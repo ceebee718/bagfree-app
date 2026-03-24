@@ -17,6 +17,21 @@
       "headers": { "Content-Type": "application/manifest+json" },
       "dest": "/manifest.json"
     },
-    { "src": "/(.*)", "dest": "/index.html" }
+    {
+      "src": "/hero.jpeg",
+      "dest": "/hero.jpeg"
+    },
+    {
+      "src": "/icon-192.png",
+      "dest": "/icon-192.png"
+    },
+    {
+      "src": "/icon-512.png",
+      "dest": "/icon-512.png"
+    },
+    {
+      "src": "/(.*)",
+      "dest": "/index.html"
+    }
   ]
 }
