@@ -678,15 +678,34 @@ function SupplierPortal(){
 
 // ── APP ───────────────────────────────────────────────────────────────────────
 function App(){
-  const [page,setPage]=useState('home');
+  const [page,setPage]=useState(()=>{
+    const h = window.location.hash.replace('#','');
+    return h||'home';
+  });
   const [activeVendor,setActiveVendor]=useState('valet-by-nuor');
+
+  function navigate(p){
+    window.location.hash = p;
+    setPage(p);
+    window.scrollTo(0,0);
+  }
+
+  React.useEffect(()=>{
+    function onPop(){
+      const h = window.location.hash.replace('#','');
+      setPage(h||'home');
+      window.scrollTo(0,0);
+    }
+    window.addEventListener('popstate',onPop);
+    return()=>window.removeEventListener('popstate',onPop);
+  },[]);
 
   return(
     <>
-      <Nav page={page} setPage={setPage}/>
-      {page==='home'&&<Home setPage={setPage}/>}
-      {page==='vendors'&&<VendorMarketplace setPage={setPage} setActiveVendor={setActiveVendor}/>}
-      {page==='products'&&<ProductsPage setPage={setPage}/>}
+      <Nav page={page} setPage={navigate}/>
+      {page==='home'&&<Home setPage={navigate}/>}
+      {page==='vendors'&&<VendorMarketplace setPage={navigate} setActiveVendor={setActiveVendor}/>}
+      {page==='products'&&<ProductsPage setPage={navigate}/>}
       {page==='hotel'&&<HotelConcierge/>}
       {page==='supplier'&&<SupplierPortal/>}
       <footer style={{background:'var(--noir-2)',padding:'2rem 3rem',display:'flex',justifyContent:'space-between',alignItems:'center',borderTop:'1px solid var(--border)',flexWrap:'wrap',gap:'1rem'}}>
