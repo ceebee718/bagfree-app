@@ -1,723 +1,1115 @@
-<!DOCTYPE html>
-<html lang="en">
-<head>
-<meta charset="UTF-8">
-<meta name="viewport" content="width=device-width, initial-scale=1.0">
-<title>BagFree — Arrive to Everything</title>
-<link href="https://fonts.googleapis.com/css2?family=Cormorant+Garamond:ital,wght@0,300;0,400;0,600;1,300;1,400&family=Jost:wght@300;400;500&display=swap" rel="stylesheet">
-<script src="https://unpkg.com/react@18/umd/react.development.js"></script>
-<script src="https://unpkg.com/react-dom@18/umd/react-dom.development.js"></script>
-<script src="https://unpkg.com/@babel/standalone/babel.min.js"></script>
-<style>
-*{margin:0;padding:0;box-sizing:border-box}
-:root{
-  --noir:#0A0A08;--noir-2:#111110;--noir-3:#1A1A17;--noir-4:#242420;
-  --gold:#C9A96E;--gold-light:#E8D5B0;--gold-dim:#8A6F45;--gold-xlight:#F5EDD8;
-  --white:#FDFCF8;--mist:rgba(253,252,248,0.5);--mist-low:rgba(253,252,248,0.15);
-  --mist-xlow:rgba(253,252,248,0.06);--border:rgba(201,169,110,0.16);
-  --border-hi:rgba(201,169,110,0.42);--border-noir:rgba(10,10,8,0.2);
-  --ff-display:'Cormorant Garamond',Georgia,serif;
-  --ff-body:'Jost',sans-serif;
-}
-html{scroll-behavior:smooth}
-body{font-family:var(--ff-body);background:var(--noir);color:var(--white);font-weight:300;overflow-x:hidden}
-button{font-family:var(--ff-body);cursor:pointer}
-input,select,textarea{font-family:var(--ff-body)}
-::-webkit-scrollbar{width:4px}
-::-webkit-scrollbar-track{background:var(--noir)}
-::-webkit-scrollbar-thumb{background:var(--gold-dim);border-radius:2px}
-</style>
-</head>
-<body>
-<div id="root"></div>
-<script type="text/babel">
-const { useState } = React;
+{% stylesheet %}
+@import url('https://fonts.googleapis.com/css2?family=Cormorant+Garamond:ital,wght@0,300;0,400;0,600;1,300;1,400&family=Jost:wght@300;400;500&display=swap');
 
-const FORMSPREE = 'https://formspree.io/f/mqeyrykl';
-async function submitToFormspree(data) {
-  try { await fetch(FORMSPREE,{method:'POST',headers:{'Content-Type':'application/json','Accept':'application/json'},body:JSON.stringify(data)}); } catch(e){}
+:root {
+  --noir: #0A0A08;
+  --noir-2: #111110;
+  --noir-3: #1A1A17;
+  --noir-4: #242420;
+  --gold: #C9A96E;
+  --gold-light: #E8D5B0;
+  --gold-dim: #8A6F45;
+  --white: #FDFCF8;
+  --mist: rgba(253,252,248,0.55);
+  --mist-low: rgba(253,252,248,0.12);
+  --border: rgba(201,169,110,0.16);
+  --border-hi: rgba(201,169,110,0.42);
+  --ff-display: 'Cormorant Garamond', Georgia, serif;
+  --ff-body: 'Jost', sans-serif;
 }
 
-// ── VENDORS ───────────────────────────────────────────────────────────────────
-const VENDORS = [
-  {
-    id:'valet-by-nuor', name:'Valet By Nuor', tag:'Official Partner', icon:'◈',
-    category:'Clothing · Wellness · Essentials', dest:'FL & GA',
-    desc:'The founding supplier of BagFree. Emergency travel kits, men\'s and women\'s wear, wellness kits, and the exclusive SNUGL collection. Same-day delivery in Tampa & Orlando.',
-    highlight:true, url:'https://valetbynuor.com', color:'gold',
-    products:['Men\'s 7-Day Travel Essentials','Women\'s 7-Day Bundle','Travel Wellness Kits','SNUGL Collection','Emergency Kits'],
-    badge:'Same-Day Available'
-  },
-  {
-    id:'placeholder-2', name:'Beach & Activity Co.', tag:'Coming Soon', icon:'🏄',
-    category:'Sports · Beach · Adventure', dest:'FL Keys · Miami',
-    desc:'Surfboards, paddleboards, snorkel gear, kayaks and more. Delivered to your beach hotel before you arrive. Currently accepting applications.',
-    highlight:false, url:null, color:'mist',
-    products:['Surfboards','Paddleboards','Snorkel Sets','Beach Chairs','Water Sports Gear'],
-    badge:'Accepting Applications'
-  },
-  {
-    id:'placeholder-3', name:'Little Travelers', tag:'Coming Soon', icon:'🍼',
-    category:'Baby · Family · Kids', dest:'FL & GA',
-    desc:'Premium baby gear and family essentials for parents who travel light. Strollers, car seats, cribs and more — all sanitized and safety certified.',
-    highlight:false, url:null, color:'mist',
-    products:['Strollers','Car Seats','Portable Cribs','Baby Monitors','Kids Activity Kits'],
-    badge:'Accepting Applications'
-  },
-  {
-    id:'placeholder-4', name:'Tech On The Go', tag:'Coming Soon', icon:'📷',
-    category:'Tech · Cameras · Accessories', dest:'All Destinations',
-    desc:'Cameras, drones, portable monitors, noise-canceling headphones and travel tech for business travelers and content creators alike.',
-    highlight:false, url:null, color:'mist',
-    products:['DSLR Cameras','DJI Drones','Portable Monitors','Power Banks','Laptop Stands'],
-    badge:'Accepting Applications'
-  },
-  {
-    id:'placeholder-5', name:'Slumber & Co.', tag:'Coming Soon', icon:'🛏️',
-    category:'Sleep · Comfort · Home', dest:'All Destinations',
-    desc:'Luxury sleep essentials delivered to your room. Premium pillows, weighted blankets, sleep masks and white noise machines so you sleep like home.',
-    highlight:false, url:null, color:'mist',
-    products:['Luxury Pillows','Weighted Blankets','Sleep Masks','White Noise Machines','Silk Pillowcases'],
-    badge:'Accepting Applications'
-  },
-  {
-    id:'placeholder-6', name:'Your Brand Here', tag:'Apply Now', icon:'+',
-    category:'Your Category · Your Destinations', dest:'You Choose',
-    desc:'Join the BagFree supplier network and reach a new class of traveler. Fulfilled and delivered by Valet By Nuor across Florida and Georgia.',
-    highlight:false, url:null, color:'apply',
-    products:[],
-    badge:'Become a Supplier'
-  },
-];
-
-// ── PRODUCTS ──────────────────────────────────────────────────────────────────
-const PRODUCTS = [
-  {id:1,category:'mens',name:"Men's 7-Day Travel Essentials",price:149,icon:'👔',tag:'Bestseller',desc:'A complete 7-day wardrobe for the bag-free traveler. Everything you need for a full week, delivered to your door.',url:'https://valetbynuor.com/products/mens-7-day-travel-essentials'},
-  {id:2,category:'mens',name:"Stay Fresh Kit — Men's",price:19.99,icon:'🧴',tag:'Sale',desc:'Daily freshness essentials packed and ready. Deodorant, wipes, grooming basics — feel clean from day one.',url:'https://valetbynuor.com/products/stay-fresh-kit'},
-  {id:3,category:'mens',name:"Men's Business Emergency Travel Kit",price:69.99,icon:'💼',tag:null,desc:'Everything a business traveler needs when luggage is lost. Dress shirt, chinos, belt, socks, and grooming essentials.',url:'https://valetbynuor.com/products/mens-business-emergency-travel-kit'},
-  {id:4,category:'mens',name:"Men's Basic Emergency Travel Kit",price:45,icon:'🧳',tag:null,desc:'The essentials to get you through any travel emergency. T-shirt, casual pants, undershirt, and basics.',url:'https://valetbynuor.com/products/mens-basic-travel-set'},
-  {id:5,category:'mens',name:"Men's Long-Sleeve Dress Shirt",price:44.99,icon:'👔',tag:null,desc:'A crisp, wrinkle-resistant dress shirt delivered fresh. Perfect for meetings, dinners, or any occasion.',url:'https://valetbynuor.com/products/men-s-long-sleeve-dress-shirt'},
-  {id:6,category:'mens',name:"Men's Polo Shirt",price:32,icon:'👕',tag:null,desc:'A versatile polo that transitions from the golf course to the dinner table.',url:'https://valetbynuor.com/products/men-s-polo-shirt'},
-  {id:7,category:'mens',name:"Men's Casual Chinos",price:49.99,icon:'👖',tag:null,desc:'Comfortable, tailored chinos for exploring your destination in style.',url:'https://valetbynuor.com/products/men-s-casual-chinos'},
-  {id:8,category:'mens',name:"Men's Jogger Pants",price:39.99,icon:'🩱',tag:null,desc:'Soft, comfortable joggers for travel days, lounging, or casual exploration.',url:'https://valetbynuor.com/products/men-s-jogger-pants'},
-  {id:9,category:'mens',name:"Men's Casual Shorts",price:25,icon:'🩳',tag:null,desc:'Lightweight casual shorts built for warm destinations.',url:'https://valetbynuor.com/products/men-s-casual-shorts'},
-  {id:10,category:'mens',name:"Men's Crew Neck T-Shirt",price:12,icon:'👕',tag:null,desc:'A clean, comfortable crew neck tee for any day of your trip.',url:'https://valetbynuor.com/products/men-s-crew-neck-t-shirt'},
-  {id:11,category:'mens',name:"Soft Cotton High Neck Tank",price:9.99,icon:'🎽',tag:null,desc:'Soft, breathable high-neck tank in white. Perfect for layering in the Florida heat.',url:'https://valetbynuor.com/products/soft-cotton-high-neck-tank-white'},
-  {id:12,category:'mens',name:"Men's Casual Travel Shirt",price:39.99,icon:'👔',tag:null,desc:'A relaxed travel shirt — breathable fabric, easy fit, ready to wear.',url:'https://valetbynuor.com/products/mens-casual-travel-shirt'},
-  {id:13,category:'mens',name:"Premium Men's Undershirt 2-Pack",price:19.99,icon:'👕',tag:null,desc:'Two premium undershirts, soft and moisture-wicking.',url:'https://valetbynuor.com/products/men-s-undershirt-2-pack'},
-  {id:14,category:'mens',name:"Men's Boxer Briefs 2-Pack",price:19.99,icon:'🩲',tag:null,desc:'Comfortable, supportive boxer briefs for the traveler who leaves nothing to chance.',url:'https://valetbynuor.com/products/men-s-boxer-briefs-2-pack'},
-  {id:15,category:'mens',name:"Men's Dress Socks 3-Pack",price:19.99,icon:'🧦',tag:null,desc:'Three pairs of premium dress socks. Never let lost luggage ruin a meeting.',url:'https://valetbynuor.com/products/men-s-socks-3-pack'},
-  {id:16,category:'mens',name:"Men's Leather Belt",price:24.99,icon:'⬛',tag:null,desc:'A sleek leather belt — the finishing touch every outfit needs.',url:'https://valetbynuor.com/products/men-s-leather-belt'},
-  {id:17,category:'womens',name:"Women's 7-Day Essentials Bundle",price:149,icon:'👗',tag:'Bestseller',desc:'A complete 7-day wardrobe for the bag-free woman traveler.',url:'https://valetbynuor.com/products/7-day-essentials-bundle'},
-  {id:18,category:'womens',name:"Women's Business Emergency Travel Kit",price:69.99,icon:'💼',tag:null,desc:'Everything a woman business traveler needs when luggage doesn\'t arrive.',url:'https://valetbynuor.com/products/womens-business-emergency-travel-kit'},
-  {id:19,category:'womens',name:"Women's Basic Travel Kit",price:49,icon:'🧳',tag:null,desc:'The essentials to recover from any travel emergency.',url:'https://valetbynuor.com/products/womens-basic-travel-kit'},
-  {id:20,category:'womens',name:"Women's Toiletry Stay Fresh Kit",price:39,icon:'🪥',tag:null,desc:'A curated toiletry kit — skincare, hygiene, and grooming essentials.',url:'https://valetbynuor.com/products/women-s-toiletry-stay-fresh-kit'},
-  {id:21,category:'womens',name:"Women's Beach Lounge Set",price:75,icon:'🌊',tag:null,desc:'Stylish beach lounge set for Florida beaches, hotel pools, and coastal mornings.',url:'https://valetbynuor.com/products/womens-beach-lounge-set'},
-  {id:22,category:'womens',name:"Women's Swimwear Emergency Set",price:24.99,icon:'👙',tag:null,desc:'Never miss a pool day because your bags didn\'t arrive.',url:'https://valetbynuor.com/products/women-s-swimwear-emergency-set'},
-  {id:23,category:'womens',name:"Women's Sleepwear",price:79,icon:'🌙',tag:null,desc:'Luxurious sleepwear so you sleep like home no matter where you are.',url:'https://valetbynuor.com/products/womens-leisure-set-1'},
-  {id:24,category:'womens',name:"Women's Leggings",price:45,icon:'🩱',tag:null,desc:'High-quality, versatile leggings for workouts, travel days, or casual exploring.',url:'https://valetbynuor.com/products/women-s-leggings'},
-  {id:25,category:'womens',name:"Women's Casual Chino Pants",price:29.99,icon:'👖',tag:null,desc:'Smart, comfortable chinos — from sightseeing to dinner.',url:'https://valetbynuor.com/products/women-s-casual-chino-pants'},
-  {id:26,category:'womens',name:"Women's Athletic Shorts",price:35,icon:'🩳',tag:null,desc:'Performance athletic shorts for morning runs or beach days.',url:'https://valetbynuor.com/products/women-s-athletic-shorts'},
-  {id:27,category:'womens',name:"Women's Casual Shorts",price:16.99,icon:'🩳',tag:null,desc:'Light, casual shorts built for warm Florida and Georgia days.',url:'https://valetbynuor.com/products/women-s-casual-shorts'},
-  {id:28,category:'womens',name:"Women's Casual V-Neck Travel Tee",price:19.99,icon:'👕',tag:null,desc:'A soft V-neck travel tee that goes with everything.',url:'https://valetbynuor.com/products/women-s-casual-travel-tee'},
-  {id:29,category:'womens',name:"Women's Undershirt 2-Pack",price:12.99,icon:'👚',tag:null,desc:'Two comfortable undershirts — the invisible layer that completes every outfit.',url:'https://valetbynuor.com/products/women-s-undershirt-2-pack'},
-  {id:30,category:'womens',name:"Women's Boxer Briefs 2-Pack",price:14.99,icon:'🩲',tag:null,desc:'Comfortable, supportive briefs for the traveler who prepares for everything.',url:'https://valetbynuor.com/products/women-s-boxer-briefs-2-pack'},
-  {id:31,category:'womens',name:"Women's Casual Ankle Socks 2-Pack",price:7.99,icon:'🧦',tag:null,desc:'Two pairs of soft ankle socks — a small essential that makes a big difference.',url:'https://valetbynuor.com/products/women-s-casual-ankle-socks-2-pack'},
-  {id:32,category:'womens',name:"Women's Leather Belt",price:18.99,icon:'⬛',tag:null,desc:'A clean, versatile leather belt to complete any outfit.',url:'https://valetbynuor.com/products/women-s-leather-belt'},
-  {id:33,category:'wellness',name:"Travel Shield Wellness Pack",price:49,icon:'🛡️',tag:'In Stock',desc:'Immune support, vitamins, and wellness essentials to keep you healthy on the road.',url:'https://valetbynuor.com/products/travel-immune-support-pack'},
-  {id:34,category:'wellness',name:"Sleep & Recovery Travel Kit",price:49,icon:'😴',tag:'In Stock',desc:'Everything you need to sleep deeply and recover fast. Jet lag\'s worst enemy.',url:'https://valetbynuor.com/products/sleep-recovery-travel-kit'},
-  {id:35,category:'wellness',name:"Energy & Focus Travel Kit",price:39,icon:'⚡',tag:'In Stock',desc:'Stay sharp and energized on the road. Nootropics and focus supplements for travelers.',url:'https://valetbynuor.com/products/energy-focus-travel-kit'},
-  {id:36,category:'snugl',name:"SNUGL Pod™",price:null,icon:'🫧',tag:'New',desc:'The SNUGL Pod — a revolutionary travel comfort product from Valet By Nuor\'s exclusive collection.',url:'https://valetbynuor.com/collections/snugl-pod%E2%84%A2'},
-  {id:37,category:'snugl',name:"SNUGL Tods™",price:null,icon:'🐾',tag:'New',desc:'SNUGL Tods — comfort and care designed for the littlest travelers.',url:'https://valetbynuor.com/collections/snugl-tots%E2%84%A2'},
-  {id:38,category:'snugl',name:"Butterfly SNUGL Den™",price:null,icon:'🦋',tag:'New',desc:'The SNUGL Den — a cozy, comforting travel essential for rest and recovery.',url:'https://valetbynuor.com/collections/butterfly-snugl-den%E2%84%A2'},
-];
-
-const CATEGORIES = [
-  {id:'all',label:'All Products',icon:'✦'},
-  {id:'mens',label:"Men's Wear",icon:'👔'},
-  {id:'womens',label:"Women's Wear",icon:'👗'},
-  {id:'wellness',label:'Wellness Kits',icon:'💊'},
-  {id:'snugl',label:'SNUGL Collection',icon:'🫧'},
-];
-
-const DESTINATIONS = [
-  {id:'tampa',name:'Tampa Bay',state:'FL',img:'🌴',highlight:true},
-  {id:'orlando',name:'Orlando',state:'FL',img:'🎆',highlight:true},
-  {id:'miami',name:'Miami Beach',state:'FL',img:'🌊',highlight:false},
-  {id:'keys',name:'Florida Keys',state:'FL',img:'🐠',highlight:false},
-  {id:'atlanta',name:'Atlanta',state:'GA',img:'🏙️',highlight:false},
-  {id:'savannah',name:'Savannah',state:'GA',img:'🌿',highlight:false},
-];
-
-// ── NAV ───────────────────────────────────────────────────────────────────────
-function Nav({page,setPage}){
-  return(
-    <nav style={{position:'fixed',top:0,left:0,right:0,zIndex:200,display:'flex',alignItems:'center',justifyContent:'space-between',padding:'1.25rem 2.5rem',borderBottom:'1px solid var(--border)',background:'rgba(10,10,8,0.97)',backdropFilter:'blur(16px)'}}>
-      <div onClick={()=>setPage('home')} style={{fontFamily:'var(--ff-display)',fontSize:'1.5rem',fontWeight:300,letterSpacing:'3px',textTransform:'uppercase',color:'var(--white)',cursor:'pointer'}}>
-        Bag<span style={{color:'var(--gold)'}}>Free</span>
-      </div>
-      <div style={{display:'flex',gap:'2rem',alignItems:'center'}}>
-        {[['home','Destinations'],['vendors','Marketplace'],['hotel','Book Hotel'],['supplier','Suppliers']].map(([p,l])=>(
-          <span key={p} onClick={()=>setPage(p)} style={{fontSize:'0.72rem',color:page===p?'var(--gold)':'rgba(253,252,248,0.85)',letterSpacing:'1.5px',textTransform:'uppercase',cursor:'pointer',transition:'color 0.2s',fontWeight:400}}>{l}</span>
-        ))}
-        <button onClick={()=>setPage('vendors')} style={{background:'var(--gold)',color:'var(--noir)',padding:'0.5rem 1.25rem',border:'none',fontSize:'0.68rem',letterSpacing:'2px',textTransform:'uppercase',fontWeight:500}}>Shop Now</button>
-      </div>
-    </nav>
-  );
+.valet-home {
+  background: var(--noir);
+  color: var(--white);
+  font-family: var(--ff-body);
+  font-weight: 300;
 }
 
-// ── HOME ──────────────────────────────────────────────────────────────────────
-function Home({setPage}){
-  return(
-    <div style={{paddingTop:80}}>
-
-      {/* HERO — FULL IMAGE */}
-      <div style={{minHeight:'92vh',display:'flex',flexDirection:'column',alignItems:'center',justifyContent:'center',textAlign:'center',padding:'4rem 2rem',position:'relative',overflow:'hidden'}}>
-        {/* Full background image */}
-        <div style={{position:'absolute',top:0,left:0,right:0,bottom:0,backgroundImage:"url('hero.jpeg')",backgroundSize:'cover',backgroundPosition:'center 30%',pointerEvents:'none'}}/>
-        {/* Light overlay so text stays readable */}
-        <div style={{position:'absolute',top:0,left:0,right:0,bottom:0,background:'rgba(245,237,216,0.55)',pointerEvents:'none'}}/>
-
-        <h1 style={{fontFamily:'var(--ff-display)',fontSize:'clamp(3.5rem,8vw,7rem)',fontWeight:300,lineHeight:1.02,letterSpacing:'-2px',marginBottom:'1.5rem',color:'var(--noir)',position:'relative'}}>
-          Arrive to <em style={{fontStyle:'italic',color:'var(--gold-dim)'}}>everything.</em><br/>Carry <em style={{fontStyle:'italic'}}>nothing.</em>
-        </h1>
-        <p style={{fontSize:'1rem',color:'rgba(10,10,8,0.6)',lineHeight:1.9,maxWidth:520,marginBottom:'3rem',fontWeight:300,position:'relative'}}>
-          Shop clothing, wellness kits, and travel essentials — delivered to your hotel before you arrive. Same-day available in Tampa & Orlando.
-        </p>
-        <div style={{display:'flex',gap:'1rem',flexWrap:'wrap',justifyContent:'center',marginBottom:'2rem',position:'relative'}}>
-          <button onClick={()=>setPage('vendors')} style={{background:'var(--noir)',color:'var(--gold-xlight)',padding:'1rem 2.5rem',border:'none',fontSize:'0.72rem',fontWeight:500,letterSpacing:'3px',textTransform:'uppercase'}}>
-            Shop the Marketplace
-          </button>
-          <button onClick={()=>setPage('hotel')} style={{background:'transparent',color:'var(--noir)',padding:'1rem 2rem',border:'1.5px solid rgba(10,10,8,0.3)',fontSize:'0.72rem',letterSpacing:'2.5px',textTransform:'uppercase'}}>
-            Book a Hotel
-          </button>
-        </div>
-        <div style={{fontSize:'0.72rem',color:'var(--noir)',letterSpacing:'1px',padding:'0.5rem 1.25rem',border:'1px solid rgba(10,10,8,0.2)',background:'rgba(10,10,8,0.06)',position:'relative'}}>
-          ⚡ Same-day delivery now live in Tampa & Orlando
-        </div>
-        <div style={{display:'flex',gap:'4rem',marginTop:'5rem',paddingTop:'3rem',borderTop:'1px solid rgba(10,10,8,0.12)',flexWrap:'wrap',justifyContent:'center',position:'relative'}}>
-          {[['38+','Products'],['6','Destinations'],['Same-Day','Tampa & Orlando'],['Valet By Nuor','Delivery Partner']].map(([n,l])=>(
-            <div key={l} style={{textAlign:'center'}}>
-              <div style={{fontFamily:'var(--ff-display)',fontSize:'2rem',fontWeight:300,color:'var(--noir)',lineHeight:1}}>{n}</div>
-              <div style={{fontSize:'0.62rem',letterSpacing:'2px',textTransform:'uppercase',color:'rgba(10,10,8,0.5)',marginTop:8}}>{l}</div>
-            </div>
-          ))}
-        </div>
-        <div style={{marginTop:'2rem',fontSize:'0.62rem',letterSpacing:'3px',textTransform:'uppercase',color:'rgba(10,10,8,0.4)',position:'relative',display:'flex',alignItems:'center',gap:'1rem',justifyContent:'center'}}>
-          <span style={{width:24,height:1,background:'rgba(10,10,8,0.2)',display:'inline-block'}}/>
-          Powered by Valet By Nuor
-          <span style={{width:24,height:1,background:'rgba(10,10,8,0.2)',display:'inline-block'}}/>
-        </div>
-      </div>
-
-      {/* VENDOR PREVIEW — DARK */}
-      <div style={{padding:'6rem 3rem',background:'var(--noir)'}}>
-        <div style={{fontSize:'0.62rem',letterSpacing:'4px',textTransform:'uppercase',color:'var(--gold)',marginBottom:'1.5rem',display:'flex',alignItems:'center',gap:'1rem'}}>
-          <span style={{width:24,height:1,background:'var(--gold-dim)',display:'inline-block'}}/>The Marketplace
-        </div>
-        <div style={{display:'flex',justifyContent:'space-between',alignItems:'flex-end',marginBottom:'3rem',flexWrap:'wrap',gap:'1rem'}}>
-          <h2 style={{fontFamily:'var(--ff-display)',fontSize:'clamp(2rem,4vw,3.5rem)',fontWeight:300,letterSpacing:'-0.3px'}}>
-            Curated <em style={{color:'var(--gold)',fontStyle:'italic'}}>suppliers</em><br/>one destination
-          </h2>
-          <button onClick={()=>setPage('vendors')} style={{background:'transparent',color:'var(--gold)',padding:'0.75rem 1.75rem',border:'1px solid var(--border-hi)',fontSize:'0.68rem',letterSpacing:'2px',textTransform:'uppercase'}}>View All Vendors →</button>
-        </div>
-        <div style={{display:'grid',gridTemplateColumns:'repeat(auto-fill,minmax(300px,1fr))',gap:1,background:'var(--border)',border:'1px solid var(--border)'}}>
-          {VENDORS.slice(0,3).map(v=>(
-            <div key={v.id} onClick={()=>setPage('vendors')}
-              style={{background:v.highlight?'var(--noir-3)':'var(--noir-2)',padding:'2rem',cursor:'pointer',transition:'background 0.25s',position:'relative'}}
-              onMouseEnter={e=>e.currentTarget.style.background='var(--noir-3)'}
-              onMouseLeave={e=>e.currentTarget.style.background=v.highlight?'var(--noir-3)':'var(--noir-2)'}>
-              {v.highlight && <div style={{position:'absolute',top:'1rem',right:'1rem',fontSize:'0.55rem',letterSpacing:'1.5px',textTransform:'uppercase',color:'var(--gold)',border:'1px solid var(--border-hi)',padding:'2px 8px'}}>Official Partner</div>}
-              <div style={{fontSize:'2rem',opacity:v.highlight?0.8:0.4,marginBottom:'1rem'}}>{v.icon}</div>
-              <div style={{fontFamily:'var(--ff-display)',fontSize:'1.3rem',fontWeight:300,color:'var(--white)',marginBottom:'0.4rem'}}>{v.name}</div>
-              <div style={{fontSize:'0.68rem',letterSpacing:'1.5px',textTransform:'uppercase',color:'var(--gold-dim)',marginBottom:'0.75rem'}}>{v.category}</div>
-              <div style={{fontSize:'0.78rem',color:'var(--mist)',lineHeight:1.7,marginBottom:'1rem',fontWeight:300}}>{v.desc.slice(0,100)}...</div>
-              <div style={{fontSize:'0.62rem',letterSpacing:'2px',textTransform:'uppercase',color:v.highlight?'var(--gold)':'var(--mist)'}}>{v.badge} →</div>
-            </div>
-          ))}
-        </div>
-      </div>
-
-      {/* HOW IT WORKS — GOLD INVERTED */}
-      <div style={{padding:'6rem 3rem',background:'var(--gold)',position:'relative',overflow:'hidden'}}>
-        <div style={{fontSize:'0.62rem',letterSpacing:'4px',textTransform:'uppercase',color:'rgba(10,10,8,0.7)',marginBottom:'1.5rem',display:'flex',alignItems:'center',gap:'1rem',position:'relative'}}>
-          <span style={{width:24,height:1,background:'rgba(10,10,8,0.5)',display:'inline-block'}}/>How It Works
-        </div>
-        <h2 style={{fontFamily:'var(--ff-display)',fontSize:'clamp(2rem,4vw,3.5rem)',fontWeight:300,marginBottom:'3.5rem',color:'var(--noir)',letterSpacing:'-0.3px',position:'relative'}}>
-          Three steps to <em style={{fontStyle:'italic'}}>effortless</em> arrival
-        </h2>
-        <div style={{display:'grid',gridTemplateColumns:'repeat(3,1fr)',gap:0,border:'1px solid rgba(10,10,8,0.2)',position:'relative'}}>
-          {[
-            ['01','Browse the Marketplace','Explore vendors by category or destination. Clothing, wellness, family gear, tech and more — all in one place.'],
-            ['02','Order & Confirm','Place your order and confirm your hotel and arrival date. We coordinate delivery directly with your accommodation.'],
-            ['03','Arrive to Everything','Your items are waiting in your room. Lost your luggage? Same-day delivery in Tampa & Orlando gets you sorted in hours.'],
-          ].map(([n,h,p],i)=>(
-            <div key={n} style={{padding:'2.5rem',borderRight:i<2?'1px solid rgba(10,10,8,0.2)':'none',borderTop:'1px solid rgba(10,10,8,0.2)'}}>
-              <div style={{fontFamily:'var(--ff-display)',fontSize:'4rem',fontWeight:300,color:'rgba(10,10,8,0.2)',lineHeight:1,marginBottom:'1.25rem'}}>{n}</div>
-              <div style={{width:24,height:1,background:'rgba(10,10,8,0.5)',marginBottom:'1.25rem'}}/>
-              <h3 style={{fontFamily:'var(--ff-display)',fontSize:'1.35rem',fontWeight:400,color:'var(--noir)',marginBottom:'0.75rem'}}>{h}</h3>
-              <p style={{fontSize:'0.85rem',color:'rgba(10,10,8,0.7)',lineHeight:1.9,fontWeight:300}}>{p}</p>
-            </div>
-          ))}
-        </div>
-      </div>
-
-      {/* HOTEL CONCIERGE — DARK */}
-      <div style={{padding:'6rem 3rem',background:'var(--noir-2)'}}>
-        <div style={{display:'grid',gridTemplateColumns:'1fr 1fr',gap:'4rem',alignItems:'center',maxWidth:1100,margin:'0 auto'}}>
-          <div>
-            <div style={{fontSize:'0.62rem',letterSpacing:'4px',textTransform:'uppercase',color:'var(--gold)',marginBottom:'1.5rem',display:'flex',alignItems:'center',gap:'1rem'}}>
-              <span style={{width:24,height:1,background:'var(--gold-dim)',display:'inline-block'}}/>Travel Concierge
-            </div>
-            <h2 style={{fontFamily:'var(--ff-display)',fontSize:'clamp(2rem,4vw,3.2rem)',fontWeight:300,marginBottom:'1rem'}}>
-              We'll book your <em style={{color:'var(--gold)',fontStyle:'italic'}}>hotel too</em>
-            </h2>
-            <p style={{fontSize:'0.88rem',color:'var(--mist)',lineHeight:1.9,marginBottom:'2rem',fontWeight:300,maxWidth:420}}>Our travel concierge finds and books your perfect hotel — with exclusive rates not available to the public. Then we deliver everything you need to your room before you arrive.</p>
-            <div style={{display:'flex',flexDirection:'column',gap:'0.75rem',marginBottom:'2.5rem'}}>
-              {['Exclusive hotel rates via our travel agent network','Personalized recommendations for your trip type','Coordinated with your Valet By Nuor delivery','Response within 24 hours'].map(f=>(
-                <div key={f} style={{display:'flex',gap:'0.75rem',alignItems:'center',fontSize:'0.82rem',color:'var(--mist)'}}>
-                  <span style={{color:'var(--gold)',fontSize:'0.6rem',flexShrink:0}}>◆</span>{f}
-                </div>
-              ))}
-            </div>
-            <button onClick={()=>setPage('hotel')} style={{background:'var(--gold)',color:'var(--noir)',padding:'0.9rem 2.5rem',border:'none',fontSize:'0.7rem',fontWeight:500,letterSpacing:'3px',textTransform:'uppercase'}}>
-              Request Hotel Booking
-            </button>
-          </div>
-          <div style={{background:'var(--noir-3)',border:'1px solid var(--border)',padding:'2rem'}}>
-            <div style={{fontSize:'0.6rem',letterSpacing:'3px',textTransform:'uppercase',color:'var(--gold)',marginBottom:'1.5rem',paddingBottom:'1rem',borderBottom:'1px solid var(--border)'}}>The Complete BagFree Experience</div>
-            {[['01','Book Your Hotel','Destination, dates, budget — we handle the rest.'],['02','Order Your Essentials','Browse vendors and have everything delivered to your room.'],['03','Arrive Unburdened','Hotel confirmed. Essentials waiting. Nothing to carry.']].map(([n,h,p])=>(
-              <div key={n} style={{display:'flex',gap:'1.25rem',marginBottom:'1.5rem',paddingBottom:'1.5rem',borderBottom:'1px solid var(--mist-xlow)'}}>
-                <div style={{fontFamily:'var(--ff-display)',fontSize:'1.8rem',fontWeight:300,color:'var(--border-hi)',lineHeight:1,flexShrink:0,width:32}}>{n}</div>
-                <div>
-                  <div style={{fontSize:'0.82rem',color:'var(--white)',fontWeight:400,marginBottom:4}}>{h}</div>
-                  <div style={{fontSize:'0.75rem',color:'var(--mist)',lineHeight:1.7,fontWeight:300}}>{p}</div>
-                </div>
-              </div>
-            ))}
-          </div>
-        </div>
-      </div>
-
-      {/* DESTINATIONS — GOLD INVERTED */}
-      <div style={{padding:'6rem 3rem',background:'var(--gold-xlight)'}}>
-        <div style={{fontSize:'0.62rem',letterSpacing:'4px',textTransform:'uppercase',color:'var(--gold-dim)',marginBottom:'1.5rem',display:'flex',alignItems:'center',gap:'1rem'}}>
-          <span style={{width:24,height:1,background:'var(--gold-dim)',display:'inline-block'}}/>Now Serving
-        </div>
-        <h2 style={{fontFamily:'var(--ff-display)',fontSize:'clamp(2rem,4vw,3.5rem)',fontWeight:300,marginBottom:'3rem',color:'var(--noir)',letterSpacing:'-0.3px'}}>
-          Florida & <em style={{fontStyle:'italic',color:'var(--gold-dim)'}}>Georgia</em>
-        </h2>
-        <div style={{display:'grid',gridTemplateColumns:'repeat(auto-fill,minmax(240px,1fr))',gap:1,background:'rgba(10,10,8,0.12)',border:'1px solid rgba(10,10,8,0.12)'}}>
-          {DESTINATIONS.map(d=>(
-            <div key={d.id} onClick={()=>setPage('vendors')}
-              style={{background:'var(--gold-xlight)',padding:'2rem',cursor:'pointer',transition:'background 0.25s',position:'relative'}}
-              onMouseEnter={e=>e.currentTarget.style.background='rgba(201,169,110,0.3)'}
-              onMouseLeave={e=>e.currentTarget.style.background='var(--gold-xlight)'}>
-              {d.highlight && <div style={{position:'absolute',top:'1rem',right:'1rem',fontSize:'0.55rem',letterSpacing:'1.5px',textTransform:'uppercase',color:'var(--noir)',border:'1px solid rgba(10,10,8,0.3)',padding:'2px 8px',background:'rgba(10,10,8,0.07)'}}>Same-Day</div>}
-              <div style={{fontSize:'2rem',marginBottom:'1rem',opacity:0.7}}>{d.img}</div>
-              <div style={{fontFamily:'var(--ff-display)',fontSize:'1.3rem',fontWeight:300,color:'var(--noir)',marginBottom:4}}>{d.name}, {d.state}</div>
-              <div style={{fontSize:'0.68rem',letterSpacing:'1.5px',textTransform:'uppercase',color:'var(--gold-dim)',marginTop:'0.75rem'}}>Shop vendors →</div>
-            </div>
-          ))}
-        </div>
-      </div>
-
-      {/* CTA — DARK */}
-      <div style={{padding:'7rem 3rem',background:'var(--noir)',textAlign:'center',position:'relative',overflow:'hidden'}}>
-        <div style={{position:'absolute',top:'50%',left:'50%',transform:'translate(-50%,-50%)',width:700,height:350,background:'radial-gradient(ellipse,rgba(201,169,110,0.07) 0%,transparent 70%)',pointerEvents:'none'}}/>
-        <h2 style={{fontFamily:'var(--ff-display)',fontSize:'clamp(2.5rem,5vw,5rem)',fontWeight:300,lineHeight:1.1,marginBottom:'1.5rem',position:'relative'}}>
-          Lost luggage?<br/><em style={{color:'var(--gold)',fontStyle:'italic'}}>We've got you.</em>
-        </h2>
-        <p style={{fontSize:'0.9rem',color:'var(--mist)',marginBottom:'3rem',fontWeight:300,position:'relative'}}>Same-day emergency delivery in Tampa & Orlando. Hours, not days.</p>
-        <div style={{display:'flex',gap:'1rem',justifyContent:'center',flexWrap:'wrap',position:'relative'}}>
-          <button onClick={()=>setPage('vendors')} style={{background:'var(--gold)',color:'var(--noir)',padding:'1rem 2.5rem',border:'none',fontSize:'0.72rem',fontWeight:500,letterSpacing:'3px',textTransform:'uppercase'}}>Shop Emergency Kits</button>
-          <button onClick={()=>setPage('hotel')} style={{background:'transparent',color:'var(--mist)',padding:'1rem 2rem',border:'1px solid var(--mist-low)',fontSize:'0.72rem',letterSpacing:'2.5px',textTransform:'uppercase'}}>Book a Hotel</button>
-        </div>
-      </div>
-    </div>
-  );
+.valet-home * {
+  box-sizing: border-box;
+  margin: 0;
+  padding: 0;
 }
 
-// ── VENDOR MARKETPLACE ────────────────────────────────────────────────────────
-function VendorMarketplace({setPage,setActiveVendor}){
-  return(
-    <div style={{paddingTop:80}}>
-      {/* Header — gold */}
-      <div style={{padding:'5rem 3rem 4rem',background:'var(--gold)',position:'relative',overflow:'hidden'}}>
-        <div style={{position:'absolute',top:0,left:0,right:0,bottom:0,backgroundImage:"url('https://images.unsplash.com/photo-1578683010236-d716f9a3f461?w=1800&q=80')",backgroundSize:'cover',backgroundPosition:'center top',opacity:0.08,pointerEvents:'none'}}/>
-        <div style={{fontSize:'0.62rem',letterSpacing:'4px',textTransform:'uppercase',color:'rgba(10,10,8,0.5)',marginBottom:'1.25rem',display:'flex',alignItems:'center',gap:'1rem',position:'relative'}}>
-          <span style={{width:24,height:1,background:'var(--noir)',opacity:0.3,display:'inline-block'}}/>BagFree Marketplace
-        </div>
-        <h1 style={{fontFamily:'var(--ff-display)',fontSize:'clamp(2.5rem,5vw,4.5rem)',fontWeight:300,color:'var(--noir)',letterSpacing:'-0.5px',position:'relative'}}>
-          Our <em style={{fontStyle:'italic'}}>Supplier</em> Network
-        </h1>
-        <p style={{fontSize:'0.9rem',color:'rgba(10,10,8,0.6)',marginTop:'1rem',maxWidth:500,lineHeight:1.8,fontWeight:300,position:'relative'}}>Browse verified suppliers delivering to your destination. Click any vendor to explore their products.</p>
-      </div>
-
-      {/* Vendor grid — dark */}
-      <div style={{padding:'3rem',background:'var(--noir)'}}>
-        <div style={{display:'grid',gridTemplateColumns:'repeat(auto-fill,minmax(340px,1fr))',gap:1,background:'var(--border)',border:'1px solid var(--border)'}}>
-          {VENDORS.map(v=>(
-            <VendorCard key={v.id} vendor={v} setPage={setPage} setActiveVendor={setActiveVendor} />
-          ))}
-        </div>
-      </div>
-    </div>
-  );
+.valet-home .page-width {
+  max-width: 1200px;
+  margin: 0 auto;
+  padding-left: 2.5rem;
+  padding-right: 2.5rem;
 }
 
-function VendorCard({vendor:v,setPage,setActiveVendor}){
-  const isApply = v.color==='apply';
-  const isMist = v.color==='mist';
-
-  if(isApply) return(
-    <div onClick={()=>setPage('supplier')}
-      style={{background:'var(--noir-2)',padding:'2.5rem',cursor:'pointer',border:'1px dashed rgba(201,169,110,0.25)',display:'flex',flexDirection:'column',alignItems:'center',justifyContent:'center',textAlign:'center',minHeight:280,transition:'all 0.25s'}}
-      onMouseEnter={e=>e.currentTarget.style.background='var(--noir-3)'}
-      onMouseLeave={e=>e.currentTarget.style.background='var(--noir-2)'}>
-      <div style={{fontSize:'2.5rem',color:'var(--border-hi)',marginBottom:'1rem',fontWeight:100}}>+</div>
-      <div style={{fontFamily:'var(--ff-display)',fontSize:'1.4rem',fontWeight:300,color:'var(--mist)',marginBottom:'0.5rem'}}>Your Brand Here</div>
-      <div style={{fontSize:'0.72rem',letterSpacing:'2px',textTransform:'uppercase',color:'var(--gold)',marginBottom:'1rem'}}>Apply to Join</div>
-      <div style={{fontSize:'0.78rem',color:'var(--mist)',lineHeight:1.7,maxWidth:260}}>{v.desc}</div>
-      <div style={{marginTop:'1.5rem',fontSize:'0.65rem',letterSpacing:'2.5px',textTransform:'uppercase',color:'var(--gold)',border:'1px solid var(--border-hi)',padding:'0.5rem 1.25rem'}}>Become a Supplier →</div>
-    </div>
-  );
-
-  return(
-    <div style={{background:v.highlight?'var(--noir-3)':'var(--noir-2)',padding:'2.5rem',cursor:'pointer',position:'relative',transition:'background 0.25s'}}
-      onMouseEnter={e=>e.currentTarget.style.background='var(--noir-4)'}
-      onMouseLeave={e=>e.currentTarget.style.background=v.highlight?'var(--noir-3)':'var(--noir-2)'}
-      onClick={()=>isMist?setPage('supplier'):null}>
-      {v.highlight && <div style={{position:'absolute',top:'1.25rem',right:'1.25rem',fontSize:'0.55rem',letterSpacing:'1.5px',textTransform:'uppercase',color:'var(--gold)',border:'1px solid var(--border-hi)',padding:'3px 10px',background:'rgba(201,169,110,0.08)'}}>Official Partner</div>}
-      {isMist && <div style={{position:'absolute',top:'1.25rem',right:'1.25rem',fontSize:'0.55rem',letterSpacing:'1.5px',textTransform:'uppercase',color:'var(--mist)',border:'1px solid var(--border)',padding:'3px 10px'}}>Coming Soon</div>}
-
-      <div style={{fontSize:'2.5rem',opacity:v.highlight?0.7:0.3,marginBottom:'1.25rem'}}>{v.icon}</div>
-      <div style={{fontFamily:'var(--ff-display)',fontSize:'1.5rem',fontWeight:300,color:'var(--white)',marginBottom:'0.35rem'}}>{v.name}</div>
-      <div style={{fontSize:'0.62rem',letterSpacing:'2px',textTransform:'uppercase',color:v.highlight?'var(--gold)':'var(--mist)',marginBottom:'0.5rem'}}>{v.category}</div>
-      <div style={{fontSize:'0.7rem',color:'var(--mist)',marginBottom:'1.25rem',letterSpacing:'0.5px'}}>{v.dest}</div>
-      <p style={{fontSize:'0.82rem',color:'var(--mist)',lineHeight:1.8,marginBottom:'1.5rem',fontWeight:300}}>{v.desc}</p>
-
-      {v.products.length > 0 && (
-        <div style={{display:'flex',flexWrap:'wrap',gap:6,marginBottom:'1.5rem'}}>
-          {v.products.map(p=>(
-            <span key={p} style={{fontSize:'0.62rem',color:v.highlight?'var(--gold-dim)':'var(--mist)',border:`1px solid ${v.highlight?'var(--border)':'rgba(253,252,248,0.08)'}`,padding:'3px 10px',letterSpacing:'0.5px'}}>{p}</span>
-          ))}
-        </div>
-      )}
-
-      {v.highlight ? (
-        <button onClick={()=>window.open(v.url,'_blank')}
-          style={{background:'var(--gold)',color:'var(--noir)',padding:'0.75rem 1.75rem',border:'none',fontSize:'0.68rem',fontWeight:500,letterSpacing:'2.5px',textTransform:'uppercase',width:'100%'}}>
-          Shop {v.name} ↗
-        </button>
-      ) : (
-        <div style={{padding:'0.75rem 1.75rem',border:'1px solid var(--border)',fontSize:'0.68rem',letterSpacing:'2.5px',textTransform:'uppercase',color:'var(--mist)',textAlign:'center'}}>
-          {v.badge}
-        </div>
-      )}
-    </div>
-  );
+/* ANNOUNCEMENT */
+.valet-announcement {
+  background: var(--gold);
+  color: var(--noir);
+  text-align: center;
+  font-family: var(--ff-body);
+  font-size: 0.72rem;
+  font-weight: 500;
+  letter-spacing: 2px;
+  text-transform: uppercase;
+  padding: 0.7rem 1rem;
 }
 
-// ── PRODUCTS PAGE ─────────────────────────────────────────────────────────────
-function ProductsPage({setPage}){
-  const [cat,setCat]=useState('all');
-  const [search,setSearch]=useState('');
-  const [selected,setSelected]=useState(null);
-
-  const filtered=PRODUCTS.filter(p=>{
-    if(cat!=='all'&&p.category!==cat)return false;
-    if(search&&!p.name.toLowerCase().includes(search.toLowerCase()))return false;
-    return true;
-  });
-
-  if(selected)return<ProductDetail product={selected} onBack={()=>setSelected(null)}/>;
-
-  return(
-    <div style={{paddingTop:80}}>
-      <div style={{padding:'1.5rem 2.5rem',background:'var(--noir-2)',borderBottom:'1px solid var(--border)',display:'flex',gap:'1rem',flexWrap:'wrap',alignItems:'center'}}>
-        <span onClick={()=>setPage('vendors')} style={{fontSize:'0.68rem',letterSpacing:'2px',textTransform:'uppercase',color:'var(--gold)',cursor:'pointer',marginRight:'0.5rem'}}>← Vendors</span>
-        <input value={search} onChange={e=>setSearch(e.target.value)} placeholder="Search products..."
-          style={{flex:1,minWidth:180,background:'var(--mist-xlow)',border:'1px solid var(--border)',color:'var(--white)',padding:'0.6rem 1rem',fontSize:'0.85rem',outline:'none'}}/>
-        <div style={{display:'flex',gap:6,flexWrap:'wrap'}}>
-          {CATEGORIES.map(c=>(
-            <button key={c.id} onClick={()=>setCat(c.id)}
-              style={{background:cat===c.id?'var(--gold)':'transparent',color:cat===c.id?'var(--noir)':'var(--mist)',border:`1px solid ${cat===c.id?'var(--gold)':'var(--border)'}`,padding:'0.45rem 0.9rem',fontSize:'0.65rem',letterSpacing:'1.5px',textTransform:'uppercase'}}>
-              {c.icon} {c.label}
-            </button>
-          ))}
-        </div>
-      </div>
-      <div style={{padding:'2rem 2.5rem',background:'var(--noir)'}}>
-        <div style={{display:'flex',alignItems:'center',justifyContent:'space-between',marginBottom:'1.5rem'}}>
-          <div style={{fontSize:'0.78rem',color:'var(--mist)'}}>{filtered.length} products · Valet By Nuor</div>
-          <a href="https://valetbynuor.com" target="_blank" style={{fontSize:'0.68rem',letterSpacing:'2px',textTransform:'uppercase',color:'var(--gold)',textDecoration:'none'}}>Visit valetbynuor.com ↗</a>
-        </div>
-        {filtered.length===0?(
-          <div style={{textAlign:'center',padding:'5rem',color:'var(--mist)'}}>
-            <div style={{fontFamily:'var(--ff-display)',fontSize:'2rem',fontWeight:300,marginBottom:'0.75rem'}}>No products found</div>
-            <button onClick={()=>{setSearch('');setCat('all');}} style={{background:'var(--gold)',color:'var(--noir)',padding:'0.7rem 2rem',border:'none',fontSize:'0.68rem',letterSpacing:'2px',textTransform:'uppercase',marginTop:'1rem'}}>Clear Filters</button>
-          </div>
-        ):(
-          <div style={{display:'grid',gridTemplateColumns:'repeat(auto-fill,minmax(250px,1fr))',gap:12}}>
-            {filtered.map(p=>(
-              <div key={p.id} style={{background:'var(--noir-3)',border:'1px solid var(--border)',padding:'1.5rem',cursor:'pointer',transition:'border-color 0.2s'}}
-                onMouseEnter={e=>e.currentTarget.style.borderColor='var(--border-hi)'}
-                onMouseLeave={e=>e.currentTarget.style.borderColor='var(--border)'}
-                onClick={()=>setSelected(p)}>
-                {p.tag&&<div style={{fontSize:'0.55rem',letterSpacing:'1.5px',textTransform:'uppercase',color:'var(--gold)',border:'1px solid var(--border-hi)',padding:'2px 8px',display:'inline-block',marginBottom:'0.75rem'}}>{p.tag}</div>}
-                <div style={{fontSize:'2.5rem',opacity:0.4,marginBottom:'0.75rem'}}>{p.icon}</div>
-                <div style={{fontSize:'0.58rem',letterSpacing:'2px',textTransform:'uppercase',color:'var(--gold-dim)',marginBottom:'0.35rem'}}>{CATEGORIES.find(c=>c.id===p.category)?.label}</div>
-                <div style={{fontFamily:'var(--ff-display)',fontSize:'1.05rem',fontWeight:300,color:'var(--white)',marginBottom:'0.5rem',lineHeight:1.25}}>{p.name}</div>
-                <div style={{fontSize:'0.72rem',color:'var(--mist)',lineHeight:1.7,marginBottom:'0.75rem'}}>{p.desc.slice(0,75)}...</div>
-                <div style={{fontFamily:'var(--ff-display)',fontSize:'1.3rem',fontWeight:300,color:'var(--gold)',marginBottom:'0.75rem'}}>{p.price?`$${p.price}`:'View'}</div>
-                <button onClick={e=>{e.stopPropagation();window.open(p.url,'_blank');}}
-                  style={{width:'100%',background:'transparent',color:'var(--gold)',padding:'0.55rem',border:'1px solid var(--border-hi)',fontSize:'0.62rem',letterSpacing:'2px',textTransform:'uppercase'}}>
-                  {p.price?`Shop Now — $${p.price} ↗`:'View Collection ↗'}
-                </button>
-              </div>
-            ))}
-          </div>
-        )}
-      </div>
-    </div>
-  );
+/* HEADER */
+.valet-header {
+  background: rgba(10,10,8,0.97);
+  border-bottom: 1px solid var(--border);
+  position: sticky;
+  top: 0;
+  z-index: 100;
+  backdrop-filter: blur(16px);
 }
 
-function ProductDetail({product:p,onBack}){
-  return(
-    <div style={{paddingTop:80,minHeight:'100vh',background:'var(--noir)'}}>
-      <div style={{padding:'1.25rem 2.5rem',borderBottom:'1px solid var(--border)',background:'var(--noir-2)'}}>
-        <span onClick={onBack} style={{fontSize:'0.68rem',letterSpacing:'2px',textTransform:'uppercase',color:'var(--gold)',cursor:'pointer'}}>← Back</span>
-      </div>
-      <div style={{display:'grid',gridTemplateColumns:'1fr 1fr',gap:'4rem',maxWidth:1000,margin:'0 auto',padding:'4rem 2.5rem'}}>
-        <div>
-          <div style={{background:'var(--noir-3)',border:'1px solid var(--border)',display:'flex',alignItems:'center',justifyContent:'center',height:340,fontSize:'8rem',opacity:0.3}}>{p.icon}</div>
-          <div style={{marginTop:'1rem',padding:'1.25rem',background:'var(--mist-xlow)',border:'1px solid var(--border)'}}>
-            <div style={{fontSize:'0.6rem',letterSpacing:'2px',textTransform:'uppercase',color:'var(--gold)',marginBottom:'0.5rem'}}>Fulfilled by Valet By Nuor</div>
-            <div style={{fontSize:'0.78rem',color:'var(--mist)',lineHeight:1.8}}>Delivered to your hotel, airport, or accommodation. Same-day available in Tampa & Orlando.</div>
-          </div>
-        </div>
-        <div>
-          <div style={{fontSize:'0.6rem',letterSpacing:'3px',textTransform:'uppercase',color:'var(--gold-dim)',marginBottom:'0.75rem'}}>{CATEGORIES.find(c=>c.id===p.category)?.label} · Valet By Nuor</div>
-          <h1 style={{fontFamily:'var(--ff-display)',fontSize:'2.5rem',fontWeight:300,lineHeight:1.1,marginBottom:'1.5rem'}}>{p.name}</h1>
-          <p style={{fontSize:'0.9rem',color:'var(--mist)',lineHeight:1.9,marginBottom:'2rem',fontWeight:300}}>{p.desc}</p>
-          <div style={{fontFamily:'var(--ff-display)',fontSize:'2.5rem',fontWeight:300,color:'var(--gold)',marginBottom:'2rem'}}>{p.price?`$${p.price}`:'View Pricing'}</div>
-          <button onClick={()=>window.open(p.url,'_blank')} style={{width:'100%',background:'var(--gold)',color:'var(--noir)',padding:'1rem',border:'none',fontSize:'0.72rem',fontWeight:500,letterSpacing:'3px',textTransform:'uppercase'}}>
-            {p.price?`Shop on Valet By Nuor — $${p.price} ↗`:'View Collection ↗'}
-          </button>
-          <div style={{marginTop:'1.5rem',display:'flex',flexDirection:'column',gap:'0.6rem'}}>
-            {['Delivered to your hotel','Same-day in Tampa & Orlando','Brand new from Valet By Nuor','Call (813) 816-2448 for help'].map(f=>(
-              <div key={f} style={{display:'flex',gap:'0.75rem',alignItems:'center',fontSize:'0.78rem',color:'var(--mist)'}}><span style={{color:'var(--gold)',fontSize:'0.6rem'}}>◆</span>{f}</div>
-            ))}
-          </div>
-        </div>
-      </div>
-    </div>
-  );
+.valet-header__inner {
+  display: flex;
+  align-items: center;
+  justify-content: space-between;
+  min-height: 72px;
+  padding: 0;
 }
 
-// ── HOTEL CONCIERGE ───────────────────────────────────────────────────────────
-function HotelConcierge(){
-  const [done,setDone]=useState(false);
-  const [form,setForm]=useState({name:'',email:'',phone:'',dest:'',checkin:'',checkout:'',guests:'1',budget:'',type:'leisure',requests:''});
-  const f=(k,v)=>setForm(p=>({...p,[k]:v}));
-
-  if(done)return(
-    <div style={{paddingTop:80,minHeight:'100vh',display:'flex',alignItems:'center',justifyContent:'center',flexDirection:'column',textAlign:'center',padding:'4rem 2rem',background:'var(--noir)'}}>
-      <div style={{fontFamily:'var(--ff-display)',fontSize:'4rem',fontWeight:300,marginBottom:'1rem'}}>Request <em style={{color:'var(--gold)',fontStyle:'italic'}}>Received</em></div>
-      <p style={{fontSize:'0.9rem',color:'var(--mist)',lineHeight:1.9,maxWidth:480,marginBottom:'1.5rem'}}>Thank you, <strong style={{color:'var(--white)'}}>{form.name}</strong>. Our travel concierge will contact you at <strong style={{color:'var(--white)'}}>{form.email}</strong> within 24 hours with hotel options for <strong style={{color:'var(--white)'}}>{form.dest}</strong>.</p>
-      <div style={{fontSize:'0.85rem',color:'var(--gold)',marginBottom:'2rem'}}>(813) 816-2448 · support@valetbynuor.com</div>
-    </div>
-  );
-
-  return(
-    <div style={{paddingTop:80,minHeight:'100vh',background:'var(--noir)'}}>
-      <div style={{padding:'4rem 3rem 3rem',background:'var(--gold)'}}>
-        <div style={{fontSize:'0.62rem',letterSpacing:'4px',textTransform:'uppercase',color:'rgba(10,10,8,0.5)',marginBottom:'1rem'}}>Travel Concierge</div>
-        <h1 style={{fontFamily:'var(--ff-display)',fontSize:'clamp(2.5rem,5vw,4rem)',fontWeight:300,color:'var(--noir)'}}>Book your <em style={{fontStyle:'italic'}}>perfect stay</em></h1>
-        <p style={{fontSize:'0.88rem',color:'rgba(10,10,8,0.6)',marginTop:'1rem',maxWidth:500,lineHeight:1.8,fontWeight:300}}>Exclusive hotel rates not available to the public. Our travel agents handle everything — you just show up.</p>
-      </div>
-      <div style={{maxWidth:700,margin:'0 auto',padding:'3rem 2rem'}}>
-        <div style={{display:'flex',flexDirection:'column',gap:'1.1rem'}}>
-          <div style={{display:'grid',gridTemplateColumns:'1fr 1fr',gap:'1rem'}}>
-            {[['name','Full Name','text'],['email','Email','email']].map(([k,l,t])=>(
-              <div key={k}><div style={{fontSize:'0.6rem',letterSpacing:'2px',textTransform:'uppercase',color:'var(--mist)',marginBottom:'0.4rem'}}>{l}</div>
-              <input type={t} value={form[k]} onChange={e=>f(k,e.target.value)} style={{width:'100%',background:'var(--mist-xlow)',border:'1px solid var(--border)',color:'var(--white)',padding:'0.75rem 1rem',fontSize:'0.88rem',outline:'none'}}/></div>
-            ))}
-          </div>
-          <div><div style={{fontSize:'0.6rem',letterSpacing:'2px',textTransform:'uppercase',color:'var(--mist)',marginBottom:'0.4rem'}}>Phone / WhatsApp</div>
-          <input type="tel" value={form.phone} onChange={e=>f('phone',e.target.value)} style={{width:'100%',background:'var(--mist-xlow)',border:'1px solid var(--border)',color:'var(--white)',padding:'0.75rem 1rem',fontSize:'0.88rem',outline:'none'}}/></div>
-          <div><div style={{fontSize:'0.6rem',letterSpacing:'2px',textTransform:'uppercase',color:'var(--mist)',marginBottom:'0.4rem'}}>Destination</div>
-          <select value={form.dest} onChange={e=>f('dest',e.target.value)} style={{width:'100%',background:'var(--noir-3)',border:'1px solid var(--border)',color:form.dest?'var(--white)':'var(--mist)',padding:'0.75rem 1rem',fontSize:'0.88rem',outline:'none'}}>
-            <option value="">Select destination...</option>
-            {DESTINATIONS.map(d=><option key={d.id} value={d.name}>{d.name}, {d.state}</option>)}
-            <option value="Other">Other</option>
-          </select></div>
-          <div style={{display:'grid',gridTemplateColumns:'1fr 1fr',gap:'1rem'}}>
-            {[['checkin','Check-in'],['checkout','Check-out']].map(([k,l])=>(
-              <div key={k}><div style={{fontSize:'0.6rem',letterSpacing:'2px',textTransform:'uppercase',color:'var(--mist)',marginBottom:'0.4rem'}}>{l}</div>
-              <input type="date" value={form[k]} onChange={e=>f(k,e.target.value)} style={{width:'100%',background:'var(--mist-xlow)',border:'1px solid var(--border)',color:'var(--white)',padding:'0.75rem 1rem',fontSize:'0.88rem',outline:'none',colorScheme:'dark'}}/></div>
-            ))}
-          </div>
-          <div style={{display:'grid',gridTemplateColumns:'1fr 1fr',gap:'1rem'}}>
-            <div><div style={{fontSize:'0.6rem',letterSpacing:'2px',textTransform:'uppercase',color:'var(--mist)',marginBottom:'0.4rem'}}>Guests</div>
-            <select value={form.guests} onChange={e=>f('guests',e.target.value)} style={{width:'100%',background:'var(--noir-3)',border:'1px solid var(--border)',color:'var(--white)',padding:'0.75rem 1rem',fontSize:'0.88rem',outline:'none'}}>
-              {['1','2','3','4','5','6+'].map(n=><option key={n} value={n}>{n} {n==='1'?'guest':'guests'}</option>)}
-            </select></div>
-            <div><div style={{fontSize:'0.6rem',letterSpacing:'2px',textTransform:'uppercase',color:'var(--mist)',marginBottom:'0.4rem'}}>Budget / Night</div>
-            <select value={form.budget} onChange={e=>f('budget',e.target.value)} style={{width:'100%',background:'var(--noir-3)',border:'1px solid var(--border)',color:form.budget?'var(--white)':'var(--mist)',padding:'0.75rem 1rem',fontSize:'0.88rem',outline:'none'}}>
-              <option value="">Select...</option>
-              <option value="under100">Under $100</option><option value="100-200">$100–$200</option>
-              <option value="200-350">$200–$350</option><option value="350-500">$350–$500</option>
-              <option value="500+">$500+ luxury</option>
-            </select></div>
-          </div>
-          <div><div style={{fontSize:'0.6rem',letterSpacing:'2px',textTransform:'uppercase',color:'var(--mist)',marginBottom:'0.75rem'}}>Trip Type</div>
-          <div style={{display:'grid',gridTemplateColumns:'repeat(3,1fr)',gap:8}}>
-            {[['leisure','🌴 Leisure'],['business','💼 Business'],['family','👨‍👩‍👧 Family'],['romantic','💛 Romantic'],['wedding','💍 Wedding'],['other','✦ Other']].map(([v,l])=>(
-              <div key={v} onClick={()=>f('type',v)} style={{padding:'0.75rem',border:`1px solid ${form.type===v?'var(--border-hi)':'var(--border)'}`,cursor:'pointer',fontSize:'0.75rem',color:form.type===v?'var(--white)':'var(--mist)',background:form.type===v?'var(--mist-xlow)':'transparent',textAlign:'center'}}>{l}</div>
-            ))}
-          </div></div>
-          <div><div style={{fontSize:'0.6rem',letterSpacing:'2px',textTransform:'uppercase',color:'var(--mist)',marginBottom:'0.4rem'}}>Special Requests</div>
-          <textarea value={form.requests} onChange={e=>f('requests',e.target.value)} rows={3} placeholder="Ocean view, pet-friendly, early check-in..." style={{width:'100%',background:'var(--mist-xlow)',border:'1px solid var(--border)',color:'var(--white)',padding:'0.75rem 1rem',fontSize:'0.85rem',outline:'none',resize:'vertical',fontFamily:'var(--ff-body)',lineHeight:1.7}}/></div>
-          <button onClick={async()=>{if(form.name&&form.email&&form.dest){await submitToFormspree({type:'HOTEL REQUEST',...form,source:'BagFree Hotel Concierge'});setDone(true);}}}
-            style={{background:'var(--gold)',color:'var(--noir)',padding:'1rem',border:'none',fontSize:'0.72rem',fontWeight:500,letterSpacing:'3px',textTransform:'uppercase',opacity:!form.name||!form.email||!form.dest?0.4:1}}>
-            Submit Hotel Request
-          </button>
-        </div>
-      </div>
-    </div>
-  );
+.valet-logo {
+  font-family: var(--ff-display);
+  font-size: 1.6rem;
+  font-weight: 300;
+  letter-spacing: 3px;
+  text-transform: uppercase;
+  color: var(--white);
+  text-decoration: none;
+  white-space: nowrap;
+  line-height: 1;
 }
 
-// ── SUPPLIER PORTAL ───────────────────────────────────────────────────────────
-function SupplierPortal(){
-  const [step,setStep]=useState(1);
-  const [done,setDone]=useState(false);
-  const [form,setForm]=useState({biz:'',contact:'',email:'',phone:'',website:'',category:'',destinations:[],description:'',model:'both'});
-  function toggleDest(d){setForm(f=>({...f,destinations:f.destinations.includes(d)?f.destinations.filter(x=>x!==d):[...f.destinations,d]}));}
-
-  if(done)return(
-    <div style={{paddingTop:80,minHeight:'100vh',display:'flex',alignItems:'center',justifyContent:'center',flexDirection:'column',textAlign:'center',padding:'4rem 2rem',background:'var(--noir)'}}>
-      <div style={{fontFamily:'var(--ff-display)',fontSize:'4rem',fontWeight:300,marginBottom:'1rem'}}>Application <em style={{color:'var(--gold)',fontStyle:'italic'}}>Received</em></div>
-      <p style={{fontSize:'0.9rem',color:'var(--mist)',lineHeight:1.9,maxWidth:480,marginBottom:'1.5rem'}}>Thank you, <strong style={{color:'var(--white)'}}>{form.biz}</strong>. We'll review your application and reach out to <strong style={{color:'var(--white)'}}>{form.email}</strong> within 3 business days.</p>
-      <div style={{fontSize:'0.7rem',color:'var(--gold)',letterSpacing:'2px',textTransform:'uppercase'}}>BagFree Supplier Network · Fulfilled by Valet By Nuor</div>
-    </div>
-  );
-
-  return(
-    <div style={{paddingTop:80,minHeight:'100vh',background:'var(--noir)'}}>
-      <div style={{padding:'4rem 3rem 3rem',background:'var(--gold)'}}>
-        <div style={{fontSize:'0.62rem',letterSpacing:'4px',textTransform:'uppercase',color:'rgba(10,10,8,0.5)',marginBottom:'1rem'}}>Supplier Application</div>
-        <h1 style={{fontFamily:'var(--ff-display)',fontSize:'clamp(2.5rem,5vw,4rem)',fontWeight:300,color:'var(--noir)'}}>Join the <em style={{fontStyle:'italic'}}>BagFree</em> Network</h1>
-        <p style={{fontSize:'0.88rem',color:'rgba(10,10,8,0.6)',marginTop:'1rem',maxWidth:500,lineHeight:1.8,fontWeight:300}}>Reach bag-free travelers in Florida & Georgia. Delivery handled by Valet By Nuor.</p>
-      </div>
-      <div style={{maxWidth:700,margin:'0 auto',padding:'3rem 2rem'}}>
-        <div style={{display:'flex',marginBottom:'3rem',border:'1px solid var(--border)'}}>
-          {['Business Info','Products','Details'].map((s,i)=>(
-            <div key={s} style={{flex:1,padding:'0.85rem',textAlign:'center',fontSize:'0.62rem',letterSpacing:'2px',textTransform:'uppercase',background:step===i+1?'var(--gold)':step>i+1?'var(--mist-xlow)':'transparent',color:step===i+1?'var(--noir)':'var(--mist)',borderRight:i<2?'1px solid var(--border)':'none',cursor:step>i+1?'pointer':'default'}} onClick={()=>step>i+1&&setStep(i+1)}>
-              {i+1}. {s}
-            </div>
-          ))}
-        </div>
-        {step===1&&(
-          <div style={{display:'flex',flexDirection:'column',gap:'1.1rem'}}>
-            {[['biz','Business Name'],['contact','Contact Person'],['email','Email'],['phone','Phone'],['website','Website (optional)']].map(([k,l])=>(
-              <div key={k}><div style={{fontSize:'0.6rem',letterSpacing:'2px',textTransform:'uppercase',color:'var(--mist)',marginBottom:'0.4rem'}}>{l}</div>
-              <input value={form[k]} onChange={e=>setForm({...form,[k]:e.target.value})} style={{width:'100%',background:'var(--mist-xlow)',border:'1px solid var(--border)',color:'var(--white)',padding:'0.75rem 1rem',fontSize:'0.88rem',outline:'none'}}/></div>
-            ))}
-            <button onClick={()=>form.biz&&form.email&&setStep(2)} style={{background:'var(--gold)',color:'var(--noir)',padding:'1rem',border:'none',fontSize:'0.7rem',fontWeight:500,letterSpacing:'3px',textTransform:'uppercase',opacity:!form.biz||!form.email?0.4:1}}>Continue →</button>
-          </div>
-        )}
-        {step===2&&(
-          <div style={{display:'flex',flexDirection:'column',gap:'1.5rem'}}>
-            <div><div style={{fontSize:'0.6rem',letterSpacing:'2px',textTransform:'uppercase',color:'var(--mist)',marginBottom:'0.75rem'}}>Category</div>
-            <div style={{display:'grid',gridTemplateColumns:'repeat(2,1fr)',gap:8}}>
-              {[["Men's Wear",'👔'],["Women's Wear",'👗'],['Wellness','💊'],['Baby & Family','🍼'],['Tech','📷'],['Other','✦']].map(([c,icon])=>(
-                <div key={c} onClick={()=>setForm({...form,category:c})} style={{padding:'0.75rem 1rem',border:`1px solid ${form.category===c?'var(--border-hi)':'var(--border)'}`,cursor:'pointer',fontSize:'0.78rem',color:form.category===c?'var(--white)':'var(--mist)',background:form.category===c?'var(--mist-xlow)':'transparent'}}>
-                  {icon} {c}
-                </div>
-              ))}
-            </div></div>
-            <div><div style={{fontSize:'0.6rem',letterSpacing:'2px',textTransform:'uppercase',color:'var(--mist)',marginBottom:'0.75rem'}}>Destinations</div>
-            <div style={{display:'grid',gridTemplateColumns:'repeat(2,1fr)',gap:8}}>
-              {DESTINATIONS.map(d=>(
-                <div key={d.id} onClick={()=>toggleDest(d.id)} style={{padding:'0.75rem 1rem',border:`1px solid ${form.destinations.includes(d.id)?'var(--border-hi)':'var(--border)'}`,cursor:'pointer',fontSize:'0.78rem',color:form.destinations.includes(d.id)?'var(--white)':'var(--mist)',background:form.destinations.includes(d.id)?'var(--mist-xlow)':'transparent',display:'flex',alignItems:'center',gap:'0.5rem'}}>
-                  {d.img} {d.name}
-                </div>
-              ))}
-            </div></div>
-            <div><div style={{fontSize:'0.6rem',letterSpacing:'2px',textTransform:'uppercase',color:'var(--mist)',marginBottom:'0.5rem'}}>Model</div>
-            <div style={{display:'flex',gap:8}}>
-              {[['rent','Rent Only'],['own','Sell Only'],['both','Both']].map(([v,l])=>(
-                <div key={v} onClick={()=>setForm({...form,model:v})} style={{flex:1,padding:'0.75rem',border:`1px solid ${form.model===v?'var(--border-hi)':'var(--border)'}`,cursor:'pointer',fontSize:'0.72rem',color:form.model===v?'var(--white)':'var(--mist)',background:form.model===v?'var(--mist-xlow)':'transparent',textAlign:'center'}}>{l}</div>
-              ))}
-            </div></div>
-            <div style={{display:'flex',gap:'1rem'}}>
-              <button onClick={()=>setStep(1)} style={{background:'transparent',color:'var(--mist)',padding:'0.9rem 1.5rem',border:'1px solid var(--border)',fontSize:'0.68rem',letterSpacing:'2px',textTransform:'uppercase'}}>← Back</button>
-              <button onClick={()=>form.category&&form.destinations.length>0&&setStep(3)} style={{flex:1,background:'var(--gold)',color:'var(--noir)',padding:'1rem',border:'none',fontSize:'0.7rem',fontWeight:500,letterSpacing:'3px',textTransform:'uppercase',opacity:!form.category||form.destinations.length===0?0.4:1}}>Continue →</button>
-            </div>
-          </div>
-        )}
-        {step===3&&(
-          <div style={{display:'flex',flexDirection:'column',gap:'1.25rem'}}>
-            <div><div style={{fontSize:'0.6rem',letterSpacing:'2px',textTransform:'uppercase',color:'var(--mist)',marginBottom:'0.4rem'}}>Tell us about your products</div>
-            <textarea value={form.description} onChange={e=>setForm({...form,description:e.target.value})} rows={5} placeholder="Describe your products and why you'd be a great BagFree supplier..." style={{width:'100%',background:'var(--mist-xlow)',border:'1px solid var(--border)',color:'var(--white)',padding:'0.75rem 1rem',fontSize:'0.88rem',outline:'none',resize:'vertical',fontFamily:'var(--ff-body)',lineHeight:1.7}}/></div>
-            <div style={{padding:'1.1rem',background:'var(--mist-xlow)',border:'1px solid var(--border)',fontSize:'0.78rem',color:'var(--mist)',lineHeight:1.8}}><span style={{color:'var(--gold)'}}>Logistics:</span> All BagFree suppliers integrate with Valet By Nuor for fulfillment across Florida and Georgia.</div>
-            <div style={{display:'flex',gap:'1rem'}}>
-              <button onClick={()=>setStep(2)} style={{background:'transparent',color:'var(--mist)',padding:'0.9rem 1.5rem',border:'1px solid var(--border)',fontSize:'0.68rem',letterSpacing:'2px',textTransform:'uppercase'}}>← Back</button>
-              <button onClick={async()=>{await submitToFormspree({type:'SUPPLIER APPLICATION',...form,destinations:form.destinations.join(', '),source:'BagFree Supplier Portal'});setDone(true);}} style={{flex:1,background:'var(--gold)',color:'var(--noir)',padding:'1rem',border:'none',fontSize:'0.7rem',fontWeight:500,letterSpacing:'3px',textTransform:'uppercase'}}>Submit Application</button>
-            </div>
-          </div>
-        )}
-      </div>
-    </div>
-  );
+.valet-logo span {
+  color: var(--gold);
+  font-weight: 300;
+  font-size: 1em;
+  margin-left: 0;
 }
 
-// ── APP ───────────────────────────────────────────────────────────────────────
-function App(){
-  const [page,setPage]=useState(()=>{
-    const h = window.location.hash.replace('#','');
-    return h||'home';
-  });
-  const [activeVendor,setActiveVendor]=useState('valet-by-nuor');
+.valet-header__nav-row {
+  border-top: 1px solid var(--border);
+  display: none;
+}
 
-  function navigate(p){
-    window.location.hash = p;
-    setPage(p);
-    window.scrollTo(0,0);
+.valet-nav {
+  display: flex;
+  align-items: center;
+  gap: 2.5rem;
+}
+
+.valet-nav a {
+  text-decoration: none;
+  color: rgba(253,252,248,0.8);
+  font-family: var(--ff-body);
+  font-size: 0.72rem;
+  font-weight: 400;
+  letter-spacing: 1.5px;
+  text-transform: uppercase;
+  transition: color 0.2s;
+}
+
+.valet-nav a:hover {
+  color: var(--gold);
+}
+
+.valet-header__cta {
+  display: inline-flex;
+  align-items: center;
+  justify-content: center;
+  height: 38px;
+  padding: 0 1.5rem;
+  background: var(--gold);
+  color: var(--noir);
+  text-decoration: none;
+  font-family: var(--ff-body);
+  font-size: 0.68rem;
+  font-weight: 500;
+  letter-spacing: 2px;
+  text-transform: uppercase;
+  border: none;
+  transition: background 0.2s;
+}
+
+.valet-header__cta:hover {
+  background: var(--gold-light);
+}
+
+/* HERO */
+.valet-hero {
+  min-height: 90vh;
+  display: grid;
+  grid-template-columns: 1fr 1fr;
+  align-items: center;
+  gap: 0;
+  border-bottom: 1px solid var(--border);
+}
+
+.valet-hero__content {
+  padding: 5rem 4rem 5rem 2.5rem;
+}
+
+.valet-hero__eyebrow {
+  font-family: var(--ff-body);
+  font-size: 0.62rem;
+  letter-spacing: 4px;
+  text-transform: uppercase;
+  color: var(--gold);
+  margin-bottom: 2rem;
+  display: flex;
+  align-items: center;
+  gap: 1rem;
+}
+
+.valet-hero__eyebrow::before {
+  content: '';
+  display: inline-block;
+  width: 28px;
+  height: 1px;
+  background: var(--gold-dim);
+}
+
+.valet-hero__heading {
+  font-family: var(--ff-display);
+  font-size: clamp(3rem, 5vw, 5rem);
+  font-weight: 300;
+  line-height: 1.05;
+  letter-spacing: -1px;
+  color: var(--white);
+  margin-bottom: 1.5rem;
+}
+
+.valet-hero__heading em {
+  font-style: italic;
+  color: var(--gold);
+}
+
+.valet-hero__text {
+  font-size: 0.95rem;
+  color: var(--mist);
+  line-height: 1.9;
+  max-width: 420px;
+  margin-bottom: 2.5rem;
+  font-weight: 300;
+}
+
+.valet-hero__buttons {
+  display: flex;
+  gap: 1rem;
+  flex-wrap: wrap;
+}
+
+.valet-hero__media {
+  position: relative;
+  height: 100%;
+  min-height: 90vh;
+  border-left: 1px solid var(--border);
+  overflow: hidden;
+  display: block;
+  text-decoration: none;
+}
+
+.valet-hero__media img {
+  width: 100%;
+  height: 100%;
+  object-fit: cover;
+  object-position: center;
+  display: block;
+  transition: transform 0.6s ease;
+  opacity: 0.85;
+}
+
+.valet-hero__media:hover img {
+  transform: scale(1.03);
+}
+
+.valet-hero__media-overlay {
+  position: absolute;
+  bottom: 2rem;
+  left: 2rem;
+  right: 2rem;
+  background: rgba(10,10,8,0.75);
+  border: 1px solid var(--border);
+  padding: 1.25rem 1.5rem;
+  backdrop-filter: blur(8px);
+}
+
+.valet-hero__media-tag {
+  font-size: 0.6rem;
+  letter-spacing: 2.5px;
+  text-transform: uppercase;
+  color: var(--gold);
+  margin-bottom: 0.4rem;
+}
+
+.valet-hero__media-label {
+  font-family: var(--ff-display);
+  font-size: 1.2rem;
+  font-weight: 300;
+  color: var(--white);
+}
+
+/* BUTTONS */
+.valet-btn {
+  display: inline-flex;
+  align-items: center;
+  justify-content: center;
+  height: 52px;
+  padding: 0 2rem;
+  font-family: var(--ff-body);
+  font-size: 0.72rem;
+  font-weight: 500;
+  letter-spacing: 2.5px;
+  text-transform: uppercase;
+  text-decoration: none;
+  border: none;
+  cursor: pointer;
+  transition: all 0.2s;
+}
+
+.valet-btn--primary {
+  background: var(--gold);
+  color: var(--noir);
+}
+
+.valet-btn--primary:hover {
+  background: var(--gold-light);
+}
+
+.valet-btn--secondary {
+  background: transparent;
+  color: var(--mist);
+  border: 1px solid rgba(253,252,248,0.2);
+}
+
+.valet-btn--secondary:hover {
+  color: var(--white);
+  border-color: rgba(253,252,248,0.4);
+}
+
+/* SECTIONS */
+.valet-section {
+  padding: 6rem 0;
+  border-bottom: 1px solid var(--border);
+}
+
+.valet-section--gold {
+  background: var(--gold);
+}
+
+.valet-section--dark {
+  background: var(--noir-2);
+}
+
+.valet-section__header {
+  margin-bottom: 3.5rem;
+}
+
+.valet-section__eyebrow {
+  font-size: 0.62rem;
+  letter-spacing: 4px;
+  text-transform: uppercase;
+  color: var(--gold);
+  margin-bottom: 1rem;
+  display: flex;
+  align-items: center;
+  gap: 1rem;
+}
+
+.valet-section--gold .valet-section__eyebrow {
+  color: rgba(10,10,8,0.5);
+}
+
+.valet-section__eyebrow::before {
+  content: '';
+  display: inline-block;
+  width: 20px;
+  height: 1px;
+  background: currentColor;
+  opacity: 0.6;
+}
+
+.valet-section__title {
+  font-family: var(--ff-display);
+  font-size: clamp(2rem, 4vw, 3.5rem);
+  font-weight: 300;
+  line-height: 1.1;
+  letter-spacing: -0.3px;
+  color: var(--white);
+  margin-bottom: 0.75rem;
+}
+
+.valet-section--gold .valet-section__title {
+  color: var(--noir);
+}
+
+.valet-section__title em {
+  font-style: italic;
+  color: var(--gold);
+}
+
+.valet-section--gold .valet-section__title em {
+  color: var(--noir);
+  opacity: 0.55;
+}
+
+.valet-section__subtitle {
+  font-size: 0.9rem;
+  color: var(--mist);
+  line-height: 1.8;
+  max-width: 520px;
+  font-weight: 300;
+}
+
+.valet-section--gold .valet-section__subtitle {
+  color: rgba(10,10,8,0.6);
+}
+
+/* STEPS */
+.valet-steps {
+  display: grid;
+  grid-template-columns: repeat(3, 1fr);
+  gap: 0;
+  border: 1px solid rgba(10,10,8,0.2);
+}
+
+.valet-step {
+  padding: 2.5rem;
+  border-right: 1px solid rgba(10,10,8,0.2);
+  position: relative;
+}
+
+.valet-step:last-child {
+  border-right: none;
+}
+
+.valet-step__number {
+  font-family: var(--ff-display);
+  font-size: 4rem;
+  font-weight: 300;
+  color: rgba(10,10,8,0.18);
+  line-height: 1;
+  margin-bottom: 1.25rem;
+}
+
+.valet-step__divider {
+  width: 24px;
+  height: 1px;
+  background: rgba(10,10,8,0.5);
+  margin-bottom: 1.25rem;
+}
+
+.valet-step__title {
+  font-family: var(--ff-display);
+  font-size: 1.35rem;
+  font-weight: 400;
+  color: var(--noir);
+  margin-bottom: 0.75rem;
+  line-height: 1.2;
+}
+
+.valet-step__text {
+  font-size: 0.85rem;
+  color: rgba(10,10,8,0.65);
+  line-height: 1.9;
+  font-weight: 300;
+}
+
+/* PRODUCTS */
+.valet-products {
+  display: grid;
+  grid-template-columns: repeat(3, 1fr);
+  gap: 1px;
+  background: var(--border);
+  border: 1px solid var(--border);
+}
+
+.valet-product {
+  display: block;
+  background: var(--noir-3);
+  text-decoration: none;
+  cursor: pointer;
+  transition: background 0.25s;
+  position: relative;
+  overflow: hidden;
+}
+
+.valet-product:hover {
+  background: var(--noir-4);
+}
+
+.valet-product__image {
+  aspect-ratio: 1 / 1;
+  overflow: hidden;
+  background: var(--noir-4);
+}
+
+.valet-product__image img {
+  width: 100%;
+  height: 100%;
+  object-fit: cover;
+  display: block;
+  transition: transform 0.4s ease;
+  opacity: 0.85;
+}
+
+.valet-product:hover .valet-product__image img {
+  transform: scale(1.05);
+  opacity: 1;
+}
+
+.valet-product__body {
+  padding: 1.5rem;
+  border-top: 1px solid var(--border);
+  display: flex;
+  justify-content: space-between;
+  align-items: center;
+}
+
+.valet-product__title {
+  font-family: var(--ff-display);
+  font-size: 1.1rem;
+  font-weight: 300;
+  color: var(--white);
+  line-height: 1.3;
+}
+
+.valet-product__arrow {
+  font-size: 0.8rem;
+  color: var(--gold);
+  flex-shrink: 0;
+  margin-left: 1rem;
+  transition: transform 0.2s;
+}
+
+.valet-product:hover .valet-product__arrow {
+  transform: translate(3px, -3px);
+}
+
+.valet-products__cta {
+  text-align: center;
+  margin-top: 2.5rem;
+}
+
+/* USE CASES */
+.valet-icons__grid {
+  display: grid;
+  grid-template-columns: repeat(4, 1fr);
+  gap: 1px;
+  background: var(--border);
+  border: 1px solid var(--border);
+}
+
+.valet-icon-card {
+  background: var(--noir-3);
+  text-align: center;
+  padding: 2.5rem 1.5rem;
+  transition: background 0.25s;
+}
+
+.valet-icon-card:hover {
+  background: var(--noir-4);
+}
+
+.valet-icon-card__circle {
+  font-size: 2.5rem;
+  margin-bottom: 1.25rem;
+  opacity: 0.7;
+}
+
+.valet-icon-card__label {
+  font-family: var(--ff-body);
+  font-size: 0.75rem;
+  letter-spacing: 1.5px;
+  text-transform: uppercase;
+  color: var(--mist);
+  line-height: 1.5;
+}
+
+/* FOOTER STRIP */
+.valet-footer-strip {
+  background: var(--noir-2);
+  border-top: 1px solid var(--border);
+  padding: 2rem 0;
+}
+
+.valet-footer-strip__inner {
+  display: flex;
+  justify-content: space-between;
+  align-items: center;
+  flex-wrap: wrap;
+  gap: 1rem;
+}
+
+.valet-footer-strip__logo {
+  font-family: var(--ff-display);
+  font-size: 1.2rem;
+  font-weight: 300;
+  letter-spacing: 3px;
+  text-transform: uppercase;
+  color: var(--white);
+  text-decoration: none;
+}
+
+.valet-footer-strip__logo span {
+  color: var(--gold);
+}
+
+.valet-footer-strip__contact {
+  font-size: 0.78rem;
+  color: var(--mist);
+  text-align: center;
+  line-height: 1.7;
+}
+
+.valet-footer-strip__contact a {
+  color: var(--gold);
+  text-decoration: none;
+}
+
+.valet-footer-strip__copy {
+  font-size: 0.65rem;
+  color: var(--mist);
+  letter-spacing: 1px;
+}
+
+/* RESPONSIVE */
+@media screen and (max-width: 989px) {
+  .valet-hero {
+    grid-template-columns: 1fr;
+    min-height: auto;
   }
 
-  React.useEffect(()=>{
-    function onPop(){
-      const h = window.location.hash.replace('#','');
-      setPage(h||'home');
-      window.scrollTo(0,0);
-    }
-    window.addEventListener('popstate',onPop);
-    return()=>window.removeEventListener('popstate',onPop);
-  },[]);
+  .valet-hero__content {
+    padding: 4rem 2rem;
+    order: 2;
+  }
 
-  return(
-    <>
-      <Nav page={page} setPage={navigate}/>
-      {page==='home'&&<Home setPage={navigate}/>}
-      {page==='vendors'&&<VendorMarketplace setPage={navigate} setActiveVendor={setActiveVendor}/>}
-      {page==='products'&&<ProductsPage setPage={navigate}/>}
-      {page==='hotel'&&<HotelConcierge/>}
-      {page==='supplier'&&<SupplierPortal/>}
-      <footer style={{background:'var(--noir-2)',padding:'2rem 3rem',display:'flex',justifyContent:'space-between',alignItems:'center',borderTop:'1px solid var(--border)',flexWrap:'wrap',gap:'1rem'}}>
-        <div style={{fontFamily:'var(--ff-display)',fontSize:'1.2rem',fontWeight:300,letterSpacing:'3px',textTransform:'uppercase'}}>Bag<span style={{color:'var(--gold)'}}>Free</span></div>
-        <div style={{fontSize:'0.68rem',color:'var(--mist)',letterSpacing:'1px'}}>Powered by Valet By Nuor · <a href="https://valetbynuor.com" target="_blank" style={{color:'var(--gold)',textDecoration:'none'}}>valetbynuor.com</a> · (813) 816-2448</div>
-        <div style={{fontSize:'0.65rem',color:'var(--mist)'}}>© 2026 BagFree · All rights reserved</div>
-      </footer>
-    </>
-  );
+  .valet-hero__media {
+    min-height: 60vw;
+    border-left: none;
+    border-bottom: 1px solid var(--border);
+    order: 1;
+  }
+
+  .valet-steps,
+  .valet-products,
+  .valet-icons__grid {
+    grid-template-columns: 1fr;
+  }
+
+  .valet-step {
+    border-right: none;
+    border-bottom: 1px solid rgba(10,10,8,0.2);
+  }
+
+  .valet-step:last-child {
+    border-bottom: none;
+  }
 }
 
-ReactDOM.createRoot(document.getElementById('root')).render(<App/>);
-</script>
-</body>
-</html>
+@media screen and (max-width: 749px) {
+  .valet-home .page-width {
+    padding-left: 1.25rem;
+    padding-right: 1.25rem;
+  }
+
+  .valet-hero__heading {
+    font-size: 2.8rem;
+  }
+
+  .valet-footer-strip__inner {
+    flex-direction: column;
+    text-align: center;
+  }
+}
+{% endstylesheet %}
+
+<div class="valet-home">
+
+  {% if section.settings.announcement_text != blank %}
+    <div class="valet-announcement">
+      {{ section.settings.announcement_text }}
+    </div>
+  {% endif %}
+
+  <header class="valet-header">
+    <div class="page-width">
+      <div class="valet-header__inner">
+        <a href="{{ routes.root_url }}" class="valet-logo">
+          {{ section.settings.logo_text }}<span> {{ section.settings.logo_subtext }}</span>
+        </a>
+
+        <nav class="valet-nav" aria-label="Primary">
+          {% if section.settings.nav_1_text != blank and section.settings.nav_1_link != blank %}
+            <a href="{{ section.settings.nav_1_link }}">{{ section.settings.nav_1_text }}</a>
+          {% endif %}
+          {% if section.settings.nav_2_text != blank and section.settings.nav_2_link != blank %}
+            <a href="{{ section.settings.nav_2_link }}">{{ section.settings.nav_2_text }}</a>
+          {% endif %}
+          {% if section.settings.nav_3_text != blank and section.settings.nav_3_link != blank %}
+            <a href="{{ section.settings.nav_3_link }}">{{ section.settings.nav_3_text }}</a>
+          {% endif %}
+        </nav>
+
+        {% if section.settings.header_cta_text != blank and section.settings.header_cta_link != blank %}
+          <a href="{{ section.settings.header_cta_link }}" class="valet-header__cta">
+            {{ section.settings.header_cta_text }}
+          </a>
+        {% endif %}
+      </div>
+    </div>
+  </header>
+
+  {%- comment -%} HERO {%- endcomment -%}
+  <section class="valet-hero">
+    <div class="valet-hero__content">
+      <div class="valet-hero__eyebrow">Your Essentials. On Demand. Anywhere.</div>
+      <h1 class="valet-hero__heading">
+        {{ section.settings.hero_heading | replace: 'Lost your luggage?', 'Lost your luggage?' }}
+      </h1>
+      <div class="valet-hero__text">
+        {{ section.settings.hero_text }}
+      </div>
+      <div class="valet-hero__buttons">
+        {% if section.settings.hero_btn_1_text != blank and section.settings.hero_btn_1_link != blank %}
+          <a href="{{ section.settings.hero_btn_1_link }}" class="valet-btn valet-btn--primary">
+            {{ section.settings.hero_btn_1_text }}
+          </a>
+        {% endif %}
+        {% if section.settings.hero_btn_2_text != blank and section.settings.hero_btn_2_link != blank %}
+          <a href="{{ section.settings.hero_btn_2_link }}" class="valet-btn valet-btn--secondary">
+            {{ section.settings.hero_btn_2_text }}
+          </a>
+        {% endif %}
+      </div>
+    </div>
+
+    <a href="/collections/all" class="valet-hero__media">
+      {% if section.settings.hero_image != blank %}
+        <img
+          src="{{ section.settings.hero_image | image_url: width: 1800 }}"
+          srcset="
+            {{ section.settings.hero_image | image_url: width: 700 }} 700w,
+            {{ section.settings.hero_image | image_url: width: 1000 }} 1000w,
+            {{ section.settings.hero_image | image_url: width: 1400 }} 1400w,
+            {{ section.settings.hero_image | image_url: width: 1800 }} 1800w
+          "
+          sizes="(max-width: 989px) 100vw, 50vw"
+          alt="{{ section.settings.hero_image_alt | escape }}"
+          loading="eager"
+          fetchpriority="high"
+          width="{{ section.settings.hero_image.width }}"
+          height="{{ section.settings.hero_image.height }}"
+        >
+      {% else %}
+        {{ 'lifestyle-1' | placeholder_svg_tag: 'placeholder-svg' }}
+      {% endif %}
+      <div class="valet-hero__media-overlay">
+        <div class="valet-hero__media-tag">Same-Day Delivery</div>
+        <div class="valet-hero__media-label">Tampa & Orlando</div>
+      </div>
+    </a>
+  </section>
+
+  <div class="page-width">
+
+    {%- comment -%} HOW IT WORKS — GOLD {%- endcomment -%}
+    <section class="valet-section valet-section--gold" id="how-it-works">
+      <div class="valet-section__header">
+        <div class="valet-section__eyebrow">The Experience</div>
+        <h2 class="valet-section__title">{{ section.settings.steps_heading }}</h2>
+        <p class="valet-section__subtitle">{{ section.settings.steps_subheading }}</p>
+      </div>
+
+      <div class="valet-steps">
+        <div class="valet-step">
+          <div class="valet-step__number">01</div>
+          <div class="valet-step__divider"></div>
+          <h3 class="valet-step__title">{{ section.settings.step_1_title }}</h3>
+          <p class="valet-step__text">{{ section.settings.step_1_text }}</p>
+        </div>
+        <div class="valet-step">
+          <div class="valet-step__number">02</div>
+          <div class="valet-step__divider"></div>
+          <h3 class="valet-step__title">{{ section.settings.step_2_title }}</h3>
+          <p class="valet-step__text">{{ section.settings.step_2_text }}</p>
+        </div>
+        <div class="valet-step">
+          <div class="valet-step__number">03</div>
+          <div class="valet-step__divider"></div>
+          <h3 class="valet-step__title">{{ section.settings.step_3_title }}</h3>
+          <p class="valet-step__text">{{ section.settings.step_3_text }}</p>
+        </div>
+      </div>
+    </section>
+
+    {%- comment -%} PRODUCTS — DARK {%- endcomment -%}
+    <section class="valet-section" id="what-we-deliver">
+      <div class="valet-section__header">
+        <div class="valet-section__eyebrow">Shop Now</div>
+        <h2 class="valet-section__title">{{ section.settings.products_heading }}</h2>
+        <p class="valet-section__subtitle">{{ section.settings.products_subheading }}</p>
+      </div>
+
+      <div class="valet-products">
+        <a href="/collections/mens-travel-essentials" class="valet-product">
+          <div class="valet-product__image">
+            {% if section.settings.product_1_image != blank %}
+              <img src="{{ section.settings.product_1_image | image_url: width: 1000 }}"
+                alt="{{ section.settings.product_1_title | escape }}" loading="lazy"
+                width="{{ section.settings.product_1_image.width }}" height="{{ section.settings.product_1_image.height }}">
+            {% else %}
+              {{ 'image' | placeholder_svg_tag: 'placeholder-svg' }}
+            {% endif %}
+          </div>
+          <div class="valet-product__body">
+            <h3 class="valet-product__title">{{ section.settings.product_1_title }}</h3>
+            <span class="valet-product__arrow">↗</span>
+          </div>
+        </a>
+
+        <a href="/collections/womens-essentials" class="valet-product">
+          <div class="valet-product__image">
+            {% if section.settings.product_2_image != blank %}
+              <img src="{{ section.settings.product_2_image | image_url: width: 1000 }}"
+                alt="{{ section.settings.product_2_title | escape }}" loading="lazy"
+                width="{{ section.settings.product_2_image.width }}" height="{{ section.settings.product_2_image.height }}">
+            {% else %}
+              {{ 'image' | placeholder_svg_tag: 'placeholder-svg' }}
+            {% endif %}
+          </div>
+          <div class="valet-product__body">
+            <h3 class="valet-product__title">{{ section.settings.product_2_title }}</h3>
+            <span class="valet-product__arrow">↗</span>
+          </div>
+        </a>
+
+        <a href="/collections/travel-wellness-kits" class="valet-product">
+          <div class="valet-product__image">
+            {% if section.settings.product_3_image != blank %}
+              <img src="{{ section.settings.product_3_image | image_url: width: 1000 }}"
+                alt="{{ section.settings.product_3_title | escape }}" loading="lazy"
+                width="{{ section.settings.product_3_image.width }}" height="{{ section.settings.product_3_image.height }}">
+            {% else %}
+              {{ 'image' | placeholder_svg_tag: 'placeholder-svg' }}
+            {% endif %}
+          </div>
+          <div class="valet-product__body">
+            <h3 class="valet-product__title">{{ section.settings.product_3_title }}</h3>
+            <span class="valet-product__arrow">↗</span>
+          </div>
+        </a>
+      </div>
+
+      <div class="valet-products__cta">
+        {% if section.settings.products_cta_text != blank and section.settings.products_cta_link != blank %}
+          <a href="{{ section.settings.products_cta_link }}" class="valet-btn valet-btn--primary">
+            {{ section.settings.products_cta_text }}
+          </a>
+        {% endif %}
+      </div>
+    </section>
+
+    {%- comment -%} USE CASES {%- endcomment -%}
+    <section class="valet-section valet-section--dark">
+      <div class="valet-section__header">
+        <div class="valet-section__eyebrow">Who We Serve</div>
+        <h2 class="valet-section__title">{{ section.settings.use_cases_heading }}</h2>
+      </div>
+
+      <div class="valet-icons__grid">
+        <div class="valet-icon-card">
+          <div class="valet-icon-card__circle">🧳</div>
+          <div class="valet-icon-card__label">{{ section.settings.use_case_1 }}</div>
+        </div>
+        <div class="valet-icon-card">
+          <div class="valet-icon-card__circle">🏨</div>
+          <div class="valet-icon-card__label">{{ section.settings.use_case_2 }}</div>
+        </div>
+        <div class="valet-icon-card">
+          <div class="valet-icon-card__circle">✈️</div>
+          <div class="valet-icon-card__label">{{ section.settings.use_case_3 }}</div>
+        </div>
+        <div class="valet-icon-card">
+          <div class="valet-icon-card__circle">🍃</div>
+          <div class="valet-icon-card__label">{{ section.settings.use_case_4 }}</div>
+        </div>
+      </div>
+    </section>
+
+  </div>
+
+  {%- comment -%} FOOTER STRIP {%- endcomment -%}
+  <div class="valet-footer-strip">
+    <div class="page-width">
+      <div class="valet-footer-strip__inner">
+        <a href="{{ routes.root_url }}" class="valet-footer-strip__logo">
+          {{ section.settings.logo_text }}<span> {{ section.settings.logo_subtext }}</span>
+        </a>
+        <div class="valet-footer-strip__contact">
+          Call or Text: <a href="tel:8138162448">(813) 816-2448</a><br>
+          <a href="mailto:support@valetbynuor.com">support@valetbynuor.com</a><br>
+          Serving Tampa, Orlando, and nearby destinations.
+        </div>
+        <div class="valet-footer-strip__copy">© 2026 Valet By Nuor</div>
+      </div>
+    </div>
+  </div>
+
+</div>
+
+{% schema %}
+{
+  "name": "Valet by Nuor Home",
+  "settings": [
+    {
+      "type": "text",
+      "id": "announcement_text",
+      "label": "Announcement text",
+      "default": "New: Get essentials delivered same-day in Tampa and Orlando!"
+    },
+    {
+      "type": "text",
+      "id": "logo_text",
+      "label": "Logo text",
+      "default": "Valet"
+    },
+    {
+      "type": "text",
+      "id": "logo_subtext",
+      "label": "Logo subtext",
+      "default": "by Nuor"
+    },
+    {
+      "type": "text",
+      "id": "nav_1_text",
+      "label": "Nav item 1 text",
+      "default": "How It Works"
+    },
+    {
+      "type": "url",
+      "id": "nav_1_link",
+      "label": "Nav item 1 link"
+    },
+    {
+      "type": "text",
+      "id": "nav_2_text",
+      "label": "Nav item 2 text",
+      "default": "Shop"
+    },
+    {
+      "type": "url",
+      "id": "nav_2_link",
+      "label": "Nav item 2 link"
+    },
+    {
+      "type": "text",
+      "id": "nav_3_text",
+      "label": "Nav item 3 text",
+      "default": "Contact"
+    },
+    {
+      "type": "url",
+      "id": "nav_3_link",
+      "label": "Nav item 3 link"
+    },
+    {
+      "type": "text",
+      "id": "header_cta_text",
+      "label": "Header CTA text",
+      "default": "Order Now"
+    },
+    {
+      "type": "url",
+      "id": "header_cta_link",
+      "label": "Header CTA link"
+    },
+    {
+      "type": "textarea",
+      "id": "hero_heading",
+      "label": "Hero heading",
+      "default": "Your essentials, delivered before you arrive."
+    },
+    {
+      "type": "richtext",
+      "id": "hero_text",
+      "label": "Hero text",
+      "default": "<p>Lost your luggage? Forgot something? Valet By Nuor delivers clothing, travel essentials, and wellness kits directly to your hotel or airport — same-day in Tampa and Orlando.</p>"
+    },
+    {
+      "type": "image_picker",
+      "id": "hero_image",
+      "label": "Hero image"
+    },
+    {
+      "type": "text",
+      "id": "hero_image_alt",
+      "label": "Hero image alt text",
+      "default": "Traveler receiving an emergency essentials delivery from Valet by Nuor"
+    },
+    {
+      "type": "text",
+      "id": "hero_btn_1_text",
+      "label": "Hero button 1 text",
+      "default": "Shop Emergency Kits"
+    },
+    {
+      "type": "url",
+      "id": "hero_btn_1_link",
+      "label": "Hero button 1 link"
+    },
+    {
+      "type": "text",
+      "id": "hero_btn_2_text",
+      "label": "Hero button 2 text",
+      "default": "How It Works"
+    },
+    {
+      "type": "url",
+      "id": "hero_btn_2_link",
+      "label": "Hero button 2 link"
+    },
+    {
+      "type": "text",
+      "id": "steps_heading",
+      "label": "Steps heading",
+      "default": "How It Works"
+    },
+    {
+      "type": "text",
+      "id": "steps_subheading",
+      "label": "Steps subheading",
+      "default": "Lost your luggage? We deliver essentials to you in hours so you can stay on track."
+    },
+    {
+      "type": "text",
+      "id": "step_1_title",
+      "label": "Step 1 title",
+      "default": "Tell Us What You Need"
+    },
+    {
+      "type": "textarea",
+      "id": "step_1_text",
+      "label": "Step 1 text",
+      "default": "Select clothing, toiletries, or travel essentials in seconds."
+    },
+    {
+      "type": "text",
+      "id": "step_2_title",
+      "label": "Step 2 title",
+      "default": "We Prepare Your Kit"
+    },
+    {
+      "type": "textarea",
+      "id": "step_2_text",
+      "label": "Step 2 text",
+      "default": "Fresh, comfortable essentials are packed immediately."
+    },
+    {
+      "type": "text",
+      "id": "step_3_title",
+      "label": "Step 3 title",
+      "default": "Delivered to You"
+    },
+    {
+      "type": "textarea",
+      "id": "step_3_text",
+      "label": "Step 3 text",
+      "default": "Your items arrive at your hotel, airport, or location within hours."
+    },
+    {
+      "type": "text",
+      "id": "products_heading",
+      "label": "Products heading",
+      "default": "Emergency Travel Kits"
+    },
+    {
+      "type": "text",
+      "id": "products_subheading",
+      "label": "Products subheading",
+      "default": "Everything you need to recover fast, delivered directly to your door, hotel, or airport."
+    },
+    {
+      "type": "image_picker",
+      "id": "product_1_image",
+      "label": "Product 1 image"
+    },
+    {
+      "type": "text",
+      "id": "product_1_title",
+      "label": "Product 1 title",
+      "default": "Shop Men's Essentials Kit"
+    },
+    {
+      "type": "image_picker",
+      "id": "product_2_image",
+      "label": "Product 2 image"
+    },
+    {
+      "type": "text",
+      "id": "product_2_title",
+      "label": "Product 2 title",
+      "default": "Shop Women's Essentials Kit"
+    },
+    {
+      "type": "image_picker",
+      "id": "product_3_image",
+      "label": "Product 3 image"
+    },
+    {
+      "type": "text",
+      "id": "product_3_title",
+      "label": "Product 3 title",
+      "default": "Shop Travel Wellness Kits"
+    },
+    {
+      "type": "text",
+      "id": "products_cta_text",
+      "label": "Products CTA text",
+      "default": "Browse All Kits"
+    },
+    {
+      "type": "url",
+      "id": "products_cta_link",
+      "label": "Products CTA link"
+    },
+    {
+      "type": "text",
+      "id": "use_cases_heading",
+      "label": "Use cases heading",
+      "default": "Perfect For"
+    },
+    {
+      "type": "text",
+      "id": "use_case_1",
+      "label": "Use case 1",
+      "default": "Lost luggage"
+    },
+    {
+      "type": "text",
+      "id": "use_case_2",
+      "label": "Use case 2",
+      "default": "Late hotel arrivals"
+    },
+    {
+      "type": "text",
+      "id": "use_case_3",
+      "label": "Use case 3",
+      "default": "Airport emergencies"
+    },
+    {
+      "type": "text",
+      "id": "use_case_4",
+      "label": "Use case 4",
+      "default": "Recovery & Relaxation"
+    }
+  ],
+  "presets": [
+    {
+      "name": "Valet by Nuor Home"
+    }
+  ]
+}
+{% endschema %}
