@@ -185,38 +185,36 @@ function Home({setPage}){
       <div style={{minHeight:'92vh',display:'flex',flexDirection:'column',alignItems:'center',justifyContent:'center',textAlign:'center',padding:'4rem 2rem',position:'relative',overflow:'hidden'}}>
         {/* Full background image */}
         <div style={{position:'absolute',top:0,left:0,right:0,bottom:0,backgroundImage:"url('https://raw.githubusercontent.com/ceebee718/bagfree-app/main/hero.jpeg')",backgroundSize:'cover',backgroundPosition:'center 30%',pointerEvents:'none'}}/>
-        {/* Light overlay so text stays readable */}
-        <div style={{position:'absolute',top:0,left:0,right:0,bottom:0,background:'rgba(245,237,216,0.55)',pointerEvents:'none'}}/>
 
-        <h1 style={{fontFamily:'var(--ff-display)',fontSize:'clamp(3.5rem,8vw,7rem)',fontWeight:300,lineHeight:1.02,letterSpacing:'-2px',marginBottom:'1.5rem',color:'var(--noir)',position:'relative'}}>
-          Arrive to <em style={{fontStyle:'italic',color:'var(--gold-dim)'}}>everything.</em><br/>Carry <em style={{fontStyle:'italic'}}>nothing.</em>
+        <h1 style={{fontFamily:'var(--ff-display)',fontSize:'clamp(3.5rem,8vw,7rem)',fontWeight:300,lineHeight:1.02,letterSpacing:'-2px',marginBottom:'1.5rem',color:'var(--white)',position:'relative',textShadow:'0 2px 20px rgba(0,0,0,0.3)'}}>
+          Arrive to <em style={{fontStyle:'italic',color:'var(--gold)'}}>everything.</em><br/>Carry <em style={{fontStyle:'italic'}}>nothing.</em>
         </h1>
-        <p style={{fontSize:'1rem',color:'rgba(10,10,8,0.6)',lineHeight:1.9,maxWidth:520,marginBottom:'3rem',fontWeight:300,position:'relative'}}>
+        <p style={{fontSize:'1rem',color:'rgba(253,252,248,0.85)',lineHeight:1.9,maxWidth:520,marginBottom:'3rem',fontWeight:300,position:'relative'}}>
           Shop clothing, wellness kits, and travel essentials — delivered to your hotel before you arrive. Same-day available in Tampa & Orlando.
         </p>
         <div style={{display:'flex',gap:'1rem',flexWrap:'wrap',justifyContent:'center',marginBottom:'2rem',position:'relative'}}>
-          <button onClick={()=>setPage('vendors')} style={{background:'var(--noir)',color:'var(--gold-xlight)',padding:'1rem 2.5rem',border:'none',fontSize:'0.72rem',fontWeight:500,letterSpacing:'3px',textTransform:'uppercase'}}>
+          <button onClick={()=>setPage('vendors')} style={{background:'var(--gold)',color:'var(--noir)',padding:'1rem 2.5rem',border:'none',fontSize:'0.72rem',fontWeight:500,letterSpacing:'3px',textTransform:'uppercase'}}>
             Shop the Marketplace
           </button>
-          <button onClick={()=>setPage('hotel')} style={{background:'transparent',color:'var(--noir)',padding:'1rem 2rem',border:'1.5px solid rgba(10,10,8,0.3)',fontSize:'0.72rem',letterSpacing:'2.5px',textTransform:'uppercase'}}>
+          <button onClick={()=>setPage('hotel')} style={{background:'transparent',color:'var(--white)',padding:'1rem 2rem',border:'1.5px solid rgba(253,252,248,0.4)',fontSize:'0.72rem',letterSpacing:'2.5px',textTransform:'uppercase'}}>
             Book a Hotel
           </button>
         </div>
-        <div style={{fontSize:'0.72rem',color:'var(--noir)',letterSpacing:'1px',padding:'0.5rem 1.25rem',border:'1px solid rgba(10,10,8,0.2)',background:'rgba(10,10,8,0.06)',position:'relative'}}>
+        <div style={{fontSize:'0.72rem',color:'var(--white)',letterSpacing:'1px',padding:'0.5rem 1.25rem',border:'1px solid rgba(253,252,248,0.3)',background:'rgba(0,0,0,0.25)',position:'relative'}}>
           ⚡ Same-day delivery now live in Tampa & Orlando
         </div>
-        <div style={{display:'flex',gap:'4rem',marginTop:'5rem',paddingTop:'3rem',borderTop:'1px solid rgba(10,10,8,0.12)',flexWrap:'wrap',justifyContent:'center',position:'relative'}}>
+        <div style={{display:'flex',gap:'4rem',marginTop:'5rem',paddingTop:'3rem',borderTop:'1px solid rgba(253,252,248,0.2)',flexWrap:'wrap',justifyContent:'center',position:'relative'}}>
           {[['38+','Products'],['6','Destinations'],['Same-Day','Tampa & Orlando'],['Valet By Nuor','Delivery Partner']].map(([n,l])=>(
             <div key={l} style={{textAlign:'center'}}>
-              <div style={{fontFamily:'var(--ff-display)',fontSize:'2rem',fontWeight:300,color:'var(--noir)',lineHeight:1}}>{n}</div>
-              <div style={{fontSize:'0.62rem',letterSpacing:'2px',textTransform:'uppercase',color:'rgba(10,10,8,0.5)',marginTop:8}}>{l}</div>
+              <div style={{fontFamily:'var(--ff-display)',fontSize:'2rem',fontWeight:300,color:'var(--gold)',lineHeight:1}}>{n}</div>
+              <div style={{fontSize:'0.62rem',letterSpacing:'2px',textTransform:'uppercase',color:'rgba(253,252,248,0.6)',marginTop:8}}>{l}</div>
             </div>
           ))}
         </div>
-        <div style={{marginTop:'2rem',fontSize:'0.62rem',letterSpacing:'3px',textTransform:'uppercase',color:'rgba(10,10,8,0.4)',position:'relative',display:'flex',alignItems:'center',gap:'1rem',justifyContent:'center'}}>
-          <span style={{width:24,height:1,background:'rgba(10,10,8,0.2)',display:'inline-block'}}/>
+        <div style={{marginTop:'2rem',fontSize:'0.62rem',letterSpacing:'3px',textTransform:'uppercase',color:'rgba(253,252,248,0.4)',position:'relative',display:'flex',alignItems:'center',gap:'1rem',justifyContent:'center'}}>
+          <span style={{width:24,height:1,background:'rgba(253,252,248,0.2)',display:'inline-block'}}/>
           Powered by Valet By Nuor
-          <span style={{width:24,height:1,background:'rgba(10,10,8,0.2)',display:'inline-block'}}/>
+          <span style={{width:24,height:1,background:'rgba(253,252,248,0.2)',display:'inline-block'}}/>
         </div>
       </div>
 
