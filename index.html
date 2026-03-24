@@ -107,7 +107,7 @@ function Nav({ page, setPage, cartCount }) {
         Bag<span style={{color:'var(--gold)'}}>Free</span>
       </div>
       <div style={{display:'flex',gap:'2rem',alignItems:'center'}}>
-        {[['home','Destinations'],['marketplace','Shop'],['supplier','Suppliers']].map(([p,l])=>(
+        {[['home','Destinations'],['marketplace','Shop'],['hotel','Book Hotel'],['supplier','Suppliers']].map(([p,l])=>(
           <span key={p} onClick={()=>setPage(p)} style={{fontSize:'0.68rem',color:page===p?'var(--gold)':'var(--mist)',letterSpacing:'2px',textTransform:'uppercase',cursor:'pointer',transition:'color 0.2s'}}>{l}</span>
         ))}
         <button onClick={()=>setPage('cart')} style={{background:'transparent',color:'var(--gold)',padding:'0.5rem 1.25rem',border:'1px solid var(--border-hi)',fontSize:'0.68rem',letterSpacing:'2px',textTransform:'uppercase'}}>
@@ -225,6 +225,50 @@ function Home({ setPage, setCatFilter }) {
               <div style={{fontSize:'0.72rem',color:'var(--mist)'}}>{d.desc}</div>
             </div>
           ))}
+        </div>
+      </div>
+
+      {/* Hotel Concierge */}
+      <div style={{padding:'6rem 3rem',background:'var(--noir-3)',borderTop:'1px solid var(--border)',borderBottom:'1px solid var(--border)'}}>
+        <div style={{display:'grid',gridTemplateColumns:'1fr 1fr',gap:'4rem',alignItems:'center',maxWidth:1100,margin:'0 auto'}}>
+          <div>
+            <div style={{fontSize:'0.62rem',letterSpacing:'4px',textTransform:'uppercase',color:'var(--gold)',marginBottom:'1.5rem',display:'flex',alignItems:'center',gap:'1rem'}}>
+              <span style={{width:24,height:1,background:'var(--gold-dim)',display:'inline-block'}}/>New — Travel Concierge
+            </div>
+            <h2 style={{fontFamily:'var(--ff-display)',fontSize:'clamp(2rem,4vw,3.5rem)',fontWeight:300,marginBottom:'1rem',letterSpacing:'-0.3px'}}>
+              We'll book your <em style={{color:'var(--gold)',fontStyle:'italic'}}>hotel too</em>
+            </h2>
+            <p style={{fontSize:'0.9rem',color:'var(--mist)',lineHeight:1.9,marginBottom:'2rem',fontWeight:300,maxWidth:440}}>
+              Our travel concierge finds and books the perfect hotel for your trip — with access to exclusive rates not available to the public. Then we deliver everything you need to your room before you arrive.
+            </p>
+            <div style={{display:'flex',flexDirection:'column',gap:'0.75rem',marginBottom:'2.5rem'}}>
+              {['Exclusive hotel rates through our travel agent network','Personalized recommendations for your trip type','Coordinated with your Valet By Nuor delivery','Response within 24 hours'].map(f=>(
+                <div key={f} style={{display:'flex',gap:'0.75rem',alignItems:'center',fontSize:'0.82rem',color:'var(--mist)'}}>
+                  <span style={{color:'var(--gold)',fontSize:'0.6rem',flexShrink:0}}>◆</span>{f}
+                </div>
+              ))}
+            </div>
+            <button onClick={()=>setPage('hotel')} style={{background:'var(--gold)',color:'var(--noir)',padding:'0.9rem 2.5rem',border:'none',fontSize:'0.7rem',fontWeight:500,letterSpacing:'3px',textTransform:'uppercase'}}>
+              Request Hotel Booking
+            </button>
+          </div>
+          <div style={{background:'var(--noir-2)',border:'1px solid var(--border)',padding:'2rem'}}>
+            <div style={{fontSize:'0.6rem',letterSpacing:'3px',textTransform:'uppercase',color:'var(--gold)',marginBottom:'1.5rem',paddingBottom:'1rem',borderBottom:'1px solid var(--border)'}}>Complete BagFree Experience</div>
+            {[
+              ['01','Book Your Hotel','Tell us your destination, dates, and budget. We handle everything.'],
+              ['02','Order Your Essentials','Browse Valet By Nuor products and add to your order.'],
+              ['03','Arrive to Everything','Hotel confirmed. Essentials waiting in your room. Nothing to carry.'],
+            ].map(([n,h,p])=>(
+              <div key={n} style={{display:'flex',gap:'1.25rem',marginBottom:'1.5rem',paddingBottom:'1.5rem',borderBottom:'1px solid var(--mist-xlow)'}}>
+                <div style={{fontFamily:'var(--ff-display)',fontSize:'1.8rem',fontWeight:300,color:'var(--border-hi)',lineHeight:1,flexShrink:0,width:32}}>{n}</div>
+                <div>
+                  <div style={{fontSize:'0.82rem',color:'var(--white)',fontWeight:400,marginBottom:4}}>{h}</div>
+                  <div style={{fontSize:'0.75rem',color:'var(--mist)',lineHeight:1.7,fontWeight:300}}>{p}</div>
+                </div>
+              </div>
+            ))}
+            <div style={{fontSize:'0.68rem',color:'var(--gold-dim)',letterSpacing:'1px'}}>Powered by Valet By Nuor · BagFree Travel Concierge</div>
+          </div>
         </div>
       </div>
 
@@ -349,7 +393,7 @@ function ProductDetail({ product:p, onBack, onAdd, added }) {
             </button>
           )}
           <div style={{marginTop:'1.5rem',display:'flex',flexDirection:'column',gap:'0.6rem'}}>
-            {['Delivered to your hotel or accommodation','Same-day available in Tampa & Orlando','All items brand new from Valet By Nuor','Call (813) XXX-XXXX for immediate assistance'].map(f=>(
+            {['Delivered to your hotel or accommodation','Same-day available in Tampa & Orlando','All items brand new from Valet By Nuor','Call (813) 816-2448 for immediate assistance'].map(f=>(
               <div key={f} style={{display:'flex',gap:'0.75rem',alignItems:'center',fontSize:'0.78rem',color:'var(--mist)'}}><span style={{color:'var(--gold)',fontSize:'0.6rem'}}>◆</span>{f}</div>
             ))}
           </div>
@@ -361,6 +405,18 @@ function ProductDetail({ product:p, onBack, onAdd, added }) {
 }
 
 // ── CART ──────────────────────────────────────────────────────────────────────
+const FORMSPREE = 'https://formspree.io/f/mqeyrykl';
+
+async function submitToFormspree(data) {
+  try {
+    await fetch(FORMSPREE, {
+      method:'POST',
+      headers:{'Content-Type':'application/json','Accept':'application/json'},
+      body:JSON.stringify(data)
+    });
+  } catch(e) { console.log('Form error',e); }
+}
+
 function Cart({ cart, removeFromCart, setPage }) {
   const [step, setStep] = useState('cart');
   const [form, setForm] = useState({name:'',email:'',phone:'',hotel:'',dest:'',checkin:'',checkout:''});
@@ -374,7 +430,7 @@ function Cart({ cart, removeFromCart, setPage }) {
         Thank you, <strong style={{color:'var(--white)'}}>{form.name}</strong>. Your order has been placed. The Valet By Nuor team will contact you at <strong style={{color:'var(--white)'}}>{form.email}</strong> to confirm delivery to <strong style={{color:'var(--white)'}}>{form.hotel}</strong>.
       </p>
       <div style={{fontSize:'0.75rem',color:'var(--mist)',marginBottom:'0.5rem'}}>Questions? Call or text Valet By Nuor:</div>
-      <div style={{fontSize:'0.85rem',color:'var(--gold)',letterSpacing:'1px',marginBottom:'2rem'}}>(813) XXX-XXXX · support@valetbynuor.com</div>
+      <div style={{fontSize:'0.85rem',color:'var(--gold)',letterSpacing:'1px',marginBottom:'2rem'}}>(813) 816-2448 · support@valetbynuor.com</div>
       <button onClick={()=>{setOrdered(false);setStep('cart');setPage('home');}} style={{background:'var(--gold)',color:'var(--noir)',padding:'0.9rem 2.5rem',border:'none',fontSize:'0.7rem',fontWeight:500,letterSpacing:'3px',textTransform:'uppercase'}}>Back to Home</button>
     </div>
   );
@@ -444,7 +500,7 @@ function Cart({ cart, removeFromCart, setPage }) {
               </div>
               <div style={{display:'flex',gap:'1rem'}}>
                 <button onClick={()=>setStep('cart')} style={{background:'transparent',color:'var(--mist)',padding:'0.9rem 1.5rem',border:'1px solid var(--border)',fontSize:'0.68rem',letterSpacing:'2px',textTransform:'uppercase'}}>← Back</button>
-                <button onClick={()=>{if(form.name&&form.email)setOrdered(true);}}
+                <button onClick={async ()=>{if(form.name&&form.email){await submitToFormspree({type:'ORDER',name:form.name,email:form.email,phone:form.phone,hotel:form.hotel,destination:form.dest,checkin:form.checkin,checkout:form.checkout,items:cart.map(i=>i.name).join(', '),total:'$'+total.toFixed(2),source:'BagFree Cart'});setOrdered(true);}}}
                   style={{flex:1,background:'var(--gold)',color:'var(--noir)',padding:'0.9rem',border:'none',fontSize:'0.7rem',fontWeight:500,letterSpacing:'3px',textTransform:'uppercase',opacity:!form.name||!form.email?0.5:1}}>
                   Place Order — ${total.toFixed(2)}
                 </button>
@@ -563,7 +619,7 @@ function SupplierPortal() {
             </div>
             <div style={{display:'flex',gap:'1rem'}}>
               <button onClick={()=>setStep(2)} style={{background:'transparent',color:'var(--mist)',padding:'0.9rem 1.5rem',border:'1px solid var(--border)',fontSize:'0.68rem',letterSpacing:'2px',textTransform:'uppercase'}}>← Back</button>
-              <button onClick={()=>setDone(true)} style={{flex:1,background:'var(--gold)',color:'var(--noir)',padding:'1rem',border:'none',fontSize:'0.7rem',fontWeight:500,letterSpacing:'3px',textTransform:'uppercase'}}>Submit Application</button>
+              <button onClick={async ()=>{await submitToFormspree({type:'SUPPLIER APPLICATION',business:form.biz,contact:form.contact,email:form.email,phone:form.phone,website:form.website,category:form.category,destinations:form.destinations.join(', '),model:form.model,description:form.description,source:'BagFree Supplier Portal'});setDone(true);}} style={{flex:1,background:'var(--gold)',color:'var(--noir)',padding:'1rem',border:'none',fontSize:'0.7rem',fontWeight:500,letterSpacing:'3px',textTransform:'uppercase'}}>Submit Application</button>
             </div>
           </div>
         )}
@@ -573,6 +629,143 @@ function SupplierPortal() {
 }
 
 // ── APP ───────────────────────────────────────────────────────────────────────
+function HotelConcierge() {
+  const [done, setDone] = useState(false);
+  const [form, setForm] = useState({name:'',email:'',phone:'',dest:'',checkin:'',checkout:'',guests:'1',budget:'',type:'leisure',requests:''});
+  const f = (k,v) => setForm(p=>({...p,[k]:v}));
+
+  if (done) return (
+    <div style={{paddingTop:80,minHeight:'100vh',display:'flex',alignItems:'center',justifyContent:'center',flexDirection:'column',textAlign:'center',padding:'4rem 2rem'}}>
+      <div style={{fontSize:'3rem',marginBottom:'1.5rem',opacity:0.6}}>✦</div>
+      <h1 style={{fontFamily:'var(--ff-display)',fontSize:'3.5rem',fontWeight:300,marginBottom:'1rem'}}>Request <em style={{color:'var(--gold)',fontStyle:'italic'}}>Received</em></h1>
+      <p style={{fontSize:'0.9rem',color:'var(--mist)',lineHeight:1.9,maxWidth:480,marginBottom:'1.5rem'}}>
+        Thank you, <strong style={{color:'var(--white)'}}>{form.name}</strong>. Our travel concierge will review your request and contact you at <strong style={{color:'var(--white)'}}>{form.email}</strong> within 24 hours with hotel options for <strong style={{color:'var(--white)'}}>{form.dest}</strong>.
+      </p>
+      <div style={{background:'var(--noir-3)',border:'1px solid var(--border)',padding:'1.25rem 2rem',marginBottom:'2rem'}}>
+        <div style={{fontSize:'0.6rem',letterSpacing:'2px',textTransform:'uppercase',color:'var(--gold)',marginBottom:'0.5rem'}}>Questions? Contact us directly</div>
+        <div style={{fontSize:'0.85rem',color:'var(--white)'}}>(813) 816-2448 · support@valetbynuor.com</div>
+      </div>
+      <div style={{fontSize:'0.68rem',letterSpacing:'2px',textTransform:'uppercase',color:'var(--gold-dim)'}}>BagFree Travel Concierge · Powered by Valet By Nuor</div>
+    </div>
+  );
+
+  return (
+    <div style={{paddingTop:80,minHeight:'100vh'}}>
+      <div style={{maxWidth:700,margin:'0 auto',padding:'4rem 2rem'}}>
+        <div style={{fontSize:'0.62rem',letterSpacing:'4px',textTransform:'uppercase',color:'var(--gold)',marginBottom:'1.25rem',display:'flex',alignItems:'center',gap:'1rem'}}>
+          <span style={{width:24,height:1,background:'var(--gold-dim)',display:'inline-block'}}/>Travel Concierge
+        </div>
+        <h1 style={{fontFamily:'var(--ff-display)',fontSize:'3rem',fontWeight:300,marginBottom:'0.75rem'}}>
+          Book your <em style={{color:'var(--gold)',fontStyle:'italic'}}>perfect stay</em>
+        </h1>
+        <p style={{fontSize:'0.88rem',color:'var(--mist)',lineHeight:1.9,marginBottom:'0.75rem',fontWeight:300}}>
+          Tell us where you're going and we'll find and book the perfect hotel for your trip — then have everything you need delivered by Valet By Nuor before you arrive.
+        </p>
+        <div style={{fontSize:'0.75rem',color:'var(--gold)',padding:'0.6rem 1rem',border:'1px solid var(--border-hi)',background:'var(--mist-xlow)',marginBottom:'3rem',display:'inline-block',letterSpacing:'0.5px'}}>
+          ✦ Our travel agents have access to exclusive rates not available to the public
+        </div>
+
+        <div style={{display:'flex',flexDirection:'column',gap:'1.1rem'}}>
+          {/* Personal info */}
+          <div style={{display:'grid',gridTemplateColumns:'1fr 1fr',gap:'1rem'}}>
+            <div>
+              <div style={{fontSize:'0.6rem',letterSpacing:'2px',textTransform:'uppercase',color:'var(--mist)',marginBottom:'0.4rem'}}>Your Name</div>
+              <input value={form.name} onChange={e=>f('name',e.target.value)} style={{width:'100%',background:'var(--mist-xlow)',border:'1px solid var(--border)',color:'var(--white)',padding:'0.75rem 1rem',fontSize:'0.88rem',outline:'none'}}/>
+            </div>
+            <div>
+              <div style={{fontSize:'0.6rem',letterSpacing:'2px',textTransform:'uppercase',color:'var(--mist)',marginBottom:'0.4rem'}}>Email Address</div>
+              <input type="email" value={form.email} onChange={e=>f('email',e.target.value)} style={{width:'100%',background:'var(--mist-xlow)',border:'1px solid var(--border)',color:'var(--white)',padding:'0.75rem 1rem',fontSize:'0.88rem',outline:'none'}}/>
+            </div>
+          </div>
+          <div>
+            <div style={{fontSize:'0.6rem',letterSpacing:'2px',textTransform:'uppercase',color:'var(--mist)',marginBottom:'0.4rem'}}>Phone / WhatsApp</div>
+            <input type="tel" value={form.phone} onChange={e=>f('phone',e.target.value)} style={{width:'100%',background:'var(--mist-xlow)',border:'1px solid var(--border)',color:'var(--white)',padding:'0.75rem 1rem',fontSize:'0.88rem',outline:'none'}}/>
+          </div>
+
+          {/* Trip details */}
+          <div style={{borderTop:'1px solid var(--border)',paddingTop:'1.5rem',marginTop:'0.5rem'}}>
+            <div style={{fontSize:'0.6rem',letterSpacing:'3px',textTransform:'uppercase',color:'var(--gold)',marginBottom:'1.25rem'}}>Trip Details</div>
+          </div>
+          <div>
+            <div style={{fontSize:'0.6rem',letterSpacing:'2px',textTransform:'uppercase',color:'var(--mist)',marginBottom:'0.4rem'}}>Destination City</div>
+            <select value={form.dest} onChange={e=>f('dest',e.target.value)} style={{width:'100%',background:'var(--noir-3)',border:'1px solid var(--border)',color:form.dest?'var(--white)':'var(--mist)',padding:'0.75rem 1rem',fontSize:'0.88rem',outline:'none'}}>
+              <option value="">Select destination...</option>
+              {DESTINATIONS.map(d=><option key={d.id} value={d.name}>{d.name}, {d.state}</option>)}
+              <option value="Other">Other destination</option>
+            </select>
+          </div>
+          <div style={{display:'grid',gridTemplateColumns:'1fr 1fr',gap:'1rem'}}>
+            <div>
+              <div style={{fontSize:'0.6rem',letterSpacing:'2px',textTransform:'uppercase',color:'var(--mist)',marginBottom:'0.4rem'}}>Check-in Date</div>
+              <input type="date" value={form.checkin} onChange={e=>f('checkin',e.target.value)} style={{width:'100%',background:'var(--mist-xlow)',border:'1px solid var(--border)',color:'var(--white)',padding:'0.75rem 1rem',fontSize:'0.88rem',outline:'none',colorScheme:'dark'}}/>
+            </div>
+            <div>
+              <div style={{fontSize:'0.6rem',letterSpacing:'2px',textTransform:'uppercase',color:'var(--mist)',marginBottom:'0.4rem'}}>Check-out Date</div>
+              <input type="date" value={form.checkout} onChange={e=>f('checkout',e.target.value)} style={{width:'100%',background:'var(--mist-xlow)',border:'1px solid var(--border)',color:'var(--white)',padding:'0.75rem 1rem',fontSize:'0.88rem',outline:'none',colorScheme:'dark'}}/>
+            </div>
+          </div>
+          <div style={{display:'grid',gridTemplateColumns:'1fr 1fr',gap:'1rem'}}>
+            <div>
+              <div style={{fontSize:'0.6rem',letterSpacing:'2px',textTransform:'uppercase',color:'var(--mist)',marginBottom:'0.4rem'}}>Number of Guests</div>
+              <select value={form.guests} onChange={e=>f('guests',e.target.value)} style={{width:'100%',background:'var(--noir-3)',border:'1px solid var(--border)',color:'var(--white)',padding:'0.75rem 1rem',fontSize:'0.88rem',outline:'none'}}>
+                {['1','2','3','4','5','6+'].map(n=><option key={n} value={n}>{n} {n==='1'?'guest':'guests'}</option>)}
+              </select>
+            </div>
+            <div>
+              <div style={{fontSize:'0.6rem',letterSpacing:'2px',textTransform:'uppercase',color:'var(--mist)',marginBottom:'0.4rem'}}>Nightly Budget (USD)</div>
+              <select value={form.budget} onChange={e=>f('budget',e.target.value)} style={{width:'100%',background:'var(--noir-3)',border:'1px solid var(--border)',color:form.budget?'var(--white)':'var(--mist)',padding:'0.75rem 1rem',fontSize:'0.88rem',outline:'none'}}>
+                <option value="">Select budget...</option>
+                <option value="under100">Under $100/night</option>
+                <option value="100-200">$100 – $200/night</option>
+                <option value="200-350">$200 – $350/night</option>
+                <option value="350-500">$350 – $500/night</option>
+                <option value="500+">$500+/night — luxury</option>
+              </select>
+            </div>
+          </div>
+
+          {/* Trip type */}
+          <div>
+            <div style={{fontSize:'0.6rem',letterSpacing:'2px',textTransform:'uppercase',color:'var(--mist)',marginBottom:'0.75rem'}}>Type of Trip</div>
+            <div style={{display:'grid',gridTemplateColumns:'repeat(3,1fr)',gap:8}}>
+              {[['leisure','🌴 Leisure'],['business','💼 Business'],['family','👨‍👩‍👧 Family'],['romantic','💛 Romantic'],['wedding','💍 Wedding'],['other','✦ Other']].map(([v,l])=>(
+                <div key={v} onClick={()=>f('type',v)} style={{padding:'0.75rem',border:`1px solid ${form.type===v?'var(--border-hi)':'var(--border)'}`,cursor:'pointer',fontSize:'0.75rem',color:form.type===v?'var(--white)':'var(--mist)',background:form.type===v?'var(--mist-xlow)':'transparent',textAlign:'center',transition:'all 0.2s'}}>
+                  {l}
+                </div>
+              ))}
+            </div>
+          </div>
+
+          {/* Special requests */}
+          <div>
+            <div style={{fontSize:'0.6rem',letterSpacing:'2px',textTransform:'uppercase',color:'var(--mist)',marginBottom:'0.4rem'}}>Special Requests or Preferences</div>
+            <textarea value={form.requests} onChange={e=>f('requests',e.target.value)} rows={4}
+              placeholder="Ocean view, pet-friendly, accessible room, early check-in, close to downtown..."
+              style={{width:'100%',background:'var(--mist-xlow)',border:'1px solid var(--border)',color:'var(--white)',padding:'0.75rem 1rem',fontSize:'0.85rem',outline:'none',resize:'vertical',fontFamily:'var(--ff-body)',lineHeight:1.7}}/>
+          </div>
+
+          {/* Also order essentials */}
+          <div style={{padding:'1.25rem',background:'var(--mist-xlow)',border:'1px solid var(--border-hi)',display:'flex',gap:'1rem',alignItems:'center'}}>
+            <div style={{fontSize:'1.5rem',opacity:0.7}}>📦</div>
+            <div>
+              <div style={{fontSize:'0.75rem',color:'var(--white)',fontWeight:400,marginBottom:3}}>Also need clothing or essentials delivered?</div>
+              <div style={{fontSize:'0.75rem',color:'var(--mist)',lineHeight:1.7}}>After submitting, visit the Shop to order from Valet By Nuor — we'll coordinate delivery to your booked hotel.</div>
+            </div>
+          </div>
+
+          <button onClick={async ()=>{if(form.name&&form.email&&form.dest){await submitToFormspree({type:'HOTEL REQUEST',name:form.name,email:form.email,phone:form.phone,destination:form.dest,checkin:form.checkin,checkout:form.checkout,guests:form.guests,budget:form.budget,tripType:form.type,requests:form.requests,source:'BagFree Hotel Concierge'});setDone(true);}}}
+            style={{background:'var(--gold)',color:'var(--noir)',padding:'1rem',border:'none',fontSize:'0.72rem',fontWeight:500,letterSpacing:'3px',textTransform:'uppercase',opacity:!form.name||!form.email||!form.dest?0.4:1,marginTop:'0.5rem'}}>
+            Submit Hotel Request
+          </button>
+          <div style={{fontSize:'0.72rem',color:'var(--mist)',textAlign:'center',lineHeight:1.8}}>
+            Our travel concierge will respond within 24 hours with curated hotel options and pricing.
+          </div>
+        </div>
+      </div>
+    </div>
+  );
+}
+
 function App() {
   const [page, setPage] = useState('home');
   const [cart, setCart] = useState([]);
@@ -584,10 +777,11 @@ function App() {
       {page==='home' && <Home setPage={setPage} setCatFilter={setCatFilter} />}
       {page==='marketplace' && <Marketplace addToCart={p=>setCart(c=>[...c,p])} catFilter={catFilter} setCatFilter={setCatFilter} />}
       {page==='cart' && <Cart cart={cart} removeFromCart={i=>setCart(c=>c.filter((_,idx)=>idx!==i))} setPage={setPage} />}
+      {page==='hotel' && <HotelConcierge />}
       {page==='supplier' && <SupplierPortal />}
       <footer style={{background:'var(--noir-2)',padding:'2rem 3rem',display:'flex',justifyContent:'space-between',alignItems:'center',borderTop:'1px solid var(--border)',flexWrap:'wrap',gap:'1rem'}}>
         <div style={{fontFamily:'var(--ff-display)',fontSize:'1.2rem',fontWeight:300,letterSpacing:'3px',textTransform:'uppercase'}}>Bag<span style={{color:'var(--gold)'}}>Free</span></div>
-        <div style={{fontSize:'0.68rem',color:'var(--mist)',letterSpacing:'1px'}}>Powered by Valet By Nuor · <a href="https://valetbynuor.com" target="_blank" style={{color:'var(--gold)',textDecoration:'none'}}>valetbynuor.com</a> · (813) XXX-XXXX</div>
+        <div style={{fontSize:'0.68rem',color:'var(--mist)',letterSpacing:'1px'}}>Powered by Valet By Nuor · <a href="https://valetbynuor.com" target="_blank" style={{color:'var(--gold)',textDecoration:'none'}}>valetbynuor.com</a> · (813) 816-2448</div>
         <div style={{fontSize:'0.65rem',color:'var(--mist)'}}>© 2026 BagFree · All rights reserved</div>
       </footer>
     </>
