@@ -158,7 +158,7 @@ function Nav({page,setPage}){
       </div>
       <div style={{display:'flex',gap:'2rem',alignItems:'center'}}>
         {[['home','Destinations'],['vendors','Marketplace'],['hotel','Book Hotel'],['supplier','Suppliers']].map(([p,l])=>(
-          <span key={p} onClick={()=>setPage(p)} style={{fontSize:'0.68rem',color:page===p?'var(--gold)':'var(--mist)',letterSpacing:'2px',textTransform:'uppercase',cursor:'pointer',transition:'color 0.2s'}}>{l}</span>
+          <span key={p} onClick={()=>setPage(p)} style={{fontSize:'0.72rem',color:page===p?'var(--gold)':'rgba(253,252,248,0.85)',letterSpacing:'1.5px',textTransform:'uppercase',cursor:'pointer',transition:'color 0.2s',fontWeight:400}}>{l}</span>
         ))}
         <button onClick={()=>setPage('vendors')} style={{background:'var(--gold)',color:'var(--noir)',padding:'0.5rem 1.25rem',border:'none',fontSize:'0.68rem',letterSpacing:'2px',textTransform:'uppercase',fontWeight:500}}>Shop Now</button>
       </div>
@@ -171,9 +171,12 @@ function Home({setPage}){
   return(
     <div style={{paddingTop:80}}>
 
-      {/* HERO — GOLD BACKGROUND INVERTED */}
+      {/* HERO — GOLD BACKGROUND WITH SUBTLE IMAGE */}
       <div style={{minHeight:'92vh',display:'flex',flexDirection:'column',alignItems:'center',justifyContent:'center',textAlign:'center',padding:'4rem 2rem',background:'var(--gold-xlight)',position:'relative',overflow:'hidden'}}>
-        <div style={{position:'absolute',top:0,left:0,right:0,bottom:0,backgroundImage:'repeating-linear-gradient(0deg,transparent,transparent 60px,rgba(10,10,8,0.03) 60px,rgba(10,10,8,0.03) 61px),repeating-linear-gradient(90deg,transparent,transparent 60px,rgba(10,10,8,0.03) 60px,rgba(10,10,8,0.03) 61px)',pointerEvents:'none'}}/>
+        {/* Subtle background image — luxury hotel room */}
+        <div style={{position:'absolute',top:0,left:0,right:0,bottom:0,backgroundImage:"url('https://images.unsplash.com/photo-1631049307264-da0ec9d70304?w=1800&q=80')",backgroundSize:'cover',backgroundPosition:'center',opacity:0.12,pointerEvents:'none'}}/>
+        {/* Warm vignette overlay */}
+        <div style={{position:'absolute',top:0,left:0,right:0,bottom:0,background:'radial-gradient(ellipse at center, transparent 30%, rgba(245,237,216,0.7) 100%)',pointerEvents:'none'}}/>
         <div style={{fontSize:'0.62rem',letterSpacing:'4px',textTransform:'uppercase',color:'var(--gold-dim)',marginBottom:'2rem',display:'flex',alignItems:'center',gap:'1rem',position:'relative'}}>
           <span style={{width:32,height:1,background:'var(--gold-dim)',display:'inline-block'}}/>
           Powered by Valet By Nuor
@@ -236,7 +239,7 @@ function Home({setPage}){
 
       {/* HOW IT WORKS — GOLD INVERTED */}
       <div style={{padding:'6rem 3rem',background:'var(--gold)',position:'relative',overflow:'hidden'}}>
-        <div style={{position:'absolute',top:0,left:0,right:0,bottom:0,backgroundImage:'repeating-linear-gradient(45deg,transparent,transparent 40px,rgba(10,10,8,0.03) 40px,rgba(10,10,8,0.03) 41px)',pointerEvents:'none'}}/>
+        <div style={{position:'absolute',top:0,left:0,right:0,bottom:0,backgroundImage:"url('https://images.unsplash.com/photo-1566073771259-6a8506099945?w=1800&q=80')",backgroundSize:'cover',backgroundPosition:'center',opacity:0.07,pointerEvents:'none'}}/>
         <div style={{fontSize:'0.62rem',letterSpacing:'4px',textTransform:'uppercase',color:'var(--noir)',opacity:0.5,marginBottom:'1.5rem',display:'flex',alignItems:'center',gap:'1rem',position:'relative'}}>
           <span style={{width:24,height:1,background:'var(--noir)',opacity:0.4,display:'inline-block'}}/>How It Works
         </div>
@@ -341,7 +344,7 @@ function VendorMarketplace({setPage,setActiveVendor}){
     <div style={{paddingTop:80}}>
       {/* Header — gold */}
       <div style={{padding:'5rem 3rem 4rem',background:'var(--gold)',position:'relative',overflow:'hidden'}}>
-        <div style={{position:'absolute',top:0,left:0,right:0,bottom:0,backgroundImage:'repeating-linear-gradient(0deg,transparent,transparent 60px,rgba(10,10,8,0.03) 60px,rgba(10,10,8,0.03) 61px),repeating-linear-gradient(90deg,transparent,transparent 60px,rgba(10,10,8,0.03) 60px,rgba(10,10,8,0.03) 61px)',pointerEvents:'none'}}/>
+        <div style={{position:'absolute',top:0,left:0,right:0,bottom:0,backgroundImage:"url('https://images.unsplash.com/photo-1578683010236-d716f9a3f461?w=1800&q=80')",backgroundSize:'cover',backgroundPosition:'center top',opacity:0.08,pointerEvents:'none'}}/>
         <div style={{fontSize:'0.62rem',letterSpacing:'4px',textTransform:'uppercase',color:'rgba(10,10,8,0.5)',marginBottom:'1.25rem',display:'flex',alignItems:'center',gap:'1rem',position:'relative'}}>
           <span style={{width:24,height:1,background:'var(--noir)',opacity:0.3,display:'inline-block'}}/>BagFree Marketplace
         </div>
