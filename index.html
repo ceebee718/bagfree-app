@@ -603,7 +603,7 @@ function HotelConcierge(){
 function SupplierPortal(){
   const [step,setStep]=useState(1);
   const [done,setDone]=useState(false);
-  const [form,setForm]=useState({biz:'',contact:'',email:'',phone:'',website:'',category:'',destinations:[],description:'',model:'both'});
+  const [form,setForm]=useState({biz:'',contact:'',email:'',phone:'',website:'',category:'',destinations:[],description:'',model:'both',agreedToCommission:false});
   function toggleDest(d){setForm(f=>({...f,destinations:f.destinations.includes(d)?f.destinations.filter(x=>x!==d):[...f.destinations,d]}));}
 
   if(done)return(
@@ -673,9 +673,26 @@ function SupplierPortal(){
             <div><div style={{fontSize:'0.6rem',letterSpacing:'2px',textTransform:'uppercase',color:'var(--mist)',marginBottom:'0.4rem'}}>Tell us about your products</div>
             <textarea value={form.description} onChange={e=>setForm({...form,description:e.target.value})} rows={5} placeholder="Describe your products and why you'd be a great BagFree supplier..." style={{width:'100%',background:'var(--mist-xlow)',border:'1px solid var(--border)',color:'var(--white)',padding:'0.75rem 1rem',fontSize:'0.88rem',outline:'none',resize:'vertical',fontFamily:'var(--ff-body)',lineHeight:1.7}}/></div>
             <div style={{padding:'1.1rem',background:'var(--mist-xlow)',border:'1px solid var(--border)',fontSize:'0.78rem',color:'var(--mist)',lineHeight:1.8}}><span style={{color:'var(--gold)'}}>Logistics:</span> All BagFree suppliers integrate with Valet By Nuor for fulfillment across Florida and Georgia.</div>
+
+            {/* Commission agreement */}
+            <div style={{padding:'1.25rem',background:'var(--mist-xlow)',border:`1px solid ${form.agreedToCommission?'var(--border-hi)':'var(--border)'}`,cursor:'pointer',transition:'border-color 0.2s'}} onClick={()=>setForm({...form,agreedToCommission:!form.agreedToCommission})}>
+              <div style={{display:'flex',gap:'1rem',alignItems:'flex-start'}}>
+                <div style={{width:20,height:20,border:`1px solid ${form.agreedToCommission?'var(--gold)':'var(--border-hi)'}`,background:form.agreedToCommission?'var(--gold)':'transparent',flexShrink:0,marginTop:2,display:'flex',alignItems:'center',justifyContent:'center',transition:'all 0.2s'}}>
+                  {form.agreedToCommission && <span style={{color:'var(--noir)',fontSize:'0.75rem',fontWeight:700}}>✓</span>}
+                </div>
+                <div>
+                  <div style={{fontSize:'0.78rem',color:'var(--white)',fontWeight:400,marginBottom:6}}>I agree to BagFree's commission structure</div>
+                  <div style={{fontSize:'0.72rem',color:'var(--mist)',lineHeight:1.8}}>BagFree earns a <strong style={{color:'var(--gold)'}}>15% commission</strong> on all sales generated through the platform. There are no upfront listing fees. You only pay when you earn. Valet By Nuor charges a separate delivery fee per order fulfilled.</div>
+                </div>
+              </div>
+            </div>
+
             <div style={{display:'flex',gap:'1rem'}}>
               <button onClick={()=>setStep(2)} style={{background:'transparent',color:'var(--mist)',padding:'0.9rem 1.5rem',border:'1px solid var(--border)',fontSize:'0.68rem',letterSpacing:'2px',textTransform:'uppercase'}}>← Back</button>
-              <button onClick={async()=>{await submitToFormspree({type:'SUPPLIER APPLICATION',...form,destinations:form.destinations.join(', '),source:'BagFree Supplier Portal'});setDone(true);}} style={{flex:1,background:'var(--gold)',color:'var(--noir)',padding:'1rem',border:'none',fontSize:'0.7rem',fontWeight:500,letterSpacing:'3px',textTransform:'uppercase'}}>Submit Application</button>
+              <button onClick={async()=>{if(form.agreedToCommission){await submitToFormspree({type:'SUPPLIER APPLICATION',...form,destinations:form.destinations.join(', '),agreedToCommission:'Yes — 15% commission acknowledged',source:'BagFree Supplier Portal'});setDone(true);}}}
+                style={{flex:1,background:'var(--gold)',color:'var(--noir)',padding:'1rem',border:'none',fontSize:'0.7rem',fontWeight:500,letterSpacing:'3px',textTransform:'uppercase',opacity:!form.agreedToCommission?0.4:1}}>
+                Submit Application
+              </button>
             </div>
           </div>
         )}
