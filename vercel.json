@@ -30,6 +30,14 @@
       "dest": "/icon-512.png"
     },
     {
+      "src": "/departure-lounge",
+      "dest": "/departure-lounge.html"
+    },
+    {
+      "src": "/departure-lounge.html",
+      "dest": "/departure-lounge.html"
+    },
+    {
       "src": "/(.*)",
       "dest": "/index.html"
     }
