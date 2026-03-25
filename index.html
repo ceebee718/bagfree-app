@@ -603,7 +603,7 @@ function HotelConcierge(){
 function SupplierPortal(){
   const [step,setStep]=useState(1);
   const [done,setDone]=useState(false);
-  const [form,setForm]=useState({biz:'',contact:'',email:'',phone:'',website:'',category:'',destinations:[],description:'',model:'both',agreedToCommission:false});
+  const [form,setForm]=useState({biz:'',contact:'',email:'',phone:'',website:'',category:'',destinations:[],description:'',model:'both',agreedToCommission:false,commissionPlan:'monthly'});
   function toggleDest(d){setForm(f=>({...f,destinations:f.destinations.includes(d)?f.destinations.filter(x=>x!==d):[...f.destinations,d]}));}
 
   if(done)return(
@@ -675,6 +675,40 @@ function SupplierPortal(){
             <div style={{padding:'1.1rem',background:'var(--mist-xlow)',border:'1px solid var(--border)',fontSize:'0.78rem',color:'var(--mist)',lineHeight:1.8}}><span style={{color:'var(--gold)'}}>Logistics:</span> All BagFree suppliers integrate with Valet By Nuor for fulfillment across Florida and Georgia.</div>
 
             {/* Commission agreement */}
+            <div>
+              <div style={{fontSize:'0.6rem',letterSpacing:'2px',textTransform:'uppercase',color:'var(--mist)',marginBottom:'0.75rem'}}>Commission Plan</div>
+              <div style={{display:'grid',gridTemplateColumns:'1fr 1fr',gap:8,marginBottom:'1rem'}}>
+                <div onClick={()=>setForm({...form,commissionPlan:'monthly'})}
+                  style={{padding:'1rem',border:`1px solid ${form.commissionPlan==='monthly'?'var(--border-hi)':'var(--border)'}`,cursor:'pointer',background:form.commissionPlan==='monthly'?'var(--mist-xlow)':'transparent',transition:'all 0.2s'}}>
+                  <div style={{fontSize:'0.62rem',letterSpacing:'2px',textTransform:'uppercase',color:'var(--mist)',marginBottom:6}}>Month-to-Month</div>
+                  <div style={{fontFamily:'var(--ff-display)',fontSize:'1.8rem',fontWeight:300,color:'var(--white)',lineHeight:1,marginBottom:4}}>15%</div>
+                  <div style={{fontSize:'0.72rem',color:'var(--mist)',marginBottom:8}}>No upfront fee · No commitment</div>
+                  <div style={{display:'flex',flexDirection:'column',gap:4}}>
+                    {['Standard marketplace listing','No badge','Standard delivery priority','Not featured on home page'].map(b=>(
+                      <div key={b} style={{display:'flex',gap:6,alignItems:'center',fontSize:'0.65rem',color:'var(--mist)'}}>
+                        <span style={{color:'var(--mist)',fontSize:'0.6rem'}}>—</span>{b}
+                      </div>
+                    ))}
+                  </div>
+                </div>
+                <div onClick={()=>setForm({...form,commissionPlan:'annual'})}
+                  style={{padding:'1rem',border:`1px solid ${form.commissionPlan==='annual'?'var(--gold)':'var(--border)'}`,cursor:'pointer',background:form.commissionPlan==='annual'?'var(--mist-xlow)':'transparent',transition:'all 0.2s',position:'relative'}}>
+                  <div style={{position:'absolute',top:'0.6rem',right:'0.6rem',fontSize:'0.55rem',letterSpacing:'1.5px',textTransform:'uppercase',color:'var(--gold)',border:'1px solid var(--border-hi)',padding:'2px 6px'}}>Best Value</div>
+                  <div style={{fontSize:'0.62rem',letterSpacing:'2px',textTransform:'uppercase',color:'var(--mist)',marginBottom:6}}>Annual Partner</div>
+                  <div style={{fontFamily:'var(--ff-display)',fontSize:'1.8rem',fontWeight:300,color:'var(--gold)',lineHeight:1,marginBottom:4}}>8%</div>
+                  <div style={{fontSize:'0.72rem',color:'var(--mist)',marginBottom:8}}>$199/year · 12-month agreement</div>
+                  <div style={{display:'flex',flexDirection:'column',gap:4}}>
+                    {['Featured placement in marketplace','Verified Partner badge','Priority Valet By Nuor delivery','Listed on BagFree home page'].map(b=>(
+                      <div key={b} style={{display:'flex',gap:6,alignItems:'center',fontSize:'0.65rem',color:'var(--gold-dim)'}}>
+                        <span style={{color:'var(--gold)',fontSize:'0.6rem'}}>◆</span>{b}
+                      </div>
+                    ))}
+                  </div>
+                </div>
+              </div>
+            </div>
+
+            {/* Agreement checkbox */}
             <div style={{padding:'1.25rem',background:'var(--mist-xlow)',border:`1px solid ${form.agreedToCommission?'var(--border-hi)':'var(--border)'}`,cursor:'pointer',transition:'border-color 0.2s'}} onClick={()=>setForm({...form,agreedToCommission:!form.agreedToCommission})}>
               <div style={{display:'flex',gap:'1rem',alignItems:'flex-start'}}>
                 <div style={{width:20,height:20,border:`1px solid ${form.agreedToCommission?'var(--gold)':'var(--border-hi)'}`,background:form.agreedToCommission?'var(--gold)':'transparent',flexShrink:0,marginTop:2,display:'flex',alignItems:'center',justifyContent:'center',transition:'all 0.2s'}}>
@@ -682,14 +716,19 @@ function SupplierPortal(){
                 </div>
                 <div>
                   <div style={{fontSize:'0.78rem',color:'var(--white)',fontWeight:400,marginBottom:6}}>I agree to BagFree's commission structure</div>
-                  <div style={{fontSize:'0.72rem',color:'var(--mist)',lineHeight:1.8}}>BagFree earns a <strong style={{color:'var(--gold)'}}>15% commission</strong> on all sales generated through the platform. There are no upfront listing fees. You only pay when you earn. Valet By Nuor charges a separate delivery fee per order fulfilled.</div>
+                  <div style={{fontSize:'0.72rem',color:'var(--mist)',lineHeight:1.8}}>
+                    {form.commissionPlan==='annual'
+                      ? <>BagFree earns <strong style={{color:'var(--gold)'}}>8% commission</strong> on all sales plus a <strong style={{color:'var(--gold)'}}>$199/year</strong> listing fee. Includes featured placement, Verified Partner badge, and home page listing. 12-month commitment.</>
+                      : <>BagFree earns <strong style={{color:'var(--gold)'}}>15% commission</strong> on all sales. No upfront fee, no commitment. Standard marketplace listing.</>
+                    } Valet By Nuor charges a separate delivery fee per order fulfilled.
+                  </div>
                 </div>
               </div>
             </div>
 
             <div style={{display:'flex',gap:'1rem'}}>
               <button onClick={()=>setStep(2)} style={{background:'transparent',color:'var(--mist)',padding:'0.9rem 1.5rem',border:'1px solid var(--border)',fontSize:'0.68rem',letterSpacing:'2px',textTransform:'uppercase'}}>← Back</button>
-              <button onClick={async()=>{if(form.agreedToCommission){await submitToFormspree({type:'SUPPLIER APPLICATION',...form,destinations:form.destinations.join(', '),agreedToCommission:'Yes — 15% commission acknowledged',source:'BagFree Supplier Portal'});setDone(true);}}}
+              <button onClick={async()=>{if(form.agreedToCommission){await submitToFormspree({type:'SUPPLIER APPLICATION',...form,destinations:form.destinations.join(', '),commissionPlan:form.commissionPlan==='annual'?'Annual Partner — $199/year + 8% commission':'Monthly — 15% commission, no commitment',agreedToCommission:'Yes — commission terms acknowledged',source:'BagFree Supplier Portal'});setDone(true);}}}
                 style={{flex:1,background:'var(--gold)',color:'var(--noir)',padding:'1rem',border:'none',fontSize:'0.7rem',fontWeight:500,letterSpacing:'3px',textTransform:'uppercase',opacity:!form.agreedToCommission?0.4:1}}>
                 Submit Application
               </button>
