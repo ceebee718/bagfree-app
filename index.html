@@ -262,7 +262,12 @@ function Home({setPage}){
               onMouseEnter={e=>e.currentTarget.style.background='var(--gold-light)'}
               onMouseLeave={e=>e.currentTarget.style.background='var(--gold)'}>
               {v.highlight && <div style={{position:'absolute',top:'1rem',right:'1rem',fontSize:'0.55rem',letterSpacing:'1.5px',textTransform:'uppercase',color:'var(--noir)',border:'1px solid rgba(10,10,8,0.3)',padding:'2px 8px',background:'rgba(10,10,8,0.1)'}}>Official Partner</div>}
-              <div style={{fontSize:'2rem',opacity:v.highlight?0.8:0.5,marginBottom:'1rem'}}>{v.icon}</div>
+              <div style={{fontSize:'2rem',opacity:v.highlight?0.8:0.5,marginBottom:'1rem'}}>
+                {v.highlight
+                  ? <img src="https://raw.githubusercontent.com/ceebee718/bagfree-app/main/valet-logo.png" alt="Valet By Nuor" style={{height:64,width:'auto',objectFit:'contain',display:'block'}}/>
+                  : v.icon
+                }
+              </div>
               <div style={{fontFamily:'var(--ff-display)',fontSize:'1.3rem',fontWeight:600,color:'var(--noir)',marginBottom:'0.4rem'}}>{v.name}</div>
               <div style={{fontSize:'0.68rem',letterSpacing:'1.5px',textTransform:'uppercase',color:'rgba(10,10,8,0.5)',marginBottom:'0.75rem'}}>{v.category}</div>
               <div style={{fontSize:'0.78rem',color:'rgba(10,10,8,0.65)',lineHeight:1.7,marginBottom:'1rem',fontWeight:300}}>{v.desc.slice(0,100)}...</div>
