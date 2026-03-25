@@ -267,6 +267,7 @@ button,input,select,textarea{font-family:var(--ff-body)}
         <button class="layer-btn active" onclick="toggleLayer('intel',this)"><span class="dot" style="background:var(--red)"></span>Intelligence</button>
         <button class="layer-btn active" onclick="toggleLayer('events',this)"><span class="dot" style="background:var(--purple)"></span>Events</button>
         <button class="layer-btn active" onclick="toggleLayer('embassy',this)"><span class="dot" style="background:var(--blue)"></span>Embassies</button>
+        <button class="layer-btn active" onclick="toggleLayer('collective',this)"><span class="dot" style="background:var(--green)"></span>Group Trips</button>
       </div>
 
       <div class="map-svg-wrap">
@@ -409,7 +410,19 @@ button,input,select,textarea{font-family:var(--ff-body)}
             </g>
           </g>
 
-          <!-- LIVE FLIGHTS -->
+          <!-- COLLECTIVE PINS (teal) -->
+          <g id="layerCollective">
+            <g onclick="showTripCard()" style="cursor:pointer">
+              <circle cx="200" cy="218" r="8" fill="rgba(93,202,165,0.2)" stroke="#5DCAA5" stroke-width="1.5"/>
+              <circle cx="200" cy="218" r="4" fill="#5DCAA5" opacity="0.8">
+                <animate attributeName="r" values="4;7;4" dur="2s" repeatCount="indefinite"/>
+                <animate attributeName="opacity" values="0.8;0.2;0.8" dur="2s" repeatCount="indefinite"/>
+              </circle>
+              <text x="200" y="210" text-anchor="middle" font-size="7.5" fill="#5DCAA5" font-family="Jost,sans-serif">SVG</text>
+              <text x="200" y="232" text-anchor="middle" font-size="6.5" fill="rgba(93,202,165,0.7)" font-family="Jost,sans-serif">9 spots left</text>
+              <title>St. Vincent & The Grenadines · BagFree Christmas Collective · Dec 15-28</title>
+            </g>
+          </g>
           <g id="layerFlights">
             <circle r="3" fill="#5DCAA5" opacity="0.85"><animate attributeName="cx" from="148" to="370" dur="9s" repeatCount="indefinite"/><animate attributeName="cy" from="188" to="108" dur="9s" repeatCount="indefinite"/></circle>
             <circle r="3" fill="#5DCAA5" opacity="0.85"><animate attributeName="cx" from="143" to="352" dur="11s" repeatCount="indefinite"/><animate attributeName="cy" from="185" to="95" dur="11s" repeatCount="indefinite"/></circle>
@@ -443,6 +456,8 @@ button,input,select,textarea{font-family:var(--ff-body)}
             <text x="206" y="468" fill="rgba(253,252,248,0.4)">Embassy</text>
             <circle cx="248" cy="464" r="3.5" fill="rgba(127,119,221,0.2)" stroke="#7F77DD" stroke-width="1"/>
             <text x="256" y="468" fill="rgba(253,252,248,0.4)">Events</text>
+            <circle cx="296" cy="464" r="3.5" fill="rgba(93,202,165,0.2)" stroke="#5DCAA5" stroke-width="1"/>
+            <text x="304" y="468" fill="rgba(253,252,248,0.4)">Group Trip</text>
           </g>
         </svg>
       </div>
@@ -463,14 +478,89 @@ button,input,select,textarea{font-family:var(--ff-body)}
       </div>
 
       <div style="margin-top:1.25rem;padding-top:1.25rem;border-top:1px solid var(--border)">
+        <div class="sidebar-label">Featured journey</div>
+        <div id="featuredTrip"></div>
+      </div>
+      <div style="margin-top:1.25rem;padding-top:1.25rem;border-top:1px solid var(--border)">
+        <div class="sidebar-label">Travel collective</div>
+        <div id="collectivePanel"></div>
+      </div>
+      <div style="margin-top:1.25rem;padding-top:1.25rem;border-top:1px solid var(--border)">
         <div class="sidebar-label">Travel intelligence</div>
         <div id="alertsList"></div>
       </div>
-
       <div style="margin-top:1.25rem;padding-top:1.25rem;border-top:1px solid var(--border)">
         <div class="sidebar-label">Upcoming events</div>
         <div id="eventsList"></div>
       </div>
+    </div>
+  </div>
+</div>
+<div id="depositModal" style="display:none;position:fixed;inset:0;background:rgba(0,0,0,0.88);z-index:500;align-items:center;justify-content:center;padding:1.5rem">
+  <div style="background:var(--noir2);border:1px solid var(--border-hi);max-width:500px;width:100%;padding:2rem;position:relative;max-height:88vh;overflow-y:auto">
+    <div style="font-size:0.55rem;letter-spacing:3px;text-transform:uppercase;color:var(--gold);margin-bottom:1rem">Reserve Your Spot</div>
+    <div style="font-family:var(--ff-display);font-size:1.6rem;font-weight:300;color:var(--white);margin-bottom:4px">St. Vincent & The Grenadines</div>
+    <div style="font-size:0.65rem;color:var(--gold);letter-spacing:2px;text-transform:uppercase;margin-bottom:1.5rem">Christmas Collective · Dec 15 - Dec 28, 2026</div>
+    <div id="dStep1">
+      <input class="survey-input" id="depName" placeholder="Full name" style="margin-bottom:8px">
+      <input class="survey-input" id="depEmail" placeholder="Email address" style="margin-bottom:8px">
+      <input class="survey-input" id="depPhone" placeholder="Phone number" style="margin-bottom:8px">
+      <input class="survey-input" id="depCity" placeholder="Departure city" style="margin-bottom:1.25rem">
+      <div style="border:1px solid var(--border);padding:1rem;cursor:pointer;margin-bottom:1.25rem;transition:all 0.2s" id="bfToggle" onclick="toggleBF()">
+        <div style="display:flex;justify-content:space-between;margin-bottom:6px">
+          <span style="font-size:0.82rem;color:var(--white)">Travel BagFree Package</span>
+          <span style="color:var(--gold);font-size:0.78rem">+ $299</span>
+        </div>
+        <div style="font-size:0.68rem;color:var(--mist);line-height:1.6;margin-bottom:8px">5 curated outfits for St. Vincent weather and activities, toiletry kit, wellness pack, Type G adapter — all in your room at check-in. Board the plane with nothing but your carry-on.</div>
+        <div style="display:flex;align-items:center;gap:8px">
+          <div id="bfCheck" style="width:16px;height:16px;border:1px solid var(--border-hi);background:transparent;display:flex;align-items:center;justify-content:center;font-size:10px;transition:all 0.2s"></div>
+          <span style="font-size:0.65rem;color:var(--mist)">Add Travel BagFree to my booking</span>
+        </div>
+      </div>
+      <div id="bfStyleSection" style="display:none;margin-bottom:1.25rem">
+        <div style="font-size:0.58rem;letter-spacing:2px;text-transform:uppercase;color:var(--gold);margin-bottom:0.75rem">Customize your kit</div>
+        <select class="survey-input" id="depGender" style="margin-bottom:8px;background:var(--noir3);color:var(--white)">
+          <option value="">Clothing preference...</option>
+          <option>Mens styles</option>
+          <option>Womens styles</option>
+          <option>Unisex / flexible</option>
+        </select>
+        <input class="survey-input" id="depSize" placeholder="Size (e.g. M top, 32 waist, size 9 shoe)" style="margin-bottom:8px">
+        <input class="survey-input" id="depSpecial" placeholder="Special requests or preferences...">
+      </div>
+      <div style="background:var(--noir3);border:1px solid var(--border);padding:1rem;margin-bottom:1.25rem">
+        <div style="display:flex;justify-content:space-between;font-size:0.72rem;padding:3px 0;border-bottom:1px solid var(--border)"><span style="color:var(--mist)">Trip price</span><span style="color:var(--white)">$3,800</span></div>
+        <div id="bfSumRow" style="display:none;justify-content:space-between;font-size:0.72rem;padding:3px 0;border-bottom:1px solid var(--border)"><span style="color:var(--mist)">Travel BagFree</span><span style="color:var(--gold)">$299</span></div>
+        <div style="display:flex;justify-content:space-between;font-size:0.72rem;padding:3px 0;border-bottom:1px solid var(--border)"><span style="color:var(--mist)">Balance due Oct 15</span><span id="balDue" style="color:var(--white)">$3,300</span></div>
+        <div style="display:flex;justify-content:space-between;font-size:0.85rem;padding:8px 0 0;font-weight:500"><span style="color:var(--white)">Deposit today</span><span id="depTot" style="color:var(--gold)">$500</span></div>
+        <div style="font-size:0.6rem;color:rgba(226,75,74,0.8);margin-top:4px">Non-refundable deposit secures your spot</div>
+      </div>
+      <button class="btn-gold" style="width:100%;padding:0.9rem" onclick="goStep2()">Continue to Payment</button>
+      <button class="btn-ghost" style="width:100%;margin-top:8px;padding:0.75rem" onclick="closeModal()">Cancel</button>
+    </div>
+    <div id="dStep2" style="display:none">
+      <div style="font-size:0.62rem;letter-spacing:2px;text-transform:uppercase;color:var(--mist);margin-bottom:1rem">Secure Payment</div>
+      <div style="background:var(--noir3);border:1px solid var(--border);padding:1.25rem;margin-bottom:1rem">
+        <input class="survey-input" placeholder="Card number" style="margin-bottom:8px;letter-spacing:2px">
+        <div style="display:grid;grid-template-columns:1fr 1fr;gap:8px;margin-bottom:8px">
+          <input class="survey-input" placeholder="MM / YY">
+          <input class="survey-input" placeholder="CVV">
+        </div>
+        <input class="survey-input" placeholder="Name on card">
+      </div>
+      <div style="background:rgba(201,169,110,0.05);border:1px solid var(--border-hi);padding:0.85rem;margin-bottom:1rem;font-size:0.68rem;color:var(--mist);line-height:1.7">
+        Payments processed securely via Stripe. Your $500 deposit is non-refundable and confirms your spot. Full balance due October 15, 2026.
+      </div>
+      <button class="btn-gold" style="width:100%;padding:0.9rem" onclick="confirmBooking()">Confirm $500 Deposit</button>
+      <button class="btn-ghost" style="width:100%;margin-top:8px;padding:0.75rem" onclick="goStep1()">Back</button>
+    </div>
+    <div id="dStep3" style="display:none;text-align:center;padding:1rem 0">
+      <div style="font-family:var(--ff-display);font-size:2.5rem;font-weight:300;color:var(--gold);margin-bottom:0.5rem">You are in.</div>
+      <div style="font-size:0.82rem;color:var(--mist);line-height:1.9;margin-bottom:1.5rem">Confirmation sent to your email. Welcome to the BagFree Christmas Collective. We will be in touch within 24 hours with your group introduction and full trip details.</div>
+      <div style="background:var(--noir3);border:1px solid var(--border);padding:1rem;text-align:left;margin-bottom:1.5rem;font-size:0.72rem;color:var(--mist);line-height:1.9">
+        Next: Confirmation email within 5 min · Group WhatsApp invite · Full itinerary PDF · BagFree kit questionnaire · Balance due Oct 15, 2026
+      </div>
+      <button class="btn-gold" style="padding:0.85rem 2rem" onclick="closeModal()">Close</button>
     </div>
   </div>
 </div>
@@ -521,7 +611,17 @@ const DEST_DATA = {
     bagfree:false,bagfreeNote:'Not yet available',
     events:['Mar — Nyepi Day (island shuts down)','Jun-Aug — Peak season · book early','Oct — Ubud Food Festival'],
     tips:'Stay in Ubud for culture, Seminyak for nightlife, Nusa Dua for luxury resort. Rent a scooter in Ubud. Respect temple dress codes — always carry a sarong.'},
-  'Tampa':{country:'United States',region:'BagFree Service Area',match:100,tags:['BagFree','Beach','Business'],styles:['All styles'],
+  'St. Vincent':{country:'St. Vincent & The Grenadines',region:'Caribbean',match:96,tags:['BagFree Trip','Island','Luxury','Christmas'],styles:['Luxury Cruise','Adventure & Wellness'],
+    safety:75,govt:'Parliamentary Democracy · Constitutional Monarchy',visa:'No visa · US Passport · 30 days',stateDept:'Level 1',lgbtq:'Exercise discretion · limited protections',
+    solo:'Generally safe · use common sense',health:'Basic · bring travel insurance',
+    currency:'Eastern Caribbean Dollar (XCD)',rate:'$1 = EC$2.70',trend:'Stable · pegged to USD',cash:'Cash culture · bring USD · ATMs limited on smaller islands',tip:'10-15% appreciated',atm:'Available in Kingstown · limited on outer islands',
+    hotels:8,hotelAvg:'$280/night',michelin:0,michelinStars:'Not rated · excellent local seafood',topRest:'Basil\'s Bar Mustique · iconic Caribbean dining',resv:'Book 2-3 months ahead',
+    spa:4,golf:1,marina:'Blue Lagoon Marina · Kingstown · full superyacht services',fbo:'E.T. Joshua Airport · Argyle International',
+    plug:'Type G (3 rectangular pins)',voltage:'230V · 50Hz',adapter:'Yes — US adapter required',usb:'Available at most hotels',bagfreeKit:'BagFree Christmas Kit — 5 outfits curated for SVG + Type G adapter ↗',
+    embassy:'Bridgetown, Barbados (nearest)',embassyPhone:'+1 246-227-4000',embassyHours:'Mon-Fri 8am-4:30pm',embassyStatus:'Fully operational · covers SVG',
+    bagfree:false,bagfreeNote:'BagFree delivers your kit to your hotel before arrival — Travel BagFree add-on available',
+    events:['Dec 15-28 — BagFree Christmas Collective · YOUR TRIP','Dec 25 — Christmas Day on Bequia · legendary Caribbean celebration','Jan — Mustique Blues Festival'],
+    tips:'The Tobago Cays are the highlight — book the private sailboat day early. Bequia is the gem of the Grenadines. Bring cash for Union Island and Tobago Cays. Water shoes essential for snorkeling stops.'},tags:['BagFree','Beach','Business'],styles:['All styles'],
     safety:68,govt:'Federal Republic · Democratic',visa:'No visa required',stateDept:'N/A · Domestic',lgbtq:'Safe',
     solo:'Generally safe',health:'Excellent · multiple top hospitals',
     currency:'USD',rate:'$1 = $1',trend:'N/A',cash:'Card preferred everywhere',tip:'18-20% standard',atm:'Everywhere · no fees at banks',
@@ -721,6 +821,10 @@ function launchDashboard(){
   buildBagfreeRec();
   buildAlerts();
   buildEvents();
+  buildFeaturedTrip();
+  buildCollectivePanel();
+  buildFeaturedTrip();
+  buildCollectivePanel();
 }
 
 function getAvatar(){
@@ -1058,12 +1162,239 @@ function addToTrip(city){
 function toggleLayer(layer, btn){
   activeLayer[layer] = !activeLayer[layer];
   btn.classList.toggle('active', activeLayer[layer]);
-  const layerMap = {bagfree:'layerBagfree',landmarks:'layerLandmarks',flights:'layerFlights',cruises:'layerCruises',intel:'layerIntel',events:'layerEvents',embassy:'layerEmbassy'};
+  const layerMap = {bagfree:'layerBagfree',landmarks:'layerLandmarks',flights:'layerFlights',cruises:'layerCruises',intel:'layerIntel',events:'layerEvents',embassy:'layerEmbassy',collective:'layerCollective'};
   const el = document.getElementById(layerMap[layer]);
   if(el) el.setAttribute('opacity', activeLayer[layer]?'1':'0');
 }
 
 renderSurvey();
+
+// ── TRIP CARD & COLLECTIVE ─────────────────────────────────────────────────
+const SVG_TRIP = {
+  destination:'St. Vincent & The Grenadines',
+  subtitle:'Christmas Collective',
+  dates:'Dec 15 — Dec 28, 2026',
+  days:13,
+  totalSpots:12,
+  spotsBooked:3,
+  price:3800,
+  deposit:500,
+  bagfreeAddon:299,
+  style:'Luxury Island & Cruise',
+  fitness:'Light — moderate walking',
+  ageRange:'Open · 25-65',
+  companions:'Solo travelers & couples welcome',
+  includes:['13 nights boutique accommodation','Inter-island ferry & transfers','Daily breakfast · 6 group dinners','Tobago Cays private sailboat day','BagFree welcome kit at hotel','Group WhatsApp with BagFree concierge','Embassy brief & safety guide'],
+  itinerary:[
+    {day:'Day 1-2',city:'Kingstown, St. Vincent',act:'Arrive · Welcome rum punch dinner · Fort Charlotte sunset'},
+    {day:'Day 3-4',city:'Bequia',act:'Old Hegg Turtle Sanctuary · Admiralty Bay · Princess Margaret Beach'},
+    {day:'Day 5-6',city:'Mustique',act:'Exclusive island · Basil's Bar · celebrity villa territory'},
+    {day:'Day 7-8',city:'Canouan',act:'Raffles Resort · championship golf · crystal lagoon'},
+    {day:'Day 9-10',city:'Union Island',act:'Kite surfing · Clifton Harbour · local fish market'},
+    {day:'Day 11-12',city:'Tobago Cays',act:'Private sailboat · sea turtle snorkeling · marine park'},
+    {day:'Day 13',city:'Return Kingstown',act:'Christmas Eve farewell dinner · depart Dec 28'},
+  ]
+};
+
+const COLLECTIVE_GROUPS = [
+  {dest:'St. Vincent & The Grenadines',dates:'Dec 15-28',style:'Luxury Island',size:12,joined:3,match:94,status:'forming'},
+  {dest:'Mediterranean · Greece & Italy',dates:'Apr 2027',style:'Cultural Immersion',size:8,joined:5,match:88,status:'forming'},
+  {dest:'Japan · Cherry Blossom',dates:'Mar 2027',style:'Cultural & Culinary',size:6,joined:6,match:82,status:'full'},
+];
+
+let bfAddonSelected = false;
+
+function buildFeaturedTrip() {
+  const t = SVG_TRIP;
+  const spotsLeft = t.totalSpots - t.spotsBooked;
+  const pctFilled = Math.round((t.spotsBooked / t.totalSpots) * 100);
+  const urgency = spotsLeft <= 3 ? 'bad' : spotsLeft <= 6 ? 'warn' : 'good';
+  document.getElementById('featuredTrip').innerHTML = `
+    <div style="border:1px solid var(--border-hi);overflow:hidden;cursor:pointer" onclick="showTripCard()">
+      <div style="background:linear-gradient(135deg,#0D2035,#081525);padding:1.25rem;border-bottom:1px solid var(--border)">
+        <div style="font-size:0.55rem;letter-spacing:3px;text-transform:uppercase;color:var(--gold);margin-bottom:6px">BagFree Christmas Collective</div>
+        <div style="font-family:var(--ff-display);font-size:1.25rem;font-weight:300;color:var(--white);line-height:1.2;margin-bottom:3px">${t.destination}</div>
+        <div style="font-size:0.65rem;color:var(--mist)">${t.dates} · ${t.days} days</div>
+      </div>
+      <div style="padding:1rem">
+        <div style="display:flex;justify-content:space-between;margin-bottom:6px">
+          <span style="font-size:0.65rem;color:var(--mist)">Spots filled</span>
+          <span style="font-size:0.65rem;color:var(--white)">${t.spotsBooked} of ${t.totalSpots}</span>
+        </div>
+        <div style="height:4px;background:var(--noir3);margin-bottom:10px;border-radius:0">
+          <div style="height:100%;width:${pctFilled}%;background:var(--gold);transition:width 0.6s"></div>
+        </div>
+        <div style="display:flex;justify-content:space-between;align-items:center;margin-bottom:10px">
+          <div>
+            <div style="font-family:var(--ff-display);font-size:1.4rem;font-weight:300;color:var(--gold);line-height:1">$${t.price.toLocaleString()}</div>
+            <div style="font-size:0.6rem;color:var(--mist)">per person · land only</div>
+          </div>
+          <div style="text-align:right">
+            <div style="font-size:0.78rem;color:${urgency==='bad'?'var(--red)':urgency==='warn'?'var(--amber)':'var(--green)'};font-weight:500">${spotsLeft} spots left</div>
+            <div style="font-size:0.6rem;color:var(--mist)">$${t.deposit} deposit</div>
+          </div>
+        </div>
+        <button class="btn-gold" style="width:100%;padding:0.65rem;font-size:0.62rem;letter-spacing:2px" onclick="event.stopPropagation();openDepositModal()">Reserve My Spot · $${t.deposit}</button>
+      </div>
+    </div>
+  `;
+}
+
+function showTripCard() {
+  const t = SVG_TRIP;
+  const spotsLeft = t.totalSpots - t.spotsBooked;
+  document.getElementById('rightContent').innerHTML = `
+    <div>
+      <div style="font-size:0.55rem;letter-spacing:3px;text-transform:uppercase;color:var(--green);margin-bottom:0.75rem">BagFree Collective · Active Trip</div>
+      <div style="font-family:var(--ff-display);font-size:1.6rem;font-weight:300;color:var(--white);margin-bottom:3px">${t.destination}</div>
+      <div style="font-size:0.65rem;color:var(--gold);letter-spacing:1.5px;text-transform:uppercase;margin-bottom:1.25rem">${t.dates} · ${t.days} Days</div>
+      
+      <div style="margin-bottom:1.25rem;padding-bottom:1.25rem;border-bottom:1px solid var(--border)">
+        <div style="display:flex;justify-content:space-between;margin-bottom:6px">
+          <span style="font-size:0.62rem;color:var(--mist)">${t.spotsBooked} of ${t.totalSpots} spots reserved</span>
+          <span style="font-size:0.62rem;color:${spotsLeft<=3?'var(--red)':spotsLeft<=6?'var(--amber)':'var(--green)'}">${spotsLeft} left</span>
+        </div>
+        <div style="height:5px;background:var(--noir3);margin-bottom:10px">
+          <div style="height:100%;width:${Math.round((t.spotsBooked/t.totalSpots)*100)}%;background:var(--gold)"></div>
+        </div>
+        <div style="display:grid;grid-template-columns:1fr 1fr;gap:8px">
+          <div style="background:var(--noir3);padding:0.75rem">
+            <div style="font-family:var(--ff-display);font-size:1.4rem;color:var(--gold)">$${t.price.toLocaleString()}</div>
+            <div style="font-size:0.6rem;color:var(--mist)">per person · land only</div>
+          </div>
+          <div style="background:var(--noir3);padding:0.75rem">
+            <div style="font-family:var(--ff-display);font-size:1.4rem;color:var(--white)">$${t.deposit}</div>
+            <div style="font-size:0.6rem;color:var(--mist)">non-refundable deposit</div>
+          </div>
+        </div>
+      </div>
+
+      <div style="margin-bottom:1.25rem;padding-bottom:1.25rem;border-bottom:1px solid var(--border)">
+        <div style="font-size:0.55rem;letter-spacing:2px;text-transform:uppercase;color:var(--gold);margin-bottom:0.75rem">Trip details</div>
+        <div style="font-size:0.72rem;color:var(--mist);line-height:1.9">
+          <div style="display:flex;justify-content:space-between;padding:2px 0"><span>Style</span><span style="color:var(--white)">${t.style}</span></div>
+          <div style="display:flex;justify-content:space-between;padding:2px 0"><span>Companions</span><span style="color:var(--white)">${t.companions}</span></div>
+          <div style="display:flex;justify-content:space-between;padding:2px 0"><span>Activity level</span><span style="color:var(--white)">${t.fitness}</span></div>
+          <div style="display:flex;justify-content:space-between;padding:2px 0"><span>Age range</span><span style="color:var(--white)">${t.ageRange}</span></div>
+        </div>
+      </div>
+
+      <div style="margin-bottom:1.25rem;padding-bottom:1.25rem;border-bottom:1px solid var(--border)">
+        <div style="font-size:0.55rem;letter-spacing:2px;text-transform:uppercase;color:var(--gold);margin-bottom:0.75rem">Itinerary</div>
+        ${t.itinerary.map(s=>`
+          <div style="display:flex;gap:0.75rem;padding:0.4rem 0;border-bottom:1px solid rgba(253,252,248,0.04)">
+            <div style="font-size:0.6rem;color:var(--gold);min-width:52px;flex-shrink:0;padding-top:2px">${s.day}</div>
+            <div>
+              <div style="font-size:0.75rem;color:var(--white)">${s.city}</div>
+              <div style="font-size:0.62rem;color:var(--mist);margin-top:1px">${s.act}</div>
+            </div>
+          </div>
+        `).join('')}
+      </div>
+
+      <div style="margin-bottom:1.25rem;padding-bottom:1.25rem;border-bottom:1px solid var(--border)">
+        <div style="font-size:0.55rem;letter-spacing:2px;text-transform:uppercase;color:var(--gold);margin-bottom:0.75rem">What is included</div>
+        ${t.includes.map(i=>`<div style="display:flex;gap:0.5rem;font-size:0.7rem;color:var(--mist);padding:2px 0"><span style="color:var(--gold);font-size:0.55rem;margin-top:3px">◆</span>${i}</div>`).join('')}
+      </div>
+
+      <div style="background:rgba(201,169,110,0.06);border:1px solid var(--border-hi);padding:1rem;margin-bottom:1rem">
+        <div style="font-size:0.55rem;letter-spacing:2px;text-transform:uppercase;color:var(--gold);margin-bottom:0.5rem">Travel BagFree add-on</div>
+        <div style="font-size:0.7rem;color:var(--mist);line-height:1.7;margin-bottom:6px">5 curated outfits for St. Vincent · toiletry kit · wellness pack · Type G adapter. Board your flight with nothing but a carry-on.</div>
+        <div style="font-family:var(--ff-display);font-size:1.2rem;color:var(--gold)">+ $${t.bagfreeAddon} per person</div>
+      </div>
+
+      <div style="display:flex;justify-content:space-between;align-items:center;font-size:0.68rem;color:var(--mist);margin-bottom:1rem;padding:0.75rem;background:var(--noir3)">
+        <span>Deposit deadline</span>
+        <span style="color:var(--amber)">Nov 15, 2026</span>
+      </div>
+
+      <button class="btn-gold" style="width:100%;padding:0.9rem;font-size:0.68rem;letter-spacing:2.5px" onclick="openDepositModal()">Reserve My Spot · $${t.deposit} Deposit</button>
+      <div style="text-align:center;font-size:0.62rem;color:var(--mist);margin-top:8px">Non-refundable · Spots filling fast · ${spotsLeft} remaining</div>
+    </div>
+  `;
+}
+
+function buildCollectivePanel() {
+  document.getElementById('collectivePanel').innerHTML = COLLECTIVE_GROUPS.map(g => `
+    <div style="border:1px solid ${g.status==='full'?'var(--border)':'var(--border)'};padding:0.85rem;margin-bottom:8px;cursor:pointer;transition:all 0.2s;opacity:${g.status==='full'?0.6:1}"
+      onmouseover="this.style.borderColor='rgba(201,169,110,0.35)'"
+      onmouseout="this.style.borderColor='var(--border)'">
+      <div style="display:flex;justify-content:space-between;align-items:flex-start;margin-bottom:6px">
+        <div>
+          <div style="font-size:0.8rem;color:var(--white);font-weight:400">${g.dest}</div>
+          <div style="font-size:0.62rem;color:var(--mist);margin-top:1px">${g.dates} · ${g.style}</div>
+        </div>
+        <div style="font-size:0.6rem;letter-spacing:1px;text-transform:uppercase;color:${g.status==='full'?'var(--red)':'var(--green)'};border:1px solid ${g.status==='full'?'rgba(226,75,74,0.3)':'rgba(93,202,165,0.3)'};padding:2px 7px;white-space:nowrap;flex-shrink:0;margin-left:6px">${g.status==='full'?'Full':'Forming'}</div>
+      </div>
+      <div style="display:flex;justify-content:space-between;margin-bottom:5px">
+        <span style="font-size:0.62rem;color:var(--mist)">${g.joined} of ${g.size} joined</span>
+        <span style="font-size:0.62rem;color:var(--gold)">${g.match}% match</span>
+      </div>
+      <div style="height:3px;background:var(--noir3);margin-bottom:8px">
+        <div style="height:100%;width:${Math.round((g.joined/g.size)*100)}%;background:${g.status==='full'?'var(--mist)':'var(--green)'}"></div>
+      </div>
+      ${g.status==='full'
+        ? `<div style="font-size:0.62rem;color:var(--mist);text-align:center">Join waitlist →</div>`
+        : `<button style="width:100%;background:transparent;border:1px solid rgba(93,202,165,0.3);color:var(--green);padding:4px;font-size:0.6rem;letter-spacing:2px;text-transform:uppercase;cursor:pointer;font-family:var(--ff-body)" onclick="event.stopPropagation();expressInterest('${g.dest}')">Express Interest</button>`
+      }
+    </div>
+  `).join('');
+}
+
+function expressInterest(dest) {
+  if(dest.includes('Vincent')) { openDepositModal(); return; }
+  alert('Thank you for your interest in ' + dest + '. We will reach out when the group is ready to form.');
+}
+
+let bfOn = false;
+function openDepositModal() {
+  document.getElementById('depositModal').style.display='flex';
+  document.getElementById('dStep1').style.display='block';
+  document.getElementById('dStep2').style.display='none';
+  document.getElementById('dStep3').style.display='none';
+  bfOn = false;
+  document.getElementById('bfCheck').innerHTML='';
+  document.getElementById('bfCheck').style.background='transparent';
+  document.getElementById('bfStyleSection').style.display='none';
+  document.getElementById('bfSumRow').style.display='none';
+  document.getElementById('balDue').textContent='$3,300';
+  document.getElementById('depTot').textContent='$500';
+}
+
+function closeModal() { document.getElementById('depositModal').style.display='none'; }
+
+function toggleBF() {
+  bfOn = !bfOn;
+  document.getElementById('bfCheck').innerHTML = bfOn ? '✓' : '';
+  document.getElementById('bfCheck').style.background = bfOn ? 'var(--gold)' : 'transparent';
+  document.getElementById('bfCheck').style.color = 'var(--noir)';
+  document.getElementById('bfStyleSection').style.display = bfOn ? 'block' : 'none';
+  document.getElementById('bfSumRow').style.display = bfOn ? 'flex' : 'none';
+  document.getElementById('bfToggle').style.borderColor = bfOn ? 'var(--border-hi)' : 'var(--border)';
+  document.getElementById('balDue').textContent = bfOn ? '$3,300 + $299' : '$3,300';
+  document.getElementById('depTot').textContent = '$500';
+}
+
+function goStep2() {
+  const name = document.getElementById('depName').value;
+  const email = document.getElementById('depEmail').value;
+  if(!name || !email) { alert('Please enter your name and email to continue.'); return; }
+  document.getElementById('dStep1').style.display='none';
+  document.getElementById('dStep2').style.display='block';
+}
+
+function goStep1() {
+  document.getElementById('dStep2').style.display='none';
+  document.getElementById('dStep1').style.display='block';
+}
+
+function confirmBooking() {
+  document.getElementById('dStep2').style.display='none';
+  document.getElementById('dStep3').style.display='block';
+  SVG_TRIP.spotsBooked = Math.min(SVG_TRIP.spotsBooked + 1, SVG_TRIP.totalSpots);
+  buildFeaturedTrip();
+  buildCollectivePanel();
+}
 </script>
 </body>
 </html>
