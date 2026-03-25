@@ -333,24 +333,47 @@ function Home({setPage}){
         </div>
       </div>
 
-      {/* DESTINATIONS — GOLD INVERTED */}
-      <div style={{padding:'6rem 3rem',background:'var(--gold-xlight)'}}>
-        <div style={{fontSize:'0.62rem',letterSpacing:'4px',textTransform:'uppercase',color:'var(--gold-dim)',marginBottom:'1.5rem',display:'flex',alignItems:'center',gap:'1rem'}}>
-          <span style={{width:24,height:1,background:'var(--gold-dim)',display:'inline-block'}}/>Now Serving
+      {/* DESTINATIONS — GOLD CREAM LUXURY */}
+      <div style={{padding:'6rem 3rem',background:'var(--gold-xlight)',borderTop:'1px solid rgba(201,169,110,0.2)'}}>
+        <div style={{display:'flex',justifyContent:'space-between',alignItems:'flex-end',marginBottom:'3.5rem',flexWrap:'wrap',gap:'1rem'}}>
+          <div>
+            <div style={{fontSize:'0.62rem',letterSpacing:'4px',textTransform:'uppercase',color:'var(--gold-dim)',marginBottom:'1rem',display:'flex',alignItems:'center',gap:'1rem'}}>
+              <span style={{width:24,height:1,background:'var(--gold-dim)',display:'inline-block'}}/>Now Serving
+            </div>
+            <h2 style={{fontFamily:'var(--ff-display)',fontSize:'clamp(2rem,4vw,3.5rem)',fontWeight:300,letterSpacing:'-0.3px',color:'var(--noir)'}}>
+              Florida & <em style={{fontStyle:'italic',color:'var(--gold-dim)'}}>Georgia</em>
+            </h2>
+          </div>
+          <div style={{fontSize:'0.72rem',color:'rgba(10,10,8,0.5)',fontWeight:300,maxWidth:320,lineHeight:1.8,textAlign:'right'}}>
+            Same-day delivery in Tampa & Orlando.<br/>Next-day across all other destinations.
+          </div>
         </div>
-        <h2 style={{fontFamily:'var(--ff-display)',fontSize:'clamp(2rem,4vw,3.5rem)',fontWeight:300,marginBottom:'3rem',color:'var(--noir)',letterSpacing:'-0.3px'}}>
-          Florida & <em style={{fontStyle:'italic',color:'var(--gold-dim)'}}>Georgia</em>
-        </h2>
-        <div style={{display:'grid',gridTemplateColumns:'repeat(auto-fill,minmax(240px,1fr))',gap:1,background:'rgba(10,10,8,0.12)',border:'1px solid rgba(10,10,8,0.12)'}}>
-          {DESTINATIONS.map(d=>(
-            <div key={d.id} onClick={()=>setPage('vendors')}
-              style={{background:'var(--gold-xlight)',padding:'2rem',cursor:'pointer',transition:'background 0.25s',position:'relative'}}
-              onMouseEnter={e=>e.currentTarget.style.background='rgba(201,169,110,0.3)'}
+        <div style={{display:'grid',gridTemplateColumns:'repeat(3,1fr)',gap:1,background:'rgba(10,10,8,0.1)',border:'1px solid rgba(10,10,8,0.1)'}}>
+          {[
+            {name:'Tampa Bay',state:'FL',sameDay:true,desc:'Our flagship city. Same-day delivery to all major hotels and resorts.',code:'TPA'},
+            {name:'Orlando',state:'FL',sameDay:true,desc:'Theme park to resort — essentials delivered before you check in.',code:'MCO'},
+            {name:'Miami Beach',state:'FL',sameDay:false,desc:'South Beach, Brickell and beyond. Art Basel season specialists.',code:'MIA'},
+            {name:'Florida Keys',state:'FL',sameDay:false,desc:'Island delivery from Key Largo to Key West. Resort kits our specialty.',code:'EYW'},
+            {name:'Atlanta',state:'GA',sameDay:false,desc:'Buckhead, Midtown, Airport corridor. Business and leisure.',code:'ATL'},
+            {name:'Savannah',state:'GA',sameDay:false,desc:'Historic district hotels and boutique properties. Weekend getaways.',code:'SAV'},
+          ].map((d,i)=>(
+            <div key={d.name} onClick={()=>setPage('vendors')}
+              style={{background:'var(--gold-xlight)',padding:'2.5rem 2rem',cursor:'pointer',transition:'background 0.25s',position:'relative'}}
+              onMouseEnter={e=>e.currentTarget.style.background='rgba(201,169,110,0.25)'}
               onMouseLeave={e=>e.currentTarget.style.background='var(--gold-xlight)'}>
-              {d.highlight && <div style={{position:'absolute',top:'1rem',right:'1rem',fontSize:'0.55rem',letterSpacing:'1.5px',textTransform:'uppercase',color:'var(--noir)',border:'1px solid rgba(10,10,8,0.3)',padding:'2px 8px',background:'rgba(10,10,8,0.07)'}}>Same-Day</div>}
-              <div style={{fontSize:'2rem',marginBottom:'1rem',opacity:0.7}}>{d.img}</div>
-              <div style={{fontFamily:'var(--ff-display)',fontSize:'1.3rem',fontWeight:300,color:'var(--noir)',marginBottom:4}}>{d.name}, {d.state}</div>
-              <div style={{fontSize:'0.68rem',letterSpacing:'1.5px',textTransform:'uppercase',color:'var(--gold-dim)',marginTop:'0.75rem'}}>Shop vendors →</div>
+              {d.sameDay && (
+                <div style={{position:'absolute',top:'1.25rem',right:'1.25rem',fontSize:'0.52rem',letterSpacing:'1.5px',textTransform:'uppercase',color:'var(--noir)',border:'1px solid rgba(10,10,8,0.25)',padding:'3px 8px',background:'rgba(10,10,8,0.07)'}}>
+                  Same-Day
+                </div>
+              )}
+              <div style={{fontFamily:'var(--ff-display)',fontSize:'0.7rem',fontWeight:300,letterSpacing:'4px',color:'var(--gold-dim)',marginBottom:'0.85rem',textTransform:'uppercase'}}>{d.code}</div>
+              <div style={{fontFamily:'var(--ff-display)',fontSize:'1.5rem',fontWeight:300,color:'var(--noir)',marginBottom:'4px',lineHeight:1.1}}>{d.name}</div>
+              <div style={{fontSize:'0.6rem',letterSpacing:'2px',textTransform:'uppercase',color:'var(--gold-dim)',marginBottom:'1rem'}}>{d.state}</div>
+              <div style={{width:20,height:1,background:'rgba(10,10,8,0.2)',marginBottom:'1rem'}}/>
+              <div style={{fontSize:'0.75rem',color:'rgba(10,10,8,0.55)',lineHeight:1.8,fontWeight:300,marginBottom:'1.25rem'}}>{d.desc}</div>
+              <div style={{fontSize:'0.62rem',letterSpacing:'2px',textTransform:'uppercase',color:'var(--gold-dim)',display:'flex',alignItems:'center',gap:'0.5rem'}}>
+                Shop vendors <span style={{fontSize:'0.7rem'}}>→</span>
+              </div>
             </div>
           ))}
         </div>
