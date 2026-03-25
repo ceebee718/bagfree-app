@@ -272,25 +272,25 @@ function Home({setPage}){
         </div>
       </div>
 
-      {/* HOW IT WORKS — GOLD INVERTED */}
-      <div style={{padding:'6rem 3rem',background:'var(--gold)',position:'relative',overflow:'hidden'}}>
-        <div style={{fontSize:'0.62rem',letterSpacing:'4px',textTransform:'uppercase',color:'rgba(10,10,8,0.7)',marginBottom:'1.5rem',display:'flex',alignItems:'center',gap:'1rem',position:'relative'}}>
-          <span style={{width:24,height:1,background:'rgba(10,10,8,0.5)',display:'inline-block'}}/>How It Works
+      {/* HOW IT WORKS — CREAM INVERTED */}
+      <div style={{padding:'6rem 3rem',background:'var(--gold-xlight)',position:'relative',overflow:'hidden',borderBottom:'1px solid rgba(10,10,8,0.08)'}}>
+        <div style={{fontSize:'0.62rem',letterSpacing:'4px',textTransform:'uppercase',color:'var(--gold-dim)',marginBottom:'1.5rem',display:'flex',alignItems:'center',gap:'1rem',position:'relative'}}>
+          <span style={{width:24,height:1,background:'rgba(10,10,8,0.3)',display:'inline-block'}}/>How It Works
         </div>
         <h2 style={{fontFamily:'var(--ff-display)',fontSize:'clamp(2rem,4vw,3.5rem)',fontWeight:300,marginBottom:'3.5rem',color:'var(--noir)',letterSpacing:'-0.3px',position:'relative'}}>
-          Three steps to <em style={{fontStyle:'italic'}}>effortless</em> arrival
+          Three steps to <em style={{fontStyle:'italic',color:'var(--gold-dim)'}}>effortless</em> arrival
         </h2>
-        <div style={{display:'grid',gridTemplateColumns:'repeat(3,1fr)',gap:0,border:'1px solid rgba(10,10,8,0.2)',position:'relative'}}>
+        <div style={{display:'grid',gridTemplateColumns:'repeat(3,1fr)',gap:0,border:'1px solid rgba(10,10,8,0.12)',position:'relative'}}>
           {[
             ['01','Browse the Marketplace','Explore vendors by category or destination. Clothing, wellness, family gear, tech and more — all in one place.'],
             ['02','Order & Confirm','Place your order and confirm your hotel and arrival date. We coordinate delivery directly with your accommodation.'],
             ['03','Arrive to Everything','Your items are waiting in your room. Lost your luggage? Same-day delivery in Tampa & Orlando gets you sorted in hours.'],
           ].map(([n,h,p],i)=>(
-            <div key={n} style={{padding:'2.5rem',borderRight:i<2?'1px solid rgba(10,10,8,0.2)':'none',borderTop:'1px solid rgba(10,10,8,0.2)'}}>
-              <div style={{fontFamily:'var(--ff-display)',fontSize:'4rem',fontWeight:300,color:'rgba(10,10,8,0.2)',lineHeight:1,marginBottom:'1.25rem'}}>{n}</div>
-              <div style={{width:24,height:1,background:'rgba(10,10,8,0.5)',marginBottom:'1.25rem'}}/>
+            <div key={n} style={{padding:'2.5rem',borderRight:i<2?'1px solid rgba(10,10,8,0.12)':'none',borderTop:'1px solid rgba(10,10,8,0.12)'}}>
+              <div style={{fontFamily:'var(--ff-display)',fontSize:'4rem',fontWeight:300,color:'rgba(10,10,8,0.15)',lineHeight:1,marginBottom:'1.25rem'}}>{n}</div>
+              <div style={{width:24,height:1,background:'rgba(10,10,8,0.3)',marginBottom:'1.25rem'}}/>
               <h3 style={{fontFamily:'var(--ff-display)',fontSize:'1.35rem',fontWeight:400,color:'var(--noir)',marginBottom:'0.75rem'}}>{h}</h3>
-              <p style={{fontSize:'0.85rem',color:'rgba(10,10,8,0.7)',lineHeight:1.9,fontWeight:300}}>{p}</p>
+              <p style={{fontSize:'0.85rem',color:'rgba(10,10,8,0.55)',lineHeight:1.9,fontWeight:300}}>{p}</p>
             </div>
           ))}
         </div>
