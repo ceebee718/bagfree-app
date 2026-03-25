@@ -287,15 +287,19 @@ function Home({setPage}){
         </h2>
         <div style={{display:'grid',gridTemplateColumns:'repeat(3,1fr)',gap:0,border:'1px solid rgba(10,10,8,0.12)',position:'relative'}}>
           {[
-            ['01','Browse the Marketplace','Explore vendors by category or destination. Clothing, wellness, family gear, tech and more — all in one place.'],
-            ['02','Order & Confirm','Place your order and confirm your hotel and arrival date. We coordinate delivery directly with your accommodation.'],
-            ['03','Arrive to Everything','Your items are waiting in your room. Lost your luggage? Same-day delivery in Tampa & Orlando gets you sorted in hours.'],
-          ].map(([n,h,p],i)=>(
-            <div key={n} style={{padding:'2.5rem',borderRight:i<2?'1px solid rgba(10,10,8,0.12)':'none',borderTop:'1px solid rgba(10,10,8,0.12)'}}>
+            ['01','Browse the Marketplace','Explore vendors by category or destination. Clothing, wellness, family gear, tech and more — all in one place.','Shop the Marketplace →',()=>setPage('vendors')],
+            ['02','Order & Confirm','Place your order and confirm your hotel and arrival date. We coordinate delivery directly with your accommodation.','Book a Hotel →',()=>setPage('hotel')],
+            ['03','Arrive to Everything','Your items are waiting in your room. Lost your luggage? Same-day delivery in Tampa & Orlando gets you sorted in hours.','Open the Departure Lounge →',(e)=>{e.stopPropagation();window.open('/departure-lounge','_self')}],
+          ].map(([n,h,p,cta,action],i)=>(
+            <div key={n} onClick={action}
+              style={{padding:'2.5rem',borderRight:i<2?'1px solid rgba(10,10,8,0.12)':'none',borderTop:'1px solid rgba(10,10,8,0.12)',cursor:'pointer',transition:'background 0.2s'}}
+              onMouseEnter={e=>{e.currentTarget.style.background='rgba(201,169,110,0.12)'}}
+              onMouseLeave={e=>{e.currentTarget.style.background='transparent'}}>
               <div style={{fontFamily:'var(--ff-display)',fontSize:'4rem',fontWeight:300,color:'rgba(10,10,8,0.15)',lineHeight:1,marginBottom:'1.25rem'}}>{n}</div>
-              <div style={{width:24,height:1,background:'rgba(10,10,8,0.3)',marginBottom:'1.25rem'}}/>
+              <div style={{width:20,height:1,background:'rgba(10,10,8,0.3)',marginBottom:'1.25rem'}}/>
               <h3 style={{fontFamily:'var(--ff-display)',fontSize:'1.35rem',fontWeight:400,color:'var(--noir)',marginBottom:'0.75rem'}}>{h}</h3>
-              <p style={{fontSize:'0.85rem',color:'rgba(10,10,8,0.55)',lineHeight:1.9,fontWeight:300}}>{p}</p>
+              <p style={{fontSize:'0.85rem',color:'rgba(10,10,8,0.55)',lineHeight:1.9,fontWeight:300,marginBottom:'1.5rem'}}>{p}</p>
+              <div style={{fontSize:'0.62rem',letterSpacing:'2px',textTransform:'uppercase',color:'var(--gold-dim)',display:'flex',alignItems:'center',gap:'0.5rem',fontWeight:500}}>{cta}</div>
             </div>
           ))}
         </div>
