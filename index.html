@@ -36,6 +36,7 @@ input,select,textarea{font-family:var(--ff-body)}
 ::-webkit-scrollbar{width:4px}
 ::-webkit-scrollbar-track{background:var(--noir)}
 ::-webkit-scrollbar-thumb{background:var(--gold-dim);border-radius:2px}
+@keyframes pulse{0%,100%{opacity:1}50%{opacity:0.3}}
 </style>
 </head>
 <body>
@@ -170,7 +171,7 @@ function Nav({page,setPage}){
         {[['home','Destinations'],['vendors','Marketplace'],['hotel','Book Hotel'],['supplier','Suppliers']].map(([p,l])=>(
           <span key={p} onClick={()=>setPage(p)} style={{fontSize:'0.72rem',color:page===p?'var(--gold)':'rgba(253,252,248,0.85)',letterSpacing:'1.5px',textTransform:'uppercase',cursor:'pointer',transition:'color 0.2s',fontWeight:400}}>{l}</span>
         ))}
-        <span onClick={()=>window.location.href='/departure-lounge'} style={{fontSize:'0.68rem',color:'var(--gold)',letterSpacing:'1.5px',textTransform:'uppercase',textDecoration:'none',border:'1px solid var(--border-hi)',padding:'0.3rem 0.85rem',display:'inline-flex',alignItems:'center',gap:'0.4rem',cursor:'pointer'}}>
+        <span onClick={(e)=>{e.stopPropagation();e.preventDefault();window.open('/departure-lounge','_self')}} style={{fontSize:'0.68rem',color:'var(--gold)',letterSpacing:'1.5px',textTransform:'uppercase',textDecoration:'none',border:'1px solid var(--border-hi)',padding:'0.3rem 0.85rem',display:'inline-flex',alignItems:'center',gap:'0.4rem',cursor:'pointer'}}>
           <span style={{width:5,height:5,borderRadius:'50%',background:'var(--gold)',display:'inline-block'}}/>Departure Lounge
         </span>
         <button onClick={()=>setPage('vendors')} style={{background:'var(--gold)',color:'var(--noir)',padding:'0.5rem 1.25rem',border:'none',fontSize:'0.68rem',letterSpacing:'2px',textTransform:'uppercase',fontWeight:500}}>Shop Now</button>
@@ -184,7 +185,29 @@ function Home({setPage}){
   return(
     <div style={{paddingTop:80}}>
 
-      {/* HERO — FULL IMAGE */}
+      {/* DEPARTURE LOUNGE ANNOUNCEMENT BAR */}
+      <div onClick={(e)=>{e.stopPropagation();e.preventDefault();window.open('/departure-lounge','_self')}}
+        style={{background:'var(--noir-2)',borderBottom:'1px solid var(--border)',padding:'0.75rem 2.5rem',display:'flex',alignItems:'center',justifyContent:'space-between',cursor:'pointer',transition:'background 0.2s'}}
+        onMouseEnter={e=>e.currentTarget.style.background='var(--noir-3)'}
+        onMouseLeave={e=>e.currentTarget.style.background='var(--noir-2)'}>
+        <div style={{display:'flex',alignItems:'center',gap:'1.25rem'}}>
+          <div style={{display:'flex',alignItems:'center',gap:'0.5rem'}}>
+            <span style={{width:7,height:7,borderRadius:'50%',background:'var(--gold)',display:'inline-block',animation:'pulse 2s infinite'}}/>
+            <span style={{fontSize:'0.6rem',letterSpacing:'3px',textTransform:'uppercase',color:'var(--gold)',fontWeight:500}}>New</span>
+          </div>
+          <span style={{width:1,height:14,background:'var(--border)',display:'inline-block'}}/>
+          <span style={{fontSize:'0.78rem',color:'var(--white)',fontWeight:300}}>
+            The Departure Lounge is live — your personal luxury travel intelligence platform
+          </span>
+          <span style={{fontSize:'0.72rem',color:'var(--mist)',fontWeight:300}}>
+            Live flights · embassy locator · destination intel · group trips · St. Vincent Christmas Collective
+          </span>
+        </div>
+        <div style={{display:'flex',alignItems:'center',gap:'0.5rem',flexShrink:0,marginLeft:'1.5rem'}}>
+          <span style={{fontSize:'0.68rem',letterSpacing:'2px',textTransform:'uppercase',color:'var(--gold)',fontWeight:500}}>Enter the Lounge</span>
+          <span style={{color:'var(--gold)',fontSize:'0.8rem'}}>→</span>
+        </div>
+      </div>
       <div style={{minHeight:'92vh',display:'flex',flexDirection:'column',alignItems:'center',justifyContent:'center',textAlign:'center',padding:'4rem 2rem',position:'relative',overflow:'hidden'}}>
         {/* Full background image */}
         <div style={{position:'absolute',top:0,left:0,right:0,bottom:0,backgroundImage:"url('https://raw.githubusercontent.com/ceebee718/bagfree-app/main/hero.jpeg')",backgroundSize:'cover',backgroundPosition:'center 30%',pointerEvents:'none'}}/>
@@ -363,7 +386,7 @@ function Home({setPage}){
                 </div>
               ))}
             </div>
-            <button onClick={()=>window.location.href='/departure-lounge'} style={{background:'var(--gold)',color:'var(--noir)',padding:'1rem 2.5rem',border:'none',fontSize:'0.72rem',fontWeight:500,letterSpacing:'3px',textTransform:'uppercase',cursor:'pointer',marginRight:'1rem'}}>
+            <button onClick={(e)=>{e.stopPropagation();e.preventDefault();window.open('/departure-lounge','_self')}} style={{background:'var(--gold)',color:'var(--noir)',padding:'1rem 2.5rem',border:'none',fontSize:'0.72rem',fontWeight:500,letterSpacing:'3px',textTransform:'uppercase',cursor:'pointer',marginRight:'1rem'}}>
               Enter the Lounge ↗
             </button>
           </div>
