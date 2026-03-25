@@ -1168,8 +1168,6 @@ function toggleLayer(layer, btn){
   if(el) el.setAttribute('opacity', activeLayer[layer]?'1':'0');
 }
 
-renderSurvey();
-
 // ── TRIP CARD & COLLECTIVE ─────────────────────────────────────────────────
 const SVG_TRIP = {
   destination:'St. Vincent & The Grenadines',
@@ -1396,6 +1394,8 @@ function confirmBooking() {
   buildFeaturedTrip();
   buildCollectivePanel();
 }
+
+renderSurvey();
 </script>
 </body>
 </html>
