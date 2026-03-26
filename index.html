@@ -187,25 +187,25 @@ function Home({setPage}){
 
       {/* DEPARTURE LOUNGE ANNOUNCEMENT BAR */}
       <div onClick={(e)=>{e.stopPropagation();e.preventDefault();window.open('/departure-lounge','_self')}}
-        style={{background:'var(--noir-2)',borderBottom:'1px solid var(--border)',padding:'0.75rem 2.5rem',display:'flex',alignItems:'center',justifyContent:'space-between',cursor:'pointer',transition:'background 0.2s'}}
+        style={{background:'var(--noir-2)',borderBottom:'1px solid var(--border)',padding:'0.9rem 2.5rem',display:'flex',alignItems:'center',justifyContent:'space-between',cursor:'pointer',transition:'background 0.2s'}}
         onMouseEnter={e=>e.currentTarget.style.background='var(--noir-3)'}
         onMouseLeave={e=>e.currentTarget.style.background='var(--noir-2)'}>
         <div style={{display:'flex',alignItems:'center',gap:'1.25rem'}}>
           <div style={{display:'flex',alignItems:'center',gap:'0.5rem'}}>
-            <span style={{width:7,height:7,borderRadius:'50%',background:'var(--gold)',display:'inline-block',animation:'pulse 2s infinite'}}/>
-            <span style={{fontSize:'0.6rem',letterSpacing:'3px',textTransform:'uppercase',color:'var(--gold)',fontWeight:500}}>New</span>
+            <span style={{width:8,height:8,borderRadius:'50%',background:'var(--gold)',display:'inline-block',animation:'pulse 2s infinite'}}/>
+            <span style={{fontSize:'0.68rem',letterSpacing:'3px',textTransform:'uppercase',color:'var(--gold)',fontWeight:500}}>New</span>
           </div>
-          <span style={{width:1,height:14,background:'var(--border)',display:'inline-block'}}/>
-          <span style={{fontSize:'0.78rem',color:'var(--white)',fontWeight:300}}>
+          <span style={{width:1,height:16,background:'var(--border)',display:'inline-block'}}/>
+          <span style={{fontSize:'0.88rem',color:'var(--white)',fontWeight:300}}>
             The Departure Lounge is live — your personal luxury travel intelligence platform
           </span>
-          <span style={{fontSize:'0.72rem',color:'var(--mist)',fontWeight:300}}>
+          <span style={{fontSize:'0.8rem',color:'rgba(253,252,248,0.6)',fontWeight:300}}>
             Live flights · embassy locator · destination intel · group trips · St. Vincent Christmas Collective
           </span>
         </div>
         <div style={{display:'flex',alignItems:'center',gap:'0.5rem',flexShrink:0,marginLeft:'1.5rem'}}>
-          <span style={{fontSize:'0.68rem',letterSpacing:'2px',textTransform:'uppercase',color:'var(--gold)',fontWeight:500}}>Enter the Lounge</span>
-          <span style={{color:'var(--gold)',fontSize:'0.8rem'}}>→</span>
+          <span style={{fontSize:'0.75rem',letterSpacing:'2px',textTransform:'uppercase',color:'var(--gold)',fontWeight:500}}>Enter the Lounge</span>
+          <span style={{color:'var(--gold)',fontSize:'0.9rem'}}>→</span>
         </div>
       </div>
       <div style={{minHeight:'92vh',display:'flex',flexDirection:'column',alignItems:'center',justifyContent:'center',textAlign:'center',padding:'4rem 2rem',position:'relative',overflow:'hidden'}}>
@@ -256,22 +256,26 @@ function Home({setPage}){
           <button onClick={()=>setPage('vendors')} style={{background:'transparent',color:'var(--gold)',padding:'0.75rem 1.75rem',border:'1px solid var(--border-hi)',fontSize:'0.68rem',letterSpacing:'2px',textTransform:'uppercase'}}>View All Vendors →</button>
         </div>
         <div style={{display:'grid',gridTemplateColumns:'repeat(auto-fill,minmax(300px,1fr))',gap:1,background:'var(--border)',border:'1px solid var(--border)'}}>
-          {VENDORS.slice(0,3).map(v=>(
-            <div key={v.id} onClick={()=>setPage('vendors')}
-              style={{background:'var(--gold)',padding:'2rem',cursor:'pointer',transition:'background 0.25s',position:'relative'}}
-              onMouseEnter={e=>e.currentTarget.style.background='var(--gold-light)'}
-              onMouseLeave={e=>e.currentTarget.style.background='var(--gold)'}>
-              {v.highlight && <div style={{position:'absolute',top:'1rem',right:'1rem',fontSize:'0.55rem',letterSpacing:'1.5px',textTransform:'uppercase',color:'var(--noir)',border:'1px solid rgba(10,10,8,0.3)',padding:'2px 8px',background:'rgba(10,10,8,0.1)'}}>Official Partner</div>}
-              <div style={{fontSize:'2rem',opacity:v.highlight?0.8:0.5,marginBottom:'1rem'}}>
-                {v.highlight
+          {[
+            {v:VENDORS[0],dark:false},
+            {v:{...VENDORS[1],name:'Beach & Activity Co.',badge:'Accepting Applications'},dark:true},
+            {v:{id:'snugl',name:'SNUGL Pod™',icon:'🫧',category:'Comfort · Travel · Wellness',desc:'The revolutionary travel comfort product from Valet By Nuor\'s exclusive collection. Designed for rest, recovery and total comfort on the go.',badge:'Shop Now',highlight:false,url:'https://snuglpod.com'},dark:false},
+          ].map(({v,dark},idx)=>(
+            <div key={v.id} onClick={()=>v.url?window.open(v.url,'_blank'):setPage('vendors')}
+              style={{background:dark?'#1C1A12':'var(--gold)',padding:'2rem',cursor:'pointer',transition:'all 0.25s',position:'relative'}}
+              onMouseEnter={e=>e.currentTarget.style.background=dark?'#252210':'var(--gold-light)'}
+              onMouseLeave={e=>e.currentTarget.style.background=dark?'#1C1A12':'var(--gold)'}>
+              {v.highlight && <div style={{position:'absolute',top:'1rem',right:'1rem',fontSize:'0.55rem',letterSpacing:'1.5px',textTransform:'uppercase',color:dark?'var(--gold-light)':'var(--noir)',border:`1px solid ${dark?'rgba(201,169,110,0.4)':'rgba(10,10,8,0.3)'}`,padding:'2px 8px',background:dark?'rgba(201,169,110,0.1)':'rgba(10,10,8,0.1)'}}>Official Partner</div>}
+              <div style={{fontSize:'2rem',opacity:0.8,marginBottom:'1rem'}}>
+                {v.id==='valet-by-nuor'
                   ? <img src="https://raw.githubusercontent.com/ceebee718/bagfree-app/main/valet-logo.png" alt="Valet By Nuor" style={{height:64,width:'auto',objectFit:'contain',display:'block'}}/>
                   : v.icon
                 }
               </div>
-              <div style={{fontFamily:'var(--ff-display)',fontSize:'1.3rem',fontWeight:600,color:'var(--noir)',marginBottom:'0.4rem'}}>{v.name}</div>
-              <div style={{fontSize:'0.68rem',letterSpacing:'1.5px',textTransform:'uppercase',color:'rgba(10,10,8,0.5)',marginBottom:'0.75rem'}}>{v.category}</div>
-              <div style={{fontSize:'0.78rem',color:'rgba(10,10,8,0.65)',lineHeight:1.7,marginBottom:'1rem',fontWeight:300}}>{v.desc.slice(0,100)}...</div>
-              <div style={{fontSize:'0.62rem',letterSpacing:'2px',textTransform:'uppercase',color:'var(--noir)',display:'flex',alignItems:'center',gap:'0.5rem',fontWeight:500}}>{v.badge} →</div>
+              <div style={{fontFamily:'var(--ff-display)',fontSize:'1.3rem',fontWeight:600,color:dark?'var(--gold-light)':'var(--noir)',marginBottom:'0.4rem'}}>{v.name}</div>
+              <div style={{fontSize:'0.68rem',letterSpacing:'1.5px',textTransform:'uppercase',color:dark?'rgba(201,169,110,0.5)':'rgba(10,10,8,0.5)',marginBottom:'0.75rem'}}>{v.category}</div>
+              <div style={{fontSize:'0.78rem',color:dark?'rgba(245,237,216,0.65)':'rgba(10,10,8,0.65)',lineHeight:1.7,marginBottom:'1rem',fontWeight:300}}>{v.desc.slice(0,100)}...</div>
+              <div style={{fontSize:'0.62rem',letterSpacing:'2px',textTransform:'uppercase',color:dark?'var(--gold)':'var(--noir)',display:'flex',alignItems:'center',gap:'0.5rem',fontWeight:500}}>{v.badge} →</div>
             </div>
           ))}
         </div>
