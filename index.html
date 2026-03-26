@@ -258,8 +258,8 @@ function Home({setPage}){
         <div style={{display:'grid',gridTemplateColumns:'repeat(auto-fill,minmax(300px,1fr))',gap:1,background:'var(--border)',border:'1px solid var(--border)'}}>
           {[
             {v:VENDORS[0],dark:false},
-            {v:{...VENDORS[1],name:'Beach & Activity Co.',badge:'Accepting Applications'},dark:true},
-            {v:{id:'snugl',name:'SNUGL Pod™',icon:'🫧',category:'Comfort · Travel · Wellness',desc:'The revolutionary travel comfort product from Valet By Nuor\'s exclusive collection. Designed for rest, recovery and total comfort on the go.',badge:'Shop Now',highlight:false,url:'https://snuglpod.com'},dark:false},
+            {v:{id:'snugl',name:'SNUGL Pod™',icon:'🫧',category:'Comfort · Travel · Wellness',desc:'The revolutionary travel comfort product from Valet By Nuor\'s exclusive collection. Designed for rest, recovery and total comfort on the go.',badge:'Shop Now',highlight:false,url:'https://snuglpod.com'},dark:true},
+            {v:{...VENDORS[1],name:'Beach & Activity Co.',badge:'Accepting Applications'},dark:false},
           ].map(({v,dark},idx)=>(
             <div key={v.id} onClick={()=>v.url?window.open(v.url,'_blank'):setPage('vendors')}
               style={{background:dark?'#1C1A12':'var(--gold)',padding:'2rem',cursor:'pointer',transition:'all 0.25s',position:'relative'}}
