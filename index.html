@@ -583,7 +583,7 @@ function VendorCard({vendor:v,setPage,setActiveVendor}){
       onMouseLeave={e=>e.currentTarget.style.background=v.highlight?'var(--noir-3)':'var(--noir-2)'}
       onClick={()=>isMist?setPage('supplier'):null}>
       {v.highlight && <div style={{position:'absolute',top:'1.25rem',right:'1.25rem',fontSize:'0.55rem',letterSpacing:'1.5px',textTransform:'uppercase',color:'var(--gold)',border:'1px solid var(--border-hi)',padding:'3px 10px',background:'rgba(201,169,110,0.08)'}}>Official Partner</div>}
-      {isMist && <div style={{position:'absolute',top:'1.25rem',right:'1.25rem',fontSize:'0.55rem',letterSpacing:'1.5px',textTransform:'uppercase',color:'var(--mist)',border:'1px solid var(--border)',padding:'3px 10px'}}>Coming Soon</div>}
+      {isMist && <div style={{position:'absolute',top:'1.25rem',right:'1.25rem',fontSize:'0.55rem',letterSpacing:'1.5px',textTransform:'uppercase',color:'var(--mist)',border:'1px solid var(--border)',padding:'3px 10px'}}>Open Slot</div>}
 
       <div style={{fontSize:'2.5rem',opacity:v.highlight?0.7:0.3,marginBottom:'1.25rem'}}>{v.icon}</div>
       <div style={{fontFamily:'var(--ff-display)',fontSize:'1.5rem',fontWeight:300,color:'var(--white)',marginBottom:'0.35rem'}}>{v.name}</div>
@@ -605,9 +605,12 @@ function VendorCard({vendor:v,setPage,setActiveVendor}){
           Shop {v.name} ↗
         </button>
       ) : (
-        <div style={{padding:'0.75rem 1.75rem',border:'1px solid var(--border)',fontSize:'0.68rem',letterSpacing:'2.5px',textTransform:'uppercase',color:'var(--mist)',textAlign:'center'}}>
-          {v.badge}
-        </div>
+        <button onClick={(e)=>{e.stopPropagation();setPage('supplier')}}
+          style={{background:'transparent',color:'var(--gold)',padding:'0.75rem 1.75rem',border:'1px solid var(--border-hi)',fontSize:'0.68rem',fontWeight:400,letterSpacing:'2.5px',textTransform:'uppercase',width:'100%',cursor:'pointer',transition:'all 0.2s',fontFamily:'var(--ff-body)'}}
+          onMouseEnter={e=>{e.currentTarget.style.background='rgba(201,169,110,0.08)';e.currentTarget.style.borderColor='var(--gold)'}}
+          onMouseLeave={e=>{e.currentTarget.style.background='transparent';e.currentTarget.style.borderColor='var(--border-hi)'}}>
+          Apply to List Your Brand →
+        </button>
       )}
     </div>
   );
