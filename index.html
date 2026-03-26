@@ -261,7 +261,6 @@ function Home({setPage}){
           {[
             {v:VENDORS[0],dark:false},
             {v:{id:'snugl',name:'SNUGL Pod™',icon:'🫧',category:'Comfort · Travel · Wellness',desc:'The revolutionary travel comfort product from Valet By Nuor\'s exclusive collection. Designed for rest, recovery and total comfort on the go.',badge:'Shop Now',highlight:false,url:'https://snuglpod.com'},dark:true},
-            {v:{...VENDORS[1],name:'Beach & Activity Co.',badge:'Accepting Applications'},dark:false},
           ].map(({v,dark},idx)=>(
             <div key={v.id} onClick={()=>v.url?window.open(v.url,'_blank'):setPage('vendors')}
               style={{background:dark?'#1C1A12':'var(--gold)',padding:'2rem',cursor:'pointer',transition:'all 0.25s',position:'relative'}}
@@ -282,6 +281,19 @@ function Home({setPage}){
               <div style={{fontSize:'0.62rem',letterSpacing:'2px',textTransform:'uppercase',color:dark?'var(--gold)':'var(--noir)',display:'flex',alignItems:'center',gap:'0.5rem',fontWeight:500}}>{v.badge} →</div>
             </div>
           ))}
+          {/* Apply card */}
+          <div onClick={()=>setPage('supplier')}
+            style={{background:'var(--noir-2)',padding:'2rem',cursor:'pointer',transition:'all 0.25s',position:'relative',display:'flex',flexDirection:'column',justifyContent:'center',alignItems:'flex-start',border:'1px dashed rgba(201,169,110,0.22)'}}
+            onMouseEnter={e=>e.currentTarget.style.background='var(--noir-3)'}
+            onMouseLeave={e=>e.currentTarget.style.background='var(--noir-2)'}>
+            <div style={{fontSize:'2.5rem',color:'rgba(201,169,110,0.25)',marginBottom:'1.25rem',fontWeight:100,lineHeight:1}}>+</div>
+            <div style={{fontFamily:'var(--ff-display)',fontSize:'1.3rem',fontWeight:300,color:'var(--mist)',marginBottom:'0.4rem'}}>Your Brand Here</div>
+            <div style={{fontSize:'0.68rem',letterSpacing:'1.5px',textTransform:'uppercase',color:'rgba(201,169,110,0.5)',marginBottom:'0.75rem'}}>Open Supplier Slot</div>
+            <div style={{fontSize:'0.78rem',color:'rgba(253,252,248,0.4)',lineHeight:1.7,marginBottom:'1.5rem',fontWeight:300}}>Join the BagFree supplier network and reach a new class of traveler across Florida, Georgia & the Caribbean.</div>
+            <div style={{fontSize:'0.62rem',letterSpacing:'2px',textTransform:'uppercase',color:'var(--gold)',border:'1px solid rgba(201,169,110,0.35)',padding:'0.5rem 1.25rem',display:'inline-flex',alignItems:'center',gap:'0.5rem'}}>
+              Apply to Join →
+            </div>
+          </div>
         </div>
       </div>
 
