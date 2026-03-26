@@ -200,7 +200,7 @@ function Home({setPage}){
             The Departure Lounge is live — your personal luxury travel intelligence platform
           </span>
           <span style={{fontSize:'0.8rem',color:'rgba(253,252,248,0.6)',fontWeight:300}}>
-            Live flights · embassy locator · destination intel · group trips · St. Vincent Christmas Collective
+            Live flights · embassy locator · destination intel · group trips · St. Vincent & The Grenadines Travel Collective
           </span>
         </div>
         <div style={{display:'flex',alignItems:'center',gap:'0.5rem',flexShrink:0,marginLeft:'1.5rem'}}>
@@ -269,6 +269,8 @@ function Home({setPage}){
               <div style={{fontSize:'2rem',opacity:0.8,marginBottom:'1rem'}}>
                 {v.id==='valet-by-nuor'
                   ? <img src="https://raw.githubusercontent.com/ceebee718/bagfree-app/main/valet-logo.png" alt="Valet By Nuor" style={{height:64,width:'auto',objectFit:'contain',display:'block'}}/>
+                  : v.id==='snugl'
+                  ? <img src="https://raw.githubusercontent.com/ceebee718/bagfree-app/main/snugl-logo.png" alt="SNUGL Pod" style={{height:80,width:'auto',objectFit:'contain',display:'block'}}/>
                   : v.icon
                 }
               </div>
