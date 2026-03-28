@@ -176,7 +176,7 @@ function Nav({page,setPage}){
         {[['home','Destinations'],['vendors','Marketplace'],['hotel','Book Hotel'],['supplier','Suppliers']].map(([p,l])=>(
           <span key={p} onClick={()=>setPage(p)} style={{fontSize:'0.72rem',color:page===p?'var(--gold)':'rgba(253,252,248,0.85)',letterSpacing:'1.5px',textTransform:'uppercase',cursor:'pointer',transition:'color 0.2s',fontWeight:400}}>{l}</span>
         ))}
-        <span onClick={(e)=>{e.stopPropagation();e.preventDefault();window.open('/departure-lounge','_self')}} style={{fontSize:'0.68rem',color:'var(--gold)',letterSpacing:'1.5px',textTransform:'uppercase',textDecoration:'none',border:'1px solid var(--border-hi)',padding:'0.3rem 0.85rem',display:'inline-flex',alignItems:'center',gap:'0.4rem',cursor:'pointer'}}>
+        <span onClick={(e)=>{e.stopPropagation();e.preventDefault();window.open('/departure-lounge-landing','_self')}} style={{fontSize:'0.68rem',color:'var(--gold)',letterSpacing:'1.5px',textTransform:'uppercase',textDecoration:'none',border:'1px solid var(--border-hi)',padding:'0.3rem 0.85rem',display:'inline-flex',alignItems:'center',gap:'0.4rem',cursor:'pointer'}}>
           <span style={{width:5,height:5,borderRadius:'50%',background:'var(--gold)',display:'inline-block'}}/>Departure Lounge
         </span>
         <button onClick={()=>setPage('vendors')} style={{background:'var(--gold)',color:'var(--noir)',padding:'0.5rem 1.25rem',border:'none',fontSize:'0.68rem',letterSpacing:'2px',textTransform:'uppercase',fontWeight:500}}>Shop Now</button>
@@ -191,7 +191,7 @@ function Home({setPage}){
     <div style={{paddingTop:80}}>
 
       {/* DEPARTURE LOUNGE ANNOUNCEMENT BAR */}
-      <div onClick={(e)=>{e.stopPropagation();e.preventDefault();window.open('/departure-lounge','_self')}}
+      <div onClick={(e)=>{e.stopPropagation();e.preventDefault();window.open('/departure-lounge-landing','_self')}}
         style={{background:'var(--noir-2)',borderBottom:'1px solid var(--border)',padding:'0.9rem 2.5rem',display:'flex',alignItems:'center',justifyContent:'space-between',cursor:'pointer',transition:'background 0.2s'}}
         onMouseEnter={e=>e.currentTarget.style.background='var(--noir-3)'}
         onMouseLeave={e=>e.currentTarget.style.background='var(--noir-2)'}>
@@ -312,7 +312,7 @@ function Home({setPage}){
           {[
             ['01','Browse the Marketplace','Explore vendors by category or destination. Clothing, wellness, family gear, tech and more — all in one place.','Shop the Marketplace →',()=>setPage('vendors')],
             ['02','Order & Confirm','Place your order and confirm your hotel and arrival date. We coordinate delivery directly with your accommodation.','Book a Hotel →',()=>setPage('hotel')],
-            ['03','Arrive to Everything','Your items are waiting in your room. Lost your luggage? Same-day delivery in Tampa & Orlando gets you sorted in hours.','Open the Departure Lounge →',(e)=>{e.stopPropagation();window.open('/departure-lounge','_self')}],
+            ['03','Arrive to Everything','Your items are waiting in your room. Lost your luggage? Same-day delivery in Tampa & Orlando gets you sorted in hours.','Open the Departure Lounge →',(e)=>{e.stopPropagation();window.open('/departure-lounge-landing','_self')}],
           ].map(([n,h,p,cta,action],i)=>(
             <div key={n} onClick={action}
               style={{padding:'2.5rem',borderRight:i<2?'1px solid rgba(10,10,8,0.12)':'none',borderTop:'1px solid rgba(10,10,8,0.12)',cursor:'pointer',transition:'background 0.2s'}}
@@ -504,7 +504,7 @@ function Home({setPage}){
                 </div>
               ))}
             </div>
-            <button onClick={(e)=>{e.stopPropagation();e.preventDefault();window.open('/departure-lounge','_self')}} style={{background:'var(--gold)',color:'var(--noir)',padding:'1rem 2.5rem',border:'none',fontSize:'0.72rem',fontWeight:500,letterSpacing:'3px',textTransform:'uppercase',cursor:'pointer',marginRight:'1rem'}}>
+            <button onClick={(e)=>{e.stopPropagation();e.preventDefault();window.open('/departure-lounge-landing','_self')}} style={{background:'var(--gold)',color:'var(--noir)',padding:'1rem 2.5rem',border:'none',fontSize:'0.72rem',fontWeight:500,letterSpacing:'3px',textTransform:'uppercase',cursor:'pointer',marginRight:'1rem'}}>
               Enter the Lounge ↗
             </button>
           </div>
