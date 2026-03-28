@@ -2,11 +2,11 @@
   functions = "netlify/functions"
 
 [[redirects]]
-  from = "/departure-lounge"
-  to = "/departure-lounge.html"
+  from = "/departure-lounge-landing"
+  to = "/departure-lounge-landing.html"
   status = 200
 
 [[redirects]]
-  from = "/departure-lounge-landing"
-  to = "/departure-lounge-landing.html"
+  from = "/departure-lounge"
+  to = "/departure-lounge.html"
   status = 200
