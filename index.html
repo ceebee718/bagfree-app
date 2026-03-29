@@ -626,27 +626,50 @@ function Home({setPage}){
             </button>
           </div>
           <div style={{display:'grid',gridTemplateColumns:'1fr 1fr',gap:1,background:'var(--border)'}}>
-            {[
-              {icon:'🗺️',label:'Live World Map',sub:'Flights, cruises & landmarks'},
-              {icon:'🛡️',label:'Travel Intelligence',sub:'Safety, alerts & advisories'},
-              {icon:'🏛️',label:'Destination Intel',sub:'Hotels, Michelin & more'},
-              {icon:'🎵',label:'Entertainment Match',sub:'Concerts & events for you'},
-              {icon:'🏦',label:'Embassy Locator',sub:'US embassy at every stop'},
-              {icon:'🔌',label:'Power & Currency',sub:'Adapters & exchange rates'},
-              {icon:'⭐',label:'Luxury Data',sub:'5-star & Michelin guides'},
-              {icon:'◈',label:'BagFree Coverage',sub:'Where we deliver to you'},
-            ].map(({icon,label,sub})=>(
-              <div key={label} style={{background:'var(--noir-3)',padding:'1.5rem 1.25rem',transition:'background 0.2s',cursor:'pointer'}}
-                onMouseEnter={e=>e.currentTarget.style.background='var(--noir-4)'}
-                onMouseLeave={e=>e.currentTarget.style.background='var(--noir-3)'}>
-                <div style={{fontSize:'1.4rem',marginBottom:'0.6rem',opacity:0.75}}>{icon}</div>
-                <div style={{fontSize:'0.78rem',color:'var(--white)',fontWeight:400,marginBottom:3}}>{label}</div>
-                <div style={{fontSize:'0.62rem',color:'var(--mist)',letterSpacing:'0.5px'}}>{sub}</div>
-              </div>
-            ))}
-          </div>
-        </div>
-      </div>
+{[
+  {icon:'◌',label:'Live World Map',sub:'Flights, cruises & landmarks'},
+  {icon:'◈',label:'Travel Intelligence',sub:'Safety, alerts & advisories'},
+  {icon:'▵',label:'Destination Intel',sub:'Hotels, Michelin & more'},
+  {icon:'✦',label:'Entertainment Match',sub:'Concerts & events for you'},
+  {icon:'⌘',label:'Embassy Locator',sub:'US embassy at every stop'},
+  {icon:'¤',label:'Power & Currency',sub:'Adapters & exchange rates'},
+  {icon:'★',label:'Luxury Data',sub:'5-star & Michelin guides'},
+  {icon:'◇',label:'BagFree Coverage',sub:'Where we deliver to you'},
+].map(({icon,label,sub})=>(
+  <div
+    key={label}
+    style={{
+      background:'var(--noir-3)',
+      padding:'1.5rem 1.25rem',
+      transition:'background 0.25s',
+      cursor:'pointer'
+    }}
+    onMouseEnter={e=>e.currentTarget.style.background='var(--noir-4)'}
+    onMouseLeave={e=>e.currentTarget.style.background='var(--noir-3)'}
+  >
+    <div style={{
+      fontSize:'1.15rem',
+      marginBottom:'0.7rem',
+      color:'var(--gold)',
+      opacity:0.95,
+      letterSpacing:'0.5px'
+    }}>{icon}</div>
+
+    <div style={{
+      fontSize:'0.78rem',
+      color:'var(--white)',
+      fontWeight:400,
+      marginBottom:3
+    }}>{label}</div>
+
+    <div style={{
+      fontSize:'0.62rem',
+      color:'var(--mist)',
+      letterSpacing:'0.5px'
+    }}>{sub}</div>
+  </div>
+))}
+</div>
 
       {/* CTA — DARK */}
       <div style={{padding:'7rem 3rem',background:'var(--noir)',textAlign:'center',position:'relative',overflow:'hidden'}}>
