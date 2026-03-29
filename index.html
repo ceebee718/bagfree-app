@@ -52,9 +52,6 @@ input,select,textarea{font-family:var(--ff-body)}
 </head>
 <body>
 
-<!-- LOGO IMAGES — outside Babel script to avoid parser issues -->
-<img id="valet-logo-img" src="https://cdn.shopify.com/s/files/1/0624/5727/3497/files/Valet_By_Nuor_Logo.png" alt="Valet By Nuor" style="display:none" onerror="this.style.display='none'">
-<img id="snugl-logo-img" src="https://cdn.shopify.com/s/files/1/0624/5727/3497/files/SNUGL_Logo.png" alt="SNUGL Pod" style="display:none" onerror="this.style.display='none'">
 
 <style>
 #promoBanner{
@@ -87,8 +84,9 @@ input,select,textarea{font-family:var(--ff-body)}
 const { useState } = React;
 
 // ── LOGO REFS — read from hidden img tags outside this Babel block ────────────
-const VALET_LOGO_URL = 'https://cdn.shopify.com/s/files/1/0624/5727/3497/files/Valet_By_Nuor_Logo.png';
-const SNUGL_LOGO_URL = 'https://cdn.shopify.com/s/files/1/0624/5727/3497/files/SNUGL_Logo.png';
+// Replace these with your actual logo URLs when available
+const VALET_LOGO_URL = null;
+const SNUGL_LOGO_URL = null;
 
 const FORMSPREE = 'https://formspree.io/f/mqeyrykl';
 async function submitToFormspree(data) {
@@ -200,23 +198,47 @@ const DESTINATIONS = [
   {id:'svg',name:'St. Vincent & Grenadines',state:'VC',img:'⛵',highlight:false},
 ];
 
-// ── LOGO COMPONENT — uses URL, falls back to text ────────────────────────────
-function VendorLogo({vendor, height=60}) {
+// ── LOGO COMPONENT ────────────────────────────────────────────────────────────
+// If you have real logo image URLs, set VALET_LOGO_URL / SNUGL_LOGO_URL above.
+// Otherwise this renders a styled text logo automatically.
+function VendorLogo({vendor, height=60, dark=false}) {
   const [errored, setErrored] = useState(false);
   const url = vendor.id === 'valet-by-nuor' ? VALET_LOGO_URL : SNUGL_LOGO_URL;
-  const alt = vendor.name;
+  const hasUrl = url && url !== null;
 
-  if (errored) {
-    return (
-      <div style={{fontFamily:'var(--ff-display)',fontSize:'1.2rem',fontWeight:300,color:'var(--gold)',letterSpacing:'2px'}}>
-        {alt}
-      </div>
-    );
+  // Styled text logo fallback (also used when image fails)
+  if (!hasUrl || errored) {
+    if (vendor.id === 'valet-by-nuor') {
+      return (
+        <div style={{lineHeight:1}}>
+          <div style={{fontFamily:'var(--ff-display)',fontSize:'1.65rem',fontWeight:300,letterSpacing:'4px',textTransform:'uppercase',color:dark?'var(--gold-light)':'var(--noir)',lineHeight:1}}>
+            Valet
+          </div>
+          <div style={{fontFamily:'var(--ff-display)',fontSize:'0.7rem',fontWeight:300,letterSpacing:'6px',textTransform:'uppercase',color:dark?'rgba(201,169,110,0.6)':'rgba(10,10,8,0.45)',marginTop:4}}>
+            By Nuor
+          </div>
+        </div>
+      );
+    }
+    if (vendor.id === 'snugl') {
+      return (
+        <div style={{lineHeight:1}}>
+          <div style={{fontFamily:'var(--ff-display)',fontSize:'1.8rem',fontWeight:300,letterSpacing:'5px',textTransform:'uppercase',color:'var(--gold)',lineHeight:1}}>
+            SNUGL
+          </div>
+          <div style={{fontFamily:'var(--ff-body)',fontSize:'0.55rem',fontWeight:400,letterSpacing:'4px',textTransform:'uppercase',color:'rgba(201,169,110,0.5)',marginTop:5}}>
+            Pod™ Collection
+          </div>
+        </div>
+      );
+    }
+    return null;
   }
+
   return (
     <img
       src={url}
-      alt={alt}
+      alt={vendor.name}
       style={{height:height, width:'auto', objectFit:'contain', display:'block'}}
       onError={() => setErrored(true)}
     />
@@ -328,9 +350,8 @@ function Home({setPage}) {
             onMouseLeave={e=>e.currentTarget.style.background='var(--gold)'}>
             <div style={{position:'absolute',top:'1rem',right:'1rem',fontSize:'0.55rem',letterSpacing:'1.5px',textTransform:'uppercase',color:'var(--noir)',border:'1px solid rgba(10,10,8,0.3)',padding:'2px 8px',background:'rgba(10,10,8,0.1)'}}>Official Partner</div>
             <div style={{marginBottom:'1rem'}}>
-              <VendorLogo vendor={VENDORS[0]} height={60} />
+              <VendorLogo vendor={VENDORS[0]} height={60} dark={false} />
             </div>
-            <div style={{fontFamily:'var(--ff-display)',fontSize:'1.3rem',fontWeight:600,color:'var(--noir)',marginBottom:'0.4rem'}}>Valet By Nuor</div>
             <div style={{fontSize:'0.68rem',letterSpacing:'1.5px',textTransform:'uppercase',color:'rgba(10,10,8,0.5)',marginBottom:'0.75rem'}}>Clothing · Wellness · Essentials</div>
             <div style={{fontSize:'0.78rem',color:'rgba(10,10,8,0.65)',lineHeight:1.7,marginBottom:'1rem',fontWeight:300}}>The founding supplier of BagFree. Emergency travel kits, men's and women's wear, wellness kits, and the exclusive SNUGL collection.</div>
             <div style={{fontSize:'0.62rem',letterSpacing:'2px',textTransform:'uppercase',color:'var(--noir)',display:'flex',alignItems:'center',gap:'0.5rem',fontWeight:500}}>Same-Day Available →</div>
@@ -343,9 +364,8 @@ function Home({setPage}) {
             onMouseEnter={e=>e.currentTarget.style.background='#252210'}
             onMouseLeave={e=>e.currentTarget.style.background='#1C1A12'}>
             <div style={{marginBottom:'1rem'}}>
-              <VendorLogo vendor={VENDORS[1]} height={80} />
+              <VendorLogo vendor={VENDORS[1]} height={80} dark={true} />
             </div>
-            <div style={{fontFamily:'var(--ff-display)',fontSize:'1.3rem',fontWeight:600,color:'var(--gold-light)',marginBottom:'0.4rem'}}>SNUGL Pod™</div>
             <div style={{fontSize:'0.68rem',letterSpacing:'1.5px',textTransform:'uppercase',color:'rgba(201,169,110,0.5)',marginBottom:'0.75rem'}}>Comfort · Travel · Wellness</div>
             <div style={{fontSize:'0.78rem',color:'rgba(245,237,216,0.65)',lineHeight:1.7,marginBottom:'1rem',fontWeight:300}}>The revolutionary travel comfort product from Valet By Nuor's exclusive collection.</div>
             <div style={{fontSize:'0.62rem',letterSpacing:'2px',textTransform:'uppercase',color:'var(--gold)',display:'flex',alignItems:'center',gap:'0.5rem',fontWeight:500}}>Shop Now →</div>
@@ -663,11 +683,17 @@ function VendorCard({vendor:v, setPage, setActiveVendor}) {
       )}
       <div style={{marginBottom:'1.25rem',minHeight:'3rem',display:'flex',alignItems:'center'}}>
         {isLogoVendor
-          ? <VendorLogo vendor={v} height={v.id==='snugl'?72:60} />
+          ? <VendorLogo vendor={v} height={v.id==='snugl'?72:60} dark={true} />
           : <span style={{fontSize:'2.5rem',opacity:0.25}}>{v.icon}</span>
         }
       </div>
-      <div style={{fontFamily:'var(--ff-display)',fontSize:'1.5rem',fontWeight:300,color:'var(--white)',marginBottom:'0.35rem'}}>{v.name}</div>
+      {/* Only show name as text for non-logo vendors; logo vendors show name via the logo component */}
+      {!isLogoVendor && (
+        <div style={{fontFamily:'var(--ff-display)',fontSize:'1.5rem',fontWeight:300,color:'var(--white)',marginBottom:'0.35rem'}}>{v.name}</div>
+      )}
+      {isLogoVendor && (
+        <div style={{marginBottom:'0.35rem'}}/>
+      )}
       <div style={{fontSize:'0.62rem',letterSpacing:'2px',textTransform:'uppercase',color:(v.highlight||v.id==='snugl')?'var(--gold)':'var(--mist)',marginBottom:'0.5rem'}}>{v.category}</div>
       <div style={{fontSize:'0.7rem',color:'var(--mist)',marginBottom:'1.25rem',letterSpacing:'0.5px'}}>{v.dest}</div>
       <p style={{fontSize:'0.82rem',color:'var(--mist)',lineHeight:1.8,marginBottom:'1.5rem',fontWeight:300}}>{v.desc}</p>
