@@ -1149,55 +1149,7 @@ function App(){
 ReactDOM.createRoot(document.getElementById('root')).render(<App/>);
 </script>
 
-  <script>
-(function () {
-  const promo = document.getElementById('promoBanner');
-  if (!promo) return;
-
-  let lastY = window.scrollY;
-  let dismissed = false;
-  const collapseAt = 24;
-
-  function collapsePromo() {
-    if (dismissed) return;
-    promo.classList.add('is-collapsed');
-    document.body.classList.add('promo-collapsed');
-  }
-
-  function expandPromo() {
-    if (dismissed) return;
-    promo.classList.remove('is-collapsed');
-    document.body.classList.remove('promo-collapsed');
-  }
-
-  window.addEventListener('scroll', function () {
-    const y = window.scrollY;
-    const scrollingDown = y > lastY;
-
-    if (y <= 4) {
-      expandPromo();
-    } else if (scrollingDown && y > collapseAt) {
-      collapsePromo();
-    } else if (!scrollingDown) {
-      expandPromo();
-    }
-
-    lastY = y;
-  }, { passive: true });
-
-  const dismissBtn = promo.querySelector('.promo-dismiss');
-  if (dismissBtn) {
-    dismissBtn.addEventListener('click', function (event) {
-      event.preventDefault();
-      event.stopPropagation();
-      dismissed = true;
-      promo.style.display = 'none';
-      document.body.classList.add('promo-collapsed');
-    });
-  }
-})();
-</script>
-
+ 
   <script>
 (function () {
   const promo = document.getElementById('promoBanner');
