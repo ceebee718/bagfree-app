@@ -191,6 +191,40 @@ button,input,select,textarea{font-family:var(--ff-body)}
 .no-dest-icon{font-size:2rem;opacity:0.3}
 .no-dest-text{font-size:0.8rem;color:var(--mist);max-width:200px;line-height:1.7}
 
+/* ── ADVISOR BUTTON & MODAL ── */
+#advisorFab{position:fixed;bottom:2rem;right:2rem;z-index:800;display:flex;flex-direction:column;align-items:flex-end;gap:8px}
+#advisorBtn{background:var(--gold);color:var(--noir);border:none;padding:0.75rem 1.25rem;font-size:0.65rem;font-weight:600;letter-spacing:2px;text-transform:uppercase;cursor:pointer;font-family:var(--ff-body);display:flex;align-items:center;gap:0.6rem;box-shadow:0 8px 32px rgba(201,169,110,0.35);transition:all 0.25s}
+#advisorBtn:hover{background:var(--gold-light);transform:translateY(-2px);box-shadow:0 12px 40px rgba(201,169,110,0.45)}
+#advisorPulse{width:8px;height:8px;border-radius:50%;background:var(--noir);animation:pulse 2s infinite;flex-shrink:0}
+#advisorModal{display:none;position:fixed;inset:0;background:rgba(0,0,0,0.85);z-index:900;align-items:center;justify-content:center;padding:1.5rem}
+.advisor-box{background:var(--noir2);border:1px solid var(--border-hi);max-width:540px;width:100%;max-height:90vh;overflow-y:auto;position:relative}
+.advisor-header{background:var(--gold);padding:1.5rem 2rem;display:flex;align-items:center;gap:1rem}
+.advisor-avatar{width:44px;height:44px;border-radius:50%;background:var(--noir);display:flex;align-items:center;justify-content:center;font-size:1.2rem;flex-shrink:0}
+.advisor-header-text{}
+.advisor-name{font-family:var(--ff-display);font-size:1.25rem;font-weight:400;color:var(--noir);line-height:1.1}
+.advisor-title{font-size:0.6rem;letter-spacing:2px;text-transform:uppercase;color:rgba(10,10,8,0.55);margin-top:2px}
+.advisor-online{display:flex;align-items:center;gap:5px;font-size:0.58rem;color:rgba(10,10,8,0.6);margin-top:4px;letter-spacing:1px;text-transform:uppercase}
+.advisor-online-dot{width:6px;height:6px;border-radius:50%;background:rgba(10,10,8,0.5);animation:pulse 2s infinite}
+.advisor-body{padding:1.75rem 2rem}
+.advisor-context{background:rgba(201,169,110,0.08);border:1px solid var(--border-hi);padding:0.85rem 1rem;margin-bottom:1.25rem;font-size:0.72rem;color:var(--mist);line-height:1.7}
+.advisor-context-label{font-size:0.52rem;letter-spacing:2px;text-transform:uppercase;color:var(--gold);margin-bottom:4px}
+.advisor-field{margin-bottom:0.85rem}
+.advisor-field label{display:block;font-size:0.58rem;letter-spacing:2px;text-transform:uppercase;color:var(--mist);margin-bottom:0.4rem}
+.advisor-input{width:100%;background:var(--noir3);border:1px solid var(--border);color:var(--white);padding:0.7rem 0.9rem;font-size:0.82rem;outline:none;font-family:var(--ff-body);transition:border-color 0.2s}
+.advisor-input:focus{border-color:rgba(201,169,110,0.4)}
+.advisor-input::placeholder{color:rgba(253,252,248,0.25)}
+.advisor-actions{display:grid;grid-template-columns:1fr 1fr;gap:8px;margin-top:0.25rem}
+.advisor-send{background:var(--gold);color:var(--noir);border:none;padding:0.85rem;font-size:0.65rem;font-weight:600;letter-spacing:2px;text-transform:uppercase;cursor:pointer;font-family:var(--ff-body);transition:all 0.2s}
+.advisor-send:hover{background:var(--gold-light)}
+.advisor-call{background:transparent;color:var(--mist);border:1px solid var(--border);padding:0.85rem;font-size:0.65rem;letter-spacing:2px;text-transform:uppercase;cursor:pointer;font-family:var(--ff-body);text-decoration:none;display:flex;align-items:center;justify-content:center;gap:0.5rem;transition:all 0.2s}
+.advisor-call:hover{border-color:var(--gold);color:var(--gold)}
+.advisor-whatsapp{background:transparent;color:rgb(37,211,102);border:1px solid rgba(37,211,102,0.35);padding:0.85rem;font-size:0.65rem;letter-spacing:2px;text-transform:uppercase;cursor:pointer;font-family:var(--ff-body);display:flex;align-items:center;justify-content:center;gap:0.5rem;transition:all 0.2s;grid-column:span 2}
+.advisor-whatsapp:hover{background:rgba(37,211,102,0.08)}
+.advisor-success{display:none;text-align:center;padding:2rem;color:var(--green)}
+.advisor-success-icon{font-size:2.5rem;margin-bottom:0.75rem}
+.advisor-success-title{font-family:var(--ff-display);font-size:1.5rem;font-weight:300;color:var(--white);margin-bottom:0.5rem}
+.advisor-success-sub{font-size:0.78rem;color:var(--mist);line-height:1.7}
+
 /* ── AUTH SCREEN ── */
 #authOverlay{position:fixed;inset:0;background:var(--noir);z-index:2000;display:flex;align-items:center;justify-content:center;padding:2rem}
 .auth-wrap{width:100%;max-width:420px}
@@ -356,7 +390,7 @@ window.doRegister = async function() {
 window.doReset = async function() {
   const email = document.getElementById('resetEmail').value.trim()
   if (!email) { showAuthError('Please enter your email address.'); return }
-  const { error } = await supabase.auth.resetPasswordForEmail(email, { redirectTo: window.location.origin + '/departure-lounge' })
+  const { error } = await supabase.auth.resetPasswordForEmail(email, { redirectTo: window.location.href })
   if (error) { showAuthError(error.message); return }
   showAuthSuccess('Reset link sent — check your inbox.')
 }
@@ -556,6 +590,7 @@ window._supabaseLaunchPatch = async function() {
           <button class="layer-btn" onclick="filterLiveRegion('asia',this)" style="font-size:0.50rem;padding:2px 6px">Asia</button>
         </div>
         <div id="flightQuotaWarn" style="display:none;font-size:0.56rem;color:var(--amber);margin-top:5px;font-style:italic"></div>
+        <div id="flightDataNote" style="display:none;font-size:0.56rem;color:rgba(93,202,165,0.7);margin-top:3px;font-style:italic"></div>
       </div>
 
       <div class="sidebar-section">
@@ -572,6 +607,29 @@ window._supabaseLaunchPatch = async function() {
         <a href="https://valetbynuor.com/collections/all" target="_blank" style="display:block;margin-top:0.75rem">
           <button class="btn-gold" style="width:100%;padding:0.6rem">Shop now ↗</button>
         </a>
+      </div>
+
+      <div class="sidebar-section" style="border-top:1px solid var(--border);padding-top:1.25rem">
+        <div class="sidebar-label">Saved itineraries</div>
+        <div id="savedTripsContainer">
+          <div style="text-align:center;padding:1.5rem 0;color:var(--mist);font-size:0.72rem">No saved trips yet.<br>Build a trip and save it.</div>
+        </div>
+      </div>
+
+      <div class="sidebar-section" style="border-top:1px solid var(--border);padding-top:1.25rem">
+        <div class="sidebar-label">Book a hotel</div>
+        <div style="font-size:0.72rem;color:var(--mist);line-height:1.7;margin-bottom:0.75rem">Exclusive rates via our travel concierge network. Delivered before you arrive.</div>
+        <button class="btn-gold" style="width:100%;padding:0.6rem;font-size:0.6rem;letter-spacing:2px" onclick="showHotelSearch()">Search Hotels ↗</button>
+      </div>
+
+      <div class="sidebar-section" style="border-top:1px solid var(--border);padding-top:1.25rem">
+        <div class="sidebar-label">BagFree kit tracker</div>
+        <div id="kitTrackerContainer">
+          <div style="font-size:0.68rem;color:var(--mist);line-height:1.7;margin-bottom:0.75rem">Track your Valet By Nuor kit delivery to your hotel.</div>
+          <input id="kitOrderNum" placeholder="Order # or email..." style="width:100%;background:var(--noir3);border:1px solid var(--border);color:var(--white);padding:0.55rem 0.75rem;font-size:0.75rem;outline:none;margin-bottom:6px;font-family:var(--ff-body)"/>
+          <button onclick="trackKitOrder()" style="width:100%;background:transparent;border:1px solid var(--border-hi);color:var(--gold);padding:0.5rem;font-size:0.6rem;letter-spacing:2px;text-transform:uppercase;cursor:pointer;font-family:var(--ff-body)">Track Order</button>
+          <div id="kitTrackResult" style="display:none;margin-top:0.65rem;font-size:0.68rem;line-height:1.7"></div>
+        </div>
       </div>
     </div>
 
@@ -686,19 +744,18 @@ window._supabaseLaunchPatch = async function() {
       <button class="btn-ghost" style="width:100%;margin-top:8px;padding:0.75rem" onclick="closeModal()">Cancel</button>
     </div>
     <div id="dStep2" style="display:none">
-      <div style="font-size:0.62rem;letter-spacing:2px;text-transform:uppercase;color:var(--mist);margin-bottom:1rem">Secure Payment</div>
-      <div style="background:var(--noir3);border:1px solid var(--border);padding:1.25rem;margin-bottom:1rem">
-        <input class="survey-input" placeholder="Card number" style="margin-bottom:8px;letter-spacing:2px">
-        <div style="display:grid;grid-template-columns:1fr 1fr;gap:8px;margin-bottom:8px">
-          <input class="survey-input" placeholder="MM / YY">
-          <input class="survey-input" placeholder="CVV">
-        </div>
-        <input class="survey-input" placeholder="Name on card">
+      <div style="font-size:0.62rem;letter-spacing:2px;text-transform:uppercase;color:var(--gold);margin-bottom:1rem">Reserve Your Interest</div>
+      <div style="background:rgba(201,169,110,0.06);border:1px solid var(--border-hi);padding:1rem;margin-bottom:1rem;font-size:0.75rem;color:var(--mist);line-height:1.8">
+        <strong style="color:var(--white)">How it works:</strong> Submit your interest below and our travel advisor will contact you within 24 hours with payment details and a secure booking link. Your $500 deposit is processed directly and securely by Valet By Nuor.
       </div>
-      <div style="background:rgba(201,169,110,0.05);border:1px solid var(--border-hi);padding:0.85rem;margin-bottom:1rem;font-size:0.68rem;color:var(--mist);line-height:1.7">
-        Payments processed securely via Stripe. Your $500 deposit is non-refundable and confirms your spot. Full balance due October 15, 2026.
+      <div style="font-size:0.72rem;color:var(--mist);margin-bottom:1rem;line-height:1.7">Confirming your interest for:</div>
+      <div style="background:var(--noir3);border:1px solid var(--border);padding:1rem;margin-bottom:1.25rem;font-size:0.72rem;line-height:1.9">
+        <div style="display:flex;justify-content:space-between;padding:2px 0"><span style="color:var(--mist)">Trip</span><span style="color:var(--white)">St. Vincent & The Grenadines</span></div>
+        <div style="display:flex;justify-content:space-between;padding:2px 0"><span style="color:var(--mist)">Dates</span><span style="color:var(--white)">Dec 15 — 28, 2026</span></div>
+        <div style="display:flex;justify-content:space-between;padding:2px 0"><span style="color:var(--mist)">Deposit</span><span id="depTot2" style="color:var(--gold)">$500</span></div>
+        <div style="display:flex;justify-content:space-between;padding:2px 0"><span style="color:var(--mist)">Balance due</span><span id="balDue2" style="color:var(--white)">Oct 15, 2026</span></div>
       </div>
-      <button class="btn-gold" style="width:100%;padding:0.9rem" onclick="confirmBooking()">Confirm $500 Deposit</button>
+      <button class="btn-gold" style="width:100%;padding:0.9rem" onclick="confirmBooking()">Submit Interest — Advisor Will Contact You</button>
       <button class="btn-ghost" style="width:100%;margin-top:8px;padding:0.75rem" onclick="goStep1()">Back</button>
     </div>
     <div id="dStep3" style="display:none;text-align:center;padding:1rem 0">
@@ -791,6 +848,84 @@ const DEST_DATA = {
     bagfree:false,bagfreeNote:'Coming 2027',
     events:['Jun — Wimbledon · Hotels book out','Jun 21 — Royal Ascot','Jul — Proms at Royal Albert Hall'],
     tips:'Get an Oyster card. Book West End shows online. Borough Market for food lovers. The Shard for views. Avoid August — locals leave but tourists arrive.'},
+  'Barcelona':{country:'Spain',region:'Europe',match:89,tags:['Culinary','Cultural','Nightlife'],styles:['Cultural Immersion','Culinary Journey'],
+    safety:76,govt:'Constitutional Monarchy · Democratic',visa:'No visa · US Passport',stateDept:'Level 1',lgbtq:'Very Safe · Full protections',
+    solo:'Safe · 80/100',health:'Excellent · Universal healthcare',
+    currency:'Euro (EUR)',rate:'$1 = €0.92',trend:'↑ Favorable',cash:'Card accepted widely · carry some cash for markets',tip:'Not expected · service included',atm:'Widely available · use bank ATMs',
+    hotels:68,hotelAvg:'$420/night',michelin:24,michelinStars:'1 three-star · 7 two-star',topRest:'Disfrutar · 3★ · $280pp',resv:'Book 2-3 months ahead',
+    spa:34,golf:8,marina:'Port Vell · full marina services',fbo:'Barcelona FBO · El Prat',
+    plug:'Type F (2 round pins)',voltage:'230V · 50Hz',adapter:'Yes — US adapter required',usb:'Yes · most hotels',bagfreeKit:'Business Emergency Kit includes adapter ↗',
+    embassy:'Passeig Reina Elisenda de Montcada 23, Barcelona',embassyPhone:'+34 93-280-2227',embassyHours:'Mon-Fri 9am-1pm',embassyStatus:'Fully operational',
+    bagfree:false,bagfreeNote:'Coming 2027 · Nearest: Miami',
+    events:['May — Primavera Sound Festival · 100k+ attendees','Jun 24 — La Revetlla de Sant Joan · fire festival','Sep — La Merce · free concerts city-wide'],
+    tips:'Book Sagrada Familia online — the queues are 3 hours without a ticket. Barceloneta beach gets crowded by 11am — arrive early or go to Bogatell. Eat dinner at 9pm like a local — restaurants are empty before 8:30pm.'},
+  'Dubai':{country:'United Arab Emirates',region:'Middle East',match:84,tags:['Luxury','Business','Shopping'],styles:['Business Travel','Luxury Cruise'],
+    safety:88,govt:'Federal Monarchy · Emirate',visa:'Visa on arrival · 30 days · Free for US passport',stateDept:'Level 1',lgbtq:'Exercise extreme caution · illegal',
+    solo:'Very Safe · 91/100',health:'World-class · private only',
+    currency:'Dirham (AED)',rate:'$1 = AED 3.67',trend:'Stable · pegged to USD',cash:'Card preferred · cash for souks',tip:'10-15% appreciated · not mandatory',atm:'Everywhere · low fees',
+    hotels:89,hotelAvg:'$520/night',michelin:0,michelinStars:'Not Michelin rated · world-class dining',topRest:'Nobu Dubai · Tresind Studio · $180pp',resv:'Book 2-4 weeks ahead',
+    spa:62,golf:18,marina:'Dubai Marina · superyacht berths',fbo:'Al Maktoum FBO · DIFC',
+    plug:'Type G (3 rectangular pins)',voltage:'230V · 50Hz',adapter:'Yes — same as UK',usb:'Universal in hotels',bagfreeKit:'Business Emergency Kit includes adapter ↗',
+    embassy:'Corner of Al Seef & Sheikh Khalifa Roads, Dubai',embassyPhone:'+971 4-309-4000',embassyHours:'Sun-Thu 8am-4:30pm',embassyStatus:'Fully operational',
+    bagfree:false,bagfreeNote:'Partnership in discussion · 2026',
+    events:['Oct — Dubai Shopping Festival','Nov — Abu Dhabi Grand Prix nearby · hotel surge','Jan-Mar — Dubai Tennis Championships'],
+    tips:'Dress modestly outside hotels and malls — shoulders and knees covered. Ramadan hours change everything — check dates. Dubai Mall ice rink and aquarium are underrated. The Burj Khalifa At the Top tickets sell out — book a week ahead.'},
+  'Maldives':{country:'Republic of Maldives',region:'Asia Pacific',match:91,tags:['Luxury','Wellness','Honeymoon'],styles:['Adventure & Wellness','Luxury Cruise'],
+    safety:82,govt:'Presidential Republic · Democratic',visa:'Visa on arrival · 30 days · Free',stateDept:'Level 1',lgbtq:'Exercise extreme caution · illegal',
+    solo:'Safe · 84/100 · isolated by nature',health:'Basic on outer atolls · excellent at resorts',
+    currency:'Maldivian Rufiyaa (MVR)',rate:'$1 = MVR 15.42',trend:'Stable',cash:'USD accepted everywhere · resorts are cashless',tip:'Included in resort bills · extra appreciated',atm:'Available in Malé · resorts are cashless',
+    hotels:12,hotelAvg:'$1,200/night',michelin:0,michelinStars:'Not rated · outstanding seafood',topRest:'Ithaa Undersea Restaurant · $350pp',resv:'Book 6+ months ahead · iconic experiences sell out',
+    spa:18,golf:1,marina:'Full superyacht and seaplane services',fbo:'Velana International · seaplane transfers',
+    plug:'Type G (3 rectangular pins) / Type D (3 round pins)',voltage:'230V · 50Hz',adapter:'Yes — dual check your resort',usb:'Yes · all resorts',bagfreeKit:'Wellness Travel Kit · lightweight essentials ↗',
+    embassy:'Colombo, Sri Lanka (nearest full embassy)',embassyPhone:'+94 11-249-8500',embassyHours:'Mon-Fri 8am-4:30pm',embassyStatus:'US Embassy in Colombo covers Maldives',
+    bagfree:false,bagfreeNote:'Not yet available',
+    events:['Nov-Apr — Dry season · peak season · book early','Jun-Aug — Whale shark season in South Ari Atoll','May-Oct — Surf season · Pasta Point & Chickens'],
+    tips:'Choose your atoll carefully — North Malé has fast speedboat transfers, South has longer seaplane rides but fewer crowds. Book the over-water bungalow — beach villas cost the same but the experience is different. Bring reef-safe sunscreen — the reefs are extraordinary.'},
+  'Santorini':{country:'Greece',region:'Europe',match:87,tags:['Luxury','Honeymoon','Culinary'],styles:['Luxury Cruise','Cultural Immersion'],
+    safety:83,govt:'Parliamentary Republic · Democratic',visa:'No visa · US Passport',stateDept:'Level 1',lgbtq:'Increasingly safe · legal protections improving',
+    solo:'Safe · 82/100',health:'Good · private clinics in Fira',
+    currency:'Euro (EUR)',rate:'$1 = €0.92',trend:'↑ Favorable',cash:'Card widely accepted · cash for small tavernas',tip:'10% appreciated',atm:'Available in Fira and Oia · stock up',
+    hotels:22,hotelAvg:'$680/night',michelin:0,michelinStars:'Not rated · exceptional local cuisine',topRest:'Selene · Metaxy Mas · $120pp',resv:'Book 4-6 months for June-August',
+    spa:14,golf:0,marina:'Vlychada Marina · sailing hub',fbo:'Santorini Airport · small FBO',
+    plug:'Type F (2 round pins)',voltage:'230V · 50Hz',adapter:'Yes — US adapter required',usb:'Yes · most hotels',bagfreeKit:'Business Emergency Kit includes adapter ↗',
+    embassy:'91 Vassilisis Sophias Avenue, Athens',embassyPhone:'+30 210-720-2401',embassyHours:'Mon-Fri 8:30am-5pm',embassyStatus:'Fully operational · covers all Greek islands',
+    bagfree:false,bagfreeNote:'Not yet available',
+    events:['Jul-Aug — Peak season · prices triple · book a year ahead','Sep — Harvest season · wine festivals','Oct — Shoulder season · best value'],
+    tips:'Oia sunset is worth it but arrive 2 hours early for a spot. Perissa black sand beach is less crowded than Kamari. Rent an ATV — the roads are too narrow for taxis. Eat at family-run tavernas in Pyrgos village for half the price of Oia.'},
+  'New York':{country:'United States',region:'Americas',match:86,tags:['Business','Cultural','Theater'],styles:['Business Travel','Cultural Immersion'],
+    safety:72,govt:'Federal Republic · Democratic',visa:'No visa required',stateDept:'N/A · Domestic',lgbtq:'Very Safe · Full protections',
+    solo:'Safe with awareness · 79/100',health:'World-class · expensive',
+    currency:'USD',rate:'$1 = $1',trend:'N/A',cash:'Card everywhere · cash for street food',tip:'20% standard',atm:'Everywhere · use bank ATMs',
+    hotels:312,hotelAvg:'$420/night',michelin:78,michelinStars:'5 three-star · 14 two-star',topRest:'Le Bernardin · 3★ · $280pp',resv:'Book 6-8 weeks ahead',
+    spa:88,golf:6,marina:'79th Street Boat Basin',fbo:'Teterboro FBO · KHPN',
+    plug:'Type A (standard US)',voltage:'120V · 60Hz',adapter:'No adapter needed',usb:'Everywhere',bagfreeKit:'Same-day delivery · partner network ↗',
+    embassy:'N/A · Domestic travel',embassyPhone:'N/A',embassyHours:'N/A',embassyStatus:'N/A',
+    bagfree:false,bagfreeNote:'Partner network in discussion',
+    events:['Sep — New York Fashion Week','Nov — Macy\'s Thanksgiving Parade · 3M attendees','Dec-Jan — Times Square New Year · hotel prices 3x'],
+    tips:'MetroCard is essential — don\'t take taxis in Midtown. Get the NYC Restaurant Week reservations the day they open. Central Park at 7am is a completely different experience. Brooklyn Dumbo for the Manhattan Bridge shot.'},
+  'Trinidad':{country:'Trinidad & Tobago',region:'Caribbean',match:82,tags:['BagFree Zone','Carnival','Culture','Food'],styles:['Cultural Immersion','Adventure & Wellness'],
+    safety:65,govt:'Parliamentary Republic · Democratic',visa:'No visa · US Passport · 90 days',stateDept:'Level 2',lgbtq:'Exercise caution · limited protections',
+    solo:'Exercise caution · use vetted transport',health:'Good · public and private hospitals',
+    currency:'Trinidad & Tobago Dollar (TTD)',rate:'$1 = TTD 6.79',trend:'Stable',cash:'Cash preferred · USD accepted in many places',tip:'10-15% appreciated',atm:'Available in Port of Spain · stock up before heading south',
+    hotels:18,hotelAvg:'$180/night',michelin:0,michelinStars:'Not rated · exceptional local cuisine',topRest:'Chaud Café · Apsara · $60pp',resv:'Book 2-4 weeks ahead · months ahead for Carnival',
+    spa:8,golf:4,marina:'Crews Inn Marina · full services',fbo:'Piarco International · small FBO',
+    plug:'Type A/B (standard US + grounded)',voltage:'115V · 60Hz',adapter:'No adapter needed · same as US',usb:'Yes · most hotels',bagfreeKit:'BagFree Caribbean Kit ↗',
+    embassy:'15 Queen\'s Park West, Port of Spain',embassyPhone:'+1 868-622-6371',embassyHours:'Mon-Fri 7:30am-4:30pm',embassyStatus:'Fully operational',
+    bagfree:false,bagfreeNote:'BagFree Caribbean delivery · 2026',
+    events:['Feb-Mar — Carnival · the greatest show on Earth · book 6 months ahead','Oct — Tobago Jazz Experience','Aug — Emancipation Day · street festivals'],
+    tips:'Doubles for breakfast from a street vendor is essential — the best $1 meal in the Caribbean. Maracas Bay for the beach and bake and shark. Avoid driving in Port of Spain peak hours 7-9am and 4-7pm. Tobago is much calmer — worth the quick flight.'},
+  'Orlando':{country:'United States',region:'BagFree Service Area',match:98,tags:['BagFree','Family','Theme Parks'],styles:['All styles'],
+    safety:70,govt:'Federal Republic · Democratic',visa:'No visa required',stateDept:'N/A · Domestic',lgbtq:'Safe',
+    solo:'Safe',health:'Excellent · major hospital network',
+    currency:'USD',rate:'$1 = $1',trend:'N/A',cash:'Card everywhere',tip:'18-20% standard',atm:'Everywhere',
+    hotels:38,hotelAvg:'$220/night',michelin:0,michelinStars:'Not rated · strong dining scene',topRest:'Victoria & Albert\'s · AAA 5 Diamond',resv:'Book 6 months ahead for V&A',
+    spa:24,golf:34,marina:'N/A',fbo:'Orlando Executive Airport FBO',
+    plug:'Type A (standard US)',voltage:'120V · 60Hz',adapter:'No adapter needed',usb:'Everywhere',bagfreeKit:'Same-day delivery available now ↗',
+    embassy:'N/A · Domestic travel',embassyPhone:'N/A',embassyHours:'N/A',embassyStatus:'N/A',
+    bagfree:true,bagfreeNote:'Same-day delivery available · Powered by Valet By Nuor',
+    events:['Year-round — Theme park events · check dates','Dec — Mickey\'s Very Merry Christmas Party','Jun — Pride events across the city'],
+    tips:'BagFree delivers same-day to all Disney, Universal and SeaWorld resort hotels. Order your kit before you fly and it\'s in your room before you check in. Download the Disney app and make Lightning Lane reservations before 7am.'},
+  'Miami':{country:'United States',region:'BagFree Service Area'
   'Miami':{country:'United States',region:'BagFree Service Area',match:98,tags:['BagFree','Beach','Luxury','Nightlife'],styles:['All styles'],
     safety:62,govt:'Federal Republic · Democratic',visa:'No visa required',stateDept:'N/A · Domestic',lgbtq:'Very Safe',
     solo:'Exercise awareness',health:'Excellent',
@@ -811,15 +946,12 @@ const TRIPS = {
   europe:{label:'European Grand Tour · 14 Days',cities:['London','Paris','Rome','Athens'],stops:[{city:'London',x:352,y:95,day:'Day 1',act:'London · Tower Bridge & West End'},{city:'Paris',x:366,y:108,day:'Day 3',act:'Paris · Eiffel Tower & cuisine'},{city:'Amsterdam',x:362,y:90,day:'Day 6',act:'Amsterdam · Canal cruise & museums'},{city:'Rome',x:390,y:118,day:'Day 9',act:'Rome · Vatican & pasta'},{city:'Athens',x:420,y:125,day:'Day 12',act:'Athens · Ancient ruins & ouzo'}]},
 };
 
+// Cruise schedules — representative sample routes (not live tracking)
 const LIVE_MOVEMENTS = [
-  {type:'flight',name:'AA 1024 · Miami → Rome',detail:'Atlantic · FL 380',status:'En route'},
-  {type:'cruise',name:'MSC Seashore · Caribbean',detail:'Nassau → Cozumel',status:'At sea'},
-  {type:'flight',name:'DL 406 · Atlanta → Paris',detail:'Atlantic · FL 360',status:'En route'},
-  {type:'cruise',name:'Celebrity Beyond · Med',detail:'Barcelona → Cannes',status:'At sea'},
-  {type:'flight',name:'UA 892 · Tampa → London',detail:'Atlantic · FL 370',status:'En route'},
-  {type:'cruise',name:'Norwegian Prima · Alaska',detail:'Seattle → Juneau',status:'At sea'},
-  {type:'flight',name:'BA 206 · London → Dubai',detail:'Europe · FL 390',status:'En route'},
-  {type:'cruise',name:'Regent Seven Seas · Asia',detail:'Tokyo → Hong Kong',status:'At sea'},
+  {type:'cruise',name:'MSC Seashore · Caribbean',detail:'Nassau → Cozumel',status:'Scheduled'},
+  {type:'cruise',name:'Celebrity Beyond · Mediterranean',detail:'Barcelona → Cannes',status:'Scheduled'},
+  {type:'cruise',name:'Norwegian Prima · Alaska',detail:'Seattle → Juneau',status:'Scheduled'},
+  {type:'cruise',name:'Regent Seven Seas · Asia',detail:'Tokyo → Hong Kong',status:'Scheduled'},
 ];
 
 const TIPS_BY_STYLE = {
@@ -983,9 +1115,100 @@ function _launchDashboardCore(){
   // Init Leaflet map after dashboard is visible
   setTimeout(() => { initMap(); }, 100);
   updateNearMeBtn();
+  renderSavedTrips();
+  showAdvisorFab();
+}
+
+// ── HOTEL SEARCH PANEL ─────────────────────────────────────────────────────
+function showHotelSearch() {
+  const dest = (profile.homeCity || '').length > 0 ? '' : '';
+  document.getElementById('rightContent').innerHTML = `
+    <div class="dest-detail visible">
+      <div style="font-size:0.6rem;letter-spacing:3px;text-transform:uppercase;color:var(--gold);margin-bottom:0.75rem">Hotel Concierge</div>
+      <div class="dest-detail-name" style="font-size:1.5rem">Book Your Stay</div>
+      <div class="dest-detail-country">Exclusive rates · Not publicly available</div>
+
+      <div class="detail-section" style="margin-top:1rem">
+        <div style="font-size:0.72rem;color:var(--mist);line-height:1.8;margin-bottom:1rem">
+          Our travel concierge finds and books your hotel with exclusive rates, then coordinates your BagFree kit delivery to the room before you arrive.
+        </div>
+
+        <input id="hotelDest" placeholder="Destination city..." style="width:100%;background:var(--noir3);border:1px solid var(--border);color:var(--white);padding:0.65rem 0.85rem;font-size:0.82rem;outline:none;margin-bottom:8px;font-family:var(--ff-body)"/>
+        <div style="display:grid;grid-template-columns:1fr 1fr;gap:8px;margin-bottom:8px">
+          <input id="hotelCheckin" type="date" style="background:var(--noir3);border:1px solid var(--border);color:var(--white);padding:0.65rem 0.85rem;font-size:0.78rem;outline:none;font-family:var(--ff-body);colorScheme:dark" placeholder="Check-in"/>
+          <input id="hotelCheckout" type="date" style="background:var(--noir3);border:1px solid var(--border);color:var(--white);padding:0.65rem 0.85rem;font-size:0.78rem;outline:none;font-family:var(--ff-body)" placeholder="Check-out"/>
+        </div>
+        <div style="display:grid;grid-template-columns:1fr 1fr;gap:8px;margin-bottom:8px">
+          <select id="hotelGuests" style="background:var(--noir3);border:1px solid var(--border);color:var(--white);padding:0.65rem 0.85rem;font-size:0.78rem;outline:none;font-family:var(--ff-body)">
+            <option value="1">1 guest</option><option value="2">2 guests</option>
+            <option value="3">3 guests</option><option value="4">4+ guests</option>
+          </select>
+          <select id="hotelBudget" style="background:var(--noir3);border:1px solid var(--border);color:var(--white);padding:0.65rem 0.85rem;font-size:0.78rem;outline:none;font-family:var(--ff-body)">
+            <option value="">Budget/night...</option>
+            <option value="under100">Under $100</option>
+            <option value="100-200">$100–$200</option>
+            <option value="200-350">$200–$350</option>
+            <option value="350-500">$350–$500</option>
+            <option value="500+">$500+ luxury</option>
+          </select>
+        </div>
+        <textarea id="hotelRequests" rows="2" placeholder="Special requests (ocean view, pet-friendly, etc)..." style="width:100%;background:var(--noir3);border:1px solid var(--border);color:var(--white);padding:0.65rem 0.85rem;font-size:0.78rem;outline:none;resize:none;font-family:var(--ff-body);line-height:1.6;margin-bottom:8px"></textarea>
+
+        <button onclick="submitHotelRequest()" style="width:100%;background:var(--gold);color:var(--noir);border:none;padding:0.85rem;font-size:0.68rem;letter-spacing:2.5px;text-transform:uppercase;font-weight:500;cursor:pointer;font-family:var(--ff-body)">
+          Submit Hotel Request
+        </button>
+        <div id="hotelConfirm" style="display:none;margin-top:0.75rem;padding:0.75rem;background:rgba(93,202,165,0.1);border:1px solid rgba(93,202,165,0.3);font-size:0.72rem;color:var(--green);line-height:1.6;text-align:center">
+          ✓ Request received · We'll contact you within 24 hours
+        </div>
+      </div>
+
+      <div style="margin-top:1rem;padding:0.85rem;background:rgba(201,169,110,0.07);border:1px solid var(--border);font-size:0.68rem;color:var(--mist);line-height:1.7">
+        <span style="color:var(--gold)">◆ Included:</span> Exclusive agent rates · BagFree kit coordination · 24hr response · No booking fee
+      </div>
+    </div>
+  `;
+}
+
+async function submitHotelRequest() {
+  const dest = document.getElementById('hotelDest')?.value?.trim();
+  const checkin = document.getElementById('hotelCheckin')?.value;
+  const checkout = document.getElementById('hotelCheckout')?.value;
+  const guests = document.getElementById('hotelGuests')?.value;
+  const budget = document.getElementById('hotelBudget')?.value;
+  const requests = document.getElementById('hotelRequests')?.value;
+
+  if (!dest) { document.getElementById('hotelDest').style.borderColor='var(--red)'; return; }
+
+  try {
+    await fetch('https://formspree.io/f/mqeyrykl', {
+      method: 'POST',
+      headers: {'Content-Type':'application/json','Accept':'application/json'},
+      body: JSON.stringify({
+        type: 'HOTEL REQUEST — Departure Lounge',
+        guest_name: profile.name || 'Lounge Member',
+        guest_email: profile.email || '',
+        destination: dest, checkin, checkout, guests, budget,
+        special_requests: requests,
+        travel_style: profile.travelStyle || '',
+        source: 'BagFree Departure Lounge'
+      })
+    });
+  } catch(e) {}
+
+  const btn = document.querySelector('[onclick="submitHotelRequest()"]');
+  if(btn){ btn.textContent='✓ Request Sent'; btn.style.background='var(--green)'; btn.style.color='var(--noir)'; }
+  document.getElementById('hotelConfirm').style.display='block';
+  showToast('Hotel request submitted · 24hr response');
 }
 
 function getAvatar(){
+  // Show initials if name available, else style emoji
+  const name = profile.name||'';
+  if(name.trim()){
+    const parts = name.trim().split(' ');
+    const initials = parts.length>1 ? parts[0][0]+parts[parts.length-1][0] : parts[0].slice(0,2);
+    return initials.toUpperCase();
+  }
   const style = profile.travelStyle||'';
   const map = {'Luxury Cruise':'🚢','Cultural Immersion':'🏛️','Adventure & Wellness':'🧘','Culinary Journey':'🍽️','Business Travel':'💼','Family Adventure':'👨‍👩‍👧'};
   return map[style]||'✈️';
@@ -1273,8 +1496,9 @@ function refreshFlights(btn) {
   // Clear cache to force a fresh API call
   const usage = getCallCount();
   if (usage.count >= MONTHLY_CALL_LIMIT) {
-    document.getElementById('flightQuotaWarn').style.display = 'block';
-    document.getElementById('flightQuotaWarn').textContent = 'Monthly flight data limit reached — resets next month.';
+    const warn = document.getElementById('flightQuotaWarn');
+    warn.style.display = 'block';
+    warn.textContent = 'Live flight data unavailable this month — quota reached. Showing scheduled cruise routes only.';
     return;
   }
   localStorage.removeItem('bf_flights_cache');
@@ -1334,15 +1558,21 @@ function renderLiveList(filter) {
     const delayBadge = l.delay && l.delay > 0
       ? `<span style="font-size:0.5rem;color:var(--amber);margin-left:4px;border:1px solid rgba(239,159,39,0.4);padding:1px 4px">+${l.delay}m</span>`
       : '';
-    const liveBadge = l.live
+    // Only show LIVE badge for real AviationStack data
+    const isRealFlight = l.live === true;
+    const liveBadge = isRealFlight
       ? '<span style="font-size:0.5rem;color:var(--green);margin-left:4px;letter-spacing:1px">LIVE</span>'
+      : '';
+    // Cruises are always scheduled routes, not live tracked
+    const scheduledBadge = l.type === 'cruise'
+      ? '<span style="font-size:0.5rem;color:var(--gold);margin-left:4px;letter-spacing:1px;opacity:0.7">ROUTE</span>'
       : '';
     return `
     <div class="live-item">
       <div class="live-dot ${l.type}"></div>
       <div class="live-text">
         <div class="live-name" style="display:flex;align-items:center;flex-wrap:wrap;gap:2px">
-          <span>${l.name}</span>${liveBadge}${delayBadge}
+          <span>${l.name}</span>${liveBadge}${scheduledBadge}${delayBadge}
         </div>
         <div class="live-detail">${l.detail}</div>
         ${l.airline ? '<div style="font-size:0.58rem;color:rgba(253,252,248,0.3);margin-top:1px">' + l.airline + '</div>' : ''}
@@ -1354,14 +1584,26 @@ function renderLiveList(filter) {
 
 async function buildLiveList(filter='all'){
   _liveFilter = filter;
-  // Render immediately with cached/simulated data
-  renderLiveList(filter);
 
-  // Fetch real data and re-render
+  // Show loading state
+  const listEl = document.getElementById('liveList');
+  if(listEl && _liveFlightCache.length === 0) {
+    listEl.innerHTML = '<div style="font-size:0.65rem;color:var(--mist);padding:8px 0;font-style:italic">Checking flight data...</div>';
+  }
+
+  // Fetch real data
   const gotLive = await fetchLiveFlights();
   if (gotLive) {
     renderLiveList(_liveFilter);
-    // No auto-refresh — preserves API quota. User can manually refresh.
+    // Show data source note
+    const note = document.getElementById('flightDataNote');
+    if(note) { note.style.display='block'; note.textContent='✓ Live flight data via AviationStack'; }
+  } else {
+    // No real flight data — show cruises only with honest label
+    _liveFlightCache = [];
+    renderLiveList(_liveFilter);
+    const note = document.getElementById('flightDataNote');
+    if(note) { note.style.display='block'; note.textContent='Flight tracking unavailable · showing cruise routes'; }
   }
 }
 
@@ -1498,6 +1740,11 @@ function showDestDetail(city){
         <div class="detail-row"><span class="detail-key">Marina</span><span class="detail-val">${d.marina}</span></div>
       </div>
 
+      <div class="detail-section" id="liveWeatherSection">
+        <div class="detail-section-title">Current Weather</div>
+        <div style="font-size:0.65rem;color:var(--mist);font-style:italic">Loading live weather...</div>
+      </div>
+
       <div class="detail-section">
         <div class="detail-section-title">Events this season</div>
         ${d.events.map(e=>`<div style="font-size:0.72rem;color:var(--mist);padding:3px 0;border-bottom:1px solid rgba(253,252,248,0.04)">${e}</div>`).join('')}
@@ -1518,6 +1765,13 @@ function showDestDetail(city){
         <button class="detail-cta primary" onclick="addToTrip('${city}')">+ Add to trip</button>
         <button class="detail-cta secondary" onclick="planTripTo('${city}')">Plan full trip</button>
       </div>
+      <div style="display:grid;grid-template-columns:1fr 1fr;gap:6px;margin-top:6px">
+        <button class="detail-cta secondary" onclick="showHotelSearch()" style="font-size:0.58rem">🏨 Book Hotel</button>
+        <button class="detail-cta secondary" onclick="whatsappDest('${city}')" style="font-size:0.58rem">📱 Share</button>
+      </div>
+      <div style="margin-top:5px">
+        <button class="detail-cta primary" onclick="openAdvisor()" style="width:100%;font-size:0.58rem;background:rgba(201,169,110,0.15);color:var(--gold);border:1px solid var(--border-hi)">✦ Talk to a Travel Advisor</button>
+      </div>
     </div>
   `;
 
@@ -1526,6 +1780,9 @@ function showDestDetail(city){
     alert.style.display='block';
     setTimeout(()=>alert.style.display='none',4000);
   }
+
+  // Fetch live weather for this destination
+  fetchWeather(city).then(data => renderWeatherInPanel(city, data));
 }
 
 function showEmbassy(city){
@@ -1622,10 +1879,238 @@ function plotRoute(key){
     alertEl.style.display='block';
     setTimeout(()=>alertEl.style.display='none',5000);
   }
+  // Add save/whatsapp/export buttons below itinerary
+  const existingBar = document.getElementById('tripActionBar');
+  if(existingBar) existingBar.remove();
+  const bar = document.createElement('div');
+  bar.id = 'tripActionBar';
+  bar.style.cssText = 'display:flex;gap:6px;padding:8px 0.75rem;background:var(--noir2);border-top:1px solid var(--border)';
+  bar.innerHTML = `
+    <button onclick="saveTripFromMap('${key}')" style="flex:1;background:transparent;border:1px solid var(--border-hi);color:var(--gold);padding:0.4rem;font-size:0.58rem;letter-spacing:1.5px;text-transform:uppercase;cursor:pointer;font-family:var(--ff-body)">♥ Save Trip</button>
+    <button onclick="whatsappTripFromMap('${key}')" style="background:transparent;border:1px solid rgba(37,211,102,0.4);color:rgb(37,211,102);padding:0.4rem 0.65rem;font-size:0.75rem;cursor:pointer" title="Send to WhatsApp">📱</button>
+    <button onclick="exportTripMapPDF('${key}')" style="background:transparent;border:1px solid var(--border);color:var(--mist);padding:0.4rem 0.65rem;font-size:0.75rem;cursor:pointer" title="Export PDF">⬇</button>
+  `;
+  it.appendChild(bar);
 }
 
 function addToTrip(city){
   planTripTo(city);
+}
+function trackKitOrder(){
+  const val = (document.getElementById('kitOrderNum')?.value||'').trim();
+  const el = document.getElementById('kitTrackResult');
+  if(!val || !el) return;
+  // Show contact CTA — orders are tracked via Valet By Nuor directly
+  el.style.display='block';
+  el.innerHTML = `
+    <div style="padding:0.65rem;background:rgba(201,169,110,0.07);border:1px solid var(--border)">
+      <div style="font-size:0.65rem;color:var(--gold);font-weight:500;margin-bottom:4px">Track with Valet By Nuor</div>
+      <div style="font-size:0.65rem;color:var(--mist);line-height:1.6;margin-bottom:0.65rem">
+        For live tracking, contact Valet By Nuor directly with your order reference.
+      </div>
+      <a href="tel:+18138162448" style="display:block;text-align:center;background:var(--gold);color:var(--noir);padding:0.45rem;font-size:0.6rem;letter-spacing:2px;text-transform:uppercase;text-decoration:none;font-weight:500;margin-bottom:5px">(813) 816-2448</a>
+      <a href="https://valetbynuor.com" target="_blank" style="display:block;text-align:center;background:transparent;border:1px solid var(--border-hi);color:var(--gold);padding:0.45rem;font-size:0.6rem;letter-spacing:2px;text-transform:uppercase;text-decoration:none">valetbynuor.com ↗</a>
+    </div>
+  `;
+  showToast('Contact Valet By Nuor to track your kit');
+}
+
+// ── TRAVEL ADVISOR ───────────────────────────────────────────────────────────
+let _advisorContext = { destination: null, itinerary: null, type: 'general' };
+
+function openAdvisor() {
+  // Build context from current app state
+  const ctx = buildAdvisorContext();
+  document.getElementById('advisorContextText').innerHTML = ctx.text;
+  document.getElementById('advisorContext').style.display = ctx.hasContext ? 'block' : 'none';
+
+  // Pre-fill name and email from profile
+  const nameEl = document.getElementById('advisorName');
+  const emailEl = document.getElementById('advisorEmail');
+  if(nameEl && profile.name) nameEl.value = profile.name;
+  if(emailEl && profile.email) emailEl.value = profile.email;
+
+  // Pre-select topic based on context
+  const topicEl = document.getElementById('advisorTopic');
+  if(topicEl && ctx.topic) topicEl.value = ctx.topic;
+
+  // Pre-fill message
+  const msgEl = document.getElementById('advisorMessage');
+  if(msgEl && ctx.message) msgEl.value = ctx.message;
+
+  // Show modal
+  document.getElementById('advisorForm').style.display = 'block';
+  document.getElementById('advisorSuccess').style.display = 'none';
+  document.getElementById('advisorError').style.display = 'none';
+  document.getElementById('advisorModal').style.display = 'flex';
+}
+
+function closeAdvisor() {
+  document.getElementById('advisorModal').style.display = 'none';
+}
+
+function buildAdvisorContext() {
+  const ctx = { hasContext: false, text: '', topic: 'general', message: '' };
+  const parts = [];
+
+  // Check for saved trips
+  const savedTrips = getSavedTrips();
+  if(savedTrips.length > 0) {
+    const latest = savedTrips[0];
+    parts.push('<strong style="color:var(--white)">Latest saved trip:</strong> ' + latest.destination + (latest.duration ? ' · ' + latest.duration : ''));
+    ctx.topic = 'itinerary';
+    ctx.message = 'Hi, I\'ve been building a trip to ' + latest.destination + ' in the BagFree Departure Lounge. I\'d love your help refining the itinerary and booking recommendations.';
+    ctx.hasContext = true;
+    _advisorContext.destination = latest.destination;
+    _advisorContext.itinerary = latest.preview || '';
+  }
+
+  // Check profile
+  if(profile.travelStyle) {
+    parts.push('<strong style="color:var(--white)">Travel style:</strong> ' + profile.travelStyle);
+    ctx.hasContext = true;
+  }
+  if(profile.destinations && profile.destinations.length > 0) {
+    parts.push('<strong style="color:var(--white)">Dream regions:</strong> ' + profile.destinations.join(', '));
+    ctx.hasContext = true;
+  }
+  if(profile.homeCity) {
+    parts.push('<strong style="color:var(--white)">Departing from:</strong> ' + profile.homeCity);
+    ctx.hasContext = true;
+  }
+
+  // Check AI scores for top match
+  if(window._aiScoreCache && window._aiScoreCache.length > 0) {
+    const top = window._aiScoreCache[0];
+    parts.push('<strong style="color:var(--gold)">Top AI match:</strong> ' + top.destination + ' · ' + top.score + '% · ' + (top.reason||'').slice(0,80));
+    if(!ctx.message) {
+      ctx.message = 'Hi, the BagFree Departure Lounge matched me with ' + top.destination + ' (' + top.score + '%). I\'d love to discuss making this trip happen — hotels, BagFree kit, and any tips.';
+    }
+    ctx.hasContext = true;
+  }
+
+  ctx.text = parts.length > 0 ? parts.join('<br>') : 'No context yet. Tell us where you want to go below.';
+  if(!ctx.message) ctx.message = 'Hi, I\'m planning a trip and would love help from a BagFree travel advisor. My travel style is ' + (profile.travelStyle || 'not set') + ' and I\'m interested in ' + (profile.destinations||[]).join(', ') + '.';
+  return ctx;
+}
+
+async function sendToAdvisor() {
+  const name = document.getElementById('advisorName')?.value?.trim();
+  const email = document.getElementById('advisorEmail')?.value?.trim();
+  const topic = document.getElementById('advisorTopic')?.value;
+  const message = document.getElementById('advisorMessage')?.value?.trim();
+  const errEl = document.getElementById('advisorError');
+
+  if(!email) { errEl.style.display='block'; errEl.textContent='Please enter your email address.'; return; }
+  if(!message) { errEl.style.display='block'; errEl.textContent='Please add a message for your advisor.'; return; }
+  errEl.style.display = 'none';
+
+  const btn = document.querySelector('.advisor-send');
+  if(btn) { btn.textContent = 'Sending...'; btn.disabled = true; }
+
+  // Build full context to send
+  const savedTrips = getSavedTrips();
+  const tripContext = savedTrips.length > 0 ? savedTrips[0] : null;
+  const aiTop = window._aiScoreCache ? window._aiScoreCache.slice(0,3).map(s=>s.destination+' ('+s.score+'%)').join(', ') : 'N/A';
+
+  const payload = {
+    type: 'ADVISOR REQUEST — Departure Lounge',
+    topic: topic,
+    guest_name: name || 'Lounge Member',
+    guest_email: email,
+    message: message,
+    travel_style: profile.travelStyle || 'Not set',
+    home_city: profile.homeCity || 'Not set',
+    dream_destinations: (profile.destinations||[]).join(', ') || 'Not set',
+    entertainment: (profile.entertainment||[]).join(', ') || 'Not set',
+    ai_top_matches: aiTop,
+    saved_trip: tripContext ? (tripContext.destination + ' · ' + tripContext.duration) : 'None',
+    itinerary_preview: tripContext ? (tripContext.preview||'').slice(0,500) : 'None',
+    source: 'BagFree Departure Lounge · Talk to Advisor'
+  };
+
+  try {
+    await fetch('https://formspree.io/f/mqeyrykl', {
+      method: 'POST',
+      headers: {'Content-Type':'application/json','Accept':'application/json'},
+      body: JSON.stringify(payload)
+    });
+  } catch(e) {}
+
+  // Show success
+  document.getElementById('advisorForm').style.display = 'none';
+  document.getElementById('advisorSuccess').style.display = 'block';
+  document.getElementById('advisorSuccessEmail').textContent = email;
+  showToast('✓ Message sent to your BagFree advisor');
+}
+
+function sendViaWhatsApp() {
+  const name = document.getElementById('advisorName')?.value?.trim() || profile.name || 'Lounge Member';
+  const message = document.getElementById('advisorMessage')?.value?.trim();
+  const topic = document.getElementById('advisorTopic')?.value || 'general';
+  const savedTrips = getSavedTrips();
+  const tripContext = savedTrips.length > 0 ? savedTrips[0] : null;
+
+  let text = '🌍 *BagFree Travel Advisor Request*\n\n';
+  text += '*From:* ' + name + '\n';
+  text += '*Topic:* ' + topic + '\n';
+  text += '*Travel style:* ' + (profile.travelStyle || 'Not set') + '\n';
+  text += '*Home city:* ' + (profile.homeCity || 'Not set') + '\n';
+  text += '*Dream destinations:* ' + ((profile.destinations||[]).join(', ') || 'Not set') + '\n';
+  if(tripContext) text += '*Saved trip:* ' + tripContext.destination + '\n';
+  if(message) text += '\n*Message:* ' + message;
+  text += '\n\n_Sent from BagFree Departure Lounge_';
+
+  window.open('https://wa.me/18138162448?text=' + encodeURIComponent(text), '_blank');
+}
+
+// Show FAB after login, hide on auth screens
+function showAdvisorFab() {
+  const fab = document.getElementById('advisorFab');
+  if(fab) fab.style.display = 'flex';
+}
+
+// Close modal on backdrop click
+document.addEventListener('click', function(e) {
+  const modal = document.getElementById('advisorModal');
+  if(e.target === modal) closeAdvisor();
+});
+
+function whatsappDest(city){
+  const d = DEST_DATA[city];
+  if(!d) return;
+  const text = encodeURIComponent(
+    '🌍 *'+city+', '+d.country+'*\n\n'+
+    '✦ Safety: '+d.safety+'/100\n'+
+    '✦ Visa: '+d.visa+'\n'+
+    '✦ Currency: '+d.currency+' ('+d.rate+')\n'+
+    '✦ State Dept: '+d.stateDept+'\n'+
+    '✦ Best restaurant: '+d.topRest+'\n'+
+    '✦ Tip: '+d.tips.slice(0,120)+'...\n\n'+
+    '_Researched with BagFree Departure Lounge · bagfree.com/departure-lounge_'
+  );
+  window.open('https://wa.me/?text='+text,'_blank');
+}
+
+function saveTripFromMap(key){
+  const trip = TRIPS[key];
+  if(!trip) return;
+  const preview = trip.stops.map(s=>`${s.day}: ${s.city} — ${s.act}`).join('\n');
+  saveTrip({destination:trip.label.split(' · ')[0], duration:trip.label.split(' · ')[1]||'', preview, fullText:'<p style="white-space:pre-line">'+preview+'</p>'});
+}
+function whatsappTripFromMap(key){
+  const trip = TRIPS[key];
+  if(!trip) return;
+  const lines = trip.stops.map(s=>s.day+': '+s.city+' — '+s.act).join('%0A');
+  window.open('https://wa.me/?text='+encodeURIComponent('🌍 *'+trip.label+'*\n\n'+trip.stops.map(s=>s.day+': '+s.city+' — '+s.act).join('\n')+'\n\n_Built with BagFree Departure Lounge · bagfree.com/departure-lounge_'),'_blank');
+}
+function exportTripMapPDF(key){
+  const trip = TRIPS[key];
+  if(!trip) return;
+  const rows = trip.stops.map(s=>`<tr><td style="padding:8px;border-bottom:1px solid #eee;color:#888;font-size:0.85rem">${s.day}</td><td style="padding:8px;border-bottom:1px solid #eee;font-weight:400">${s.city}</td><td style="padding:8px;border-bottom:1px solid #eee;color:#555">${s.act}</td></tr>`).join('');
+  const w = window.open('','_blank');
+  w.document.write('<!DOCTYPE html><html><head><title>'+trip.label+'</title><style>body{font-family:Georgia,serif;max-width:680px;margin:40px auto;color:#1a1a18;line-height:1.8;font-weight:300}h1{font-size:2rem;font-weight:300;border-bottom:2px solid #C9A96E;padding-bottom:0.75rem}table{width:100%;border-collapse:collapse;margin-top:1.5rem}.footer{margin-top:3rem;padding-top:1rem;border-top:1px solid #eee;font-size:0.75rem;color:#bbb;text-align:center}@media print{body{margin:20px}}</style></head><body><h1>'+trip.label+'</h1><table>'+rows+'</table><div class="footer">BagFree &middot; bagfree.com/departure-lounge &middot; Powered by Valet By Nuor</div><script>window.onload=function(){window.print();}<\/script></body></html>');
+  w.document.close();
 }
 
 // ── LEAFLET MAP ───────────────────────────────────────────────────────────────
@@ -1665,6 +2150,103 @@ const CITY_COORDS = {
   'Monte Carlo':   [43.74, 7.43],
   'Cannes':        [43.55, 7.02],
 };
+
+// ── LIVE WEATHER — Open-Meteo (free, no API key) ─────────────────────────────
+const DEST_COORDS = {
+  'Rome':       [41.9028, 12.4964],
+  'Paris':      [48.8566, 2.3522],
+  'Tokyo':      [35.6762, 139.6503],
+  'Bali':       [-8.3405, 115.0920],
+  'St. Vincent':[13.1600, -61.2248],
+  'Tampa':      [27.9506, -82.4572],
+  'London':     [51.5074, -0.1278],
+  'Miami':      [25.7617, -80.1918],
+  'Barcelona':  [41.3851, 2.1734],
+  'Dubai':      [25.2048, 55.2708],
+  'Maldives':   [3.2028, 73.2207],
+  'Santorini':  [36.3932, 25.4615],
+  'New York':   [40.7128, -74.0060],
+  'Trinidad':   [10.6918, -61.2225],
+  'Orlando':    [28.5383, -81.3792],
+};
+
+const WMO_CODES = {
+  0:'Clear',1:'Mostly clear',2:'Partly cloudy',3:'Overcast',
+  45:'Foggy',48:'Icy fog',51:'Light drizzle',53:'Drizzle',55:'Heavy drizzle',
+  61:'Light rain',63:'Rain',65:'Heavy rain',71:'Light snow',73:'Snow',75:'Heavy snow',
+  77:'Snow grains',80:'Showers',81:'Heavy showers',82:'Violent showers',
+  85:'Snow showers',86:'Heavy snow showers',95:'Thunderstorm',96:'Thunderstorm+hail',99:'Severe thunderstorm',
+};
+
+const WMO_ICONS = {
+  0:'☀️',1:'🌤️',2:'⛅',3:'☁️',45:'🌫️',48:'🌫️',
+  51:'🌦️',53:'🌧️',55:'🌧️',61:'🌦️',63:'🌧️',65:'🌧️',
+  71:'🌨️',73:'❄️',75:'❄️',77:'🌨️',80:'🌦️',81:'🌧️',82:'⛈️',
+  85:'🌨️',86:'❄️',95:'⛈️',96:'⛈️',99:'⛈️',
+};
+
+let _weatherCache = {};
+
+async function fetchWeather(city) {
+  if (_weatherCache[city]) return _weatherCache[city];
+  const coords = DEST_COORDS[city];
+  if (!coords) return null;
+  try {
+    const url = `https://api.open-meteo.com/v1/forecast?latitude=${coords[0]}&longitude=${coords[1]}&current=temperature_2m,relative_humidity_2m,wind_speed_10m,weathercode&daily=temperature_2m_max,temperature_2m_min,weathercode&temperature_unit=fahrenheit&wind_speed_unit=mph&timezone=auto&forecast_days=7`;
+    const res = await fetch(url);
+    const data = await res.json();
+    _weatherCache[city] = data;
+    return data;
+  } catch(e) {
+    console.warn('Weather fetch failed:', e);
+    return null;
+  }
+}
+
+function renderWeatherInPanel(city, data) {
+  const el = document.getElementById('liveWeatherSection');
+  if (!el) return;
+  if (!data || !data.current) {
+    el.innerHTML = '<div style="font-size:0.68rem;color:var(--mist)">Weather data unavailable</div>';
+    return;
+  }
+  const cur = data.current;
+  const daily = data.daily;
+  const icon = WMO_ICONS[cur.weathercode] || '🌡️';
+  const desc = WMO_CODES[cur.weathercode] || 'Unknown';
+  const days = ['Sun','Mon','Tue','Wed','Thu','Fri','Sat'];
+
+  const forecast = daily ? daily.time.slice(0,7).map((t,i) => {
+    const d = new Date(t);
+    const dayName = i === 0 ? 'Today' : days[d.getDay()];
+    const hi = Math.round(daily.temperature_2m_max[i]);
+    const lo = Math.round(daily.temperature_2m_min[i]);
+    const fc = WMO_ICONS[daily.weathercode[i]] || '🌡️';
+    return `<div style="text-align:center;padding:5px 4px;background:rgba(255,255,255,0.03);border:1px solid var(--border)">
+      <div style="font-size:0.55rem;color:var(--mist);margin-bottom:3px">${dayName}</div>
+      <div style="font-size:0.9rem;margin-bottom:2px">${fc}</div>
+      <div style="font-size:0.6rem;color:var(--white)">${hi}°</div>
+      <div style="font-size:0.55rem;color:var(--mist)">${lo}°</div>
+    </div>`;
+  }).join('') : '';
+
+  el.innerHTML = `
+    <div style="display:flex;align-items:center;gap:1rem;padding:0.85rem;background:rgba(93,202,165,0.07);border:1px solid rgba(93,202,165,0.2);margin-bottom:0.75rem">
+      <div style="font-size:2.5rem;line-height:1">${icon}</div>
+      <div>
+        <div style="font-family:var(--ff-display);font-size:2rem;font-weight:300;color:var(--white);line-height:1">${Math.round(cur.temperature_2m)}°F</div>
+        <div style="font-size:0.68rem;color:var(--mist);margin-top:2px">${desc}</div>
+      </div>
+      <div style="margin-left:auto;text-align:right">
+        <div style="font-size:0.6rem;color:var(--mist)">Humidity: ${cur.relative_humidity_2m}%</div>
+        <div style="font-size:0.6rem;color:var(--mist)">Wind: ${Math.round(cur.wind_speed_10m)} mph</div>
+        <div style="font-size:0.52rem;color:rgba(93,202,165,0.7);margin-top:3px">● Live · Open-Meteo</div>
+      </div>
+    </div>
+    ${forecast ? `<div style="display:grid;grid-template-columns:repeat(7,1fr);gap:4px">${forecast}</div>` : ''}
+  `;
+}
+
 
 // Airport IATA → approximate coords for flight plotting
 const AIRPORT_COORDS = {
@@ -1972,6 +2554,83 @@ const COLLECTIVE_GROUPS = [
 
 let bfAddonSelected = false;
 
+// ── SAVED TRIPS ────────────────────────────────────────────────────────────────
+function getSavedTrips(){
+  try { return JSON.parse(localStorage.getItem('bf_saved_trips')||'[]'); } catch(e){ return []; }
+}
+function saveTrip(trip){
+  const trips = getSavedTrips();
+  trip.id = Date.now();
+  trip.savedAt = new Date().toLocaleDateString();
+  trips.unshift(trip);
+  localStorage.setItem('bf_saved_trips', JSON.stringify(trips.slice(0,10)));
+  renderSavedTrips();
+  showToast('✓ Itinerary saved');
+}
+function deleteTrip(id){
+  const trips = getSavedTrips().filter(t=>t.id!==id);
+  localStorage.setItem('bf_saved_trips', JSON.stringify(trips));
+  renderSavedTrips();
+}
+function showToast(msg){
+  let t = document.getElementById('bfToast');
+  if(!t){ t = document.createElement('div'); t.id='bfToast'; t.style.cssText='position:fixed;bottom:2rem;right:2rem;background:var(--gold);color:var(--noir);padding:0.75rem 1.5rem;font-size:0.72rem;letter-spacing:2px;text-transform:uppercase;font-weight:500;z-index:9999;opacity:0;transition:opacity 0.3s;pointer-events:none;'; document.body.appendChild(t); }
+  t.textContent=msg; t.style.opacity=1;
+  setTimeout(()=>t.style.opacity=0, 2500);
+}
+function renderSavedTrips(){
+  const el = document.getElementById('savedTripsContainer');
+  if(!el) return;
+  const trips = getSavedTrips();
+  if(trips.length===0){
+    el.innerHTML='<div style="text-align:center;padding:2rem;color:var(--mist);font-size:0.75rem">No saved itineraries yet.<br>Build a trip and click Save.</div>';
+    return;
+  }
+  el.innerHTML = trips.map(t=>`
+    <div style="border:1px solid var(--border);padding:1rem;margin-bottom:8px;position:relative;background:rgba(255,255,255,0.02)">
+      <div style="display:flex;justify-content:space-between;align-items:flex-start;gap:0.5rem">
+        <div style="flex:1;min-width:0">
+          <div style="font-family:var(--ff-display);font-size:1rem;color:var(--white);margin-bottom:2px">${t.destination}</div>
+          <div style="font-size:0.58rem;color:var(--gold);letter-spacing:1px;text-transform:uppercase;margin-bottom:6px">${t.duration||''} · Saved ${t.savedAt}</div>
+          <div style="font-size:0.62rem;color:var(--mist);line-height:1.6;overflow:hidden;max-height:48px">${(t.preview||'').slice(0,140)}...</div>
+        </div>
+        <button onclick="deleteTrip(${t.id})" style="background:transparent;border:none;color:rgba(253,252,248,0.3);font-size:1.1rem;cursor:pointer;flex-shrink:0;padding:0;line-height:1">×</button>
+      </div>
+      <div style="display:flex;gap:6px;margin-top:0.75rem">
+        <button onclick="loadSavedTrip(${t.id})" style="flex:1;background:transparent;border:1px solid var(--border-hi);color:var(--gold);padding:0.4rem;font-size:0.58rem;letter-spacing:1.5px;text-transform:uppercase;cursor:pointer">View</button>
+        <button onclick="whatsappTrip(${t.id})" style="background:transparent;border:1px solid rgba(37,211,102,0.4);color:rgb(37,211,102);padding:0.4rem 0.65rem;font-size:0.75rem;cursor:pointer" title="WhatsApp">📱</button>
+        <button onclick="exportTripPDF(${t.id})" style="background:transparent;border:1px solid var(--border);color:var(--mist);padding:0.4rem 0.65rem;font-size:0.75rem;cursor:pointer" title="Export PDF">⬇</button>
+      </div>
+      <button onclick="openAdvisor()" style="width:100%;margin-top:5px;background:rgba(201,169,110,0.1);border:1px solid var(--border-hi);color:var(--gold);padding:0.4rem;font-size:0.58rem;letter-spacing:1.5px;text-transform:uppercase;cursor:pointer;font-family:var(--ff-body)">✦ Send to Advisor</button>
+    </div>
+  `).join('');
+}
+function loadSavedTrip(id){
+  const trip = getSavedTrips().find(t=>t.id===id);
+  if(!trip) return;
+  openPanel(trip.destination);
+  setTimeout(()=>{
+    document.querySelectorAll('.tab-btn').forEach(b=>b.classList.remove('active'));
+    document.querySelectorAll('.tab-panel').forEach(p=>p.style.display='none');
+    const tb = document.querySelector('.tab-btn[data-tab="trip"]');
+    if(tb){ tb.classList.add('active'); const panel = document.getElementById('tab-trip'); if(panel){ panel.style.display='block'; panel.innerHTML = trip.fullText||trip.preview||''; } }
+  }, 350);
+}
+function whatsappTrip(id){
+  const trip = getSavedTrips().find(t=>t.id===id);
+  if(!trip) return;
+  const plain = (trip.preview||'').replace(/<[^>]+>/g,'').slice(0,600);
+  const text = encodeURIComponent('🌍 *'+trip.destination+' Itinerary*\n\nBuilt with BagFree Departure Lounge\n\n'+plain+'\n\n_Full itinerary at bagfree.com/departure-lounge_');
+  window.open('https://wa.me/?text='+text,'_blank');
+}
+function exportTripPDF(id){
+  const trip = getSavedTrips().find(t=>t.id===id);
+  if(!trip) return;
+  const w = window.open('','_blank');
+  w.document.write('<!DOCTYPE html><html><head><title>'+trip.destination+' Itinerary</title><style>body{font-family:Georgia,serif;max-width:680px;margin:40px auto;color:#1a1a18;line-height:1.85;font-weight:300}h1{font-size:2.5rem;font-weight:300;border-bottom:2px solid #C9A96E;padding-bottom:0.75rem}p,li{margin:0.4rem 0;font-size:0.95rem}.meta{color:#888;font-size:0.82rem;margin-bottom:2.5rem}.footer{margin-top:3rem;padding-top:1rem;border-top:1px solid #eee;font-size:0.75rem;color:#bbb;text-align:center}@media print{body{margin:20px}}</style></head><body><h1>'+trip.destination+'</h1><div class="meta">'+( trip.duration||'')+(trip.duration?' · ':'')+trip.savedAt+' · Built with BagFree Departure Lounge</div>'+(trip.fullText||trip.preview||'')+'<div class="footer">BagFree &middot; bagfree.com/departure-lounge &middot; Powered by Valet By Nuor</div><script>window.onload=function(){window.print();}<\/script></body></html>');
+  w.document.close();
+}
+
 function buildFeaturedTrip() {
   const t = SVG_TRIP;
   const spotsLeft = t.totalSpots - t.spotsBooked;
@@ -2156,17 +2815,129 @@ function goStep1() {
   document.getElementById('dStep1').style.display='block';
 }
 
-function confirmBooking() {
+async function confirmBooking() {
+  const btn = document.querySelector('#dStep2 .btn-gold');
+  if(btn){ btn.textContent = 'Submitting...'; btn.disabled = true; }
+
+  const includeBF = document.getElementById('bfCheck')?.textContent === '✓';
+  try {
+    await fetch('https://formspree.io/f/mqeyrykl', {
+      method:'POST',
+      headers:{'Content-Type':'application/json','Accept':'application/json'},
+      body: JSON.stringify({
+        type: 'COLLECTIVE RESERVATION — St. Vincent Christmas 2026',
+        name: document.getElementById('depName')?.value || profile.name || '',
+        email: document.getElementById('depEmail')?.value || profile.email || '',
+        phone: document.getElementById('depPhone')?.value || '',
+        departure_city: document.getElementById('depCity')?.value || profile.homeCity || '',
+        travel_bagfree_addon: includeBF ? 'Yes — $299' : 'No',
+        gender_pref: document.getElementById('depGender')?.value || '',
+        size: document.getElementById('depSize')?.value || '',
+        special: document.getElementById('depSpecial')?.value || '',
+        trip: 'St. Vincent & The Grenadines · Christmas Collective',
+        dates: 'Dec 15 — 28, 2026',
+        deposit: '$500',
+        travel_style: profile.travelStyle || '',
+        source: 'BagFree Departure Lounge · Collective'
+      })
+    });
+  } catch(e) {}
+
   document.getElementById('dStep2').style.display='none';
   document.getElementById('dStep3').style.display='block';
   SVG_TRIP.spotsBooked = Math.min(SVG_TRIP.spotsBooked + 1, SVG_TRIP.totalSpots);
   buildFeaturedTrip();
   buildCollectivePanel();
+  showToast('✓ Interest submitted — advisor will contact you within 24hrs');
 }
 
 // DOMContentLoaded is handled by the Supabase module script above.
 // It checks for an existing session and either restores the profile
 // (skipping the survey) or falls through to renderSurvey().
 </script>
+<!-- ADVISOR FLOATING BUTTON -->
+<div id="advisorFab" style="display:none">
+  <button id="advisorBtn" onclick="openAdvisor()">
+    <span id="advisorPulse"></span>
+    Talk to an Advisor
+  </button>
+</div>
+
+<!-- ADVISOR MODAL -->
+<div id="advisorModal">
+  <div class="advisor-box">
+    <button onclick="closeAdvisor()" style="position:absolute;top:1rem;right:1rem;background:transparent;border:none;color:rgba(10,10,8,0.4);font-size:1.25rem;cursor:pointer;z-index:10;line-height:1">✕</button>
+
+    <div class="advisor-header">
+      <div class="advisor-avatar">✈️</div>
+      <div class="advisor-header-text">
+        <div class="advisor-name">BagFree Travel Advisors</div>
+        <div class="advisor-title">Valet By Nuor · Concierge Team</div>
+        <div class="advisor-online"><span class="advisor-online-dot"></span>Available · Responds within 24 hours</div>
+      </div>
+    </div>
+
+    <div class="advisor-body">
+      <!-- Context box — auto-filled with current trip/destination -->
+      <div class="advisor-context" id="advisorContext">
+        <div class="advisor-context-label">Your current context</div>
+        <div id="advisorContextText">No active destination or itinerary selected. Tell us where you want to go below.</div>
+      </div>
+
+      <!-- Form — shown by default -->
+      <div id="advisorForm">
+        <div class="advisor-field">
+          <label>What can we help you with?</label>
+          <select id="advisorTopic" class="advisor-input" style="background:var(--noir3)">
+            <option value="itinerary">Send my itinerary for review</option>
+            <option value="hotel">Book a hotel at my destination</option>
+            <option value="kit">Help choosing my BagFree kit</option>
+            <option value="collective">Join the Travel Collective</option>
+            <option value="emergency">Lost luggage / emergency kit</option>
+            <option value="general">General travel advice</option>
+          </select>
+        </div>
+
+        <div class="advisor-field">
+          <label>Your message</label>
+          <textarea id="advisorMessage" class="advisor-input" rows="4" placeholder="Tell us about your trip — destination, dates, travel style, any questions..."></textarea>
+        </div>
+
+        <div style="display:grid;grid-template-columns:1fr 1fr;gap:8px;margin-bottom:0.85rem">
+          <div class="advisor-field" style="margin:0">
+            <label>Your name</label>
+            <input id="advisorName" class="advisor-input" placeholder="First name" type="text"/>
+          </div>
+          <div class="advisor-field" style="margin:0">
+            <label>Email</label>
+            <input id="advisorEmail" class="advisor-input" placeholder="your@email.com" type="email"/>
+          </div>
+        </div>
+
+        <div id="advisorError" style="display:none;font-size:0.68rem;color:var(--red);margin-bottom:0.75rem;padding:0.5rem 0.75rem;border:1px solid rgba(226,75,74,0.3);background:rgba(226,75,74,0.07)"></div>
+
+        <div class="advisor-actions">
+          <button class="advisor-send" onclick="sendToAdvisor()">Send to Advisor →</button>
+          <a href="tel:+18138162448" class="advisor-call">📞 (813) 816-2448</a>
+          <button class="advisor-whatsapp" onclick="sendViaWhatsApp()">📱 Send via WhatsApp</button>
+        </div>
+
+        <div style="text-align:center;margin-top:1rem;font-size:0.6rem;color:rgba(253,252,248,0.25);line-height:1.7">
+          Powered by Valet By Nuor · support@valetbynuor.com<br>
+          Same-day kits in Tampa & Orlando · Caribbean delivery available
+        </div>
+      </div>
+
+      <!-- Success state -->
+      <div class="advisor-success" id="advisorSuccess">
+        <div class="advisor-success-icon">✓</div>
+        <div class="advisor-success-title">Message sent</div>
+        <div class="advisor-success-sub">Your advisor will respond to <span id="advisorSuccessEmail" style="color:var(--gold)"></span> within 24 hours.<br><br>Need urgent help? Call us directly.<br><a href="tel:+18138162448" style="color:var(--gold);text-decoration:none;font-weight:500">(813) 816-2448</a></div>
+        <button onclick="closeAdvisor()" style="margin-top:1.5rem;background:transparent;border:1px solid var(--border-hi);color:var(--gold);padding:0.65rem 2rem;font-size:0.62rem;letter-spacing:2px;text-transform:uppercase;cursor:pointer;font-family:var(--ff-body)">Close</button>
+      </div>
+    </div>
+  </div>
+</div>
+
 </body>
 </html>
