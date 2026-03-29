@@ -25,8 +25,8 @@ button,input,select,textarea{font-family:var(--ff-body)}
 ::-webkit-scrollbar-thumb{background:var(--gold-dim)}
 
 /* LEAFLET DARK OVERRIDES */
-.leaflet-container{background:#081525;font-family:var(--ff-body)}
-.leaflet-tile{filter:brightness(0.45) saturate(0.6) hue-rotate(180deg)}
+.leaflet-container{background:#e8e4dc;font-family:var(--ff-body)}
+.leaflet-tile{transition:filter 0.3s}
 .leaflet-control-zoom a{background:var(--noir2);color:var(--gold);border-color:var(--border)}
 .leaflet-control-zoom a:hover{background:var(--noir3);color:var(--gold-light)}
 .leaflet-popup-content-wrapper{background:var(--noir2);color:var(--white);border:1px solid var(--border-hi);border-radius:0;box-shadow:0 4px 24px rgba(0,0,0,0.6)}
@@ -114,7 +114,7 @@ button,input,select,textarea{font-family:var(--ff-body)}
 .layer-btn{background:transparent;border:1px solid var(--border);color:var(--mist);padding:3px 10px;font-size:0.58rem;letter-spacing:1.5px;text-transform:uppercase;cursor:pointer;transition:all 0.2s;white-space:nowrap;display:flex;align-items:center;gap:4px}
 .layer-btn .dot{width:6px;height:6px;border-radius:50%;flex-shrink:0}
 .layer-btn.active{border-color:rgba(201,169,110,0.4);color:var(--gold);background:rgba(201,169,110,0.08)}
-.map-svg-wrap{flex:1;position:relative;overflow:hidden;background:#081525;min-height:300px}
+.map-svg-wrap{flex:1;position:relative;overflow:hidden;background:#e8e4dc;min-height:300px}
 .map-trip-label{position:absolute;top:10px;left:50%;transform:translateX(-50%);background:rgba(10,10,8,0.85);border:1px solid var(--border);padding:4px 14px;font-size:0.65rem;letter-spacing:1.5px;text-transform:uppercase;color:var(--mist);pointer-events:none;white-space:nowrap}
 .bagfree-alert{position:absolute;bottom:10px;left:50%;transform:translateX(-50%);background:rgba(201,169,110,0.15);border:1px solid var(--border-hi);padding:6px 16px;font-size:0.68rem;color:var(--gold);pointer-events:none;white-space:nowrap;display:none}
 .map-itinerary{background:var(--noir2);border-top:1px solid var(--border);padding:0.75rem 1rem;flex-shrink:0;max-height:160px;overflow-y:auto}
@@ -673,6 +673,11 @@ window._supabaseLaunchPatch = async function() {
       </div>
 
       <div class="map-toolbar">
+        <button class="layer-btn" onclick="switchBasemap('dark',this)" id="bmDark">Dark</button>
+        <button class="layer-btn active" onclick="switchBasemap('light',this)" id="bmLight">Light</button>
+        <button class="layer-btn" onclick="switchBasemap('satellite',this)" id="bmSatellite">Satellite</button>
+        <button class="layer-btn" onclick="switchBasemap('voyager',this)" id="bmVoyager">Voyager</button>
+        <span style="width:1px;height:18px;background:var(--border);flex-shrink:0;margin:0 2px"></span>
         <button class="layer-btn active" onclick="toggleLayer('bagfree',this)"><span class="dot" style="background:var(--gold)"></span>BagFree</button>
         <button class="layer-btn active" onclick="toggleLayer('landmarks',this)"><span class="dot" style="background:var(--white);opacity:0.6"></span>Landmarks</button>
         <button class="layer-btn active" onclick="toggleLayer('flights',this)"><span class="dot" style="background:var(--green)"></span>Flights</button>
@@ -681,11 +686,6 @@ window._supabaseLaunchPatch = async function() {
         <button class="layer-btn active" onclick="toggleLayer('events',this)"><span class="dot" style="background:var(--purple)"></span>Events</button>
         <button class="layer-btn active" onclick="toggleLayer('embassy',this)"><span class="dot" style="background:var(--blue)"></span>Embassies</button>
         <button class="layer-btn active" onclick="toggleLayer('collective',this)"><span class="dot" style="background:var(--green)"></span>Group Trips</button>
-        <span style="width:1px;height:18px;background:var(--border);flex-shrink:0;margin:0 2px"></span>
-        <button class="layer-btn active" onclick="switchBasemap('dark',this)" id="bmDark">Dark</button>
-        <button class="layer-btn" onclick="switchBasemap('satellite',this)" id="bmSatellite">Satellite</button>
-        <button class="layer-btn" onclick="switchBasemap('light',this)" id="bmLight">Light</button>
-        <button class="layer-btn" onclick="switchBasemap('voyager',this)" id="bmVoyager">Voyager</button>
       </div>
 
       <div class="map-svg-wrap">
@@ -1864,12 +1864,12 @@ function initMap() {
   };
   window._basemaps = BASEMAPS;
 
-  // Default: dark
-  window._activeBasemap = L.tileLayer(BASEMAPS.dark, {
+  // Default: light
+  window._activeBasemap = L.tileLayer(BASEMAPS.light, {
     subdomains: 'abcd',
     maxZoom: 19
   }).addTo(_map);
-  window._activeBasemapKey = 'dark';
+  window._activeBasemapKey = 'light';
 
   // Custom pane for markers so they sit above tiles
   _map.createPane('markers'); _map.getPane('markers').style.zIndex = 450;
