@@ -681,6 +681,11 @@ window._supabaseLaunchPatch = async function() {
         <button class="layer-btn active" onclick="toggleLayer('events',this)"><span class="dot" style="background:var(--purple)"></span>Events</button>
         <button class="layer-btn active" onclick="toggleLayer('embassy',this)"><span class="dot" style="background:var(--blue)"></span>Embassies</button>
         <button class="layer-btn active" onclick="toggleLayer('collective',this)"><span class="dot" style="background:var(--green)"></span>Group Trips</button>
+        <span style="width:1px;height:18px;background:var(--border);flex-shrink:0;margin:0 2px"></span>
+        <button class="layer-btn active" onclick="switchBasemap('dark',this)" id="bmDark">Dark</button>
+        <button class="layer-btn" onclick="switchBasemap('satellite',this)" id="bmSatellite">Satellite</button>
+        <button class="layer-btn" onclick="switchBasemap('light',this)" id="bmLight">Light</button>
+        <button class="layer-btn" onclick="switchBasemap('voyager',this)" id="bmVoyager">Voyager</button>
       </div>
 
       <div class="map-svg-wrap">
@@ -1850,11 +1855,21 @@ function initMap() {
     attributionControl: false,
   });
 
-  // Dark tile layer (CartoDB dark matter)
-  L.tileLayer('https://{s}.basemaps.cartocdn.com/dark_all/{z}/{x}/{y}{r}.png', {
+  // Basemap tile layers
+  const BASEMAPS = {
+    dark: 'https://{s}.basemaps.cartocdn.com/dark_all/{z}/{x}/{y}{r}.png',
+    light: 'https://{s}.basemaps.cartocdn.com/light_all/{z}/{x}/{y}{r}.png',
+    voyager: 'https://{s}.basemaps.cartocdn.com/rastertiles/voyager/{z}/{x}/{y}{r}.png',
+    satellite: 'https://server.arcgisonline.com/ArcGIS/rest/services/World_Imagery/MapServer/tile/{z}/{y}/{x}',
+  };
+  window._basemaps = BASEMAPS;
+
+  // Default: dark
+  window._activeBasemap = L.tileLayer(BASEMAPS.dark, {
     subdomains: 'abcd',
     maxZoom: 19
   }).addTo(_map);
+  window._activeBasemapKey = 'dark';
 
   // Custom pane for markers so they sit above tiles
   _map.createPane('markers'); _map.getPane('markers').style.zIndex = 450;
@@ -1875,6 +1890,33 @@ function initMap() {
   };
 
   _buildMapMarkers();
+}
+
+function switchBasemap(key, btn) {
+  if (!_map || key === window._activeBasemapKey) return;
+  // Remove current basemap
+  if (window._activeBasemap) _map.removeLayer(window._activeBasemap);
+  // Add new one
+  const opts = { subdomains: 'abcd', maxZoom: 19 };
+  if (key === 'satellite') { delete opts.subdomains; }
+  window._activeBasemap = L.tileLayer(window._basemaps[key], opts).addTo(_map);
+  window._activeBasemap.bringToBack();
+  window._activeBasemapKey = key;
+  // Update toolbar buttons
+  ['bmDark','bmSatellite','bmLight','bmVoyager'].forEach(id => {
+    const b = document.getElementById(id);
+    if (b) b.classList.remove('active');
+  });
+  if (btn) btn.classList.add('active');
+  // Adjust tile filter for light/satellite maps
+  const mapEl = document.getElementById('leafletMap');
+  if (key === 'dark') {
+    document.querySelector('.leaflet-container').style.background = '#081525';
+  } else if (key === 'satellite') {
+    document.querySelector('.leaflet-container').style.background = '#0a1628';
+  } else {
+    document.querySelector('.leaflet-container').style.background = '#e8e4dc';
+  }
 }
 
 function _icon(emoji, color, size=28) {
