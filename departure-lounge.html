@@ -191,6 +191,29 @@ button,input,select,textarea{font-family:var(--ff-body)}
 .no-dest-icon{font-size:2rem;opacity:0.3}
 .no-dest-text{font-size:0.8rem;color:var(--mist);max-width:200px;line-height:1.7}
 
+/* ── REGIONAL GUIDE AVATAR ── */
+#guideAvatar{position:fixed;bottom:6rem;right:2rem;z-index:700;display:none;flex-direction:column;align-items:flex-end;gap:0}
+.guide-bubble{background:var(--noir2);border:1px solid var(--border-hi);padding:0.85rem 1.1rem;max-width:240px;font-size:0.75rem;color:var(--mist);line-height:1.7;position:relative;margin-bottom:6px;border-radius:2px 2px 0 2px}
+.guide-bubble::after{content:'';position:absolute;bottom:-8px;right:16px;border:4px solid transparent;border-top-color:var(--border-hi)}
+.guide-bubble-name{font-size:0.58rem;letter-spacing:2px;text-transform:uppercase;margin-bottom:4px;font-weight:500}
+.guide-bubble-text{font-size:0.72rem;line-height:1.7}
+.guide-img-wrap{width:80px;height:80px;border-radius:50%;overflow:hidden;border:2px solid;cursor:pointer;transition:transform 0.2s;background:#000;flex-shrink:0}
+.guide-img-wrap:hover{transform:scale(1.05)}
+.guide-img-wrap img{width:100%;height:100%;object-fit:cover;object-position:center top}
+.guide-dismiss{position:absolute;top:-8px;right:-8px;width:18px;height:18px;border-radius:50%;background:var(--noir3);border:1px solid var(--border);color:var(--mist);font-size:0.6rem;cursor:pointer;display:flex;align-items:center;justify-content:center;line-height:1}
+
+/* ── GUIDE PANEL inside dest detail ── */
+.guide-panel{display:flex;gap:0.85rem;align-items:flex-start;padding:0.85rem;border:1px solid;margin-bottom:0.75rem}
+.guide-panel-img{width:52px;height:52px;border-radius:50%;overflow:hidden;background:#000;flex-shrink:0}
+.guide-panel-img img{width:100%;height:100%;object-fit:cover;object-position:center top}
+.guide-panel-name{font-size:0.58rem;letter-spacing:2px;text-transform:uppercase;font-weight:500;margin-bottom:2px}
+.guide-panel-intro{font-size:0.68rem;color:var(--mist);line-height:1.6}
+.guide-panel-chat{margin-top:0.65rem;display:flex;gap:6px}
+.guide-chat-input{flex:1;background:var(--noir3);border:1px solid var(--border);color:var(--white);padding:0.45rem 0.65rem;font-size:0.72rem;outline:none;font-family:var(--ff-body)}
+.guide-chat-input::placeholder{color:rgba(253,252,248,0.25)}
+.guide-chat-send{background:var(--gold);color:var(--noir);border:none;padding:0.45rem 0.75rem;font-size:0.65rem;cursor:pointer;font-family:var(--ff-body);font-weight:500}
+.guide-chat-response{margin-top:0.5rem;font-size:0.68rem;color:var(--mist);line-height:1.7;padding:0.5rem 0.65rem;background:rgba(255,255,255,0.03);border-left:2px solid;display:none}
+
 /* ── ADVISOR BUTTON & MODAL ── */
 #advisorFab{position:fixed;bottom:2rem;right:2rem;z-index:800;display:flex;flex-direction:column;align-items:flex-end;gap:8px}
 #advisorBtn{background:var(--gold);color:var(--noir);border:none;padding:0.75rem 1.25rem;font-size:0.65rem;font-weight:600;letter-spacing:2px;text-transform:uppercase;cursor:pointer;font-family:var(--ff-body);display:flex;align-items:center;gap:0.6rem;box-shadow:0 8px 32px rgba(201,169,110,0.35);transition:all 0.25s}
@@ -271,6 +294,115 @@ const supabase = createClient(SUPABASE_URL, SUPABASE_KEY)
 window.supabase = supabase
 
 const SURVEY_VERSION = 1
+
+// ── REGIONAL TRAVEL GUIDES ───────────────────────────────────────────────────
+const REGIONAL_GUIDES = {
+  caribbean: {
+    name: 'Perla',
+    region: 'Caribbean',
+    title: 'Your Caribbean Guide',
+    accent: 'St. Vincent',
+    voice: 'Warm, joyful and deeply knowledgeable. Speaks with a soft St. Vincent lilt. She knows every island, every hidden beach, every Carnival date, and exactly which doubles stall in Port of Spain is worth the queue.',
+    greeting: "Hey there, welcome to the islands! I\'m Perla, your Caribbean guide. Whether you\'re dreaming of Tobago Cays, Trinidad Carnival, or finding the perfect beach on Bequia — I\'ve got you. What are you planning?",
+    color: '#5DCAA5',
+    bg: 'rgba(77,219,168,0.08)',
+    border: 'rgba(77,219,168,0.3)',
+    image: 'data:image/png;base64,' + perla_b64,
+    destinations: ['St. Vincent', 'Trinidad', 'Miami'],
+  },
+  europe: {
+    name: 'Isabelle',
+    region: 'Europe',
+    title: 'Your European Guide',
+    accent: 'Paris',
+    voice: 'Elegant, precise and cultured. Deep knowledge of Michelin dining, museum reservations, fashion weeks, and how to live like a local in every European capital.',
+    greeting: "Bonjour! I\'m Isabelle, and Europe is my world. From the best table at Guy Savoy to the quietest corner of the Uffizi — I know where the real magic is. Where in Europe are we going?",
+    color: '#C9A96E',
+    bg: 'rgba(201,169,110,0.08)',
+    border: 'rgba(201,169,110,0.35)',
+    image: null,
+    destinations: ['Rome', 'Paris', 'London', 'Barcelona', 'Santorini'],
+  },
+  asia: {
+    name: 'Yuki',
+    region: 'Asia Pacific',
+    title: 'Your Asia Pacific Guide',
+    accent: 'Tokyo',
+    voice: 'Calm, respectful and extraordinarily detailed. Expert in temple etiquette, omakase reservations, Bali wellness retreats, and navigating Asia's complex cultural norms with grace.',
+    greeting: "Konnichiwa! I\'m Yuki, your guide across Asia Pacific. From a private onsen in Kyoto to sunrise at Uluwatu — I\'ll help you experience Asia the right way. What\'s calling to you?",
+    color: '#9B7FE8',
+    bg: 'rgba(155,127,232,0.08)',
+    border: 'rgba(155,127,232,0.3)',
+    image: null,
+    destinations: ['Tokyo', 'Bali', 'Maldives'],
+  },
+  middleeast: {
+    name: 'Zara',
+    region: 'Middle East',
+    title: 'Your Middle East Guide',
+    accent: 'Dubai',
+    voice: 'Sophisticated, culturally aware and sharp. Navigates dress codes, Ramadan schedules, desert experiences, rooftop dining and the world's most opulent hotels with ease.',
+    greeting: "Marhaba! I\'m Zara, your guide to the Middle East. Dubai, Abu Dhabi, the desert — it\'s a world of contrast and luxury. Let me show you how to do it properly. Where are we headed?",
+    color: '#F0A830',
+    bg: 'rgba(240,168,48,0.08)',
+    border: 'rgba(240,168,48,0.3)',
+    image: null,
+    destinations: ['Dubai'],
+  },
+  americas: {
+    name: 'Luna',
+    region: 'Americas',
+    title: 'Your Americas Guide',
+    accent: 'New York',
+    voice: 'Dynamic, connected and full of insider access. Knows the best Michelin tables in New York, the real neighbourhoods in every city, and how to get the most out of the USA.',
+    greeting: "Hey! I\'m Luna, your guide across the Americas. New York, Tampa, Miami, Orlando — I know where the locals eat, sleep and explore. What\'s the plan?",
+    color: '#378ADD',
+    bg: 'rgba(55,138,221,0.08)',
+    border: 'rgba(55,138,221,0.3)',
+    image: null,
+    destinations: ['Tampa', 'Miami', 'Orlando', 'New York'],
+  },
+  africa: {
+    name: 'Amara',
+    region: 'Africa',
+    title: 'Your Africa Guide',
+    accent: 'Cape Town',
+    voice: 'Soulful, adventurous and deeply connected to the continent. Safari expertise, coastal dining, vibrant city culture and the warmth that defines African hospitality.',
+    greeting: "Jambo! I\'m Amara, your guide across Africa. From Cape Town\'s winelands to the Serengeti at dawn — Africa will change you. Tell me where your heart is pulling you.",
+    color: '#E85555',
+    bg: 'rgba(232,85,85,0.08)',
+    border: 'rgba(232,85,85,0.3)',
+    image: null,
+    destinations: [],
+  },
+};
+
+function getGuideForDestination(city) {
+  if (!city) return null;
+  for (const [key, guide] of Object.entries(REGIONAL_GUIDES)) {
+    if (guide.destinations.includes(city)) return guide;
+  }
+  // Fallback by region string
+  const d = DEST_DATA[city];
+  if (!d) return null;
+  if (d.region === 'Caribbean') return REGIONAL_GUIDES.caribbean;
+  if (d.region === 'Europe') return REGIONAL_GUIDES.europe;
+  if (d.region === 'Asia Pacific') return REGIONAL_GUIDES.asia;
+  if (d.region === 'Middle East') return REGIONAL_GUIDES.middleeast;
+  if (d.region === 'Americas' || d.region === 'BagFree Service Area') return REGIONAL_GUIDES.americas;
+  return null;
+}
+
+function getGuideForProfile() {
+  const dests = profile.destinations || [];
+  if (dests.some(d => d.includes('Caribbean'))) return REGIONAL_GUIDES.caribbean;
+  if (dests.some(d => d.includes('Europe'))) return REGIONAL_GUIDES.europe;
+  if (dests.some(d => d.includes('Asia'))) return REGIONAL_GUIDES.asia;
+  if (dests.some(d => d.includes('Middle East'))) return REGIONAL_GUIDES.middleeast;
+  if (dests.some(d => d.includes('Americas'))) return REGIONAL_GUIDES.americas;
+  if (dests.some(d => d.includes('Africa'))) return REGIONAL_GUIDES.africa;
+  return REGIONAL_GUIDES.caribbean; // default to Perla
+}
 
 // ── SAVE PROFILE ──
 async function saveProfile(src) {
@@ -1117,6 +1249,11 @@ function _launchDashboardCore(){
   updateNearMeBtn();
   renderSavedTrips();
   showAdvisorFab();
+  // Show guide based on profile preferences
+  setTimeout(() => {
+    const guide = getGuideForProfile();
+    if (guide) showGuideAvatar(guide);
+  }, 1500);
 }
 
 // ── HOTEL SEARCH PANEL ─────────────────────────────────────────────────────
@@ -1783,6 +1920,19 @@ function showDestDetail(city){
 
   // Fetch live weather for this destination
   fetchWeather(city).then(data => renderWeatherInPanel(city, data));
+
+  // Show regional guide avatar and inject guide panel
+  const guide = getGuideForDestination(city);
+  if (guide) {
+    showGuideAvatar(guide);
+    // Inject guide panel at top of detail
+    setTimeout(() => {
+      const detail = document.querySelector('#rightContent .dest-detail');
+      if (detail) renderGuidePanel(city, detail);
+    }, 50);
+  } else {
+    hideGuideAvatar();
+  }
 }
 
 function showEmbassy(city){
@@ -1896,6 +2046,140 @@ function plotRoute(key){
 function addToTrip(city){
   planTripTo(city);
 }
+// ── REGIONAL GUIDE SYSTEM ────────────────────────────────────────────────────
+let _activeGuide = null;
+let _guideBubbleTimer = null;
+
+function showGuideAvatar(guide) {
+  if (!guide) return;
+  _activeGuide = guide;
+  const wrap = document.getElementById('guideAvatar');
+  const img = document.getElementById('guideImg');
+  const imgWrap = document.getElementById('guideImgWrap');
+  if (!wrap || !img) return;
+
+  // Set image or fallback emoji
+  if (guide.image) {
+    img.src = guide.image;
+    img.style.display = 'block';
+  } else {
+    // Placeholder until image is uploaded
+    imgWrap.innerHTML = `<div style="width:100%;height:100%;display:flex;align-items:center;justify-content:center;font-size:1.8rem;background:${guide.bg}">${guide.region === 'Europe' ? '🗼' : guide.region === 'Asia Pacific' ? '⛩️' : guide.region === 'Middle East' ? '🕌' : guide.region === 'Americas' ? '🗽' : '🌍'}</div>`;
+  }
+
+  // Style border to guide colour
+  imgWrap.style.borderColor = guide.color;
+
+  // Show
+  wrap.style.display = 'flex';
+
+  // Show greeting bubble after 1s
+  clearTimeout(_guideBubbleTimer);
+  _guideBubbleTimer = setTimeout(() => showGuideBubble(guide), 800);
+}
+
+function showGuideBubble(guide) {
+  const bubble = document.getElementById('guideBubble');
+  const name = document.getElementById('guideBubbleName');
+  const text = document.getElementById('guideBubbleText');
+  if (!bubble || !name || !text) return;
+  name.textContent = guide.name + ' · ' + guide.region;
+  name.style.color = guide.color;
+  text.textContent = guide.greeting;
+  bubble.style.borderColor = guide.border;
+  bubble.style.display = 'block';
+  // Auto-dismiss after 8s
+  clearTimeout(_guideBubbleTimer);
+  _guideBubbleTimer = setTimeout(dismissGuideBubble, 8000);
+}
+
+function dismissGuideBubble() {
+  const bubble = document.getElementById('guideBubble');
+  if (bubble) bubble.style.display = 'none';
+}
+
+function hideGuideAvatar() {
+  const wrap = document.getElementById('guideAvatar');
+  if (wrap) wrap.style.display = 'none';
+  dismissGuideBubble();
+  _activeGuide = null;
+}
+
+function openAdvisorWithGuide() {
+  dismissGuideBubble();
+  openAdvisor();
+}
+
+// Inject guide panel into destination detail
+function renderGuidePanel(city, container) {
+  const guide = getGuideForDestination(city);
+  if (!guide) return;
+
+  const panelId = 'guidePanel_' + city.replace(/\s/g, '_');
+  const panel = document.createElement('div');
+  panel.className = 'guide-panel';
+  panel.id = panelId;
+  panel.style.cssText = `border-color:${guide.border};background:${guide.bg}`;
+  panel.innerHTML = `
+    <div class="guide-panel-img">
+      ${guide.image
+        ? `<img src="${guide.image}" alt="${guide.name}"/>`
+        : `<div style="width:100%;height:100%;display:flex;align-items:center;justify-content:center;font-size:1.4rem;background:${guide.bg}">${guide.region === 'Europe' ? '🗼' : guide.region === 'Asia Pacific' ? '⛩️' : '🌍'}</div>`
+      }
+    </div>
+    <div style="flex:1;min-width:0">
+      <div class="guide-panel-name" style="color:${guide.color}">${guide.name} · ${guide.title}</div>
+      <div class="guide-panel-intro">Ask me anything about ${city} — I know it well.</div>
+      <div class="guide-panel-chat">
+        <input class="guide-chat-input" id="guideChatInput_${panelId}" placeholder="Ask ${guide.name} about ${city}..." onkeydown="if(event.key==='Enter')askGuide('${city}','${panelId}')"/>
+        <button class="guide-chat-send" onclick="askGuide('${city}','${panelId}')" style="background:${guide.color}">Ask →</button>
+      </div>
+      <div class="guide-chat-response" id="guideChatResp_${panelId}" style="border-color:${guide.color}"></div>
+    </div>
+  `;
+  if (container) container.prepend(panel);
+}
+
+async function askGuide(city, panelId) {
+  const guide = getGuideForDestination(city);
+  if (!guide) return;
+  const input = document.getElementById('guideChatInput_' + panelId);
+  const resp = document.getElementById('guideChatResp_' + panelId);
+  const question = input?.value?.trim();
+  if (!question || !resp) return;
+
+  resp.style.display = 'block';
+  resp.textContent = guide.name + ' is thinking...';
+  input.value = '';
+
+  const d = DEST_DATA[city] || {};
+  const prompt = `You are ${guide.name}, a BagFree travel guide for the ${guide.region} region. ${guide.voice}
+
+You are helping a traveler who is considering visiting ${city}, ${d.country || ''}.
+
+Key facts about ${city}: Safety ${d.safety}/100, visa: ${d.visa || 'check requirements'}, currency: ${d.currency || 'local currency'}, top restaurant: ${d.topRest || 'various options'}, insider tip: ${d.tips || ''}.
+
+The traveler's profile: travel style is "${profile.travelStyle || 'not set'}", interests include ${(profile.entertainment || []).join(', ') || 'general travel'}.
+
+The traveler asks: "${question}"
+
+Reply in your character voice — warm, specific, and genuinely helpful. Keep it to 2-3 sentences maximum. No generic advice. Give real, specific recommendations.`;
+
+  try {
+    const res = await fetch('/.netlify/functions/claude-proxy', {
+      method: 'POST',
+      headers: { 'Content-Type': 'application/json' },
+      body: JSON.stringify({ max_tokens: 200, messages: [{ role: 'user', content: prompt }] })
+    });
+    const data = await res.json();
+    const text = data.content?.[0]?.text || 'Let me think on that one...';
+    resp.textContent = text;
+    resp.style.borderLeftColor = guide.color;
+  } catch(e) {
+    resp.textContent = 'Sorry, I had trouble connecting — try again in a moment.';
+  }
+}
+
 function trackKitOrder(){
   const val = (document.getElementById('kitOrderNum')?.value||'').trim();
   const el = document.getElementById('kitTrackResult');
@@ -1919,6 +2203,27 @@ function trackKitOrder(){
 let _advisorContext = { destination: null, itinerary: null, type: 'general' };
 
 function openAdvisor() {
+  // Update modal with active guide
+  const guide = _activeGuide || getGuideForProfile();
+  if (guide) {
+    const nameEl = document.getElementById('advisorGuideName');
+    const titleEl = document.getElementById('advisorGuideTitle');
+    const emojiEl = document.getElementById('advisorAvatarEmoji');
+    const imgEl = document.getElementById('advisorAvatarImg');
+    const header = document.getElementById('advisorHeader');
+    if (nameEl) nameEl.textContent = guide.name + ' · ' + guide.region;
+    if (titleEl) titleEl.textContent = guide.title + ' · BagFree';
+    if (guide.image && imgEl) {
+      imgEl.src = guide.image;
+      imgEl.style.display = 'block';
+      if (emojiEl) emojiEl.style.display = 'none';
+    }
+    // Tint header with guide colour
+    if (header) header.style.background = guide.color === '#C9A96E'
+      ? 'var(--gold)'
+      : `linear-gradient(135deg, ${guide.color}dd, ${guide.color}99)`;
+  }
+
   // Build context from current app state
   const ctx = buildAdvisorContext();
   document.getElementById('advisorContextText').innerHTML = ctx.text;
@@ -2855,6 +3160,18 @@ async function confirmBooking() {
 // It checks for an existing session and either restores the profile
 // (skipping the survey) or falls through to renderSurvey().
 </script>
+<!-- REGIONAL GUIDE AVATAR -->
+<div id="guideAvatar">
+  <div class="guide-bubble" id="guideBubble" style="display:none">
+    <div class="guide-bubble-name" id="guideBubbleName"></div>
+    <div class="guide-bubble-text" id="guideBubbleText"></div>
+    <div class="guide-dismiss" onclick="dismissGuideBubble()">✕</div>
+  </div>
+  <div class="guide-img-wrap" id="guideImgWrap" onclick="openAdvisorWithGuide()">
+    <img id="guideImg" src="" alt="Travel Guide"/>
+  </div>
+</div>
+
 <!-- ADVISOR FLOATING BUTTON -->
 <div id="advisorFab" style="display:none">
   <button id="advisorBtn" onclick="openAdvisor()">
@@ -2868,11 +3185,14 @@ async function confirmBooking() {
   <div class="advisor-box">
     <button onclick="closeAdvisor()" style="position:absolute;top:1rem;right:1rem;background:transparent;border:none;color:rgba(10,10,8,0.4);font-size:1.25rem;cursor:pointer;z-index:10;line-height:1">✕</button>
 
-    <div class="advisor-header">
-      <div class="advisor-avatar">✈️</div>
+    <div class="advisor-header" id="advisorHeader" style="background:var(--gold)">
+      <div class="advisor-avatar" id="advisorAvatar" style="overflow:hidden;background:#000">
+        <span id="advisorAvatarEmoji" style="font-size:1.2rem">✈️</span>
+        <img id="advisorAvatarImg" src="" alt="" style="display:none;width:100%;height:100%;object-fit:cover;object-position:center top"/>
+      </div>
       <div class="advisor-header-text">
-        <div class="advisor-name">BagFree Travel Advisors</div>
-        <div class="advisor-title">Valet By Nuor · Concierge Team</div>
+        <div class="advisor-name" id="advisorGuideName">BagFree Travel Advisors</div>
+        <div class="advisor-title" id="advisorGuideTitle">Valet By Nuor · Concierge Team</div>
         <div class="advisor-online"><span class="advisor-online-dot"></span>Available · Responds within 24 hours</div>
       </div>
     </div>
