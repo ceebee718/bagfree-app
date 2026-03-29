@@ -89,17 +89,13 @@ input,select,textarea{font-family:var(--ff-body)}
   left:0;
   right:0;
   z-index:99999;
-
   min-height:var(--promo-height);
-
   background:#C9A96E;
   color:#0A0A08;
-
   display:flex;
   align-items:center;
   justify-content:center;
   gap:0.75rem;
-
   padding:9px 1rem;
   font-size:0.62rem;
   font-weight:500;
@@ -107,20 +103,12 @@ input,select,textarea{font-family:var(--ff-body)}
   text-transform:uppercase;
   text-decoration:none;
   font-family:sans-serif;
-
-  transition:
-    transform 0.28s ease,
-    opacity 0.28s ease,
-    background 0.2s ease;
-
+  transition:transform 0.28s ease, opacity 0.28s ease, background 0.2s ease;
   will-change:transform,opacity;
 }
 
-#promoBanner:hover{
-  background:#E8D5B0;
-}
+#promoBanner:hover{background:#E8D5B0}
 
-/* 👇 THIS is what enables collapse */
 #promoBanner.is-collapsed{
   transform:translateY(-100%);
   opacity:0;
