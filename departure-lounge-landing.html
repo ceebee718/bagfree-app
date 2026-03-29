@@ -141,9 +141,25 @@ footer{position:relative;z-index:10;background:rgba(201,169,110,0.03);border-top
 .reveal{opacity:0;transform:translateY(28px);transition:opacity 0.75s ease,transform 0.75s ease}
 .reveal.up{opacity:1;transform:translateY(0)}
 .d1{transition-delay:0.1s}.d2{transition-delay:0.2s}.d3{transition-delay:0.3s}
+
+/* ── PROMO BAR ── */
+#promoBanner{position:fixed;top:0;left:0;right:0;z-index:99999;background:var(--gold, #C9A96E);color:#0A0A08;display:flex;align-items:center;justify-content:center;gap:0.75rem;padding:9px 1rem;font-family:'Jost',sans-serif;font-size:0.62rem;font-weight:500;letter-spacing:2.5px;text-transform:uppercase;cursor:pointer;text-decoration:none;transition:background 0.2s}
+#promoBanner:hover{background:#E8D5B0}
+.promo-code{background:#0A0A08;color:#C9A96E;padding:2px 10px;letter-spacing:3px;font-weight:600;font-size:0.6rem}
+.promo-dismiss{position:absolute;right:1rem;background:transparent;border:none;color:rgba(10,10,8,0.45);font-size:1rem;cursor:pointer;line-height:1;padding:0;font-family:inherit}
+body{padding-top:36px}
+#nav{top:36px!important}
 </style>
 </head>
 <body>
+<!-- PROMO BAR -->
+<a id="promoBanner" href="https://valetbynuor.com/collections/all" target="_blank">
+  <span>✦ 25% off your first BagFree kit</span>
+  <span class="promo-code">BAGFREE25</span>
+  <span>· Shop now ↗</span>
+  <button class="promo-dismiss" onclick="event.preventDefault();event.stopPropagation();this.parentElement.style.display='none';document.body.style.paddingTop='0'" title="Dismiss">✕</button>
+</a>
+
 <div id="mesh"><canvas id="mc"></canvas></div>
 
 <nav id="nav">
