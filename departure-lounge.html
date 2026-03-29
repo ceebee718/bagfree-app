@@ -366,17 +366,23 @@ window.doSignIn = async function() {
   if (!email || !password) { showAuthError('Please enter your email and password.'); return }
   const btn = document.getElementById('signinBtn')
   btn.disabled = true; btn.textContent = 'Signing in...'
-  const { data, error } = await supabase.auth.signInWithPassword({ email, password })
-  if (error) {
-    showAuthError(error.message === 'Invalid login credentials' ? 'Incorrect email or password.' : error.message)
-    btn.disabled = false; btn.textContent = 'Sign In →'; return
-  }
-  const { data: saved } = await supabase.from('profiles').select('*').eq('id', data.user.id).single()
-  document.getElementById('authOverlay').style.display = 'none'
-  if (saved && saved.travel_style) {
-    applyProfile(saved); _launchDashboardCore()
-  } else {
-    document.getElementById('surveyOverlay').style.display = 'flex'; renderSurvey()
+  try {
+    const { data, error } = await supabase.auth.signInWithPassword({ email, password })
+    if (error) {
+      showAuthError(error.message === 'Invalid login credentials' ? 'Incorrect email or password.' : error.message)
+      btn.disabled = false; btn.textContent = 'Sign In →'; return
+    }
+    const { data: saved } = await supabase.from('profiles').select('*').eq('id', data.user.id).single()
+    document.getElementById('authOverlay').style.display = 'none'
+    if (saved && saved.travel_style) {
+      applyProfile(saved); _launchDashboardCore()
+    } else {
+      document.getElementById('surveyOverlay').style.display = 'flex'; renderSurvey()
+    }
+  } catch(e) {
+    console.error('Sign in error:', e)
+    showAuthError('Connection error — please check your internet and try again.')
+    btn.disabled = false; btn.textContent = 'Sign In →'
   }
 }
 
@@ -390,13 +396,30 @@ window.doRegister = async function() {
   if (pass1 !== pass2)  { showAuthError('Passwords do not match.'); return }
   const btn = document.getElementById('registerBtn')
   btn.disabled = true; btn.textContent = 'Creating account...'
-  const { data, error } = await supabase.auth.signUp({ email, password: pass1 })
-  if (error) { showAuthError(error.message); btn.disabled = false; btn.textContent = 'Create Account & Personalise →'; return }
-  profile.name = name; profile.email = email
-  window._profile = { ...profile }
-  document.getElementById('authOverlay').style.display = 'none'
-  document.getElementById('surveyOverlay').style.display = 'flex'
-  renderSurvey()
+  try {
+    const { data, error } = await supabase.auth.signUp({ email, password: pass1 })
+    if (error) { showAuthError(error.message); btn.disabled = false; btn.textContent = 'Create Account & Personalise →'; return }
+    // If email confirmation is required, user won't have a session yet
+    if (data.user && data.user.identities && data.user.identities.length === 0) {
+      showAuthError('This email is already registered. Try signing in instead.')
+      btn.disabled = false; btn.textContent = 'Create Account & Personalise →'; return
+    }
+    if (!data.session) {
+      // Email confirmation is enabled — tell user to check inbox
+      showAuthSuccess('Account created! Check your email for a confirmation link, then sign in.')
+      btn.disabled = false; btn.textContent = 'Create Account & Personalise →'
+      switchAuthTab('signin'); return
+    }
+    profile.name = name; profile.email = email
+    window._profile = { ...profile }
+    document.getElementById('authOverlay').style.display = 'none'
+    document.getElementById('surveyOverlay').style.display = 'flex'
+    renderSurvey()
+  } catch(e) {
+    console.error('Registration error:', e)
+    showAuthError('Connection error — please check your internet and try again.')
+    btn.disabled = false; btn.textContent = 'Create Account & Personalise →'
+  }
 }
 
 window.doReset = async function() {
@@ -912,7 +935,7 @@ const DEST_DATA = {
     plug:'Type A (standard US)',voltage:'120V · 60Hz',adapter:'No adapter needed',usb:'Everywhere',bagfreeKit:'Same-day delivery · partner network ↗',
     embassy:'N/A · Domestic travel',embassyPhone:'N/A',embassyHours:'N/A',embassyStatus:'N/A',
     bagfree:false,bagfreeNote:'Partner network in discussion',
-    events:['Sep — New York Fashion Week','Nov — Macy's Thanksgiving Parade','Dec-Jan — Times Square New Year'],
+    events:['Sep — New York Fashion Week','Nov — Macy\u2019s Thanksgiving Parade','Dec-Jan — Times Square New Year'],
     tips:'MetroCard is essential. Get NYC Restaurant Week reservations day they open. Central Park at 7am is magical.'},
   'Trinidad':{country:'Trinidad & Tobago',region:'Caribbean',match:82,tags:['BagFree Zone','Carnival','Culture'],styles:['Cultural Immersion','Adventure & Wellness'],
     safety:65,govt:'Parliamentary Republic · Democratic',visa:'No visa · US Passport · 90 days',stateDept:'Level 2',lgbtq:'Exercise caution · limited protections',
@@ -921,7 +944,7 @@ const DEST_DATA = {
     hotels:18,hotelAvg:'$180/night',michelin:0,michelinStars:'Not rated · exceptional local cuisine',topRest:'Chaud Cafe · Apsara · $60pp',resv:'Book months ahead for Carnival',
     spa:8,golf:4,marina:'Crews Inn Marina',fbo:'Piarco International',
     plug:'Type A/B (standard US + grounded)',voltage:'115V · 60Hz',adapter:'No adapter needed',usb:'Yes · most hotels',bagfreeKit:'BagFree Caribbean Kit ↗',
-    embassy:'15 Queen's Park West, Port of Spain',embassyPhone:'+1 868-622-6371',embassyHours:'Mon-Fri 7:30am-4:30pm',embassyStatus:'Fully operational',
+    embassy:'15 Queen\u2019s Park West, Port of Spain',embassyPhone:'+1 868-622-6371',embassyHours:'Mon-Fri 7:30am-4:30pm',embassyStatus:'Fully operational',
     bagfree:false,bagfreeNote:'BagFree Caribbean delivery · 2026',
     events:['Feb-Mar — Carnival · book 6 months ahead','Oct — Tobago Jazz Experience','Aug — Emancipation Day'],
     tips:'Doubles for breakfast from a street vendor is essential. Maracas Bay for beach and bake & shark. Tobago is much calmer.'},
@@ -929,12 +952,12 @@ const DEST_DATA = {
     safety:70,govt:'Federal Republic · Democratic',visa:'No visa required',stateDept:'N/A · Domestic',lgbtq:'Safe',
     solo:'Safe',health:'Excellent · major hospital network',
     currency:'USD',rate:'$1 = $1',trend:'N/A',cash:'Card everywhere',tip:'18-20% standard',atm:'Everywhere',
-    hotels:38,hotelAvg:'$220/night',michelin:0,michelinStars:'Not rated · strong dining scene',topRest:'Victoria & Albert's · AAA 5 Diamond',resv:'Book 6 months ahead for V&A',
+    hotels:38,hotelAvg:'$220/night',michelin:0,michelinStars:'Not rated · strong dining scene',topRest:'Victoria & Albert\u2019s · AAA 5 Diamond',resv:'Book 6 months ahead for V&A',
     spa:24,golf:34,marina:'N/A',fbo:'Orlando Executive Airport FBO',
     plug:'Type A (standard US)',voltage:'120V · 60Hz',adapter:'No adapter needed',usb:'Everywhere',bagfreeKit:'Same-day delivery available now ↗',
     embassy:'N/A · Domestic travel',embassyPhone:'N/A',embassyHours:'N/A',embassyStatus:'N/A',
     bagfree:true,bagfreeNote:'Same-day delivery available · Powered by Valet By Nuor',
-    events:['Year-round — Theme park events','Dec — Mickey's Very Merry Christmas Party','Jun — Pride events'],
+    events:['Year-round — Theme park events','Dec — Mickey\u2019s Very Merry Christmas Party','Jun — Pride events'],
     tips:'BagFree delivers same-day to all Disney, Universal and SeaWorld resort hotels. Download the Disney app before you fly.'},
 };
 
