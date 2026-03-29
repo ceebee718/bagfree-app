@@ -25,8 +25,8 @@ button,input,select,textarea{font-family:var(--ff-body)}
 ::-webkit-scrollbar-thumb{background:var(--gold-dim)}
 
 /* LEAFLET DARK OVERRIDES */
-.leaflet-container{background:#081525;font-family:var(--ff-body)}
-.leaflet-tile{filter:brightness(0.45) saturate(0.6) hue-rotate(180deg)}
+.leaflet-container{background:#e8e4dc;font-family:var(--ff-body)}
+.leaflet-tile{transition:filter 0.3s}
 .leaflet-control-zoom a{background:var(--noir2);color:var(--gold);border-color:var(--border)}
 .leaflet-control-zoom a:hover{background:var(--noir3);color:var(--gold-light)}
 .leaflet-popup-content-wrapper{background:var(--noir2);color:var(--white);border:1px solid var(--border-hi);border-radius:0;box-shadow:0 4px 24px rgba(0,0,0,0.6)}
@@ -85,10 +85,10 @@ button,input,select,textarea{font-family:var(--ff-body)}
 .dest-card.active{border-color:var(--gold);background:rgba(201,169,110,0.06)}
 .dest-match{position:absolute;top:0.75rem;right:0.75rem;font-size:0.6rem;letter-spacing:1px;color:var(--gold);background:rgba(201,169,110,0.12);padding:2px 7px;border:1px solid var(--border-hi)}
 .dest-name{font-family:var(--ff-display);font-size:1.05rem;font-weight:300;color:var(--white);margin-bottom:2px}
-.dest-country{font-size:0.65rem;color:rgba(253,252,248,0.7);margin-bottom:6px}
+.dest-country{font-size:0.65rem;color:var(--mist);margin-bottom:6px}
 .dest-tags{display:flex;gap:4px;flex-wrap:wrap}
-.dest-tag{font-size:0.58rem;letter-spacing:1px;text-transform:uppercase;padding:2px 8px;border:1px solid rgba(253,252,248,0.25);color:rgba(253,252,248,0.82);background:rgba(253,252,248,0.06)}
-.dest-tag.match{border-color:rgba(201,169,110,0.55);color:var(--gold);background:rgba(201,169,110,0.08)}
+.dest-tag{font-size:0.58rem;letter-spacing:1px;text-transform:uppercase;padding:2px 6px;border:1px solid var(--border);color:var(--mist)}
+.dest-tag.match{border-color:rgba(201,169,110,0.3);color:var(--gold)}
 
 /* LIVE FEED */
 .live-item{display:flex;align-items:center;gap:0.6rem;padding:0.5rem 0;border-bottom:1px solid rgba(253,252,248,0.05)}
@@ -105,16 +105,16 @@ button,input,select,textarea{font-family:var(--ff-body)}
 /* TIP */
 .tip-card{background:var(--noir3);border-left:2px solid var(--gold);padding:0.85rem;border-radius:0}
 .tip-day{font-size:0.55rem;letter-spacing:2px;text-transform:uppercase;color:var(--gold);margin-bottom:4px}
-.tip-text{font-size:0.75rem;color:rgba(253,252,248,0.72);line-height:1.7}
+.tip-text{font-size:0.75rem;color:var(--mist);line-height:1.7}
 
 /* MAP CENTER */
 .dl-map-area{display:flex;flex-direction:column;overflow:hidden}
 .map-toolbar{background:var(--noir2);border-bottom:1px solid var(--border);padding:0 1rem;height:42px;display:flex;align-items:center;gap:0.5rem;flex-shrink:0;overflow-x:auto}
 .map-toolbar::-webkit-scrollbar{height:0}
-.layer-btn{background:transparent;border:1px solid rgba(253,252,248,0.2);color:rgba(253,252,248,0.75);padding:3px 10px;font-size:0.58rem;letter-spacing:1.5px;text-transform:uppercase;cursor:pointer;transition:all 0.2s;white-space:nowrap;display:flex;align-items:center;gap:4px}
+.layer-btn{background:transparent;border:1px solid var(--border);color:var(--mist);padding:3px 10px;font-size:0.58rem;letter-spacing:1.5px;text-transform:uppercase;cursor:pointer;transition:all 0.2s;white-space:nowrap;display:flex;align-items:center;gap:4px}
 .layer-btn .dot{width:6px;height:6px;border-radius:50%;flex-shrink:0}
-.layer-btn.active{border-color:rgba(201,169,110,0.6);color:var(--gold);background:rgba(201,169,110,0.1)}
-.map-svg-wrap{flex:1;position:relative;overflow:hidden;background:#081525;min-height:300px}
+.layer-btn.active{border-color:rgba(201,169,110,0.4);color:var(--gold);background:rgba(201,169,110,0.08)}
+.map-svg-wrap{flex:1;position:relative;overflow:hidden;background:#e8e4dc;min-height:300px}
 .map-trip-label{position:absolute;top:10px;left:50%;transform:translateX(-50%);background:rgba(10,10,8,0.85);border:1px solid var(--border);padding:4px 14px;font-size:0.65rem;letter-spacing:1.5px;text-transform:uppercase;color:var(--mist);pointer-events:none;white-space:nowrap}
 .bagfree-alert{position:absolute;bottom:10px;left:50%;transform:translateX(-50%);background:rgba(201,169,110,0.15);border:1px solid var(--border-hi);padding:6px 16px;font-size:0.68rem;color:var(--gold);pointer-events:none;white-space:nowrap;display:none}
 .map-itinerary{background:var(--noir2);border-top:1px solid var(--border);padding:0.75rem 1rem;flex-shrink:0;max-height:160px;overflow-y:auto}
@@ -137,7 +137,7 @@ button,input,select,textarea{font-family:var(--ff-body)}
 .detail-section:last-child{border-bottom:none}
 .detail-section-title{font-size:0.55rem;letter-spacing:3px;text-transform:uppercase;color:var(--gold);margin-bottom:0.75rem}
 .detail-row{display:flex;justify-content:space-between;align-items:flex-start;padding:3px 0;gap:0.5rem}
-.detail-key{font-size:0.68rem;color:rgba(253,252,248,0.68);flex-shrink:0}
+.detail-key{font-size:0.68rem;color:var(--mist);flex-shrink:0}
 .detail-val{font-size:0.72rem;color:var(--white);text-align:right;line-height:1.4}
 .detail-val.good{color:var(--green)}
 .detail-val.warn{color:var(--amber)}
@@ -180,7 +180,7 @@ button,input,select,textarea{font-family:var(--ff-body)}
 /* TRIP PLANNER BAR */
 .trip-bar{background:var(--noir2);border-bottom:1px solid var(--border);padding:0.6rem 1rem;display:flex;gap:0.5rem;align-items:center;flex-shrink:0}
 .trip-input{background:var(--noir3);border:1px solid var(--border);color:var(--white);padding:0.45rem 0.75rem;font-size:0.75rem;outline:none;flex:1}
-.trip-input::placeholder{color:rgba(253,252,248,0.45)}
+.trip-input::placeholder{color:rgba(253,252,248,0.3)}
 .trip-input:focus{border-color:rgba(201,169,110,0.35)}
 .trip-select{background:var(--noir3);border:1px solid var(--border);color:var(--white);padding:0.45rem 0.5rem;font-size:0.72rem;outline:none}
 .trip-go{background:var(--gold);color:var(--noir);border:none;padding:0.45rem 1rem;font-size:0.62rem;letter-spacing:2px;text-transform:uppercase;cursor:pointer;white-space:nowrap}
@@ -247,15 +247,40 @@ button,input,select,textarea{font-family:var(--ff-body)}
 /* ── TOAST ── */
 #bfToast{position:fixed;bottom:2rem;right:2rem;background:var(--gold);color:var(--noir);padding:0.7rem 1.4rem;font-size:0.68rem;letter-spacing:2px;text-transform:uppercase;font-weight:500;z-index:9999;opacity:0;transition:opacity 0.3s;pointer-events:none}
 
-/* ── PROMO BAR ── */
-#promoBanner{position:fixed;top:0;left:0;right:0;z-index:99999;background:var(--gold, #C9A96E);color:#0A0A08;display:flex;align-items:center;justify-content:center;gap:0.75rem;padding:9px 1rem;font-family:'Jost',sans-serif;font-size:0.62rem;font-weight:500;letter-spacing:2.5px;text-transform:uppercase;cursor:pointer;text-decoration:none;transition:background 0.2s}
-#promoBanner:hover{background:#E8D5B0}
-.promo-code{background:#0A0A08;color:#C9A96E;padding:2px 10px;letter-spacing:3px;font-weight:600;font-size:0.6rem}
-.promo-dismiss{position:absolute;right:1rem;background:transparent;border:none;color:rgba(10,10,8,0.45);font-size:1rem;cursor:pointer;line-height:1;padding:0;font-family:inherit}
-body{padding-top:36px}
+/* ── PROMO BANNER ── */
+#promoBanner{position:fixed;bottom:1.5rem;left:1.5rem;z-index:790;max-width:340px;background:var(--noir2);border:1px solid var(--border-hi);box-shadow:0 8px 40px rgba(0,0,0,0.5);transform:translateY(120%);transition:transform 0.5s cubic-bezier(0.16,1,0.3,1);display:none}
+#promoBanner.visible{transform:translateY(0)}
+#promoBanner .promo-shimmer{position:absolute;top:0;left:0;right:0;height:2px;background:linear-gradient(90deg,transparent,var(--gold),transparent);animation:promoShimmer 3s infinite}
+@keyframes promoShimmer{0%{opacity:0.3}50%{opacity:1}100%{opacity:0.3}}
+
+/* ── RESPONSIVE ── */
+@media(max-width:1024px){
+  .dl-body{grid-template-columns:1fr!important}
+  .dl-sidebar,.dl-right{display:none}
+  .dl-sidebar.mobile-open,.dl-right.mobile-open{display:block;position:fixed;top:52px;bottom:0;width:300px;z-index:500;overflow-y:auto}
+  .dl-sidebar.mobile-open{left:0}
+  .dl-right.mobile-open{right:0}
+  .dl-header{padding:0 0.75rem}
+  .map-toolbar{flex-wrap:wrap;height:auto;padding:0.5rem}
+  .trip-bar{flex-wrap:wrap}
+  .trip-input{min-width:120px}
+  #advisorFab{bottom:1rem;right:1rem}
+  #advisorBtn{padding:0.6rem 1rem;font-size:0.58rem}
+  #promoBanner{left:1rem;right:1rem;max-width:none;bottom:1rem}
+}
+@media(max-width:768px){
+  .survey-grid{grid-template-columns:1fr!important}
+  .survey-grid.cols3{grid-template-columns:1fr 1fr!important}
+  .survey-title{font-size:clamp(1.5rem,4vw,2.5rem)}
+  .auth-wrap{max-width:100%}
+  .profile-box,.adv-box{max-width:100%;margin:0.5rem}
+  .dl-logo{font-size:0.8rem;letter-spacing:2px}
+  .dl-user{font-size:0.62rem;gap:0.4rem}
+  .dl-user button{display:none}
+  .map-toolbar .layer-btn{font-size:0.5rem;padding:2px 6px}
+}
 </style>
 <script src="https://unpkg.com/leaflet@1.9.4/dist/leaflet.js"></script>
-</head>
 <script type="module">
 import { createClient } from 'https://cdn.jsdelivr.net/npm/@supabase/supabase-js/+esm'
 
@@ -276,6 +301,7 @@ async function saveProfile(src) {
     home_city: p.homeCity||null, travel_style: p.travelStyle||null,
     destinations: p.destinations||[], entertainment: p.entertainment||[],
     artists: p.artists||null, pain_point: p.painPoint||null,
+    discoverable: p.discoverable||false,
     survey_version: SURVEY_VERSION, updated_at: new Date().toISOString()
   })
 }
@@ -286,29 +312,48 @@ function applyProfile(saved) {
     name: saved.name, email: saved.email, homeCity: saved.home_city,
     travelStyle: saved.travel_style, destinations: saved.destinations||[],
     entertainment: saved.entertainment||[], artists: saved.artists, painPoint: saved.pain_point,
+    discoverable: saved.discoverable||false,
   }
-  Object.assign(profile, window._profile)
+  window.profile = window.profile || {}
+  Object.assign(window.profile, window._profile)
 }
 
 // ── AUTH FLOW ON LOAD ──
 document.addEventListener('DOMContentLoaded', async function() {
-  const { data: { session } } = await supabase.auth.getSession()
-  if (session) {
-    const { data: saved } = await supabase.from('profiles').select('*').eq('id', session.user.id).single()
-    if (saved && saved.travel_style) {
-      applyProfile(saved)
-      if ((saved.survey_version||0) < SURVEY_VERSION) {
-        document.getElementById('surveyOverlay').style.display = 'flex'
-        renderSurvey(); return
+  try {
+    const { data: { session }, error: sessErr } = await supabase.auth.getSession()
+    if (sessErr) { console.error('Session error:', sessErr) }
+    console.log('Session check:', session ? 'logged in as ' + session.user.email : 'no session')
+    if (session) {
+      const { data: saved, error: profErr } = await supabase.from('profiles').select('*').eq('id', session.user.id).single()
+      if (profErr) { console.warn('Profile fetch error:', profErr) }
+      console.log('Profile data:', saved ? 'found, travel_style=' + saved.travel_style : 'not found')
+      if (saved && saved.travel_style) {
+        applyProfile(saved)
+        if ((saved.survey_version||0) < SURVEY_VERSION) {
+          console.log('Survey version outdated, showing survey')
+          document.getElementById('authOverlay').style.display = 'none'
+          document.getElementById('surveyOverlay').style.display = 'flex'
+          renderSurvey(); return
+        }
+        console.log('Launching dashboard directly')
+        document.getElementById('authOverlay').style.display = 'none'
+        _launchDashboardCore(); return
       }
-      _launchDashboardCore(); return
+      // Logged in but no profile yet — show survey
+      console.log('No profile found, showing survey')
+      document.getElementById('authOverlay').style.display = 'none'
+      document.getElementById('surveyOverlay').style.display = 'flex'
+      renderSurvey(); return
     }
-    document.getElementById('surveyOverlay').style.display = 'flex'
-    renderSurvey(); return
+    // Not logged in — show auth screen
+    document.getElementById('authOverlay').style.display = 'flex'
+    document.getElementById('surveyOverlay').style.display = 'none'
+  } catch(e) {
+    console.error('Auth flow error:', e)
+    document.getElementById('authOverlay').style.display = 'flex'
+    document.getElementById('surveyOverlay').style.display = 'none'
   }
-  // Not logged in — show auth screen
-  document.getElementById('authOverlay').style.display = 'flex'
-  document.getElementById('surveyOverlay').style.display = 'none'
 })
 
 // ── AUTH TAB SWITCHER ──
@@ -348,17 +393,23 @@ window.doSignIn = async function() {
   if (!email || !password) { showAuthError('Please enter your email and password.'); return }
   const btn = document.getElementById('signinBtn')
   btn.disabled = true; btn.textContent = 'Signing in...'
-  const { data, error } = await supabase.auth.signInWithPassword({ email, password })
-  if (error) {
-    showAuthError(error.message === 'Invalid login credentials' ? 'Incorrect email or password.' : error.message)
-    btn.disabled = false; btn.textContent = 'Sign In →'; return
-  }
-  const { data: saved } = await supabase.from('profiles').select('*').eq('id', data.user.id).single()
-  document.getElementById('authOverlay').style.display = 'none'
-  if (saved && saved.travel_style) {
-    applyProfile(saved); _launchDashboardCore()
-  } else {
-    document.getElementById('surveyOverlay').style.display = 'flex'; renderSurvey()
+  try {
+    const { data, error } = await supabase.auth.signInWithPassword({ email, password })
+    if (error) {
+      showAuthError(error.message === 'Invalid login credentials' ? 'Incorrect email or password.' : error.message)
+      btn.disabled = false; btn.textContent = 'Sign In →'; return
+    }
+    const { data: saved } = await supabase.from('profiles').select('*').eq('id', data.user.id).single()
+    document.getElementById('authOverlay').style.display = 'none'
+    if (saved && saved.travel_style) {
+      applyProfile(saved); _launchDashboardCore()
+    } else {
+      document.getElementById('surveyOverlay').style.display = 'flex'; renderSurvey()
+    }
+  } catch(e) {
+    console.error('Sign in error:', e)
+    showAuthError('Connection error — please check your internet and try again.')
+    btn.disabled = false; btn.textContent = 'Sign In →'
   }
 }
 
@@ -372,13 +423,30 @@ window.doRegister = async function() {
   if (pass1 !== pass2)  { showAuthError('Passwords do not match.'); return }
   const btn = document.getElementById('registerBtn')
   btn.disabled = true; btn.textContent = 'Creating account...'
-  const { data, error } = await supabase.auth.signUp({ email, password: pass1 })
-  if (error) { showAuthError(error.message); btn.disabled = false; btn.textContent = 'Create Account & Personalise →'; return }
-  profile.name = name; profile.email = email
-  window._profile = { ...profile }
-  document.getElementById('authOverlay').style.display = 'none'
-  document.getElementById('surveyOverlay').style.display = 'flex'
-  renderSurvey()
+  try {
+    const { data, error } = await supabase.auth.signUp({ email, password: pass1 })
+    if (error) { showAuthError(error.message); btn.disabled = false; btn.textContent = 'Create Account & Personalise →'; return }
+    // If email confirmation is required, user won't have a session yet
+    if (data.user && data.user.identities && data.user.identities.length === 0) {
+      showAuthError('This email is already registered. Try signing in instead.')
+      btn.disabled = false; btn.textContent = 'Create Account & Personalise →'; return
+    }
+    if (!data.session) {
+      // Email confirmation is enabled — tell user to check inbox
+      showAuthSuccess('Account created! Check your email for a confirmation link, then sign in.')
+      btn.disabled = false; btn.textContent = 'Create Account & Personalise →'
+      switchAuthTab('signin'); return
+    }
+    window.profile.name = name; window.profile.email = email
+    window._profile = { ...window.profile }
+    document.getElementById('authOverlay').style.display = 'none'
+    document.getElementById('surveyOverlay').style.display = 'flex'
+    renderSurvey()
+  } catch(e) {
+    console.error('Registration error:', e)
+    showAuthError('Connection error — please check your internet and try again.')
+    btn.disabled = false; btn.textContent = 'Create Account & Personalise →'
+  }
 }
 
 window.doReset = async function() {
@@ -406,7 +474,7 @@ window.openProfileModal = function() {
   const STYLE_OPTS = ['Luxury Cruise','Cultural Immersion','Adventure & Wellness','Culinary Journey','Business Travel','Family Adventure']
   const DEST_OPTS  = ['Caribbean','Mediterranean','Asia Pacific','Europe','Africa & Middle East','Americas']
   const ENT_OPTS   = ['Live Music & Concerts','Formula 1 & Motorsport','Football & Sports','Theater & Opera','Art & Culture','Food & Wine Events']
-  const p = profile
+  const p = window.profile
   document.getElementById('profileContent').innerHTML = `
     <div class="profile-section-title">Personal details</div>
     <input class="auth-input" id="pName" placeholder="First name" value="${p.name||''}">
@@ -423,8 +491,19 @@ window.openProfileModal = function() {
     <div class="profile-section-title">Entertainment interests</div>
     <div class="pref-grid" id="pEntGrid">
       ${ENT_OPTS.map(e=>`<div class="pref-opt${(p.entertainment||[]).includes(e)?' selected':''}" onclick="togglePref(this,'multi')" data-val="${e}">${e}</div>`).join('')}
+    </div>
+    <div class="profile-section-title">Discoverability</div>
+    <div style="display:flex;align-items:center;gap:0.75rem;padding:0.75rem;border:1px solid ${p.discoverable?'var(--border-hi)':'var(--border)'};background:${p.discoverable?'rgba(201,169,110,0.06)':'transparent'};cursor:pointer;transition:all 0.2s" id="pDiscoverToggle" onclick="toggleDiscover()">
+      <div style="width:36px;height:20px;border-radius:10px;background:${p.discoverable?'var(--gold)':'var(--noir3)'};position:relative;transition:background 0.2s;flex-shrink:0" id="pDiscoverTrack">
+        <div style="width:16px;height:16px;border-radius:50%;background:${p.discoverable?'var(--noir)':'var(--mist)'};position:absolute;top:2px;${p.discoverable?'right:2px':'left:2px'};transition:all 0.2s" id="pDiscoverDot"></div>
+      </div>
+      <div>
+        <div style="font-size:0.75rem;color:var(--white)">${p.discoverable?'Discoverable':'Private'}</div>
+        <div style="font-size:0.6rem;color:var(--mist);margin-top:2px">${p.discoverable?'Other members can find you for group trips':'Your profile is hidden from other travelers'}</div>
+      </div>
     </div>`
   document.getElementById('profileModal').style.display = 'flex'
+  window._discoverToggleState = p.discoverable || false
 }
 
 window.togglePref = function(el, mode) {
@@ -432,6 +511,21 @@ window.togglePref = function(el, mode) {
     el.closest('.pref-grid').querySelectorAll('.pref-opt').forEach(o=>o.classList.remove('selected'))
   }
   el.classList.toggle('selected')
+}
+
+window.toggleDiscover = function() {
+  window._discoverToggleState = !window._discoverToggleState
+  const on = window._discoverToggleState
+  const track = document.getElementById('pDiscoverTrack')
+  const dot = document.getElementById('pDiscoverDot')
+  const wrap = document.getElementById('pDiscoverToggle')
+  if (track) { track.style.background = on ? 'var(--gold)' : 'var(--noir3)' }
+  if (dot) { dot.style.background = on ? 'var(--noir)' : 'var(--mist)'; dot.style.left = on ? 'auto' : '2px'; dot.style.right = on ? '2px' : 'auto' }
+  if (wrap) { wrap.style.borderColor = on ? 'var(--border-hi)' : 'var(--border)'; wrap.style.background = on ? 'rgba(201,169,110,0.06)' : 'transparent' }
+  const label = wrap?.querySelector('div > div:first-child')
+  const sub = wrap?.querySelector('div > div:last-child')
+  if (label) label.textContent = on ? 'Discoverable' : 'Private'
+  if (sub) sub.textContent = on ? 'Other members can find you for group trips' : 'Your profile is hidden from other travelers'
 }
 
 window.closeProfileModal = function() {
@@ -442,19 +536,21 @@ window.saveProfileChanges = async function() {
   const styleEl = document.querySelector('#pStyleGrid .pref-opt.selected')
   const dests = [...document.querySelectorAll('#pDestGrid .pref-opt.selected')].map(e=>e.dataset.val)
   const ents  = [...document.querySelectorAll('#pEntGrid .pref-opt.selected')].map(e=>e.dataset.val)
+  const p = window.profile
   const updated = {
-    name: document.getElementById('pName').value.trim()||profile.name,
-    homeCity: document.getElementById('pCity').value.trim()||profile.homeCity,
-    artists: document.getElementById('pArtists').value.trim()||profile.artists,
-    travelStyle: styleEl ? styleEl.dataset.val : profile.travelStyle,
-    destinations: dests.length ? dests : profile.destinations,
-    entertainment: ents.length ? ents : profile.entertainment,
-    email: profile.email, painPoint: profile.painPoint,
+    name: document.getElementById('pName').value.trim()||p.name,
+    homeCity: document.getElementById('pCity').value.trim()||p.homeCity,
+    artists: document.getElementById('pArtists').value.trim()||p.artists,
+    travelStyle: styleEl ? styleEl.dataset.val : p.travelStyle,
+    destinations: dests.length ? dests : p.destinations,
+    entertainment: ents.length ? ents : p.entertainment,
+    email: p.email, painPoint: p.painPoint,
+    discoverable: window._discoverToggleState !== undefined ? window._discoverToggleState : (p.discoverable || false),
   }
-  Object.assign(profile, updated)
-  window._profile = { ...profile }
-  document.getElementById('headerName').textContent = profile.name || 'Traveler'
-  document.getElementById('headerStyle').textContent = profile.travelStyle || 'Luxury'
+  Object.assign(window.profile, updated)
+  window._profile = { ...window.profile }
+  document.getElementById('headerName').textContent = window.profile.name || 'Traveler'
+  document.getElementById('headerStyle').textContent = window.profile.travelStyle || 'Luxury'
   document.getElementById('headerAvatar').textContent = getAvatar()
   await saveProfile(updated)
   window._aiScoreCache = null
@@ -465,26 +561,19 @@ window.saveProfileChanges = async function() {
 // ── SURVEY SUBMIT ──
 window._supabaseLaunchPatch = async function() {
   showAdvisorFab();
-  window._profile = { ...profile }
+  window._profile = { ...window.profile }
   saveProfile().catch(console.warn)
   _launchDashboardCore()
 }
 </script>
+</head>
 <body>
-<!-- PROMO BAR -->
-<a id="promoBanner" href="https://valetbynuor.com/collections/all" target="_blank">
-  <span>✦ 25% off your first BagFree kit</span>
-  <span class="promo-code">BAGFREE25</span>
-  <span>· Shop now ↗</span>
-  <button class="promo-dismiss" onclick="event.preventDefault();event.stopPropagation();this.parentElement.style.display='none';document.body.style.paddingTop='0'" title="Dismiss">✕</button>
-</a>
-
 
 <!-- AUTH SCREEN -->
 <div id="authOverlay" style="display:none">
   <div class="auth-wrap">
-    <div class="auth-logo">Bag<span>Free</span></div>
-    <div class="auth-tagline">The Departure Lounge · Member Access</div>
+    <a href="https://bagfree.app" style="text-decoration:none"><div class="auth-logo">Bag<span>Free</span></div></a>
+    <div class="auth-tagline">The Departure Lounge · Member Access <span style="background:var(--gold);color:var(--noir);padding:1px 6px;font-size:0.5rem;letter-spacing:2px;font-weight:600;margin-left:6px;vertical-align:middle">BETA</span></div>
 
     <div class="auth-tabs">
       <button class="auth-tab active" onclick="switchAuthTab('signin')" id="authTabSignin">Sign In</button>
@@ -543,7 +632,7 @@ window._supabaseLaunchPatch = async function() {
 </div>
 
 <!-- SURVEY -->
-<div id="surveyOverlay">
+<div id="surveyOverlay" style="display:none">
   <div class="survey-wrap">
     <div class="survey-progress" id="surveyProgress">
       <div class="survey-prog-step done" id="sp1"></div>
@@ -551,6 +640,7 @@ window._supabaseLaunchPatch = async function() {
       <div class="survey-prog-step" id="sp3"></div>
       <div class="survey-prog-step" id="sp4"></div>
       <div class="survey-prog-step" id="sp5"></div>
+      <div class="survey-prog-step" id="sp6"></div>
     </div>
     <div id="surveyContent"></div>
   </div>
@@ -559,7 +649,7 @@ window._supabaseLaunchPatch = async function() {
 <!-- DASHBOARD -->
 <div id="dashboard">
   <div class="dl-header">
-    <div class="dl-logo">Bag<span>Free</span> <span style="color:rgba(201,169,110,0.4);margin:0 8px">·</span> The Departure Lounge</div>
+    <a href="https://bagfree.app" style="text-decoration:none"><div class="dl-logo">Bag<span>Free</span> <span style="color:rgba(201,169,110,0.4);margin:0 8px">·</span> The Departure Lounge <span style="background:var(--gold);color:var(--noir);padding:1px 5px;font-size:0.45rem;letter-spacing:1.5px;font-weight:600;margin-left:6px;vertical-align:middle">BETA</span></div></a>
     <div class="dl-user">
       <div class="dl-avatar-badge" id="headerAvatar" style="cursor:pointer" onclick="openProfileModal()" title="Edit profile">👩‍✈️</div>
       <span id="headerName" style="cursor:pointer" onclick="openProfileModal()">Traveler</span>
@@ -606,7 +696,7 @@ window._supabaseLaunchPatch = async function() {
       <div class="sidebar-section" style="border-bottom:none">
         <div class="sidebar-label">BagFree essentials</div>
         <div id="bagfreeRec" style="font-size:0.72rem;color:var(--mist);line-height:1.7"></div>
-        <a href="https://valetbynuor.com/collections/all" target="_blank" style="display:block;margin-top:0.75rem">
+        <a href="https://valetbynuor.com" target="_blank" style="display:block;margin-top:0.75rem">
           <button class="btn-gold" style="width:100%;padding:0.6rem">Shop now ↗</button>
         </a>
       </div>
@@ -617,7 +707,7 @@ window._supabaseLaunchPatch = async function() {
       <div class="sidebar-section" style="border-top:1px solid var(--border);padding-top:1.25rem;margin-top:0">
         <div class="sidebar-label">Book a hotel</div>
         <div style="font-size:0.68rem;color:var(--mist);line-height:1.6;margin-bottom:0.65rem">Exclusive rates via our concierge network.</div>
-        <button class="btn-gold" style="width:100%;padding:0.55rem;font-size:0.58rem;letter-spacing:2px" onclick="showHotelSearch()">Search Hotels ↗</button>
+        <a href="https://bagfree.app/#hotel" target="_blank" style="display:block"><button class="btn-gold" style="width:100%;padding:0.55rem;font-size:0.58rem;letter-spacing:2px">Book Hotel ↗</button></a>
       </div>
     </div>
 
@@ -639,6 +729,11 @@ window._supabaseLaunchPatch = async function() {
       </div>
 
       <div class="map-toolbar">
+        <button class="layer-btn" onclick="switchBasemap('dark',this)" id="bmDark">Dark</button>
+        <button class="layer-btn active" onclick="switchBasemap('light',this)" id="bmLight">Light</button>
+        <button class="layer-btn" onclick="switchBasemap('satellite',this)" id="bmSatellite">Satellite</button>
+        <button class="layer-btn" onclick="switchBasemap('voyager',this)" id="bmVoyager">Voyager</button>
+        <span style="width:1px;height:18px;background:var(--border);flex-shrink:0;margin:0 2px"></span>
         <button class="layer-btn active" onclick="toggleLayer('bagfree',this)"><span class="dot" style="background:var(--gold)"></span>BagFree</button>
         <button class="layer-btn active" onclick="toggleLayer('landmarks',this)"><span class="dot" style="background:var(--white);opacity:0.6"></span>Landmarks</button>
         <button class="layer-btn active" onclick="toggleLayer('flights',this)"><span class="dot" style="background:var(--green)"></span>Flights</button>
@@ -901,7 +996,7 @@ const DEST_DATA = {
     plug:'Type A (standard US)',voltage:'120V · 60Hz',adapter:'No adapter needed',usb:'Everywhere',bagfreeKit:'Same-day delivery · partner network ↗',
     embassy:'N/A · Domestic travel',embassyPhone:'N/A',embassyHours:'N/A',embassyStatus:'N/A',
     bagfree:false,bagfreeNote:'Partner network in discussion',
-    events:['Sep — New York Fashion Week','Nov — Macy's Thanksgiving Parade','Dec-Jan — Times Square New Year'],
+    events:['Sep — New York Fashion Week','Nov — Macy\u2019s Thanksgiving Parade','Dec-Jan — Times Square New Year'],
     tips:'MetroCard is essential. Get NYC Restaurant Week reservations day they open. Central Park at 7am is magical.'},
   'Trinidad':{country:'Trinidad & Tobago',region:'Caribbean',match:82,tags:['BagFree Zone','Carnival','Culture'],styles:['Cultural Immersion','Adventure & Wellness'],
     safety:65,govt:'Parliamentary Republic · Democratic',visa:'No visa · US Passport · 90 days',stateDept:'Level 2',lgbtq:'Exercise caution · limited protections',
@@ -910,7 +1005,7 @@ const DEST_DATA = {
     hotels:18,hotelAvg:'$180/night',michelin:0,michelinStars:'Not rated · exceptional local cuisine',topRest:'Chaud Cafe · Apsara · $60pp',resv:'Book months ahead for Carnival',
     spa:8,golf:4,marina:'Crews Inn Marina',fbo:'Piarco International',
     plug:'Type A/B (standard US + grounded)',voltage:'115V · 60Hz',adapter:'No adapter needed',usb:'Yes · most hotels',bagfreeKit:'BagFree Caribbean Kit ↗',
-    embassy:'15 Queen's Park West, Port of Spain',embassyPhone:'+1 868-622-6371',embassyHours:'Mon-Fri 7:30am-4:30pm',embassyStatus:'Fully operational',
+    embassy:'15 Queen\u2019s Park West, Port of Spain',embassyPhone:'+1 868-622-6371',embassyHours:'Mon-Fri 7:30am-4:30pm',embassyStatus:'Fully operational',
     bagfree:false,bagfreeNote:'BagFree Caribbean delivery · 2026',
     events:['Feb-Mar — Carnival · book 6 months ahead','Oct — Tobago Jazz Experience','Aug — Emancipation Day'],
     tips:'Doubles for breakfast from a street vendor is essential. Maracas Bay for beach and bake & shark. Tobago is much calmer.'},
@@ -918,12 +1013,12 @@ const DEST_DATA = {
     safety:70,govt:'Federal Republic · Democratic',visa:'No visa required',stateDept:'N/A · Domestic',lgbtq:'Safe',
     solo:'Safe',health:'Excellent · major hospital network',
     currency:'USD',rate:'$1 = $1',trend:'N/A',cash:'Card everywhere',tip:'18-20% standard',atm:'Everywhere',
-    hotels:38,hotelAvg:'$220/night',michelin:0,michelinStars:'Not rated · strong dining scene',topRest:'Victoria & Albert's · AAA 5 Diamond',resv:'Book 6 months ahead for V&A',
+    hotels:38,hotelAvg:'$220/night',michelin:0,michelinStars:'Not rated · strong dining scene',topRest:'Victoria & Albert\u2019s · AAA 5 Diamond',resv:'Book 6 months ahead for V&A',
     spa:24,golf:34,marina:'N/A',fbo:'Orlando Executive Airport FBO',
     plug:'Type A (standard US)',voltage:'120V · 60Hz',adapter:'No adapter needed',usb:'Everywhere',bagfreeKit:'Same-day delivery available now ↗',
     embassy:'N/A · Domestic travel',embassyPhone:'N/A',embassyHours:'N/A',embassyStatus:'N/A',
     bagfree:true,bagfreeNote:'Same-day delivery available · Powered by Valet By Nuor',
-    events:['Year-round — Theme park events','Dec — Mickey's Very Merry Christmas Party','Jun — Pride events'],
+    events:['Year-round — Theme park events','Dec — Mickey\u2019s Very Merry Christmas Party','Jun — Pride events'],
     tips:'BagFree delivers same-day to all Disney, Universal and SeaWorld resort hotels. Download the Disney app before you fly.'},
 };
 
@@ -972,12 +1067,12 @@ const ALERTS = [
 
 // Survey data
 const SURVEY_STEPS = [
-  {step:1,eyebrow:'Step 1 of 5',title:'Welcome to The Departure Lounge',sub:'Let\'s personalize your luxury travel intelligence. First, tell us about yourself.',fields:[
+  {step:1,eyebrow:'Step 1 of 6',title:'Welcome to The Departure Lounge',sub:'Let\'s personalize your luxury travel intelligence. First, tell us about yourself.',fields:[
     {type:'text',id:'name',placeholder:'Your first name'},
     {type:'text',id:'homeCity',placeholder:'Your home city (e.g. Tampa, New York)'},
     {type:'text',id:'email',placeholder:'Email for travel alerts (optional)'},
   ],opts:[],optsLabel:'',multi:false},
-  {step:2,eyebrow:'Step 2 of 5',title:'How do you travel?',sub:'Select your travel style — we\'ll curate destinations, events, and tips to match.',optsLabel:'Travel style',multi:false,opts:[
+  {step:2,eyebrow:'Step 2 of 6',title:'How do you travel?',sub:'Select your travel style — we\'ll curate destinations, events, and tips to match.',optsLabel:'Travel style',multi:false,opts:[
     {icon:'🚢',label:'Luxury Cruise',sub:'Ship life · ports · sea days'},
     {icon:'🏛️',label:'Cultural Immersion',sub:'History · art · local life'},
     {icon:'🧘',label:'Adventure & Wellness',sub:'Active · spa · restoration'},
@@ -985,7 +1080,7 @@ const SURVEY_STEPS = [
     {icon:'💼',label:'Business Travel',sub:'Efficiency · comfort · speed'},
     {icon:'👨‍👩‍👧',label:'Family Adventure',sub:'Memorable · safe · fun'},
   ],fields:[]},
-  {step:3,eyebrow:'Step 3 of 5',title:'Your dream destinations',sub:'Where have you always wanted to go? Select all that call to you.',optsLabel:'Destinations',multi:true,opts:[
+  {step:3,eyebrow:'Step 3 of 6',title:'Your dream destinations',sub:'Where have you always wanted to go? Select all that call to you.',optsLabel:'Destinations',multi:true,opts:[
     {icon:'🌊',label:'Caribbean',sub:'Islands · beaches · cruises'},
     {icon:'🏛️',label:'Mediterranean',sub:'Italy · Greece · France'},
     {icon:'⛩️',label:'Asia Pacific',sub:'Japan · Bali · Thailand'},
@@ -993,7 +1088,7 @@ const SURVEY_STEPS = [
     {icon:'🦁',label:'Africa & Middle East',sub:'Safari · Dubai · Egypt'},
     {icon:'🏔️',label:'Americas',sub:'NYC · Patagonia · Machu Picchu'},
   ],fields:[]},
-  {step:4,eyebrow:'Step 4 of 5',title:'Your entertainment DNA',sub:'We\'ll match concerts, festivals and events to your taste and destination.',optsLabel:'What excites you most?',multi:true,opts:[
+  {step:4,eyebrow:'Step 4 of 6',title:'Your entertainment DNA',sub:'We\'ll match concerts, festivals and events to your taste and destination.',optsLabel:'What excites you most?',multi:true,opts:[
     {icon:'🎵',label:'Live Music & Concerts',sub:'Artists · festivals · venues'},
     {icon:'🏎️',label:'Formula 1 & Motorsport',sub:'Monaco · Silverstone · Spa'},
     {icon:'⚽',label:'Football & Sports',sub:'World Cup · Champions League'},
@@ -1003,7 +1098,7 @@ const SURVEY_STEPS = [
   ],fields:[
     {type:'text',id:'artists',placeholder:'Favorite artists (e.g. Coldplay, Jay-Z, Andrea Bocelli)'},
   ]},
-  {step:5,eyebrow:'Step 5 of 5',title:'One last thing',sub:'Have you ever arrived at a destination without something you needed?',optsLabel:'Biggest travel pain point',multi:false,opts:[
+  {step:5,eyebrow:'Step 5 of 6',title:'One last thing',sub:'Have you ever arrived at a destination without something you needed?',optsLabel:'Biggest travel pain point',multi:false,opts:[
     {icon:'🧳',label:'Lost luggage',sub:'Airlines lose my bags'},
     {icon:'📦',label:'Overpacking',sub:'I bring too much'},
     {icon:'🗺️',label:'Overwhelmed by choices',sub:'Too much info, can\'t decide'},
@@ -1011,19 +1106,24 @@ const SURVEY_STEPS = [
     {icon:'🔌',label:'Wrong adapters',sub:'Electronics don\'t work abroad'},
     {icon:'⏰',label:'Poor planning',sub:'Never enough time to research'},
   ],fields:[]},
+  {step:6,eyebrow:'Step 6 of 6',title:'Connect with travelers',sub:'Want other BagFree members to find you? Discoverable travelers can be matched for group trips, shared itineraries, and travel companions.',optsLabel:'Visibility',multi:false,opts:[
+    {icon:'🌍',label:'Yes, make me discoverable',sub:'Other members can see my name, style & destinations'},
+    {icon:'🔒',label:'No, keep me private',sub:'My profile stays hidden from other travelers'},
+  ],fields:[]},
 ];
 
-let profile = {};
+window.profile = window.profile || {};
+let profile = window.profile;
 let currentStep = 0;
 let selectedOpts = {};
 let liveFilter = 'all';
-let activeLayer = {bagfree:true,landmarks:true,flights:true,cruises:true,intel:true,events:true,embassy:true};
+let activeLayer = {bagfree:true,landmarks:true,flights:true,cruises:true,intel:true,events:true,embassy:true,collective:true};
 let tipIdx = 0;
 let tipInterval;
 
 function renderSurvey(){
   const s = SURVEY_STEPS[currentStep];
-  for(let i=0;i<5;i++) document.getElementById('sp'+(i+1)).classList.toggle('done', i <= currentStep);
+  for(let i=0;i<6;i++) document.getElementById('sp'+(i+1)).classList.toggle('done', i <= currentStep);
   let html = `<div class="survey-eyebrow">${s.eyebrow}</div>
     <div class="survey-title">${s.title}</div>
     <div class="survey-sub">${s.sub}</div>`;
@@ -1046,8 +1146,8 @@ function renderSurvey(){
   }
   html += `<div class="survey-actions">
     ${currentStep>0?'<button class="btn-ghost" onclick="prevStep()">← Back</button>':''}
-    <button class="btn-gold" onclick="nextStep()">${currentStep<4?'Continue →':'Launch My Lounge ↗'}</button>
-    <span class="survey-step-count">Step ${currentStep+1} of 5</span>
+    <button class="btn-gold" onclick="nextStep()">${currentStep<5?'Continue →':'Launch My Lounge ↗'}</button>
+    <span class="survey-step-count">Step ${currentStep+1} of 6</span>
   </div>`;
   document.getElementById('surveyContent').innerHTML = html;
 }
@@ -1073,7 +1173,8 @@ function nextStep(){
   if(currentStep===2) profile.destinations = (selectedOpts[2]||[]).map(i=>SURVEY_STEPS[2].opts[i].label);
   if(currentStep===3) profile.entertainment = (selectedOpts[3]||[]).map(i=>SURVEY_STEPS[3].opts[i].label);
   if(currentStep===4) profile.painPoint = selectedOpts[4]?.length ? SURVEY_STEPS[4].opts[selectedOpts[4][0]].label : '';
-  if(currentStep<4){ currentStep++; renderSurvey(); }
+  if(currentStep===5) profile.discoverable = selectedOpts[5]?.length ? selectedOpts[5][0] === 0 : false;
+  if(currentStep<5){ currentStep++; renderSurvey(); }
   else { launchDashboard(); }
 }
 
@@ -1108,6 +1209,8 @@ function _launchDashboardCore(){
   // Init Leaflet map after dashboard is visible
   setTimeout(() => { initMap(); }, 100);
   updateNearMeBtn();
+  // Show promo banner after a short delay
+  setTimeout(showPromoBanner, 2500);
 }
 
 function getAvatar(){
@@ -1185,23 +1288,14 @@ Return format:
 [{"destination":"...","score":0-99,"reason":"One specific sentence."}]`;
 
   try {
-    const res = await fetch('https://api.anthropic.com/v1/messages', {
+    const res = await fetch('/.netlify/functions/ai-scores', {
       method: 'POST',
-      headers: {
-        'Content-Type': 'application/json',
-        // API key handled server-side by Netlify function
-        'anthropic-version': '2023-06-01',
-        'anthropic-dangerous-direct-browser-access': 'true'
-      },
-      body: JSON.stringify({
-        model: 'claude-sonnet-4-20250514',
-        max_tokens: 1000,
-        messages: [{ role: 'user', content: prompt }]
-      })
+      headers: { 'Content-Type': 'application/json' },
+      body: JSON.stringify({ prompt })
     });
+    if (!res.ok) throw new Error('Netlify function returned ' + res.status);
     const data = await res.json();
-    const text = data.content?.[0]?.text || '[]';
-    const scores = JSON.parse(text.replace(/```json|```/g, '').trim());
+    const scores = Array.isArray(data) ? data : JSON.parse((data.text || '[]').replace(/```json|```/g, '').trim());
     _aiScoreCache = scores;
     return scores;
   } catch(e) {
@@ -1266,8 +1360,7 @@ async function buildDestCards(){
   }
 }
 
-// ── LIVE FLIGHT DATA — AviationStack ────────────────────────────────────────
-const AVIATIONSTACK_KEY = '090b6d0c895e0ea3225ef17db824ac36';
+// ── LIVE FLIGHT DATA — via Netlify function ────────────────────────────────
 let _liveFlightCache = [];
 let _liveFilter = 'all';
 
@@ -1328,11 +1421,9 @@ async function fetchLiveFlights() {
     return false;
   }
 
-  // 3. Fetch from API
+  // 3. Fetch from Netlify function (key stored server-side)
   try {
-    const res = await fetch(
-      `https://api.aviationstack.com/v1/flights?access_key=${AVIATIONSTACK_KEY}&flight_status=active&limit=8`
-    );
+    const res = await fetch('/.netlify/functions/flights');
     const data = await res.json();
     if (data && data.data && data.data.length > 0) {
       const count = incrementCallCount();
@@ -1644,7 +1735,7 @@ function showDestDetail(city){
       <div class="detail-section" style="border:1px solid ${d.bagfree?'var(--border-hi)':'var(--border)'};padding:0.85rem;margin-top:0.5rem;border-bottom:none">
         <div class="detail-section-title" style="color:${d.bagfree?'var(--gold)':'var(--mist)'}">BagFree Status</div>
         <div style="font-size:0.78rem;color:${d.bagfree?'var(--gold)':'var(--mist)'};margin-bottom:8px">${d.bagfreeNote}</div>
-        ${d.bagfree?`<a href="https://valetbynuor.com/collections/all" target="_blank"><button class="btn-gold" style="width:100%;padding:0.6rem;font-size:0.62rem">Order Essentials Now ↗</button></a>`:''}
+        ${d.bagfree?`<a href="https://valetbynuor.com" target="_blank"><button class="btn-gold" style="width:100%;padding:0.6rem;font-size:0.62rem">Order Essentials Now ↗</button></a>`:''}
       </div>
 
       <div class="detail-ctas">
@@ -1828,11 +1919,21 @@ function initMap() {
     attributionControl: false,
   });
 
-  // Dark tile layer (CartoDB dark matter)
-  L.tileLayer('https://{s}.basemaps.cartocdn.com/dark_all/{z}/{x}/{y}{r}.png', {
+  // Basemap tile layers
+  const BASEMAPS = {
+    dark: 'https://{s}.basemaps.cartocdn.com/dark_all/{z}/{x}/{y}{r}.png',
+    light: 'https://{s}.basemaps.cartocdn.com/light_all/{z}/{x}/{y}{r}.png',
+    voyager: 'https://{s}.basemaps.cartocdn.com/rastertiles/voyager/{z}/{x}/{y}{r}.png',
+    satellite: 'https://server.arcgisonline.com/ArcGIS/rest/services/World_Imagery/MapServer/tile/{z}/{y}/{x}',
+  };
+  window._basemaps = BASEMAPS;
+
+  // Default: light
+  window._activeBasemap = L.tileLayer(BASEMAPS.light, {
     subdomains: 'abcd',
     maxZoom: 19
   }).addTo(_map);
+  window._activeBasemapKey = 'light';
 
   // Custom pane for markers so they sit above tiles
   _map.createPane('markers'); _map.getPane('markers').style.zIndex = 450;
@@ -1853,6 +1954,33 @@ function initMap() {
   };
 
   _buildMapMarkers();
+}
+
+function switchBasemap(key, btn) {
+  if (!_map || key === window._activeBasemapKey) return;
+  // Remove current basemap
+  if (window._activeBasemap) _map.removeLayer(window._activeBasemap);
+  // Add new one
+  const opts = { subdomains: 'abcd', maxZoom: 19 };
+  if (key === 'satellite') { delete opts.subdomains; }
+  window._activeBasemap = L.tileLayer(window._basemaps[key], opts).addTo(_map);
+  window._activeBasemap.bringToBack();
+  window._activeBasemapKey = key;
+  // Update toolbar buttons
+  ['bmDark','bmSatellite','bmLight','bmVoyager'].forEach(id => {
+    const b = document.getElementById(id);
+    if (b) b.classList.remove('active');
+  });
+  if (btn) btn.classList.add('active');
+  // Adjust tile filter for light/satellite maps
+  const mapEl = document.getElementById('leafletMap');
+  if (key === 'dark') {
+    document.querySelector('.leaflet-container').style.background = '#081525';
+  } else if (key === 'satellite') {
+    document.querySelector('.leaflet-container').style.background = '#0a1628';
+  } else {
+    document.querySelector('.leaflet-container').style.background = '#e8e4dc';
+  }
 }
 
 function _icon(emoji, color, size=28) {
@@ -2462,6 +2590,38 @@ function showAdvisorFab(){
   if(fab)fab.style.display='block';
 }
 
+// ── PROMO BANNER ──────────────────────────────────────────────────────────
+function showPromoBanner(){
+  if(localStorage.getItem('bf_promo_dismissed')) return;
+  const banner=document.getElementById('promoBanner');
+  if(!banner) return;
+  banner.style.display='block';
+  setTimeout(()=>banner.classList.add('visible'),100);
+}
+
+function closePromo(){
+  const banner=document.getElementById('promoBanner');
+  if(banner){banner.classList.remove('visible');setTimeout(()=>banner.style.display='none',500);}
+  localStorage.setItem('bf_promo_dismissed','1');
+}
+
+function copyPromo(){
+  navigator.clipboard.writeText('BAGFREE25').then(()=>{
+    const btn=document.getElementById('promoCopyBtn');
+    if(btn){btn.textContent='Copied!';btn.style.color='var(--gold)';btn.style.borderColor='var(--border-hi)';}
+    const box=document.getElementById('promoCodeBox');
+    if(box){box.style.borderColor='var(--gold)';box.style.background='rgba(201,169,110,0.08)';}
+    showToast('✓ Promo code copied');
+    setTimeout(()=>{
+      if(btn){btn.textContent='Copy';btn.style.color='var(--mist)';btn.style.borderColor='var(--border)';}
+    },3000);
+  }).catch(()=>{
+    // Fallback for older browsers
+    const el=document.createElement('textarea');el.value='BAGFREE25';document.body.appendChild(el);el.select();document.execCommand('copy');document.body.removeChild(el);
+    showToast('✓ Promo code copied');
+  });
+}
+
 </script>
 
 <!-- ADVISOR FAB -->
@@ -2516,6 +2676,25 @@ function showAdvisorFab(){
       </div>
     </div>
   </div>
+</div>
+
+<!-- PROMO BANNER -->
+<div id="promoBanner">
+  <div class="promo-shimmer"></div>
+  <button onclick="closePromo()" style="position:absolute;top:6px;right:8px;background:transparent;border:none;color:rgba(253,252,248,0.3);font-size:0.9rem;cursor:pointer;line-height:1;z-index:2">✕</button>
+  <div style="padding:1.1rem 1.25rem 0.5rem">
+    <div style="display:flex;align-items:center;gap:0.5rem;margin-bottom:0.6rem">
+      <span style="font-size:1.1rem">✦</span>
+      <div style="font-size:0.5rem;letter-spacing:3px;text-transform:uppercase;color:var(--gold)">Welcome Gift</div>
+    </div>
+    <div style="font-family:var(--ff-display);font-size:1.3rem;font-weight:300;color:var(--white);line-height:1.2;margin-bottom:0.4rem">Get <span style="color:var(--gold)">$25</span> in travel credit</div>
+    <div style="font-size:0.7rem;color:var(--mist);line-height:1.6;margin-bottom:0.85rem">On your first order at ValetByNuor.com — luxury travel essentials delivered before you fly.</div>
+    <div style="display:flex;align-items:center;gap:0.5rem;margin-bottom:0.85rem">
+      <div id="promoCodeBox" style="flex:1;background:var(--noir3);border:1px dashed var(--border-hi);padding:0.55rem 0.75rem;font-size:0.82rem;font-weight:500;letter-spacing:3px;color:var(--gold);text-align:center;font-family:var(--ff-body);cursor:pointer" onclick="copyPromo()" title="Click to copy">BAGFREE25</div>
+      <button onclick="copyPromo()" style="background:var(--noir3);border:1px solid var(--border);color:var(--mist);padding:0.55rem 0.7rem;font-size:0.6rem;letter-spacing:1.5px;text-transform:uppercase;cursor:pointer;font-family:var(--ff-body);white-space:nowrap;transition:all 0.2s" id="promoCopyBtn">Copy</button>
+    </div>
+  </div>
+  <a href="https://valetbynuor.com" target="_blank" style="display:block;background:var(--gold);color:var(--noir);text-align:center;padding:0.7rem;font-size:0.6rem;font-weight:600;letter-spacing:2.5px;text-transform:uppercase;text-decoration:none;font-family:var(--ff-body);transition:background 0.2s" onmouseover="this.style.background='var(--gold-light)'" onmouseout="this.style.background='var(--gold)'">Shop Now & Save ↗</a>
 </div>
 
 <!-- TOAST -->
