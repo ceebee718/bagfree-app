@@ -42,17 +42,80 @@ input,select,textarea{font-family:var(--ff-body)}
 <body>
 
 <style>
-#promoBanner{position:fixed;top:0;left:0;right:0;z-index:99999;background:#C9A96E;color:#0A0A08;display:flex;align-items:center;justify-content:center;gap:0.75rem;padding:9px 1rem;font-size:0.62rem;font-weight:500;letter-spacing:2.5px;text-transform:uppercase;text-decoration:none;transition:background 0.2s;font-family:sans-serif}
-#promoBanner:hover{background:#E8D5B0}
-.promo-code{background:#0A0A08;color:#C9A96E;padding:2px 10px;letter-spacing:3px;font-weight:600;font-size:0.6rem}
-.promo-dismiss{position:absolute;right:1rem;background:transparent;border:none;color:rgba(10,10,8,0.45);font-size:1rem;cursor:pointer;line-height:1;padding:0}
+:root{
+  --promo-height: 52px;
+}
+
+/* PROMO BAR */
+#promoBanner{
+  position:fixed;
+  top:0;
+  left:0;
+  right:0;
+  z-index:99999;
+
+  min-height:var(--promo-height);
+
+  background:#C9A96E;
+  color:#0A0A08;
+
+  display:flex;
+  align-items:center;
+  justify-content:center;
+  gap:0.75rem;
+
+  padding:9px 1rem;
+  font-size:0.62rem;
+  font-weight:500;
+  letter-spacing:2.5px;
+  text-transform:uppercase;
+  text-decoration:none;
+  font-family:sans-serif;
+
+  transition:background 0.2s;
+}
+
+#promoBanner:hover{
+  background:#E8D5B0;
+}
+
+.promo-code{
+  background:#0A0A08;
+  color:#C9A96E;
+  padding:2px 10px;
+  letter-spacing:3px;
+  font-weight:600;
+  font-size:0.6rem;
+}
+
+.promo-dismiss{
+  position:absolute;
+  right:1rem;
+  background:transparent;
+  border:none;
+  color:rgba(10,10,8,0.45);
+  font-size:1rem;
+  cursor:pointer;
+  line-height:1;
+  padding:0;
+}
 </style>
+
 <!-- PROMO BAR -->
 <a id="promoBanner" href="https://valetbynuor.com/collections/all" target="_blank">
   <span>✦ 25% off your first BagFree kit</span>
   <span class="promo-code">BAGFREE25</span>
   <span>· Shop now ↗</span>
-  <button class="promo-dismiss" onclick="event.preventDefault();event.stopPropagation();this.parentElement.style.display='none';document.body.style.paddingTop='0'" title="Dismiss">✕</button>
+  <button 
+    class="promo-dismiss" 
+    onclick="
+      event.preventDefault();
+      event.stopPropagation();
+      document.getElementById('promoBanner').style.display='none';
+      document.body.style.paddingTop='0';
+    "
+    title="Dismiss"
+  >✕</button>
 </a>
 
 <div id="root"></div>
