@@ -320,23 +320,40 @@ function applyProfile(saved) {
 
 // ── AUTH FLOW ON LOAD ──
 document.addEventListener('DOMContentLoaded', async function() {
-  const { data: { session } } = await supabase.auth.getSession()
-  if (session) {
-    const { data: saved } = await supabase.from('profiles').select('*').eq('id', session.user.id).single()
-    if (saved && saved.travel_style) {
-      applyProfile(saved)
-      if ((saved.survey_version||0) < SURVEY_VERSION) {
-        document.getElementById('surveyOverlay').style.display = 'flex'
-        renderSurvey(); return
+  try {
+    const { data: { session }, error: sessErr } = await supabase.auth.getSession()
+    if (sessErr) { console.error('Session error:', sessErr) }
+    console.log('Session check:', session ? 'logged in as ' + session.user.email : 'no session')
+    if (session) {
+      const { data: saved, error: profErr } = await supabase.from('profiles').select('*').eq('id', session.user.id).single()
+      if (profErr) { console.warn('Profile fetch error:', profErr) }
+      console.log('Profile data:', saved ? 'found, travel_style=' + saved.travel_style : 'not found')
+      if (saved && saved.travel_style) {
+        applyProfile(saved)
+        if ((saved.survey_version||0) < SURVEY_VERSION) {
+          console.log('Survey version outdated, showing survey')
+          document.getElementById('authOverlay').style.display = 'none'
+          document.getElementById('surveyOverlay').style.display = 'flex'
+          renderSurvey(); return
+        }
+        console.log('Launching dashboard directly')
+        document.getElementById('authOverlay').style.display = 'none'
+        _launchDashboardCore(); return
       }
-      _launchDashboardCore(); return
+      // Logged in but no profile yet — show survey
+      console.log('No profile found, showing survey')
+      document.getElementById('authOverlay').style.display = 'none'
+      document.getElementById('surveyOverlay').style.display = 'flex'
+      renderSurvey(); return
     }
-    document.getElementById('surveyOverlay').style.display = 'flex'
-    renderSurvey(); return
+    // Not logged in — show auth screen
+    document.getElementById('authOverlay').style.display = 'flex'
+    document.getElementById('surveyOverlay').style.display = 'none'
+  } catch(e) {
+    console.error('Auth flow error:', e)
+    document.getElementById('authOverlay').style.display = 'flex'
+    document.getElementById('surveyOverlay').style.display = 'none'
   }
-  // Not logged in — show auth screen
-  document.getElementById('authOverlay').style.display = 'flex'
-  document.getElementById('surveyOverlay').style.display = 'none'
 })
 
 // ── AUTH TAB SWITCHER ──
@@ -555,7 +572,7 @@ window._supabaseLaunchPatch = async function() {
 <!-- AUTH SCREEN -->
 <div id="authOverlay" style="display:none">
   <div class="auth-wrap">
-    <div class="auth-logo">Bag<span>Free</span></div>
+    <a href="https://bagfree.app" style="text-decoration:none"><div class="auth-logo">Bag<span>Free</span></div></a>
     <div class="auth-tagline">The Departure Lounge · Member Access <span style="background:var(--gold);color:var(--noir);padding:1px 6px;font-size:0.5rem;letter-spacing:2px;font-weight:600;margin-left:6px;vertical-align:middle">BETA</span></div>
 
     <div class="auth-tabs">
@@ -615,7 +632,7 @@ window._supabaseLaunchPatch = async function() {
 </div>
 
 <!-- SURVEY -->
-<div id="surveyOverlay">
+<div id="surveyOverlay" style="display:none">
   <div class="survey-wrap">
     <div class="survey-progress" id="surveyProgress">
       <div class="survey-prog-step done" id="sp1"></div>
@@ -632,7 +649,7 @@ window._supabaseLaunchPatch = async function() {
 <!-- DASHBOARD -->
 <div id="dashboard">
   <div class="dl-header">
-    <div class="dl-logo">Bag<span>Free</span> <span style="color:rgba(201,169,110,0.4);margin:0 8px">·</span> The Departure Lounge <span style="background:var(--gold);color:var(--noir);padding:1px 5px;font-size:0.45rem;letter-spacing:1.5px;font-weight:600;margin-left:6px;vertical-align:middle">BETA</span></div>
+    <a href="https://bagfree.app" style="text-decoration:none"><div class="dl-logo">Bag<span>Free</span> <span style="color:rgba(201,169,110,0.4);margin:0 8px">·</span> The Departure Lounge <span style="background:var(--gold);color:var(--noir);padding:1px 5px;font-size:0.45rem;letter-spacing:1.5px;font-weight:600;margin-left:6px;vertical-align:middle">BETA</span></div></a>
     <div class="dl-user">
       <div class="dl-avatar-badge" id="headerAvatar" style="cursor:pointer" onclick="openProfileModal()" title="Edit profile">👩‍✈️</div>
       <span id="headerName" style="cursor:pointer" onclick="openProfileModal()">Traveler</span>
@@ -679,7 +696,7 @@ window._supabaseLaunchPatch = async function() {
       <div class="sidebar-section" style="border-bottom:none">
         <div class="sidebar-label">BagFree essentials</div>
         <div id="bagfreeRec" style="font-size:0.72rem;color:var(--mist);line-height:1.7"></div>
-        <a href="https://valetbynuor.com/collections/all" target="_blank" style="display:block;margin-top:0.75rem">
+        <a href="https://valetbynuor.com" target="_blank" style="display:block;margin-top:0.75rem">
           <button class="btn-gold" style="width:100%;padding:0.6rem">Shop now ↗</button>
         </a>
       </div>
@@ -690,7 +707,7 @@ window._supabaseLaunchPatch = async function() {
       <div class="sidebar-section" style="border-top:1px solid var(--border);padding-top:1.25rem;margin-top:0">
         <div class="sidebar-label">Book a hotel</div>
         <div style="font-size:0.68rem;color:var(--mist);line-height:1.6;margin-bottom:0.65rem">Exclusive rates via our concierge network.</div>
-        <button class="btn-gold" style="width:100%;padding:0.55rem;font-size:0.58rem;letter-spacing:2px" onclick="showHotelSearch()">Search Hotels ↗</button>
+        <a href="https://bagfree.app/#hotel" target="_blank" style="display:block"><button class="btn-gold" style="width:100%;padding:0.55rem;font-size:0.58rem;letter-spacing:2px">Book Hotel ↗</button></a>
       </div>
     </div>
 
@@ -1718,7 +1735,7 @@ function showDestDetail(city){
       <div class="detail-section" style="border:1px solid ${d.bagfree?'var(--border-hi)':'var(--border)'};padding:0.85rem;margin-top:0.5rem;border-bottom:none">
         <div class="detail-section-title" style="color:${d.bagfree?'var(--gold)':'var(--mist)'}">BagFree Status</div>
         <div style="font-size:0.78rem;color:${d.bagfree?'var(--gold)':'var(--mist)'};margin-bottom:8px">${d.bagfreeNote}</div>
-        ${d.bagfree?`<a href="https://valetbynuor.com/collections/all" target="_blank"><button class="btn-gold" style="width:100%;padding:0.6rem;font-size:0.62rem">Order Essentials Now ↗</button></a>`:''}
+        ${d.bagfree?`<a href="https://valetbynuor.com" target="_blank"><button class="btn-gold" style="width:100%;padding:0.6rem;font-size:0.62rem">Order Essentials Now ↗</button></a>`:''}
       </div>
 
       <div class="detail-ctas">
@@ -2677,7 +2694,7 @@ function copyPromo(){
       <button onclick="copyPromo()" style="background:var(--noir3);border:1px solid var(--border);color:var(--mist);padding:0.55rem 0.7rem;font-size:0.6rem;letter-spacing:1.5px;text-transform:uppercase;cursor:pointer;font-family:var(--ff-body);white-space:nowrap;transition:all 0.2s" id="promoCopyBtn">Copy</button>
     </div>
   </div>
-  <a href="https://valetbynuor.com/collections/all" target="_blank" style="display:block;background:var(--gold);color:var(--noir);text-align:center;padding:0.7rem;font-size:0.6rem;font-weight:600;letter-spacing:2.5px;text-transform:uppercase;text-decoration:none;font-family:var(--ff-body);transition:background 0.2s" onmouseover="this.style.background='var(--gold-light)'" onmouseout="this.style.background='var(--gold)'">Shop Now & Save ↗</a>
+  <a href="https://valetbynuor.com" target="_blank" style="display:block;background:var(--gold);color:var(--noir);text-align:center;padding:0.7rem;font-size:0.6rem;font-weight:600;letter-spacing:2.5px;text-transform:uppercase;text-decoration:none;font-family:var(--ff-body);transition:background 0.2s" onmouseover="this.style.background='var(--gold-light)'" onmouseout="this.style.background='var(--gold)'">Shop Now & Save ↗</a>
 </div>
 
 <!-- TOAST -->
