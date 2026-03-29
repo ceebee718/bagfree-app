@@ -247,6 +247,12 @@ button,input,select,textarea{font-family:var(--ff-body)}
 /* ── TOAST ── */
 #bfToast{position:fixed;bottom:2rem;right:2rem;background:var(--gold);color:var(--noir);padding:0.7rem 1.4rem;font-size:0.68rem;letter-spacing:2px;text-transform:uppercase;font-weight:500;z-index:9999;opacity:0;transition:opacity 0.3s;pointer-events:none}
 
+/* ── PROMO BANNER ── */
+#promoBanner{position:fixed;bottom:1.5rem;left:1.5rem;z-index:790;max-width:340px;background:var(--noir2);border:1px solid var(--border-hi);box-shadow:0 8px 40px rgba(0,0,0,0.5);transform:translateY(120%);transition:transform 0.5s cubic-bezier(0.16,1,0.3,1);display:none}
+#promoBanner.visible{transform:translateY(0)}
+#promoBanner .promo-shimmer{position:absolute;top:0;left:0;right:0;height:2px;background:linear-gradient(90deg,transparent,var(--gold),transparent);animation:promoShimmer 3s infinite}
+@keyframes promoShimmer{0%{opacity:0.3}50%{opacity:1}100%{opacity:0.3}}
+
 /* ── RESPONSIVE ── */
 @media(max-width:1024px){
   .dl-body{grid-template-columns:1fr!important}
@@ -260,6 +266,7 @@ button,input,select,textarea{font-family:var(--ff-body)}
   .trip-input{min-width:120px}
   #advisorFab{bottom:1rem;right:1rem}
   #advisorBtn{padding:0.6rem 1rem;font-size:0.58rem}
+  #promoBanner{left:1rem;right:1rem;max-width:none;bottom:1rem}
 }
 @media(max-width:768px){
   .survey-grid{grid-template-columns:1fr!important}
@@ -294,6 +301,7 @@ async function saveProfile(src) {
     home_city: p.homeCity||null, travel_style: p.travelStyle||null,
     destinations: p.destinations||[], entertainment: p.entertainment||[],
     artists: p.artists||null, pain_point: p.painPoint||null,
+    discoverable: p.discoverable||false,
     survey_version: SURVEY_VERSION, updated_at: new Date().toISOString()
   })
 }
@@ -304,8 +312,10 @@ function applyProfile(saved) {
     name: saved.name, email: saved.email, homeCity: saved.home_city,
     travelStyle: saved.travel_style, destinations: saved.destinations||[],
     entertainment: saved.entertainment||[], artists: saved.artists, painPoint: saved.pain_point,
+    discoverable: saved.discoverable||false,
   }
-  Object.assign(profile, window._profile)
+  window.profile = window.profile || {}
+  Object.assign(window.profile, window._profile)
 }
 
 // ── AUTH FLOW ON LOAD ──
@@ -410,8 +420,8 @@ window.doRegister = async function() {
       btn.disabled = false; btn.textContent = 'Create Account & Personalise →'
       switchAuthTab('signin'); return
     }
-    profile.name = name; profile.email = email
-    window._profile = { ...profile }
+    window.profile.name = name; window.profile.email = email
+    window._profile = { ...window.profile }
     document.getElementById('authOverlay').style.display = 'none'
     document.getElementById('surveyOverlay').style.display = 'flex'
     renderSurvey()
@@ -447,7 +457,7 @@ window.openProfileModal = function() {
   const STYLE_OPTS = ['Luxury Cruise','Cultural Immersion','Adventure & Wellness','Culinary Journey','Business Travel','Family Adventure']
   const DEST_OPTS  = ['Caribbean','Mediterranean','Asia Pacific','Europe','Africa & Middle East','Americas']
   const ENT_OPTS   = ['Live Music & Concerts','Formula 1 & Motorsport','Football & Sports','Theater & Opera','Art & Culture','Food & Wine Events']
-  const p = profile
+  const p = window.profile
   document.getElementById('profileContent').innerHTML = `
     <div class="profile-section-title">Personal details</div>
     <input class="auth-input" id="pName" placeholder="First name" value="${p.name||''}">
@@ -464,8 +474,19 @@ window.openProfileModal = function() {
     <div class="profile-section-title">Entertainment interests</div>
     <div class="pref-grid" id="pEntGrid">
       ${ENT_OPTS.map(e=>`<div class="pref-opt${(p.entertainment||[]).includes(e)?' selected':''}" onclick="togglePref(this,'multi')" data-val="${e}">${e}</div>`).join('')}
+    </div>
+    <div class="profile-section-title">Discoverability</div>
+    <div style="display:flex;align-items:center;gap:0.75rem;padding:0.75rem;border:1px solid ${p.discoverable?'var(--border-hi)':'var(--border)'};background:${p.discoverable?'rgba(201,169,110,0.06)':'transparent'};cursor:pointer;transition:all 0.2s" id="pDiscoverToggle" onclick="toggleDiscover()">
+      <div style="width:36px;height:20px;border-radius:10px;background:${p.discoverable?'var(--gold)':'var(--noir3)'};position:relative;transition:background 0.2s;flex-shrink:0" id="pDiscoverTrack">
+        <div style="width:16px;height:16px;border-radius:50%;background:${p.discoverable?'var(--noir)':'var(--mist)'};position:absolute;top:2px;${p.discoverable?'right:2px':'left:2px'};transition:all 0.2s" id="pDiscoverDot"></div>
+      </div>
+      <div>
+        <div style="font-size:0.75rem;color:var(--white)">${p.discoverable?'Discoverable':'Private'}</div>
+        <div style="font-size:0.6rem;color:var(--mist);margin-top:2px">${p.discoverable?'Other members can find you for group trips':'Your profile is hidden from other travelers'}</div>
+      </div>
     </div>`
   document.getElementById('profileModal').style.display = 'flex'
+  window._discoverToggleState = p.discoverable || false
 }
 
 window.togglePref = function(el, mode) {
@@ -473,6 +494,21 @@ window.togglePref = function(el, mode) {
     el.closest('.pref-grid').querySelectorAll('.pref-opt').forEach(o=>o.classList.remove('selected'))
   }
   el.classList.toggle('selected')
+}
+
+window.toggleDiscover = function() {
+  window._discoverToggleState = !window._discoverToggleState
+  const on = window._discoverToggleState
+  const track = document.getElementById('pDiscoverTrack')
+  const dot = document.getElementById('pDiscoverDot')
+  const wrap = document.getElementById('pDiscoverToggle')
+  if (track) { track.style.background = on ? 'var(--gold)' : 'var(--noir3)' }
+  if (dot) { dot.style.background = on ? 'var(--noir)' : 'var(--mist)'; dot.style.left = on ? 'auto' : '2px'; dot.style.right = on ? '2px' : 'auto' }
+  if (wrap) { wrap.style.borderColor = on ? 'var(--border-hi)' : 'var(--border)'; wrap.style.background = on ? 'rgba(201,169,110,0.06)' : 'transparent' }
+  const label = wrap?.querySelector('div > div:first-child')
+  const sub = wrap?.querySelector('div > div:last-child')
+  if (label) label.textContent = on ? 'Discoverable' : 'Private'
+  if (sub) sub.textContent = on ? 'Other members can find you for group trips' : 'Your profile is hidden from other travelers'
 }
 
 window.closeProfileModal = function() {
@@ -483,19 +519,21 @@ window.saveProfileChanges = async function() {
   const styleEl = document.querySelector('#pStyleGrid .pref-opt.selected')
   const dests = [...document.querySelectorAll('#pDestGrid .pref-opt.selected')].map(e=>e.dataset.val)
   const ents  = [...document.querySelectorAll('#pEntGrid .pref-opt.selected')].map(e=>e.dataset.val)
+  const p = window.profile
   const updated = {
-    name: document.getElementById('pName').value.trim()||profile.name,
-    homeCity: document.getElementById('pCity').value.trim()||profile.homeCity,
-    artists: document.getElementById('pArtists').value.trim()||profile.artists,
-    travelStyle: styleEl ? styleEl.dataset.val : profile.travelStyle,
-    destinations: dests.length ? dests : profile.destinations,
-    entertainment: ents.length ? ents : profile.entertainment,
-    email: profile.email, painPoint: profile.painPoint,
+    name: document.getElementById('pName').value.trim()||p.name,
+    homeCity: document.getElementById('pCity').value.trim()||p.homeCity,
+    artists: document.getElementById('pArtists').value.trim()||p.artists,
+    travelStyle: styleEl ? styleEl.dataset.val : p.travelStyle,
+    destinations: dests.length ? dests : p.destinations,
+    entertainment: ents.length ? ents : p.entertainment,
+    email: p.email, painPoint: p.painPoint,
+    discoverable: window._discoverToggleState !== undefined ? window._discoverToggleState : (p.discoverable || false),
   }
-  Object.assign(profile, updated)
-  window._profile = { ...profile }
-  document.getElementById('headerName').textContent = profile.name || 'Traveler'
-  document.getElementById('headerStyle').textContent = profile.travelStyle || 'Luxury'
+  Object.assign(window.profile, updated)
+  window._profile = { ...window.profile }
+  document.getElementById('headerName').textContent = window.profile.name || 'Traveler'
+  document.getElementById('headerStyle').textContent = window.profile.travelStyle || 'Luxury'
   document.getElementById('headerAvatar').textContent = getAvatar()
   await saveProfile(updated)
   window._aiScoreCache = null
@@ -506,7 +544,7 @@ window.saveProfileChanges = async function() {
 // ── SURVEY SUBMIT ──
 window._supabaseLaunchPatch = async function() {
   showAdvisorFab();
-  window._profile = { ...profile }
+  window._profile = { ...window.profile }
   saveProfile().catch(console.warn)
   _launchDashboardCore()
 }
@@ -518,7 +556,7 @@ window._supabaseLaunchPatch = async function() {
 <div id="authOverlay" style="display:none">
   <div class="auth-wrap">
     <div class="auth-logo">Bag<span>Free</span></div>
-    <div class="auth-tagline">The Departure Lounge · Member Access</div>
+    <div class="auth-tagline">The Departure Lounge · Member Access <span style="background:var(--gold);color:var(--noir);padding:1px 6px;font-size:0.5rem;letter-spacing:2px;font-weight:600;margin-left:6px;vertical-align:middle">BETA</span></div>
 
     <div class="auth-tabs">
       <button class="auth-tab active" onclick="switchAuthTab('signin')" id="authTabSignin">Sign In</button>
@@ -585,6 +623,7 @@ window._supabaseLaunchPatch = async function() {
       <div class="survey-prog-step" id="sp3"></div>
       <div class="survey-prog-step" id="sp4"></div>
       <div class="survey-prog-step" id="sp5"></div>
+      <div class="survey-prog-step" id="sp6"></div>
     </div>
     <div id="surveyContent"></div>
   </div>
@@ -593,7 +632,7 @@ window._supabaseLaunchPatch = async function() {
 <!-- DASHBOARD -->
 <div id="dashboard">
   <div class="dl-header">
-    <div class="dl-logo">Bag<span>Free</span> <span style="color:rgba(201,169,110,0.4);margin:0 8px">·</span> The Departure Lounge</div>
+    <div class="dl-logo">Bag<span>Free</span> <span style="color:rgba(201,169,110,0.4);margin:0 8px">·</span> The Departure Lounge <span style="background:var(--gold);color:var(--noir);padding:1px 5px;font-size:0.45rem;letter-spacing:1.5px;font-weight:600;margin-left:6px;vertical-align:middle">BETA</span></div>
     <div class="dl-user">
       <div class="dl-avatar-badge" id="headerAvatar" style="cursor:pointer" onclick="openProfileModal()" title="Edit profile">👩‍✈️</div>
       <span id="headerName" style="cursor:pointer" onclick="openProfileModal()">Traveler</span>
@@ -1011,12 +1050,12 @@ const ALERTS = [
 
 // Survey data
 const SURVEY_STEPS = [
-  {step:1,eyebrow:'Step 1 of 5',title:'Welcome to The Departure Lounge',sub:'Let\'s personalize your luxury travel intelligence. First, tell us about yourself.',fields:[
+  {step:1,eyebrow:'Step 1 of 6',title:'Welcome to The Departure Lounge',sub:'Let\'s personalize your luxury travel intelligence. First, tell us about yourself.',fields:[
     {type:'text',id:'name',placeholder:'Your first name'},
     {type:'text',id:'homeCity',placeholder:'Your home city (e.g. Tampa, New York)'},
     {type:'text',id:'email',placeholder:'Email for travel alerts (optional)'},
   ],opts:[],optsLabel:'',multi:false},
-  {step:2,eyebrow:'Step 2 of 5',title:'How do you travel?',sub:'Select your travel style — we\'ll curate destinations, events, and tips to match.',optsLabel:'Travel style',multi:false,opts:[
+  {step:2,eyebrow:'Step 2 of 6',title:'How do you travel?',sub:'Select your travel style — we\'ll curate destinations, events, and tips to match.',optsLabel:'Travel style',multi:false,opts:[
     {icon:'🚢',label:'Luxury Cruise',sub:'Ship life · ports · sea days'},
     {icon:'🏛️',label:'Cultural Immersion',sub:'History · art · local life'},
     {icon:'🧘',label:'Adventure & Wellness',sub:'Active · spa · restoration'},
@@ -1024,7 +1063,7 @@ const SURVEY_STEPS = [
     {icon:'💼',label:'Business Travel',sub:'Efficiency · comfort · speed'},
     {icon:'👨‍👩‍👧',label:'Family Adventure',sub:'Memorable · safe · fun'},
   ],fields:[]},
-  {step:3,eyebrow:'Step 3 of 5',title:'Your dream destinations',sub:'Where have you always wanted to go? Select all that call to you.',optsLabel:'Destinations',multi:true,opts:[
+  {step:3,eyebrow:'Step 3 of 6',title:'Your dream destinations',sub:'Where have you always wanted to go? Select all that call to you.',optsLabel:'Destinations',multi:true,opts:[
     {icon:'🌊',label:'Caribbean',sub:'Islands · beaches · cruises'},
     {icon:'🏛️',label:'Mediterranean',sub:'Italy · Greece · France'},
     {icon:'⛩️',label:'Asia Pacific',sub:'Japan · Bali · Thailand'},
@@ -1032,7 +1071,7 @@ const SURVEY_STEPS = [
     {icon:'🦁',label:'Africa & Middle East',sub:'Safari · Dubai · Egypt'},
     {icon:'🏔️',label:'Americas',sub:'NYC · Patagonia · Machu Picchu'},
   ],fields:[]},
-  {step:4,eyebrow:'Step 4 of 5',title:'Your entertainment DNA',sub:'We\'ll match concerts, festivals and events to your taste and destination.',optsLabel:'What excites you most?',multi:true,opts:[
+  {step:4,eyebrow:'Step 4 of 6',title:'Your entertainment DNA',sub:'We\'ll match concerts, festivals and events to your taste and destination.',optsLabel:'What excites you most?',multi:true,opts:[
     {icon:'🎵',label:'Live Music & Concerts',sub:'Artists · festivals · venues'},
     {icon:'🏎️',label:'Formula 1 & Motorsport',sub:'Monaco · Silverstone · Spa'},
     {icon:'⚽',label:'Football & Sports',sub:'World Cup · Champions League'},
@@ -1042,7 +1081,7 @@ const SURVEY_STEPS = [
   ],fields:[
     {type:'text',id:'artists',placeholder:'Favorite artists (e.g. Coldplay, Jay-Z, Andrea Bocelli)'},
   ]},
-  {step:5,eyebrow:'Step 5 of 5',title:'One last thing',sub:'Have you ever arrived at a destination without something you needed?',optsLabel:'Biggest travel pain point',multi:false,opts:[
+  {step:5,eyebrow:'Step 5 of 6',title:'One last thing',sub:'Have you ever arrived at a destination without something you needed?',optsLabel:'Biggest travel pain point',multi:false,opts:[
     {icon:'🧳',label:'Lost luggage',sub:'Airlines lose my bags'},
     {icon:'📦',label:'Overpacking',sub:'I bring too much'},
     {icon:'🗺️',label:'Overwhelmed by choices',sub:'Too much info, can\'t decide'},
@@ -1050,9 +1089,14 @@ const SURVEY_STEPS = [
     {icon:'🔌',label:'Wrong adapters',sub:'Electronics don\'t work abroad'},
     {icon:'⏰',label:'Poor planning',sub:'Never enough time to research'},
   ],fields:[]},
+  {step:6,eyebrow:'Step 6 of 6',title:'Connect with travelers',sub:'Want other BagFree members to find you? Discoverable travelers can be matched for group trips, shared itineraries, and travel companions.',optsLabel:'Visibility',multi:false,opts:[
+    {icon:'🌍',label:'Yes, make me discoverable',sub:'Other members can see my name, style & destinations'},
+    {icon:'🔒',label:'No, keep me private',sub:'My profile stays hidden from other travelers'},
+  ],fields:[]},
 ];
 
-let profile = {};
+window.profile = window.profile || {};
+let profile = window.profile;
 let currentStep = 0;
 let selectedOpts = {};
 let liveFilter = 'all';
@@ -1062,7 +1106,7 @@ let tipInterval;
 
 function renderSurvey(){
   const s = SURVEY_STEPS[currentStep];
-  for(let i=0;i<5;i++) document.getElementById('sp'+(i+1)).classList.toggle('done', i <= currentStep);
+  for(let i=0;i<6;i++) document.getElementById('sp'+(i+1)).classList.toggle('done', i <= currentStep);
   let html = `<div class="survey-eyebrow">${s.eyebrow}</div>
     <div class="survey-title">${s.title}</div>
     <div class="survey-sub">${s.sub}</div>`;
@@ -1085,8 +1129,8 @@ function renderSurvey(){
   }
   html += `<div class="survey-actions">
     ${currentStep>0?'<button class="btn-ghost" onclick="prevStep()">← Back</button>':''}
-    <button class="btn-gold" onclick="nextStep()">${currentStep<4?'Continue →':'Launch My Lounge ↗'}</button>
-    <span class="survey-step-count">Step ${currentStep+1} of 5</span>
+    <button class="btn-gold" onclick="nextStep()">${currentStep<5?'Continue →':'Launch My Lounge ↗'}</button>
+    <span class="survey-step-count">Step ${currentStep+1} of 6</span>
   </div>`;
   document.getElementById('surveyContent').innerHTML = html;
 }
@@ -1112,7 +1156,8 @@ function nextStep(){
   if(currentStep===2) profile.destinations = (selectedOpts[2]||[]).map(i=>SURVEY_STEPS[2].opts[i].label);
   if(currentStep===3) profile.entertainment = (selectedOpts[3]||[]).map(i=>SURVEY_STEPS[3].opts[i].label);
   if(currentStep===4) profile.painPoint = selectedOpts[4]?.length ? SURVEY_STEPS[4].opts[selectedOpts[4][0]].label : '';
-  if(currentStep<4){ currentStep++; renderSurvey(); }
+  if(currentStep===5) profile.discoverable = selectedOpts[5]?.length ? selectedOpts[5][0] === 0 : false;
+  if(currentStep<5){ currentStep++; renderSurvey(); }
   else { launchDashboard(); }
 }
 
@@ -1147,6 +1192,8 @@ function _launchDashboardCore(){
   // Init Leaflet map after dashboard is visible
   setTimeout(() => { initMap(); }, 100);
   updateNearMeBtn();
+  // Show promo banner after a short delay
+  setTimeout(showPromoBanner, 2500);
 }
 
 function getAvatar(){
@@ -2526,6 +2573,38 @@ function showAdvisorFab(){
   if(fab)fab.style.display='block';
 }
 
+// ── PROMO BANNER ──────────────────────────────────────────────────────────
+function showPromoBanner(){
+  if(localStorage.getItem('bf_promo_dismissed')) return;
+  const banner=document.getElementById('promoBanner');
+  if(!banner) return;
+  banner.style.display='block';
+  setTimeout(()=>banner.classList.add('visible'),100);
+}
+
+function closePromo(){
+  const banner=document.getElementById('promoBanner');
+  if(banner){banner.classList.remove('visible');setTimeout(()=>banner.style.display='none',500);}
+  localStorage.setItem('bf_promo_dismissed','1');
+}
+
+function copyPromo(){
+  navigator.clipboard.writeText('BAGFREE25').then(()=>{
+    const btn=document.getElementById('promoCopyBtn');
+    if(btn){btn.textContent='Copied!';btn.style.color='var(--gold)';btn.style.borderColor='var(--border-hi)';}
+    const box=document.getElementById('promoCodeBox');
+    if(box){box.style.borderColor='var(--gold)';box.style.background='rgba(201,169,110,0.08)';}
+    showToast('✓ Promo code copied');
+    setTimeout(()=>{
+      if(btn){btn.textContent='Copy';btn.style.color='var(--mist)';btn.style.borderColor='var(--border)';}
+    },3000);
+  }).catch(()=>{
+    // Fallback for older browsers
+    const el=document.createElement('textarea');el.value='BAGFREE25';document.body.appendChild(el);el.select();document.execCommand('copy');document.body.removeChild(el);
+    showToast('✓ Promo code copied');
+  });
+}
+
 </script>
 
 <!-- ADVISOR FAB -->
@@ -2580,6 +2659,25 @@ function showAdvisorFab(){
       </div>
     </div>
   </div>
+</div>
+
+<!-- PROMO BANNER -->
+<div id="promoBanner">
+  <div class="promo-shimmer"></div>
+  <button onclick="closePromo()" style="position:absolute;top:6px;right:8px;background:transparent;border:none;color:rgba(253,252,248,0.3);font-size:0.9rem;cursor:pointer;line-height:1;z-index:2">✕</button>
+  <div style="padding:1.1rem 1.25rem 0.5rem">
+    <div style="display:flex;align-items:center;gap:0.5rem;margin-bottom:0.6rem">
+      <span style="font-size:1.1rem">✦</span>
+      <div style="font-size:0.5rem;letter-spacing:3px;text-transform:uppercase;color:var(--gold)">Welcome Gift</div>
+    </div>
+    <div style="font-family:var(--ff-display);font-size:1.3rem;font-weight:300;color:var(--white);line-height:1.2;margin-bottom:0.4rem">Get <span style="color:var(--gold)">$25</span> in travel credit</div>
+    <div style="font-size:0.7rem;color:var(--mist);line-height:1.6;margin-bottom:0.85rem">On your first order at ValetByNuor.com — luxury travel essentials delivered before you fly.</div>
+    <div style="display:flex;align-items:center;gap:0.5rem;margin-bottom:0.85rem">
+      <div id="promoCodeBox" style="flex:1;background:var(--noir3);border:1px dashed var(--border-hi);padding:0.55rem 0.75rem;font-size:0.82rem;font-weight:500;letter-spacing:3px;color:var(--gold);text-align:center;font-family:var(--ff-body);cursor:pointer" onclick="copyPromo()" title="Click to copy">BAGFREE25</div>
+      <button onclick="copyPromo()" style="background:var(--noir3);border:1px solid var(--border);color:var(--mist);padding:0.55rem 0.7rem;font-size:0.6rem;letter-spacing:1.5px;text-transform:uppercase;cursor:pointer;font-family:var(--ff-body);white-space:nowrap;transition:all 0.2s" id="promoCopyBtn">Copy</button>
+    </div>
+  </div>
+  <a href="https://valetbynuor.com/collections/all" target="_blank" style="display:block;background:var(--gold);color:var(--noir);text-align:center;padding:0.7rem;font-size:0.6rem;font-weight:600;letter-spacing:2.5px;text-transform:uppercase;text-decoration:none;font-family:var(--ff-body);transition:background 0.2s" onmouseover="this.style.background='var(--gold-light)'" onmouseout="this.style.background='var(--gold)'">Shop Now & Save ↗</a>
 </div>
 
 <!-- TOAST -->
