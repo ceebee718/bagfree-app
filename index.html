@@ -487,26 +487,47 @@ function Home({setPage}) {
         </div>
         <div style={{display:'grid',gridTemplateColumns:'repeat(3,1fr)',gap:1,background:'rgba(10,10,8,0.1)',border:'1px solid rgba(10,10,8,0.1)'}}>
           {[
-            {name:'Trinidad & Tobago',state:'TT',code:'POS',comingSoon:false,desc:'Port of Spain and Crown Point. Carnival season specialists. Pre-arrival delivery to all major resorts.'},
-            {name:'St. Vincent & Grenadines',state:'VC',code:'SVD',comingSoon:false,desc:'Kingstown to Bequia and the Grenadines. Private island and boutique resort delivery.'},
-            {name:'More Coming Soon',state:'Caribbean',code:'···',comingSoon:true,desc:'Additional Caribbean destinations launching soon. Contact us for availability at your island destination.'},
+            {
+              name:'Trinidad & Tobago',state:'TT',code:'POS',comingSoon:false,
+              desc:'Port of Spain and Crown Point. Carnival season specialists. Pre-arrival delivery to all major resorts.',
+              bg:'linear-gradient(135deg, rgba(180,42,42,0.13) 0%, rgba(245,235,220,1) 38%, rgba(245,235,220,1) 62%, rgba(180,42,42,0.10) 100%)',
+              bgHover:'linear-gradient(135deg, rgba(180,42,42,0.22) 0%, rgba(238,225,205,1) 38%, rgba(238,225,205,1) 62%, rgba(180,42,42,0.18) 100%)',
+              accentColor:'rgba(160,38,38,0.75)',
+              dividerColor:'rgba(160,38,38,0.25)',
+              textColor:'rgba(80,20,20,0.6)',
+            },
+            {
+              name:'St. Vincent & Grenadines',state:'VC',code:'SVD',comingSoon:false,
+              desc:'Kingstown to Bequia and the Grenadines. Private island and boutique resort delivery.',
+              bg:'linear-gradient(105deg, rgba(0,90,160,0.10) 0%, rgba(245,195,40,0.14) 35%, rgba(245,235,220,1) 50%, rgba(245,195,40,0.12) 65%, rgba(20,130,60,0.11) 100%)',
+              bgHover:'linear-gradient(105deg, rgba(0,90,160,0.18) 0%, rgba(245,195,40,0.22) 35%, rgba(238,225,205,1) 50%, rgba(245,195,40,0.20) 65%, rgba(20,130,60,0.18) 100%)',
+              accentColor:'rgba(20,110,55,0.75)',
+              dividerColor:'rgba(20,110,55,0.22)',
+              textColor:'rgba(10,55,25,0.6)',
+            },
+            {
+              name:'More Coming Soon',state:'Caribbean',code:'···',comingSoon:true,
+              desc:'Additional Caribbean destinations launching soon. Contact us for availability at your island destination.',
+              bg:'var(--gold-xlight)',bgHover:'var(--gold-xlight)',
+              accentColor:'var(--gold-dim)',dividerColor:'rgba(10,10,8,0.2)',textColor:'rgba(10,10,8,0.55)',
+            },
           ].map((d)=>(
             <div key={d.name} onClick={()=>!d.comingSoon&&setPage('vendors')}
-              style={{background:'var(--gold-xlight)',padding:'2.5rem 2rem',cursor:d.comingSoon?'default':'pointer',transition:'background 0.25s',position:'relative',opacity:d.comingSoon?0.55:1}}
-              onMouseEnter={e=>!d.comingSoon&&(e.currentTarget.style.background='rgba(201,169,110,0.25)')}
-              onMouseLeave={e=>(e.currentTarget.style.background='var(--gold-xlight)')}>
+              style={{background:d.bg,padding:'2.5rem 2rem',cursor:d.comingSoon?'default':'pointer',transition:'background 0.3s',position:'relative',opacity:d.comingSoon?0.55:1}}
+              onMouseEnter={e=>!d.comingSoon&&(e.currentTarget.style.background=d.bgHover)}
+              onMouseLeave={e=>(e.currentTarget.style.background=d.bg)}>
               {!d.comingSoon && (
                 <div style={{position:'absolute',top:'1.25rem',right:'1.25rem',fontSize:'0.52rem',letterSpacing:'1.5px',textTransform:'uppercase',color:'var(--noir)',border:'1px solid rgba(10,10,8,0.25)',padding:'3px 8px',background:'rgba(10,10,8,0.07)'}}>
                   International
                 </div>
               )}
-              <div style={{fontFamily:'var(--ff-display)',fontSize:'0.7rem',fontWeight:300,letterSpacing:'4px',color:'var(--gold-dim)',marginBottom:'0.85rem',textTransform:'uppercase'}}>{d.code}</div>
+              <div style={{fontFamily:'var(--ff-display)',fontSize:'0.7rem',fontWeight:300,letterSpacing:'4px',color:d.accentColor,marginBottom:'0.85rem',textTransform:'uppercase'}}>{d.code}</div>
               <div style={{fontFamily:'var(--ff-display)',fontSize:'1.5rem',fontWeight:300,color:'var(--noir)',marginBottom:'4px',lineHeight:1.1}}>{d.name}</div>
-              <div style={{fontSize:'0.6rem',letterSpacing:'2px',textTransform:'uppercase',color:'var(--gold-dim)',marginBottom:'1rem'}}>{d.state}</div>
-              <div style={{width:20,height:1,background:'rgba(10,10,8,0.2)',marginBottom:'1rem'}}/>
-              <div style={{fontSize:'0.75rem',color:'rgba(10,10,8,0.55)',lineHeight:1.8,fontWeight:300,marginBottom:'1.25rem'}}>{d.desc}</div>
+              <div style={{fontSize:'0.6rem',letterSpacing:'2px',textTransform:'uppercase',color:d.accentColor,marginBottom:'1rem'}}>{d.state}</div>
+              <div style={{width:20,height:1,background:d.dividerColor,marginBottom:'1rem'}}/>
+              <div style={{fontSize:'0.75rem',color:d.textColor,lineHeight:1.8,fontWeight:300,marginBottom:'1.25rem'}}>{d.desc}</div>
               {!d.comingSoon && (
-                <div style={{fontSize:'0.62rem',letterSpacing:'2px',textTransform:'uppercase',color:'var(--gold-dim)',display:'flex',alignItems:'center',gap:'0.5rem'}}>
+                <div style={{fontSize:'0.62rem',letterSpacing:'2px',textTransform:'uppercase',color:d.accentColor,display:'flex',alignItems:'center',gap:'0.5rem'}}>
                   Shop vendors <span style={{fontSize:'0.7rem'}}>→</span>
                 </div>
               )}
