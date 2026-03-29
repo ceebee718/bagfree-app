@@ -104,8 +104,8 @@ input,select,textarea{font-family:var(--ff-body)}
   <span>✦ 25% off your first BagFree kit</span>
   <span class="promo-code">BAGFREE25</span>
   <span>· Shop now ↗</span>
-  <button 
-    class="promo-dismiss" 
+  <span
+    class="promo-dismiss"
     onclick="
       event.preventDefault();
       event.stopPropagation();
@@ -113,7 +113,9 @@ input,select,textarea{font-family:var(--ff-body)}
       document.body.style.paddingTop='0';
     "
     title="Dismiss"
-  >✕</button>
+    role="button"
+    tabindex="0"
+  >✕</span>
 </a>
 
 <div id="root"></div>
