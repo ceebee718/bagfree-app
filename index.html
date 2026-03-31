@@ -453,8 +453,28 @@ function Home({setPage}) {
       </div>
 
       {/* DESTINATIONS */}
-      <div style={{padding:'3rem 3rem',background:'var(--gold-xlight)',borderTop:'1px solid rgba(201,169,110,0.2)'}}>
-        <div style={{display:'flex',justifyContent:'space-between',alignItems:'flex-end',marginBottom:'2rem',flexWrap:'wrap',gap:'1rem'}}>
+      <div style={{padding:'3rem 3rem',background:'var(--gold-xlight)',borderTop:'1px solid rgba(201,169,110,0.2)',position:'relative',overflow:'hidden'}}>
+
+        {/* NYC street map background */}
+        <div style={{position:'absolute',inset:0,backgroundImage:"url('https://api.mapbox.com/styles/v1/mapbox/light-v11/static/-74.0060,40.7128,9,0/1800x900?access_token=pk.eyJ1IjoibWFwYm94IiwiYSI6ImNpejY4NXVycTA2emYycXBndHRqcmZ3N3gifQ.rJcFIG214AriISLbB6B5aw')",backgroundSize:'cover',backgroundPosition:'center',opacity:0.12,pointerEvents:'none',filter:'grayscale(100%) contrast(1.4)'}}/>
+        {/* Fallback SVG map pattern if Mapbox fails */}
+        <svg style={{position:'absolute',inset:0,width:'100%',height:'100%',opacity:0.06,pointerEvents:'none'}} xmlns="http://www.w3.org/2000/svg">
+          <defs>
+            <pattern id="grid" width="40" height="40" patternUnits="userSpaceOnUse">
+              <path d="M 40 0 L 0 0 0 40" fill="none" stroke="#0A0A08" strokeWidth="0.5"/>
+            </pattern>
+            <pattern id="roads" width="120" height="120" patternUnits="userSpaceOnUse">
+              <line x1="0" y1="60" x2="120" y2="60" stroke="#0A0A08" strokeWidth="1.5"/>
+              <line x1="60" y1="0" x2="60" y2="120" stroke="#0A0A08" strokeWidth="1.5"/>
+              <line x1="0" y1="20" x2="80" y2="100" stroke="#0A0A08" strokeWidth="0.5"/>
+              <line x1="40" y1="0" x2="120" y2="80" stroke="#0A0A08" strokeWidth="0.5"/>
+              <line x1="20" y1="120" x2="100" y2="40" stroke="#0A0A08" strokeWidth="0.4"/>
+            </pattern>
+          </defs>
+          <rect width="100%" height="100%" fill="url(#grid)"/>
+          <rect width="100%" height="100%" fill="url(#roads)"/>
+        </svg>
+        <div style={{display:'flex',justifyContent:'space-between',alignItems:'flex-end',marginBottom:'2rem',flexWrap:'wrap',gap:'1rem',position:'relative',zIndex:1}}>
           <div>
             <div style={{fontSize:'0.62rem',letterSpacing:'4px',textTransform:'uppercase',color:'var(--gold-dim)',marginBottom:'1rem',display:'flex',alignItems:'center',gap:'1rem'}}>
               <span style={{width:24,height:1,background:'var(--gold-dim)',display:'inline-block'}}/>Now Serving
@@ -468,6 +488,7 @@ function Home({setPage}) {
           </div>
         </div>
 
+        <div style={{position:'relative',zIndex:1}}>
         <div style={{fontSize:'0.58rem',letterSpacing:'3px',textTransform:'uppercase',color:'var(--gold-dim)',marginBottom:'1rem',display:'flex',alignItems:'center',gap:'0.75rem'}}>
           <span style={{width:16,height:1,background:'var(--gold-dim)',display:'inline-block'}}/>United States
         </div>
@@ -500,6 +521,8 @@ function Home({setPage}) {
             </div>
           ))}
         </div>
+
+        </div>{/* end US zIndex wrapper */}
 
         <div style={{margin:'0 -3rem -3rem -3rem',padding:'2.5rem 3rem 3rem',position:'relative',overflow:'hidden',backgroundImage:"url('https://images.unsplash.com/photo-1505118380757-91f5f5632de0?w=1800&q=80')",backgroundSize:'cover',backgroundPosition:'center 60%'}}>
 
