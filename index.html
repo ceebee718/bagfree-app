@@ -30,7 +30,6 @@
   --gold-light:#E8D5B0;
   --gold-dim:#8A6F45;
   --gold-xlight:#F5EDD8;
-  --promo-height:52px;
   --white:#FDFCF8;
   --mist:rgba(253,252,248,0.5);
   --mist-low:rgba(253,252,248,0.15);
@@ -53,22 +52,12 @@ input,select,textarea{font-family:var(--ff-body)}
 @media(max-width:768px){
 
   /* Promo bar */
-  #promoBanner{
-    font-size:0.52rem;
-    letter-spacing:1.5px;
-    padding:5px 2.5rem 5px 0.75rem;
-    gap:0.4rem;
-    flex-wrap:nowrap;
-    justify-content:center;
-  }
-  #promoBanner .promo-dismiss{right:0.5rem;}
+  
 
   /* Nav — hide text links, show hamburger */
   .bf-nav-links{display:none !important;}
   .bf-hamburger{display:block !important;}
   .bf-nav{padding:0.75rem 1.25rem !important;}
-  /* Tighten promo-height on mobile so nav doesn't drop too far */
-  :root{ --promo-height: 38px; }
 
   /* Announcement bar */
   .bf-announce{
@@ -119,30 +108,9 @@ input,select,textarea{font-family:var(--ff-body)}
 <body>
 
 
-<style>
-#promoBanner{
-  position:fixed;top:0;left:0;right:0;z-index:99999;
-  background:#C9A96E;color:#0A0A08;
-  display:flex;align-items:center;justify-content:center;
-  gap:0.75rem;padding:6px 1rem;
-  font-size:0.62rem;font-weight:500;letter-spacing:2.5px;
-  text-transform:uppercase;text-decoration:none;
-  font-family:sans-serif;
-  transition:transform 0.28s ease,opacity 0.28s ease,background 0.2s ease;
-  will-change:transform,opacity;
-}
-#promoBanner:hover{background:#E8D5B0}
-#promoBanner.is-collapsed{transform:translateY(-100%);opacity:0;pointer-events:none;}
-.promo-code{background:#0A0A08;color:#C9A96E;padding:2px 10px;letter-spacing:3px;font-weight:600;font-size:0.6rem;}
-.promo-dismiss{position:absolute;right:1rem;background:transparent;border:none;color:rgba(10,10,8,0.45);font-size:1rem;cursor:pointer;line-height:1;padding:0;}
-</style>
 
-<a id="promoBanner" href="https://valetbynuor.com/collections/all" target="_blank">
-  <span>✦ 25% off your first BagFree kit</span>
-  <span class="promo-code">BAGFREE25</span>
-  <span>· Shop now ↗</span>
-  <span class="promo-dismiss" onclick="event.preventDefault();event.stopPropagation();document.getElementById('promoBanner').style.display='none';" title="Dismiss" role="button" tabindex="0">✕</span>
-</a>
+
+
 
 <div id="root"></div>
 
@@ -1472,43 +1440,7 @@ ReactDOM.createRoot(document.getElementById('root')).render(<App/>);
 </script>
 
 <script>
-(function () {
-  const promo = document.getElementById('promoBanner');
-  if (!promo) return;
-  let lastY = window.scrollY;
-  let dismissed = false;
-  const collapseAt = 24;
 
-  function collapsePromo() {
-    if (dismissed) return;
-    promo.classList.add('is-collapsed');
-  }
-  function expandPromo() {
-    if (dismissed) return;
-    promo.classList.remove('is-collapsed');
-  }
-
-  window.addEventListener('scroll', function () {
-    const y = window.scrollY;
-    const scrollingDown = y > lastY;
-    if (y <= 4) { expandPromo(); }
-    else if (scrollingDown && y > collapseAt) { collapsePromo(); }
-    else if (!scrollingDown) { expandPromo(); }
-    lastY = y;
-  }, { passive: true });
-
-  const dismissBtn = promo.querySelector('.promo-dismiss');
-  if (dismissBtn) {
-    dismissBtn.addEventListener('click', function (event) {
-      event.preventDefault();
-      event.stopPropagation();
-      dismissed = true;
-      promo.style.display = 'none';
-      // Move nav up since promo bar is gone
-      document.documentElement.style.setProperty('--promo-height', '0px');
-    });
-  }
-})();
 </script>
 </body>
 </html>
