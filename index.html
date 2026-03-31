@@ -791,27 +791,7 @@ function Home({setPage}) {
               Enter the Lounge ↗
             </button>
           </div>
-          <div style={{display:'grid',gridTemplateColumns:'1fr 1fr',gap:1,background:'var(--border)'}}>
-            {[
-              {icon:'◌',label:'Live World Map',sub:'Flights, cruises and landmarks'},
-              {icon:'◈',label:'Travel Intelligence',sub:'Safety, alerts and advisories'},
-              {icon:'▵',label:'Destination Intel',sub:'Hotels, Michelin and more'},
-              {icon:'✦',label:'Entertainment Match',sub:'Concerts and events for you'},
-              {icon:'⌘',label:'Embassy Locator',sub:'US embassy at every stop'},
-              {icon:'¤',label:'Power and Currency',sub:'Adapters and exchange rates'},
-              {icon:'★',label:'Luxury Data',sub:'5-star and Michelin guides'},
-              {icon:'◇',label:'BagFree Coverage',sub:'Where we deliver to you'},
-            ].map(({icon,label,sub})=>(
-              <div key={label}
-                style={{background:'var(--noir-3)',padding:'1.5rem 1.25rem',transition:'background 0.25s',cursor:'pointer'}}
-                onMouseEnter={e=>e.currentTarget.style.background='var(--noir-4)'}
-                onMouseLeave={e=>e.currentTarget.style.background='var(--noir-3)'}>
-                <div style={{fontSize:'1.75rem',marginBottom:'0.7rem',color:'var(--gold)'}}>{icon}</div>
-                <div style={{fontSize:'0.78rem',color:'var(--white)',fontWeight:400,marginBottom:3}}>{label}</div>
-                <div style={{fontSize:'0.62rem',color:'var(--mist)'}}>{sub}</div>
-              </div>
-            ))}
-          </div>
+          <LoungeTiles />
         </div>
       </div>
 
@@ -1292,6 +1272,160 @@ function SupplierPortal() {
 }
 
 // ── APP ───────────────────────────────────────────────────────────────────────
+// ── LOUNGE TILES WITH POPUP ───────────────────────────────────────────────────
+const LOUNGE_FEATURES = [
+  {
+    icon:'◌',
+    label:'Live World Map',
+    sub:'Flights, cruises and landmarks',
+    title:'Live World Map',
+    description:'Track real-time flights, cruise ship positions, and major landmarks across the globe. See exactly where planes are in the air right now, follow cruise routes, and explore destination infrastructure — all on a single interactive map built for the luxury traveler.',
+    details:['Live flight tracking with airline, route and ETA data','Cruise ship positions and itineraries','Major landmarks, ports and airports pinned by destination','BagFree delivery coverage zones overlaid on the map','Filter by region, transport type or destination'],
+    color:'rgba(0,150,255,0.12)',
+    accentColor:'#4da6ff',
+  },
+  {
+    icon:'◈',
+    label:'Travel Intelligence',
+    sub:'Safety, alerts and advisories',
+    title:'Travel Intelligence',
+    description:'Know before you go. Our travel intelligence layer surfaces safety ratings, government travel advisories, political climate scores, health alerts and weather patterns for every destination — so you can make informed decisions with confidence.',
+    details:['US State Department travel advisories updated daily','Safety scores by neighborhood and district','Political climate and civil unrest indicators','Health alerts, vaccination requirements and medical facility ratings','Seasonal weather patterns and best time to visit'],
+    color:'rgba(255,160,50,0.12)',
+    accentColor:'#ffaa33',
+  },
+  {
+    icon:'▵',
+    label:'Destination Intel',
+    sub:'Hotels, Michelin and more',
+    title:'Destination Intel',
+    description:'Deep destination knowledge curated for the discerning traveler. Explore 5-star hotels, Michelin-starred restaurants, luxury spas, private beach clubs, members-only venues and hidden gems — all scored and ranked for your travel profile.',
+    details:['5-star and luxury hotel database with real-time availability','Michelin-starred and critically acclaimed restaurants','Private clubs, members-only venues and exclusive experiences','Luxury spa, wellness and fitness facilities','Curated neighbourhood guides for each city'],
+    color:'rgba(201,169,110,0.12)',
+    accentColor:'var(--gold)',
+  },
+  {
+    icon:'✦',
+    label:'Entertainment Match',
+    sub:'Concerts and events for you',
+    title:'Entertainment Match',
+    description:'We match upcoming concerts, festivals, sporting events and cultural experiences to your personal taste profile. Tell us your favourite artists, sports teams and entertainment genres — and we will surface events happening at your destination during your travel dates.',
+    details:['Concert and live music event matching by artist and genre','Sporting events — NFL, NBA, F1, Champions League and more','Art fairs, fashion weeks and cultural festivals','Theatre, opera and performance arts calendar','VIP and hospitality package availability'],
+    color:'rgba(180,50,220,0.12)',
+    accentColor:'#c47aff',
+  },
+  {
+    icon:'⌘',
+    label:'Embassy Locator',
+    sub:'US embassy at every stop',
+    title:'Embassy Locator',
+    description:'Never be without consular support. Our embassy locator maps the nearest US embassy or consulate to every destination on your itinerary — with addresses, emergency phone numbers, appointment booking links and opening hours.',
+    details:['US Embassy and Consulate locations for every country','Emergency contact numbers and after-hours lines','Appointment booking information for passport and visa services','Nearest embassy routing with maps and directions','Dual-citizen and international traveler consular contacts'],
+    color:'rgba(50,180,120,0.12)',
+    accentColor:'#4dc48a',
+  },
+  {
+    icon:'¤',
+    label:'Power and Currency',
+    sub:'Adapters and exchange rates',
+    title:'Power and Currency',
+    description:'Practical intelligence that makes a real difference on the ground. Know exactly which power adapter you need, live currency exchange rates, ATM availability, tipping customs, and cash vs card norms for every country you visit.',
+    details:['Power outlet types and voltage standards by country','Live currency exchange rates updated hourly','ATM availability and international withdrawal fee guidance','Tipping culture and expected amounts by venue type','Cash vs card acceptance norms by city and venue'],
+    color:'rgba(255,220,50,0.1)',
+    accentColor:'#ffd700',
+  },
+  {
+    icon:'★',
+    label:'Luxury Data',
+    sub:'5-star and Michelin guides',
+    title:'Luxury Data',
+    description:'The most comprehensive luxury travel database assembled in one place. Every Forbes Five Star property, every Michelin-starred restaurant, every Relais & Chateaux member, every Virtuoso hotel — surfaced for your destination and travel dates.',
+    details:['Forbes Five Star and AAA Five Diamond hotels','Michelin 1, 2 and 3-star restaurant database','Relais & Chateaux, Leading Hotels of the World and Virtuoso properties','Luxury yacht charter and private aviation contacts','Preferred partner rates for BagFree members'],
+    color:'rgba(201,169,110,0.15)',
+    accentColor:'var(--gold)',
+  },
+  {
+    icon:'◇',
+    label:'BagFree Coverage',
+    sub:'Where we deliver to you',
+    title:'BagFree Coverage Map',
+    description:'See exactly where BagFree delivers before you book. Our coverage map shows all active delivery zones — from same-day service in Tampa and Orlando to next-day across Florida and Georgia, and international delivery to Caribbean island destinations.',
+    details:['Same-day delivery zones: Tampa Bay and Orlando','Next-day delivery: Miami Beach, Florida Keys, Atlanta, Savannah','International delivery: Trinidad & Tobago, St. Vincent & Grenadines','Planned expansion zones coming soon — Caribbean and beyond','Request delivery to a new destination not on the map'],
+    color:'rgba(0,200,180,0.12)',
+    accentColor:'#00c8b4',
+  },
+];
+
+function LoungeTileModal({feature, onClose}) {
+  if (!feature) return null;
+  return (
+    <div
+      onClick={onClose}
+      style={{position:'fixed',inset:0,zIndex:9999,background:'rgba(0,0,0,0.85)',display:'flex',alignItems:'center',justifyContent:'center',padding:'1.5rem',backdropFilter:'blur(8px)'}}>
+      <div
+        onClick={e=>e.stopPropagation()}
+        style={{background:'var(--noir-2)',border:'1px solid var(--border-hi)',maxWidth:560,width:'100%',position:'relative',maxHeight:'90vh',overflowY:'auto'}}>
+        {/* Header */}
+        <div style={{background:feature.color,borderBottom:'1px solid var(--border)',padding:'2rem 2rem 1.5rem'}}>
+          <div style={{fontSize:'2.5rem',color:feature.accentColor,marginBottom:'0.75rem',lineHeight:1}}>{feature.icon}</div>
+          <div style={{fontFamily:'var(--ff-display)',fontSize:'1.8rem',fontWeight:300,color:'var(--white)',lineHeight:1.1,marginBottom:'0.35rem'}}>{feature.title}</div>
+          <div style={{fontSize:'0.62rem',letterSpacing:'2px',textTransform:'uppercase',color:feature.accentColor,opacity:0.8}}>{feature.sub}</div>
+        </div>
+        {/* Body */}
+        <div style={{padding:'1.75rem 2rem'}}>
+          <p style={{fontSize:'0.88rem',color:'rgba(253,252,248,0.75)',lineHeight:1.9,fontWeight:300,marginBottom:'1.75rem'}}>{feature.description}</p>
+          <div style={{fontSize:'0.6rem',letterSpacing:'3px',textTransform:'uppercase',color:feature.accentColor,marginBottom:'1rem',display:'flex',alignItems:'center',gap:'0.75rem'}}>
+            <span style={{width:16,height:1,background:feature.accentColor,display:'inline-block',opacity:0.5}}/>What's included
+          </div>
+          <div style={{display:'flex',flexDirection:'column',gap:'0.65rem',marginBottom:'2rem'}}>
+            {feature.details.map(d=>(
+              <div key={d} style={{display:'flex',gap:'0.85rem',alignItems:'flex-start',fontSize:'0.8rem',color:'rgba(253,252,248,0.65)',lineHeight:1.7}}>
+                <span style={{color:feature.accentColor,fontSize:'0.55rem',flexShrink:0,marginTop:5}}>◆</span>{d}
+              </div>
+            ))}
+          </div>
+          <button
+            onClick={()=>window.open('/departure-lounge','_self')}
+            style={{width:'100%',background:'var(--gold)',color:'var(--noir)',padding:'0.85rem',border:'none',fontSize:'0.68rem',fontWeight:500,letterSpacing:'3px',textTransform:'uppercase',cursor:'pointer',fontFamily:'var(--ff-body)'}}>
+            Enter the Departure Lounge ↗
+          </button>
+        </div>
+        {/* Close */}
+        <button
+          onClick={onClose}
+          style={{position:'absolute',top:'1rem',right:'1rem',background:'transparent',border:'1px solid var(--border)',color:'var(--mist)',width:28,height:28,display:'flex',alignItems:'center',justifyContent:'center',cursor:'pointer',fontSize:'0.7rem',fontFamily:'var(--ff-body)'}}>
+          ✕
+        </button>
+      </div>
+    </div>
+  );
+}
+
+function LoungeTiles() {
+  const [active, setActive] = React.useState(null);
+  return (
+    <>
+      <LoungeTileModal feature={active} onClose={()=>setActive(null)} />
+      <div style={{display:'grid',gridTemplateColumns:'1fr 1fr',gap:1,background:'var(--border)'}}>
+        {LOUNGE_FEATURES.map((f)=>(
+          <div key={f.label}
+            onClick={()=>setActive(f)}
+            style={{background:'var(--noir-3)',padding:'1.5rem 1.25rem',transition:'all 0.25s',cursor:'pointer',position:'relative'}}
+            onMouseEnter={e=>{e.currentTarget.style.background='var(--noir-4)';e.currentTarget.querySelector('.tile-arrow').style.opacity='1';}}
+            onMouseLeave={e=>{e.currentTarget.style.background='var(--noir-3)';e.currentTarget.querySelector('.tile-arrow').style.opacity='0';}}>
+            <div style={{fontSize:'1.75rem',marginBottom:'0.7rem',color:'var(--gold)'}}>{f.icon}</div>
+            <div style={{fontSize:'0.78rem',color:'var(--white)',fontWeight:400,marginBottom:3}}>{f.label}</div>
+            <div style={{fontSize:'0.62rem',color:'var(--mist)'}}>{f.sub}</div>
+            <div className="tile-arrow" style={{position:'absolute',bottom:'0.85rem',right:'0.85rem',fontSize:'0.6rem',color:'var(--gold)',opacity:0,transition:'opacity 0.2s',letterSpacing:'1px'}}>
+              Learn more →
+            </div>
+          </div>
+        ))}
+      </div>
+    </>
+  );
+}
+
 function App() {
   const [page, setPage] = useState(() => {
     const h = window.location.hash.replace('#','');
