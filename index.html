@@ -315,7 +315,7 @@ function Nav({page, setPage}) {
   const [menuOpen, setMenuOpen] = React.useState(false);
   return (
     <>
-      <nav className="bf-nav" style={{position:'fixed',top:'var(--promo-height)',left:0,right:0,zIndex:200,display:'flex',alignItems:'center',justifyContent:'space-between',padding:'1rem 2.5rem',borderBottom:'1px solid var(--border)',background:'rgba(10,10,8,0.97)',backdropFilter:'blur(16px)'}}>
+      <nav className="bf-nav" style={{position:'fixed',top:0,left:0,right:0,zIndex:200,display:'flex',alignItems:'center',justifyContent:'space-between',padding:'1rem 2.5rem',borderBottom:'1px solid var(--border)',background:'rgba(10,10,8,0.97)',backdropFilter:'blur(16px)'}}>
         <div onClick={()=>{setPage('home');setMenuOpen(false);}} style={{fontFamily:'var(--ff-display)',fontSize:'1.5rem',fontWeight:300,letterSpacing:'3px',textTransform:'uppercase',color:'var(--white)',cursor:'pointer'}}>
           Bag<span style={{color:'var(--gold)'}}>Free</span>
         </div>
@@ -358,9 +358,7 @@ function Nav({page, setPage}) {
 // ── HOME ──────────────────────────────────────────────────────────────────────
 function Home({setPage}) {
   return (
-    <div>
-      {/* Spacer to clear promo bar + nav */}
-      <div style={{height:108}}/>
+    <div style={{paddingTop:108}}>
       {/* DEPARTURE LOUNGE ANNOUNCEMENT BAR */}
       <div
         onClick={()=>window.open('/departure-lounge','_self')}
@@ -387,8 +385,7 @@ function Home({setPage}) {
       </div>
 
       {/* HERO */}
-      <div style={{minHeight:'92vh',display:'flex',flexDirection:'column',alignItems:'center',justifyContent:'center',textAlign:'center',padding:'4rem 2rem',position:'relative',overflow:'hidden'}}>
-        <div style={{position:'absolute',top:0,left:0,right:0,bottom:0,backgroundImage:"url('https://raw.githubusercontent.com/ceebee718/bagfree-app/main/hero.jpeg')",backgroundSize:'cover',backgroundPosition:'center 30%',pointerEvents:'none'}}/>
+      <div style={{minHeight:'92vh',display:'flex',flexDirection:'column',alignItems:'center',justifyContent:'center',textAlign:'center',padding:'4rem 2rem',position:'relative',overflow:'hidden',backgroundImage:"url('https://raw.githubusercontent.com/ceebee718/bagfree-app/main/hero.jpeg')",backgroundSize:'cover',backgroundPosition:'center 30%'}}>
         <h1 style={{fontFamily:'var(--ff-display)',fontSize:'clamp(3.5rem,8vw,7rem)',fontWeight:300,lineHeight:1.02,letterSpacing:'-2px',marginBottom:'1.5rem',color:'var(--white)',position:'relative',textShadow:'0 2px 20px rgba(0,0,0,0.3)'}}>
           Arrive to <em style={{fontStyle:'italic',color:'var(--gold)'}}>everything.</em><br/>Carry <em style={{fontStyle:'italic'}}>nothing.</em>
         </h1>
