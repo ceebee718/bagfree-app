@@ -501,72 +501,42 @@ function Home({setPage}) {
           ))}
         </div>
 
-        <div style={{background:'var(--noir)',margin:'0 -3rem -3rem -3rem',padding:'2.5rem 3rem 3rem',position:'relative',overflow:'hidden'}}>
+        <div style={{margin:'0 -3rem -3rem -3rem',padding:'2.5rem 3rem 3rem',position:'relative',overflow:'hidden',backgroundImage:"url('https://images.unsplash.com/photo-1505118380757-91f5f5632de0?w=1800&q=80')",backgroundSize:'cover',backgroundPosition:'center 60%'}}>
 
-        {/* Ocean wave background */}
-        <svg style={{position:'absolute',bottom:0,left:0,right:0,width:'100%',opacity:0.12,pointerEvents:'none'}} viewBox="0 0 1440 320" preserveAspectRatio="none" xmlns="http://www.w3.org/2000/svg">
-          <defs>
-            <style>{`
-              @keyframes wave1 { 0%{transform:translateX(0)} 100%{transform:translateX(-50%)} }
-              @keyframes wave2 { 0%{transform:translateX(-50%)} 100%{transform:translateX(0)} }
-              @keyframes wave3 { 0%{transform:translateX(0)} 100%{transform:translateX(-50%)} }
-              .w1{animation:wave1 14s linear infinite}
-              .w2{animation:wave2 10s linear infinite}
-              .w3{animation:wave3 18s linear infinite}
-            `}</style>
-          </defs>
-          <g className="w1">
-            <path d="M0,160 C180,220 360,80 540,160 C720,240 900,80 1080,160 C1260,240 1440,80 1440,160 L1440,320 L0,320 Z" fill="#0066CC"/>
-            <path d="M1440,160 C1620,220 1800,80 1980,160 C2160,240 2340,80 2520,160 C2700,240 2880,80 2880,160 L2880,320 L1440,320 Z" fill="#0066CC"/>
-          </g>
-          <g className="w2">
-            <path d="M0,200 C200,140 400,260 600,200 C800,140 1000,260 1200,200 C1400,140 1440,220 1440,200 L1440,320 L0,320 Z" fill="#00AAFF"/>
-            <path d="M1440,200 C1640,140 1840,260 2040,200 C2240,140 2440,260 2640,200 C2840,140 2880,220 2880,200 L2880,320 L1440,320 Z" fill="#00AAFF"/>
-          </g>
-          <g className="w3">
-            <path d="M0,240 C160,200 320,280 480,240 C640,200 800,280 960,240 C1120,200 1280,280 1440,240 L1440,320 L0,320 Z" fill="#004488"/>
-            <path d="M1440,240 C1600,200 1760,280 1920,240 C2080,200 2240,280 2400,240 C2560,200 2720,280 2880,240 L2880,320 L1440,320 Z" fill="#004488"/>
-          </g>
-        </svg>
+        {/* Dark overlay so text stays readable */}
+        <div style={{position:'absolute',inset:0,background:'linear-gradient(135deg, rgba(8,20,40,0.82) 0%, rgba(5,30,20,0.78) 50%, rgba(8,20,40,0.85) 100%)',pointerEvents:'none'}}/>
 
-        {/* Top wave decorative line */}
-        <svg style={{position:'absolute',top:0,left:0,right:0,width:'100%',opacity:0.08,pointerEvents:'none'}} viewBox="0 0 1440 80" preserveAspectRatio="none" xmlns="http://www.w3.org/2000/svg">
-          <g className="w2">
-            <path d="M0,40 C120,10 240,70 360,40 C480,10 600,70 720,40 C840,10 960,70 1080,40 C1200,10 1320,70 1440,40 L1440,0 L0,0 Z" fill="#00AAFF"/>
-            <path d="M1440,40 C1560,10 1680,70 1800,40 C1920,10 2040,70 2160,40 C2280,10 2400,70 2520,40 C2640,10 2760,70 2880,40 L2880,0 L1440,0 Z" fill="#00AAFF"/>
-          </g>
-        </svg>
 
         <div style={{position:'relative',zIndex:1}}>
         <div style={{fontSize:'0.58rem',letterSpacing:'3px',textTransform:'uppercase',color:'var(--gold)',marginBottom:'1rem',display:'flex',alignItems:'center',gap:'0.75rem'}}>
           <span style={{width:16,height:1,background:'var(--gold)',display:'inline-block'}}/>The Caribbean
         </div>
-        <div style={{display:'grid',gridTemplateColumns:'repeat(3,1fr)',gap:1,background:'var(--border)',border:'1px solid var(--border)'}}>
+        <div style={{display:'grid',gridTemplateColumns:'repeat(3,1fr)',gap:1,background:'rgba(255,255,255,0.08)',border:'1px solid rgba(255,255,255,0.12)'}}>
           {[
             {
               name:'Trinidad & Tobago',state:'TT',code:'POS',comingSoon:false,
               desc:'Port of Spain and Crown Point. Carnival season specialists. Pre-arrival delivery to all major resorts.',
-              bg:'linear-gradient(135deg, rgba(180,42,42,0.25) 0%, rgba(30,28,20,1) 38%, rgba(30,28,20,1) 62%, rgba(180,42,42,0.18) 100%)',
-              bgHover:'linear-gradient(135deg, rgba(180,42,42,0.35) 0%, rgba(40,36,24,1) 38%, rgba(40,36,24,1) 62%, rgba(180,42,42,0.28) 100%)',
-              accentColor:'rgba(220,120,100,0.9)',
-              dividerColor:'rgba(180,42,42,0.35)',
-              textColor:'rgba(253,252,248,0.55)',
+              bg:'rgba(140,30,30,0.25)',
+              bgHover:'rgba(140,30,30,0.40)',
+              accentColor:'rgba(255,160,130,0.95)',
+              dividerColor:'rgba(200,80,60,0.4)',
+              textColor:'rgba(253,252,248,0.7)',
               nameColor:'var(--white)',
             },
             {
               name:'St. Vincent & Grenadines',state:'VC',code:'SVD',comingSoon:false,
               desc:'Kingstown to Bequia and the Grenadines. Private island and boutique resort delivery.',
-              bg:'linear-gradient(105deg, rgba(0,90,160,0.18) 0%, rgba(201,169,110,0.12) 35%, rgba(26,26,23,1) 50%, rgba(201,169,110,0.10) 65%, rgba(20,130,60,0.16) 100%)',
-              bgHover:'linear-gradient(105deg, rgba(0,90,160,0.28) 0%, rgba(201,169,110,0.20) 35%, rgba(36,36,32,1) 50%, rgba(201,169,110,0.18) 65%, rgba(20,130,60,0.24) 100%)',
-              accentColor:'rgba(100,200,130,0.85)',
-              dividerColor:'rgba(20,130,60,0.35)',
-              textColor:'rgba(253,252,248,0.55)',
+              bg:'rgba(0,80,40,0.25)',
+              bgHover:'rgba(0,80,40,0.40)',
+              accentColor:'rgba(100,220,150,0.95)',
+              dividerColor:'rgba(20,160,80,0.4)',
+              textColor:'rgba(253,252,248,0.7)',
               nameColor:'var(--white)',
             },
             {
               name:'More Coming Soon',state:'Caribbean',code:'···',comingSoon:true,
               desc:'Additional Caribbean destinations launching soon. Contact us for availability at your island destination.',
-              bg:'var(--noir-3)',bgHover:'var(--noir-3)',
+              bg:'rgba(10,10,8,0.35)',bgHover:'rgba(10,10,8,0.35)',
               accentColor:'var(--gold-dim)',dividerColor:'rgba(201,169,110,0.2)',
               textColor:'rgba(253,252,248,0.35)',nameColor:'rgba(253,252,248,0.5)',
             },
