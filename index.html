@@ -389,13 +389,31 @@ function Home({setPage}) {
 
       {/* HOW IT WORKS */}
       <div style={{padding:'3rem 3rem',background:'var(--gold-xlight)',position:'relative',overflow:'hidden',borderBottom:'1px solid rgba(10,10,8,0.08)'}}>
-        <div style={{fontSize:'0.62rem',letterSpacing:'4px',textTransform:'uppercase',color:'var(--gold-dim)',marginBottom:'1.5rem',display:'flex',alignItems:'center',gap:'1rem',position:'relative'}}>
+
+        {/* Street map background — same as Destinations section */}
+        <svg style={{position:'absolute',inset:0,width:'100%',height:'100%',opacity:0.06,pointerEvents:'none'}} xmlns="http://www.w3.org/2000/svg">
+          <defs>
+            <pattern id="grid-hiw" width="40" height="40" patternUnits="userSpaceOnUse">
+              <path d="M 40 0 L 0 0 0 40" fill="none" stroke="#0A0A08" strokeWidth="0.5"/>
+            </pattern>
+            <pattern id="roads-hiw" width="120" height="120" patternUnits="userSpaceOnUse">
+              <line x1="0" y1="60" x2="120" y2="60" stroke="#0A0A08" strokeWidth="1.5"/>
+              <line x1="60" y1="0" x2="60" y2="120" stroke="#0A0A08" strokeWidth="1.5"/>
+              <line x1="0" y1="20" x2="80" y2="100" stroke="#0A0A08" strokeWidth="0.5"/>
+              <line x1="40" y1="0" x2="120" y2="80" stroke="#0A0A08" strokeWidth="0.5"/>
+              <line x1="20" y1="120" x2="100" y2="40" stroke="#0A0A08" strokeWidth="0.4"/>
+            </pattern>
+          </defs>
+          <rect width="100%" height="100%" fill="url(#grid-hiw)"/>
+          <rect width="100%" height="100%" fill="url(#roads-hiw)"/>
+        </svg>
+        <div style={{fontSize:'0.62rem',letterSpacing:'4px',textTransform:'uppercase',color:'var(--gold-dim)',marginBottom:'1.5rem',display:'flex',alignItems:'center',gap:'1rem',position:'relative',zIndex:1}}>
           <span style={{width:24,height:1,background:'rgba(10,10,8,0.3)',display:'inline-block'}}/>How It Works
         </div>
-        <h2 style={{fontFamily:'var(--ff-display)',fontSize:'clamp(2rem,4vw,3.5rem)',fontWeight:300,marginBottom:'2rem',color:'var(--noir)',letterSpacing:'-0.3px',position:'relative'}}>
+        <h2 style={{fontFamily:'var(--ff-display)',fontSize:'clamp(2rem,4vw,3.5rem)',fontWeight:300,marginBottom:'2rem',color:'var(--noir)',letterSpacing:'-0.3px',position:'relative',zIndex:1}}>
           Three steps to <em style={{fontStyle:'italic',color:'var(--gold-dim)'}}>effortless</em> arrival
         </h2>
-        <div style={{display:'grid',gridTemplateColumns:'repeat(3,1fr)',gap:0,border:'1px solid rgba(10,10,8,0.12)',position:'relative'}}>
+        <div style={{display:'grid',gridTemplateColumns:'repeat(3,1fr)',gap:0,border:'1px solid rgba(10,10,8,0.12)',position:'relative',zIndex:1}}>
           {[
             ['01','Browse the Marketplace','Explore vendors by category or destination. Clothing, wellness, family gear, and more — all in one place.','Shop the Marketplace →',()=>setPage('vendors')],
             ['02','Order & Confirm','Place your order and confirm your hotel and arrival date. We coordinate delivery directly with your accommodation.','Book a Hotel →',()=>setPage('hotel')],
