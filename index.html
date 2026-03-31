@@ -450,91 +450,30 @@ function Home({setPage}) {
         <div style={{fontSize:'0.58rem',letterSpacing:'3px',textTransform:'uppercase',color:'var(--gold-dim)',marginBottom:'1rem',display:'flex',alignItems:'center',gap:'0.75rem'}}>
           <span style={{width:16,height:1,background:'var(--gold-dim)',display:'inline-block'}}/>United States
         </div>
-        <div className="bf-grid-3" style={{display:'grid',gridTemplateColumns:'repeat(3,1fr)',gap:1,background:'rgba(10,10,8,0.08)',border:'1px solid rgba(10,10,8,0.08)',marginBottom:'2rem'}}>
+        <div className="bf-grid-3" style={{display:'grid',gridTemplateColumns:'repeat(3,1fr)',gap:1,background:'rgba(10,10,8,0.1)',border:'1px solid rgba(10,10,8,0.1)'}}>
           {[
-            {
-              name:'Tampa Bay', state:'FL', sameDay:true, code:'TPA',
-              desc:'Our flagship city. Same-day delivery to all major hotels and resorts.',
-              // Buccaneers — soft pewter red
-              bg:'linear-gradient(145deg,#f5ede8 0%,#eeddd6 60%,#f0e6de 100%)',
-              bgHover:'linear-gradient(145deg,#eeddd6 0%,#e5cfc6 60%,#e8d8ce 100%)',
-              accent:'#9B2335', accentText:'#7a1a28',
-              codeColor:'rgba(155,35,53,0.65)', divider:'rgba(155,35,53,0.2)',
-              textColor:'rgba(10,10,8,0.5)', nameColor:'var(--noir)',
-              theme:'🏈 Buccaneers Country',
-            },
-            {
-              name:'Orlando', state:'FL', sameDay:true, code:'MCO',
-              desc:'Theme park to resort — essentials delivered before you check in.',
-              // Magic — soft blue mist
-              bg:'linear-gradient(145deg,#e8eef5 0%,#d6e2ef 60%,#dde8f0 100%)',
-              bgHover:'linear-gradient(145deg,#dde8f5 0%,#c8d8eb 60%,#d0e0ed 100%)',
-              accent:'#0056A2', accentText:'#003d75',
-              codeColor:'rgba(0,86,162,0.6)', divider:'rgba(0,86,162,0.18)',
-              textColor:'rgba(10,10,8,0.5)', nameColor:'var(--noir)',
-              theme:'🏀 Magic City',
-            },
-            {
-              name:'Miami Beach', state:'FL', sameDay:false, code:'MIA',
-              desc:'South Beach, Brickell and beyond. Art Basel season specialists.',
-              // Heat — soft blush pink
-              bg:'linear-gradient(145deg,#f5e8ed 0%,#edd6e0 60%,#f0dde6 100%)',
-              bgHover:'linear-gradient(145deg,#eedde6 0%,#e5ccd8 60%,#e8d4de 100%)',
-              accent:'#98002E', accentText:'#7a0025',
-              codeColor:'rgba(152,0,46,0.6)', divider:'rgba(152,0,46,0.18)',
-              textColor:'rgba(10,10,8,0.5)', nameColor:'var(--noir)',
-              theme:'🦩 Heat & Flamingos',
-            },
-            {
-              name:'Florida Keys', state:'FL', sameDay:false, code:'EYW',
-              desc:'Island delivery from Key Largo to Key West. Resort kits our specialty.',
-              // Keys — soft sea glass teal
-              bg:'linear-gradient(145deg,#e8f4f2 0%,#d4eceb 60%,#daeeed 100%)',
-              bgHover:'linear-gradient(145deg,#dcefee 0%,#c8e6e4 60%,#d0eae8 100%)',
-              accent:'#00897B', accentText:'#006b60',
-              codeColor:'rgba(0,137,123,0.65)', divider:'rgba(0,137,123,0.2)',
-              textColor:'rgba(10,10,8,0.5)', nameColor:'var(--noir)',
-              theme:'🦞 Spiny Lobster Waters',
-            },
-            {
-              name:'Atlanta', state:'GA', sameDay:false, code:'ATL',
-              desc:'Buckhead, Midtown, Airport corridor. Business and leisure.',
-              // Falcons + Peach — soft warm peach
-              bg:'linear-gradient(145deg,#f5ede4 0%,#eeddd0 60%,#f0e5d8 100%)',
-              bgHover:'linear-gradient(145deg,#eeddd0 0%,#e5cfc0 60%,#e8d8c8 100%)',
-              accent:'#A71930', accentText:'#c45c00',
-              codeColor:'rgba(196,92,0,0.7)', divider:'rgba(167,25,48,0.2)',
-              textColor:'rgba(10,10,8,0.5)', nameColor:'var(--noir)',
-              theme:'🍑 Falcons & Georgia Peach',
-            },
-            {
-              name:'Savannah', state:'GA', sameDay:false, code:'SAV',
-              desc:'Historic district hotels and boutique properties. Weekend getaways.',
-              // Spanish moss — soft sage green
-              bg:'linear-gradient(145deg,#eaf0e6 0%,#dae8d4 60%,#e0ecdc 100%)',
-              bgHover:'linear-gradient(145deg,#e0ead8 0%,#d0e0c8 60%,#d8e8d2 100%)',
-              accent:'#4a6741', accentText:'#3a5232',
-              codeColor:'rgba(74,103,65,0.65)', divider:'rgba(74,103,65,0.2)',
-              textColor:'rgba(10,10,8,0.5)', nameColor:'var(--noir)',
-              theme:'🌿 Spanish Moss & Pecans',
-            },
+            {name:'Tampa Bay',state:'FL',sameDay:true,desc:'Our flagship city. Same-day delivery to all major hotels and resorts.',code:'TPA'},
+            {name:'Orlando',state:'FL',sameDay:true,desc:'Theme park to resort — essentials delivered before you check in.',code:'MCO'},
+            {name:'Miami Beach',state:'FL',sameDay:false,desc:'South Beach, Brickell and beyond. Art Basel season specialists.',code:'MIA'},
+            {name:'Florida Keys',state:'FL',sameDay:false,desc:'Island delivery from Key Largo to Key West. Resort kits our specialty.',code:'EYW'},
+            {name:'Atlanta',state:'GA',sameDay:false,desc:'Buckhead, Midtown, Airport corridor. Business and leisure.',code:'ATL'},
+            {name:'Savannah',state:'GA',sameDay:false,desc:'Historic district hotels and boutique properties. Weekend getaways.',code:'SAV'},
           ].map((d)=>(
             <div key={d.name} onClick={()=>setPage('vendors')}
-              style={{background:d.bg,padding:'2.5rem 2rem',cursor:'pointer',transition:'background 0.3s',position:'relative'}}
-              onMouseEnter={e=>e.currentTarget.style.background=d.bgHover}
-              onMouseLeave={e=>e.currentTarget.style.background=d.bg}>
+              style={{background:'var(--gold-xlight)',padding:'2.5rem 2rem',cursor:'pointer',transition:'background 0.25s',position:'relative'}}
+              onMouseEnter={e=>e.currentTarget.style.background='rgba(201,169,110,0.25)'}
+              onMouseLeave={e=>e.currentTarget.style.background='var(--gold-xlight)'}>
               {d.sameDay && (
-                <div style={{position:'absolute',top:'1.25rem',right:'1.25rem',fontSize:'0.52rem',letterSpacing:'1.5px',textTransform:'uppercase',color:d.accentText,border:`1px solid ${d.accent}`,padding:'3px 8px',background:'rgba(255,255,255,0.5)'}}>
+                <div style={{position:'absolute',top:'1.25rem',right:'1.25rem',fontSize:'0.52rem',letterSpacing:'1.5px',textTransform:'uppercase',color:'var(--noir)',border:'1px solid rgba(10,10,8,0.25)',padding:'3px 8px',background:'rgba(10,10,8,0.07)'}}>
                   Same-Day
                 </div>
               )}
-              <div style={{fontSize:'0.55rem',letterSpacing:'2px',textTransform:'uppercase',color:d.accentText,marginBottom:'0.6rem',opacity:0.7}}>{d.theme}</div>
-              <div style={{fontFamily:'var(--ff-display)',fontSize:'0.7rem',fontWeight:300,letterSpacing:'4px',color:d.codeColor,marginBottom:'0.6rem',textTransform:'uppercase'}}>{d.code}</div>
-              <div style={{fontFamily:'var(--ff-display)',fontSize:'1.5rem',fontWeight:300,color:d.nameColor,marginBottom:'4px',lineHeight:1.1}}>{d.name}</div>
-              <div style={{fontSize:'0.6rem',letterSpacing:'2px',textTransform:'uppercase',color:d.accentText,marginBottom:'1rem',opacity:0.6}}>{d.state}</div>
-              <div style={{width:20,height:1,background:d.divider,marginBottom:'1rem'}}/>
-              <div style={{fontSize:'0.75rem',color:d.textColor,lineHeight:1.8,fontWeight:300,marginBottom:'1.25rem'}}>{d.desc}</div>
-              <div style={{fontSize:'0.62rem',letterSpacing:'2px',textTransform:'uppercase',color:d.accentText,display:'flex',alignItems:'center',gap:'0.5rem'}}>
+              <div style={{fontFamily:'var(--ff-display)',fontSize:'0.7rem',fontWeight:300,letterSpacing:'4px',color:'var(--gold-dim)',marginBottom:'0.85rem',textTransform:'uppercase'}}>{d.code}</div>
+              <div style={{fontFamily:'var(--ff-display)',fontSize:'1.5rem',fontWeight:300,color:'var(--noir)',marginBottom:'4px',lineHeight:1.1}}>{d.name}</div>
+              <div style={{fontSize:'0.6rem',letterSpacing:'2px',textTransform:'uppercase',color:'var(--gold-dim)',marginBottom:'1rem'}}>{d.state}</div>
+              <div style={{width:20,height:1,background:'rgba(10,10,8,0.2)',marginBottom:'1rem'}}/>
+              <div style={{fontSize:'0.75rem',color:'rgba(10,10,8,0.55)',lineHeight:1.8,fontWeight:300,marginBottom:'1.25rem'}}>{d.desc}</div>
+              <div style={{fontSize:'0.62rem',letterSpacing:'2px',textTransform:'uppercase',color:'var(--gold-dim)',display:'flex',alignItems:'center',gap:'0.5rem'}}>
                 Shop vendors <span style={{fontSize:'0.7rem'}}>→</span>
               </div>
             </div>
@@ -543,43 +482,6 @@ function Home({setPage}) {
 
         </div>{/* end US zIndex wrapper */}
 
-      </div>
-
-      {/* HOTEL CONCIERGE */}
-      <div style={{padding:'6rem 3rem',background:'var(--noir-2)',borderTop:'1px solid var(--border)'}}>
-        <div className="bf-hotel-grid" style={{display:'grid',gridTemplateColumns:'1fr 1fr',gap:'4rem',alignItems:'center',maxWidth:1100,margin:'0 auto'}}>
-          <div>
-            <div style={{fontSize:'0.62rem',letterSpacing:'4px',textTransform:'uppercase',color:'var(--gold)',marginBottom:'1.5rem',display:'flex',alignItems:'center',gap:'1rem'}}>
-              <span style={{width:24,height:1,background:'var(--gold-dim)',display:'inline-block'}}/>Travel Concierge
-            </div>
-            <h2 style={{fontFamily:'var(--ff-display)',fontSize:'clamp(2rem,4vw,3.2rem)',fontWeight:300,marginBottom:'1rem'}}>
-              We'll book your <em style={{color:'var(--gold)',fontStyle:'italic'}}>hotel too</em>
-            </h2>
-            <p style={{fontSize:'0.88rem',color:'var(--mist)',lineHeight:1.9,marginBottom:'2rem',fontWeight:300,maxWidth:420}}>Our travel concierge finds and books your perfect hotel — with exclusive rates not available to the public. Then we deliver everything you need to your room before you arrive.</p>
-            <div style={{display:'flex',flexDirection:'column',gap:'0.75rem',marginBottom:'2.5rem'}}>
-              {['Exclusive hotel rates via our travel agent network','Personalized recommendations for your trip type','Coordinated with your Valet By Nuor delivery','Response within 24 hours'].map(f=>(
-                <div key={f} style={{display:'flex',gap:'0.75rem',alignItems:'center',fontSize:'0.82rem',color:'var(--mist)'}}>
-                  <span style={{color:'var(--gold)',fontSize:'0.6rem',flexShrink:0}}>◆</span>{f}
-                </div>
-              ))}
-            </div>
-            <button onClick={()=>setPage('hotel')} style={{background:'var(--gold)',color:'var(--noir)',padding:'0.9rem 2.5rem',border:'none',fontSize:'0.7rem',fontWeight:500,letterSpacing:'3px',textTransform:'uppercase'}}>
-              Request Hotel Booking
-            </button>
-          </div>
-          <div style={{background:'var(--noir-3)',border:'1px solid var(--border)',padding:'2rem'}}>
-            <div style={{fontSize:'0.6rem',letterSpacing:'3px',textTransform:'uppercase',color:'var(--gold)',marginBottom:'1.5rem',paddingBottom:'1rem',borderBottom:'1px solid var(--border)'}}>The Complete BagFree Experience</div>
-            {[['01','Book Your Hotel','Destination, dates, budget — we handle the rest.'],['02','Order Your Essentials','Browse vendors and have everything delivered to your room.'],['03','Arrive Unburdened','Hotel confirmed. Essentials waiting. Nothing to carry.']].map(([n,h,p])=>(
-              <div key={n} style={{display:'flex',gap:'1.25rem',marginBottom:'1.5rem',paddingBottom:'1.5rem',borderBottom:'1px solid var(--mist-xlow)'}}>
-                <div style={{fontFamily:'var(--ff-display)',fontSize:'1.8rem',fontWeight:300,color:'var(--border-hi)',lineHeight:1,flexShrink:0,width:32}}>{n}</div>
-                <div>
-                  <div style={{fontSize:'0.82rem',color:'var(--white)',fontWeight:400,marginBottom:4}}>{h}</div>
-                  <div style={{fontSize:'0.75rem',color:'var(--mist)',lineHeight:1.7,fontWeight:300}}>{p}</div>
-                </div>
-              </div>
-            ))}
-          </div>
-        </div>
       </div>
 
       {/* CARIBBEAN */}
@@ -648,6 +550,43 @@ function Home({setPage}) {
         </div>
         </div>{/* end position:relative wrapper */}
         </div>{/* end dark caribbean panel */}
+      </div>
+
+      {/* HOTEL CONCIERGE */}
+      <div style={{padding:'6rem 3rem',background:'var(--noir-2)',borderTop:'1px solid var(--border)'}}>
+        <div className="bf-hotel-grid" style={{display:'grid',gridTemplateColumns:'1fr 1fr',gap:'4rem',alignItems:'center',maxWidth:1100,margin:'0 auto'}}>
+          <div>
+            <div style={{fontSize:'0.62rem',letterSpacing:'4px',textTransform:'uppercase',color:'var(--gold)',marginBottom:'1.5rem',display:'flex',alignItems:'center',gap:'1rem'}}>
+              <span style={{width:24,height:1,background:'var(--gold-dim)',display:'inline-block'}}/>Travel Concierge
+            </div>
+            <h2 style={{fontFamily:'var(--ff-display)',fontSize:'clamp(2rem,4vw,3.2rem)',fontWeight:300,marginBottom:'1rem'}}>
+              We'll book your <em style={{color:'var(--gold)',fontStyle:'italic'}}>hotel too</em>
+            </h2>
+            <p style={{fontSize:'0.88rem',color:'var(--mist)',lineHeight:1.9,marginBottom:'2rem',fontWeight:300,maxWidth:420}}>Our travel concierge finds and books your perfect hotel — with exclusive rates not available to the public. Then we deliver everything you need to your room before you arrive.</p>
+            <div style={{display:'flex',flexDirection:'column',gap:'0.75rem',marginBottom:'2.5rem'}}>
+              {['Exclusive hotel rates via our travel agent network','Personalized recommendations for your trip type','Coordinated with your Valet By Nuor delivery','Response within 24 hours'].map(f=>(
+                <div key={f} style={{display:'flex',gap:'0.75rem',alignItems:'center',fontSize:'0.82rem',color:'var(--mist)'}}>
+                  <span style={{color:'var(--gold)',fontSize:'0.6rem',flexShrink:0}}>◆</span>{f}
+                </div>
+              ))}
+            </div>
+            <button onClick={()=>setPage('hotel')} style={{background:'var(--gold)',color:'var(--noir)',padding:'0.9rem 2.5rem',border:'none',fontSize:'0.7rem',fontWeight:500,letterSpacing:'3px',textTransform:'uppercase'}}>
+              Request Hotel Booking
+            </button>
+          </div>
+          <div style={{background:'var(--noir-3)',border:'1px solid var(--border)',padding:'2rem'}}>
+            <div style={{fontSize:'0.6rem',letterSpacing:'3px',textTransform:'uppercase',color:'var(--gold)',marginBottom:'1.5rem',paddingBottom:'1rem',borderBottom:'1px solid var(--border)'}}>The Complete BagFree Experience</div>
+            {[['01','Book Your Hotel','Destination, dates, budget — we handle the rest.'],['02','Order Your Essentials','Browse vendors and have everything delivered to your room.'],['03','Arrive Unburdened','Hotel confirmed. Essentials waiting. Nothing to carry.']].map(([n,h,p])=>(
+              <div key={n} style={{display:'flex',gap:'1.25rem',marginBottom:'1.5rem',paddingBottom:'1.5rem',borderBottom:'1px solid var(--mist-xlow)'}}>
+                <div style={{fontFamily:'var(--ff-display)',fontSize:'1.8rem',fontWeight:300,color:'var(--border-hi)',lineHeight:1,flexShrink:0,width:32}}>{n}</div>
+                <div>
+                  <div style={{fontSize:'0.82rem',color:'var(--white)',fontWeight:400,marginBottom:4}}>{h}</div>
+                  <div style={{fontSize:'0.75rem',color:'var(--mist)',lineHeight:1.7,fontWeight:300}}>{p}</div>
+                </div>
+              </div>
+            ))}
+          </div>
+        </div>
       </div>
 
       {/* DEPARTURE LOUNGE TEASER */}
