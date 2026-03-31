@@ -67,6 +67,8 @@ input,select,textarea{font-family:var(--ff-body)}
   .bf-nav-links{display:none !important;}
   .bf-hamburger{display:block !important;}
   .bf-nav{padding:0.75rem 1.25rem !important;}
+  /* Tighten promo-height on mobile so nav doesn't drop too far */
+  :root{ --promo-height: 38px; }
 
   /* Announcement bar */
   .bf-announce{
@@ -313,7 +315,7 @@ function Nav({page, setPage}) {
   const [menuOpen, setMenuOpen] = React.useState(false);
   return (
     <>
-      <nav className="bf-nav" style={{position:'fixed',top:0,left:0,right:0,zIndex:200,display:'flex',alignItems:'center',justifyContent:'space-between',padding:'1rem 2.5rem',borderBottom:'1px solid var(--border)',background:'rgba(10,10,8,0.97)',backdropFilter:'blur(16px)'}}>
+      <nav className="bf-nav" style={{position:'fixed',top:'var(--promo-height)',left:0,right:0,zIndex:200,display:'flex',alignItems:'center',justifyContent:'space-between',padding:'1rem 2.5rem',borderBottom:'1px solid var(--border)',background:'rgba(10,10,8,0.97)',backdropFilter:'blur(16px)'}}>
         <div onClick={()=>{setPage('home');setMenuOpen(false);}} style={{fontFamily:'var(--ff-display)',fontSize:'1.5rem',fontWeight:300,letterSpacing:'3px',textTransform:'uppercase',color:'var(--white)',cursor:'pointer'}}>
           Bag<span style={{color:'var(--gold)'}}>Free</span>
         </div>
@@ -833,7 +835,7 @@ function Home({setPage}) {
 // ── VENDOR MARKETPLACE ────────────────────────────────────────────────────────
 function VendorMarketplace({setPage, setActiveVendor}) {
   return (
-    <div style={{paddingTop:80}}>
+    <div style={{paddingTop:108}}>
       <div style={{padding:'5rem 3rem 4rem',background:'var(--gold)',position:'relative',overflow:'hidden'}}>
         <div style={{fontSize:'0.62rem',letterSpacing:'4px',textTransform:'uppercase',color:'rgba(10,10,8,0.5)',marginBottom:'1.25rem',display:'flex',alignItems:'center',gap:'1rem',position:'relative'}}>
           <span style={{width:24,height:1,background:'var(--noir)',opacity:0.3,display:'inline-block'}}/>BagFree Marketplace
@@ -941,7 +943,7 @@ function ProductsPage({setPage}) {
   if (selected) return <ProductDetail product={selected} onBack={()=>setSelected(null)}/>;
 
   return (
-    <div style={{paddingTop:80}}>
+    <div style={{paddingTop:108}}>
       <div style={{padding:'1.5rem 2.5rem',background:'var(--noir-2)',borderBottom:'1px solid var(--border)',display:'flex',gap:'1rem',flexWrap:'wrap',alignItems:'center'}}>
         <span onClick={()=>setPage('vendors')} style={{fontSize:'0.68rem',letterSpacing:'2px',textTransform:'uppercase',color:'var(--gold)',cursor:'pointer',marginRight:'0.5rem'}}>← Vendors</span>
         <input value={search} onChange={e=>setSearch(e.target.value)} placeholder="Search products..."
@@ -995,7 +997,7 @@ function ProductsPage({setPage}) {
 
 function ProductDetail({product:p, onBack}) {
   return (
-    <div style={{paddingTop:80,minHeight:'100vh',background:'var(--noir)'}}>
+    <div style={{paddingTop:108,minHeight:'100vh',background:'var(--noir)'}}>
       <div style={{padding:'1.25rem 2.5rem',borderBottom:'1px solid var(--border)',background:'var(--noir-2)'}}>
         <span onClick={onBack} style={{fontSize:'0.68rem',letterSpacing:'2px',textTransform:'uppercase',color:'var(--gold)',cursor:'pointer'}}>← Back</span>
       </div>
@@ -1033,7 +1035,7 @@ function HotelConcierge() {
   const f = (k,v) => setForm(p=>({...p,[k]:v}));
 
   if (done) return (
-    <div style={{paddingTop:80,minHeight:'100vh',display:'flex',alignItems:'center',justifyContent:'center',flexDirection:'column',textAlign:'center',padding:'4rem 2rem',background:'var(--noir)'}}>
+    <div style={{paddingTop:108,minHeight:'100vh',display:'flex',alignItems:'center',justifyContent:'center',flexDirection:'column',textAlign:'center',padding:'4rem 2rem',background:'var(--noir)'}}>
       <div style={{fontFamily:'var(--ff-display)',fontSize:'4rem',fontWeight:300,marginBottom:'1rem'}}>Request <em style={{color:'var(--gold)',fontStyle:'italic'}}>Received</em></div>
       <p style={{fontSize:'0.9rem',color:'var(--mist)',lineHeight:1.9,maxWidth:480,marginBottom:'1.5rem'}}>Thank you, <strong style={{color:'var(--white)'}}>{form.name}</strong>. Our travel concierge will contact you at <strong style={{color:'var(--white)'}}>{form.email}</strong> within 24 hours with hotel options for <strong style={{color:'var(--white)'}}>{form.dest}</strong>.</p>
       <div style={{fontSize:'0.85rem',color:'var(--gold)',marginBottom:'2rem'}}>(813) 816-2448 · support@valetbynuor.com</div>
@@ -1041,7 +1043,7 @@ function HotelConcierge() {
   );
 
   return (
-    <div style={{paddingTop:80,minHeight:'100vh',background:'var(--noir)'}}>
+    <div style={{paddingTop:108,minHeight:'100vh',background:'var(--noir)'}}>
       <div style={{padding:'4rem 3rem 3rem',background:'var(--gold)'}}>
         <div style={{fontSize:'0.62rem',letterSpacing:'4px',textTransform:'uppercase',color:'rgba(10,10,8,0.5)',marginBottom:'1rem'}}>Travel Concierge</div>
         <h1 style={{fontFamily:'var(--ff-display)',fontSize:'clamp(2.5rem,5vw,4rem)',fontWeight:300,color:'var(--noir)'}}>Book your <em style={{fontStyle:'italic'}}>perfect stay</em></h1>
@@ -1130,7 +1132,7 @@ function SupplierPortal() {
   }
 
   if (done) return (
-    <div style={{paddingTop:80,minHeight:'100vh',display:'flex',alignItems:'center',justifyContent:'center',flexDirection:'column',textAlign:'center',padding:'4rem 2rem',background:'var(--noir)'}}>
+    <div style={{paddingTop:108,minHeight:'100vh',display:'flex',alignItems:'center',justifyContent:'center',flexDirection:'column',textAlign:'center',padding:'4rem 2rem',background:'var(--noir)'}}>
       <div style={{fontFamily:'var(--ff-display)',fontSize:'4rem',fontWeight:300,marginBottom:'1rem'}}>Application <em style={{color:'var(--gold)',fontStyle:'italic'}}>Received</em></div>
       <p style={{fontSize:'0.9rem',color:'var(--mist)',lineHeight:1.9,maxWidth:480,marginBottom:'1.5rem'}}>Thank you, <strong style={{color:'var(--white)'}}>{form.biz}</strong>. We will review your application and reach out to <strong style={{color:'var(--white)'}}>{form.email}</strong> within 3 business days.</p>
       <div style={{fontSize:'0.7rem',color:'var(--gold)',letterSpacing:'2px',textTransform:'uppercase'}}>BagFree Supplier Network · Fulfilled by Valet By Nuor</div>
@@ -1138,7 +1140,7 @@ function SupplierPortal() {
   );
 
   return (
-    <div style={{paddingTop:80,minHeight:'100vh',background:'var(--noir)'}}>
+    <div style={{paddingTop:108,minHeight:'100vh',background:'var(--noir)'}}>
       <div style={{padding:'4rem 3rem 3rem',background:'var(--gold)'}}>
         <div style={{fontSize:'0.62rem',letterSpacing:'4px',textTransform:'uppercase',color:'rgba(10,10,8,0.5)',marginBottom:'1rem'}}>Supplier Application</div>
         <h1 style={{fontFamily:'var(--ff-display)',fontSize:'clamp(2.5rem,5vw,4rem)',fontWeight:300,color:'var(--noir)'}}>Join the <em style={{fontStyle:'italic'}}>BagFree</em> Network</h1>
@@ -1369,6 +1371,8 @@ ReactDOM.createRoot(document.getElementById('root')).render(<App/>);
       event.stopPropagation();
       dismissed = true;
       promo.style.display = 'none';
+      // Move nav up since promo bar is gone
+      document.documentElement.style.setProperty('--promo-height', '0px');
     });
   }
 })();
