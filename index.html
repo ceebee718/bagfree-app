@@ -492,30 +492,91 @@ function Home({setPage}) {
         <div style={{fontSize:'0.58rem',letterSpacing:'3px',textTransform:'uppercase',color:'var(--gold-dim)',marginBottom:'1rem',display:'flex',alignItems:'center',gap:'0.75rem'}}>
           <span style={{width:16,height:1,background:'var(--gold-dim)',display:'inline-block'}}/>United States
         </div>
-        <div style={{display:'grid',gridTemplateColumns:'repeat(3,1fr)',gap:1,background:'rgba(10,10,8,0.1)',border:'1px solid rgba(10,10,8,0.1)',marginBottom:'2rem'}}>
+        <div style={{display:'grid',gridTemplateColumns:'repeat(3,1fr)',gap:1,background:'rgba(10,10,8,0.08)',border:'1px solid rgba(10,10,8,0.08)',marginBottom:'2rem'}}>
           {[
-            {name:'Tampa Bay',state:'FL',sameDay:true,desc:'Our flagship city. Same-day delivery to all major hotels and resorts.',code:'TPA'},
-            {name:'Orlando',state:'FL',sameDay:true,desc:'Theme park to resort — essentials delivered before you check in.',code:'MCO'},
-            {name:'Miami Beach',state:'FL',sameDay:false,desc:'South Beach, Brickell and beyond. Art Basel season specialists.',code:'MIA'},
-            {name:'Florida Keys',state:'FL',sameDay:false,desc:'Island delivery from Key Largo to Key West. Resort kits our specialty.',code:'EYW'},
-            {name:'Atlanta',state:'GA',sameDay:false,desc:'Buckhead, Midtown, Airport corridor. Business and leisure.',code:'ATL'},
-            {name:'Savannah',state:'GA',sameDay:false,desc:'Historic district hotels and boutique properties. Weekend getaways.',code:'SAV'},
+            {
+              name:'Tampa Bay', state:'FL', sameDay:true, code:'TPA',
+              desc:'Our flagship city. Same-day delivery to all major hotels and resorts.',
+              // Tampa Bay Buccaneers — NFL pewter & red
+              bg:'linear-gradient(145deg,#1a0a0a 0%,#2d0f0f 60%,#1f1208 100%)',
+              bgHover:'linear-gradient(145deg,#220c0c 0%,#3a1212 60%,#271508 100%)',
+              accent:'#D50A0A', accentText:'#ff6b6b',
+              codeColor:'rgba(213,10,10,0.7)', divider:'rgba(213,10,10,0.3)',
+              textColor:'rgba(253,252,248,0.6)', nameColor:'#FDFCF8',
+              theme:'🏈 Buccaneers Country',
+            },
+            {
+              name:'Orlando', state:'FL', sameDay:true, code:'MCO',
+              desc:'Theme park to resort — essentials delivered before you check in.',
+              // Orlando Magic — NBA royal blue & black
+              bg:'linear-gradient(145deg,#080d1a 0%,#0d1a35 60%,#080f20 100%)',
+              bgHover:'linear-gradient(145deg,#0a1020 0%,#112240 60%,#0a1228 100%)',
+              accent:'#0056A2', accentText:'#4da6ff',
+              codeColor:'rgba(0,86,162,0.8)', divider:'rgba(0,86,162,0.35)',
+              textColor:'rgba(253,252,248,0.6)', nameColor:'#FDFCF8',
+              theme:'🏀 Magic City',
+            },
+            {
+              name:'Miami Beach', state:'FL', sameDay:false, code:'MIA',
+              desc:'South Beach, Brickell and beyond. Art Basel season specialists.',
+              // Miami Heat — NBA red & black + flamingo pink
+              bg:'linear-gradient(145deg,#1a0508 0%,#2d0810 60%,#1a0a14 100%)',
+              bgHover:'linear-gradient(145deg,#220610 0%,#3a0a14 60%,#220c18 100%)',
+              accent:'#98002E', accentText:'#ff4d7a',
+              codeColor:'rgba(255,77,122,0.75)', divider:'rgba(152,0,46,0.4)',
+              textColor:'rgba(253,252,248,0.6)', nameColor:'#FDFCF8',
+              theme:'🦩 Heat & Flamingos',
+            },
+            {
+              name:'Florida Keys', state:'FL', sameDay:false, code:'EYW',
+              desc:'Island delivery from Key Largo to Key West. Resort kits our specialty.',
+              // Florida Keys — spiny lobster coral + turquoise water
+              bg:'linear-gradient(145deg,#051a18 0%,#082e2a 60%,#051a12 100%)',
+              bgHover:'linear-gradient(145deg,#062220 0%,#0a3a34 60%,#062218 100%)',
+              accent:'#00B8A9', accentText:'#00e8d6',
+              codeColor:'rgba(0,184,169,0.8)', divider:'rgba(0,184,169,0.3)',
+              textColor:'rgba(253,252,248,0.6)', nameColor:'#FDFCF8',
+              theme:'🦞 Spiny Lobster Waters',
+            },
+            {
+              name:'Atlanta', state:'GA', sameDay:false, code:'ATL',
+              desc:'Buckhead, Midtown, Airport corridor. Business and leisure.',
+              // Atlanta Falcons NFL red & black + Georgia Peach orange
+              bg:'linear-gradient(145deg,#1a0a04 0%,#2e1206 60%,#1a0d04 100%)',
+              bgHover:'linear-gradient(145deg,#221008 0%,#3a180a 60%,#221008 100%)',
+              accent:'#A71930', accentText:'#FF8C42',
+              codeColor:'rgba(255,140,66,0.85)', divider:'rgba(167,25,48,0.4)',
+              textColor:'rgba(253,252,248,0.6)', nameColor:'#FDFCF8',
+              theme:'🍑 Falcons & Georgia Peach',
+            },
+            {
+              name:'Savannah', state:'GA', sameDay:false, code:'SAV',
+              desc:'Historic district hotels and boutique properties. Weekend getaways.',
+              // Savannah — Spanish moss deep green + pecan brown
+              bg:'linear-gradient(145deg,#0a1208 0%,#141f0e 60%,#0e1a0a 100%)',
+              bgHover:'linear-gradient(145deg,#0c1609 0%,#1a2812 60%,#10200c 100%)',
+              accent:'#5a7a2e', accentText:'#8FBF4A',
+              codeColor:'rgba(143,191,74,0.8)', divider:'rgba(90,122,46,0.4)',
+              textColor:'rgba(253,252,248,0.6)', nameColor:'#FDFCF8',
+              theme:'🌿 Spanish Moss & Pecans',
+            },
           ].map((d)=>(
             <div key={d.name} onClick={()=>setPage('vendors')}
-              style={{background:'var(--gold-xlight)',padding:'2.5rem 2rem',cursor:'pointer',transition:'background 0.25s',position:'relative'}}
-              onMouseEnter={e=>e.currentTarget.style.background='rgba(201,169,110,0.25)'}
-              onMouseLeave={e=>e.currentTarget.style.background='var(--gold-xlight)'}>
+              style={{background:d.bg,padding:'2.5rem 2rem',cursor:'pointer',transition:'background 0.3s',position:'relative'}}
+              onMouseEnter={e=>e.currentTarget.style.background=d.bgHover}
+              onMouseLeave={e=>e.currentTarget.style.background=d.bg}>
               {d.sameDay && (
-                <div style={{position:'absolute',top:'1.25rem',right:'1.25rem',fontSize:'0.52rem',letterSpacing:'1.5px',textTransform:'uppercase',color:'var(--noir)',border:'1px solid rgba(10,10,8,0.25)',padding:'3px 8px',background:'rgba(10,10,8,0.07)'}}>
+                <div style={{position:'absolute',top:'1.25rem',right:'1.25rem',fontSize:'0.52rem',letterSpacing:'1.5px',textTransform:'uppercase',color:d.accentText,border:`1px solid ${d.accent}`,padding:'3px 8px',background:'rgba(255,255,255,0.05)'}}>
                   Same-Day
                 </div>
               )}
-              <div style={{fontFamily:'var(--ff-display)',fontSize:'0.7rem',fontWeight:300,letterSpacing:'4px',color:'var(--gold-dim)',marginBottom:'0.85rem',textTransform:'uppercase'}}>{d.code}</div>
-              <div style={{fontFamily:'var(--ff-display)',fontSize:'1.5rem',fontWeight:300,color:'var(--noir)',marginBottom:'4px',lineHeight:1.1}}>{d.name}</div>
-              <div style={{fontSize:'0.6rem',letterSpacing:'2px',textTransform:'uppercase',color:'var(--gold-dim)',marginBottom:'1rem'}}>{d.state}</div>
-              <div style={{width:20,height:1,background:'rgba(10,10,8,0.2)',marginBottom:'1rem'}}/>
-              <div style={{fontSize:'0.75rem',color:'rgba(10,10,8,0.55)',lineHeight:1.8,fontWeight:300,marginBottom:'1.25rem'}}>{d.desc}</div>
-              <div style={{fontSize:'0.62rem',letterSpacing:'2px',textTransform:'uppercase',color:'var(--gold-dim)',display:'flex',alignItems:'center',gap:'0.5rem'}}>
+              <div style={{fontSize:'0.55rem',letterSpacing:'2px',textTransform:'uppercase',color:d.accentText,marginBottom:'0.6rem',opacity:0.7}}>{d.theme}</div>
+              <div style={{fontFamily:'var(--ff-display)',fontSize:'0.7rem',fontWeight:300,letterSpacing:'4px',color:d.codeColor,marginBottom:'0.6rem',textTransform:'uppercase'}}>{d.code}</div>
+              <div style={{fontFamily:'var(--ff-display)',fontSize:'1.5rem',fontWeight:300,color:d.nameColor,marginBottom:'4px',lineHeight:1.1}}>{d.name}</div>
+              <div style={{fontSize:'0.6rem',letterSpacing:'2px',textTransform:'uppercase',color:d.accentText,marginBottom:'1rem',opacity:0.6}}>{d.state}</div>
+              <div style={{width:20,height:1,background:d.divider,marginBottom:'1rem'}}/>
+              <div style={{fontSize:'0.75rem',color:d.textColor,lineHeight:1.8,fontWeight:300,marginBottom:'1.25rem'}}>{d.desc}</div>
+              <div style={{fontSize:'0.62rem',letterSpacing:'2px',textTransform:'uppercase',color:d.accentText,display:'flex',alignItems:'center',gap:'0.5rem'}}>
                 Shop vendors <span style={{fontSize:'0.7rem'}}>→</span>
               </div>
             </div>
