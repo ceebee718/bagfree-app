@@ -277,7 +277,7 @@ function Nav({page, setPage}) {
           Bag<span style={{color:'var(--gold)'}}>Free</span>
         </div>
         <div className="bf-nav-links" style={{display:'flex',gap:'2rem',alignItems:'center'}}>
-          {[['home','Destinations'],['vendors','Marketplace'],['hotel','Book Hotel'],['supplier','Suppliers']].map(([p,l])=>(
+          {[['home','Destinations'],['vendors','Marketplace'],['supplier','Suppliers']].map(([p,l])=>(
             <span key={p} onClick={()=>setPage(p)} style={{fontSize:'0.72rem',color:page===p?'var(--gold)':'rgba(253,252,248,0.85)',letterSpacing:'1.5px',textTransform:'uppercase',cursor:'pointer',transition:'color 0.2s',fontWeight:400}}>{l}</span>
           ))}
           <span onClick={(e)=>{e.stopPropagation();window.open('/departure-lounge','_self');}}
@@ -296,7 +296,7 @@ function Nav({page, setPage}) {
             Bag<span style={{color:'var(--gold)'}}>Free</span>
           </div>
           <div style={{width:40,height:1,background:'var(--border)'}}/>
-          {[['home','Destinations'],['vendors','Marketplace'],['hotel','Book Hotel'],['supplier','Suppliers']].map(([p,l])=>(
+          {[['home','Destinations'],['vendors','Marketplace'],['supplier','Suppliers']].map(([p,l])=>(
             <span key={p} onClick={()=>{setPage(p);setMenuOpen(false);}}
               style={{fontSize:'0.9rem',color:page===p?'var(--gold)':'rgba(253,252,248,0.85)',letterSpacing:'3px',textTransform:'uppercase',cursor:'pointer',fontWeight:300}}>
               {l}
@@ -330,8 +330,8 @@ function Home({setPage}) {
           <button onClick={()=>setPage('vendors')} style={{background:'var(--gold)',color:'var(--noir)',padding:'1rem 2.5rem',border:'none',fontSize:'0.72rem',fontWeight:500,letterSpacing:'3px',textTransform:'uppercase'}}>
             Shop the Marketplace
           </button>
-          <button onClick={()=>setPage('hotel')} style={{background:'transparent',color:'var(--white)',padding:'1rem 2rem',border:'1.5px solid rgba(253,252,248,0.4)',fontSize:'0.72rem',letterSpacing:'2.5px',textTransform:'uppercase'}}>
-            Book a Hotel
+          <button onClick={()=>window.open('/departure-lounge','_self')} style={{background:'transparent',color:'var(--white)',padding:'1rem 2rem',border:'1.5px solid rgba(253,252,248,0.4)',fontSize:'0.72rem',letterSpacing:'2.5px',textTransform:'uppercase'}}>
+            Enter the Lounge ↗
           </button>
         </div>
         <div style={{fontSize:'0.72rem',color:'var(--white)',letterSpacing:'1px',padding:'0.5rem 1.25rem',border:'1px solid rgba(253,252,248,0.3)',background:'rgba(0,0,0,0.25)',position:'relative'}}>
@@ -580,54 +580,64 @@ function Home({setPage}) {
         </div>
       </div>
 
-      {/* HOTEL + DEPARTURE LOUNGE — combined */}
-      <div style={{padding:'6rem 0',background:'var(--noir-2)',borderTop:'1px solid var(--border)',position:'relative',overflow:'hidden'}}>
-        <div style={{display:'flex',alignItems:'flex-start'}}>
+      {/* DEPARTURE LOUNGE — full width feature section */}
+      <div style={{background:'var(--noir-2)',borderTop:'1px solid var(--border)',position:'relative',overflow:'hidden'}}>
 
-          {/* LEFT — Departure Lounge */}
-          <div style={{flex:'1 1 0',display:'flex',flexDirection:'column',alignItems:'center',justifyContent:'flex-start',textAlign:'center',padding:'0 4rem'}}>
-            <div style={{fontSize:'0.58rem',letterSpacing:'4px',textTransform:'uppercase',color:'var(--gold)',marginBottom:'1.25rem',display:'flex',alignItems:'center',justifyContent:'center',gap:'1rem'}}>
-              <span style={{width:24,height:1,background:'var(--gold-dim)',display:'inline-block'}}/>New Feature
-            </div>
-            <h2 style={{fontFamily:'var(--ff-display)',fontSize:'clamp(1.8rem,3vw,2.8rem)',fontWeight:300,lineHeight:1.08,letterSpacing:'-0.5px',marginBottom:'1rem'}}>
-              The Departure <em style={{color:'var(--gold)',fontStyle:'italic'}}>Lounge</em>
-            </h2>
-            <p style={{fontSize:'0.85rem',color:'var(--mist)',lineHeight:1.9,marginBottom:'1.75rem',fontWeight:300,maxWidth:420}}>
-              Your personal luxury travel intelligence platform. Tell us who you are, where you dream of going, and what moves you — and we'll map your perfect journey.
-            </p>
-            <LoungeTiles />
-            <div style={{marginTop:'1.5rem'}}>
-              <button onClick={()=>window.open('/departure-lounge','_self')} style={{background:'transparent',color:'var(--gold)',padding:'0.85rem 2rem',border:'1px solid var(--border-hi)',fontSize:'0.68rem',fontWeight:500,letterSpacing:'3px',textTransform:'uppercase',cursor:'pointer'}}>
-                Enter the Lounge ↗
-              </button>
-            </div>
+        {/* Ambient glow */}
+        <div style={{position:'absolute',top:'-20%',left:'50%',transform:'translateX(-50%)',width:900,height:500,background:'radial-gradient(ellipse,rgba(201,169,110,0.06) 0%,transparent 65%)',pointerEvents:'none'}}/>
+
+        {/* Header */}
+        <div style={{textAlign:'center',padding:'6rem 3rem 4rem',position:'relative'}}>
+          <div style={{fontSize:'0.58rem',letterSpacing:'4px',textTransform:'uppercase',color:'var(--gold)',marginBottom:'1.5rem',display:'flex',alignItems:'center',justifyContent:'center',gap:'1rem'}}>
+            <span style={{width:32,height:1,background:'var(--gold-dim)',display:'inline-block'}}/>Now Available<span style={{width:32,height:1,background:'var(--gold-dim)',display:'inline-block'}}/>
           </div>
-
-          {/* Divider */}
-          <div style={{width:1,background:'var(--border)',alignSelf:'stretch',flexShrink:0}}/>
-
-          {/* RIGHT — Hotel Concierge */}
-          <div style={{flex:'1 1 0',display:'flex',flexDirection:'column',alignItems:'center',justifyContent:'flex-start',textAlign:'center',padding:'0 4rem'}}>
-            <div style={{fontSize:'0.62rem',letterSpacing:'4px',textTransform:'uppercase',color:'var(--gold)',marginBottom:'1.5rem',display:'flex',alignItems:'center',justifyContent:'center',gap:'1rem'}}>
-              <span style={{width:24,height:1,background:'var(--gold-dim)',display:'inline-block'}}/>Travel Concierge
-            </div>
-            <h2 style={{fontFamily:'var(--ff-display)',fontSize:'clamp(1.8rem,3vw,2.8rem)',fontWeight:300,marginBottom:'1rem'}}>
-              We'll book your <em style={{color:'var(--gold)',fontStyle:'italic'}}>hotel too</em>
-            </h2>
-            <p style={{fontSize:'0.85rem',color:'var(--mist)',lineHeight:1.9,marginBottom:'1.75rem',fontWeight:300,maxWidth:420}}>Our travel concierge finds and books your perfect hotel — with exclusive rates not available to the public. Then we deliver everything you need to your room before you arrive.</p>
-            <div style={{display:'flex',flexDirection:'column',gap:'0.65rem',marginBottom:'2rem',alignItems:'center'}}>
-              {['Exclusive hotel rates via our travel agent network','Personalized recommendations for your trip type','Coordinated with your Valet By Nuor delivery','Response within 24 hours'].map(f=>(
-                <div key={f} style={{display:'flex',gap:'0.75rem',alignItems:'center',fontSize:'0.8rem',color:'var(--mist)'}}>
-                  <span style={{color:'var(--gold)',fontSize:'0.6rem',flexShrink:0}}>◆</span>{f}
-                </div>
-              ))}
-            </div>
-            <button onClick={()=>setPage('hotel')} style={{background:'var(--gold)',color:'var(--noir)',padding:'0.85rem 2rem',border:'none',fontSize:'0.68rem',fontWeight:500,letterSpacing:'3px',textTransform:'uppercase',cursor:'pointer'}}>
-              Request Hotel Booking
-            </button>
-          </div>
-
+          <h2 style={{fontFamily:'var(--ff-display)',fontSize:'clamp(2.5rem,5vw,4.5rem)',fontWeight:300,lineHeight:1.05,letterSpacing:'-1px',marginBottom:'1.25rem'}}>
+            The Departure <em style={{color:'var(--gold)',fontStyle:'italic'}}>Lounge</em>
+          </h2>
+          <p style={{fontSize:'0.92rem',color:'var(--mist)',lineHeight:1.9,maxWidth:580,margin:'0 auto 1rem',fontWeight:300}}>
+            Your personal luxury travel intelligence platform. Before you pack a single bag — or decide not to — let the Lounge map your journey.
+          </p>
+          <p style={{fontSize:'0.82rem',color:'rgba(253,252,248,0.4)',lineHeight:1.8,maxWidth:480,margin:'0 auto',fontWeight:300}}>
+            Destination intelligence. Safety briefings. Cultural guides. Concert listings. Live flight maps. Embassy contacts. All in one place, built for the traveler who arrives prepared.
+          </p>
         </div>
+
+        {/* Tiles — full width, 4 columns */}
+        <div style={{padding:'0 3rem',position:'relative'}}>
+          <LoungeTiles />
+        </div>
+
+        {/* Bottom strip — value props + CTA */}
+        <div style={{margin:'4rem 3rem 0',borderTop:'1px solid var(--border)',display:'grid',gridTemplateColumns:'1fr 1px 1fr 1px 1fr 1px 1fr',gap:0}}>
+          {[
+            {icon:'◎',label:'Live Intelligence',desc:'Real-time flight maps, safety alerts and travel advisories updated continuously.'},
+            {icon:'✦',label:'Cultural Fluency',desc:'Etiquette, language basics, dress codes and local customs for every destination.'},
+            {icon:'♪',label:'Entertainment Match',desc:'Concerts, shows and events personalized to your travel dates and taste.'},
+            {icon:'◆',label:'Luxury Data',desc:'Every Forbes Five Star, Michelin star and Relais & Châteaux property, surfaced for you.'},
+          ].map((p,i)=>(
+            <React.Fragment key={p.label}>
+              <div style={{padding:'2.5rem 2rem',textAlign:'center'}}>
+                <div style={{fontSize:'1.4rem',color:'var(--gold)',marginBottom:'0.85rem'}}>{p.icon}</div>
+                <div style={{fontSize:'0.72rem',fontWeight:500,letterSpacing:'1.5px',textTransform:'uppercase',color:'var(--white)',marginBottom:'0.6rem'}}>{p.label}</div>
+                <div style={{fontSize:'0.76rem',color:'rgba(253,252,248,0.45)',lineHeight:1.8,fontWeight:300}}>{p.desc}</div>
+              </div>
+              {i < 3 && <div style={{background:'var(--border)'}}/>}
+            </React.Fragment>
+          ))}
+        </div>
+
+        {/* CTA row */}
+        <div style={{padding:'3rem',textAlign:'center',display:'flex',flexDirection:'column',alignItems:'center',gap:'1.25rem'}}>
+          <button
+            onClick={()=>window.open('/departure-lounge','_self')}
+            style={{background:'var(--gold)',color:'var(--noir)',padding:'1rem 3rem',border:'none',fontSize:'0.72rem',fontWeight:500,letterSpacing:'3px',textTransform:'uppercase',cursor:'pointer'}}>
+            Enter the Departure Lounge ↗
+          </button>
+          <div style={{fontSize:'0.68rem',color:'rgba(253,252,248,0.3)',letterSpacing:'1.5px'}}>
+            Free with every BagFree order · No account required
+          </div>
+        </div>
+
       </div>
 
       {/* CTA */}
@@ -639,7 +649,7 @@ function Home({setPage}) {
         <p style={{fontSize:'0.9rem',color:'var(--mist)',marginBottom:'3rem',fontWeight:300,position:'relative'}}>Same-day emergency delivery in Tampa & Orlando. Hours, not days.</p>
         <div style={{display:'flex',gap:'1rem',justifyContent:'center',flexWrap:'wrap',position:'relative'}}>
           <button onClick={()=>setPage('vendors')} style={{background:'var(--gold)',color:'var(--noir)',padding:'1rem 2.5rem',border:'none',fontSize:'0.72rem',fontWeight:500,letterSpacing:'3px',textTransform:'uppercase'}}>Shop Emergency Kits</button>
-          <button onClick={()=>setPage('hotel')} style={{background:'transparent',color:'var(--mist)',padding:'1rem 2rem',border:'1px solid var(--mist-low)',fontSize:'0.72rem',letterSpacing:'2.5px',textTransform:'uppercase'}}>Book a Hotel</button>
+          <button onClick={()=>window.open('/departure-lounge','_self')} style={{background:'transparent',color:'var(--mist)',padding:'1rem 2rem',border:'1px solid var(--mist-low)',fontSize:'0.72rem',letterSpacing:'2.5px',textTransform:'uppercase'}}>Enter the Lounge ↗</button>
         </div>
       </div>
     </div>
