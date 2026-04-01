@@ -665,43 +665,74 @@ window._supabaseLaunchPatch = async function() {
       <!-- BAGFREE LOGO -->
       <div style="text-align:center;padding:1.4rem 0.5rem 1.1rem;border-bottom:1px solid var(--border);margin-bottom:1.25rem">
         <div class="hb-sidebar-wrap" style="display:inline-block">
-          <img
-            src="https://valetbynuor.com/cdn/shop/files/BagFree_Logo_Gold_on_Dark_500px.png"
-            alt="BagFree"
-            onerror="this.style.display='none';document.getElementById('hbFallbackSvg').style.display='block'"
-            style="width:88px;height:auto;display:block;margin:0 auto"
-          />
-          <!-- Fallback SVG if image fails -->
-          <svg id="hbFallbackSvg" viewBox="0 0 120 110" xmlns="http://www.w3.org/2000/svg" style="width:72px;height:auto;display:none;margin:0 auto">
-            <ellipse cx="68" cy="58" rx="18" ry="8" fill="#C9A96E" opacity="0.95" transform="rotate(-15 68 58)"/>
-            <path d="M84 65 Q96 72 100 80 Q90 74 86 70Z" fill="#C9A96E" opacity="0.7"/>
-            <circle cx="54" cy="50" r="9" fill="#C9A96E"/>
-            <circle cx="51" cy="48" r="1.8" fill="#0A0A08"/>
-            <path d="M45 50 Q36 49 28 51 Q36 52 45 51Z" fill="#E8D5B0"/>
-            <g style="animation:wingFlap 0.18s ease-in-out infinite;transform-origin:65px 55px">
-              <path d="M65 55 Q58 35 52 22 Q62 38 70 50 Q72 53 65 55Z" fill="#C9A96E" opacity="0.85"/>
-              <path d="M65 55 Q72 30 78 18 Q72 38 68 52 Q67 54 65 55Z" fill="#E8D5B0" opacity="0.6"/>
+          <svg viewBox="0 0 160 130" xmlns="http://www.w3.org/2000/svg" style="width:90px;height:auto;display:block;margin:0 auto 0.5rem">
+            <defs>
+              <linearGradient id="hbGold" x1="0%" y1="0%" x2="100%" y2="100%">
+                <stop offset="0%" style="stop-color:#E8D5B0"/>
+                <stop offset="50%" style="stop-color:#C9A96E"/>
+                <stop offset="100%" style="stop-color:#A07840"/>
+              </linearGradient>
+            </defs>
+
+            <!-- WING GROUP (animated) -->
+            <g id="hbLogoWing" style="transform-origin:72px 52px">
+              <!-- Upper wing — swept back, feathered -->
+              <path d="M72 52 C65 44 54 36 42 30 C50 34 60 38 68 46 C56 28 44 16 30 8 C46 18 60 32 70 48 C62 22 56 10 48 2 C58 14 66 30 72 50 Z"
+                    fill="url(#hbGold)" opacity="0.95"/>
+              <!-- Lower wing / body sweep -->
+              <path d="M72 54 C64 58 52 64 38 66 C50 62 62 58 70 54 Z"
+                    fill="url(#hbGold)" opacity="0.7"/>
             </g>
-            <ellipse cx="52" cy="54" rx="5" ry="3" fill="#EF9F27" opacity="0.8" transform="rotate(-10 52 54)"/>
-            <text x="60" y="90" text-anchor="middle" font-family="'Cormorant Garamond',Georgia,serif" font-size="13" font-weight="300" letter-spacing="4" fill="#C9A96E">BAGFREE</text>
-            <text x="60" y="103" text-anchor="middle" font-family="'Jost',sans-serif" font-size="5.5" letter-spacing="2.5" fill="rgba(201,169,110,0.5)">TRAVEL WITHOUT LUGGAGE</text>
+
+            <!-- BODY -->
+            <path d="M70 50 C76 46 88 44 98 46 C106 48 112 52 110 58 C108 64 98 68 88 66 C80 64 72 60 70 54 Z"
+                  fill="url(#hbGold)"/>
+
+            <!-- TAIL — forked, elegant -->
+            <path d="M88 66 C92 72 94 82 90 92 C88 80 86 72 84 68 Z"
+                  fill="url(#hbGold)" opacity="0.9"/>
+            <path d="M86 67 C92 76 98 88 96 100 C92 88 88 76 84 69 Z"
+                  fill="url(#hbGold)" opacity="0.6"/>
+
+            <!-- HEAD -->
+            <ellipse cx="76" cy="48" rx="9" ry="7" fill="url(#hbGold)" transform="rotate(-10 76 48)"/>
+
+            <!-- EYE -->
+            <circle cx="73" cy="45" r="2" fill="#0A0A08"/>
+            <circle cx="72.3" cy="44.4" r="0.7" fill="rgba(255,255,255,0.65)"/>
+
+            <!-- BEAK — long, sharp, pointing right-forward -->
+            <path d="M82 46 C92 43 108 41 124 42 C108 44 92 46 82 48 Z"
+                  fill="#E8D5B0"/>
+
+            <!-- WORDMARK -->
+            <text x="80" y="116" text-anchor="middle"
+                  font-family="'Cormorant Garamond',Georgia,serif"
+                  font-size="15" font-weight="400" letter-spacing="5"
+                  fill="#C9A96E">BAGFREE</text>
+            <text x="80" y="127" text-anchor="middle"
+                  font-family="'Jost',sans-serif"
+                  font-size="5" letter-spacing="2.8"
+                  fill="rgba(201,169,110,0.45)">TRAVEL WITHOUT LUGGAGE</text>
           </svg>
         </div>
-        <div style="font-size:0.44rem;letter-spacing:2.5px;color:rgba(201,169,110,0.32);text-transform:uppercase;margin-top:0.5rem">Powered by Valet by Nuor</div>
+        <div style="font-size:0.44rem;letter-spacing:2.5px;color:rgba(201,169,110,0.3);text-transform:uppercase;margin-top:0.2rem">Powered by Valet by Nuor</div>
       </div>
 
       <style>
         @keyframes wingFlap {
-          0%,100% { transform: scaleY(1) rotate(0deg); }
-          25%      { transform: scaleY(-0.6) rotate(-8deg); }
-          50%      { transform: scaleY(0.4) rotate(-14deg); }
-          75%      { transform: scaleY(-0.3) rotate(-6deg); }
+          0%,100% { transform: rotate(0deg) scaleY(1); }
+          20%      { transform: rotate(-12deg) scaleY(0.5); }
+          40%      { transform: rotate(-18deg) scaleY(-0.3); }
+          60%      { transform: rotate(-10deg) scaleY(0.6); }
+          80%      { transform: rotate(-4deg) scaleY(0.9); }
         }
         @keyframes hoverFloat {
           0%,100% { transform: translateY(0px); }
-          35%     { transform: translateY(-4px); }
+          35%     { transform: translateY(-5px); }
           70%     { transform: translateY(2px); }
         }
+        #hbLogoWing { animation: wingFlap 0.2s ease-in-out infinite; }
         .hb-sidebar-wrap { animation: hoverFloat 3s ease-in-out infinite; display:inline-block; }
       </style>
 
