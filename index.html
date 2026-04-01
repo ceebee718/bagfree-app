@@ -468,7 +468,59 @@ function Home({setPage}) {
       </div>
 
       {/* CARIBBEAN */}
-      <div className="bf-section-pad" style={{padding:'0 3rem 3rem',position:'relative',zIndex:1}}>
+      <div className="bf-section-pad" style={{padding:'2.5rem 3rem 3rem',position:'relative',overflow:'hidden',background:'#051520'}}>
+
+        {/* Animated ocean waves */}
+        <style>{`
+          @keyframes waveMove1{0%{transform:translateX(0)}100%{transform:translateX(-50%)}}
+          @keyframes waveMove2{0%{transform:translateX(-50%)}100%{transform:translateX(0)}}
+          @keyframes waveMove3{0%{transform:translateX(0)}100%{transform:translateX(-50%)}}
+          @keyframes shimmer{0%,100%{opacity:0.03}50%{opacity:0.07}}
+          .wave1{animation:waveMove1 18s linear infinite}
+          .wave2{animation:waveMove2 12s linear infinite}
+          .wave3{animation:waveMove3 22s linear infinite}
+          .waveShimmer{animation:shimmer 6s ease-in-out infinite}
+        `}</style>
+
+        {/* Deep ocean gradient base */}
+        <div style={{position:'absolute',inset:0,background:'linear-gradient(180deg,#051a2e 0%,#062535 40%,#041e2a 70%,#051015 100%)',pointerEvents:'none'}}/>
+
+        {/* Shimmer light on water surface */}
+        <div className="waveShimmer" style={{position:'absolute',top:'20%',left:'10%',right:'10%',height:'2px',background:'linear-gradient(90deg,transparent,rgba(180,220,255,0.4),rgba(255,255,255,0.6),rgba(180,220,255,0.4),transparent)',pointerEvents:'none',borderRadius:2}}/>
+        <div className="waveShimmer" style={{position:'absolute',top:'35%',left:'20%',right:'25%',height:'1px',background:'linear-gradient(90deg,transparent,rgba(180,220,255,0.25),rgba(255,255,255,0.4),transparent)',pointerEvents:'none',animationDelay:'2s'}}/>
+
+        {/* Wave layer 1 — deep background */}
+        <svg style={{position:'absolute',bottom:0,left:0,width:'200%',pointerEvents:'none',opacity:0.35}} viewBox="0 0 1440 180" preserveAspectRatio="none" xmlns="http://www.w3.org/2000/svg">
+          <g className="wave1">
+            <path d="M0,100 C200,60 400,140 600,100 C800,60 1000,140 1200,100 C1400,60 1440,100 1440,100 L1440,180 L0,180Z" fill="#0a4a6e"/>
+            <path d="M1440,100 C1640,60 1840,140 2040,100 C2240,60 2440,140 2640,100 C2840,60 2880,100 2880,100 L2880,180 L1440,180Z" fill="#0a4a6e"/>
+          </g>
+        </svg>
+
+        {/* Wave layer 2 — mid */}
+        <svg style={{position:'absolute',bottom:0,left:0,width:'200%',pointerEvents:'none',opacity:0.5}} viewBox="0 0 1440 140" preserveAspectRatio="none" xmlns="http://www.w3.org/2000/svg">
+          <g className="wave2">
+            <path d="M0,80 C180,40 360,110 540,80 C720,50 900,110 1080,80 C1260,50 1440,90 1440,80 L1440,140 L0,140Z" fill="#073d5c"/>
+            <path d="M1440,80 C1620,40 1800,110 1980,80 C2160,50 2340,110 2520,80 C2700,50 2880,90 2880,80 L2880,140 L1440,140Z" fill="#073d5c"/>
+          </g>
+        </svg>
+
+        {/* Wave layer 3 — foreground foam */}
+        <svg style={{position:'absolute',bottom:0,left:0,width:'200%',pointerEvents:'none',opacity:0.7}} viewBox="0 0 1440 90" preserveAspectRatio="none" xmlns="http://www.w3.org/2000/svg">
+          <g className="wave3">
+            <path d="M0,50 C120,25 240,70 360,50 C480,30 600,70 720,50 C840,30 960,70 1080,50 C1200,30 1320,65 1440,50 L1440,90 L0,90Z" fill="#041828"/>
+            <path d="M1440,50 C1560,25 1680,70 1800,50 C1920,30 2040,70 2160,50 C2280,30 2400,70 2520,50 C2640,30 2760,65 2880,50 L2880,90 L1440,90Z" fill="#041828"/>
+          </g>
+        </svg>
+
+        {/* Foam highlights */}
+        <svg style={{position:'absolute',bottom:0,left:0,width:'200%',pointerEvents:'none',opacity:0.15}} viewBox="0 0 1440 40" preserveAspectRatio="none" xmlns="http://www.w3.org/2000/svg">
+          <g className="wave2">
+            <path d="M0,20 C90,8 180,32 270,20 C360,8 450,32 540,20 C630,8 720,32 810,20 C900,8 990,32 1080,20 C1170,8 1260,32 1350,20 C1400,12 1440,22 1440,20 L1440,40 L0,40Z" fill="white"/>
+            <path d="M1440,20 C1530,8 1620,32 1710,20 C1800,8 1890,32 1980,20 C2070,8 2160,32 2250,20 C2340,8 2430,32 2520,20 C2610,8 2700,32 2790,20 C2840,12 2880,22 2880,20 L2880,40 L1440,40Z" fill="white"/>
+          </g>
+        </svg>
+
         <div style={{position:'relative',zIndex:1}}>
         <div style={{fontSize:'0.58rem',letterSpacing:'3px',textTransform:'uppercase',color:'var(--gold)',marginBottom:'1rem',display:'flex',alignItems:'center',gap:'0.75rem'}}>
           <span style={{width:16,height:1,background:'var(--gold)',display:'inline-block'}}/>The Caribbean
