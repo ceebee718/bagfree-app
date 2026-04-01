@@ -856,7 +856,7 @@ window._supabaseLaunchPatch = async function() {
 
       <!-- CUSTOMISE + BUTTON — pinned at top -->
       <div style="display:flex;align-items:center;justify-content:space-between;margin-bottom:1rem;padding-bottom:0.85rem;border-bottom:1px solid var(--border)">
-        <div style="font-size:0.5rem;letter-spacing:3px;text-transform:uppercase;color:rgba(201,169,110,0.45)">Customise panels</div>
+        <div style="font-size:0.72rem;letter-spacing:2px;text-transform:uppercase;color:rgba(201,169,110,0.8)">Customise panels</div>
         <button id="customiseToggle" onclick="toggleCustomise()" title="Add or remove panels" style="
           width:24px;height:24px;border-radius:50%;
           background:rgba(201,169,110,0.1);border:1px solid rgba(201,169,110,0.4);
@@ -1336,6 +1336,12 @@ function _launchDashboardCore(){
   injectHummingbirdAvatar();
   // Show promo banner after a short delay
   setTimeout(showPromoBanner, 2500);
+  // Clear panel states so new users always start with nothing checked
+  if (!localStorage.getItem('bf_panels_initialized')) {
+    localStorage.removeItem('bf_panels');
+    localStorage.removeItem('bf_left_panels');
+    localStorage.setItem('bf_panels_initialized', '1');
+  }
   // Auto-launch tour for first-time visitors
   if (!localStorage.getItem('bf_tour_done')) {
     setTimeout(() => { startTour(); localStorage.setItem('bf_tour_done','1'); }, 1800);
@@ -2932,11 +2938,11 @@ function initLeftCustomisePanels() {
   const container = document.getElementById('leftPanelToggles');
   if (!container) return;
   container.innerHTML = LEFT_PANELS.map(p => {
-    const on = saved ? saved.includes(p.id) : true;
+    const on = saved ? saved.includes(p.id) : false;
     return `
       <label style="display:flex;align-items:center;gap:0.65rem;cursor:pointer;padding:0.35rem 0.5rem;border:1px solid var(--border);transition:border-color 0.2s" onmouseover="this.style.borderColor='rgba(201,169,110,0.3)'" onmouseout="this.style.borderColor='var(--border)'">
         <input type="checkbox" id="lchk_${p.id}" ${on?'checked':''} style="accent-color:var(--gold);width:12px;height:12px;cursor:pointer">
-        <span style="font-size:0.63rem;color:var(--mist)">${p.label}</span>
+        <span style="font-size:0.72rem;color:var(--mist)">${p.label}</span>
       </label>`;
   }).join('');
 }
@@ -2986,11 +2992,11 @@ function initCustomisePanels() {
   const saved = JSON.parse(localStorage.getItem('bf_panels') || 'null');
   const toggles = document.getElementById('panelToggles');
   toggles.innerHTML = PANELS.map(p => {
-    const on = saved ? saved.includes(p.id) : true;
+    const on = saved ? saved.includes(p.id) : false;
     return `
       <label style="display:flex;align-items:center;gap:0.65rem;cursor:pointer;padding:0.4rem 0.6rem;border:1px solid var(--border);transition:border-color 0.2s" onmouseover="this.style.borderColor='rgba(201,169,110,0.3)'" onmouseout="this.style.borderColor='var(--border)'">
         <input type="checkbox" id="chk_${p.id}" ${on?'checked':''} style="accent-color:var(--gold);width:13px;height:13px;cursor:pointer">
-        <span style="font-size:0.65rem;color:var(--mist)">${p.label}</span>
+        <span style="font-size:0.72rem;color:var(--mist)">${p.label}</span>
       </label>`;
   }).join('');
   applyPanels(true);
