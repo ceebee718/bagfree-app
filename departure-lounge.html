@@ -5,8 +5,7 @@
 <meta name="viewport" content="width=device-width, initial-scale=1.0">
 <title>The Departure Lounge — BagFree</title>
 <link rel="stylesheet" href="https://unpkg.com/leaflet@1.9.4/dist/leaflet.css"/>
-<link href="https://fonts.googleapis.com/css2?family=Cormorant+Garamond:ital,wght@0,300;0,400;0,600;1,300;1,400&family=Jost:wght@300;400;500;600&display=swap" rel="stylesheet" media="print" onload="this.media='all'">
-<noscript><link href="https://fonts.googleapis.com/css2?family=Cormorant+Garamond:ital,wght@0,300;0,400;0,600;1,300;1,400&family=Jost:wght@300;400;500;600&display=swap" rel="stylesheet"></noscript>
+<link href="https://fonts.googleapis.com/css2?family=Cormorant+Garamond:ital,wght@0,300;0,400;0,600;1,300;1,400&family=Jost:wght@300;400;500;600&display=swap" rel="stylesheet">
 <style>
 *{margin:0;padding:0;box-sizing:border-box}
 :root{
@@ -656,12 +655,58 @@ window._supabaseLaunchPatch = async function() {
       <span style="color:var(--border-hi)">·</span>
       <span id="headerStyle" style="color:var(--gold)">Luxury</span>
       <button onclick="openProfileModal()" style="background:transparent;border:1px solid var(--border);color:var(--mist);padding:2px 8px;font-size:0.55rem;letter-spacing:1.5px;text-transform:uppercase;cursor:pointer;transition:all 0.2s;margin-left:4px" onmouseover="this.style.borderColor='var(--gold)';this.style.color='var(--gold)'" onmouseout="this.style.borderColor='var(--border)';this.style.color='var(--mist)'">Profile</button>
+      <button onclick="startTour()" title="Take a guided tour" style="background:rgba(201,169,110,0.1);border:1px solid rgba(201,169,110,0.35);color:var(--gold);padding:2px 8px;font-size:0.55rem;letter-spacing:1.5px;text-transform:uppercase;cursor:pointer;transition:all 0.2s;margin-left:4px" onmouseover="this.style.background='rgba(201,169,110,0.2)'" onmouseout="this.style.background='rgba(201,169,110,0.1)'">✦ Tour</button>
     </div>
   </div>
 
   <div class="dl-body">
     <!-- LEFT SIDEBAR -->
     <div class="dl-sidebar">
+      <!-- BAGFREE LOGO -->
+      <div style="text-align:center;padding:1.25rem 0.5rem 1rem;border-bottom:1px solid var(--border);margin-bottom:1.25rem">
+        <svg viewBox="0 0 120 110" xmlns="http://www.w3.org/2000/svg" style="width:72px;height:auto;display:block;margin:0 auto 0.6rem" class="hb-wrap">
+          <!-- Hummingbird body -->
+          <ellipse cx="68" cy="58" rx="18" ry="8" fill="#C9A96E" opacity="0.95" transform="rotate(-15 68 58)"/>
+          <!-- Tail feathers -->
+          <path d="M84 65 Q96 72 100 80 Q90 74 86 70Z" fill="#C9A96E" opacity="0.7"/>
+          <path d="M84 67 Q98 78 104 88 Q92 80 87 73Z" fill="#C9A96E" opacity="0.45"/>
+          <!-- Head -->
+          <circle cx="54" cy="50" r="9" fill="#C9A96E"/>
+          <!-- Eye -->
+          <circle cx="51" cy="48" r="1.8" fill="#0A0A08"/>
+          <circle cx="50.4" cy="47.5" r="0.6" fill="rgba(255,255,255,0.6)"/>
+          <!-- Beak -->
+          <path d="M45 50 Q36 49 28 51 Q36 52 45 51Z" fill="#E8D5B0"/>
+          <!-- Wing (animated) -->
+          <g id="hbWing" style="transform-origin:65px 55px">
+            <path d="M65 55 Q58 35 52 22 Q62 38 70 50 Q72 53 65 55Z" fill="#C9A96E" opacity="0.85"/>
+            <path d="M65 55 Q72 30 78 18 Q72 38 68 52 Q67 54 65 55Z" fill="#E8D5B0" opacity="0.6"/>
+          </g>
+          <!-- Gorget (throat flash) -->
+          <ellipse cx="52" cy="54" rx="5" ry="3" fill="#EF9F27" opacity="0.8" transform="rotate(-10 52 54)"/>
+          <!-- Text -->
+          <text x="60" y="90" text-anchor="middle" font-family="'Cormorant Garamond',Georgia,serif" font-size="13" font-weight="300" letter-spacing="4" fill="#C9A96E">BAGFREE</text>
+          <text x="60" y="103" text-anchor="middle" font-family="'Jost',sans-serif" font-size="5.5" letter-spacing="2.5" fill="rgba(201,169,110,0.5)">TRAVEL WITHOUT LUGGAGE</text>
+        </svg>
+        <div style="font-size:0.48rem;letter-spacing:2px;color:rgba(201,169,110,0.35);text-transform:uppercase">Powered by Valet by Nuor</div>
+      </div>
+
+      <style>
+        @keyframes wingFlap {
+          0%,100% { transform: scaleY(1) rotate(0deg); }
+          25%      { transform: scaleY(-0.6) rotate(-8deg); }
+          50%      { transform: scaleY(0.4) rotate(-14deg); }
+          75%      { transform: scaleY(-0.3) rotate(-6deg); }
+        }
+        @keyframes hoverFloat {
+          0%,100% { transform: translateY(0px) rotate(0deg); }
+          30%     { transform: translateY(-3px) rotate(1deg); }
+          70%     { transform: translateY(2px) rotate(-1deg); }
+        }
+        #hbWing { animation: wingFlap 0.18s ease-in-out infinite; }
+        .hb-wrap { animation: hoverFloat 2.8s ease-in-out infinite; }
+      </style>
+
       <div class="sidebar-section">
         <div class="sidebar-label">Recommended for you</div>
         <div id="destCards"></div>
@@ -757,7 +802,7 @@ window._supabaseLaunchPatch = async function() {
     </div>
 
     <!-- RIGHT SIDEBAR -->
-    <div class="dl-right">
+    <div class="dl-right" id="dlRight">
       <div id="rightContent">
         <div class="no-dest">
           <div class="no-dest-icon">✦</div>
@@ -765,19 +810,45 @@ window._supabaseLaunchPatch = async function() {
         </div>
       </div>
 
-      <div style="margin-top:1.25rem;padding-top:1.25rem;border-top:1px solid var(--border)">
+      <!-- CUSTOMISE PANEL (collapsed by default, expands on +) -->
+      <div id="customisePanel" style="margin-top:auto;padding-top:1.5rem;border-top:1px solid var(--border)">
+        <div style="display:flex;align-items:center;justify-content:space-between;margin-bottom:0.5rem">
+          <div style="font-size:0.5rem;letter-spacing:3px;text-transform:uppercase;color:rgba(201,169,110,0.45)">Customise panels</div>
+          <button id="customiseToggle" onclick="toggleCustomise()" title="Add or remove panels" style="
+            width:26px;height:26px;border-radius:50%;
+            background:rgba(201,169,110,0.1);border:1px solid rgba(201,169,110,0.35);
+            color:var(--gold);font-size:1rem;line-height:1;cursor:pointer;
+            display:flex;align-items:center;justify-content:center;
+            transition:all 0.25s;font-weight:300;
+          " onmouseover="this.style.background='rgba(201,169,110,0.22)'" onmouseout="this.style.background='rgba(201,169,110,0.1)'">+</button>
+        </div>
+
+        <div id="customiseOptions" style="display:none;margin-top:0.85rem">
+          <div style="font-size:0.62rem;color:rgba(253,252,248,0.4);margin-bottom:0.85rem;line-height:1.7">Choose which panels appear in this column.</div>
+          <div id="panelToggles" style="display:flex;flex-direction:column;gap:6px"></div>
+          <button onclick="applyPanels()" style="
+            width:100%;margin-top:1rem;background:var(--gold);color:var(--noir);
+            border:none;padding:0.5rem;font-size:0.55rem;letter-spacing:2px;
+            text-transform:uppercase;cursor:pointer;font-family:'Jost',sans-serif;font-weight:500;
+            transition:background 0.2s;
+          " onmouseover="this.style.background='var(--gold-light)'" onmouseout="this.style.background='var(--gold)'">Apply</button>
+        </div>
+      </div>
+
+      <!-- DYNAMIC PANELS (shown/hidden based on user preference) -->
+      <div id="panelFeaturedTrip" class="dash-panel" style="margin-top:1.25rem;padding-top:1.25rem;border-top:1px solid var(--border)">
         <div class="sidebar-label">Featured journey</div>
         <div id="featuredTrip"></div>
       </div>
-      <div style="margin-top:1.25rem;padding-top:1.25rem;border-top:1px solid var(--border)">
+      <div id="panelCollective" class="dash-panel" style="margin-top:1.25rem;padding-top:1.25rem;border-top:1px solid var(--border)">
         <div class="sidebar-label">Travel collective</div>
         <div id="collectivePanel"></div>
       </div>
-      <div style="margin-top:1.25rem;padding-top:1.25rem;border-top:1px solid var(--border)">
+      <div id="panelAlerts" class="dash-panel" style="margin-top:1.25rem;padding-top:1.25rem;border-top:1px solid var(--border)">
         <div class="sidebar-label">Travel intelligence</div>
         <div id="alertsList"></div>
       </div>
-      <div style="margin-top:1.25rem;padding-top:1.25rem;border-top:1px solid var(--border)">
+      <div id="panelEvents" class="dash-panel" style="margin-top:1.25rem;padding-top:1.25rem;border-top:1px solid var(--border)">
         <div class="sidebar-label">Upcoming events</div>
         <div id="eventsList"></div>
       </div>
@@ -1209,8 +1280,14 @@ function _launchDashboardCore(){
   // Init Leaflet map after dashboard is visible
   setTimeout(() => { initMap(); }, 100);
   updateNearMeBtn();
+  initCustomisePanels();
+  injectHummingbirdAvatar();
   // Show promo banner after a short delay
   setTimeout(showPromoBanner, 2500);
+  // Auto-launch tour for first-time visitors
+  if (!localStorage.getItem('bf_tour_done')) {
+    setTimeout(() => { startTour(); localStorage.setItem('bf_tour_done','1'); }, 1800);
+  }
 }
 
 function getAvatar(){
@@ -2588,6 +2665,303 @@ async function submitHotelReq(){
 function showAdvisorFab(){
   const fab=document.getElementById('advisorFab');
   if(fab)fab.style.display='block';
+}
+
+// ── DASHBOARD TOUR ────────────────────────────────────────────────────────
+const TOUR_STEPS = [
+  {
+    sel: '.dl-header',
+    title: 'Your Command Centre',
+    body: 'The header shows your profile, travel style, and gives access to Cultural Immersion settings. Everything here is personalised to you.',
+    pos: 'bottom', wide: true
+  },
+  {
+    sel: '#destCards',
+    title: 'AI-Matched Destinations',
+    body: 'Claude scores every destination against your travel profile in real time. Click any card to load full intelligence — safety, embassy, currency, best time to visit.',
+    pos: 'right'
+  },
+  {
+    sel: '#liveList',
+    title: 'Live Movements',
+    body: 'Real-time flights and cruises departing now. Filter by flights, cruises, or your home airport. Data updates automatically.',
+    pos: 'right'
+  },
+  {
+    sel: '.map-toolbar',
+    title: 'Map Layers',
+    body: 'Toggle overlays on the map — BagFree pins, landmarks, live flights, cruise routes, events, embassies, and travel intelligence alerts.',
+    pos: 'bottom', wide: true
+  },
+  {
+    sel: '#leafletMap',
+    title: 'Interactive World Map',
+    body: 'Click any pin to see full destination intelligence. Switch between Light, Dark, Satellite, and Voyager basemaps. Live flight arcs animate in real time.',
+    pos: 'left'
+  },
+  {
+    sel: '.dl-right',
+    title: 'Intelligence Panel',
+    body: 'Click any destination card to load deep intel here — government stability, visa info, currency trends, best travel windows, and embassy emergency contacts.',
+    pos: 'left'
+  },
+  {
+    sel: '.trip-bar',
+    title: 'Trip Planner',
+    body: 'Enter any destination to generate a custom itinerary. Claude builds a day-by-day plan based on your travel style and the number of days you select.',
+    pos: 'bottom', wide: true
+  },
+  {
+    sel: '#advisorFab',
+    title: 'Talk to an Advisor',
+    body: 'Connect directly with a BagFree concierge advisor. They handle bookings, kit delivery, and any travel logistics you need taken care of.',
+    pos: 'top'
+  }
+];
+
+let _tourStep = 0;
+let _tourActive = false;
+
+function startTour() {
+  if (_tourActive) return;
+  _tourActive = true;
+  _tourStep = 0;
+
+  // Build overlay elements
+  const ov = document.createElement('div');
+  ov.id = 'tourOverlay';
+  ov.style.cssText = 'position:fixed;inset:0;z-index:8000;pointer-events:none';
+  document.body.appendChild(ov);
+
+  const spot = document.createElement('div');
+  spot.id = 'tourSpot';
+  spot.style.cssText = `
+    position:fixed;z-index:8001;pointer-events:none;
+    border-radius:3px;
+    box-shadow:0 0 0 9999px rgba(10,10,8,0.80),0 0 0 2px rgba(201,169,110,0.8),0 0 32px rgba(201,169,110,0.2);
+    transition:all 0.42s cubic-bezier(0.4,0,0.2,1);
+    opacity:0;
+  `;
+  document.body.appendChild(spot);
+
+  const tip = document.createElement('div');
+  tip.id = 'tourTip';
+  tip.style.cssText = `
+    position:fixed;z-index:8002;
+    background:rgba(10,10,8,0.97);
+    border:1px solid rgba(201,169,110,0.4);
+    backdrop-filter:blur(20px);
+    padding:1.5rem 1.75rem 1.25rem;
+    width:300px;
+    font-family:'Jost',sans-serif;
+    box-shadow:0 20px 60px rgba(0,0,0,0.8);
+    opacity:0;transition:opacity 0.3s,left 0.42s cubic-bezier(0.4,0,0.2,1),top 0.42s cubic-bezier(0.4,0,0.2,1);
+  `;
+  tip.innerHTML = `
+    <div id="tourStepLabel" style="font-size:0.48rem;letter-spacing:3px;text-transform:uppercase;color:rgba(201,169,110,0.55);margin-bottom:0.55rem"></div>
+    <div id="tourTitle" style="font-family:'Cormorant Garamond',serif;font-size:1.2rem;font-weight:300;color:#FDFCF8;margin-bottom:0.45rem;line-height:1.2"></div>
+    <div id="tourBody" style="font-size:0.7rem;color:rgba(253,252,248,0.58);line-height:1.85;font-weight:300"></div>
+    <div style="display:flex;align-items:center;gap:6px;margin-top:1.1rem;flex-wrap:wrap">
+      <div id="tourDots" style="display:flex;gap:4px;flex:1"></div>
+      <button id="tourPrev" onclick="tourNav(-1)" style="background:transparent;border:1px solid rgba(201,169,110,0.2);color:rgba(201,169,110,0.6);padding:0.35rem 0.8rem;font-size:0.5rem;letter-spacing:2px;text-transform:uppercase;cursor:pointer;font-family:'Jost',sans-serif;transition:all 0.2s">←</button>
+      <button id="tourNext" onclick="tourNav(1)" style="background:linear-gradient(135deg,#C9A96E,#b8893e);border:none;color:#0A0A08;padding:0.35rem 1rem;font-size:0.5rem;letter-spacing:2px;text-transform:uppercase;cursor:pointer;font-family:'Jost',sans-serif;font-weight:600;transition:all 0.2s">Next →</button>
+    </div>
+  `;
+  document.body.appendChild(tip);
+
+  const skip = document.createElement('button');
+  skip.id = 'tourSkip';
+  skip.textContent = 'Skip Tour';
+  skip.onclick = endTour;
+  skip.style.cssText = `
+    position:fixed;top:60px;right:1rem;z-index:8003;
+    background:rgba(10,10,8,0.9);border:1px solid rgba(201,169,110,0.25);
+    color:rgba(201,169,110,0.55);padding:0.4rem 0.9rem;
+    font-size:0.48rem;letter-spacing:2px;text-transform:uppercase;
+    cursor:pointer;font-family:'Jost',sans-serif;backdrop-filter:blur(10px);
+    transition:all 0.2s;
+  `;
+  skip.onmouseenter = () => { skip.style.color='rgba(201,169,110,1)'; skip.style.borderColor='rgba(201,169,110,0.6)'; };
+  skip.onmouseleave = () => { skip.style.color='rgba(201,169,110,0.55)'; skip.style.borderColor='rgba(201,169,110,0.25)'; };
+  document.body.appendChild(skip);
+
+  goTourStep(0);
+}
+
+function goTourStep(idx) {
+  _tourStep = idx;
+  const step = TOUR_STEPS[idx];
+  const el = document.querySelector(step.sel);
+  if (!el) { tourNav(1); return; }
+
+  // Make advisor FAB visible temporarily for its step
+  if (step.sel === '#advisorFab') {
+    const fab = document.getElementById('advisorFab');
+    if (fab) fab.style.display = 'block';
+  }
+
+  el.scrollIntoView({ behavior: 'smooth', block: 'nearest' });
+
+  setTimeout(() => {
+    const r = el.getBoundingClientRect();
+    const pad = 6;
+    const spot = document.getElementById('tourSpot');
+    spot.style.left   = (r.left - pad) + 'px';
+    spot.style.top    = (r.top - pad) + 'px';
+    spot.style.width  = (r.width + pad*2) + 'px';
+    spot.style.height = (r.height + pad*2) + 'px';
+    spot.style.opacity = '1';
+
+    const tip = document.getElementById('tourTip');
+    const TW = 300, vw = window.innerWidth, vh = window.innerHeight;
+    let tx, ty;
+
+    if (step.pos === 'bottom') {
+      ty = Math.min(r.bottom + pad + 14, vh - 200);
+      tx = Math.max(8, Math.min(r.left + r.width/2 - TW/2, vw - TW - 8));
+    } else if (step.pos === 'top') {
+      ty = Math.max(8, r.top - 180 - pad);
+      tx = Math.max(8, Math.min(r.left + r.width/2 - TW/2, vw - TW - 8));
+    } else if (step.pos === 'right') {
+      tx = Math.min(r.right + pad + 14, vw - TW - 8);
+      ty = Math.max(8, Math.min(r.top, vh - 220));
+    } else { // left
+      tx = Math.max(8, r.left - TW - pad - 14);
+      ty = Math.max(8, Math.min(r.top, vh - 220));
+    }
+
+    tip.style.left = tx + 'px';
+    tip.style.top  = ty + 'px';
+    tip.style.opacity = '1';
+
+    document.getElementById('tourStepLabel').textContent = `Step ${idx+1} of ${TOUR_STEPS.length}`;
+    document.getElementById('tourTitle').textContent = step.title;
+    document.getElementById('tourBody').textContent = step.body;
+
+    // Dots
+    document.getElementById('tourDots').innerHTML = TOUR_STEPS.map((_, i) =>
+      `<div style="width:${i===idx?14:5}px;height:5px;border-radius:3px;background:${i===idx?'var(--gold)':'rgba(201,169,110,0.2)'};transition:all 0.3s"></div>`
+    ).join('');
+
+    // Next/End button
+    const nxt = document.getElementById('tourNext');
+    if (nxt) nxt.textContent = idx === TOUR_STEPS.length-1 ? 'Finish ✓' : 'Next →';
+    const prev = document.getElementById('tourPrev');
+    if (prev) prev.style.opacity = idx === 0 ? '0.3' : '1';
+  }, 200);
+}
+
+window.tourNav = function(dir) {
+  const next = _tourStep + dir;
+  if (next < 0) return;
+  if (next >= TOUR_STEPS.length) { endTour(); return; }
+  goTourStep(next);
+};
+
+function endTour() {
+  _tourActive = false;
+  ['tourOverlay','tourSpot','tourTip','tourSkip'].forEach(id => {
+    const el = document.getElementById(id);
+    if (el) el.remove();
+  });
+  // Restore advisor FAB to its original state
+  const fab = document.getElementById('advisorFab');
+  if (fab && !document.getElementById('authOverlay')) {
+    // keep visible since user is logged in
+  }
+  showToast('✓ Tour complete — explore your Departure Lounge');
+}
+
+window.startTour = startTour;
+
+// ── CUSTOMISE PANELS ──────────────────────────────────────────────────────
+const PANELS = [
+  { id: 'panelFeaturedTrip', label: 'Featured Journey' },
+  { id: 'panelCollective',   label: 'Travel Collective' },
+  { id: 'panelAlerts',       label: 'Travel Intelligence' },
+  { id: 'panelEvents',       label: 'Upcoming Events' },
+];
+
+function initCustomisePanels() {
+  const saved = JSON.parse(localStorage.getItem('bf_panels') || 'null');
+  const toggles = document.getElementById('panelToggles');
+  toggles.innerHTML = PANELS.map(p => {
+    const on = saved ? saved.includes(p.id) : true;
+    return `
+      <label style="display:flex;align-items:center;gap:0.65rem;cursor:pointer;padding:0.4rem 0.6rem;border:1px solid var(--border);transition:border-color 0.2s" onmouseover="this.style.borderColor='rgba(201,169,110,0.3)'" onmouseout="this.style.borderColor='var(--border)'">
+        <input type="checkbox" id="chk_${p.id}" ${on?'checked':''} style="accent-color:var(--gold);width:13px;height:13px;cursor:pointer">
+        <span style="font-size:0.65rem;color:var(--mist)">${p.label}</span>
+      </label>`;
+  }).join('');
+  applyPanels(true);
+}
+
+function applyPanels(init) {
+  const visible = PANELS.filter(p => {
+    const chk = document.getElementById('chk_' + p.id);
+    return chk ? chk.checked : true;
+  }).map(p => p.id);
+  localStorage.setItem('bf_panels', JSON.stringify(visible));
+  PANELS.forEach(p => {
+    const el = document.getElementById(p.id);
+    if (el) el.style.display = visible.includes(p.id) ? 'block' : 'none';
+  });
+  if (!init) {
+    toggleCustomise();
+    showToast('✓ Panels updated');
+  }
+}
+
+function toggleCustomise() {
+  const opts = document.getElementById('customiseOptions');
+  const btn  = document.getElementById('customiseToggle');
+  const open = opts.style.display === 'none';
+  opts.style.display = open ? 'block' : 'none';
+  btn.textContent = open ? '×' : '+';
+  btn.style.transform = open ? 'rotate(0deg)' : '';
+}
+
+// ── ANIMATED HUMMINGBIRD AVATAR ───────────────────────────────────────────
+function injectHummingbirdAvatar() {
+  const el = document.getElementById('headerAvatar');
+  if (!el) return;
+  el.innerHTML = `
+    <svg viewBox="0 0 36 36" xmlns="http://www.w3.org/2000/svg" style="width:26px;height:26px;display:block">
+      <style>
+        @keyframes hbAvatarWing {
+          0%,100%{ transform:scaleY(1) rotate(0deg); }
+          30%    { transform:scaleY(-0.7) rotate(-10deg); }
+          60%    { transform:scaleY(0.3) rotate(-16deg); }
+        }
+        @keyframes hbAvatarFloat {
+          0%,100%{ transform:translateY(0); }
+          50%    { transform:translateY(-2px); }
+        }
+        .hba-root { animation: hbAvatarFloat 2.4s ease-in-out infinite; transform-origin:18px 18px; }
+        .hba-wing { animation: hbAvatarWing 0.16s ease-in-out infinite; transform-origin:18px 17px; }
+      </style>
+      <g class="hba-root">
+        <!-- body -->
+        <ellipse cx="20" cy="19" rx="7" ry="3.2" fill="#C9A96E" transform="rotate(-15 20 19)"/>
+        <!-- tail -->
+        <path d="M25 22 Q30 26 32 30 Q27 27 25 24Z" fill="#C9A96E" opacity="0.6"/>
+        <!-- head -->
+        <circle cx="14" cy="16" r="4" fill="#C9A96E"/>
+        <!-- eye -->
+        <circle cx="12.8" cy="15" r="1" fill="#0A0A08"/>
+        <circle cx="12.4" cy="14.7" r="0.35" fill="rgba(255,255,255,0.7)"/>
+        <!-- beak -->
+        <path d="M11 16 Q5 15.5 2 16.5 Q5 17 11 16.5Z" fill="#E8D5B0"/>
+        <!-- wing -->
+        <g class="hba-wing">
+          <path d="M18 17 Q14 8 11 3 Q16 11 20 16Z" fill="#C9A96E" opacity="0.9"/>
+          <path d="M18 17 Q22 7 25 3 Q21 11 19 16Z" fill="#E8D5B0" opacity="0.55"/>
+        </g>
+        <!-- gorget -->
+        <ellipse cx="13" cy="18" rx="2.5" ry="1.4" fill="#EF9F27" opacity="0.85" transform="rotate(-10 13 18)"/>
+      </g>
+    </svg>`;
+  el.style.fontSize = '0';
 }
 
 // ── PROMO BANNER ──────────────────────────────────────────────────────────
