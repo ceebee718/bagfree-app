@@ -663,32 +663,31 @@ window._supabaseLaunchPatch = async function() {
     <!-- LEFT SIDEBAR -->
     <div class="dl-sidebar">
       <!-- BAGFREE LOGO -->
-      <div style="text-align:center;padding:1.25rem 0.5rem 1rem;border-bottom:1px solid var(--border);margin-bottom:1.25rem">
-        <svg viewBox="0 0 120 110" xmlns="http://www.w3.org/2000/svg" style="width:72px;height:auto;display:block;margin:0 auto 0.6rem" class="hb-wrap">
-          <!-- Hummingbird body -->
-          <ellipse cx="68" cy="58" rx="18" ry="8" fill="#C9A96E" opacity="0.95" transform="rotate(-15 68 58)"/>
-          <!-- Tail feathers -->
-          <path d="M84 65 Q96 72 100 80 Q90 74 86 70Z" fill="#C9A96E" opacity="0.7"/>
-          <path d="M84 67 Q98 78 104 88 Q92 80 87 73Z" fill="#C9A96E" opacity="0.45"/>
-          <!-- Head -->
-          <circle cx="54" cy="50" r="9" fill="#C9A96E"/>
-          <!-- Eye -->
-          <circle cx="51" cy="48" r="1.8" fill="#0A0A08"/>
-          <circle cx="50.4" cy="47.5" r="0.6" fill="rgba(255,255,255,0.6)"/>
-          <!-- Beak -->
-          <path d="M45 50 Q36 49 28 51 Q36 52 45 51Z" fill="#E8D5B0"/>
-          <!-- Wing (animated) -->
-          <g id="hbWing" style="transform-origin:65px 55px">
-            <path d="M65 55 Q58 35 52 22 Q62 38 70 50 Q72 53 65 55Z" fill="#C9A96E" opacity="0.85"/>
-            <path d="M65 55 Q72 30 78 18 Q72 38 68 52 Q67 54 65 55Z" fill="#E8D5B0" opacity="0.6"/>
-          </g>
-          <!-- Gorget (throat flash) -->
-          <ellipse cx="52" cy="54" rx="5" ry="3" fill="#EF9F27" opacity="0.8" transform="rotate(-10 52 54)"/>
-          <!-- Text -->
-          <text x="60" y="90" text-anchor="middle" font-family="'Cormorant Garamond',Georgia,serif" font-size="13" font-weight="300" letter-spacing="4" fill="#C9A96E">BAGFREE</text>
-          <text x="60" y="103" text-anchor="middle" font-family="'Jost',sans-serif" font-size="5.5" letter-spacing="2.5" fill="rgba(201,169,110,0.5)">TRAVEL WITHOUT LUGGAGE</text>
-        </svg>
-        <div style="font-size:0.48rem;letter-spacing:2px;color:rgba(201,169,110,0.35);text-transform:uppercase">Powered by Valet by Nuor</div>
+      <div style="text-align:center;padding:1.4rem 0.5rem 1.1rem;border-bottom:1px solid var(--border);margin-bottom:1.25rem">
+        <div class="hb-sidebar-wrap" style="display:inline-block">
+          <img
+            src="https://valetbynuor.com/cdn/shop/files/BagFree_Logo_Gold_on_Dark_500px.png"
+            alt="BagFree"
+            onerror="this.style.display='none';document.getElementById('hbFallbackSvg').style.display='block'"
+            style="width:88px;height:auto;display:block;margin:0 auto"
+          />
+          <!-- Fallback SVG if image fails -->
+          <svg id="hbFallbackSvg" viewBox="0 0 120 110" xmlns="http://www.w3.org/2000/svg" style="width:72px;height:auto;display:none;margin:0 auto">
+            <ellipse cx="68" cy="58" rx="18" ry="8" fill="#C9A96E" opacity="0.95" transform="rotate(-15 68 58)"/>
+            <path d="M84 65 Q96 72 100 80 Q90 74 86 70Z" fill="#C9A96E" opacity="0.7"/>
+            <circle cx="54" cy="50" r="9" fill="#C9A96E"/>
+            <circle cx="51" cy="48" r="1.8" fill="#0A0A08"/>
+            <path d="M45 50 Q36 49 28 51 Q36 52 45 51Z" fill="#E8D5B0"/>
+            <g style="animation:wingFlap 0.18s ease-in-out infinite;transform-origin:65px 55px">
+              <path d="M65 55 Q58 35 52 22 Q62 38 70 50 Q72 53 65 55Z" fill="#C9A96E" opacity="0.85"/>
+              <path d="M65 55 Q72 30 78 18 Q72 38 68 52 Q67 54 65 55Z" fill="#E8D5B0" opacity="0.6"/>
+            </g>
+            <ellipse cx="52" cy="54" rx="5" ry="3" fill="#EF9F27" opacity="0.8" transform="rotate(-10 52 54)"/>
+            <text x="60" y="90" text-anchor="middle" font-family="'Cormorant Garamond',Georgia,serif" font-size="13" font-weight="300" letter-spacing="4" fill="#C9A96E">BAGFREE</text>
+            <text x="60" y="103" text-anchor="middle" font-family="'Jost',sans-serif" font-size="5.5" letter-spacing="2.5" fill="rgba(201,169,110,0.5)">TRAVEL WITHOUT LUGGAGE</text>
+          </svg>
+        </div>
+        <div style="font-size:0.44rem;letter-spacing:2.5px;color:rgba(201,169,110,0.32);text-transform:uppercase;margin-top:0.5rem">Powered by Valet by Nuor</div>
       </div>
 
       <style>
@@ -699,12 +698,11 @@ window._supabaseLaunchPatch = async function() {
           75%      { transform: scaleY(-0.3) rotate(-6deg); }
         }
         @keyframes hoverFloat {
-          0%,100% { transform: translateY(0px) rotate(0deg); }
-          30%     { transform: translateY(-3px) rotate(1deg); }
-          70%     { transform: translateY(2px) rotate(-1deg); }
+          0%,100% { transform: translateY(0px); }
+          35%     { transform: translateY(-4px); }
+          70%     { transform: translateY(2px); }
         }
-        #hbWing { animation: wingFlap 0.18s ease-in-out infinite; }
-        .hb-wrap { animation: hoverFloat 2.8s ease-in-out infinite; }
+        .hb-sidebar-wrap { animation: hoverFloat 3s ease-in-out infinite; display:inline-block; }
       </style>
 
       <div class="sidebar-section">
@@ -2755,10 +2753,18 @@ function startTour() {
     width:300px;
     font-family:'Jost',sans-serif;
     box-shadow:0 20px 60px rgba(0,0,0,0.8);
-    opacity:0;transition:opacity 0.3s,left 0.42s cubic-bezier(0.4,0,0.2,1),top 0.42s cubic-bezier(0.4,0,0.2,1);
+    opacity:0;
+    transition:opacity 0.3s,left 0.42s cubic-bezier(0.4,0,0.2,1),top 0.42s cubic-bezier(0.4,0,0.2,1);
   `;
   tip.innerHTML = `
-    <div id="tourStepLabel" style="font-size:0.48rem;letter-spacing:3px;text-transform:uppercase;color:rgba(201,169,110,0.55);margin-bottom:0.55rem"></div>
+    <button onclick="endTour()" title="Close tour" style="
+      position:absolute;top:0.65rem;right:0.75rem;
+      background:transparent;border:none;
+      color:rgba(201,169,110,0.4);font-size:1rem;line-height:1;
+      cursor:pointer;font-family:'Jost',sans-serif;
+      transition:color 0.2s;padding:2px 4px;
+    " onmouseover="this.style.color='rgba(201,169,110,1)'" onmouseout="this.style.color='rgba(201,169,110,0.4)'">✕</button>
+    <div id="tourStepLabel" style="font-size:0.48rem;letter-spacing:3px;text-transform:uppercase;color:rgba(201,169,110,0.55);margin-bottom:0.55rem;padding-right:1.5rem"></div>
     <div id="tourTitle" style="font-family:'Cormorant Garamond',serif;font-size:1.2rem;font-weight:300;color:#FDFCF8;margin-bottom:0.45rem;line-height:1.2"></div>
     <div id="tourBody" style="font-size:0.7rem;color:rgba(253,252,248,0.58);line-height:1.85;font-weight:300"></div>
     <div style="display:flex;align-items:center;gap:6px;margin-top:1.1rem;flex-wrap:wrap">
@@ -2768,22 +2774,6 @@ function startTour() {
     </div>
   `;
   document.body.appendChild(tip);
-
-  const skip = document.createElement('button');
-  skip.id = 'tourSkip';
-  skip.textContent = 'Skip Tour';
-  skip.onclick = endTour;
-  skip.style.cssText = `
-    position:fixed;top:60px;right:1rem;z-index:8003;
-    background:rgba(10,10,8,0.9);border:1px solid rgba(201,169,110,0.25);
-    color:rgba(201,169,110,0.55);padding:0.4rem 0.9rem;
-    font-size:0.48rem;letter-spacing:2px;text-transform:uppercase;
-    cursor:pointer;font-family:'Jost',sans-serif;backdrop-filter:blur(10px);
-    transition:all 0.2s;
-  `;
-  skip.onmouseenter = () => { skip.style.color='rgba(201,169,110,1)'; skip.style.borderColor='rgba(201,169,110,0.6)'; };
-  skip.onmouseleave = () => { skip.style.color='rgba(201,169,110,0.55)'; skip.style.borderColor='rgba(201,169,110,0.25)'; };
-  document.body.appendChild(skip);
 
   goTourStep(0);
 }
@@ -2860,7 +2850,7 @@ window.tourNav = function(dir) {
 
 function endTour() {
   _tourActive = false;
-  ['tourOverlay','tourSpot','tourTip','tourSkip'].forEach(id => {
+  ['tourOverlay','tourSpot','tourTip'].forEach(id => {
     const el = document.getElementById(id);
     if (el) el.remove();
   });
