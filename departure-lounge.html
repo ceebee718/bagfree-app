@@ -738,7 +738,7 @@ window._supabaseLaunchPatch = async function() {
 
       <div class="sidebar-section">
         <div style="display:flex;align-items:center;justify-content:space-between;margin-bottom:0.85rem">
-          <div class="sidebar-label" style="margin-bottom:0">Recommended for you</div>
+          <div style="font-size:0.85rem;letter-spacing:2px;text-transform:uppercase;color:var(--white);font-family:'Jost',sans-serif;font-weight:500">Customise Panels</div>
           <button id="leftCustomiseToggle" onclick="toggleLeftCustomise()" title="Customise left panel" style="
             width:22px;height:22px;border-radius:50%;
             background:rgba(201,169,110,0.1);border:1px solid rgba(201,169,110,0.4);
@@ -856,7 +856,7 @@ window._supabaseLaunchPatch = async function() {
 
       <!-- CUSTOMISE + BUTTON — pinned at top -->
       <div style="display:flex;align-items:center;justify-content:space-between;margin-bottom:1rem;padding-bottom:0.85rem;border-bottom:1px solid var(--border)">
-        <div style="font-size:0.72rem;letter-spacing:2px;text-transform:uppercase;color:rgba(201,169,110,0.8)">Customise panels</div>
+        <div style="font-size:0.85rem;letter-spacing:2px;text-transform:uppercase;color:var(--white);font-family:'Jost',sans-serif;font-weight:500">Customise Panels</div>
         <button id="customiseToggle" onclick="toggleCustomise()" title="Add or remove panels" style="
           width:24px;height:24px;border-radius:50%;
           background:rgba(201,169,110,0.1);border:1px solid rgba(201,169,110,0.4);
@@ -1336,16 +1336,11 @@ function _launchDashboardCore(){
   injectHummingbirdAvatar();
   // Show promo banner after a short delay
   setTimeout(showPromoBanner, 2500);
-  // Clear panel states so new users always start with nothing checked
-  if (!localStorage.getItem('bf_panels_initialized')) {
-    localStorage.removeItem('bf_panels');
-    localStorage.removeItem('bf_left_panels');
-    localStorage.setItem('bf_panels_initialized', '1');
-  }
-  // Auto-launch tour for first-time visitors
-  if (!localStorage.getItem('bf_tour_done')) {
-    setTimeout(() => { startTour(); localStorage.setItem('bf_tour_done','1'); }, 1800);
-  }}
+  // Always hide all panels until user selects them (clear on every load)
+  localStorage.removeItem('bf_panels');
+  localStorage.removeItem('bf_left_panels');
+  // Auto-launch tour every time (always shows on dashboard load)
+  setTimeout(() => { startTour(); }, 1600);
 
 function getAvatar(){
   const style = profile.travelStyle||'';
@@ -2945,6 +2940,18 @@ function initLeftCustomisePanels() {
         <span style="font-size:0.72rem;color:var(--mist)">${p.label}</span>
       </label>`;
   }).join('');
+  // Hide all left sections by default if no saved state
+  if (!saved) {
+    const sidebar = document.querySelector('.dl-sidebar');
+    if (sidebar) {
+      const sections = sidebar.querySelectorAll('.sidebar-section');
+      sections.forEach((sec, i) => { if (i > 0) sec.style.display = 'none'; });
+    }
+    const destCards = document.getElementById('destCards');
+    if (destCards) destCards.style.display = 'none';
+  }
+}
+  }).join('');
 }
 
 function applyLeftPanels() {
@@ -3003,9 +3010,12 @@ function initCustomisePanels() {
 }
 
 function applyPanels(init) {
+  const saved = JSON.parse(localStorage.getItem('bf_panels') || 'null');
   const visible = PANELS.filter(p => {
     const chk = document.getElementById('chk_' + p.id);
-    return chk ? chk.checked : true;
+    // If init and no saved state, default to hidden
+    if (init && !saved) return false;
+    return chk ? chk.checked : false;
   }).map(p => p.id);
   localStorage.setItem('bf_panels', JSON.stringify(visible));
   PANELS.forEach(p => {
