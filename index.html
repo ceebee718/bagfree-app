@@ -115,6 +115,25 @@ async function submitToFormspree(data) {
   try { await fetch(FORMSPREE,{method:'POST',headers:{'Content-Type':'application/json','Accept':'application/json'},body:JSON.stringify(data)}); } catch(e){}
 }
 
+// ── AIRTABLE PROXY (via Netlify Functions — token is server-side only) ───────
+async function submitToAirtable(form) {
+  try {
+    await fetch('/.netlify/functions/submit-supplier', {
+      method: 'POST',
+      headers: { 'Content-Type': 'application/json' },
+      body: JSON.stringify(form),
+    });
+  } catch(e){ console.error('Airtable proxy error:', e); }
+}
+
+async function fetchApprovedVendors() {
+  try {
+    const res = await fetch('/.netlify/functions/get-vendors');
+    if (!res.ok) return [];
+    return await res.json();
+  } catch(e){ return []; }
+}
+
 // ── VENDORS ───────────────────────────────────────────────────────────────────
 const VENDORS = [
   {
@@ -639,6 +658,18 @@ function Home({setPage}) {
 
 // ── VENDOR MARKETPLACE ────────────────────────────────────────────────────────
 function VendorMarketplace({setPage, setActiveVendor}) {
+  const [atVendors, setAtVendors] = React.useState([]);
+  const [loading, setLoading] = React.useState(true);
+
+  React.useEffect(()=>{
+    fetchApprovedVendors().then(v=>{ setAtVendors(v); setLoading(false); });
+  },[]);
+
+  // Static vendors (always shown) + approved Airtable vendors + apply slots
+  const staticCore = VENDORS.filter(v => v.color !== 'apply');
+  const applySlots = VENDORS.filter(v => v.color === 'apply');
+  const allVendors = [...staticCore, ...atVendors, ...applySlots];
+
   return (
     <div style={{paddingTop:60}}>
       <div style={{padding:'5rem 3rem 4rem',background:'var(--gold)',position:'relative',overflow:'hidden'}}>
@@ -651,11 +682,17 @@ function VendorMarketplace({setPage, setActiveVendor}) {
         <p style={{fontSize:'0.9rem',color:'rgba(10,10,8,0.6)',marginTop:'1rem',maxWidth:500,lineHeight:1.8,fontWeight:300,position:'relative'}}>Browse verified suppliers delivering to your destination. Click any vendor to explore their products.</p>
       </div>
       <div style={{padding:'3rem',background:'var(--noir)'}}>
-        <div style={{display:'grid',gridTemplateColumns:'repeat(auto-fill,minmax(340px,1fr))',gap:1,background:'var(--border)',border:'1px solid var(--border)'}}>
-          {VENDORS.map(v=>(
-            <VendorCard key={v.id} vendor={v} setPage={setPage} setActiveVendor={setActiveVendor} />
-          ))}
-        </div>
+        {loading ? (
+          <div style={{textAlign:'center',padding:'3rem',color:'var(--mist)',fontSize:'0.78rem',letterSpacing:'2px',textTransform:'uppercase'}}>
+            <div style={{animation:'pulse 1.5s ease-in-out infinite',display:'inline-block'}}>Loading suppliers...</div>
+          </div>
+        ) : (
+          <div style={{display:'grid',gridTemplateColumns:'repeat(auto-fill,minmax(340px,1fr))',gap:1,background:'var(--border)',border:'1px solid var(--border)'}}>
+            {allVendors.map(v=>(
+              <VendorCard key={v.id} vendor={v} setPage={setPage} setActiveVendor={setActiveVendor} />
+            ))}
+          </div>
+        )}
       </div>
     </div>
   );
@@ -1075,14 +1112,17 @@ function SupplierPortal() {
               <button
                 onClick={async()=>{
                   if(form.agreedToCommission){
-                    await submitToFormspree({
-                      type:'SUPPLIER APPLICATION',
-                      ...form,
-                      destinations:form.destinations.join(', '),
-                      commissionPlan:form.commissionPlan==='annual'?'Annual Partner — $199/year + 8% commission':'Monthly — 15% commission, no commitment',
-                      agreedToCommission:'Yes — commission terms acknowledged',
-                      source:'BagFree Supplier Portal'
-                    });
+                    await Promise.all([
+                      submitToAirtable(form),
+                      submitToFormspree({
+                        type:'SUPPLIER APPLICATION',
+                        ...form,
+                        destinations:form.destinations.join(', '),
+                        commissionPlan:form.commissionPlan==='annual'?'Annual Partner — $199/year + 8% commission':'Monthly — 15% commission, no commitment',
+                        agreedToCommission:'Yes — commission terms acknowledged',
+                        source:'BagFree Supplier Portal'
+                      })
+                    ]);
                     setDone(true);
                   }
                 }}
