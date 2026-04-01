@@ -648,7 +648,7 @@ window._supabaseLaunchPatch = async function() {
 <!-- DASHBOARD -->
 <div id="dashboard">
   <div class="dl-header">
-    <a href="https://bagfree.app" style="text-decoration:none"><div class="dl-logo">Bag<span>Free</span> <span style="color:rgba(201,169,110,0.4);margin:0 8px">·</span> The Departure Lounge <span style="background:var(--gold);color:var(--noir);padding:1px 5px;font-size:0.45rem;letter-spacing:1.5px;font-weight:600;margin-left:6px;vertical-align:middle">BETA</span></div></a>
+    <a href="https://bagfree.app" style="text-decoration:none"><div class="dl-logo">Bag<span>Free</span> <span style="color:rgba(201,169,110,0.3);margin:0 8px">·</span> <span style="color:var(--gold)">The Departure Lounge</span> <span style="background:var(--gold);color:var(--noir);padding:1px 5px;font-size:0.45rem;letter-spacing:1.5px;font-weight:600;margin-left:6px;vertical-align:middle">BETA</span></div></a>
     <div class="dl-user">
       <div class="dl-avatar-badge" id="headerAvatar" style="cursor:pointer" onclick="openProfileModal()" title="Edit profile">👩‍✈️</div>
       <span id="headerName" style="cursor:pointer" onclick="openProfileModal()">Traveler</span>
@@ -832,6 +832,32 @@ window._supabaseLaunchPatch = async function() {
 
     <!-- RIGHT SIDEBAR -->
     <div class="dl-right" id="dlRight">
+
+      <!-- CUSTOMISE + BUTTON — pinned at top -->
+      <div style="display:flex;align-items:center;justify-content:space-between;margin-bottom:1rem;padding-bottom:0.85rem;border-bottom:1px solid var(--border)">
+        <div style="font-size:0.5rem;letter-spacing:3px;text-transform:uppercase;color:rgba(201,169,110,0.45)">Customise panels</div>
+        <button id="customiseToggle" onclick="toggleCustomise()" title="Add or remove panels" style="
+          width:24px;height:24px;border-radius:50%;
+          background:rgba(201,169,110,0.1);border:1px solid rgba(201,169,110,0.4);
+          color:var(--gold);font-size:1.1rem;line-height:1;cursor:pointer;
+          display:flex;align-items:center;justify-content:center;
+          transition:all 0.25s;font-weight:300;flex-shrink:0;
+        " onmouseover="this.style.background='rgba(201,169,110,0.22)'" onmouseout="this.style.background='rgba(201,169,110,0.1)'">+</button>
+      </div>
+
+      <!-- Expand/collapse panel picker -->
+      <div id="customiseOptions" style="display:none;margin-bottom:1rem;padding-bottom:1rem;border-bottom:1px solid var(--border)">
+        <div style="font-size:0.62rem;color:rgba(253,252,248,0.4);margin-bottom:0.75rem;line-height:1.7">Choose which panels appear here.</div>
+        <div id="panelToggles" style="display:flex;flex-direction:column;gap:6px"></div>
+        <button onclick="applyPanels()" style="
+          width:100%;margin-top:0.85rem;background:var(--gold);color:var(--noir);
+          border:none;padding:0.5rem;font-size:0.55rem;letter-spacing:2px;
+          text-transform:uppercase;cursor:pointer;font-family:'Jost',sans-serif;font-weight:500;
+          transition:background 0.2s;
+        " onmouseover="this.style.background='var(--gold-light)'" onmouseout="this.style.background='var(--gold)'">Apply</button>
+      </div>
+
+      <!-- Intelligence placeholder when nothing selected -->
       <div id="rightContent">
         <div class="no-dest">
           <div class="no-dest-icon">✦</div>
@@ -839,32 +865,7 @@ window._supabaseLaunchPatch = async function() {
         </div>
       </div>
 
-      <!-- CUSTOMISE PANEL (collapsed by default, expands on +) -->
-      <div id="customisePanel" style="margin-top:auto;padding-top:1.5rem;border-top:1px solid var(--border)">
-        <div style="display:flex;align-items:center;justify-content:space-between;margin-bottom:0.5rem">
-          <div style="font-size:0.5rem;letter-spacing:3px;text-transform:uppercase;color:rgba(201,169,110,0.45)">Customise panels</div>
-          <button id="customiseToggle" onclick="toggleCustomise()" title="Add or remove panels" style="
-            width:26px;height:26px;border-radius:50%;
-            background:rgba(201,169,110,0.1);border:1px solid rgba(201,169,110,0.35);
-            color:var(--gold);font-size:1rem;line-height:1;cursor:pointer;
-            display:flex;align-items:center;justify-content:center;
-            transition:all 0.25s;font-weight:300;
-          " onmouseover="this.style.background='rgba(201,169,110,0.22)'" onmouseout="this.style.background='rgba(201,169,110,0.1)'">+</button>
-        </div>
-
-        <div id="customiseOptions" style="display:none;margin-top:0.85rem">
-          <div style="font-size:0.62rem;color:rgba(253,252,248,0.4);margin-bottom:0.85rem;line-height:1.7">Choose which panels appear in this column.</div>
-          <div id="panelToggles" style="display:flex;flex-direction:column;gap:6px"></div>
-          <button onclick="applyPanels()" style="
-            width:100%;margin-top:1rem;background:var(--gold);color:var(--noir);
-            border:none;padding:0.5rem;font-size:0.55rem;letter-spacing:2px;
-            text-transform:uppercase;cursor:pointer;font-family:'Jost',sans-serif;font-weight:500;
-            transition:background 0.2s;
-          " onmouseover="this.style.background='var(--gold-light)'" onmouseout="this.style.background='var(--gold)'">Apply</button>
-        </div>
-      </div>
-
-      <!-- DYNAMIC PANELS (shown/hidden based on user preference) -->
+      <!-- DYNAMIC PANELS -->
       <div id="panelFeaturedTrip" class="dash-panel" style="margin-top:1.25rem;padding-top:1.25rem;border-top:1px solid var(--border)">
         <div class="sidebar-label">Featured journey</div>
         <div id="featuredTrip"></div>
@@ -1316,8 +1317,7 @@ function _launchDashboardCore(){
   // Auto-launch tour for first-time visitors
   if (!localStorage.getItem('bf_tour_done')) {
     setTimeout(() => { startTour(); localStorage.setItem('bf_tour_done','1'); }, 1800);
-  }
-}
+  }}
 
 function getAvatar(){
   const style = profile.travelStyle||'';
