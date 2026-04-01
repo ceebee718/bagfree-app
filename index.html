@@ -607,25 +607,6 @@ function Home({setPage}) {
           <LoungeTiles />
         </div>
 
-        {/* Bottom strip — value props + CTA */}
-        <div style={{margin:'4rem 3rem 0',borderTop:'1px solid var(--border)',display:'grid',gridTemplateColumns:'1fr 1px 1fr 1px 1fr 1px 1fr',gap:0}}>
-          {[
-            {icon:'◎',label:'Live Intelligence',desc:'Real-time flight maps, safety alerts and travel advisories updated continuously.'},
-            {icon:'✦',label:'Cultural Fluency',desc:'Etiquette, language basics, dress codes and local customs for every destination.'},
-            {icon:'♪',label:'Entertainment Match',desc:'Concerts, shows and events personalized to your travel dates and taste.'},
-            {icon:'◆',label:'Luxury Data',desc:'Every Forbes Five Star, Michelin star and Relais & Châteaux property, surfaced for you.'},
-          ].map((p,i)=>(
-            <React.Fragment key={p.label}>
-              <div style={{padding:'2.5rem 2rem',textAlign:'center'}}>
-                <div style={{fontSize:'1.4rem',color:'var(--gold)',marginBottom:'0.85rem'}}>{p.icon}</div>
-                <div style={{fontSize:'0.72rem',fontWeight:500,letterSpacing:'1.5px',textTransform:'uppercase',color:'var(--white)',marginBottom:'0.6rem'}}>{p.label}</div>
-                <div style={{fontSize:'0.76rem',color:'rgba(253,252,248,0.45)',lineHeight:1.8,fontWeight:300}}>{p.desc}</div>
-              </div>
-              {i < 3 && <div style={{background:'var(--border)'}}/>}
-            </React.Fragment>
-          ))}
-        </div>
-
         {/* CTA row */}
         <div style={{padding:'3rem',textAlign:'center',display:'flex',flexDirection:'column',alignItems:'center',gap:'1.25rem'}}>
           <button
