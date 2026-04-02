@@ -235,6 +235,221 @@ body{padding-top:36px}
   <div><div class="sb-ey">The BagFree connection</div><div class="sb-h">Board with only a carry-on</div><div class="sb-b">Your curated kit built from your destination, travel style, and trip length. Delivered to your hotel before you arrive.</div></div>
 </div>
 
+<!-- ── COST COMPARISON SECTION ── -->
+<style>
+.cost-sec{position:relative;z-index:10;padding:7rem 2.5rem;background:var(--noir);overflow:hidden}
+.cost-sec::before{content:'';position:absolute;inset:0;background:radial-gradient(ellipse 70% 60% at 50% 50%,rgba(201,169,110,0.07) 0%,transparent 70%);pointer-events:none}
+.cost-intro{text-align:center;margin-bottom:4.5rem;position:relative;z-index:2}
+.cost-cards{display:grid;grid-template-columns:1fr auto 1fr;gap:0;align-items:stretch;max-width:1100px;margin:0 auto 3rem;position:relative;z-index:2}
+.cost-card{padding:2.75rem 2.5rem;display:flex;flex-direction:column}
+.cost-card.trad{background:rgba(226,75,74,0.04);border:1px solid rgba(226,75,74,0.18)}
+.cost-card.bf{background:rgba(201,169,110,0.05);border:1px solid rgba(201,169,110,0.3)}
+.cost-card-label{font-size:0.55rem;letter-spacing:3.5px;text-transform:uppercase;margin-bottom:1.5rem;display:flex;align-items:center;gap:0.6rem}
+.cost-card-label.trad-l{color:rgba(226,75,74,0.8)}
+.cost-card-label.bf-l{color:var(--gold)}
+.cost-item{display:flex;justify-content:space-between;align-items:center;padding:0.75rem 0;border-bottom:1px solid rgba(253,252,248,0.06);gap:1rem}
+.cost-item:last-of-type{border-bottom:none}
+.cost-item-name{font-size:0.8rem;color:rgba(253,252,248,0.55);line-height:1.4;flex:1}
+.cost-item-val{font-size:0.85rem;font-weight:500;white-space:nowrap}
+.cost-item-val.red{color:rgba(226,75,74,0.9)}
+.cost-item-val.green{color:var(--green)}
+.cost-item-val.gold{color:var(--gold)}
+.cost-item-val.dim{color:rgba(253,252,248,0.25);font-size:0.7rem;font-style:italic}
+.cost-subtotal{display:flex;justify-content:space-between;align-items:baseline;margin-top:1.5rem;padding-top:1.25rem;border-top:1px solid rgba(253,252,248,0.12)}
+.cost-subtotal-label{font-size:0.58rem;letter-spacing:2px;text-transform:uppercase;color:rgba(253,252,248,0.35)}
+.cost-subtotal-val{font-family:var(--ff);font-size:2.2rem;font-weight:300;line-height:1}
+.cost-subtotal-val.trad-val{color:rgba(226,75,74,0.9)}
+.cost-subtotal-val.bf-val{color:var(--gold)}
+.cost-divider{display:flex;flex-direction:column;align-items:center;justify-content:center;padding:0 2rem;gap:1rem}
+.cost-vs{font-family:var(--ff);font-size:3rem;font-weight:300;color:rgba(253,252,248,0.12);line-height:1}
+.cost-win-badge{background:linear-gradient(135deg,rgba(93,202,165,0.15),rgba(93,202,165,0.05));border:1px solid rgba(93,202,165,0.35);padding:0.85rem 1.1rem;text-align:center}
+.cost-win-amount{font-family:var(--ff);font-size:1.8rem;font-weight:300;color:var(--green);line-height:1;margin-bottom:3px}
+.cost-win-label{font-size:0.5rem;letter-spacing:2px;text-transform:uppercase;color:rgba(93,202,165,0.7)}
+.cost-controls{max-width:1100px;margin:0 auto;display:flex;gap:1rem;justify-content:center;flex-wrap:wrap;margin-bottom:1rem}
+.cost-pill{display:flex;flex-direction:column;gap:5px}
+.cost-pill label{font-size:0.48rem;letter-spacing:2px;text-transform:uppercase;color:var(--gold)}
+.cost-pill select{background:rgba(253,252,248,0.04);border:1px solid var(--border);color:var(--white);padding:0.5rem 1rem;font-size:0.78rem;font-family:var(--fb);outline:none;cursor:pointer;transition:border-color 0.2s;min-width:160px}
+.cost-pill select:focus{border-color:var(--border-hi)}
+.cost-note{text-align:center;font-size:0.62rem;color:rgba(253,252,248,0.22);margin-top:0.5rem;line-height:1.8;position:relative;z-index:2}
+.cost-cta-row{display:flex;gap:1rem;justify-content:center;margin-top:3rem;position:relative;z-index:2;flex-wrap:wrap}
+/* Intangibles strip */
+.cost-intangibles{max-width:1100px;margin:3.5rem auto 0;display:grid;grid-template-columns:repeat(4,1fr);gap:1px;background:var(--border);border:1px solid var(--border);position:relative;z-index:2}
+.cost-int{background:var(--noir);padding:1.75rem 1.5rem;text-align:center}
+.cost-int-icon{font-size:1.6rem;margin-bottom:0.75rem}
+.cost-int-title{font-size:0.7rem;color:var(--white);font-weight:500;margin-bottom:0.4rem;letter-spacing:0.5px}
+.cost-int-sub{font-size:0.62rem;color:rgba(253,252,248,0.38);line-height:1.65}
+</style>
+
+<section class="cost-sec reveal" id="cost-compare">
+  <div class="cost-intro">
+    <div class="eyebrow">The real math</div>
+    <h2 class="big-title" style="font-size:clamp(2.2rem,4.5vw,3.8rem)">What does luggage<br><em style="color:var(--gold);font-style:italic">actually</em> cost you?</h2>
+    <p style="font-size:0.82rem;color:var(--mist);max-width:540px;margin:1.25rem auto 0;line-height:2">Most travelers never add it up. When you do, the number is surprising — and that's before counting what it costs your time, stress, and experience.</p>
+  </div>
+
+  <!-- Personalizer controls -->
+  <div class="cost-controls">
+    <div class="cost-pill">
+      <label>Home city</label>
+      <select id="lp-home" onchange="lpCalc()">
+        <option value="70">Tampa / Miami (Southwest/AA)</option>
+        <option value="70">Atlanta (Delta)</option>
+        <option value="70">New York (JetBlue/Delta)</option>
+        <option value="70">Los Angeles (United/AA)</option>
+        <option value="70">Chicago (United/AA)</option>
+      </select>
+    </div>
+    <div class="cost-pill">
+      <label>Trip duration</label>
+      <select id="lp-days" onchange="lpCalc()">
+        <option value="3">3 days</option>
+        <option value="5">5 days</option>
+        <option value="7" selected>7 days</option>
+        <option value="10">10 days</option>
+        <option value="14">14 days</option>
+      </select>
+    </div>
+    <div class="cost-pill">
+      <label>Travel style</label>
+      <select id="lp-style" onchange="lpCalc()">
+        <option value="luxury">Luxury</option>
+        <option value="leisure" selected>Leisure</option>
+        <option value="business">Business</option>
+        <option value="wellness">Wellness</option>
+      </select>
+    </div>
+  </div>
+
+  <!-- Cards -->
+  <div class="cost-cards">
+    <!-- Traditional -->
+    <div class="cost-card trad">
+      <div class="cost-card-label trad-l"><span style="font-size:1.2rem">🧳</span> Traveling with luggage</div>
+      <div id="lp-trad-items"></div>
+      <div class="cost-subtotal">
+        <div class="cost-subtotal-label">Estimated total</div>
+        <div class="cost-subtotal-val trad-val" id="lp-trad-total"></div>
+      </div>
+    </div>
+
+    <!-- VS divider -->
+    <div class="cost-divider">
+      <div class="cost-vs">vs</div>
+      <div class="cost-win-badge">
+        <div class="cost-win-amount" id="lp-saving"></div>
+        <div class="cost-win-label">you save</div>
+      </div>
+    </div>
+
+    <!-- BagFree -->
+    <div class="cost-card bf">
+      <div class="cost-card-label bf-l"><span style="font-size:1.2rem">✦</span> Traveling BagFree</div>
+      <div id="lp-bf-items"></div>
+      <div class="cost-subtotal">
+        <div class="cost-subtotal-label">Estimated total</div>
+        <div class="cost-subtotal-val bf-val" id="lp-bf-total"></div>
+      </div>
+    </div>
+  </div>
+
+  <div class="cost-note">Estimates based on average US airline fees, typical leisure traveler behavior, and Valet by Nuor kit pricing.<br>Your actual savings may be higher. Bag fees alone have increased 340% since 2008.</div>
+
+  <!-- Intangibles -->
+  <div class="cost-intangibles reveal">
+    <div class="cost-int">
+      <div class="cost-int-icon">⏱️</div>
+      <div class="cost-int-title">2+ hours back</div>
+      <div class="cost-int-sub">No check-in queue, no baggage claim. Walk straight to your hotel transfer.</div>
+    </div>
+    <div class="cost-int">
+      <div class="cost-int-icon">😌</div>
+      <div class="cost-int-title">Zero anxiety</div>
+      <div class="cost-int-sub">No lost luggage risk. No overweight panic at the scale. No forgotten items.</div>
+    </div>
+    <div class="cost-int">
+      <div class="cost-int-icon">👗</div>
+      <div class="cost-int-title">Curated wardrobe</div>
+      <div class="cost-int-sub">Destination-appropriate clothes selected by style. In your room before you arrive.</div>
+    </div>
+    <div class="cost-int">
+      <div class="cost-int-icon">✈️</div>
+      <div class="cost-int-title">Any airline, any seat</div>
+      <div class="cost-int-sub">Travel in your lightest outfit. Take the window. No overhead bin wars.</div>
+    </div>
+  </div>
+
+  <div class="cost-cta-row">
+    <a href="departure-lounge.html" class="cta-main">Enter The Lounge — See Your Savings ✦</a>
+    <a href="https://valetbynuor.com" target="_blank" class="cta-ghost">Shop BagFree Kits ↗</a>
+  </div>
+</section>
+
+<script>
+function lpCalc() {
+  const bagFee = parseInt(document.getElementById('lp-home').value) || 70;
+  const days   = parseInt(document.getElementById('lp-days').value) || 7;
+  const style  = document.getElementById('lp-style').value;
+
+  // ── TRADITIONAL ──
+  const checked   = bagFee * 2;
+  const overweight = Math.round(bagFee * 0.4);
+  const laundry   = days >= 7 ? 85 : days >= 5 ? 55 : 30;
+  const forgotten  = days >= 7 ? 95 : 65;
+  const airportTime = 120;
+  const stress    = 50;
+  const tradTotal = checked + overweight + laundry + forgotten + airportTime + stress;
+
+  const kits = {
+    luxury:   { name:'Luxury Wardrobe Kit',  price:480 },
+    leisure:  { name:'Stay Fresh Kit',        price:220 },
+    business: { name:'Business Travel Kit',   price:320 },
+    wellness: { name:'Wellness Travel Kit',   price:280 },
+  };
+  const kit = kits[style];
+
+  // ── BAGFREE ──
+  const delivery = 35;
+  const curator  = style==='luxury' ? 280 : style==='business' ? 180 : 130;
+  const bfTotal  = kit.price + curator + delivery;
+  const saving   = tradTotal - bfTotal;
+
+  // Render traditional items
+  document.getElementById('lp-trad-items').innerHTML = [
+    ['Checked bag fee (round trip)', '$' + checked, 'red'],
+    ['Overweight bag risk (avg)', '$' + overweight, 'red'],
+    ['Hotel laundry (' + days + ' days)', '$' + laundry, 'red'],
+    ['Forgotten & replacement items', '$' + forgotten, 'red'],
+    ['Time cost — 2hrs bag check & claim', '$' + airportTime, 'red'],
+    ['Stress buffer & misc', '$' + stress, 'red'],
+  ].map(([n,v,c]) => `
+    <div class="cost-item">
+      <div class="cost-item-name">${n}</div>
+      <div class="cost-item-val ${c}">${v}</div>
+    </div>`).join('');
+
+  // Render BagFree items
+  document.getElementById('lp-bf-items').innerHTML = [
+    ['Checked bag fee', '$0', 'green'],
+    ['Hotel laundry', '$0', 'green'],
+    ['Forgotten items', '$0', 'green'],
+    ['Time cost', '$0', 'green'],
+    [kit.name + ' · Valet by Nuor', '$' + kit.price, 'gold'],
+    ['Local curator curation', '$' + curator, 'gold'],
+    ['Hotel delivery fee', '$' + delivery, 'gold'],
+  ].map(([n,v,c]) => `
+    <div class="cost-item">
+      <div class="cost-item-name">${n}</div>
+      <div class="cost-item-val ${c}">${v}</div>
+    </div>`).join('');
+
+  document.getElementById('lp-trad-total').textContent = '$' + tradTotal;
+  document.getElementById('lp-bf-total').textContent = '$' + bfTotal;
+  document.getElementById('lp-saving').textContent = saving > 0 ? '$' + saving : '–';
+}
+// Run on load
+document.addEventListener('DOMContentLoaded', lpCalc);
+</script>
+
 <section class="ffsec" id="all-features">
   <div class="ff-head reveal"><div class="eyebrow">Everything inside</div><h2 class="big-title" style="font-size:clamp(2.2rem,4vw,3.5rem)">12 features. One lounge.</h2></div>
   <div class="ff-grid">
