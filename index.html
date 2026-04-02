@@ -299,7 +299,7 @@ function Nav({page, setPage}) {
           {[['home','Destinations'],['vendors','Marketplace'],['supplier','Suppliers']].map(([p,l])=>(
             <span key={p} onClick={()=>setPage(p)} style={{fontSize:'0.72rem',color:page===p?'var(--gold)':'rgba(253,252,248,0.85)',letterSpacing:'1.5px',textTransform:'uppercase',cursor:'pointer',transition:'color 0.2s',fontWeight:400}}>{l}</span>
           ))}
-          <span onClick={(e)=>{e.stopPropagation();window.open('/departure-lounge','_self');}}
+          <span onClick={(e)=>{e.stopPropagation();window.open('/departure-lounge-landing','_self');}}
             style={{fontSize:'0.68rem',color:'var(--gold)',letterSpacing:'1.5px',textTransform:'uppercase',border:'1px solid var(--border-hi)',padding:'0.3rem 0.85rem',display:'inline-flex',alignItems:'center',gap:'0.4rem',cursor:'pointer'}}>
             <span style={{width:5,height:5,borderRadius:'50%',background:'var(--gold)',display:'inline-block'}}/>Departure Lounge
           </span>
@@ -321,7 +321,7 @@ function Nav({page, setPage}) {
               {l}
             </span>
           ))}
-          <span onClick={()=>{window.open('/departure-lounge','_self');setMenuOpen(false);}}
+          <span onClick={()=>{window.open('/departure-lounge-landing','_self');setMenuOpen(false);}}
             style={{fontSize:'0.8rem',color:'var(--gold)',letterSpacing:'2px',textTransform:'uppercase',border:'1px solid var(--border-hi)',padding:'0.65rem 1.5rem',cursor:'pointer',display:'flex',alignItems:'center',gap:'0.5rem',marginTop:'0.5rem'}}>
             <span style={{width:6,height:6,borderRadius:'50%',background:'var(--gold)',display:'inline-block'}}/>Departure Lounge
           </span>
@@ -349,7 +349,7 @@ function Home({setPage}) {
           <button onClick={()=>setPage('vendors')} style={{background:'var(--gold)',color:'var(--noir)',padding:'1rem 2.5rem',border:'none',fontSize:'0.72rem',fontWeight:500,letterSpacing:'3px',textTransform:'uppercase'}}>
             Shop the Marketplace
           </button>
-          <button onClick={()=>window.open('/departure-lounge','_self')} style={{background:'transparent',color:'var(--white)',padding:'1rem 2rem',border:'1.5px solid rgba(253,252,248,0.4)',fontSize:'0.72rem',letterSpacing:'2.5px',textTransform:'uppercase'}}>
+          <button onClick={()=>window.open('/departure-lounge-landing','_self')} style={{background:'transparent',color:'var(--white)',padding:'1rem 2rem',border:'1.5px solid rgba(253,252,248,0.4)',fontSize:'0.72rem',letterSpacing:'2.5px',textTransform:'uppercase'}}>
             Enter the Lounge ↗
           </button>
         </div>
@@ -629,7 +629,7 @@ function Home({setPage}) {
         {/* CTA row */}
         <div style={{padding:'3rem',textAlign:'center',display:'flex',flexDirection:'column',alignItems:'center',gap:'1.25rem'}}>
           <button
-            onClick={()=>window.open('/departure-lounge','_self')}
+            onClick={()=>window.open('/departure-lounge-landing','_self')}
             style={{background:'var(--gold)',color:'var(--noir)',padding:'1rem 3rem',border:'none',fontSize:'0.72rem',fontWeight:500,letterSpacing:'3px',textTransform:'uppercase',cursor:'pointer'}}>
             Enter the Departure Lounge ↗
           </button>
@@ -649,7 +649,7 @@ function Home({setPage}) {
         <p style={{fontSize:'0.9rem',color:'var(--mist)',marginBottom:'3rem',fontWeight:300,position:'relative'}}>Same-day emergency delivery in Tampa & Orlando. Hours, not days.</p>
         <div style={{display:'flex',gap:'1rem',justifyContent:'center',flexWrap:'wrap',position:'relative'}}>
           <button onClick={()=>setPage('vendors')} style={{background:'var(--gold)',color:'var(--noir)',padding:'1rem 2.5rem',border:'none',fontSize:'0.72rem',fontWeight:500,letterSpacing:'3px',textTransform:'uppercase'}}>Shop Emergency Kits</button>
-          <button onClick={()=>window.open('/departure-lounge','_self')} style={{background:'transparent',color:'var(--mist)',padding:'1rem 2rem',border:'1px solid var(--mist-low)',fontSize:'0.72rem',letterSpacing:'2.5px',textTransform:'uppercase'}}>Enter the Lounge ↗</button>
+          <button onClick={()=>window.open('/departure-lounge-landing','_self')} style={{background:'transparent',color:'var(--mist)',padding:'1rem 2rem',border:'1px solid var(--mist-low)',fontSize:'0.72rem',letterSpacing:'2.5px',textTransform:'uppercase'}}>Enter the Lounge ↗</button>
         </div>
       </div>
     </div>
@@ -1251,7 +1251,7 @@ function LoungeTileModal({feature, onClose}) {
             ))}
           </div>
           <button
-            onClick={()=>window.open('/departure-lounge','_self')}
+            onClick={()=>window.open('/departure-lounge-landing','_self')}
             style={{width:'100%',background:'var(--gold)',color:'var(--noir)',padding:'0.85rem',border:'none',fontSize:'0.68rem',fontWeight:500,letterSpacing:'3px',textTransform:'uppercase',cursor:'pointer',fontFamily:'var(--ff-body)'}}>
             Enter the Departure Lounge ↗
           </button>
