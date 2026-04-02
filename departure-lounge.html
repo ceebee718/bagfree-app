@@ -196,7 +196,7 @@ button,input,select,textarea{font-family:var(--ff-body)}
 .ai-msg{display:flex;flex-direction:column;gap:0.35rem}
 .ai-msg.user .ai-bubble{background:rgba(201,169,110,0.1);border:1px solid rgba(201,169,110,0.25);align-self:flex-end;color:var(--white);max-width:80%}
 .ai-msg.assistant .ai-bubble{background:var(--noir3);border:1px solid var(--border);align-self:flex-start;color:var(--mist);max-width:100%;width:100%}
-.ai-bubble{padding:1.25rem 1.5rem;font-size:1rem;line-height:2;border-radius:2px}
+.ai-bubble{padding:1.25rem 1.5rem;font-size:1.05rem;line-height:2.05;border-radius:2px}
 .ai-bubble b,.ai-bubble strong{color:var(--gold);font-weight:500}
 .ai-cards{display:grid;grid-template-columns:1fr 1fr 1fr;gap:8px;margin-top:0.85rem}
 .ai-card{background:var(--noir2);border:1px solid var(--border);padding:0.85rem}
@@ -1133,6 +1133,7 @@ window._supabaseLaunchPatch = async function() {
         <div class="ai-brain-title">Plan your <span>perfect</span> trip</div>
       </div>
       <button onclick="closeAIBrain()" style="background:transparent;border:none;color:rgba(201,169,110,0.5);font-size:1.3rem;cursor:pointer;transition:color 0.2s;padding:4px" onmouseover="this.style.color='var(--gold)'" onmouseout="this.style.color='rgba(201,169,110,0.5)'">✕</button>
+      <button onclick="resetAIBrain()" style="background:transparent;border:1px solid rgba(201,169,110,0.25);color:rgba(201,169,110,0.6);padding:4px 12px;font-size:0.55rem;letter-spacing:2px;text-transform:uppercase;cursor:pointer;font-family:var(--ff-body);transition:all 0.2s" onmouseover="this.style.borderColor='rgba(201,169,110,0.6)';this.style.color='var(--gold)'" onmouseout="this.style.borderColor='rgba(201,169,110,0.25)';this.style.color='rgba(201,169,110,0.6)'">↺ Reset</button>
     </div>
 
     <div class="ai-quick-prompts" id="aiQuickPrompts">
@@ -2748,6 +2749,152 @@ function updateFlightMarkersOnMap(flights) {
   });
 }
 
+// ── AI PLAN → MAP INTEGRATION ─────────────────────────────────────────────
+// Extended landmark coords for common travel destinations
+const LANDMARK_COORDS = {
+  // Rome
+  'Vatican Museums':[41.906,12.454],'Vatican':[41.906,12.454],
+  'Colosseum':[41.890,12.492],'Colosseo':[41.890,12.492],
+  'Trastevere':[41.889,12.469],'Pantheon':[41.899,12.477],
+  'Borghese':[41.914,12.492],'Trevi':[41.901,12.484],
+  'San Clemente':[41.890,12.498],'Caracalla':[41.878,12.489],
+  'Gianicolo':[41.893,12.463],'Testaccio':[41.878,12.477],
+  // Paris
+  'Eiffel Tower':[48.858,2.295],'Louvre':[48.860,2.337],
+  'Marais':[48.855,2.356],'Montmartre':[48.886,2.344],
+  'Musée d\'Orsay':[48.860,2.326],'Versailles':[48.805,2.120],
+  'Notre Dame':[48.853,2.350],'Saint-Germain':[48.854,2.333],
+  // Bali
+  'Ubud':[-8.506,115.262],'Seminyak':[-8.694,115.166],
+  'Tirta Empul':[-8.415,115.315],'Mount Batur':[-8.242,115.375],
+  'Tanah Lot':[-8.621,115.086],'Nusa Dua':[-8.797,115.230],
+  'Yoga Barn':[-8.508,115.263],'Locavore':[-8.507,115.262],
+  'Karsa Spa':[-8.466,115.257],'Pyramids of Chi':[-8.465,115.258],
+  'Gunung Kawi':[-8.388,115.298],'Toya Devasya':[-8.243,115.374],
+  // Tokyo
+  'Shinjuku':[35.690,139.700],'Shibuya':[35.658,139.701],
+  'Harajuku':[35.670,139.703],'Asakusa':[35.715,139.796],
+  'Tsukiji':[35.666,139.770],'Roppongi':[35.663,139.732],
+  'Ginza':[35.671,139.764],'Akihabara':[35.700,139.774],
+  // London
+  'Westminster':[51.499,-0.125],'Covent Garden':[51.512,-0.122],
+  'Soho':[51.513,-0.131],'Mayfair':[51.511,-0.146],
+  'Shoreditch':[51.523,-0.075],'Chelsea':[51.487,-0.170],
+  // Positano / Amalfi
+  'Positano':[40.628,14.485],'Amalfi':[40.634,14.602],
+  'Ravello':[40.647,14.612],'Capri':[40.550,14.242],
+  // Barcelona
+  'Sagrada Familia':[41.404,2.175],'Gothic Quarter':[41.383,2.176],
+  'Gracia':[41.403,2.157],'El Born':[41.386,2.181],
+};
+
+function plotAIPlanOnMap(responseText, destination) {
+  if (!_map) return;
+
+  // Clear previous AI plan markers
+  _mapLayers.routes.clearLayers();
+
+  const coords = [];
+  const markers = [];
+
+  // 1. Find destination city center
+  const destKey = Object.keys(CITY_COORDS).find(k =>
+    destination.toLowerCase().includes(k.toLowerCase()) ||
+    k.toLowerCase().includes(destination.toLowerCase().split(',')[0].trim().toLowerCase())
+  );
+  if (destKey) {
+    coords.push(CITY_COORDS[destKey]);
+    markers.push({ coord: CITY_COORDS[destKey], label: destKey, emoji: '🏨', primary: true });
+  }
+
+  // 2. Extract bold terms (**place**) from AI response
+  const boldTerms = [...responseText.matchAll(/\*\*([\w\s'àâäéèêëîïôùûüç&-]{3,40})\*\*/g)]
+    .map(m => m[1].trim());
+
+  // 3. Match bold terms against landmark coords
+  boldTerms.forEach(term => {
+    // Check landmark coords
+    const lKey = Object.keys(LANDMARK_COORDS).find(k =>
+      term.toLowerCase().includes(k.toLowerCase()) || k.toLowerCase().includes(term.toLowerCase())
+    );
+    if (lKey && LANDMARK_COORDS[lKey]) {
+      const coord = LANDMARK_COORDS[lKey];
+      if (!markers.some(m => Math.abs(m.coord[0]-coord[0]) < 0.005)) {
+        coords.push(coord);
+        markers.push({ coord, label: term, emoji: getCatEmoji(term), primary: false });
+      }
+      return;
+    }
+    // Check city coords
+    const cKey = Object.keys(CITY_COORDS).find(k =>
+      term.toLowerCase() === k.toLowerCase()
+    );
+    if (cKey) {
+      const coord = CITY_COORDS[cKey];
+      if (!markers.some(m => Math.abs(m.coord[0]-coord[0]) < 0.01)) {
+        coords.push(coord);
+        markers.push({ coord, label: term, emoji: '📍', primary: false });
+      }
+    }
+  });
+
+  if (markers.length === 0) return;
+
+  // 4. Plot route line through all points
+  if (coords.length >= 2) {
+    L.polyline(coords, {
+      pane: 'routes', color: '#C9A96E', weight: 2,
+      dashArray: '6 4', opacity: 0.7
+    }).addTo(_mapLayers.routes);
+  }
+
+  // 5. Add markers
+  markers.forEach((m, i) => {
+    const size = m.primary ? 32 : 26;
+    const icon = L.divIcon({
+      className: '',
+      html: `<div style="
+        width:${size}px;height:${size}px;border-radius:50%;
+        background:${m.primary ? 'rgba(201,169,110,0.25)' : 'rgba(10,10,8,0.85)'};
+        border:${m.primary ? '2px solid #C9A96E' : '1.5px solid rgba(201,169,110,0.6)'};
+        display:flex;align-items:center;justify-content:center;
+        font-size:${m.primary ? 14 : 11}px;
+        box-shadow:0 2px 8px rgba(0,0,0,0.5);
+        cursor:pointer;transition:transform 0.15s;
+        animation:${m.primary ? 'leaflet-pulse 2s ease-in-out infinite' : 'none'}
+      " onmouseover="this.style.transform='scale(1.25)'" onmouseout="this.style.transform='scale(1)'">${m.emoji}</div>`,
+      iconSize: [size, size],
+      iconAnchor: [size/2, size/2],
+    });
+    L.marker(m.coord, { pane: 'markers', icon })
+      .addTo(_mapLayers.routes)
+      .bindTooltip(`<strong style="color:#C9A96E">${m.label}</strong>`, {
+        direction: 'top', className: 'leaflet-tooltip'
+      });
+  });
+
+  // 6. Fit map to show all markers
+  if (coords.length > 0) {
+    const bounds = L.latLngBounds(coords);
+    _map.fitBounds(bounds, { padding: [60, 60], maxZoom: 13 });
+    document.getElementById('mapTripLabel').textContent =
+      `AI Plan · ${destination} · ${markers.length} stops`;
+  }
+}
+
+function getCatEmoji(term) {
+  const t = term.toLowerCase();
+  if (/museum|gallery|basilica|church|temple|monument|ruins|palace/.test(t)) return '🏛️';
+  if (/restaurant|dining|bistro|café|cafe|bar|food|lunch|dinner|breakfast/.test(t)) return '🍽️';
+  if (/spa|yoga|wellness|healing|massage|retreat/.test(t)) return '🧘';
+  if (/hotel|resort|villa|lodge|stay/.test(t)) return '🏨';
+  if (/beach|coast|island|bay|sea/.test(t)) return '🏖️';
+  if (/market|shop|boutique/.test(t)) return '🛍️';
+  if (/mountain|trek|hike|summit|volcano/.test(t)) return '⛰️';
+  return '✦';
+}
+window.plotAIPlanOnMap = plotAIPlanOnMap;
+
 function plotTripOnMap(trip) {
   if (!_map) return;
   _mapLayers.routes.clearLayers();
@@ -3239,10 +3386,10 @@ function aiRenderResponse(raw) {
   let html = raw
     .replace(/\*\*(.*?)\*\*/g, '<strong>$1</strong>')
     .replace(/\*(.*?)\*/g, '<em>$1</em>')
-    .replace(/^### (.*)/gm, '<div style="font-size:0.78rem;letter-spacing:2px;text-transform:uppercase;color:var(--gold);margin:1.4rem 0 0.7rem;padding-top:1rem;border-top:1px solid var(--border)">$1</div>')
-    .replace(/^## (.*)/gm, '<div style="font-family:var(--ff-display);font-size:1.4rem;font-weight:300;color:var(--white);margin:0.6rem 0">$1</div>')
-    .replace(/^- (.*)/gm, '<div style="display:flex;gap:8px;padding:5px 0;font-size:1rem;line-height:1.7"><span style="color:var(--gold);font-size:0.7rem;margin-top:5px;flex-shrink:0">✦</span><span>$1</span></div>')
-    .replace(/^\d+\. (.*)/gm, '<div style="display:flex;gap:8px;padding:5px 0;font-size:1rem;line-height:1.7;border-bottom:1px solid rgba(201,169,110,0.08)"><span style="color:var(--gold);font-size:0.7rem;margin-top:5px;flex-shrink:0">→</span><span>$1</span></div>')
+    .replace(/^### (.*)/gm, '<div style="font-size:0.82rem;letter-spacing:2px;text-transform:uppercase;color:var(--gold);margin:1.4rem 0 0.7rem;padding-top:1rem;border-top:1px solid var(--border)">$1</div>')
+    .replace(/^## (.*)/gm, '<div style="font-family:var(--ff-display);font-size:1.5rem;font-weight:300;color:var(--white);margin:0.6rem 0">$1</div>')
+    .replace(/^- (.*)/gm, '<div style="display:flex;gap:8px;padding:5px 0;font-size:1.05rem;line-height:1.75"><span style="color:var(--gold);font-size:0.7rem;margin-top:6px;flex-shrink:0">✦</span><span>$1</span></div>')
+    .replace(/^\d+\. (.*)/gm, '<div style="display:flex;gap:8px;padding:5px 0;font-size:1.05rem;line-height:1.75;border-bottom:1px solid rgba(201,169,110,0.08)"><span style="color:var(--gold);font-size:0.7rem;margin-top:6px;flex-shrink:0">→</span><span>$1</span></div>')
     .replace(/\n\n/g, '<br><br>')
     .replace(/\n/g, '');
   return html;
@@ -3324,16 +3471,23 @@ Keep tone: refined, knowledgeable, like a well-traveled concierge friend. Bold k
     if (bubble) {
       bubble.innerHTML = aiRenderResponse(reply);
 
+      // Plot landmarks on map from the response
+      const dest = document.getElementById('aiBrainQuickInput')?.value ||
+                   _aiBrainHistory.find(m=>m.role==='user')?.content || '';
+      const destMatch = reply.match(/## ([\w\s,&'-]+) —/) ||
+                        reply.match(/\*\*([\w\s,&'-]+)\*\* —/);
+      const resolvedDest = destMatch ? destMatch[1].trim() : dest;
+      if (resolvedDest) setTimeout(() => plotAIPlanOnMap(reply, resolvedDest), 400);
+
       // Auto-trigger map route if destination detected
-      const destMatch = reply.match(/\*\*([\w\s]+)\*\* —/) || reply.match(/## ([\w\s,]+) —/);
-      if (destMatch) {
-        const city = destMatch[1].trim().toLowerCase();
+      const routeMatch = reply.match(/\*\*([\w\s]+)\*\* —/) || reply.match(/## ([\w\s,]+) —/);
+      if (routeMatch) {
+        const city = routeMatch[1].trim().toLowerCase();
         let routeKey = 'med';
         if (['miami','nassau','caribbean','barbados','grenada','st vincent'].some(c=>city.includes(c))) routeKey='caribbean';
         else if (['tokyo','bali','japan','asia','singapore','thailand'].some(c=>city.includes(c))) routeKey='asia';
         else if (['london','paris','amsterdam','berlin'].some(c=>city.includes(c))) routeKey='europe';
         else if (['rome','italy','greece','amalfi','santorini'].some(c=>city.includes(c))) routeKey='med';
-        setTimeout(() => plotRoute(routeKey), 400);
       }
     }
 
@@ -3348,6 +3502,22 @@ Keep tone: refined, knowledgeable, like a well-traveled concierge friend. Bold k
   sendBtn.disabled = false;
   sendBtn.textContent = 'Send ✦';
 }
+
+function resetAIBrain() {
+  _aiBrainHistory = [];
+  _aiBrainStreaming = false;
+  const history = document.getElementById('aiChatHistory');
+  history.innerHTML = `
+    <div style="text-align:center;padding:2rem 1rem;opacity:0.4">
+      <div style="font-size:1.5rem;margin-bottom:0.5rem">✦</div>
+      <div style="font-size:1rem;color:var(--mist);line-height:1.8">Describe your trip — destination, vibe, duration, budget.<br>I'll build your itinerary, packing list, and map route.</div>
+    </div>`;
+  document.getElementById('aiQuickPrompts').style.display = 'flex';
+  document.getElementById('aiBrainInput').value = '';
+  document.getElementById('aiBrainSendBtn').disabled = false;
+  document.getElementById('aiBrainSendBtn').textContent = 'Send ✦';
+}
+window.resetAIBrain = resetAIBrain;
 
 window.openAIBrain = openAIBrain;
 window.closeAIBrain = closeAIBrain;
