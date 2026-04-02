@@ -2091,25 +2091,25 @@ function _launchDashboardCore(){
   updateNearMeBtn();
   initCustomizePanels();
   initLeftCustomizePanels();
-  // Always start with all panels hidden — user picks what they want
+  // Restore saved panel state, or hide all on first visit
+  const savedPanels = JSON.parse(localStorage.getItem('bf_panels') || 'null');
+  const savedLeftPanels = JSON.parse(localStorage.getItem('bf_left_panels') || 'null');
   LEFT_PANELS.forEach(p => {
     const el = document.getElementById(p.elId);
-    if (el) el.style.display = 'none';
+    if (el) el.style.display = (savedLeftPanels && savedLeftPanels.includes(p.id)) ? '' : 'none';
   });
   PANELS.forEach(p => {
     const el = document.getElementById(p.id);
-    if (el) el.style.display = 'none';
+    if (el) el.style.display = (savedPanels && savedPanels.includes(p.id)) ? 'block' : 'none';
+    if (p.id === 'panelSync' && savedPanels && savedPanels.includes(p.id)) buildBagfreeSyncPanel();
   });
-  localStorage.removeItem('bf_panels');
-  localStorage.removeItem('bf_left_panels');
   injectHummingbirdAvatar();
   // Show promo banner after a short delay
   setTimeout(showPromoBanner, 2500);
-  // Always hide all panels until user selects them (clear on every load)
-  localStorage.removeItem('bf_panels');
-  localStorage.removeItem('bf_left_panels');
-  // Auto-launch tour every time (always shows on dashboard load)
-  setTimeout(() => { startTour(); }, 1600);
+  // Auto-launch tour on first ever visit only
+  if (!localStorage.getItem('bf_tour_done')) {
+    setTimeout(() => { startTour(); localStorage.setItem('bf_tour_done','1'); }, 1600);
+  }
 }
 
 function getAvatar(){
@@ -5292,7 +5292,7 @@ function initCustomizePanels() {
         <span style="font-size:0.72rem;color:var(--mist)">${p.label}</span>
       </label>`;
   }).join('');
-  applyPanels(true);
+  // Don't call applyPanels here — display state is handled by _launchDashboardCore
 }
 
 function applyPanels(init) {
