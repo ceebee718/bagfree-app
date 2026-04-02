@@ -627,7 +627,7 @@ window.openProfileModal = function() {
     <div class="profile-section-title">Personal details</div>
     <input class="auth-input" id="pName" placeholder="First name" value="${p.name||''}">
     <input class="auth-input" id="pCity" placeholder="Home city" value="${p.homeCity||''}">
-    <input class="auth-input" id="pArtists" placeholder="Favourite artists" value="${p.artists||''}">
+    <input class="auth-input" id="pArtists" placeholder="Favorite artists" value="${p.artists||''}">
     <div class="profile-section-title">Travel style</div>
     <div class="pref-grid" id="pStyleGrid">
       ${STYLE_OPTS.map(s=>`<div class="pref-opt${p.travelStyle===s?' selected':''}" onclick="togglePref(this,'style')" data-val="${s}">${s}</div>`).join('')}
@@ -1078,7 +1078,7 @@ window._supabaseLaunchPatch = async function() {
     <div class="sib-left">
       <div class="sib-left-header">
         <div style="font-size:0.5rem;letter-spacing:3px;text-transform:uppercase;color:var(--gold);margin-bottom:0.35rem">⊞ Smart Itinerary Builder</div>
-        <div style="font-family:var(--ff-display);font-size:1.2rem;font-weight:300;color:var(--white)">Trip Command Centre</div>
+        <div style="font-family:var(--ff-display);font-size:1.2rem;font-weight:300;color:var(--white)">Trip Command Center</div>
       </div>
       <div class="sib-left-body">
         <div class="sib-field">
@@ -4269,10 +4269,10 @@ Rules:
 function sibFallbackItinerary(dest, numDays, hotel) {
   const base = [
     {day:1,label:'Day 1 — Arrival',sub:'Settle in & explore',cards:[
-      {id:'f1a',time:'3:00 PM',title:`Check-in at ${hotel}`,category:'Hotel',duration:'30 min',neighborhood:'City Centre',travel:'From airport',booked:false,note:'Request high floor for city views'},
+      {id:'f1a',time:'3:00 PM',title:`Check-in at ${hotel}`,category:'Hotel',duration:'30 min',neighborhood:'City Center',travel:'From airport',booked:false,note:'Request high floor for city views'},
       {id:'f1b',time:'4:30 PM',title:'Neighbourhood stroll',category:'Leisure',duration:'1 hr',neighborhood:'Old Town',travel:'10 min walk',booked:false,note:''},
       {id:'f1c',time:'6:30 PM',title:'Dinner at local bistro',category:'Dining',duration:'1.5 hrs',neighborhood:'Old Town',travel:'5 min walk',booked:true,note:'Book ahead — fills fast'},
-      {id:'f1d',time:'8:30 PM',title:'Evening rooftop drink',category:'Leisure',duration:'1 hr',neighborhood:'City Centre',travel:'15 min walk',booked:false,note:''},
+      {id:'f1d',time:'8:30 PM',title:'Evening rooftop drink',category:'Leisure',duration:'1 hr',neighborhood:'City Center',travel:'15 min walk',booked:false,note:''},
     ]},
     {day:2,label:'Day 2 — Culture & Dining',sub:'Deep dive into local life',cards:[
       {id:'f2a',time:'9:00 AM',title:'Hotel breakfast',category:'Dining',duration:'45 min',neighborhood:'Hotel',travel:'At hotel',booked:false,note:''},
@@ -4283,7 +4283,7 @@ function sibFallbackItinerary(dest, numDays, hotel) {
     ]},
     {day:3,label:`Day ${numDays} — Departure`,sub:'Final moments & airport',cards:[
       {id:'f3a',time:'8:00 AM',title:'Breakfast & checkout',category:'Hotel',duration:'1 hr',neighborhood:'Hotel',travel:'At hotel',booked:false,note:'Request late checkout if possible'},
-      {id:'f3b',time:'10:00 AM',title:'Final neighbourhood walk',category:'Leisure',duration:'1 hr',neighborhood:'City Centre',travel:'On foot',booked:false,note:'Pick up last-minute gifts'},
+      {id:'f3b',time:'10:00 AM',title:'Final neighborhood walk',category:'Leisure',duration:'1 hr',neighborhood:'City Center',travel:'On foot',booked:false,note:'Pick up last-minute gifts'},
       {id:'f3c',time:'12:00 PM',title:'Airport transfer',category:'Transport',duration:'45 min',neighborhood:'—',travel:'From hotel',booked:false,note:'Allow 3hrs before international flights'},
     ]},
   ];
@@ -4488,7 +4488,7 @@ const CURATORS_DATA = [
   { id:'c3', name:'Amalfi Atelier', city:'Rome', country:'Italy', type:'Personal Shopping · Delivery', tags:['Coastal','Linen','Italian'], price:'From $320', badge:'featured', tab:['browse','stylists'], desc:'Italian Riviera linen sets and coastal luxury — sourced from local artisans, in your room by noon.' },
   { id:'c4', name:'Seminyak Style Co.', city:'Bali', country:'Indonesia', type:'Styling Session · Wardrobe Delivery', tags:['Boho','Resort','Wellness'], price:'From $120', badge:'new', tab:['browse','stylists','rentals'], desc:'Resort-ready Bali wardrobes curated for the wellness traveler. Batik, linen, and handwoven pieces.' },
   { id:'c5', name:'The London Edit', city:'London', country:'United Kingdom', type:'Personal Shopping · Styling', tags:['Classic','British','Luxury'], price:'From $350', badge:'featured', tab:['browse','stylists'], desc:'London luxury personal shopping with a Savile Row sensibility. Delivered anywhere in Zone 1.' },
-  { id:'c6', name:'Caribbean Colour Co.', city:'Caribbean', country:'Regional', type:'Cultural Kit · Outfit Rental', tags:['Vibrant','Island','Resort'], price:'From $95', badge:'new', tab:['browse','kits','rentals'], desc:'Island-inspired looks for the Caribbean traveler — bright linen, handmade accessories, local designers.' },
+  { id:'c6', name:'Caribbean Color Co.', city:'Caribbean', country:'Regional', type:'Cultural Kit · Outfit Rental', tags:['Vibrant','Island','Resort'], price:'From $95', badge:'new', tab:['browse','kits','rentals'], desc:'Island-inspired looks for the Caribbean traveler — bright linen, handmade accessories, local designers.' },
 ];
 
 let _curatorFilter = 'all';
@@ -4680,8 +4680,8 @@ window.toggleVChip = toggleVChip;
 const TOUR_STEPS = [
   {
     sel: '.dl-header',
-    title: 'Your Command Centre',
-    body: 'The header shows your profile, travel style, and gives access to Cultural Immersion settings. Everything here is personalised to you.',
+    title: 'Your Command Center',
+    body: 'The header shows your profile, travel style, and gives access to Cultural Immersion settings. Everything here is personalized to you.',
     pos: 'bottom', wide: true
   },
   {
