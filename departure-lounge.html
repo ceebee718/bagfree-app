@@ -347,6 +347,59 @@ button,input,select,textarea{font-family:var(--ff-body)}
 .sync-ai-loading span{width:5px;height:5px;border-radius:50%;background:var(--gold);animation:aiTyping 1.2s ease-in-out infinite}
 .sync-ai-loading span:nth-child(2){animation-delay:0.2s}
 .sync-ai-loading span:nth-child(3){animation-delay:0.4s}
+
+/* ── SMART ITINERARY BUILDER ── */
+#itineraryBuilderModal{display:none;position:fixed;inset:0;background:rgba(0,0,0,0.94);z-index:900;overflow:hidden}
+.sib-wrap{display:grid;grid-template-columns:280px 1fr;height:100vh;overflow:hidden}
+.sib-left{background:var(--noir2);border-right:1px solid var(--border);display:flex;flex-direction:column;overflow:hidden}
+.sib-left-header{padding:1.25rem 1.5rem;border-bottom:1px solid var(--border);flex-shrink:0}
+.sib-left-body{padding:1.25rem 1.5rem;overflow-y:auto;flex:1}
+.sib-field{margin-bottom:0.85rem}
+.sib-field label{display:block;font-size:0.5rem;letter-spacing:2.5px;text-transform:uppercase;color:var(--gold);margin-bottom:0.35rem}
+.sib-input{width:100%;background:var(--noir3);border:1px solid var(--border);color:var(--white);padding:0.5rem 0.75rem;font-size:0.75rem;outline:none;font-family:var(--ff-body);transition:border-color 0.2s}
+.sib-input:focus{border-color:rgba(201,169,110,0.4)}
+.sib-input::placeholder{color:rgba(253,252,248,0.28)}
+.sib-select{width:100%;background:var(--noir3);border:1px solid var(--border);color:var(--white);padding:0.5rem 0.75rem;font-size:0.75rem;outline:none;font-family:var(--ff-body)}
+.sib-pace-row{display:grid;grid-template-columns:1fr 1fr 1fr;gap:5px}
+.sib-pace-opt{border:1px solid var(--border);padding:0.45rem 0.25rem;cursor:pointer;font-size:0.6rem;letter-spacing:1px;text-transform:uppercase;text-align:center;color:var(--mist);transition:all 0.2s;background:transparent;font-family:var(--ff-body)}
+.sib-pace-opt:hover{border-color:rgba(201,169,110,0.35);color:var(--white)}
+.sib-pace-opt.on{border-color:var(--gold);color:var(--gold);background:rgba(201,169,110,0.08)}
+.sib-build-btn{width:100%;background:linear-gradient(135deg,var(--gold),#b8893e);color:var(--noir);border:none;padding:0.8rem;font-size:0.65rem;font-weight:600;letter-spacing:2.5px;text-transform:uppercase;cursor:pointer;font-family:var(--ff-body);margin-top:1rem;transition:opacity 0.2s}
+.sib-build-btn:hover{opacity:0.88}
+.sib-build-btn:disabled{opacity:0.4;cursor:not-allowed}
+.sib-center{display:flex;flex-direction:column;background:var(--noir);overflow:hidden}
+.sib-center-header{background:var(--noir2);border-bottom:1px solid var(--border);padding:0 1.5rem;height:52px;display:flex;align-items:center;justify-content:space-between;flex-shrink:0}
+.sib-timeline{flex:1;overflow-y:auto;padding:1.5rem}
+.sib-day{margin-bottom:2rem}
+.sib-day-header{display:flex;align-items:center;gap:0.75rem;margin-bottom:0.85rem}
+.sib-day-label{font-family:var(--ff-display);font-size:1.1rem;font-weight:300;color:var(--white)}
+.sib-day-sub{font-size:0.55rem;letter-spacing:2px;text-transform:uppercase;color:var(--mist)}
+.sib-day-line{flex:1;height:1px;background:var(--border)}
+.sib-cards{display:flex;flex-direction:column;gap:6px;min-height:40px;transition:all 0.2s}
+.sib-card{display:flex;align-items:stretch;border:1px solid var(--border);background:var(--noir2);cursor:grab;transition:border-color 0.2s,background 0.2s;position:relative;user-select:none}
+.sib-card:active{cursor:grabbing;opacity:0.6}
+.sib-card.conflict{border-color:var(--amber)!important;background:rgba(239,159,39,0.06)}
+.sib-card-accent{width:3px;flex-shrink:0}
+.sib-card-body{flex:1;padding:0.65rem 0.85rem}
+.sib-card-time{font-size:0.65rem;color:var(--gold);font-weight:500;margin-bottom:2px}
+.sib-card-travel{font-size:0.55rem;color:rgba(253,252,248,0.3);margin-left:8px}
+.sib-card-title{font-size:0.82rem;color:var(--white);margin-bottom:3px}
+.sib-card-meta{display:flex;gap:6px;flex-wrap:wrap;margin-top:4px}
+.sib-card-tag{font-size:0.48rem;letter-spacing:1px;text-transform:uppercase;padding:1px 6px;border:1px solid var(--border);color:rgba(253,252,248,0.4)}
+.sib-card-tag.booked{border-color:rgba(93,202,165,0.4);color:var(--green)}
+.sib-card-tag.warn{border-color:rgba(239,159,39,0.4);color:var(--amber)}
+.sib-card-actions{display:flex;flex-direction:column;gap:2px;padding:0.5rem 0.6rem;border-left:1px solid var(--border);justify-content:center}
+.sib-card-btn{background:transparent;border:none;color:rgba(253,252,248,0.25);font-size:0.8rem;cursor:pointer;padding:3px;line-height:1;transition:color 0.2s}
+.sib-card-btn:hover{color:var(--gold)}
+.sib-add-row{border:1px dashed rgba(201,169,110,0.18);padding:7px;text-align:center;font-size:0.52rem;color:rgba(253,252,248,0.2);letter-spacing:1.5px;text-transform:uppercase;cursor:pointer;transition:all 0.2s;margin-top:4px}
+.sib-add-row:hover{border-color:rgba(201,169,110,0.45);color:var(--gold);background:rgba(201,169,110,0.04)}
+.sib-conflict-bar{background:rgba(239,159,39,0.1);border:1px solid rgba(239,159,39,0.3);padding:0.55rem 1rem;margin-bottom:0.85rem;font-size:0.67rem;color:var(--amber);display:flex;align-items:center;gap:0.6rem}
+.sib-empty{text-align:center;padding:4rem 2rem;opacity:0.35}
+.sib-loading{text-align:center;padding:3rem}
+.sib-dots{display:flex;gap:6px;justify-content:center;margin-bottom:0.75rem}
+.sib-dots span{width:8px;height:8px;border-radius:50%;background:var(--gold);animation:aiTyping 1.2s ease-in-out infinite}
+.sib-dots span:nth-child(2){animation-delay:0.2s}
+.sib-dots span:nth-child(3){animation-delay:0.4s}
 </style>
 <script src="https://unpkg.com/leaflet@1.9.4/dist/leaflet.js"></script>
 <script type="module">
@@ -903,6 +956,7 @@ window._supabaseLaunchPatch = async function() {
         <button class="layer-btn active" onclick="toggleLayer('collective',this)"><span class="dot" style="background:var(--green)"></span>Group Trips</button>
         <span style="width:1px;height:18px;background:var(--border);flex-shrink:0;margin:0 2px"></span>
         <button class="layer-btn" onclick="openCuratorMarket()" style="border-color:rgba(201,169,110,0.4);color:var(--gold)"><span style="font-size:0.7rem">✦</span> Curators</button>
+        <button class="layer-btn" onclick="openItineraryBuilder()" style="border-color:rgba(93,202,165,0.5);color:var(--green)"><span style="font-size:0.7rem">⊞</span> Itinerary</button>
       </div>
 
       <div class="map-svg-wrap">
@@ -979,6 +1033,97 @@ window._supabaseLaunchPatch = async function() {
     </div>
   </div>
 </div>
+<!-- ── SMART ITINERARY BUILDER MODAL ── -->
+<div id="itineraryBuilderModal">
+  <div class="sib-wrap">
+
+    <!-- LEFT: Trip control panel -->
+    <div class="sib-left">
+      <div class="sib-left-header">
+        <div style="font-size:0.5rem;letter-spacing:3px;text-transform:uppercase;color:var(--gold);margin-bottom:0.35rem">⊞ Smart Itinerary Builder</div>
+        <div style="font-family:var(--ff-display);font-size:1.2rem;font-weight:300;color:var(--white)">Trip Command Centre</div>
+      </div>
+      <div class="sib-left-body">
+        <div class="sib-field">
+          <label>Destination</label>
+          <input class="sib-input" id="sibDest" placeholder="e.g. Paris, France">
+        </div>
+        <div class="sib-field">
+          <label>Hotel</label>
+          <input class="sib-input" id="sibHotel" placeholder="e.g. Le Meurice">
+        </div>
+        <div class="sib-field">
+          <label>Trip dates</label>
+          <div style="display:grid;grid-template-columns:1fr 1fr;gap:5px">
+            <input class="sib-input" id="sibFrom" type="date">
+            <input class="sib-input" id="sibTo" type="date">
+          </div>
+        </div>
+        <div class="sib-field">
+          <label>Trip mode</label>
+          <select class="sib-select" id="sibMode">
+            <option>Luxury Leisure</option>
+            <option>Cultural Immersion</option>
+            <option>Culinary Journey</option>
+            <option>Adventure & Wellness</option>
+            <option>Business + Leisure</option>
+            <option>Romantic Getaway</option>
+          </select>
+        </div>
+        <div class="sib-field">
+          <label>Budget level</label>
+          <select class="sib-select" id="sibBudget">
+            <option>Ultra Luxury (no limit)</option>
+            <option>Luxury ($500–$1000/day)</option>
+            <option>Premium ($200–$500/day)</option>
+            <option>Comfortable ($100–$200/day)</option>
+          </select>
+        </div>
+        <div class="sib-field">
+          <label>Pace</label>
+          <div class="sib-pace-row">
+            <button class="sib-pace-opt" onclick="setSibPace('relaxed',this)">Relaxed</button>
+            <button class="sib-pace-opt on" onclick="setSibPace('balanced',this)">Balanced</button>
+            <button class="sib-pace-opt" onclick="setSibPace('packed',this)">Packed</button>
+          </div>
+        </div>
+
+        <button class="sib-build-btn" id="sibBuildBtn" onclick="sibAutoBuild()">✦ Auto-Build My Itinerary</button>
+
+        <div style="margin-top:1.5rem;padding-top:1.25rem;border-top:1px solid var(--border)">
+          <div style="font-size:0.5rem;letter-spacing:2.5px;text-transform:uppercase;color:var(--gold);margin-bottom:0.65rem">Quick add activity</div>
+          <input class="sib-input" id="sibQuickAdd" placeholder="e.g. Louvre at 10am" style="margin-bottom:5px" onkeydown="if(event.key==='Enter')sibAddQuick()">
+          <button onclick="sibAddQuick()" style="width:100%;background:transparent;border:1px solid var(--border);color:var(--mist);padding:0.45rem;font-size:0.55rem;letter-spacing:2px;text-transform:uppercase;cursor:pointer;font-family:var(--ff-body);transition:all 0.2s" onmouseover="this.style.borderColor='rgba(201,169,110,0.4)';this.style.color='var(--gold)'" onmouseout="this.style.borderColor='var(--border)';this.style.color='var(--mist)'">+ Add to Day 1</button>
+        </div>
+
+        <div style="margin-top:1.5rem;padding-top:1.25rem;border-top:1px solid var(--border)">
+          <button onclick="sibSaveItinerary()" style="width:100%;background:transparent;border:1px solid rgba(93,202,165,0.4);color:var(--green);padding:0.55rem;font-size:0.58rem;letter-spacing:2px;text-transform:uppercase;cursor:pointer;font-family:var(--ff-body);transition:all 0.2s;margin-bottom:5px" onmouseover="this.style.background='rgba(93,202,165,0.08)'" onmouseout="this.style.background='transparent'">💾 Save Itinerary</button>
+          <button onclick="closeItineraryBuilder()" style="width:100%;background:transparent;border:1px solid var(--border);color:var(--mist);padding:0.5rem;font-size:0.55rem;letter-spacing:2px;text-transform:uppercase;cursor:pointer;font-family:var(--ff-body);transition:all 0.2s" onmouseover="this.style.borderColor='rgba(201,169,110,0.3)'" onmouseout="this.style.borderColor='var(--border)'">← Back to Lounge</button>
+        </div>
+      </div>
+    </div>
+
+    <!-- CENTER: Timeline -->
+    <div class="sib-center">
+      <div class="sib-center-header">
+        <div id="sibTripTitle" style="font-family:var(--ff-display);font-size:1rem;font-weight:300;color:var(--white)">Your Journey Awaits</div>
+        <div style="display:flex;align-items:center;gap:0.75rem">
+          <div id="sibConflictCount" style="display:none;font-size:0.6rem;color:var(--amber);border:1px solid rgba(239,159,39,0.4);padding:2px 10px;background:rgba(239,159,39,0.08)">⚠ Timing conflicts</div>
+          <div style="font-size:0.58rem;color:rgba(253,252,248,0.3);letter-spacing:1px">Drag cards to reorder</div>
+        </div>
+      </div>
+
+      <div class="sib-timeline" id="sibTimeline">
+        <div class="sib-empty">
+          <div style="font-size:2.5rem;margin-bottom:0.75rem">⊞</div>
+          <div style="font-size:0.78rem;color:var(--mist);line-height:1.8">Fill in your trip details and hit<br><strong style="color:var(--gold)">Auto-Build My Itinerary</strong><br>Claude will build your full day-by-day plan.</div>
+        </div>
+      </div>
+    </div>
+
+  </div>
+</div>
+
 <!-- AI TRAVEL BRAIN MODAL -->
 <div id="aiBrainModal" onclick="if(event.target===this)closeAIBrain()">
   <div class="ai-brain-box">
@@ -3464,6 +3609,329 @@ window.toggleSyncNeed = toggleSyncNeed;
 window.toggleSyncTiming = toggleSyncTiming;
 window.applySyncSuggestion = applySyncSuggestion;
 window.submitBagfreeSync = submitBagfreeSync;
+
+// ── SMART ITINERARY BUILDER ───────────────────────────────────────────────
+let _sibPace = 'balanced';
+let _sibDays = []; // [{label, sub, cards:[{id,time,title,category,duration,neighborhood,travel,booked,color}]}]
+let _sibDragCard = null;
+let _sibDragDay = null;
+let _sibDragIdx = null;
+
+const CAT_COLORS = {
+  'Dining':'#EF9F27','Culture':'#7F77DD','Shopping':'#4A9EDD',
+  'Wellness':'#5DCAA5','Hotel':'#C9A96E','Transport':'rgba(253,252,248,0.3)',
+  'Experience':'#E24B4A','Leisure':'#5DCAA5'
+};
+
+function openItineraryBuilder() {
+  // Pre-fill from active state
+  const dest = document.querySelector('.dest-card.active .dest-name');
+  if (dest) document.getElementById('sibDest').value = dest.textContent;
+  if (profile.travelStyle) {
+    const modeMap = {'Luxury Cruise':'Luxury Leisure','Cultural Immersion':'Cultural Immersion','Culinary Journey':'Culinary Journey','Adventure & Wellness':'Adventure & Wellness','Business Travel':'Business + Leisure'};
+    const sel = document.getElementById('sibMode');
+    const mapped = modeMap[profile.travelStyle];
+    if (mapped) for (let o of sel.options) if (o.value===mapped) { o.selected=true; break; }
+  }
+  document.getElementById('itineraryBuilderModal').style.display = 'block';
+}
+
+function closeItineraryBuilder() {
+  document.getElementById('itineraryBuilderModal').style.display = 'none';
+}
+
+function setSibPace(pace, btn) {
+  _sibPace = pace;
+  document.querySelectorAll('.sib-pace-opt').forEach(b => b.classList.remove('on'));
+  btn.classList.add('on');
+}
+
+async function sibAutoBuild() {
+  const dest = document.getElementById('sibDest').value.trim();
+  if (!dest) { showToast('⚠ Please enter a destination'); return; }
+
+  const from = document.getElementById('sibFrom').value;
+  const to   = document.getElementById('sibTo').value;
+  const mode = document.getElementById('sibMode').value;
+  const budget = document.getElementById('sibBudget').value;
+  const hotel = document.getElementById('sibHotel').value || 'your hotel';
+
+  // Calc days
+  let numDays = 3;
+  if (from && to) {
+    const diff = Math.round((new Date(to)-new Date(from))/(1000*60*60*24));
+    if (diff > 0) numDays = Math.min(diff+1, 7);
+  }
+
+  const btn = document.getElementById('sibBuildBtn');
+  btn.disabled = true; btn.textContent = 'Building your itinerary…';
+
+  document.getElementById('sibTimeline').innerHTML = `
+    <div class="sib-loading">
+      <div class="sib-dots"><span></span><span></span><span></span></div>
+      <div style="font-size:0.72rem;color:var(--mist)">Claude is planning your ${dest} trip…</div>
+    </div>`;
+
+  document.getElementById('sibTripTitle').textContent = `${dest} · ${numDays} Days`;
+
+  const activitiesPerDay = _sibPace === 'relaxed' ? 3 : _sibPace === 'packed' ? 6 : 4;
+
+  try {
+    const res = await fetch('https://api.anthropic.com/v1/messages', {
+      method:'POST',
+      headers:{'Content-Type':'application/json'},
+      body: JSON.stringify({
+        model:'claude-sonnet-4-20250514',
+        max_tokens:2000,
+        messages:[{
+          role:'user',
+          content:`You are a luxury travel itinerary architect for BagFree. Build a ${numDays}-day ${dest} itinerary.
+
+Profile: ${mode}, ${budget}, ${_sibPace} pace, staying at ${hotel}.
+Traveler style: ${profile.travelStyle||'Luxury'}.
+
+Return ONLY a valid JSON array (no markdown, no explanation):
+[
+  {
+    "day": 1,
+    "label": "Day 1 — Arrival",
+    "sub": "Theme for the day",
+    "cards": [
+      {
+        "time": "3:00 PM",
+        "title": "Specific place or activity name",
+        "category": "Hotel|Dining|Culture|Shopping|Wellness|Experience|Leisure|Transport",
+        "duration": "45 min",
+        "neighborhood": "Neighborhood name",
+        "travel": "10 min walk from hotel",
+        "booked": false,
+        "note": "One insider tip max 10 words"
+      }
+    ]
+  }
+]
+
+Rules:
+- ${activitiesPerDay} activities per day (${_sibPace} pace)
+- Use REAL, specific place names (not generic "a restaurant")
+- Day 1 starts with hotel check-in at 3pm
+- Last day ends with airport/transport
+- Flag booked:true only for restaurant reservations needed
+- travel field: realistic time from PRIOR stop
+- Keep times realistic — don't schedule lunch at 1pm then museum 20min away at 1:15pm
+- Budget for ${budget}`
+        }]
+      })
+    });
+
+    const data = await res.json();
+    const raw = data.content?.[0]?.text || '[]';
+    _sibDays = JSON.parse(raw.replace(/```json|```/g,'').trim());
+    _sibDays.forEach((day,di) => day.cards.forEach((c,ci) => c.id = `c${di}_${ci}_${Date.now()}`));
+    renderSibTimeline();
+
+  } catch(e) {
+    // Rich fallback
+    _sibDays = sibFallbackItinerary(dest, numDays, hotel);
+    renderSibTimeline();
+  }
+
+  btn.disabled = false; btn.textContent = '✦ Rebuild Itinerary';
+}
+
+function sibFallbackItinerary(dest, numDays, hotel) {
+  const base = [
+    {day:1,label:'Day 1 — Arrival',sub:'Settle in & explore',cards:[
+      {id:'f1a',time:'3:00 PM',title:`Check-in at ${hotel}`,category:'Hotel',duration:'30 min',neighborhood:'City Centre',travel:'From airport',booked:false,note:'Request high floor for city views'},
+      {id:'f1b',time:'4:30 PM',title:'Neighbourhood stroll',category:'Leisure',duration:'1 hr',neighborhood:'Old Town',travel:'10 min walk',booked:false,note:''},
+      {id:'f1c',time:'6:30 PM',title:'Dinner at local bistro',category:'Dining',duration:'1.5 hrs',neighborhood:'Old Town',travel:'5 min walk',booked:true,note:'Book ahead — fills fast'},
+      {id:'f1d',time:'8:30 PM',title:'Evening rooftop drink',category:'Leisure',duration:'1 hr',neighborhood:'City Centre',travel:'15 min walk',booked:false,note:''},
+    ]},
+    {day:2,label:'Day 2 — Culture & Dining',sub:'Deep dive into local life',cards:[
+      {id:'f2a',time:'9:00 AM',title:'Hotel breakfast',category:'Dining',duration:'45 min',neighborhood:'Hotel',travel:'At hotel',booked:false,note:''},
+      {id:'f2b',time:'10:30 AM',title:'Main museum or landmark',category:'Culture',duration:'2 hrs',neighborhood:'Museum District',travel:'20 min taxi',booked:false,note:'Pre-book skip-the-line tickets'},
+      {id:'f2c',time:'1:00 PM',title:'Local market lunch',category:'Dining',duration:'1 hr',neighborhood:'Market Quarter',travel:'10 min walk',booked:false,note:''},
+      {id:'f2d',time:'3:00 PM',title:'Boutique shopping',category:'Shopping',duration:'1.5 hrs',neighborhood:'Shopping District',travel:'5 min walk',booked:false,note:''},
+      {id:'f2e',time:'7:30 PM',title:'Fine dining experience',category:'Dining',duration:'2 hrs',neighborhood:'Restaurant Row',travel:'15 min taxi',booked:true,note:'Dress code: smart casual'},
+    ]},
+    {day:3,label:`Day ${numDays} — Departure`,sub:'Final moments & airport',cards:[
+      {id:'f3a',time:'8:00 AM',title:'Breakfast & checkout',category:'Hotel',duration:'1 hr',neighborhood:'Hotel',travel:'At hotel',booked:false,note:'Request late checkout if possible'},
+      {id:'f3b',time:'10:00 AM',title:'Final neighbourhood walk',category:'Leisure',duration:'1 hr',neighborhood:'City Centre',travel:'On foot',booked:false,note:'Pick up last-minute gifts'},
+      {id:'f3c',time:'12:00 PM',title:'Airport transfer',category:'Transport',duration:'45 min',neighborhood:'—',travel:'From hotel',booked:false,note:'Allow 3hrs before international flights'},
+    ]},
+  ];
+  return base.slice(0, Math.min(numDays, 3));
+}
+
+function renderSibTimeline() {
+  const tl = document.getElementById('sibTimeline');
+  if (!_sibDays.length) { tl.innerHTML='<div class="sib-empty"><div style="font-size:2rem;margin-bottom:0.5rem">⊞</div><div style="font-size:0.78rem;color:var(--mist)">No itinerary yet.</div></div>'; return; }
+
+  let conflicts = checkSibConflicts();
+  const conflictBar = conflicts.length ? `<div class="sib-conflict-bar">⚠ ${conflicts.length} timing conflict${conflicts.length>1?'s':''} detected — ${conflicts[0]}</div>` : '';
+
+  tl.innerHTML = conflictBar + _sibDays.map((day, di) => `
+    <div class="sib-day" id="sibDay_${di}">
+      <div class="sib-day-header">
+        <div>
+          <div class="sib-day-label">${day.label||'Day '+(di+1)}</div>
+          ${day.sub?`<div class="sib-day-sub">${day.sub}</div>`:''}
+        </div>
+        <div class="sib-day-line"></div>
+      </div>
+      <div class="sib-cards" id="sibCards_${di}"
+        ondragover="event.preventDefault();this.classList.add('drag-over')"
+        ondragleave="this.classList.remove('drag-over')"
+        ondrop="sibDrop(event,${di})">
+        ${day.cards.map((c,ci) => sibCardHTML(c,di,ci,conflicts)).join('')}
+        <div class="sib-add-row" onclick="sibAddActivity(${di})">+ Add activity to Day ${di+1}</div>
+      </div>
+    </div>
+  `).join('');
+
+  // Update conflict indicator
+  const cc = document.getElementById('sibConflictCount');
+  if (cc) cc.style.display = conflicts.length ? 'block' : 'none';
+}
+
+function sibCardHTML(c, di, ci, conflicts) {
+  const color = CAT_COLORS[c.category] || 'var(--mist)';
+  const isConflict = conflicts.some(f => f.includes(c.title));
+  return `
+    <div class="sib-card${isConflict?' conflict':''}" id="card_${c.id}"
+      draggable="true"
+      ondragstart="sibDragStart(event,${di},${ci})"
+      ondragend="sibDragEnd(event)">
+      <div class="sib-card-accent" style="background:${color}"></div>
+      <div class="sib-card-body">
+        <div class="sib-card-time">
+          ${c.time}
+          ${c.travel?`<span class="sib-card-travel">· ${c.travel}</span>`:''}
+        </div>
+        <div class="sib-card-title">${c.title}</div>
+        ${c.note?`<div style="font-size:0.6rem;color:rgba(253,252,248,0.35);margin-top:2px;font-style:italic">${c.note}</div>`:''}
+        <div class="sib-card-meta">
+          <span class="sib-card-tag">${c.category}</span>
+          ${c.duration?`<span class="sib-card-tag">${c.duration}</span>`:''}
+          ${c.neighborhood?`<span class="sib-card-tag">${c.neighborhood}</span>`:''}
+          ${c.booked?`<span class="sib-card-tag booked">✓ Book ahead</span>`:''}
+          ${isConflict?`<span class="sib-card-tag warn">⚠ Tight timing</span>`:''}
+        </div>
+      </div>
+      <div class="sib-card-actions">
+        <button class="sib-card-btn" onclick="sibMoveUp(${di},${ci})" title="Move up">↑</button>
+        <button class="sib-card-btn" onclick="sibMoveDown(${di},${ci})" title="Move down">↓</button>
+        <button class="sib-card-btn" onclick="sibRemoveCard(${di},${ci})" title="Remove" style="color:rgba(226,75,74,0.4)" onmouseover="this.style.color='var(--red)'" onmouseout="this.style.color='rgba(226,75,74,0.4)'">✕</button>
+      </div>
+    </div>`;
+}
+
+function checkSibConflicts() {
+  const warnings = [];
+  _sibDays.forEach(day => {
+    for (let i=1; i<day.cards.length; i++) {
+      const prev = day.cards[i-1], curr = day.cards[i];
+      const pt = parseTime(prev.time), ct = parseTime(curr.time);
+      const prevDurMins = parseDuration(prev.duration||'1 hr');
+      const prevEnd = pt + prevDurMins;
+      const travelMins = parseInt((curr.travel||'').match(/(\d+)\s*min/)?.[1]||'0');
+      if (pt > 0 && ct > 0 && prevEnd + travelMins > ct) {
+        warnings.push(`${curr.title} may conflict with ${prev.title}`);
+      }
+    }
+  });
+  return warnings;
+}
+
+function parseTime(t) {
+  if (!t) return 0;
+  const m = t.match(/(\d+):(\d+)\s*(AM|PM)/i);
+  if (!m) return 0;
+  let h = parseInt(m[1]), min = parseInt(m[2]);
+  if (m[3].toUpperCase()==='PM' && h!==12) h+=12;
+  if (m[3].toUpperCase()==='AM' && h===12) h=0;
+  return h*60+min;
+}
+
+function parseDuration(d) {
+  if (!d) return 60;
+  const h = (d.match(/(\d+)\s*hr/)||[])[1]||0;
+  const m = (d.match(/(\d+)\s*min/)||[])[1]||0;
+  return parseInt(h)*60+parseInt(m)||60;
+}
+
+// Drag and drop
+function sibDragStart(e, di, ci) {
+  _sibDragDay=di; _sibDragIdx=ci;
+  e.dataTransfer.effectAllowed='move';
+}
+function sibDragEnd(e) { _sibDragDay=null; _sibDragIdx=null; }
+function sibDrop(e, targetDay) {
+  e.preventDefault();
+  const el = e.currentTarget; el.classList.remove('drag-over');
+  if (_sibDragDay===null) return;
+  const card = _sibDays[_sibDragDay].cards.splice(_sibDragIdx,1)[0];
+  _sibDays[targetDay].cards.push(card);
+  renderSibTimeline();
+}
+
+// Card controls
+function sibMoveUp(di, ci) {
+  if (ci===0) return;
+  const c = _sibDays[di].cards;
+  [c[ci-1],c[ci]] = [c[ci],c[ci-1]];
+  renderSibTimeline();
+}
+function sibMoveDown(di, ci) {
+  const c = _sibDays[di].cards;
+  if (ci>=c.length-1) return;
+  [c[ci],c[ci+1]] = [c[ci+1],c[ci]];
+  renderSibTimeline();
+}
+function sibRemoveCard(di, ci) {
+  _sibDays[di].cards.splice(ci,1);
+  renderSibTimeline();
+}
+function sibAddActivity(di) {
+  const txt = prompt('Add activity (e.g. "Louvre at 2pm"):');
+  if (!txt) return;
+  const timeM = txt.match(/at\s+(\d+(?::\d+)?(?:\s*[ap]m)?)/i);
+  _sibDays[di].cards.push({
+    id:'u'+Date.now(),
+    time: timeM ? timeM[1].toUpperCase() : '12:00 PM',
+    title: txt.replace(/\s*at\s+\d+.*/i,'').trim()||txt,
+    category:'Experience', duration:'1 hr', neighborhood:'', travel:'', booked:false, note:''
+  });
+  renderSibTimeline();
+}
+function sibAddQuick() {
+  const v = document.getElementById('sibQuickAdd').value.trim();
+  if (!v||!_sibDays.length) { showToast('Build an itinerary first, then add activities'); return; }
+  sibAddActivity(0);
+  document.getElementById('sibQuickAdd').value='';
+}
+
+function sibSaveItinerary() {
+  const dest = document.getElementById('sibDest').value||'Trip';
+  const saved = JSON.parse(localStorage.getItem('bf_itineraries')||'[]');
+  saved.unshift({dest, date: new Date().toLocaleDateString(), days:_sibDays});
+  localStorage.setItem('bf_itineraries', JSON.stringify(saved.slice(0,5)));
+  showToast('✓ Itinerary saved');
+}
+
+window.openItineraryBuilder = openItineraryBuilder;
+window.closeItineraryBuilder = closeItineraryBuilder;
+window.setSibPace = setSibPace;
+window.sibAutoBuild = sibAutoBuild;
+window.sibDragStart = sibDragStart;
+window.sibDragEnd = sibDragEnd;
+window.sibDrop = sibDrop;
+window.sibMoveUp = sibMoveUp;
+window.sibMoveDown = sibMoveDown;
+window.sibRemoveCard = sibRemoveCard;
+window.sibAddActivity = sibAddActivity;
+window.sibAddQuick = sibAddQuick;
+window.sibSaveItinerary = sibSaveItinerary;
 
 // ── LOCAL CURATOR MARKETPLACE ─────────────────────────────────────────────
 const CURATORS_DATA = [
