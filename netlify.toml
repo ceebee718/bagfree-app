@@ -1,4 +1,5 @@
 [build]
+  publish = "."
   functions = "netlify/functions"
 
 [[redirects]]
@@ -10,3 +11,4 @@
   from = "/departure-lounge"
   to = "/departure-lounge.html"
   status = 200
+
