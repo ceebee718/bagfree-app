@@ -446,7 +446,19 @@ button,input,select,textarea{font-family:var(--ff-body)}
 .cost-sel{background:var(--noir2);border:1px solid var(--border);color:var(--white);padding:0.4rem 0.5rem;font-size:0.72rem;outline:none;font-family:var(--ff-body);width:100%;transition:border-color 0.2s}
 .cost-sel:focus{border-color:rgba(201,169,110,0.4)}
 
-/* PERSONALIZE TILES */
+/* MAP CLICK POPUP */
+.bf-map-popup .leaflet-popup-content-wrapper{background:#111110;border:1px solid rgba(201,169,110,0.4);border-radius:0;box-shadow:0 8px 32px rgba(0,0,0,0.7);padding:0}
+.bf-map-popup .leaflet-popup-content{margin:14px 16px;font-family:'Jost',sans-serif}
+.bf-map-popup .leaflet-popup-tip{background:#111110}
+.bf-map-popup .leaflet-popup-close-button{color:rgba(201,169,110,0.6)!important;font-size:1rem!important;top:8px!important;right:10px!important}
+.bf-map-popup .leaflet-popup-close-button:hover{color:#C9A96E!important}
+
+/* CUSTOMIZE + PULSE */
+@keyframes customizePulse {
+  0%,100%{transform:scale(1);box-shadow:0 0 0 0 rgba(201,169,110,0.4)}
+  50%{transform:scale(1.22);box-shadow:0 0 0 6px rgba(201,169,110,0)}
+}
+.customize-pulse{animation:customizePulse 2s ease-in-out infinite}
 .pz-tile{border:1px solid var(--border);padding:0.7rem 0.6rem;cursor:pointer;text-align:center;font-size:0.72rem;color:var(--mist);transition:all 0.2s;background:transparent;line-height:1.4}
 .pz-tile:hover{border-color:rgba(201,169,110,0.35);color:var(--white)}
 .pz-tile.pz-on{border-color:var(--gold);color:var(--gold);background:rgba(201,169,110,0.08)}
@@ -899,7 +911,7 @@ window._supabaseLaunchPatch = async function() {
       <div class="sidebar-section">
         <div style="display:flex;align-items:center;justify-content:space-between;margin-bottom:0.85rem">
           <div style="font-size:0.85rem;letter-spacing:2px;text-transform:uppercase;color:var(--white);font-family:'Jost',sans-serif;font-weight:500">Customize Panels</div>
-          <button id="leftCustomizeToggle" onclick="toggleLeftCustomize()" title="Customize left panel" style="
+          <button id="leftCustomizeToggle" onclick="toggleLeftCustomize()" title="Customize left panel" class="customize-pulse" style="
             width:22px;height:22px;border-radius:50%;
             background:rgba(201,169,110,0.1);border:1px solid rgba(201,169,110,0.4);
             color:var(--gold);font-size:1rem;line-height:1;cursor:pointer;
@@ -1008,6 +1020,8 @@ window._supabaseLaunchPatch = async function() {
         <button onclick="openBagfreeSyncFromTrip()" style="background:transparent;border:1px solid rgba(93,202,165,0.3);color:var(--green);padding:2px 10px;font-size:0.52rem;letter-spacing:1.5px;text-transform:uppercase;cursor:pointer;font-family:var(--ff-body);white-space:nowrap;transition:all 0.2s" onmouseover="this.style.background='rgba(93,202,165,0.06)'" onmouseout="this.style.background='transparent'">🧳 Sync</button>
         <button onclick="clearActiveTrip()" style="background:transparent;border:none;color:rgba(253,252,248,0.25);font-size:0.8rem;cursor:pointer;padding:2px 4px;transition:color 0.2s" title="Clear trip" onmouseover="this.style.color='var(--red)'" onmouseout="this.style.color='rgba(253,252,248,0.25)'">✕</button>
       </div>
+
+      <div class="map-svg-wrap">
         <div class="map-trip-label" id="mapTripLabel" style="z-index:10">The World · Your Journey Awaits</div>
         <div class="bagfree-alert" id="bagfreeAlert" style="z-index:10">BagFree delivers in this city — essentials waiting on arrival</div>
         <div id="leafletMap"></div>
@@ -1025,7 +1039,7 @@ window._supabaseLaunchPatch = async function() {
       <!-- CUSTOMISE + BUTTON — pinned at top -->
       <div style="display:flex;align-items:center;justify-content:space-between;margin-bottom:1rem;padding-bottom:0.85rem;border-bottom:1px solid var(--border)">
         <div style="font-size:0.85rem;letter-spacing:2px;text-transform:uppercase;color:var(--white);font-family:'Jost',sans-serif;font-weight:500">Customize Panels</div>
-        <button id="customiseToggle" onclick="toggleCustomize()" title="Add or remove panels" style="
+        <button id="customiseToggle" onclick="toggleCustomize()" title="Add or remove panels" class="customize-pulse" style="
           width:24px;height:24px;border-radius:50%;
           background:rgba(201,169,110,0.1);border:1px solid rgba(201,169,110,0.4);
           color:var(--gold);font-size:1.1rem;line-height:1;cursor:pointer;
@@ -1048,9 +1062,9 @@ window._supabaseLaunchPatch = async function() {
 
       <!-- Intelligence placeholder when nothing selected -->
       <div id="rightContent">
-        <div class="no-dest">
-          <div class="no-dest-icon">✦</div>
-          <div class="no-dest-text">Click any destination, landmark, or pin to see full travel intelligence</div>
+        <div class="no-dest" style="cursor:pointer" onclick="if(_map)_map.fire('click',{latlng:_map.getCenter()})" title="Click to explore map">
+          <div class="no-dest-icon" style="animation:glw 2s ease-in-out infinite">✦</div>
+          <div class="no-dest-text">Double-click the map to explore any region</div>
         </div>
       </div>
 
@@ -2833,6 +2847,7 @@ function initMap() {
     maxZoom: 12,
     zoomControl: true,
     attributionControl: false,
+    doubleClickZoom: false,
   });
 
   // Basemap tile layers
@@ -2870,6 +2885,137 @@ function initMap() {
   };
 
   _buildMapMarkers();
+
+  // ── MAP SELECTION MODE ──
+  let _selectionMode = false;
+
+  // Clicking the "no-dest" placeholder activates selection mode
+  document.getElementById('rightContent').addEventListener('click', function() {
+    if (!_selectionMode) activateSelectionMode();
+  });
+
+  function activateSelectionMode() {
+    _selectionMode = true;
+
+    // Switch map to dark basemap
+    if (window._activeBasemapKey !== 'dark') {
+      if (window._activeBasemap) _map.removeLayer(window._activeBasemap);
+      window._activeBasemap = L.tileLayer(window._basemaps.dark, { subdomains:'abcd', maxZoom:19 }).addTo(_map);
+      window._activeBasemapKey = 'dark';
+      document.querySelectorAll('.layer-btn[id^="bm"]').forEach(b => b.classList.remove('active'));
+      document.getElementById('bmDark')?.classList.add('active');
+    }
+
+    // Show overlay prompt on map
+    const label = document.getElementById('mapTripLabel');
+    if (label) {
+      label.style.background = 'rgba(201,169,110,0.15)';
+      label.style.border = '1px solid rgba(201,169,110,0.5)';
+      label.style.color = '#C9A96E';
+      label.style.letterSpacing = '2px';
+      label.textContent = '✦ Double-click anywhere on the map to explore that region';
+      label.style.display = 'block';
+    }
+
+    // Pulse cursor hint
+    document.getElementById('leafletMap').style.cursor = 'crosshair';
+
+    // Update placeholder text
+    document.getElementById('rightContent').innerHTML = `
+      <div class="no-dest" style="cursor:default">
+        <div style="font-size:1.5rem;opacity:0.6;animation:glw 2s ease-in-out infinite">✦</div>
+        <div style="font-size:0.78rem;color:var(--mist);max-width:200px;line-height:1.7;margin-top:0.5rem">Map is in explore mode.<br>Double-click any region to get a summary.</div>
+        <button onclick="deactivateSelectionMode()" style="margin-top:1rem;background:transparent;border:1px solid var(--border);color:var(--mist);padding:4px 12px;font-size:0.55rem;letter-spacing:1.5px;text-transform:uppercase;cursor:pointer;font-family:var(--ff-body)">Cancel ✕</button>
+      </div>`;
+  }
+
+  window.deactivateSelectionMode = function() {
+    _selectionMode = false;
+    document.getElementById('leafletMap').style.cursor = '';
+    const label = document.getElementById('mapTripLabel');
+    if (label) {
+      label.style.background = '';
+      label.style.border = '';
+      label.style.color = '';
+      label.style.letterSpacing = '';
+      label.textContent = 'The World · Your Journey Awaits';
+    }
+    document.getElementById('rightContent').innerHTML = `
+      <div class="no-dest">
+        <div class="no-dest-icon">✦</div>
+        <div class="no-dest-text">Click any destination, landmark, or pin to see full travel intelligence</div>
+      </div>`;
+  };
+
+  // Map click — only fires in selection mode OR always for quick explore
+  _map.on('dblclick', function(e) {
+    // If not in selection mode, activate it first click, explore on second
+    if (!_selectionMode) {
+      activateSelectionMode();
+      return;
+    }
+
+    const lat = e.latlng.lat, lng = e.latlng.lng;
+
+    // Find nearest destination with coords
+    let nearest = null, minDist = Infinity;
+    Object.entries(CITY_COORDS).forEach(([city, [clat, clng]]) => {
+      const dist = Math.sqrt((lat - clat) ** 2 + (lng - clng) ** 2);
+      if (dist < minDist) { minDist = dist; nearest = city; }
+    });
+
+    if (!nearest) return;
+
+    // Exit selection mode
+    _selectionMode = false;
+    document.getElementById('leafletMap').style.cursor = '';
+    const label = document.getElementById('mapTripLabel');
+    if (label) {
+      label.style.background = '';
+      label.style.border = '';
+      label.style.color = '';
+      label.style.letterSpacing = '';
+      label.textContent = nearest + ' · Region Intelligence';
+    }
+
+    // Get data
+    const d = DEST_DATA[nearest];
+    const safetyColor = d ? (d.safety > 85 ? '#5DCAA5' : d.safety > 70 ? '#EF9F27' : '#E24B4A') : '#C9A96E';
+    const safetyLabel = d ? (d.safety > 85 ? 'Very Safe' : d.safety > 70 ? 'Exercise Caution' : 'Use Caution') : '—';
+    const sdColor = d ? (d.stateDept?.includes('1') ? '#5DCAA5' : d.stateDept?.includes('2') ? '#EF9F27' : '#E24B4A') : '#C9A96E';
+
+    const content = d ? `
+      <div style="font-family:'Jost',sans-serif;min-width:230px;max-width:270px">
+        <div style="font-size:0.48rem;letter-spacing:2.5px;text-transform:uppercase;color:#C9A96E;margin-bottom:4px">${d.region}</div>
+        <div style="font-family:'Cormorant Garamond',serif;font-size:1.4rem;font-weight:300;color:#FDFCF8;margin-bottom:2px">${nearest}</div>
+        <div style="font-size:0.62rem;color:rgba(253,252,248,0.45);margin-bottom:12px">${d.country}</div>
+        <div style="display:flex;flex-direction:column;gap:0">
+          ${[
+            ['Safety', safetyLabel, safetyColor],
+            ['State Dept', d.stateDept, sdColor],
+            ['Visa', d.visa, '#FDFCF8'],
+            ['Currency', d.currency, '#C9A96E'],
+            ['Hotels from', d.hotelAvg, '#C9A96E'],
+            ['Best time', d.tags?.slice(0,2).join(' · ')||'—', 'rgba(253,252,248,0.7)'],
+          ].map(([k,v,c]) => `
+            <div style="display:flex;justify-content:space-between;align-items:center;font-size:0.68rem;padding:5px 0;border-bottom:1px solid rgba(253,252,248,0.06);gap:8px">
+              <span style="color:rgba(253,252,248,0.45);flex-shrink:0">${k}</span>
+              <span style="color:${c};text-align:right;font-weight:500">${v}</span>
+            </div>`).join('')}
+        </div>
+        ${d.tips ? `<div style="font-size:0.63rem;color:rgba(253,252,248,0.4);line-height:1.65;margin-top:10px;font-style:italic">"${d.tips.split('.')[0]}."</div>` : ''}
+        <button onclick="showDestDetail('${nearest}')" style="width:100%;margin-top:12px;background:linear-gradient(135deg,#C9A96E,#b8893e);color:#0A0A08;border:none;padding:7px;font-size:0.55rem;font-weight:600;letter-spacing:2px;text-transform:uppercase;cursor:pointer;font-family:'Jost',sans-serif">Full Intelligence →</button>
+      </div>` : `
+      <div style="font-family:'Jost',sans-serif;min-width:180px">
+        <div style="font-family:'Cormorant Garamond',serif;font-size:1.2rem;font-weight:300;color:#FDFCF8;margin-bottom:8px">${nearest} region</div>
+        <div style="font-size:0.68rem;color:rgba(253,252,248,0.5);line-height:1.7">Nearest destination in our database. Select a destination card for full intelligence.</div>
+      </div>`;
+
+    L.popup({ className:'bf-map-popup', maxWidth:290, closeButton:true })
+      .setLatLng(e.latlng)
+      .setContent(content)
+      .openOn(_map);
+  });
 }
 
 function switchBasemap(key, btn) {
@@ -5185,6 +5331,9 @@ function toggleLeftCustomize() {
   const open = opts.style.display === 'none';
   opts.style.display = open ? 'block' : 'none';
   btn.textContent = open ? '×' : '+';
+  // Stop pulse once discovered
+  btn.classList.remove('customize-pulse');
+  document.getElementById('customiseToggle')?.classList.remove('customize-pulse');
 }
 
 function toggleMobilePanel(side) {
@@ -5354,6 +5503,9 @@ function toggleCustomize() {
   opts.style.display = open ? 'block' : 'none';
   btn.textContent = open ? '×' : '+';
   btn.style.transform = open ? 'rotate(0deg)' : '';
+  // Stop pulse once discovered
+  btn.classList.remove('customize-pulse');
+  document.getElementById('leftCustomizeToggle')?.classList.remove('customize-pulse');
 }
 
 // ── ANIMATED HUMMINGBIRD AVATAR ───────────────────────────────────────────
