@@ -314,37 +314,45 @@ button,input,select,textarea{font-family:var(--ff-body)}
   .map-toolbar .layer-btn{font-size:0.5rem;padding:2px 6px}
 }
 
-/* ── BAGFREE SYNC ── */
-.sync-section{margin-bottom:1.1rem;padding-bottom:1.1rem;border-bottom:1px solid var(--border)}
-.sync-section:last-child{border-bottom:none;margin-bottom:0}
-.sync-section-title{font-size:0.52rem;letter-spacing:2.5px;text-transform:uppercase;color:var(--gold);margin-bottom:0.65rem}
-.sync-tile-grid{display:grid;grid-template-columns:1fr 1fr;gap:6px;margin-bottom:0.5rem}
-.sync-tile{border:1px solid var(--border);padding:0.6rem 0.5rem;cursor:pointer;transition:all 0.2s;text-align:center;background:transparent}
-.sync-tile:hover{border-color:rgba(201,169,110,0.35);background:var(--noir3)}
+/* ── BAGFREE SYNC MODAL ── */
+#syncModal{display:none;position:fixed;inset:0;background:rgba(0,0,0,0.9);z-index:800;align-items:flex-start;justify-content:center;padding:1.5rem;overflow-y:auto}
+.sync-box{background:var(--noir2);border:1px solid var(--border-hi);width:100%;max-width:760px;margin:auto;position:relative}
+.sync-modal-header{background:linear-gradient(135deg,rgba(201,169,110,0.12),rgba(201,169,110,0.04));border-bottom:1px solid var(--border);padding:2rem 2.5rem;display:flex;justify-content:space-between;align-items:flex-start}
+.sync-modal-body{padding:2rem 2.5rem;display:flex;flex-direction:column;gap:2rem}
+.sync-section-title{font-size:0.6rem;letter-spacing:3px;text-transform:uppercase;color:var(--gold);margin-bottom:1.1rem;display:flex;align-items:center;gap:0.5rem}
+.sync-trip-card{background:var(--noir3);border:1px solid var(--border);padding:1.25rem 1.5rem;display:grid;grid-template-columns:1fr 1fr 1fr;gap:1rem}
+.sync-trip-field label{display:block;font-size:0.52rem;letter-spacing:2px;text-transform:uppercase;color:var(--gold);margin-bottom:0.4rem}
+.sync-trip-input{width:100%;background:var(--noir2);border:1px solid var(--border);color:var(--white);padding:0.6rem 0.85rem;font-size:0.85rem;outline:none;font-family:var(--ff-body);transition:border-color 0.2s}
+.sync-trip-input:focus{border-color:rgba(201,169,110,0.4)}
+.sync-trip-input::placeholder{color:rgba(253,252,248,0.28)}
+.sync-tile-grid{display:grid;grid-template-columns:repeat(3,1fr);gap:10px}
+.sync-tile{border:1px solid var(--border);padding:1.25rem 1rem;cursor:pointer;transition:all 0.22s;text-align:center;background:transparent;display:flex;flex-direction:column;align-items:center;gap:0.5rem}
+.sync-tile:hover{border-color:rgba(201,169,110,0.4);background:rgba(201,169,110,0.05)}
 .sync-tile.on{border-color:var(--gold);background:rgba(201,169,110,0.09)}
-.sync-tile-icon{font-size:1.1rem;display:block;margin-bottom:3px}
-.sync-tile-label{font-size:0.58rem;color:var(--mist);letter-spacing:0.5px}
+.sync-tile-icon{font-size:1.8rem;line-height:1}
+.sync-tile-label{font-size:0.72rem;color:var(--mist);letter-spacing:0.5px;font-weight:400}
 .sync-tile.on .sync-tile-label{color:var(--gold)}
-.sync-timing-opt{display:flex;align-items:center;gap:0.6rem;padding:0.45rem 0.6rem;border:1px solid var(--border);margin-bottom:5px;cursor:pointer;transition:all 0.2s}
-.sync-timing-opt:hover{border-color:rgba(201,169,110,0.35)}
-.sync-timing-opt.on{border-color:var(--gold);background:rgba(201,169,110,0.07)}
-.sync-timing-opt input[type=checkbox]{accent-color:var(--gold);width:12px;height:12px;flex-shrink:0;cursor:pointer}
-.sync-timing-label{font-size:0.68rem;color:var(--mist)}
-.sync-timing-opt.on .sync-timing-label{color:var(--white)}
-.sync-suggestion{padding:0.55rem 0.7rem;border-left:2px solid var(--gold);background:rgba(201,169,110,0.05);margin-bottom:6px;font-size:0.68rem;color:var(--mist);line-height:1.6;cursor:pointer;transition:background 0.2s}
+.sync-custom-field{margin-top:0.85rem}
+.sync-custom-input{width:100%;background:var(--noir3);border:1px solid var(--border);color:var(--white);padding:0.7rem 1rem;font-size:0.85rem;outline:none;font-family:var(--ff-body);resize:none;transition:border-color 0.2s}
+.sync-custom-input:focus{border-color:rgba(201,169,110,0.4)}
+.sync-custom-input::placeholder{color:rgba(253,252,248,0.28)}
+.sync-suggestions-grid{display:flex;flex-direction:column;gap:8px}
+.sync-suggestion{padding:0.85rem 1.1rem;border-left:2px solid var(--gold);background:rgba(201,169,110,0.05);font-size:0.85rem;color:var(--mist);line-height:1.6;cursor:pointer;transition:background 0.2s;display:flex;justify-content:space-between;align-items:center;gap:1rem}
 .sync-suggestion:hover{background:rgba(201,169,110,0.1)}
 .sync-suggestion b{color:var(--gold)}
-.sync-field{background:var(--noir3);border:1px solid var(--border);color:var(--white);padding:0.5rem 0.75rem;font-size:0.75rem;outline:none;width:100%;font-family:var(--ff-body);margin-bottom:6px;transition:border-color 0.2s}
-.sync-field:focus{border-color:rgba(201,169,110,0.4)}
-.sync-field::placeholder{color:rgba(253,252,248,0.28)}
-.sync-cta{width:100%;background:linear-gradient(135deg,var(--gold),#b8893e);color:var(--noir);border:none;padding:0.85rem;font-size:0.65rem;font-weight:600;letter-spacing:2.5px;text-transform:uppercase;cursor:pointer;font-family:var(--ff-body);transition:opacity 0.2s;margin-top:0.5rem}
-.sync-cta:hover{opacity:0.88}
-.sync-trip-card{background:var(--noir3);border:1px solid var(--border);padding:0.75rem;margin-bottom:0.75rem}
-.sync-trip-row{display:flex;align-items:center;gap:0.5rem;padding:3px 0;color:var(--mist);font-size:0.7rem}
-.sync-trip-row span:first-child{font-size:0.85rem;flex-shrink:0}
-.sync-trip-row b{color:var(--white)}
-.sync-ai-loading{display:flex;gap:4px;align-items:center;padding:0.5rem 0}
-.sync-ai-loading span{width:5px;height:5px;border-radius:50%;background:var(--gold);animation:aiTyping 1.2s ease-in-out infinite}
+.sync-suggestion-add{font-size:0.6rem;letter-spacing:1.5px;text-transform:uppercase;color:var(--gold);opacity:0.6;white-space:nowrap;flex-shrink:0}
+.sync-timing-grid{display:flex;flex-direction:column;gap:8px}
+.sync-timing-opt{display:flex;align-items:center;gap:1rem;padding:0.85rem 1.1rem;border:1px solid var(--border);cursor:pointer;transition:all 0.2s}
+.sync-timing-opt:hover{border-color:rgba(201,169,110,0.35)}
+.sync-timing-opt.on{border-color:var(--gold);background:rgba(201,169,110,0.07)}
+.sync-timing-opt input[type=checkbox]{accent-color:var(--gold);width:16px;height:16px;cursor:pointer;flex-shrink:0}
+.sync-timing-label{font-size:0.85rem;color:var(--mist)}
+.sync-timing-opt.on .sync-timing-label{color:var(--white)}
+.sync-timing-sub{font-size:0.65rem;color:rgba(253,252,248,0.3);margin-top:2px}
+.sync-submit-btn{width:100%;background:linear-gradient(135deg,var(--gold),#b8893e);color:var(--noir);border:none;padding:1.1rem;font-size:0.78rem;font-weight:600;letter-spacing:3px;text-transform:uppercase;cursor:pointer;font-family:var(--ff-body);transition:opacity 0.2s}
+.sync-submit-btn:hover{opacity:0.88}
+.sync-ai-loading{display:flex;gap:5px;align-items:center;padding:0.75rem 0}
+.sync-ai-loading span{width:6px;height:6px;border-radius:50%;background:var(--gold);animation:aiTyping 1.2s ease-in-out infinite}
 .sync-ai-loading span:nth-child(2){animation-delay:0.2s}
 .sync-ai-loading span:nth-child(3){animation-delay:0.4s}
 
@@ -1045,11 +1053,13 @@ window._supabaseLaunchPatch = async function() {
 
       <!-- DYNAMIC PANELS -->
       <div id="panelSync" class="dash-panel" style="margin-top:1.25rem;padding-top:1.25rem;border-top:1px solid var(--border)">
-        <div class="sidebar-label" style="display:flex;align-items:center;gap:0.5rem">
+        <div class="sidebar-label" style="display:flex;align-items:center;gap:0.5rem;margin-bottom:0.85rem">
           <span>BagFree Sync</span>
           <span style="font-size:0.45rem;letter-spacing:1.5px;background:rgba(201,169,110,0.12);border:1px solid rgba(201,169,110,0.4);color:var(--gold);padding:1px 6px">YOUR UNFAIR ADVANTAGE</span>
         </div>
-        <div id="bagfreeSyncPanel"></div>
+        <div style="font-size:0.72rem;color:var(--mist);line-height:1.75;margin-bottom:1rem">Tell us what you want waiting in your hotel room. We deliver everything before you arrive.</div>
+        <button onclick="openSyncModal()" style="width:100%;background:linear-gradient(135deg,var(--gold),#b8893e);color:var(--noir);border:none;padding:0.85rem;font-size:0.68rem;font-weight:600;letter-spacing:2.5px;text-transform:uppercase;cursor:pointer;font-family:var(--ff-body);transition:opacity 0.2s" onmouseover="this.style.opacity='0.88'" onmouseout="this.style.opacity='1'">Set Up My Delivery ✦</button>
+        <div id="syncStatusBadge" style="display:none;margin-top:0.75rem;padding:0.6rem 0.85rem;background:rgba(93,202,165,0.1);border:1px solid rgba(93,202,165,0.3);font-size:0.68rem;color:var(--green);text-align:center"></div>
       </div>
       <div id="panelFeaturedTrip" class="dash-panel" style="margin-top:1.25rem;padding-top:1.25rem;border-top:1px solid var(--border)">
         <div class="sidebar-label">Featured journey</div>
@@ -1460,6 +1470,119 @@ window._supabaseLaunchPatch = async function() {
     <div style="padding:1.25rem 1.5rem;display:flex;gap:0.75rem;border-top:1px solid var(--border)">
       <button onclick="closeCostModal();openBagfreeSyncFromTrip()" style="flex:1;background:linear-gradient(135deg,var(--gold),#b8893e);color:var(--noir);border:none;padding:0.8rem;font-size:0.65rem;font-weight:600;letter-spacing:2px;text-transform:uppercase;cursor:pointer;font-family:var(--ff-body)">Start BagFree Sync ✦</button>
       <button onclick="closeCostModal();openCuratorMarket()" style="flex:1;background:transparent;border:1px solid rgba(201,169,110,0.4);color:var(--gold);padding:0.8rem;font-size:0.65rem;letter-spacing:2px;text-transform:uppercase;cursor:pointer;font-family:var(--ff-body);transition:all 0.2s" onmouseover="this.style.background='rgba(201,169,110,0.08)'" onmouseout="this.style.background='transparent'">Browse Local Curators</button>
+    </div>
+  </div>
+</div>
+
+<!-- ── BAGFREE SYNC MODAL ── -->
+<div id="syncModal" onclick="if(event.target===this)closeSyncModal()">
+  <div class="sync-box">
+    <div class="sync-modal-header">
+      <div>
+        <div style="font-size:0.52rem;letter-spacing:3px;text-transform:uppercase;color:var(--gold);margin-bottom:0.5rem">🧳 BagFree Sync · Your Unfair Advantage</div>
+        <div style="font-family:var(--ff-display);font-size:2rem;font-weight:300;color:var(--white);line-height:1.1">Everything waiting<br><em style="color:var(--gold)">before you arrive.</em></div>
+        <div style="font-size:0.82rem;color:var(--mist);margin-top:0.6rem;line-height:1.7">Tell us what you need. We deliver it to your hotel room before you land — zero luggage, zero stress.</div>
+      </div>
+      <button onclick="closeSyncModal()" style="background:transparent;border:none;color:rgba(201,169,110,0.5);font-size:1.4rem;cursor:pointer;transition:color 0.2s;flex-shrink:0" onmouseover="this.style.color='var(--gold)'" onmouseout="this.style.color='rgba(201,169,110,0.5)'">✕</button>
+    </div>
+
+    <div class="sync-modal-body">
+
+      <!-- Section 1: Trip Details -->
+      <div>
+        <div class="sync-section-title">📍 Trip Details</div>
+        <div class="sync-trip-card">
+          <div class="sync-trip-field">
+            <label>Destination</label>
+            <input class="sync-trip-input" id="sm-dest" placeholder="e.g. Paris, France" oninput="_syncState.destination=this.value;loadSyncSuggestions()">
+          </div>
+          <div class="sync-trip-field">
+            <label>Hotel name</label>
+            <input class="sync-trip-input" id="sm-hotel" placeholder="e.g. Le Meurice" oninput="_syncState.hotel=this.value">
+          </div>
+          <div class="sync-trip-field">
+            <label>Arrival date</label>
+            <input class="sync-trip-input" id="sm-arrival" type="date" oninput="_syncState.arrival=this.value">
+          </div>
+        </div>
+      </div>
+
+      <!-- Section 2: What do you want? -->
+      <div>
+        <div class="sync-section-title">🎁 What Do You Want Waiting For You?</div>
+        <div class="sync-tile-grid">
+          <div class="sync-tile" onclick="toggleSyncNeed('clothing',this)" id="syncTile_clothing">
+            <div class="sync-tile-icon">👗</div>
+            <div class="sync-tile-label">Clothing</div>
+          </div>
+          <div class="sync-tile" onclick="toggleSyncNeed('grooming',this)" id="syncTile_grooming">
+            <div class="sync-tile-icon">🪥</div>
+            <div class="sync-tile-label">Grooming</div>
+          </div>
+          <div class="sync-tile" onclick="toggleSyncNeed('wellness',this)" id="syncTile_wellness">
+            <div class="sync-tile-icon">💊</div>
+            <div class="sync-tile-label">Wellness</div>
+          </div>
+          <div class="sync-tile" onclick="toggleSyncNeed('recovery',this)" id="syncTile_recovery">
+            <div class="sync-tile-icon">🧘</div>
+            <div class="sync-tile-label">Recovery</div>
+          </div>
+          <div class="sync-tile" onclick="toggleSyncNeed('work',this)" id="syncTile_work">
+            <div class="sync-tile-icon">💻</div>
+            <div class="sync-tile-label">Work Essentials</div>
+          </div>
+          <div class="sync-tile" onclick="toggleSyncNeed('custom',this)" id="syncTile_custom">
+            <div class="sync-tile-icon">🎁</div>
+            <div class="sync-tile-label">Custom Request</div>
+          </div>
+        </div>
+        <div id="sm-customField" style="display:none;margin-top:0.85rem">
+          <textarea class="sync-custom-input" id="sm-customReq" rows="3" placeholder="Describe your custom request — e.g. 'Italian linen shirt in size M, navy' or 'premium face moisturiser and SPF'..."></textarea>
+        </div>
+      </div>
+
+      <!-- Section 3: AI Smart Suggestions -->
+      <div>
+        <div class="sync-section-title">✦ Smart Suggestions — Based On Your Trip</div>
+        <div id="sm-suggestions">
+          <div class="sync-ai-loading"><span></span><span></span><span></span></div>
+        </div>
+      </div>
+
+      <!-- Section 4: Delivery Timing -->
+      <div>
+        <div class="sync-section-title">🚚 Delivery Schedule</div>
+        <div class="sync-timing-grid">
+          <label class="sync-timing-opt on" onclick="toggleSyncTiming('before',this)">
+            <input type="checkbox" checked onclick="event.stopPropagation()">
+            <div>
+              <div class="sync-timing-label">Deliver before arrival</div>
+              <div class="sync-timing-sub">Everything in your room when you check in</div>
+            </div>
+          </label>
+          <label class="sync-timing-opt" onclick="toggleSyncTiming('daily',this)">
+            <input type="checkbox" onclick="event.stopPropagation()">
+            <div>
+              <div class="sync-timing-label">Daily refresh</div>
+              <div class="sync-timing-sub">Replenish consumables each morning</div>
+            </div>
+          </label>
+          <label class="sync-timing-opt" onclick="toggleSyncTiming('midstay',this)">
+            <input type="checkbox" onclick="event.stopPropagation()">
+            <div>
+              <div class="sync-timing-label">Mid-stay restock</div>
+              <div class="sync-timing-sub">Fresh items delivered halfway through your trip</div>
+            </div>
+          </label>
+        </div>
+      </div>
+
+      <!-- Section 5: CTA -->
+      <div>
+        <button class="sync-submit-btn" onclick="submitBagfreeSync()">Have Everything Waiting For Me ✦</button>
+        <div style="font-size:0.65rem;color:rgba(253,252,248,0.3);text-align:center;margin-top:0.75rem;line-height:1.7">BagFree delivers to your hotel before you arrive · Powered by Valet by Nuor · <a href="https://valetbynuor.com" target="_blank" style="color:rgba(201,169,110,0.5)">valetbynuor.com</a></div>
+      </div>
+
     </div>
   </div>
 </div>
@@ -3662,8 +3785,38 @@ function openBagfreeSyncFromTrip() {
   if (right && panel) setTimeout(() => panel.scrollIntoView({ behavior:'smooth', block:'start' }), 100);
 }
 
-window.setActiveTrip = setActiveTrip;
-window.clearActiveTrip = clearActiveTrip;
+function openSyncModal() {
+  const t = window._activeTrip;
+  // Pre-fill from active trip
+  const destEl = document.getElementById('sm-dest');
+  const hotelEl = document.getElementById('sm-hotel');
+  const arrEl = document.getElementById('sm-arrival');
+  if (destEl && t.destination) destEl.value = t.destination;
+  if (hotelEl && t.hotel) hotelEl.value = t.hotel;
+  if (arrEl && t.arrival) arrEl.value = t.arrival;
+  // Reset tiles to match _syncState
+  SYNC_NEEDS.forEach(n => {
+    const tile = document.getElementById('syncTile_' + n.id);
+    if (tile) tile.classList.toggle('on', _syncState.needs.includes(n.id));
+  });
+  // Show/hide custom
+  const cf = document.getElementById('sm-customField');
+  if (cf) cf.style.display = _syncState.needs.includes('custom') ? 'block' : 'none';
+  document.getElementById('syncModal').style.display = 'flex';
+  loadSyncSuggestions();
+}
+
+function closeSyncModal() {
+  document.getElementById('syncModal').style.display = 'none';
+}
+
+window.openSyncModal = openSyncModal;
+window.closeSyncModal = closeSyncModal;
+
+function openBagfreeSyncFromTrip() {
+  openSyncModal();
+}
+
 window.openBagfreeSyncFromTrip = openBagfreeSyncFromTrip;
 
 // ── AI TRAVEL BRAIN ───────────────────────────────────────────────────────
@@ -4012,30 +4165,28 @@ function toggleSyncTiming(id, el) {
 }
 
 function applySyncSuggestion(text) {
-  // Add to custom request
   _syncState.customRequest = (_syncState.customRequest ? _syncState.customRequest + '\n' : '') + text;
-  // Auto-select custom tile
   if (!_syncState.needs.includes('custom')) {
     _syncState.needs.push('custom');
     const tile = document.getElementById('syncTile_custom');
     if (tile) tile.classList.add('on');
-    const cf = document.getElementById('syncCustomField');
+    const cf = document.getElementById('sm-customField');
     if (cf) cf.style.display = 'block';
   }
-  const ta = document.getElementById('syncCustomReq');
+  const ta = document.getElementById('sm-customReq');
   if (ta) ta.value = _syncState.customRequest;
   showToast('✓ Suggestion added to your request');
 }
 
 async function loadSyncSuggestions() {
-  const container = document.getElementById('syncSuggestions');
+  const container = document.getElementById('sm-suggestions') || document.getElementById('syncSuggestions');
   if (!container) return;
   container.innerHTML = '<div class="sync-ai-loading"><span></span><span></span><span></span></div>';
 
-  const dest = _syncState.destination || (profile.destinations||[])[0] || 'your destination';
+  const dest = document.getElementById('sm-dest')?.value || _syncState.destination || (profile.destinations||[])[0] || 'your destination';
   const needs = _syncState.needs.length ? _syncState.needs.join(', ') : 'general travel';
   const style = profile.travelStyle || 'Luxury';
-  const arrival = _syncState.arrival || 'upcoming trip';
+  const arrival = document.getElementById('sm-arrival')?.value || _syncState.arrival || 'upcoming trip';
 
   try {
     const syncPrompt = `You are BagFree's smart delivery suggestion engine. Generate exactly 4 short, specific, actionable delivery suggestions for this traveler.
@@ -4066,7 +4217,8 @@ Return ONLY a JSON array of 4 strings, no markdown, no explanation:
     const suggestions = JSON.parse(raw);
     container.innerHTML = suggestions.map(s => `
       <div class="sync-suggestion" onclick="applySyncSuggestion('${s.replace(/'/g,"\\'")}')">
-        ${s} <span style="float:right;font-size:0.55rem;color:var(--gold);opacity:0.7">+ add</span>
+        <span>${s}</span>
+        <span class="sync-suggestion-add">+ add</span>
       </div>`).join('');
   } catch(e) {
     // Fallback static suggestions
@@ -4078,48 +4230,49 @@ Return ONLY a JSON array of 4 strings, no markdown, no explanation:
     ];
     container.innerHTML = fallbacks.map(s => `
       <div class="sync-suggestion" onclick="applySyncSuggestion('${s.replace(/'/g,"\\'")}')">
-        ${s} <span style="float:right;font-size:0.55rem;color:var(--gold);opacity:0.7">+ add</span>
+        <span>${s}</span>
+        <span class="sync-suggestion-add">+ add</span>
       </div>`).join('');
   }
 }
 
 async function submitBagfreeSync() {
-  const dest = _syncState.destination || document.getElementById('syncDest')?.value;
-  if (!dest) { showToast('⚠ Please add your destination first'); toggleSyncTripForm(); return; }
+  const dest = document.getElementById('sm-dest')?.value || _syncState.destination;
+  const hotel = document.getElementById('sm-hotel')?.value || _syncState.hotel;
+  const arrival = document.getElementById('sm-arrival')?.value || _syncState.arrival;
+  const customReq = document.getElementById('sm-customReq')?.value || _syncState.customRequest;
+
+  if (!dest) { showToast('⚠ Please add your destination first'); return; }
   if (_syncState.needs.length === 0) { showToast('⚠ Please select at least one item category'); return; }
 
-  const btn = document.querySelector('.sync-cta');
+  const btn = document.querySelector('.sync-submit-btn');
   if (btn) { btn.textContent = 'Submitting…'; btn.disabled = true; }
 
   const payload = {
     traveler_name: profile.name || '',
     traveler_email: profile.email || '',
     travel_style: profile.travelStyle || '',
-    destination: _syncState.destination,
-    hotel: _syncState.hotel,
-    arrival_date: _syncState.arrival,
-    arrival_time: _syncState.arrivalTime,
-    needs: _syncState.needs,
-    timing: _syncState.timing,
-    custom_request: _syncState.customRequest,
-    status: 'pending',
+    destination: dest, hotel, arrival_date: arrival,
+    needs: _syncState.needs, timing: _syncState.timing,
+    custom_request: customReq, status: 'pending',
     created_at: new Date().toISOString()
   };
 
   try {
-    if (window.supabase) {
-      await window.supabase.from('bagfree_sync_orders').insert([payload]);
-    }
-    // Also send to advisor email as backup
+    if (window.supabase) await window.supabase.from('bagfree_sync_orders').insert([payload]);
     await fetch('https://formspree.io/f/mqeyrykl', {
       method: 'POST',
       headers: { 'Content-Type': 'application/json', Accept: 'application/json' },
       body: JSON.stringify({ type: 'BAGFREE SYNC ORDER', ...payload })
     });
-    if (btn) { btn.textContent = '✓ Order Received — We\'ll handle it'; btn.style.background = 'var(--green)'; btn.style.color = 'var(--white)'; }
+    closeSyncModal();
+    // Update status badge in sidebar
+    const badge = document.getElementById('syncStatusBadge');
+    if (badge) { badge.textContent = `✓ Sync confirmed for ${dest} · BagFree will handle it`; badge.style.display = 'block'; }
+    setActiveTrip({ destination: dest, hotel, arrival, needs: _syncState.needs });
     showToast('✦ BagFree Sync confirmed — everything will be waiting for you');
   } catch(e) {
-    if (btn) { btn.textContent = 'Have Everything Waiting for Me ✦'; btn.disabled = false; }
+    if (btn) { btn.textContent = 'Have Everything Waiting For Me ✦'; btn.disabled = false; }
     showToast('⚠ Connection issue — please try again');
   }
 }
