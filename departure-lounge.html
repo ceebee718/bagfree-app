@@ -4205,14 +4205,23 @@ Keep tone: refined, knowledgeable, like a well-traveled concierge friend. Bold k
 
   try {
     const fullPrompt = systemPrompt + '\n\nUser: ' + _aiBrainHistory.map(m=>m.role+': '+m.content).join('\n');
-    const res = await fetch('/.netlify/functions/ai-scores', {
+    const res = await fetch('https://api.anthropic.com/v1/messages', {
       method: 'POST',
-      headers: { 'Content-Type': 'application/json' },
-      body: JSON.stringify({ prompt: fullPrompt })
+      headers: {
+        'Content-Type': 'application/json',
+        'x-api-key': '',
+        'anthropic-version': '2023-06-01',
+        'anthropic-dangerous-direct-browser-access': 'true'
+      },
+      body: JSON.stringify({
+        model: 'claude-sonnet-4-20250514',
+        max_tokens: 2000,
+        messages: [{ role: 'user', content: fullPrompt }]
+      })
     });
-    if (!res.ok) throw new Error('Function error ' + res.status);
+    if (!res.ok) throw new Error('API error ' + res.status);
     const data = await res.json();
-    const reply = (data.text || data.content?.[0]?.text || '').trim() || 'I had trouble generating your itinerary. Please try again.';
+    const reply = (data.content?.[0]?.text || '').trim() || 'I had trouble generating your itinerary. Please try again.';
 
     // Update history
     _aiBrainHistory.push({ role: 'assistant', content: reply });
