@@ -400,6 +400,33 @@ button,input,select,textarea{font-family:var(--ff-body)}
 .sib-dots span{width:8px;height:8px;border-radius:50%;background:var(--gold);animation:aiTyping 1.2s ease-in-out infinite}
 .sib-dots span:nth-child(2){animation-delay:0.2s}
 .sib-dots span:nth-child(3){animation-delay:0.4s}
+
+/* ── COST COMPARISON ── */
+#costModal{display:none;position:fixed;inset:0;background:rgba(0,0,0,0.88);z-index:800;align-items:center;justify-content:center;padding:1.5rem}
+.cost-box{background:var(--noir2);border:1px solid var(--border-hi);width:100%;max-width:680px;max-height:92vh;overflow-y:auto;position:relative}
+.cost-header{background:linear-gradient(135deg,rgba(201,169,110,0.14),rgba(201,169,110,0.04));border-bottom:1px solid var(--border);padding:1.5rem 2rem;display:flex;justify-content:space-between;align-items:flex-start}
+.cost-columns{display:grid;grid-template-columns:1fr 1fr;gap:1px;background:var(--border)}
+.cost-col{background:var(--noir2);padding:1.5rem}
+.cost-col.bf-col{background:rgba(201,169,110,0.04)}
+.cost-col-label{font-size:0.52rem;letter-spacing:3px;text-transform:uppercase;margin-bottom:1rem;display:flex;align-items:center;gap:6px}
+.cost-row{display:flex;justify-content:space-between;align-items:flex-start;padding:0.5rem 0;border-bottom:1px solid rgba(253,252,248,0.05);gap:1rem}
+.cost-row:last-child{border-bottom:none}
+.cost-row-label{font-size:0.72rem;color:var(--mist);flex:1;line-height:1.5}
+.cost-row-val{font-size:0.78rem;color:var(--white);font-weight:500;white-space:nowrap}
+.cost-row-val.cr{color:var(--red)}
+.cost-row-val.cg{color:var(--green)}
+.cost-row-val.ci{color:rgba(93,202,165,0.55);font-size:0.65rem}
+.cost-total-row{display:flex;justify-content:space-between;align-items:center;padding:0.85rem 1.5rem;background:var(--noir3);border-top:1px solid var(--border)}
+.cost-total-label{font-size:0.55rem;letter-spacing:2px;text-transform:uppercase;color:var(--mist)}
+.cost-total-val{font-family:var(--ff-display);font-size:1.6rem;font-weight:300}
+.cost-saving-banner{background:linear-gradient(135deg,rgba(93,202,165,0.12),rgba(93,202,165,0.04));border:1px solid rgba(93,202,165,0.3);margin:1.5rem;padding:1.25rem 1.5rem;display:flex;align-items:center;gap:1.25rem}
+.cost-saving-amount{font-family:var(--ff-display);font-size:2.2rem;font-weight:300;color:var(--green);flex-shrink:0;white-space:nowrap}
+.cost-saving-text{font-size:0.78rem;color:var(--mist);line-height:1.75}
+.cost-inputs{display:grid;grid-template-columns:1fr 1fr 1fr;gap:8px;padding:1.25rem 1.5rem;border-top:1px solid var(--border);background:rgba(10,10,8,0.5)}
+.cost-input-wrap{display:flex;flex-direction:column;gap:4px}
+.cost-input-label{font-size:0.48rem;letter-spacing:2px;text-transform:uppercase;color:var(--gold)}
+.cost-sel{background:var(--noir2);border:1px solid var(--border);color:var(--white);padding:0.4rem 0.5rem;font-size:0.72rem;outline:none;font-family:var(--ff-body);width:100%;transition:border-color 0.2s}
+.cost-sel:focus{border-color:rgba(201,169,110,0.4)}
 </style>
 <script src="https://unpkg.com/leaflet@1.9.4/dist/leaflet.js"></script>
 <script type="module">
@@ -959,7 +986,17 @@ window._supabaseLaunchPatch = async function() {
         <button class="layer-btn" onclick="openItineraryBuilder()" style="border-color:rgba(93,202,165,0.5);color:var(--green)"><span style="font-size:0.7rem">⊞</span> Itinerary</button>
       </div>
 
-      <div class="map-svg-wrap">
+      <!-- ACTIVE TRIP BANNER — shows when a trip is in progress -->
+      <div id="activeTripBanner" style="display:none;background:rgba(201,169,110,0.08);border-bottom:1px solid rgba(201,169,110,0.25);padding:0.5rem 1rem;display:none;align-items:center;gap:0.75rem;flex-shrink:0">
+        <div style="width:6px;height:6px;border-radius:50%;background:var(--green);box-shadow:0 0 6px var(--green);animation:pulse 2s infinite;flex-shrink:0"></div>
+        <div style="flex:1;min-width:0">
+          <span id="activeTripLabel" style="font-size:0.72rem;color:var(--white);font-weight:500"></span>
+          <span id="activeTripMeta" style="font-size:0.62rem;color:var(--mist);margin-left:0.5rem"></span>
+        </div>
+        <button onclick="openItineraryBuilder()" style="background:transparent;border:1px solid rgba(201,169,110,0.3);color:var(--gold);padding:2px 10px;font-size:0.52rem;letter-spacing:1.5px;text-transform:uppercase;cursor:pointer;font-family:var(--ff-body);white-space:nowrap;transition:all 0.2s" onmouseover="this.style.background='rgba(201,169,110,0.1)'" onmouseout="this.style.background='transparent'">⊞ Itinerary</button>
+        <button onclick="openBagfreeSyncFromTrip()" style="background:transparent;border:1px solid rgba(93,202,165,0.3);color:var(--green);padding:2px 10px;font-size:0.52rem;letter-spacing:1.5px;text-transform:uppercase;cursor:pointer;font-family:var(--ff-body);white-space:nowrap;transition:all 0.2s" onmouseover="this.style.background='rgba(93,202,165,0.06)'" onmouseout="this.style.background='transparent'">🧳 Sync</button>
+        <button onclick="clearActiveTrip()" style="background:transparent;border:none;color:rgba(253,252,248,0.25);font-size:0.8rem;cursor:pointer;padding:2px 4px;transition:color 0.2s" title="Clear trip" onmouseover="this.style.color='var(--red)'" onmouseout="this.style.color='rgba(253,252,248,0.25)'">✕</button>
+      </div>
         <div class="map-trip-label" id="mapTripLabel" style="z-index:10">The World · Your Journey Awaits</div>
         <div class="bagfree-alert" id="bagfreeAlert" style="z-index:10">BagFree delivers in this city — essentials waiting on arrival</div>
         <div id="leafletMap"></div>
@@ -1098,6 +1135,7 @@ window._supabaseLaunchPatch = async function() {
 
         <div style="margin-top:1.5rem;padding-top:1.25rem;border-top:1px solid var(--border)">
           <button onclick="sibSaveItinerary()" style="width:100%;background:transparent;border:1px solid rgba(93,202,165,0.4);color:var(--green);padding:0.55rem;font-size:0.58rem;letter-spacing:2px;text-transform:uppercase;cursor:pointer;font-family:var(--ff-body);transition:all 0.2s;margin-bottom:5px" onmouseover="this.style.background='rgba(93,202,165,0.08)'" onmouseout="this.style.background='transparent'">💾 Save Itinerary</button>
+          <button onclick="sibSetUpSync()" style="width:100%;background:transparent;border:1px solid rgba(201,169,110,0.35);color:var(--gold);padding:0.55rem;font-size:0.58rem;letter-spacing:2px;text-transform:uppercase;cursor:pointer;font-family:var(--ff-body);transition:all 0.2s;margin-bottom:5px" onmouseover="this.style.background='rgba(201,169,110,0.08)'" onmouseout="this.style.background='transparent'">🧳 Set Up BagFree Sync</button>
           <button onclick="closeItineraryBuilder()" style="width:100%;background:transparent;border:1px solid var(--border);color:var(--mist);padding:0.5rem;font-size:0.55rem;letter-spacing:2px;text-transform:uppercase;cursor:pointer;font-family:var(--ff-body);transition:all 0.2s" onmouseover="this.style.borderColor='rgba(201,169,110,0.3)'" onmouseout="this.style.borderColor='var(--border)'">← Back to Lounge</button>
         </div>
       </div>
@@ -1357,6 +1395,71 @@ window._supabaseLaunchPatch = async function() {
         <button id="vBackBtn" onclick="vendorBack()" style="background:transparent;border:1px solid var(--border);color:var(--mist);padding:0.7rem 1.25rem;font-size:0.6rem;letter-spacing:2px;text-transform:uppercase;cursor:pointer;font-family:var(--ff-body);display:none">← Back</button>
         <button id="vNextBtn" onclick="vendorNext()" style="background:var(--gold);color:var(--noir);border:none;padding:0.7rem 2rem;font-size:0.62rem;letter-spacing:2px;text-transform:uppercase;cursor:pointer;font-family:var(--ff-body);font-weight:500;margin-left:auto">Next →</button>
       </div>
+    </div>
+  </div>
+</div>
+
+<!-- ── COST COMPARISON MODAL ── -->
+<div id="costModal" onclick="if(event.target===this)closeCostModal()">
+  <div class="cost-box">
+    <div class="cost-header">
+      <div>
+        <div style="font-size:0.5rem;letter-spacing:3px;text-transform:uppercase;color:var(--gold);margin-bottom:0.4rem">💰 Real Cost Comparison</div>
+        <div id="costModalTitle" style="font-family:var(--ff-display);font-size:1.5rem;font-weight:300;color:var(--white);line-height:1.1"></div>
+        <div id="costModalSub" style="font-size:0.68rem;color:var(--mist);margin-top:0.3rem"></div>
+      </div>
+      <button onclick="closeCostModal()" style="background:transparent;border:none;color:rgba(201,169,110,0.5);font-size:1.3rem;cursor:pointer" onmouseover="this.style.color='var(--gold)'" onmouseout="this.style.color='rgba(201,169,110,0.5)'">✕</button>
+    </div>
+
+    <!-- Inputs -->
+    <div class="cost-inputs">
+      <div class="cost-input-wrap">
+        <div class="cost-input-label">Home city</div>
+        <select class="cost-sel" id="costHomeCity" onchange="recalcCost()">
+          <option value="TPA">Tampa, FL</option>
+          <option value="MIA">Miami, FL</option>
+          <option value="MCO">Orlando, FL</option>
+          <option value="ATL">Atlanta, GA</option>
+          <option value="JFK">New York, NY</option>
+          <option value="LAX">Los Angeles, CA</option>
+          <option value="ORD">Chicago, IL</option>
+          <option value="DFW">Dallas, TX</option>
+        </select>
+      </div>
+      <div class="cost-input-wrap">
+        <div class="cost-input-label">Trip duration</div>
+        <select class="cost-sel" id="costDays" onchange="recalcCost()">
+          <option value="3">3 days</option>
+          <option value="5">5 days</option>
+          <option value="7" selected>7 days</option>
+          <option value="10">10 days</option>
+          <option value="14">14 days</option>
+        </select>
+      </div>
+      <div class="cost-input-wrap">
+        <div class="cost-input-label">Travel style</div>
+        <select class="cost-sel" id="costStyle" onchange="recalcCost()">
+          <option value="luxury">Luxury</option>
+          <option value="business">Business</option>
+          <option value="leisure" selected>Leisure</option>
+          <option value="wellness">Wellness</option>
+        </select>
+      </div>
+    </div>
+
+    <!-- Two columns -->
+    <div class="cost-columns" id="costColumns"></div>
+
+    <!-- Saving banner -->
+    <div class="cost-saving-banner" id="costSavingBanner">
+      <div class="cost-saving-amount" id="costSavingAmount"></div>
+      <div class="cost-saving-text" id="costSavingText"></div>
+    </div>
+
+    <!-- CTAs -->
+    <div style="padding:1.25rem 1.5rem;display:flex;gap:0.75rem;border-top:1px solid var(--border)">
+      <button onclick="closeCostModal();openBagfreeSyncFromTrip()" style="flex:1;background:linear-gradient(135deg,var(--gold),#b8893e);color:var(--noir);border:none;padding:0.8rem;font-size:0.65rem;font-weight:600;letter-spacing:2px;text-transform:uppercase;cursor:pointer;font-family:var(--ff-body)">Start BagFree Sync ✦</button>
+      <button onclick="closeCostModal();openCuratorMarket()" style="flex:1;background:transparent;border:1px solid rgba(201,169,110,0.4);color:var(--gold);padding:0.8rem;font-size:0.65rem;letter-spacing:2px;text-transform:uppercase;cursor:pointer;font-family:var(--ff-body);transition:all 0.2s" onmouseover="this.style.background='rgba(201,169,110,0.08)'" onmouseout="this.style.background='transparent'">Browse Local Curators</button>
     </div>
   </div>
 </div>
@@ -2606,13 +2709,14 @@ function _buildMapMarkers() {
   const PURP  = '127,119,221';
 
   // BagFree service cities
-  ['Tampa','Miami','Orlando','Atlanta','Savannah'].forEach(city => {
+  const bagfreeCities = ['Tampa','Miami','Orlando','Atlanta','Savannah'];
+  bagfreeCities.forEach(city => {
     const c = CITY_COORDS[city];
     if (!c) return;
     const m = L.marker(c, { pane:'markers', icon: _circleIcon('BF', GOLD, 28) })
       .addTo(_mapLayers.bagfree)
-      .on('click', () => showDestDetail(city));
-    m.bindTooltip(`<strong style="color:#C9A96E">${city}</strong><br>BagFree · Same-Day Delivery`, {className:'', direction:'top'});
+      .on('click', () => openCostComparison(city));
+    m.bindTooltip(`<strong style="color:#C9A96E">${city}</strong><br>BagFree · Tap to see savings`, {className:'', direction:'top'});
   });
 
   // Landmarks
@@ -3332,6 +3436,236 @@ function showAdvisorFab(){
   if(fab)fab.style.display='block';
 }
 
+// ── COST COMPARISON ENGINE ────────────────────────────────────────────────
+let _costCity = null;
+
+// Airline bag fees by home city (round trip, 1 checked bag each way)
+const AIRLINE_FEES = {
+  TPA: { airline:'Southwest / United', checked: 70,  overweight: 100, rt: true },
+  MIA: { airline:'American / Delta',   checked: 70,  overweight: 100, rt: true },
+  MCO: { airline:'Southwest / Spirit', checked: 50,  overweight: 100, rt: true },
+  ATL: { airline:'Delta / Southwest',  checked: 70,  overweight: 100, rt: true },
+  JFK: { airline:'JetBlue / Delta',    checked: 70,  overweight: 100, rt: true },
+  LAX: { airline:'United / American',  checked: 70,  overweight: 100, rt: true },
+  ORD: { airline:'United / American',  checked: 70,  overweight: 100, rt: true },
+  DFW: { airline:'American / Southwest',checked:70,  overweight: 100, rt: true },
+};
+
+// BagFree kit costs by style
+const BF_KITS = {
+  luxury:   { kit: 'Luxury Wardrobe Kit',    price: 480, desc: '5 outfits + accessories' },
+  business: { kit: 'Business Travel Kit',     price: 320, desc: '4 business outfits + grooming' },
+  leisure:  { kit: 'Stay Fresh Kit',          price: 220, desc: '4 outfits + essentials' },
+  wellness: { kit: 'Wellness Travel Kit',     price: 280, desc: 'Activewear + recovery + grooming' },
+};
+
+// Curator rental costs (per trip)
+const CURATOR_COSTS = {
+  luxury:   { label: 'Local Curator (Maison Rivière style)', price: 280 },
+  business: { label: 'Local Curator (business styling)',     price: 180 },
+  leisure:  { label: 'Local Curator (casual curation)',      price: 120 },
+  wellness: { label: 'Local Curator (wellness & yoga wear)', price: 140 },
+};
+
+function openCostComparison(city) {
+  _costCity = city;
+  // Pre-fill home city from profile
+  const homeMap = { Tampa:'TPA', Miami:'MIA', Orlando:'MCO', Atlanta:'ATL' };
+  const homeKey = homeMap[profile.homeCity] || 'TPA';
+  document.getElementById('costHomeCity').value = homeKey;
+
+  // Pre-fill style from profile
+  const styleMap = { 'Luxury Cruise':'luxury','Business Travel':'business','Adventure & Wellness':'wellness' };
+  document.getElementById('costStyle').value = styleMap[profile.travelStyle] || 'leisure';
+
+  // Pre-fill days from active trip
+  if (window._activeTrip?.days?.length) {
+    const sel = document.getElementById('costDays');
+    const d = window._activeTrip.days.length.toString();
+    for (let o of sel.options) if (o.value === d) { o.selected = true; break; }
+  }
+
+  document.getElementById('costModal').style.display = 'flex';
+  recalcCost();
+}
+
+function closeCostModal() {
+  document.getElementById('costModal').style.display = 'none';
+}
+
+function recalcCost() {
+  const homeCode = document.getElementById('costHomeCity').value;
+  const days     = parseInt(document.getElementById('costDays').value);
+  const style    = document.getElementById('costStyle').value;
+  const city     = _costCity || 'Tampa';
+  const fees     = AIRLINE_FEES[homeCode] || AIRLINE_FEES.TPA;
+  const kit      = BF_KITS[style];
+  const curator  = CURATOR_COSTS[style];
+
+  // ── TRADITIONAL COSTS ──
+  const checkedBagRT  = fees.checked * 2;           // both ways
+  const overweightRisk = Math.round(fees.overweight * 0.4); // 40% chance
+  const hotelLaundry  = days >= 7 ? 85 : days >= 5 ? 55 : 30;
+  const forgottenItems = days >= 7 ? 95 : 60;
+  const airportFood   = Math.round(days * 18);       // eating at airport, more days = more trips
+  const timeCost      = 120;                          // value of 2hrs checking/collecting bags
+  const stressBuffer  = 50;                           // misc forgotten/replaced items
+
+  const tradTotal = checkedBagRT + overweightRisk + hotelLaundry + forgottenItems + airportFood + timeCost + stressBuffer;
+
+  // ── BAGFREE COSTS ──
+  const deliveryFee   = 35;
+  const kitPrice      = kit.price;
+  const curatorPrice  = curator.price;
+  const bfTotal       = deliveryFee + kitPrice + curatorPrice;
+  const saving        = tradTotal - bfTotal;
+  const savingPct     = Math.round((saving / tradTotal) * 100);
+
+  // Update title
+  document.getElementById('costModalTitle').textContent = `${city} Delivery — ${days}-Day Trip`;
+  document.getElementById('costModalSub').textContent =
+    `Flying from ${document.getElementById('costHomeCity').options[document.getElementById('costHomeCity').selectedIndex].text} · ${fees.airline}`;
+
+  // Render columns
+  document.getElementById('costColumns').innerHTML = `
+    <div class="cost-col">
+      <div class="cost-col-label" style="color:rgba(226,75,74,0.8)">
+        <span style="font-size:1rem">🧳</span> Traditional Travel
+      </div>
+      ${costRow('Checked bag fees (round trip)', '$'+checkedBagRT, 'cr')}
+      ${costRow('Overweight bag risk (avg)', '$'+overweightRisk, 'cr')}
+      ${costRow('Hotel laundry ('+days+' days)', '$'+hotelLaundry, 'cr')}
+      ${costRow('Forgotten & replacement items', '$'+forgottenItems, 'cr')}
+      ${costRow('Airport meals & delays', '$'+airportFood, 'cr')}
+      ${costRow('Time cost (bag check + claim)', '$'+timeCost, 'cr')}
+      ${costRow('Misc stress & scramble buffer', '$'+stressBuffer, 'cr')}
+      <div class="cost-total-row">
+        <div class="cost-total-label">Total estimated cost</div>
+        <div class="cost-total-val" style="color:var(--red)">$${tradTotal}</div>
+      </div>
+    </div>
+    <div class="cost-col bf-col">
+      <div class="cost-col-label" style="color:var(--gold)">
+        <span style="font-size:1rem">✦</span> BagFree to ${city}
+      </div>
+      ${costRow('Bag check fee', '$0', 'cg')}
+      ${costRow('Overweight risk', '$0', 'cg')}
+      ${costRow('Hotel laundry', '$0', 'cg')}
+      ${costRow('Forgotten items', '$0', 'cg')}
+      ${costRow(kit.kit + ' · ' + kit.desc, '$'+kitPrice, '')}
+      ${costRow(curator.label, '$'+curatorPrice, '')}
+      ${costRow('BagFree delivery to your hotel', '$'+deliveryFee, '')}
+      <div class="cost-total-row">
+        <div class="cost-total-label">Total BagFree cost</div>
+        <div class="cost-total-val" style="color:var(--gold)">$${bfTotal}</div>
+      </div>
+    </div>
+  `;
+
+  // Saving banner
+  const isWin = saving > 0;
+  document.getElementById('costSavingAmount').textContent = isWin ? `Save $${saving}` : `+$${Math.abs(saving)}`;
+  document.getElementById('costSavingAmount').style.color = isWin ? 'var(--green)' : 'var(--amber)';
+  document.getElementById('costSavingText').innerHTML = isWin
+    ? `You save <strong style="color:var(--green)">$${saving} (${savingPct}%)</strong> traveling BagFree to ${city} — and arrive with a curated wardrobe waiting in your room, zero luggage stress, and 2+ hours back in your day.<br><br>Based on flying from <strong>${document.getElementById('costHomeCity').options[document.getElementById('costHomeCity').selectedIndex].text}</strong> on ${fees.airline}.`
+    : `BagFree costs <strong style="color:var(--amber)">$${Math.abs(saving)} more</strong> — but includes a full curated wardrobe, hotel delivery, and zero luggage hassle. The real savings are in time, stress, and experience.`;
+}
+
+function costRow(label, val, cls) {
+  return `<div class="cost-row">
+    <div class="cost-row-label">${label}</div>
+    <div class="cost-row-val ${cls}">${val}</div>
+  </div>`;
+}
+
+window.openCostComparison = openCostComparison;
+window.closeCostModal = closeCostModal;
+window.recalcCost = recalcCost;
+
+// ── UNIFIED ACTIVE TRIP STATE ─────────────────────────────────────────────
+// Single source of truth shared across AI Brain, Itinerary Builder, BagFree Sync & Map
+window._activeTrip = {
+  destination: '',
+  hotel: '',
+  arrival: '',
+  days: null,        // itinerary days array from builder
+  rawPlan: '',       // full AI brain response text
+  needs: [],
+  timing: ['before'],
+  mode: '',
+  budget: '',
+};
+
+function setActiveTrip(updates) {
+  Object.assign(window._activeTrip, updates);
+  syncActiveTripUI();
+}
+
+function syncActiveTripUI() {
+  const t = window._activeTrip;
+  const banner = document.getElementById('activeTripBanner');
+  if (!banner) return;
+
+  if (!t.destination) {
+    banner.style.display = 'none';
+    return;
+  }
+
+  banner.style.display = 'flex';
+  document.getElementById('activeTripLabel').textContent = `✦ Active Trip · ${t.destination}`;
+
+  const parts = [];
+  if (t.hotel) parts.push(t.hotel);
+  if (t.arrival) parts.push(new Date(t.arrival).toLocaleDateString('en-US',{month:'short',day:'numeric'}));
+  if (t.days) parts.push(`${t.days.length} days planned`);
+  document.getElementById('activeTripMeta').textContent = parts.join(' · ');
+
+  // Sync to AI Brain quick input
+  const qi = document.getElementById('aiBrainQuickInput');
+  if (qi && !qi.value) qi.placeholder = `Continue planning ${t.destination}…`;
+
+  // Sync to Itinerary Builder fields
+  const sibDest = document.getElementById('sibDest');
+  if (sibDest && !sibDest.value) sibDest.value = t.destination;
+  const sibHotel = document.getElementById('sibHotel');
+  if (sibHotel && !sibHotel.value && t.hotel) sibHotel.value = t.hotel;
+  const sibFrom = document.getElementById('sibFrom');
+  if (sibFrom && !sibFrom.value && t.arrival) sibFrom.value = t.arrival;
+
+  // Sync to BagFree Sync
+  _syncState.destination = _syncState.destination || t.destination;
+  _syncState.hotel = _syncState.hotel || t.hotel;
+  _syncState.arrival = _syncState.arrival || t.arrival;
+}
+
+function clearActiveTrip() {
+  window._activeTrip = { destination:'', hotel:'', arrival:'', days:null, rawPlan:'', needs:[], timing:['before'], mode:'', budget:'' };
+  document.getElementById('activeTripBanner').style.display = 'none';
+  document.getElementById('mapTripLabel').textContent = 'The World · Your Journey Awaits';
+  if (_map && _mapLayers.routes) _mapLayers.routes.clearLayers();
+  showToast('Trip cleared');
+}
+
+function openBagfreeSyncFromTrip() {
+  // Enable the sync panel if not already visible
+  const panel = document.getElementById('panelSync');
+  if (panel && panel.style.display === 'none') {
+    panel.style.display = 'block';
+    const saved = JSON.parse(localStorage.getItem('bf_panels') || '[]');
+    if (!saved.includes('panelSync')) { saved.unshift('panelSync'); localStorage.setItem('bf_panels', JSON.stringify(saved)); }
+    const chk = document.getElementById('chk_panelSync');
+    if (chk) chk.checked = true;
+  }
+  buildBagfreeSyncPanel();
+  // Scroll right sidebar to sync panel
+  const right = document.getElementById('dlRight');
+  if (right && panel) setTimeout(() => panel.scrollIntoView({ behavior:'smooth', block:'start' }), 100);
+}
+
+window.setActiveTrip = setActiveTrip;
+window.clearActiveTrip = clearActiveTrip;
+window.openBagfreeSyncFromTrip = openBagfreeSyncFromTrip;
+
 // ── AI TRAVEL BRAIN ───────────────────────────────────────────────────────
 let _aiBrainHistory = [];
 let _aiBrainStreaming = false;
@@ -3466,29 +3800,28 @@ Keep tone: refined, knowledgeable, like a well-traveled concierge friend. Bold k
     // Update history
     _aiBrainHistory.push({ role: 'assistant', content: reply });
 
+    // ── Update shared active trip state ──
+    const userMsg = _aiBrainHistory.find(m => m.role === 'user')?.content || '';
+    const destMatch2 = reply.match(/## ([\w\s,&'-]+) —/) || reply.match(/\*\*([\w\s,&'-]+)\*\* —/);
+    const resolvedDest2 = destMatch2 ? destMatch2[1].trim() : (document.getElementById('aiBrainQuickInput')?.value || userMsg.split(' ').slice(0,3).join(' '));
+    setActiveTrip({ destination: resolvedDest2, rawPlan: reply });
+
     // Render into the bubble
     const bubble = document.getElementById('aiStreamBubble');
     if (bubble) {
       bubble.innerHTML = aiRenderResponse(reply);
 
-      // Plot landmarks on map from the response
-      const dest = document.getElementById('aiBrainQuickInput')?.value ||
-                   _aiBrainHistory.find(m=>m.role==='user')?.content || '';
-      const destMatch = reply.match(/## ([\w\s,&'-]+) —/) ||
-                        reply.match(/\*\*([\w\s,&'-]+)\*\* —/);
-      const resolvedDest = destMatch ? destMatch[1].trim() : dest;
-      if (resolvedDest) setTimeout(() => plotAIPlanOnMap(reply, resolvedDest), 400);
+      // Plot landmarks on map
+      if (resolvedDest2) setTimeout(() => plotAIPlanOnMap(reply, resolvedDest2), 400);
 
-      // Auto-trigger map route if destination detected
-      const routeMatch = reply.match(/\*\*([\w\s]+)\*\* —/) || reply.match(/## ([\w\s,]+) —/);
-      if (routeMatch) {
-        const city = routeMatch[1].trim().toLowerCase();
-        let routeKey = 'med';
-        if (['miami','nassau','caribbean','barbados','grenada','st vincent'].some(c=>city.includes(c))) routeKey='caribbean';
-        else if (['tokyo','bali','japan','asia','singapore','thailand'].some(c=>city.includes(c))) routeKey='asia';
-        else if (['london','paris','amsterdam','berlin'].some(c=>city.includes(c))) routeKey='europe';
-        else if (['rome','italy','greece','amalfi','santorini'].some(c=>city.includes(c))) routeKey='med';
-      }
+      // Add "Build Itinerary" and "Set Up Sync" action buttons below response
+      const actRow = document.createElement('div');
+      actRow.style.cssText = 'display:flex;gap:8px;margin-top:1rem;flex-wrap:wrap';
+      actRow.innerHTML = `
+        <button onclick="prefillItineraryFromBrain()" style="background:transparent;border:1px solid rgba(201,169,110,0.4);color:var(--gold);padding:6px 14px;font-size:0.65rem;letter-spacing:1.5px;text-transform:uppercase;cursor:pointer;font-family:var(--ff-body);transition:all 0.2s" onmouseover="this.style.background='rgba(201,169,110,0.1)'" onmouseout="this.style.background='transparent'">⊞ Build Itinerary →</button>
+        <button onclick="prefillSyncFromBrain()" style="background:transparent;border:1px solid rgba(93,202,165,0.3);color:var(--green);padding:6px 14px;font-size:0.65rem;letter-spacing:1.5px;text-transform:uppercase;cursor:pointer;font-family:var(--ff-body);transition:all 0.2s" onmouseover="this.style.background='rgba(93,202,165,0.06)'" onmouseout="this.style.background='transparent'">🧳 Set Up BagFree Sync →</button>
+      `;
+      bubble.appendChild(actRow);
     }
 
     const history = document.getElementById('aiChatHistory');
@@ -3518,6 +3851,33 @@ function resetAIBrain() {
   document.getElementById('aiBrainSendBtn').textContent = 'Send ✦';
 }
 window.resetAIBrain = resetAIBrain;
+
+// ── CROSS-FEATURE BRIDGES ─────────────────────────────────────────────────
+function prefillItineraryFromBrain() {
+  const t = window._activeTrip;
+  closeAIBrain();
+  openItineraryBuilder();
+  // Fill fields from active trip
+  setTimeout(() => {
+    if (t.destination) document.getElementById('sibDest').value = t.destination;
+    if (t.hotel) document.getElementById('sibHotel').value = t.hotel;
+    if (t.arrival) document.getElementById('sibFrom').value = t.arrival;
+    // Auto-trigger build if we have a destination
+    if (t.destination && !_sibDays.length) {
+      showToast(`✦ Pre-filled from your ${t.destination} plan — hit Auto-Build to generate days`);
+    }
+  }, 200);
+}
+
+function prefillSyncFromBrain() {
+  const t = window._activeTrip;
+  closeAIBrain();
+  openBagfreeSyncFromTrip();
+  showToast(`✦ BagFree Sync pre-filled for ${t.destination}`);
+}
+
+window.prefillItineraryFromBrain = prefillItineraryFromBrain;
+window.prefillSyncFromBrain = prefillSyncFromBrain;
 
 window.openAIBrain = openAIBrain;
 window.closeAIBrain = closeAIBrain;
@@ -3885,6 +4245,16 @@ Rules:
     const raw = (data.text || data.content?.[0]?.text || '[]').replace(/```json|```/g,'').trim();
     _sibDays = JSON.parse(raw.replace(/```json|```/g,'').trim());
     _sibDays.forEach((day,di) => day.cards.forEach((c,ci) => c.id = `c${di}_${ci}_${Date.now()}`));
+
+    // Update shared active trip state
+    setActiveTrip({
+      destination: dest,
+      hotel: hotel !== 'your hotel' ? hotel : window._activeTrip.hotel,
+      arrival: from || window._activeTrip.arrival,
+      days: _sibDays,
+      mode, budget
+    });
+
     renderSibTimeline();
 
   } catch(e) {
@@ -4068,13 +4438,34 @@ function sibAddQuick() {
   document.getElementById('sibQuickAdd').value='';
 }
 
-function sibSaveItinerary() {
-  const dest = document.getElementById('sibDest').value||'Trip';
-  const saved = JSON.parse(localStorage.getItem('bf_itineraries')||'[]');
-  saved.unshift({dest, date: new Date().toLocaleDateString(), days:_sibDays});
-  localStorage.setItem('bf_itineraries', JSON.stringify(saved.slice(0,5)));
-  showToast('✓ Itinerary saved');
+function sibSetUpSync() {
+  // Save current state first
+  setActiveTrip({
+    destination: document.getElementById('sibDest')?.value || window._activeTrip.destination,
+    hotel: document.getElementById('sibHotel')?.value || window._activeTrip.hotel,
+    arrival: document.getElementById('sibFrom')?.value || window._activeTrip.arrival,
+    days: _sibDays,
+  });
+  closeItineraryBuilder();
+  setTimeout(() => openBagfreeSyncFromTrip(), 200);
 }
+
+function sibSaveItinerary() {
+  const dest = document.getElementById('sibDest').value || window._activeTrip.destination || 'Trip';
+  // Update active trip with latest days
+  setActiveTrip({ destination: dest, days: _sibDays });
+  // Also persist to localStorage
+  const saved = JSON.parse(localStorage.getItem('bf_itineraries')||'[]');
+  saved.unshift({ dest, date: new Date().toLocaleDateString(), days: _sibDays });
+  localStorage.setItem('bf_itineraries', JSON.stringify(saved.slice(0,5)));
+  showToast('✓ Itinerary saved — visible in your dashboard');
+  // Plot on map
+  if (_sibDays.length && dest) setTimeout(() => plotAIPlanOnMap(
+    _sibDays.flatMap(d=>d.cards).map(c=>`**${c.title}**`).join('\n'), dest
+  ), 300);
+}
+
+window.sibSetUpSync = sibSetUpSync;
 
 window.openItineraryBuilder = openItineraryBuilder;
 window.closeItineraryBuilder = closeItineraryBuilder;
