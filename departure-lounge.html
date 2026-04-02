@@ -2872,6 +2872,7 @@ function initMap() {
     attributionControl: false,
     doubleClickZoom: false,
   });
+  window._map = _map;
 
   // Basemap tile layers
   const BASEMAPS = {
@@ -2919,7 +2920,6 @@ function initMap() {
 
   function activateSelectionMode() {
     window._selectionMode = true;
-
     // Switch map to dark basemap
     if (window._activeBasemapKey !== 'dark') {
       if (window._activeBasemap) _map.removeLayer(window._activeBasemap);
@@ -2954,7 +2954,7 @@ function initMap() {
 
   window.deactivateSelectionMode = function() {
     window._selectionMode = false;
-    document.getElementById('leafletMap').style.cursor = '';
+    if (document.getElementById('leafletMap')) document.getElementById('leafletMap').style.cursor = '';
     const label = document.getElementById('mapTripLabel');
     if (label) {
       label.style.background = '';
@@ -2963,12 +2963,14 @@ function initMap() {
       label.style.letterSpacing = '';
       label.textContent = 'The World · Your Journey Awaits';
     }
-    document.getElementById('rightContent').innerHTML = `
-      <div class="no-dest" style="cursor:pointer" onclick="if(_map)_map.fire('dblclick',{latlng:_map.getCenter()})" title="Double-click to explore">
+    const rc = document.getElementById('rightContent');
+    if (rc) rc.innerHTML = `
+      <div class="no-dest" style="cursor:pointer" onclick="if(window._map)window._map.fire('dblclick',{latlng:window._map.getCenter()})" title="Double-click to explore">
         <div class="no-dest-icon" style="animation:glw 2s ease-in-out infinite">✦</div>
         <div class="no-dest-text">Double-click the map to explore any region</div>
       </div>`;
   };
+  window.deactivateSelectionMode(); // init default state
 
   // Map click — only fires in selection mode OR always for quick explore
   _map.on('dblclick', function(e) {
