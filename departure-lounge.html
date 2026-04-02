@@ -887,8 +887,8 @@ window._supabaseLaunchPatch = async function() {
 
       <div class="sidebar-section">
         <div style="display:flex;align-items:center;justify-content:space-between;margin-bottom:0.85rem">
-          <div style="font-size:0.85rem;letter-spacing:2px;text-transform:uppercase;color:var(--white);font-family:'Jost',sans-serif;font-weight:500">Customise Panels</div>
-          <button id="leftCustomiseToggle" onclick="toggleLeftCustomise()" title="Customise left panel" style="
+          <div style="font-size:0.85rem;letter-spacing:2px;text-transform:uppercase;color:var(--white);font-family:'Jost',sans-serif;font-weight:500">Customize Panels</div>
+          <button id="leftCustomizeToggle" onclick="toggleLeftCustomize()" title="Customize left panel" style="
             width:22px;height:22px;border-radius:50%;
             background:rgba(201,169,110,0.1);border:1px solid rgba(201,169,110,0.4);
             color:var(--gold);font-size:1rem;line-height:1;cursor:pointer;
@@ -898,7 +898,7 @@ window._supabaseLaunchPatch = async function() {
         </div>
 
         <!-- Left panel customise options -->
-        <div id="leftCustomiseOptions" style="display:none;margin-bottom:1rem;padding:0.85rem;background:var(--noir3);border:1px solid var(--border)">
+        <div id="leftCustomizeOptions" style="display:none;margin-bottom:1rem;padding:0.85rem;background:var(--noir3);border:1px solid var(--border)">
           <div style="font-size:0.58rem;color:rgba(253,252,248,0.4);margin-bottom:0.75rem;line-height:1.7;letter-spacing:0.5px">Choose which sections appear here.</div>
           <div style="display:flex;flex-direction:column;gap:6px" id="leftPanelToggles"></div>
           <button onclick="applyLeftPanels()" style="
@@ -1013,8 +1013,8 @@ window._supabaseLaunchPatch = async function() {
 
       <!-- CUSTOMISE + BUTTON — pinned at top -->
       <div style="display:flex;align-items:center;justify-content:space-between;margin-bottom:1rem;padding-bottom:0.85rem;border-bottom:1px solid var(--border)">
-        <div style="font-size:0.85rem;letter-spacing:2px;text-transform:uppercase;color:var(--white);font-family:'Jost',sans-serif;font-weight:500">Customise Panels</div>
-        <button id="customiseToggle" onclick="toggleCustomise()" title="Add or remove panels" style="
+        <div style="font-size:0.85rem;letter-spacing:2px;text-transform:uppercase;color:var(--white);font-family:'Jost',sans-serif;font-weight:500">Customize Panels</div>
+        <button id="customiseToggle" onclick="toggleCustomize()" title="Add or remove panels" style="
           width:24px;height:24px;border-radius:50%;
           background:rgba(201,169,110,0.1);border:1px solid rgba(201,169,110,0.4);
           color:var(--gold);font-size:1.1rem;line-height:1;cursor:pointer;
@@ -1889,8 +1889,8 @@ function _launchDashboardCore(){
   // Init Leaflet map after dashboard is visible
   setTimeout(() => { initMap(); }, 100);
   updateNearMeBtn();
-  initCustomisePanels();
-  initLeftCustomisePanels();
+  initCustomizePanels();
+  initLeftCustomizePanels();
   // Always start with all panels hidden — user picks what they want
   LEFT_PANELS.forEach(p => {
     const el = document.getElementById(p.elId);
@@ -4685,8 +4685,8 @@ const TOUR_STEPS = [
     pos: 'bottom', wide: true
   },
   {
-    sel: '#leftCustomiseToggle',
-    title: 'Customise Left Panel',
+    sel: '#leftCustomizeToggle',
+    title: 'Customize Left Panel',
     body: 'Tap the + to choose which sections appear in the left sidebar — destinations, live movements, daily tips, BagFree essentials, saved itineraries, and hotel booking.',
     pos: 'right'
   },
@@ -4716,7 +4716,7 @@ const TOUR_STEPS = [
   },
   {
     sel: '#customiseToggle',
-    title: 'Customise Right Panel',
+    title: 'Customize Right Panel',
     body: 'Tap the + here to choose which panels appear on the right — Featured Journey, Travel Collective, Travel Intelligence alerts, and Upcoming Events.',
     pos: 'left'
   },
@@ -4897,7 +4897,7 @@ const LEFT_PANELS = [
   { id: 'leftSecHotel',   label: 'Book a hotel',         elId: 'secHotel' },
 ];
 
-function initLeftCustomisePanels() {
+function initLeftCustomizePanels() {
   const saved = JSON.parse(localStorage.getItem('bf_left_panels') || 'null');
   const container = document.getElementById('leftPanelToggles');
   if (!container) return;
@@ -4928,13 +4928,13 @@ function applyLeftPanels() {
     if (el) el.style.display = show ? '' : 'none';
   });
   localStorage.setItem('bf_left_panels', JSON.stringify(visible));
-  toggleLeftCustomise();
+  toggleLeftCustomize();
   showToast('✓ Left panel updated');
 }
 
-function toggleLeftCustomise() {
-  const opts = document.getElementById('leftCustomiseOptions');
-  const btn  = document.getElementById('leftCustomiseToggle');
+function toggleLeftCustomize() {
+  const opts = document.getElementById('leftCustomizeOptions');
+  const btn  = document.getElementById('leftCustomizeToggle');
   if (!opts) return;
   const open = opts.style.display === 'none';
   opts.style.display = open ? 'block' : 'none';
@@ -4950,7 +4950,7 @@ const PANELS = [
   { id: 'panelEvents',       label: 'Upcoming Events' },
 ];
 
-function initCustomisePanels() {
+function initCustomizePanels() {
   const saved = JSON.parse(localStorage.getItem('bf_panels') || 'null');
   const toggles = document.getElementById('panelToggles');
   toggles.innerHTML = PANELS.map(p => {
@@ -4979,12 +4979,12 @@ function applyPanels(init) {
     if (p.id === 'panelSync' && visible.includes(p.id)) buildBagfreeSyncPanel();
   });
   if (!init) {
-    toggleCustomise();
+    toggleCustomize();
     showToast('✓ Panels updated');
   }
 }
 
-function toggleCustomise() {
+function toggleCustomize() {
   const opts = document.getElementById('customiseOptions');
   const btn  = document.getElementById('customiseToggle');
   const open = opts.style.display === 'none';
