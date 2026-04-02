@@ -46,6 +46,7 @@ input,select,textarea{font-family:var(--ff-body)}
 ::-webkit-scrollbar{width:4px}
 ::-webkit-scrollbar-track{background:var(--noir)}
 ::-webkit-scrollbar-thumb{background:var(--gold-dim);border-radius:2px}
+select option{background:#1A1A17!important;color:#FDFCF8!important}
 @keyframes pulse{0%,100%{opacity:1}50%{opacity:0.3}}
 
 /* ── MOBILE RESPONSIVE ───────────────────────────────────────── */
@@ -391,9 +392,9 @@ function Home({setPage}) {
             ].map(f=>(
               <div key={f.id} style={{display:'flex',flexDirection:'column',gap:4}}>
                 <label style={{fontSize:'0.46rem',letterSpacing:'2px',textTransform:'uppercase',color:'var(--gold)'}}>{f.label}</label>
-                <select id={f.id} defaultValue={f.def} onChange={()=>hpCalc()}
-                  style={{background:'rgba(253,252,248,0.04)',border:'1px solid var(--border)',color:'var(--white)',padding:'0.45rem 0.85rem',fontSize:'0.75rem',fontFamily:'var(--ff-body)',outline:'none',cursor:'pointer',minWidth:140}}>
-                  {f.opts.map(([v,l])=><option key={v} value={v}>{l}</option>)}
+                <select id={f.id} defaultValue={f.def} onChange={(e)=>{window._hpState=window._hpState||{};window._hpState[f.id]=e.target.value;hpCalc();}}
+                  style={{background:'var(--noir-2)',border:'1px solid var(--border)',color:'var(--white)',padding:'0.45rem 0.85rem',fontSize:'0.78rem',fontFamily:'var(--ff-body)',outline:'none',cursor:'pointer',minWidth:140,colorScheme:'dark'}}>
+                  {f.opts.map(([v,l])=><option key={v} value={v} style={{background:'#1A1A17',color:'#FDFCF8'}}>{l}</option>)}
                 </select>
               </div>
             ))}
@@ -450,8 +451,8 @@ function Home({setPage}) {
       </div>
 
       {/* VENDOR PREVIEW */}
-      <div style={{padding:'6rem 3rem',background:'var(--noir)'}}>
-        <div style={{fontSize:'0.62rem',letterSpacing:'4px',textTransform:'uppercase',color:'var(--gold)',marginBottom:'1.5rem',display:'flex',alignItems:'center',gap:'1rem'}}>
+      <div style={{padding:'6rem 3rem',background:'linear-gradient(135deg,#141210,#1a1610,#121210)'}}>
+        <div style={{fontSize:'0.72rem',letterSpacing:'4px',textTransform:'uppercase',color:'var(--gold)',marginBottom:'1.5rem',display:'flex',alignItems:'center',gap:'1rem'}}>
           <span style={{width:24,height:1,background:'var(--gold-dim)',display:'inline-block'}}/>The Marketplace
         </div>
         <div style={{display:'flex',justifyContent:'space-between',alignItems:'flex-end',marginBottom:'3rem',flexWrap:'wrap',gap:'1rem'}}>
@@ -467,13 +468,13 @@ function Home({setPage}) {
             style={{background:'var(--gold)',padding:'2rem',cursor:'pointer',transition:'all 0.25s',position:'relative'}}
             onMouseEnter={e=>e.currentTarget.style.background='var(--gold-light)'}
             onMouseLeave={e=>e.currentTarget.style.background='var(--gold)'}>
-            <div style={{position:'absolute',top:'1rem',right:'1rem',fontSize:'0.55rem',letterSpacing:'1.5px',textTransform:'uppercase',color:'var(--noir)',border:'1px solid rgba(10,10,8,0.3)',padding:'2px 8px',background:'rgba(10,10,8,0.1)'}}>Official Partner</div>
+            <div style={{position:'absolute',top:'1rem',right:'1rem',fontSize:'0.65rem',letterSpacing:'1.5px',textTransform:'uppercase',color:'var(--noir)',border:'1px solid rgba(10,10,8,0.3)',padding:'2px 8px',background:'rgba(10,10,8,0.1)'}}>Official Partner</div>
             <div style={{marginBottom:'1rem'}}>
               <VendorLogo vendor={VENDORS[0]} height={60} dark={false} />
             </div>
-            <div style={{fontSize:'0.68rem',letterSpacing:'1.5px',textTransform:'uppercase',color:'rgba(10,10,8,0.5)',marginBottom:'0.75rem'}}>Clothing · Wellness · Essentials</div>
-            <div style={{fontSize:'0.78rem',color:'rgba(10,10,8,0.65)',lineHeight:1.7,marginBottom:'1rem',fontWeight:300}}>The founding supplier of BagFree. Emergency travel kits, men's and women's wear, wellness kits, and the exclusive SNUGL collection.</div>
-            <div style={{fontSize:'0.62rem',letterSpacing:'2px',textTransform:'uppercase',color:'var(--noir)',display:'flex',alignItems:'center',gap:'0.5rem',fontWeight:500}}>Same-Day Available →</div>
+            <div style={{fontSize:'0.78rem',letterSpacing:'1.5px',textTransform:'uppercase',color:'rgba(10,10,8,0.5)',marginBottom:'0.75rem'}}>Clothing · Wellness · Essentials</div>
+            <div style={{fontSize:'0.92rem',color:'rgba(10,10,8,0.7)',lineHeight:1.8,marginBottom:'1rem',fontWeight:300}}>The founding supplier of BagFree. Emergency travel kits, men's and women's wear, wellness kits, and the exclusive SNUGL collection.</div>
+            <div style={{fontSize:'0.72rem',letterSpacing:'2px',textTransform:'uppercase',color:'var(--noir)',display:'flex',alignItems:'center',gap:'0.5rem',fontWeight:500}}>Same-Day Available →</div>
           </div>
 
           {/* SNUGL card */}
@@ -485,9 +486,9 @@ function Home({setPage}) {
             <div style={{marginBottom:'1rem'}}>
               <VendorLogo vendor={VENDORS[1]} height={80} dark={true} />
             </div>
-            <div style={{fontSize:'0.68rem',letterSpacing:'1.5px',textTransform:'uppercase',color:'rgba(201,169,110,0.5)',marginBottom:'0.75rem'}}>Comfort · Travel · Wellness</div>
-            <div style={{fontSize:'0.78rem',color:'rgba(245,237,216,0.65)',lineHeight:1.7,marginBottom:'1rem',fontWeight:300}}>The revolutionary travel comfort product from Valet By Nuor's exclusive collection.</div>
-            <div style={{fontSize:'0.62rem',letterSpacing:'2px',textTransform:'uppercase',color:'var(--gold)',display:'flex',alignItems:'center',gap:'0.5rem',fontWeight:500}}>Shop Now →</div>
+            <div style={{fontSize:'0.78rem',letterSpacing:'1.5px',textTransform:'uppercase',color:'rgba(201,169,110,0.5)',marginBottom:'0.75rem'}}>Comfort · Travel · Wellness</div>
+            <div style={{fontSize:'0.92rem',color:'rgba(245,237,216,0.7)',lineHeight:1.8,marginBottom:'1rem',fontWeight:300}}>The revolutionary travel comfort product from Valet By Nuor's exclusive collection.</div>
+            <div style={{fontSize:'0.72rem',letterSpacing:'2px',textTransform:'uppercase',color:'var(--gold)',display:'flex',alignItems:'center',gap:'0.5rem',fontWeight:500}}>Shop Now →</div>
           </div>
 
           {/* Apply card */}
@@ -497,10 +498,10 @@ function Home({setPage}) {
             onMouseEnter={e=>e.currentTarget.style.background='var(--noir-3)'}
             onMouseLeave={e=>e.currentTarget.style.background='var(--noir-2)'}>
             <div style={{fontSize:'2.5rem',color:'rgba(201,169,110,0.25)',marginBottom:'1.25rem',fontWeight:100,lineHeight:1}}>+</div>
-            <div style={{fontFamily:'var(--ff-display)',fontSize:'1.3rem',fontWeight:300,color:'var(--mist)',marginBottom:'0.4rem'}}>Your Brand Here</div>
-            <div style={{fontSize:'0.68rem',letterSpacing:'1.5px',textTransform:'uppercase',color:'rgba(201,169,110,0.5)',marginBottom:'0.75rem'}}>Open Supplier Slot</div>
-            <div style={{fontSize:'0.78rem',color:'rgba(253,252,248,0.4)',lineHeight:1.7,marginBottom:'1.5rem',fontWeight:300}}>Join the BagFree supplier network and reach a new class of traveler across Florida, Georgia & the Caribbean.</div>
-            <div style={{fontSize:'0.62rem',letterSpacing:'2px',textTransform:'uppercase',color:'var(--gold)',border:'1px solid rgba(201,169,110,0.35)',padding:'0.5rem 1.25rem',display:'inline-flex',alignItems:'center',gap:'0.5rem'}}>
+            <div style={{fontFamily:'var(--ff-display)',fontSize:'1.6rem',fontWeight:300,color:'var(--mist)',marginBottom:'0.4rem'}}>Your Brand Here</div>
+            <div style={{fontSize:'0.78rem',letterSpacing:'1.5px',textTransform:'uppercase',color:'rgba(201,169,110,0.5)',marginBottom:'0.75rem'}}>Open Supplier Slot</div>
+            <div style={{fontSize:'0.92rem',color:'rgba(253,252,248,0.45)',lineHeight:1.8,marginBottom:'1.5rem',fontWeight:300}}>Join the BagFree supplier network and reach a new class of traveler across Florida, Georgia & the Caribbean.</div>
+            <div style={{fontSize:'0.72rem',letterSpacing:'2px',textTransform:'uppercase',color:'var(--gold)',border:'1px solid rgba(201,169,110,0.35)',padding:'0.6rem 1.5rem',display:'inline-flex',alignItems:'center',gap:'0.5rem'}}>
               Apply to Join →
             </div>
           </div>
@@ -1417,8 +1418,9 @@ ReactDOM.createRoot(document.getElementById('root')).render(<App/>);
 
 <script>
 function hpCalc() {
-  const days  = parseInt(document.getElementById('hp-days')?.value) || 7;
-  const style = document.getElementById('hp-style')?.value || 'leisure';
+  const s = window._hpState || {};
+  const days  = parseInt(s['hp-days']  || document.getElementById('hp-days')?.value  || 7);
+  const style = s['hp-style'] || document.getElementById('hp-style')?.value || 'leisure';
 
   const checked    = 140;
   const overweight = Math.round(140 * 0.2);
