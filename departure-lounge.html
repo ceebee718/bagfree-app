@@ -479,36 +479,23 @@ document.addEventListener('DOMContentLoaded', async function() {
   try {
     const { data: { session }, error: sessErr } = await supabase.auth.getSession()
     if (sessErr) { console.error('Session error:', sessErr) }
-    console.log('Session check:', session ? 'logged in as ' + session.user.email : 'no session')
     if (session) {
-      const { data: saved, error: profErr } = await supabase.from('profiles').select('*').eq('id', session.user.id).single()
-      if (profErr) { console.warn('Profile fetch error:', profErr) }
-      console.log('Profile data:', saved ? 'found, travel_style=' + saved.travel_style : 'not found')
-      if (saved && saved.travel_style) {
-        applyProfile(saved)
-        if ((saved.survey_version||0) < SURVEY_VERSION) {
-          console.log('Survey version outdated, showing survey')
-          document.getElementById('authOverlay').style.display = 'none'
-          document.getElementById('surveyOverlay').style.display = 'flex'
-          renderSurvey(); return
-        }
-        console.log('Launching dashboard directly')
-        document.getElementById('authOverlay').style.display = 'none'
-        _launchDashboardCore(); return
-      }
-      // Logged in but no profile yet — show survey
-      console.log('No profile found, showing survey')
+      const { data: saved } = await supabase.from('profiles').select('*').eq('id', session.user.id).single()
+      if (saved) applyProfile(saved)
+      // Always go straight to dashboard — no survey gate
       document.getElementById('authOverlay').style.display = 'none'
-      document.getElementById('surveyOverlay').style.display = 'flex'
-      renderSurvey(); return
+      _launchDashboardCore()
+      // If no profile yet, nudge user to personalize after a delay
+      if (!saved || !saved.travel_style) {
+        setTimeout(() => showPersonalizeNudge(), 3000)
+      }
+      return
     }
     // Not logged in — show auth screen
     document.getElementById('authOverlay').style.display = 'flex'
-    document.getElementById('surveyOverlay').style.display = 'none'
   } catch(e) {
     console.error('Auth flow error:', e)
     document.getElementById('authOverlay').style.display = 'flex'
-    document.getElementById('surveyOverlay').style.display = 'none'
   }
 })
 
@@ -557,11 +544,9 @@ window.doSignIn = async function() {
     }
     const { data: saved } = await supabase.from('profiles').select('*').eq('id', data.user.id).single()
     document.getElementById('authOverlay').style.display = 'none'
-    if (saved && saved.travel_style) {
-      applyProfile(saved); _launchDashboardCore()
-    } else {
-      document.getElementById('surveyOverlay').style.display = 'flex'; renderSurvey()
-    }
+    if (saved) applyProfile(saved)
+    _launchDashboardCore()
+    if (!saved || !saved.travel_style) setTimeout(() => showPersonalizeNudge(), 3000)
   } catch(e) {
     console.error('Sign in error:', e)
     showAuthError('Connection error — please check your internet and try again.')
@@ -596,8 +581,8 @@ window.doRegister = async function() {
     window.profile.name = name; window.profile.email = email
     window._profile = { ...window.profile }
     document.getElementById('authOverlay').style.display = 'none'
-    document.getElementById('surveyOverlay').style.display = 'flex'
-    renderSurvey()
+    _launchDashboardCore()
+    setTimeout(() => showPersonalizeNudge(), 3000)
   } catch(e) {
     console.error('Registration error:', e)
     showAuthError('Connection error — please check your internet and try again.')
@@ -812,6 +797,7 @@ window._supabaseLaunchPatch = async function() {
       <span style="color:var(--border-hi)">·</span>
       <span id="headerStyle" style="color:var(--gold)">Luxury</span>
       <button onclick="openProfileModal()" style="background:transparent;border:1px solid var(--border);color:var(--mist);padding:2px 8px;font-size:0.55rem;letter-spacing:1.5px;text-transform:uppercase;cursor:pointer;transition:all 0.2s;margin-left:4px" onmouseover="this.style.borderColor='var(--gold)';this.style.color='var(--gold)'" onmouseout="this.style.borderColor='var(--border)';this.style.color='var(--mist)'">Profile</button>
+      <button onclick="openPersonalizeModal()" id="personalizeBtn" style="background:rgba(201,169,110,0.12);border:1px solid rgba(201,169,110,0.5);color:var(--gold);padding:2px 8px;font-size:0.55rem;letter-spacing:1.5px;text-transform:uppercase;cursor:pointer;transition:all 0.2s;margin-left:4px" onmouseover="this.style.background='rgba(201,169,110,0.22)'" onmouseout="this.style.background='rgba(201,169,110,0.12)'">✦ Personalize</button>
       <button onclick="startTour()" title="Take a guided tour" style="background:rgba(201,169,110,0.1);border:1px solid rgba(201,169,110,0.35);color:var(--gold);padding:2px 8px;font-size:0.55rem;letter-spacing:1.5px;text-transform:uppercase;cursor:pointer;transition:all 0.2s;margin-left:4px" onmouseover="this.style.background='rgba(201,169,110,0.2)'" onmouseout="this.style.background='rgba(201,169,110,0.1)'">✦ Tour</button>
     </div>
   </div>
@@ -1583,6 +1569,82 @@ window._supabaseLaunchPatch = async function() {
         <div style="font-size:0.65rem;color:rgba(253,252,248,0.3);text-align:center;margin-top:0.75rem;line-height:1.7">BagFree delivers to your hotel before you arrive · Powered by Valet by Nuor · <a href="https://valetbynuor.com" target="_blank" style="color:rgba(201,169,110,0.5)">valetbynuor.com</a></div>
       </div>
 
+    </div>
+  </div>
+</div>
+
+<!-- ── PERSONALIZE MODAL ── -->
+<div id="personalizeModal" onclick="if(event.target===this)closePersonalizeModal()" style="display:none;position:fixed;inset:0;background:rgba(0,0,0,0.88);z-index:800;align-items:center;justify-content:center;padding:1.5rem">
+  <div style="background:var(--noir2);border:1px solid var(--border-hi);max-width:580px;width:100%;max-height:88vh;overflow-y:auto;position:relative">
+    <div style="background:linear-gradient(135deg,rgba(201,169,110,0.12),rgba(201,169,110,0.04));border-bottom:1px solid var(--border);padding:1.75rem 2rem;display:flex;justify-content:space-between;align-items:flex-start">
+      <div>
+        <div style="font-size:0.5rem;letter-spacing:3px;text-transform:uppercase;color:var(--gold);margin-bottom:0.4rem">✦ Your Lounge</div>
+        <div style="font-family:var(--ff-display);font-size:1.6rem;font-weight:300;color:var(--white);line-height:1.1">Personalize your experience</div>
+        <div style="font-size:0.72rem;color:var(--mist);margin-top:0.4rem">Takes 60 seconds. Makes everything smarter.</div>
+      </div>
+      <button onclick="closePersonalizeModal()" style="background:transparent;border:none;color:rgba(201,169,110,0.5);font-size:1.3rem;cursor:pointer" onmouseover="this.style.color='var(--gold)'" onmouseout="this.style.color='rgba(201,169,110,0.5)'">✕</button>
+    </div>
+    <div style="padding:1.75rem 2rem;display:flex;flex-direction:column;gap:1.5rem">
+
+      <!-- Name & Home City -->
+      <div style="display:grid;grid-template-columns:1fr 1fr;gap:0.85rem">
+        <div>
+          <label style="display:block;font-size:0.5rem;letter-spacing:2px;text-transform:uppercase;color:var(--gold);margin-bottom:0.4rem">Your name</label>
+          <input id="pz-name" class="auth-input" placeholder="First name" style="margin-bottom:0">
+        </div>
+        <div>
+          <label style="display:block;font-size:0.5rem;letter-spacing:2px;text-transform:uppercase;color:var(--gold);margin-bottom:0.4rem">Home city</label>
+          <input id="pz-city" class="auth-input" placeholder="e.g. Tampa, FL" style="margin-bottom:0">
+        </div>
+      </div>
+
+      <!-- Travel style -->
+      <div>
+        <label style="display:block;font-size:0.5rem;letter-spacing:2px;text-transform:uppercase;color:var(--gold);margin-bottom:0.75rem">How do you travel?</label>
+        <div style="display:grid;grid-template-columns:1fr 1fr 1fr;gap:6px" id="pz-style-grid">
+          ${['Luxury Cruise','Cultural Immersion','Adventure & Wellness','Culinary Journey','Business Travel','Family Adventure'].map(s=>`
+            <div onclick="pzSelectStyle(this,'${s}')" style="border:1px solid var(--border);padding:0.75rem 0.5rem;cursor:pointer;text-align:center;font-size:0.65rem;color:var(--mist);transition:all 0.2s;background:transparent" onmouseover="if(!this.classList.contains('pz-on'))this.style.borderColor='rgba(201,169,110,0.3)'" onmouseout="if(!this.classList.contains('pz-on'))this.style.borderColor='var(--border)'">${s}</div>
+          `).join('')}
+        </div>
+      </div>
+
+      <!-- Dream destinations -->
+      <div>
+        <label style="display:block;font-size:0.5rem;letter-spacing:2px;text-transform:uppercase;color:var(--gold);margin-bottom:0.75rem">Dream destinations (pick any)</label>
+        <div style="display:flex;flex-wrap:wrap;gap:6px" id="pz-dest-grid">
+          ${['Europe','Caribbean','Asia Pacific','Americas','Middle East','Africa','Antarctica'].map(d=>`
+            <div onclick="pzToggleDest(this,'${d}')" style="border:1px solid var(--border);padding:0.4rem 0.85rem;cursor:pointer;font-size:0.65rem;color:var(--mist);transition:all 0.2s;background:transparent">${d}</div>
+          `).join('')}
+        </div>
+      </div>
+
+      <!-- Biggest travel pain point -->
+      <div>
+        <label style="display:block;font-size:0.5rem;letter-spacing:2px;text-transform:uppercase;color:var(--gold);margin-bottom:0.75rem">Biggest travel frustration?</label>
+        <div style="display:grid;grid-template-columns:1fr 1fr;gap:6px" id="pz-pain-grid">
+          ${['Overpacking','Lost luggage','Wrong adapters','Hotel laundry costs','Forgotten essentials','Checking bags'].map(p=>`
+            <div onclick="pzSelectPain(this,'${p}')" style="border:1px solid var(--border);padding:0.6rem 0.75rem;cursor:pointer;font-size:0.65rem;color:var(--mist);transition:all 0.2s;background:transparent">${p}</div>
+          `).join('')}
+        </div>
+      </div>
+
+      <button onclick="savePersonalization()" style="width:100%;background:linear-gradient(135deg,var(--gold),#b8893e);color:var(--noir);border:none;padding:0.9rem;font-size:0.68rem;font-weight:600;letter-spacing:2.5px;text-transform:uppercase;cursor:pointer;font-family:var(--ff-body);transition:opacity 0.2s" onmouseover="this.style.opacity='0.88'" onmouseout="this.style.opacity='1'">Save & Personalize My Lounge ✦</button>
+      <div style="text-align:center;font-size:0.6rem;color:rgba(253,252,248,0.25)">You can update this anytime from the Personalize button in the header</div>
+    </div>
+  </div>
+</div>
+
+<!-- PERSONALIZE NUDGE (appears for new users) -->
+<div id="personalizeNudge" style="display:none;position:fixed;bottom:6rem;right:2rem;z-index:700;background:var(--noir2);border:1px solid rgba(201,169,110,0.5);padding:1.1rem 1.25rem;max-width:280px;box-shadow:0 8px 32px rgba(0,0,0,0.6)">
+  <div style="display:flex;align-items:flex-start;gap:0.75rem">
+    <div style="font-size:1.2rem;flex-shrink:0">✦</div>
+    <div style="flex:1">
+      <div style="font-size:0.72rem;color:var(--white);font-weight:500;margin-bottom:0.3rem">Make it yours</div>
+      <div style="font-size:0.65rem;color:var(--mist);line-height:1.65;margin-bottom:0.75rem">Tell us your travel style and we'll personalize your destination scores, AI suggestions, and BagFree recommendations.</div>
+      <div style="display:flex;gap:0.5rem">
+        <button onclick="openPersonalizeModal();hidePersonalizeNudge()" style="flex:1;background:var(--gold);color:var(--noir);border:none;padding:0.5rem;font-size:0.58rem;font-weight:600;letter-spacing:1.5px;text-transform:uppercase;cursor:pointer;font-family:var(--ff-body)">Personalize →</button>
+        <button onclick="hidePersonalizeNudge()" style="background:transparent;border:1px solid var(--border);color:var(--mist);padding:0.5rem 0.75rem;font-size:0.58rem;cursor:pointer;font-family:var(--ff-body)">Later</button>
+      </div>
     </div>
   </div>
 </div>
@@ -5093,6 +5155,107 @@ function toggleLeftCustomize() {
   opts.style.display = open ? 'block' : 'none';
   btn.textContent = open ? '×' : '+';
 }
+
+// ── PERSONALIZE MODAL ─────────────────────────────────────────────────────
+let _pzStyle = '', _pzDests = [], _pzPain = '';
+
+function openPersonalizeModal() {
+  // Pre-fill from existing profile
+  if (profile.name) document.getElementById('pz-name').value = profile.name;
+  if (profile.homeCity) document.getElementById('pz-city').value = profile.homeCity;
+  // Restore style selection
+  if (profile.travelStyle) {
+    document.querySelectorAll('#pz-style-grid div').forEach(el => {
+      if (el.textContent === profile.travelStyle) pzSelectStyle(el, profile.travelStyle);
+    });
+  }
+  document.getElementById('personalizeModal').style.display = 'flex';
+}
+function closePersonalizeModal() {
+  document.getElementById('personalizeModal').style.display = 'none';
+}
+function showPersonalizeNudge() {
+  const nudge = document.getElementById('personalizeNudge');
+  if (nudge) nudge.style.display = 'block';
+}
+function hidePersonalizeNudge() {
+  const nudge = document.getElementById('personalizeNudge');
+  if (nudge) nudge.style.display = 'none';
+}
+function pzSelectStyle(el, style) {
+  _pzStyle = style;
+  document.querySelectorAll('#pz-style-grid div').forEach(d => {
+    d.classList.remove('pz-on');
+    d.style.borderColor = 'var(--border)';
+    d.style.color = 'var(--mist)';
+    d.style.background = 'transparent';
+  });
+  el.classList.add('pz-on');
+  el.style.borderColor = 'var(--gold)';
+  el.style.color = 'var(--gold)';
+  el.style.background = 'rgba(201,169,110,0.08)';
+}
+function pzToggleDest(el, dest) {
+  if (_pzDests.includes(dest)) {
+    _pzDests = _pzDests.filter(d => d !== dest);
+    el.style.borderColor = 'var(--border)';
+    el.style.color = 'var(--mist)';
+    el.style.background = 'transparent';
+  } else {
+    _pzDests.push(dest);
+    el.style.borderColor = 'var(--gold)';
+    el.style.color = 'var(--gold)';
+    el.style.background = 'rgba(201,169,110,0.08)';
+  }
+}
+function pzSelectPain(el, pain) {
+  _pzPain = pain;
+  document.querySelectorAll('#pz-pain-grid div').forEach(d => {
+    d.style.borderColor = 'var(--border)';
+    d.style.color = 'var(--mist)';
+    d.style.background = 'transparent';
+  });
+  el.style.borderColor = 'var(--gold)';
+  el.style.color = 'var(--gold)';
+  el.style.background = 'rgba(201,169,110,0.08)';
+}
+async function savePersonalization() {
+  const name = document.getElementById('pz-name').value.trim();
+  const city = document.getElementById('pz-city').value.trim();
+  // Update profile object
+  if (name) { profile.name = name; window.profile.name = name; }
+  if (city) { profile.homeCity = city; window.profile.homeCity = city; }
+  if (_pzStyle) { profile.travelStyle = _pzStyle; window.profile.travelStyle = _pzStyle; }
+  if (_pzDests.length) { profile.destinations = _pzDests; window.profile.destinations = _pzDests; }
+  if (_pzPain) { profile.painPoint = _pzPain; window.profile.painPoint = _pzPain; }
+  // Update header display
+  const nameEl = document.getElementById('headerName');
+  const styleEl = document.getElementById('headerStyle');
+  const avatarEl = document.getElementById('headerAvatar');
+  if (nameEl && name) nameEl.textContent = name;
+  if (styleEl && _pzStyle) styleEl.textContent = _pzStyle;
+  if (avatarEl) injectHummingbirdAvatar();
+  // Save to Supabase
+  if (window._saveProfile) await window._saveProfile(profile);
+  // Rebuild AI-powered panels with new profile
+  buildDestCards();
+  buildTips();
+  buildBagfreeRec();
+  closePersonalizeModal();
+  hidePersonalizeNudge();
+  // Remove the gold pulsing dot from Personalize button
+  const btn = document.getElementById('personalizeBtn');
+  if (btn) { btn.style.background = 'transparent'; btn.style.borderColor = 'var(--border)'; btn.style.color = 'var(--mist)'; }
+  showToast('✦ Your Lounge has been personalized');
+}
+window.openPersonalizeModal = openPersonalizeModal;
+window.closePersonalizeModal = closePersonalizeModal;
+window.showPersonalizeNudge = showPersonalizeNudge;
+window.hidePersonalizeNudge = hidePersonalizeNudge;
+window.pzSelectStyle = pzSelectStyle;
+window.pzToggleDest = pzToggleDest;
+window.pzSelectPain = pzSelectPain;
+window.savePersonalization = savePersonalization;
 
 // ── CUSTOMISE PANELS ──────────────────────────────────────────────────────
 const PANELS = [
