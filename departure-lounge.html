@@ -762,7 +762,7 @@ window._supabaseLaunchPatch = async function() {
         <div id="destCards"></div>
       </div>
 
-      <div class="sidebar-section">
+      <div class="sidebar-section" id="secLive">
         <div class="sidebar-label">Live movements</div>
         <div id="liveList"></div>
         <div style="display:flex;gap:4px;margin-top:8px;flex-wrap:wrap" id="liveFilterBtns">
@@ -780,7 +780,7 @@ window._supabaseLaunchPatch = async function() {
         <div id="flightQuotaWarn" style="display:none;font-size:0.56rem;color:var(--amber);margin-top:5px;font-style:italic"></div>
       </div>
 
-      <div class="sidebar-section">
+      <div class="sidebar-section" id="secTip">
         <div class="sidebar-label">Daily tip</div>
         <div class="tip-card">
           <div class="tip-day" id="tipDay">Today</div>
@@ -788,18 +788,18 @@ window._supabaseLaunchPatch = async function() {
         </div>
       </div>
 
-      <div class="sidebar-section" style="border-bottom:none">
+      <div class="sidebar-section" id="secBagfree" style="border-bottom:none">
         <div class="sidebar-label">BagFree essentials</div>
         <div id="bagfreeRec" style="font-size:0.72rem;color:var(--mist);line-height:1.7"></div>
         <a href="https://valetbynuor.com" target="_blank" style="display:block;margin-top:0.75rem">
           <button class="btn-gold" style="width:100%;padding:0.6rem">Shop now ↗</button>
         </a>
       </div>
-      <div class="sidebar-section" style="border-top:1px solid var(--border);padding-top:1.25rem;margin-top:0">
+      <div class="sidebar-section" id="secSaved" style="border-top:1px solid var(--border);padding-top:1.25rem;margin-top:0">
         <div class="sidebar-label">Saved itineraries</div>
         <div id="savedTripsContainer"><div style="font-size:0.68rem;color:var(--mist)">No saved trips yet.</div></div>
       </div>
-      <div class="sidebar-section" style="border-top:1px solid var(--border);padding-top:1.25rem;margin-top:0">
+      <div class="sidebar-section" id="secHotel" style="border-top:1px solid var(--border);padding-top:1.25rem;margin-top:0">
         <div class="sidebar-label">Book a hotel</div>
         <div style="font-size:0.68rem;color:var(--mist);line-height:1.6;margin-bottom:0.65rem">Exclusive rates via our concierge network.</div>
         <a href="https://bagfree.app/#hotel" target="_blank" style="display:block"><button class="btn-gold" style="width:100%;padding:0.55rem;font-size:0.58rem;letter-spacing:2px">Book Hotel ↗</button></a>
@@ -2729,6 +2729,12 @@ const TOUR_STEPS = [
     pos: 'bottom', wide: true
   },
   {
+    sel: '#leftCustomiseToggle',
+    title: 'Customise Left Panel',
+    body: 'Tap the + to choose which sections appear in the left sidebar — destinations, live movements, daily tips, BagFree essentials, saved itineraries, and hotel booking.',
+    pos: 'right'
+  },
+  {
     sel: '#destCards',
     title: 'AI-Matched Destinations',
     body: 'Claude scores every destination against your travel profile in real time. Click any card to load full intelligence — safety, embassy, currency, best time to visit.',
@@ -2750,6 +2756,12 @@ const TOUR_STEPS = [
     sel: '#leafletMap',
     title: 'Interactive World Map',
     body: 'Click any pin to see full destination intelligence. Switch between Light, Dark, Satellite, and Voyager basemaps. Live flight arcs animate in real time.',
+    pos: 'left'
+  },
+  {
+    sel: '#customiseToggle',
+    title: 'Customise Right Panel',
+    body: 'Tap the + here to choose which panels appear on the right — Featured Journey, Travel Collective, Travel Intelligence alerts, and Upcoming Events.',
     pos: 'left'
   },
   {
@@ -2921,12 +2933,12 @@ window.startTour = startTour;
 
 // ── LEFT SIDEBAR CUSTOMISE ────────────────────────────────────────────────
 const LEFT_PANELS = [
-  { id: 'leftSecDest',      label: 'Recommended for you',  sel: '#destCards' },
-  { id: 'leftSecLive',      label: 'Live movements',        sel: '.sidebar-section:nth-child(4)' },
-  { id: 'leftSecTip',       label: 'Daily tip',             sel: '.sidebar-section:nth-child(5)' },
-  { id: 'leftSecBagfree',   label: 'BagFree essentials',    sel: '.sidebar-section:nth-child(6)' },
-  { id: 'leftSecSaved',     label: 'Saved itineraries',     sel: '.sidebar-section:nth-child(7)' },
-  { id: 'leftSecHotel',     label: 'Book a hotel',          sel: '.sidebar-section:nth-child(8)' },
+  { id: 'leftSecDest',    label: 'Recommended for you', elId: 'destCards' },
+  { id: 'leftSecLive',    label: 'Live movements',       elId: 'secLive' },
+  { id: 'leftSecTip',     label: 'Daily tip',            elId: 'secTip' },
+  { id: 'leftSecBagfree', label: 'BagFree essentials',   elId: 'secBagfree' },
+  { id: 'leftSecSaved',   label: 'Saved itineraries',    elId: 'secSaved' },
+  { id: 'leftSecHotel',   label: 'Book a hotel',         elId: 'secHotel' },
 ];
 
 function initLeftCustomisePanels() {
@@ -2941,37 +2953,24 @@ function initLeftCustomisePanels() {
         <span style="font-size:0.72rem;color:var(--mist)">${p.label}</span>
       </label>`;
   }).join('');
-  // Hide all left sections by default if no saved state
+  // Hide all by default if no saved state
   if (!saved) {
-    const sidebar = document.querySelector('.dl-sidebar');
-    if (sidebar) {
-      const sections = sidebar.querySelectorAll('.sidebar-section');
-      sections.forEach((sec, i) => { if (i > 0) sec.style.display = 'none'; });
-    }
-    const destCards = document.getElementById('destCards');
-    if (destCards) destCards.style.display = 'none';
+    LEFT_PANELS.forEach(p => {
+      const el = document.getElementById(p.elId);
+      if (el) el.style.display = 'none';
+    });
   }
 }
 
 function applyLeftPanels() {
-  const sidebar = document.querySelector('.dl-sidebar');
-  if (!sidebar) return;
-  const sections = sidebar.querySelectorAll('.sidebar-section');
-  // sections[0] = destinations (index 0), [1] = live, [2] = tip, [3] = bagfree, [4] = saved, [5] = hotel
-  const map = ['leftSecDest','leftSecLive','leftSecTip','leftSecBagfree','leftSecSaved','leftSecHotel'];
   const visible = [];
-  map.forEach((id, i) => {
-    const chk = document.getElementById('lchk_' + id);
-    const show = chk ? chk.checked : true;
-    if (show) visible.push(id);
-    // sections[0] is the dest section (has the + button), sections 1-5 are the rest
-    const sec = sections[i + 1]; // offset by 1 because first section has toggle
-    if (sec) sec.style.display = show ? '' : 'none';
+  LEFT_PANELS.forEach(p => {
+    const chk = document.getElementById('lchk_' + p.id);
+    const show = chk ? chk.checked : false;
+    if (show) visible.push(p.id);
+    const el = document.getElementById(p.elId);
+    if (el) el.style.display = show ? '' : 'none';
   });
-  // The dest cards themselves
-  const destCards = document.getElementById('destCards');
-  const destChk = document.getElementById('lchk_leftSecDest');
-  if (destCards && destChk) destCards.style.display = destChk.checked ? '' : 'none';
   localStorage.setItem('bf_left_panels', JSON.stringify(visible));
   toggleLeftCustomise();
   showToast('✓ Left panel updated');
