@@ -3307,19 +3307,15 @@ Best flight routes from their home city, rough cost, transit tips on arrival.
 Keep tone: refined, knowledgeable, like a well-traveled concierge friend. Bold key destination names and experiences. Be specific, not generic.`;
 
   try {
-    const res = await fetch('https://api.anthropic.com/v1/messages', {
+    const fullPrompt = systemPrompt + '\n\nUser: ' + _aiBrainHistory.map(m=>m.role+': '+m.content).join('\n');
+    const res = await fetch('/.netlify/functions/ai-scores', {
       method: 'POST',
       headers: { 'Content-Type': 'application/json' },
-      body: JSON.stringify({
-        model: 'claude-sonnet-4-20250514',
-        max_tokens: 1500,
-        system: systemPrompt,
-        messages: _aiBrainHistory
-      })
+      body: JSON.stringify({ prompt: fullPrompt })
     });
-
+    if (!res.ok) throw new Error('Function error ' + res.status);
     const data = await res.json();
-    const reply = data.content?.[0]?.text || 'I had trouble generating your itinerary. Please try again.';
+    const reply = (data.text || data.content?.[0]?.text || '').trim() || 'I had trouble generating your itinerary. Please try again.';
 
     // Update history
     _aiBrainHistory.push({ role: 'assistant', content: reply });
@@ -3513,15 +3509,7 @@ async function loadSyncSuggestions() {
   const arrival = _syncState.arrival || 'upcoming trip';
 
   try {
-    const res = await fetch('https://api.anthropic.com/v1/messages', {
-      method: 'POST',
-      headers: { 'Content-Type': 'application/json' },
-      body: JSON.stringify({
-        model: 'claude-sonnet-4-20250514',
-        max_tokens: 400,
-        messages: [{
-          role: 'user',
-          content: `You are BagFree's smart delivery suggestion engine. Generate exactly 4 short, specific, actionable delivery suggestions for this traveler.
+    const syncPrompt = `You are BagFree's smart delivery suggestion engine. Generate exactly 4 short, specific, actionable delivery suggestions for this traveler.
 
 Traveler: ${style} travel style
 Destination: ${dest}
@@ -3536,13 +3524,17 @@ Rules:
 - Think: clothing items, grooming kits, wellness products, work gear, local essentials
 
 Return ONLY a JSON array of 4 strings, no markdown, no explanation:
-["suggestion 1","suggestion 2","suggestion 3","suggestion 4"]`
-        }]
-      })
+["suggestion 1","suggestion 2","suggestion 3","suggestion 4"]`;
+
+    const res = await fetch('/.netlify/functions/ai-scores', {
+      method: 'POST',
+      headers: { 'Content-Type': 'application/json' },
+      body: JSON.stringify({ prompt: syncPrompt })
     });
+    if (!res.ok) throw new Error('Function error');
     const data = await res.json();
-    const raw = data.content?.[0]?.text || '[]';
-    const suggestions = JSON.parse(raw.replace(/```json|```/g,'').trim());
+    const raw = (data.text || data.content?.[0]?.text || '[]').replace(/```json|```/g,'').trim();
+    const suggestions = JSON.parse(raw);
     container.innerHTML = suggestions.map(s => `
       <div class="sync-suggestion" onclick="applySyncSuggestion('${s.replace(/'/g,"\\'")}')">
         ${s} <span style="float:right;font-size:0.55rem;color:var(--gold);opacity:0.7">+ add</span>
@@ -3677,15 +3669,7 @@ async function sibAutoBuild() {
   const activitiesPerDay = _sibPace === 'relaxed' ? 3 : _sibPace === 'packed' ? 6 : 4;
 
   try {
-    const res = await fetch('https://api.anthropic.com/v1/messages', {
-      method:'POST',
-      headers:{'Content-Type':'application/json'},
-      body: JSON.stringify({
-        model:'claude-sonnet-4-20250514',
-        max_tokens:2000,
-        messages:[{
-          role:'user',
-          content:`You are a luxury travel itinerary architect for BagFree. Build a ${numDays}-day ${dest} itinerary.
+    const sibPrompt = `You are a luxury travel itinerary architect for BagFree. Build a ${numDays}-day ${dest} itinerary.
 
 Profile: ${mode}, ${budget}, ${_sibPace} pace, staying at ${hotel}.
 Traveler style: ${profile.travelStyle||'Luxury'}.
@@ -3719,13 +3703,17 @@ Rules:
 - Flag booked:true only for restaurant reservations needed
 - travel field: realistic time from PRIOR stop
 - Keep times realistic — don't schedule lunch at 1pm then museum 20min away at 1:15pm
-- Budget for ${budget}`
-        }]
-      })
+- Budget for ${budget}`;
+
+    const res = await fetch('/.netlify/functions/ai-scores', {
+      method:'POST',
+      headers:{'Content-Type':'application/json'},
+      body: JSON.stringify({ prompt: sibPrompt })
     });
+    if (!res.ok) throw new Error('Function error ' + res.status);
 
     const data = await res.json();
-    const raw = data.content?.[0]?.text || '[]';
+    const raw = (data.text || data.content?.[0]?.text || '[]').replace(/```json|```/g,'').trim();
     _sibDays = JSON.parse(raw.replace(/```json|```/g,'').trim());
     _sibDays.forEach((day,di) => day.cards.forEach((c,ci) => c.id = `c${di}_${ci}_${Date.now()}`));
     renderSibTimeline();
