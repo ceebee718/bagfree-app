@@ -176,14 +176,49 @@ button,input,select,textarea{font-family:var(--ff-body)}
 .alert-tag.amber{color:var(--amber)}
 .alert-tag.green{color:var(--green)}
 
-/* TRIP PLANNER BAR */
-.trip-bar{background:var(--noir2);border-bottom:1px solid var(--border);padding:0.6rem 1rem;display:flex;gap:0.5rem;align-items:center;flex-shrink:0}
+/* AI TRAVEL BRAIN BAR */
+.trip-bar{background:var(--noir2);border-bottom:1px solid var(--border);padding:0.55rem 1rem;display:flex;gap:0.5rem;align-items:center;flex-shrink:0;position:relative}
 .trip-input{background:var(--noir3);border:1px solid var(--border);color:var(--white);padding:0.45rem 0.75rem;font-size:0.75rem;outline:none;flex:1}
 .trip-input::placeholder{color:rgba(253,252,248,0.3)}
 .trip-input:focus{border-color:rgba(201,169,110,0.35)}
 .trip-select{background:var(--noir3);border:1px solid var(--border);color:var(--white);padding:0.45rem 0.5rem;font-size:0.72rem;outline:none}
 .trip-go{background:var(--gold);color:var(--noir);border:none;padding:0.45rem 1rem;font-size:0.62rem;letter-spacing:2px;text-transform:uppercase;cursor:pointer;white-space:nowrap}
 .trip-go:hover{background:var(--gold-light)}
+.trip-go:disabled{opacity:0.5;cursor:not-allowed}
+
+/* AI BRAIN MODAL */
+#aiBrainModal{display:none;position:fixed;inset:0;background:rgba(0,0,0,0.88);z-index:700;align-items:flex-start;justify-content:center;padding:1.5rem;overflow-y:auto}
+.ai-brain-box{background:var(--noir2);border:1px solid var(--border-hi);width:100%;max-width:780px;margin:auto;position:relative;display:flex;flex-direction:column;max-height:90vh}
+.ai-brain-header{background:linear-gradient(135deg,rgba(201,169,110,0.12),rgba(201,169,110,0.04));border-bottom:1px solid var(--border);padding:1.25rem 1.75rem;display:flex;align-items:center;justify-content:space-between;flex-shrink:0}
+.ai-brain-title{font-family:var(--ff-display);font-size:1.5rem;font-weight:300;color:var(--white)}
+.ai-brain-title span{color:var(--gold);font-style:italic}
+.ai-chat-history{flex:1;overflow-y:auto;padding:1.25rem 1.75rem;display:flex;flex-direction:column;gap:1.25rem;min-height:200px}
+.ai-msg{display:flex;flex-direction:column;gap:0.35rem}
+.ai-msg.user .ai-bubble{background:rgba(201,169,110,0.1);border:1px solid rgba(201,169,110,0.25);align-self:flex-end;color:var(--white);max-width:80%}
+.ai-msg.assistant .ai-bubble{background:var(--noir3);border:1px solid var(--border);align-self:flex-start;color:var(--mist);max-width:100%;width:100%}
+.ai-bubble{padding:0.85rem 1.1rem;font-size:0.78rem;line-height:1.85;border-radius:2px}
+.ai-bubble b,.ai-bubble strong{color:var(--gold);font-weight:500}
+.ai-cards{display:grid;grid-template-columns:1fr 1fr 1fr;gap:8px;margin-top:0.85rem}
+.ai-card{background:var(--noir2);border:1px solid var(--border);padding:0.85rem}
+.ai-card-label{font-size:0.5rem;letter-spacing:2.5px;text-transform:uppercase;color:var(--gold);margin-bottom:0.5rem}
+.ai-card-content{font-size:0.7rem;color:var(--mist);line-height:1.75}
+.ai-card-content li{list-style:none;padding:2px 0;display:flex;gap:6px}
+.ai-card-content li::before{content:'✦';font-size:0.5rem;color:var(--gold);margin-top:3px;flex-shrink:0}
+.ai-typing{display:flex;gap:4px;align-items:center;padding:0.85rem 1.1rem}
+.ai-typing span{width:5px;height:5px;border-radius:50%;background:var(--gold);animation:aiTyping 1.2s ease-in-out infinite}
+.ai-typing span:nth-child(2){animation-delay:0.2s}
+.ai-typing span:nth-child(3){animation-delay:0.4s}
+@keyframes aiTyping{0%,80%,100%{opacity:0.2;transform:scale(0.8)}40%{opacity:1;transform:scale(1)}}
+.ai-brain-input-row{border-top:1px solid var(--border);padding:0.85rem 1.25rem;display:flex;gap:0.75rem;align-items:center;flex-shrink:0;background:var(--noir2)}
+.ai-brain-input{flex:1;background:var(--noir3);border:1px solid var(--border);color:var(--white);padding:0.65rem 1rem;font-size:0.78rem;outline:none;font-family:var(--ff-body);resize:none;height:42px;transition:border-color 0.2s}
+.ai-brain-input:focus{border-color:rgba(201,169,110,0.4)}
+.ai-brain-input::placeholder{color:rgba(253,252,248,0.28)}
+.ai-send-btn{background:var(--gold);color:var(--noir);border:none;padding:0.65rem 1.25rem;font-size:0.62rem;letter-spacing:2px;text-transform:uppercase;cursor:pointer;font-family:var(--ff-body);font-weight:500;white-space:nowrap;transition:background 0.2s;flex-shrink:0}
+.ai-send-btn:hover{background:var(--gold-light)}
+.ai-send-btn:disabled{opacity:0.4;cursor:not-allowed}
+.ai-quick-prompts{display:flex;gap:6px;flex-wrap:wrap;padding:0 1.75rem 0.85rem;flex-shrink:0}
+.ai-qp{background:transparent;border:1px solid var(--border);color:rgba(253,252,248,0.45);padding:3px 10px;font-size:0.58rem;letter-spacing:1px;cursor:pointer;font-family:var(--ff-body);transition:all 0.2s;white-space:nowrap}
+.ai-qp:hover{border-color:rgba(201,169,110,0.4);color:var(--gold)}
 
 /* NO DEST PLACEHOLDER */
 .no-dest{display:flex;flex-direction:column;align-items:center;justify-content:center;height:100%;text-align:center;padding:2rem;gap:0.75rem}
@@ -278,6 +313,40 @@ button,input,select,textarea{font-family:var(--ff-body)}
   .dl-user button{display:none}
   .map-toolbar .layer-btn{font-size:0.5rem;padding:2px 6px}
 }
+
+/* ── BAGFREE SYNC ── */
+.sync-section{margin-bottom:1.1rem;padding-bottom:1.1rem;border-bottom:1px solid var(--border)}
+.sync-section:last-child{border-bottom:none;margin-bottom:0}
+.sync-section-title{font-size:0.52rem;letter-spacing:2.5px;text-transform:uppercase;color:var(--gold);margin-bottom:0.65rem}
+.sync-tile-grid{display:grid;grid-template-columns:1fr 1fr;gap:6px;margin-bottom:0.5rem}
+.sync-tile{border:1px solid var(--border);padding:0.6rem 0.5rem;cursor:pointer;transition:all 0.2s;text-align:center;background:transparent}
+.sync-tile:hover{border-color:rgba(201,169,110,0.35);background:var(--noir3)}
+.sync-tile.on{border-color:var(--gold);background:rgba(201,169,110,0.09)}
+.sync-tile-icon{font-size:1.1rem;display:block;margin-bottom:3px}
+.sync-tile-label{font-size:0.58rem;color:var(--mist);letter-spacing:0.5px}
+.sync-tile.on .sync-tile-label{color:var(--gold)}
+.sync-timing-opt{display:flex;align-items:center;gap:0.6rem;padding:0.45rem 0.6rem;border:1px solid var(--border);margin-bottom:5px;cursor:pointer;transition:all 0.2s}
+.sync-timing-opt:hover{border-color:rgba(201,169,110,0.35)}
+.sync-timing-opt.on{border-color:var(--gold);background:rgba(201,169,110,0.07)}
+.sync-timing-opt input[type=checkbox]{accent-color:var(--gold);width:12px;height:12px;flex-shrink:0;cursor:pointer}
+.sync-timing-label{font-size:0.68rem;color:var(--mist)}
+.sync-timing-opt.on .sync-timing-label{color:var(--white)}
+.sync-suggestion{padding:0.55rem 0.7rem;border-left:2px solid var(--gold);background:rgba(201,169,110,0.05);margin-bottom:6px;font-size:0.68rem;color:var(--mist);line-height:1.6;cursor:pointer;transition:background 0.2s}
+.sync-suggestion:hover{background:rgba(201,169,110,0.1)}
+.sync-suggestion b{color:var(--gold)}
+.sync-field{background:var(--noir3);border:1px solid var(--border);color:var(--white);padding:0.5rem 0.75rem;font-size:0.75rem;outline:none;width:100%;font-family:var(--ff-body);margin-bottom:6px;transition:border-color 0.2s}
+.sync-field:focus{border-color:rgba(201,169,110,0.4)}
+.sync-field::placeholder{color:rgba(253,252,248,0.28)}
+.sync-cta{width:100%;background:linear-gradient(135deg,var(--gold),#b8893e);color:var(--noir);border:none;padding:0.85rem;font-size:0.65rem;font-weight:600;letter-spacing:2.5px;text-transform:uppercase;cursor:pointer;font-family:var(--ff-body);transition:opacity 0.2s;margin-top:0.5rem}
+.sync-cta:hover{opacity:0.88}
+.sync-trip-card{background:var(--noir3);border:1px solid var(--border);padding:0.75rem;margin-bottom:0.75rem}
+.sync-trip-row{display:flex;align-items:center;gap:0.5rem;padding:3px 0;color:var(--mist);font-size:0.7rem}
+.sync-trip-row span:first-child{font-size:0.85rem;flex-shrink:0}
+.sync-trip-row b{color:var(--white)}
+.sync-ai-loading{display:flex;gap:4px;align-items:center;padding:0.5rem 0}
+.sync-ai-loading span{width:5px;height:5px;border-radius:50%;background:var(--gold);animation:aiTyping 1.2s ease-in-out infinite}
+.sync-ai-loading span:nth-child(2){animation-delay:0.2s}
+.sync-ai-loading span:nth-child(3){animation-delay:0.4s}
 </style>
 <script src="https://unpkg.com/leaflet@1.9.4/dist/leaflet.js"></script>
 <script type="module">
@@ -808,19 +877,14 @@ window._supabaseLaunchPatch = async function() {
 
     <!-- MAP CENTER -->
     <div class="dl-map-area">
+      <!-- AI TRAVEL BRAIN BAR -->
       <div class="trip-bar">
-        <input class="trip-input" id="tripDest" placeholder="Where do you want to go?">
-        <select class="trip-select" id="tripStyle">
-          <option value="">Style...</option>
-          <option>Luxury Cruise</option>
-          <option>Cultural</option>
-          <option>Adventure</option>
-          <option>Wellness</option>
-          <option>Culinary</option>
-          <option>Business</option>
-        </select>
-        <input class="trip-input" id="tripDays" placeholder="Days" style="max-width:70px">
-        <button class="trip-go" onclick="planTrip()">Map Journey</button>
+        <div style="display:flex;align-items:center;gap:6px;flex-shrink:0">
+          <svg viewBox="0 0 18 18" style="width:14px;height:14px;fill:none;stroke:var(--gold);stroke-width:1.5;stroke-linecap:round"><circle cx="9" cy="9" r="7"/><path d="M6 9 Q9 5 12 9 Q9 13 6 9Z"/><circle cx="9" cy="9" r="1.5" fill="var(--gold)" stroke="none"/></svg>
+          <span style="font-size:0.55rem;letter-spacing:2px;text-transform:uppercase;color:var(--gold);white-space:nowrap">AI Travel Brain</span>
+        </div>
+        <input class="trip-input" id="aiBrainQuickInput" placeholder="I'm in Paris for 2 days, luxury vibe, no tourist traps..." onkeydown="if(event.key==='Enter')openAIBrain()">
+        <button class="trip-go" onclick="openAIBrain()" id="aiBrainQuickBtn">Plan My Trip ✦</button>
       </div>
 
       <div class="map-toolbar">
@@ -837,6 +901,8 @@ window._supabaseLaunchPatch = async function() {
         <button class="layer-btn active" onclick="toggleLayer('events',this)"><span class="dot" style="background:var(--purple)"></span>Events</button>
         <button class="layer-btn active" onclick="toggleLayer('embassy',this)"><span class="dot" style="background:var(--blue)"></span>Embassies</button>
         <button class="layer-btn active" onclick="toggleLayer('collective',this)"><span class="dot" style="background:var(--green)"></span>Group Trips</button>
+        <span style="width:1px;height:18px;background:var(--border);flex-shrink:0;margin:0 2px"></span>
+        <button class="layer-btn" onclick="openCuratorMarket()" style="border-color:rgba(201,169,110,0.4);color:var(--gold)"><span style="font-size:0.7rem">✦</span> Curators</button>
       </div>
 
       <div class="map-svg-wrap">
@@ -887,6 +953,13 @@ window._supabaseLaunchPatch = async function() {
       </div>
 
       <!-- DYNAMIC PANELS -->
+      <div id="panelSync" class="dash-panel" style="margin-top:1.25rem;padding-top:1.25rem;border-top:1px solid var(--border)">
+        <div class="sidebar-label" style="display:flex;align-items:center;gap:0.5rem">
+          <span>BagFree Sync</span>
+          <span style="font-size:0.45rem;letter-spacing:1.5px;background:rgba(201,169,110,0.12);border:1px solid rgba(201,169,110,0.4);color:var(--gold);padding:1px 6px">YOUR UNFAIR ADVANTAGE</span>
+        </div>
+        <div id="bagfreeSyncPanel"></div>
+      </div>
       <div id="panelFeaturedTrip" class="dash-panel" style="margin-top:1.25rem;padding-top:1.25rem;border-top:1px solid var(--border)">
         <div class="sidebar-label">Featured journey</div>
         <div id="featuredTrip"></div>
@@ -906,6 +979,242 @@ window._supabaseLaunchPatch = async function() {
     </div>
   </div>
 </div>
+<!-- AI TRAVEL BRAIN MODAL -->
+<div id="aiBrainModal" onclick="if(event.target===this)closeAIBrain()">
+  <div class="ai-brain-box">
+    <div class="ai-brain-header">
+      <div>
+        <div style="font-size:0.5rem;letter-spacing:3px;text-transform:uppercase;color:var(--gold);margin-bottom:0.3rem">✦ AI Travel Brain</div>
+        <div class="ai-brain-title">Plan your <span>perfect</span> trip</div>
+      </div>
+      <button onclick="closeAIBrain()" style="background:transparent;border:none;color:rgba(201,169,110,0.5);font-size:1.3rem;cursor:pointer;transition:color 0.2s;padding:4px" onmouseover="this.style.color='var(--gold)'" onmouseout="this.style.color='rgba(201,169,110,0.5)'">✕</button>
+    </div>
+
+    <div class="ai-quick-prompts" id="aiQuickPrompts">
+      <button class="ai-qp" onclick="aiQuickPrompt(this)">2 days in Tokyo, cultural deep dive</button>
+      <button class="ai-qp" onclick="aiQuickPrompt(this)">Luxury Caribbean cruise, 7 nights</button>
+      <button class="ai-qp" onclick="aiQuickPrompt(this)">Paris long weekend, no tourist traps</button>
+      <button class="ai-qp" onclick="aiQuickPrompt(this)">Bali wellness retreat, solo traveler</button>
+      <button class="ai-qp" onclick="aiQuickPrompt(this)">Rome & Amalfi, honeymoon vibes</button>
+    </div>
+
+    <div class="ai-chat-history" id="aiChatHistory">
+      <div style="text-align:center;padding:2rem 1rem;opacity:0.4">
+        <div style="font-size:1.5rem;margin-bottom:0.5rem">✦</div>
+        <div style="font-size:0.75rem;color:var(--mist);line-height:1.8">Describe your trip — destination, vibe, duration, budget.<br>I'll build your itinerary, packing list, and map route.</div>
+      </div>
+    </div>
+
+    <div class="ai-brain-input-row">
+      <textarea class="ai-brain-input" id="aiBrainInput" placeholder="I'm in Paris for 2 days, luxury vibe, no tourist traps..." rows="1"
+        onkeydown="if(event.key==='Enter'&&!event.shiftKey){event.preventDefault();sendAIBrain()}"
+        oninput="this.style.height='auto';this.style.height=Math.min(this.scrollHeight,100)+'px'"></textarea>
+      <button class="ai-send-btn" id="aiBrainSendBtn" onclick="sendAIBrain()">Send ✦</button>
+    </div>
+  </div>
+</div>
+
+<!-- ── CURATOR MARKETPLACE MODAL ── -->
+<style>
+/* CURATOR MARKETPLACE */
+#curatorModal{display:none;position:fixed;inset:0;background:rgba(0,0,0,0.9);z-index:750;align-items:flex-start;justify-content:center;padding:1.5rem;overflow-y:auto}
+.curator-box{background:var(--noir2);border:1px solid var(--border-hi);width:100%;max-width:900px;margin:auto;position:relative;display:flex;flex-direction:column;max-height:92vh}
+.curator-header{padding:1.5rem 2rem;border-bottom:1px solid var(--border);display:flex;align-items:flex-start;justify-content:space-between;flex-shrink:0;background:linear-gradient(135deg,rgba(201,169,110,0.1),transparent)}
+.curator-tabs{display:flex;border-bottom:1px solid var(--border);flex-shrink:0}
+.curator-tab{flex:1;padding:0.75rem;font-size:0.6rem;letter-spacing:2px;text-transform:uppercase;color:var(--mist);background:transparent;border:none;cursor:pointer;border-bottom:2px solid transparent;transition:all 0.2s;font-family:var(--ff-body)}
+.curator-tab.active{color:var(--gold);border-bottom-color:var(--gold)}
+.curator-body{flex:1;overflow-y:auto;padding:1.5rem 2rem}
+.curator-grid{display:grid;grid-template-columns:1fr 1fr 1fr;gap:12px;margin-bottom:1.5rem}
+.curator-card{border:1px solid var(--border);padding:1.1rem;cursor:pointer;transition:all 0.25s;position:relative;background:var(--noir3)}
+.curator-card:hover{border-color:rgba(201,169,110,0.45);background:rgba(201,169,110,0.04)}
+.curator-card.featured{border-color:rgba(201,169,110,0.5);background:rgba(201,169,110,0.06)}
+.curator-badge{position:absolute;top:0.75rem;right:0.75rem;font-size:0.45rem;letter-spacing:1.5px;text-transform:uppercase;padding:2px 7px;border:1px solid}
+.curator-badge.featured{color:var(--gold);border-color:rgba(201,169,110,0.5);background:rgba(201,169,110,0.1)}
+.curator-badge.new{color:var(--green);border-color:rgba(93,202,165,0.4);background:rgba(93,202,165,0.07)}
+.curator-city{font-size:0.5rem;letter-spacing:2.5px;text-transform:uppercase;color:var(--gold);margin-bottom:0.4rem}
+.curator-name{font-family:var(--ff-display);font-size:1.05rem;font-weight:300;color:var(--white);margin-bottom:3px}
+.curator-type{font-size:0.62rem;color:var(--mist);margin-bottom:0.6rem}
+.curator-tags{display:flex;gap:4px;flex-wrap:wrap;margin-bottom:0.75rem}
+.curator-tag{font-size:0.5rem;letter-spacing:1px;text-transform:uppercase;padding:2px 7px;border:1px solid var(--border);color:rgba(253,252,248,0.45)}
+.curator-price{font-size:0.7rem;color:var(--gold);font-weight:500}
+.curator-price span{font-size:0.55rem;color:var(--mist);font-weight:300}
+.curator-filter-row{display:flex;gap:6px;flex-wrap:wrap;margin-bottom:1.25rem}
+.curator-filter{background:transparent;border:1px solid var(--border);color:var(--mist);padding:3px 10px;font-size:0.55rem;letter-spacing:1.5px;text-transform:uppercase;cursor:pointer;font-family:var(--ff-body);transition:all 0.2s}
+.curator-filter.active,.curator-filter:hover{border-color:rgba(201,169,110,0.4);color:var(--gold)}
+.curator-search{background:var(--noir3);border:1px solid var(--border);color:var(--white);padding:0.55rem 1rem;font-size:0.78rem;outline:none;font-family:var(--ff-body);width:100%;margin-bottom:1rem;transition:border-color 0.2s}
+.curator-search:focus{border-color:rgba(201,169,110,0.4)}
+.curator-search::placeholder{color:rgba(253,252,248,0.28)}
+
+/* VENDOR SIGNUP */
+#vendorSignupModal{display:none;position:fixed;inset:0;background:rgba(0,0,0,0.92);z-index:800;align-items:center;justify-content:center;padding:1.5rem}
+.vendor-box{background:var(--noir2);border:1px solid var(--border-hi);max-width:560px;width:100%;max-height:90vh;overflow-y:auto;position:relative}
+.vendor-header{background:linear-gradient(135deg,var(--gold),#b8893e);padding:1.5rem 1.75rem}
+.vendor-step{display:none}.vendor-step.active{display:block}
+.vendor-prog{display:flex;gap:6px;margin-bottom:2rem}
+.vendor-prog-dot{height:3px;flex:1;background:var(--noir3);transition:background 0.4s;border-radius:2px}
+.vendor-prog-dot.done{background:var(--gold)}
+.vendor-field{margin-bottom:1rem}
+.vendor-field label{display:block;font-size:0.52rem;letter-spacing:2px;text-transform:uppercase;color:var(--mist);margin-bottom:0.4rem}
+.vendor-input{width:100%;background:var(--noir3);border:1px solid var(--border);color:var(--white);padding:0.7rem 0.9rem;font-size:0.82rem;outline:none;font-family:var(--ff-body);transition:border-color 0.2s}
+.vendor-input:focus{border-color:rgba(201,169,110,0.45)}
+.vendor-input::placeholder{color:rgba(253,252,248,0.25)}
+.vendor-select{width:100%;background:var(--noir3);border:1px solid var(--border);color:var(--white);padding:0.7rem 0.9rem;font-size:0.82rem;outline:none;font-family:var(--ff-body)}
+.vendor-chip-grid{display:grid;grid-template-columns:1fr 1fr;gap:6px}
+.vendor-chip{border:1px solid var(--border);padding:0.6rem 0.75rem;cursor:pointer;font-size:0.72rem;color:var(--mist);text-align:center;transition:all 0.2s;background:transparent}
+.vendor-chip:hover{border-color:rgba(201,169,110,0.3)}
+.vendor-chip.on{border-color:var(--gold);color:var(--gold);background:rgba(201,169,110,0.08)}
+</style>
+
+<!-- CURATOR MARKETPLACE -->
+<div id="curatorModal" onclick="if(event.target===this)closeCuratorMarket()">
+  <div class="curator-box">
+    <div class="curator-header">
+      <div>
+        <div style="font-size:0.5rem;letter-spacing:3px;text-transform:uppercase;color:var(--gold);margin-bottom:0.4rem">✦ Local Curator Marketplace</div>
+        <div style="font-family:var(--ff-display);font-size:1.6rem;font-weight:300;color:var(--white);line-height:1.1">Dress local.<br><em style="color:var(--gold)">Arrive as a local.</em></div>
+        <div style="font-size:0.7rem;color:rgba(253,252,248,0.5);margin-top:0.5rem;line-height:1.7">Local stylists, cultural kits & outfit rentals — delivered to your hotel before you arrive.</div>
+      </div>
+      <div style="display:flex;flex-direction:column;align-items:flex-end;gap:0.5rem">
+        <button onclick="closeCuratorMarket()" style="background:transparent;border:none;color:rgba(201,169,110,0.5);font-size:1.3rem;cursor:pointer;transition:color 0.2s" onmouseover="this.style.color='var(--gold)'" onmouseout="this.style.color='rgba(201,169,110,0.5)'">✕</button>
+        <button onclick="openVendorSignup()" style="background:transparent;border:1px solid rgba(201,169,110,0.4);color:var(--gold);padding:0.4rem 0.9rem;font-size:0.55rem;letter-spacing:2px;text-transform:uppercase;cursor:pointer;font-family:var(--ff-body);transition:all 0.2s;white-space:nowrap" onmouseover="this.style.background='rgba(201,169,110,0.1)'" onmouseout="this.style.background='transparent'">+ List Your Services</button>
+      </div>
+    </div>
+
+    <div class="curator-tabs">
+      <button class="curator-tab active" onclick="switchCuratorTab('browse',this)">Browse Curators</button>
+      <button class="curator-tab" onclick="switchCuratorTab('kits',this)">Cultural Kits</button>
+      <button class="curator-tab" onclick="switchCuratorTab('rentals',this)">Outfit Rentals</button>
+      <button class="curator-tab" onclick="switchCuratorTab('stylists',this)">Local Stylists</button>
+    </div>
+
+    <div class="curator-body">
+      <input class="curator-search" id="curatorSearch" placeholder="Search by city, style, or curator name..." oninput="filterCurators()">
+
+      <div class="curator-filter-row" id="curatorFilters">
+        <button class="curator-filter active" onclick="setCuratorFilter('all',this)">All Cities</button>
+        <button class="curator-filter" onclick="setCuratorFilter('Paris',this)">Paris</button>
+        <button class="curator-filter" onclick="setCuratorFilter('Tokyo',this)">Tokyo</button>
+        <button class="curator-filter" onclick="setCuratorFilter('Rome',this)">Rome</button>
+        <button class="curator-filter" onclick="setCuratorFilter('Bali',this)">Bali</button>
+        <button class="curator-filter" onclick="setCuratorFilter('London',this)">London</button>
+        <button class="curator-filter" onclick="setCuratorFilter('Caribbean',this)">Caribbean</button>
+      </div>
+
+      <div class="curator-grid" id="curatorGrid"></div>
+
+      <div id="curatorEmpty" style="display:none;text-align:center;padding:3rem;color:var(--mist);font-size:0.78rem">
+        No curators found for this filter yet.<br>
+        <button onclick="openVendorSignup()" style="margin-top:1rem;background:transparent;border:1px solid var(--border-hi);color:var(--gold);padding:0.5rem 1.2rem;font-size:0.58rem;letter-spacing:2px;text-transform:uppercase;cursor:pointer;font-family:var(--ff-body)">Be the first in this city →</button>
+      </div>
+    </div>
+  </div>
+</div>
+
+<!-- VENDOR SIGNUP MODAL -->
+<div id="vendorSignupModal" onclick="if(event.target===this)closeVendorSignup()">
+  <div class="vendor-box">
+    <div class="vendor-header">
+      <div style="font-family:var(--ff-display);font-size:1.3rem;color:var(--noir);margin-bottom:3px">List Your Services</div>
+      <div style="font-size:0.6rem;letter-spacing:2px;text-transform:uppercase;color:rgba(10,10,8,0.55)">BagFree Curator Marketplace · Application</div>
+    </div>
+
+    <div style="padding:1.5rem 1.75rem">
+      <div class="vendor-prog" id="vendorProg">
+        <div class="vendor-prog-dot done"></div>
+        <div class="vendor-prog-dot"></div>
+        <div class="vendor-prog-dot"></div>
+        <div class="vendor-prog-dot"></div>
+      </div>
+
+      <!-- Step 1: About you -->
+      <div class="vendor-step active" id="vStep0">
+        <div style="font-size:0.55rem;letter-spacing:3px;text-transform:uppercase;color:var(--gold);margin-bottom:1rem">Step 1 of 4 · About You</div>
+        <div class="vendor-field"><label>Full name</label><input class="vendor-input" id="vName" placeholder="Your name"></div>
+        <div class="vendor-field"><label>Email</label><input class="vendor-input" id="vEmail" type="email" placeholder="your@email.com"></div>
+        <div class="vendor-field"><label>Business / Brand name</label><input class="vendor-input" id="vBusiness" placeholder="e.g. Riviera Style Studio"></div>
+        <div class="vendor-field"><label>City you operate in</label><input class="vendor-input" id="vCity" placeholder="e.g. Paris, France"></div>
+        <div class="vendor-field"><label>Instagram or website (optional)</label><input class="vendor-input" id="vSocial" placeholder="@handle or https://..."></div>
+      </div>
+
+      <!-- Step 2: Services -->
+      <div class="vendor-step" id="vStep1">
+        <div style="font-size:0.55rem;letter-spacing:3px;text-transform:uppercase;color:var(--gold);margin-bottom:1rem">Step 2 of 4 · Your Services</div>
+        <div class="vendor-field">
+          <label>Service type (select all that apply)</label>
+          <div class="vendor-chip-grid" id="vServiceChips">
+            <div class="vendor-chip" onclick="toggleVChip(this,'Local Styling Session')">👗 Local Styling Session</div>
+            <div class="vendor-chip" onclick="toggleVChip(this,'Cultural Outfit Kit')">🎎 Cultural Outfit Kit</div>
+            <div class="vendor-chip" onclick="toggleVChip(this,'Outfit Rental')">👔 Outfit Rental</div>
+            <div class="vendor-chip" onclick="toggleVChip(this,'Personal Shopping')">🛍️ Personal Shopping</div>
+            <div class="vendor-chip" onclick="toggleVChip(this,'Wardrobe Delivery')">📦 Wardrobe Delivery</div>
+            <div class="vendor-chip" onclick="toggleVChip(this,'Cultural Immersion Kit')">🏺 Cultural Immersion Kit</div>
+          </div>
+        </div>
+        <div class="vendor-field"><label>Price range (per service)</label>
+          <select class="vendor-select" id="vPrice">
+            <option value="">Select range...</option>
+            <option>$50–$150 per session</option>
+            <option>$150–$300 per session</option>
+            <option>$300–$600 per session</option>
+            <option>$600+ / luxury tier</option>
+          </select>
+        </div>
+        <div class="vendor-field"><label>Short description of what you offer</label>
+          <textarea class="vendor-input" id="vDesc" rows="3" placeholder="e.g. I curate Italian Riviera linen sets — locally sourced, delivered to your hotel the morning you arrive..."></textarea>
+        </div>
+      </div>
+
+      <!-- Step 3: Logistics -->
+      <div class="vendor-step" id="vStep2">
+        <div style="font-size:0.55rem;letter-spacing:3px;text-transform:uppercase;color:var(--gold);margin-bottom:1rem">Step 3 of 4 · Logistics</div>
+        <div class="vendor-field"><label>Do you deliver to hotels?</label>
+          <select class="vendor-select" id="vDelivery">
+            <option>Yes — I deliver to any hotel in my city</option>
+            <option>Yes — select hotels only</option>
+            <option>No — client must collect</option>
+          </select>
+        </div>
+        <div class="vendor-field"><label>Typical lead time needed</label>
+          <select class="vendor-select" id="vLead">
+            <option>24 hours notice</option>
+            <option>48 hours notice</option>
+            <option>3–5 days notice</option>
+            <option>1 week+</option>
+          </select>
+        </div>
+        <div class="vendor-field"><label>Languages spoken</label><input class="vendor-input" id="vLangs" placeholder="e.g. English, French, Italian"></div>
+        <div class="vendor-field"><label>How many clients can you handle per week?</label>
+          <select class="vendor-select" id="vCapacity">
+            <option>1–3 clients/week</option>
+            <option>4–8 clients/week</option>
+            <option>9–15 clients/week</option>
+            <option>15+ clients/week</option>
+          </select>
+        </div>
+      </div>
+
+      <!-- Step 4: Review -->
+      <div class="vendor-step" id="vStep3">
+        <div style="font-size:0.55rem;letter-spacing:3px;text-transform:uppercase;color:var(--gold);margin-bottom:1rem">Step 4 of 4 · Review & Submit</div>
+        <div id="vReviewContent" style="font-size:0.72rem;color:var(--mist);line-height:1.85;background:var(--noir3);border:1px solid var(--border);padding:1rem;margin-bottom:1.25rem"></div>
+        <div style="font-size:0.65rem;color:rgba(253,252,248,0.35);line-height:1.7;margin-bottom:1rem">Your application will be reviewed by the BagFree team within 48 hours. Approved curators appear on the marketplace and receive bookings directly via the platform.</div>
+        <div id="vSubmitErr" style="display:none;font-size:0.65rem;color:var(--red);padding:0.5rem;border:1px solid rgba(226,75,74,0.3);margin-bottom:0.75rem"></div>
+        <div id="vSubmitSuccess" style="display:none;text-align:center;padding:1.5rem">
+          <div style="font-size:2rem;margin-bottom:0.5rem">✦</div>
+          <div style="font-family:var(--ff-display);font-size:1.3rem;color:var(--white);margin-bottom:0.5rem">Application submitted</div>
+          <div style="font-size:0.72rem;color:var(--mist);line-height:1.7">We'll review your application and be in touch within 48 hours. Check your email for confirmation.</div>
+          <button onclick="closeVendorSignup()" style="margin-top:1.25rem;background:transparent;border:1px solid var(--border-hi);color:var(--gold);padding:0.55rem 1.5rem;font-size:0.58rem;letter-spacing:2px;text-transform:uppercase;cursor:pointer;font-family:var(--ff-body)">Close</button>
+        </div>
+      </div>
+
+      <div id="vNavRow" style="display:flex;gap:0.75rem;margin-top:1.25rem;justify-content:space-between">
+        <button id="vBackBtn" onclick="vendorBack()" style="background:transparent;border:1px solid var(--border);color:var(--mist);padding:0.7rem 1.25rem;font-size:0.6rem;letter-spacing:2px;text-transform:uppercase;cursor:pointer;font-family:var(--ff-body);display:none">← Back</button>
+        <button id="vNextBtn" onclick="vendorNext()" style="background:var(--gold);color:var(--noir);border:none;padding:0.7rem 2rem;font-size:0.62rem;letter-spacing:2px;text-transform:uppercase;cursor:pointer;font-family:var(--ff-body);font-weight:500;margin-left:auto">Next →</button>
+      </div>
+    </div>
+  </div>
+</div>
+
 <div id="depositModal" style="display:none;position:fixed;inset:0;background:rgba(0,0,0,0.88);z-index:500;align-items:center;justify-content:center;padding:1.5rem">
   <div style="background:var(--noir2);border:1px solid var(--border-hi);max-width:500px;width:100%;padding:2rem;position:relative;max-height:88vh;overflow-y:auto">
     <div style="font-size:0.55rem;letter-spacing:3px;text-transform:uppercase;color:var(--gold);margin-bottom:1rem">Reserve Your Spot</div>
@@ -2731,6 +3040,626 @@ function showAdvisorFab(){
   if(fab)fab.style.display='block';
 }
 
+// ── AI TRAVEL BRAIN ───────────────────────────────────────────────────────
+let _aiBrainHistory = [];
+let _aiBrainStreaming = false;
+
+function openAIBrain() {
+  const quick = document.getElementById('aiBrainQuickInput');
+  const modal = document.getElementById('aiBrainModal');
+  modal.style.display = 'flex';
+  setTimeout(() => {
+    const inp = document.getElementById('aiBrainInput');
+    if (quick && quick.value.trim()) {
+      inp.value = quick.value.trim();
+      quick.value = '';
+      sendAIBrain();
+    } else {
+      inp.focus();
+    }
+  }, 80);
+}
+
+function closeAIBrain() {
+  document.getElementById('aiBrainModal').style.display = 'none';
+}
+
+function aiQuickPrompt(btn) {
+  const inp = document.getElementById('aiBrainInput');
+  inp.value = btn.textContent;
+  inp.focus();
+  document.getElementById('aiQuickPrompts').style.display = 'none';
+}
+
+function aiAppendMessage(role, content) {
+  const history = document.getElementById('aiChatHistory');
+  // Clear placeholder on first message
+  if (_aiBrainHistory.length === 0) history.innerHTML = '';
+
+  const msg = document.createElement('div');
+  msg.className = 'ai-msg ' + role;
+  msg.id = role === 'assistant' ? 'aiLastMsg' : '';
+
+  if (role === 'user') {
+    msg.innerHTML = `<div class="ai-bubble">${content}</div>`;
+  } else {
+    msg.innerHTML = `<div class="ai-bubble" id="aiStreamBubble"><div class="ai-typing"><span></span><span></span><span></span></div></div>`;
+  }
+  history.appendChild(msg);
+  history.scrollTop = history.scrollHeight;
+  return msg;
+}
+
+function aiRenderResponse(raw) {
+  // Parse structured sections from the AI response
+  let html = raw
+    .replace(/\*\*(.*?)\*\*/g, '<strong>$1</strong>')
+    .replace(/\*(.*?)\*/g, '<em>$1</em>')
+    .replace(/^### (.*)/gm, '<div style="font-size:0.6rem;letter-spacing:2.5px;text-transform:uppercase;color:var(--gold);margin:1rem 0 0.5rem;padding-top:0.75rem;border-top:1px solid var(--border)">$1</div>')
+    .replace(/^## (.*)/gm, '<div style="font-family:var(--ff-display);font-size:1.1rem;font-weight:300;color:var(--white);margin:0.5rem 0">$1</div>')
+    .replace(/^- (.*)/gm, '<div style="display:flex;gap:6px;padding:2px 0"><span style="color:var(--gold);font-size:0.6rem;margin-top:3px">✦</span><span>$1</span></div>')
+    .replace(/^\d+\. (.*)/gm, '<div style="display:flex;gap:6px;padding:3px 0;border-bottom:1px solid rgba(201,169,110,0.08)"><span style="color:var(--gold);font-size:0.6rem;margin-top:3px;flex-shrink:0">→</span><span>$1</span></div>')
+    .replace(/\n\n/g, '<br>')
+    .replace(/\n/g, '');
+  return html;
+}
+
+async function sendAIBrain() {
+  if (_aiBrainStreaming) return;
+  const inp = document.getElementById('aiBrainInput');
+  const sendBtn = document.getElementById('aiBrainSendBtn');
+  const text = inp.value.trim();
+  if (!text) return;
+
+  _aiBrainStreaming = true;
+  inp.value = '';
+  inp.style.height = '42px';
+  sendBtn.disabled = true;
+  sendBtn.textContent = '...';
+
+  // Hide quick prompts after first message
+  document.getElementById('aiQuickPrompts').style.display = 'none';
+
+  // Add user message to UI and history
+  aiAppendMessage('user', text);
+  _aiBrainHistory.push({ role: 'user', content: text });
+
+  // Add assistant placeholder
+  aiAppendMessage('assistant', '');
+
+  const systemPrompt = `You are the BagFree AI Travel Brain — a luxury travel intelligence engine for high-end travelers who travel without luggage (clothes and essentials are delivered to their destination).
+
+Traveler profile:
+- Name: ${profile.name || 'Traveler'}
+- Home city: ${profile.homeCity || 'Unknown'}
+- Travel style: ${profile.travelStyle || 'Luxury'}
+- Interests: ${(profile.entertainment||[]).join(', ') || 'Various'}
+- Destinations of interest: ${(profile.destinations||[]).join(', ') || 'Open'}
+
+When a user describes a trip, respond with ALL of the following in one reply, clearly sectioned:
+
+## [Destination] — [Duration] [Vibe]
+
+### 🗺 Day-by-Day Itinerary
+List each day with 3-4 specific, non-touristy recommendations. Include timing. Be specific (real restaurant names, neighborhoods, experiences).
+
+### 🎒 Packing Intelligence
+Since they travel BagFree, list what will be delivered to their room:
+- 3-4 outfit suggestions for the climate/activities
+- Key toiletries and wellness items
+- Tech and adapters needed
+- Any destination-specific items
+
+### 🌤 Weather & When to Go
+Current season conditions, what to expect, best time of day for activities.
+
+### ✈️ Getting There
+Best flight routes from their home city, rough cost, transit tips on arrival.
+
+### 💡 BagFree Tips
+2-3 insider tips specific to this destination that only a luxury traveler would know. Mention that BagFree delivers to this city if applicable.
+
+Keep tone: refined, knowledgeable, like a well-traveled concierge friend. Bold key destination names and experiences. Be specific, not generic.`;
+
+  try {
+    const res = await fetch('https://api.anthropic.com/v1/messages', {
+      method: 'POST',
+      headers: { 'Content-Type': 'application/json' },
+      body: JSON.stringify({
+        model: 'claude-sonnet-4-20250514',
+        max_tokens: 1500,
+        system: systemPrompt,
+        messages: _aiBrainHistory
+      })
+    });
+
+    const data = await res.json();
+    const reply = data.content?.[0]?.text || 'I had trouble generating your itinerary. Please try again.';
+
+    // Update history
+    _aiBrainHistory.push({ role: 'assistant', content: reply });
+
+    // Render into the bubble
+    const bubble = document.getElementById('aiStreamBubble');
+    if (bubble) {
+      bubble.innerHTML = aiRenderResponse(reply);
+
+      // Auto-trigger map route if destination detected
+      const destMatch = reply.match(/\*\*([\w\s]+)\*\* —/) || reply.match(/## ([\w\s,]+) —/);
+      if (destMatch) {
+        const city = destMatch[1].trim().toLowerCase();
+        let routeKey = 'med';
+        if (['miami','nassau','caribbean','barbados','grenada','st vincent'].some(c=>city.includes(c))) routeKey='caribbean';
+        else if (['tokyo','bali','japan','asia','singapore','thailand'].some(c=>city.includes(c))) routeKey='asia';
+        else if (['london','paris','amsterdam','berlin'].some(c=>city.includes(c))) routeKey='europe';
+        else if (['rome','italy','greece','amalfi','santorini'].some(c=>city.includes(c))) routeKey='med';
+        setTimeout(() => plotRoute(routeKey), 400);
+      }
+    }
+
+    const history = document.getElementById('aiChatHistory');
+    history.scrollTop = history.scrollHeight;
+  } catch(e) {
+    const bubble = document.getElementById('aiStreamBubble');
+    if (bubble) bubble.innerHTML = '<span style="color:var(--amber)">Connection issue — please try again.</span>';
+  }
+
+  _aiBrainStreaming = false;
+  sendBtn.disabled = false;
+  sendBtn.textContent = 'Send ✦';
+}
+
+window.openAIBrain = openAIBrain;
+window.closeAIBrain = closeAIBrain;
+window.sendAIBrain = sendAIBrain;
+window.aiQuickPrompt = aiQuickPrompt;
+
+// ── BAGFREE SYNC ──────────────────────────────────────────────────────────
+let _syncState = {
+  destination: '', hotel: '', arrival: '', arrivalTime: '',
+  needs: [], timing: ['before'], customRequest: ''
+};
+
+const SYNC_NEEDS = [
+  { id:'clothing',  icon:'👗', label:'Clothing' },
+  { id:'grooming',  icon:'🪥', label:'Grooming' },
+  { id:'wellness',  icon:'💊', label:'Wellness' },
+  { id:'recovery',  icon:'🧘', label:'Recovery' },
+  { id:'work',      icon:'💻', label:'Work Essentials' },
+  { id:'custom',    icon:'🎁', label:'Custom Request' },
+];
+
+const SYNC_TIMING = [
+  { id:'before',  label:'Deliver before arrival', icon:'✓' },
+  { id:'daily',   label:'Daily refresh',           icon:'✓' },
+  { id:'midstay', label:'Mid-stay restock',        icon:'✓' },
+];
+
+function buildBagfreeSyncPanel() {
+  const container = document.getElementById('bagfreeSyncPanel');
+  if (!container) return;
+
+  // Auto-fill from active destination if available
+  const activeDest = document.querySelector('.dest-card.active .dest-name');
+  if (activeDest && !_syncState.destination) _syncState.destination = activeDest.textContent;
+
+  container.innerHTML = `
+    <!-- Section 1: Trip Sync -->
+    <div class="sync-section">
+      <div class="sync-section-title">📍 Trip Sync</div>
+      <div class="sync-trip-card" id="syncTripCard">
+        <div class="sync-trip-row"><span>📍</span><div>Destination: <b id="syncDestDisplay">${_syncState.destination||'—'}</b></div></div>
+        <div class="sync-trip-row"><span>🏨</span><div>Hotel: <b id="syncHotelDisplay">${_syncState.hotel||'—'}</b></div></div>
+        <div class="sync-trip-row"><span>🗓</span><div>Arrival: <b id="syncArrivalDisplay">${_syncState.arrival||'—'}</b></div></div>
+      </div>
+      <div id="syncTripForm" style="display:none">
+        <input class="sync-field" id="syncDest" placeholder="Destination" value="${_syncState.destination}" oninput="_syncState.destination=this.value;document.getElementById('syncDestDisplay').textContent=this.value||'—'">
+        <input class="sync-field" id="syncHotel" placeholder="Hotel name (e.g. Ritz Paris)" oninput="_syncState.hotel=this.value;document.getElementById('syncHotelDisplay').textContent=this.value||'—'">
+        <input class="sync-field" id="syncArrival" type="date" oninput="_syncState.arrival=this.value;document.getElementById('syncArrivalDisplay').textContent=this.value||'—'">
+        <input class="sync-field" id="syncTime" placeholder="Arrival time (e.g. 3:00 PM)" oninput="_syncState.arrivalTime=this.value">
+      </div>
+      <button onclick="toggleSyncTripForm()" id="syncTripEditBtn" style="background:transparent;border:1px solid var(--border);color:var(--mist);padding:3px 10px;font-size:0.55rem;letter-spacing:1.5px;text-transform:uppercase;cursor:pointer;font-family:var(--ff-body);transition:all 0.2s;margin-top:4px" onmouseover="this.style.borderColor='rgba(201,169,110,0.4)';this.style.color='var(--gold)'" onmouseout="this.style.borderColor='var(--border)';this.style.color='var(--mist)'">Edit trip details</button>
+    </div>
+
+    <!-- Section 2: What do you want waiting? -->
+    <div class="sync-section">
+      <div class="sync-section-title">🎁 What do you want waiting for you?</div>
+      <div class="sync-tile-grid">
+        ${SYNC_NEEDS.map(n=>`
+          <div class="sync-tile${_syncState.needs.includes(n.id)?' on':''}" onclick="toggleSyncNeed('${n.id}',this)" id="syncTile_${n.id}">
+            <span class="sync-tile-icon">${n.icon}</span>
+            <span class="sync-tile-label">${n.label}</span>
+          </div>`).join('')}
+      </div>
+      <div id="syncCustomField" style="display:${_syncState.needs.includes('custom')?'block':'none'}">
+        <textarea class="sync-field" id="syncCustomReq" rows="2" placeholder="Describe your custom request..." style="resize:none">${_syncState.customRequest}</textarea>
+      </div>
+    </div>
+
+    <!-- Section 3: AI Smart Suggestions -->
+    <div class="sync-section">
+      <div class="sync-section-title">✦ Smart Suggestions</div>
+      <div id="syncSuggestions">
+        <div class="sync-ai-loading"><span></span><span></span><span></span></div>
+      </div>
+    </div>
+
+    <!-- Section 4: Delivery Timing -->
+    <div class="sync-section">
+      <div class="sync-section-title">🚚 Delivery Timing</div>
+      ${SYNC_TIMING.map(t=>`
+        <label class="sync-timing-opt${_syncState.timing.includes(t.id)?' on':''}" onclick="toggleSyncTiming('${t.id}',this)">
+          <input type="checkbox" ${_syncState.timing.includes(t.id)?'checked':''} onclick="event.stopPropagation()">
+          <span class="sync-timing-label">${t.icon} ${t.label}</span>
+        </label>`).join('')}
+    </div>
+
+    <!-- Section 5: CTA -->
+    <div class="sync-section">
+      <button class="sync-cta" onclick="submitBagfreeSync()">
+        Have Everything Waiting for Me ✦
+      </button>
+      <div style="font-size:0.58rem;color:rgba(253,252,248,0.28);text-align:center;margin-top:0.5rem;line-height:1.6">BagFree delivers to your hotel before you arrive.<br>Powered by Valet by Nuor.</div>
+    </div>
+  `;
+
+  // Load AI suggestions after render
+  setTimeout(() => loadSyncSuggestions(), 300);
+}
+
+function toggleSyncTripForm() {
+  const form = document.getElementById('syncTripForm');
+  const btn = document.getElementById('syncTripEditBtn');
+  const open = form.style.display === 'none';
+  form.style.display = open ? 'block' : 'none';
+  btn.textContent = open ? 'Done' : 'Edit trip details';
+}
+
+function toggleSyncNeed(id, el) {
+  el.classList.toggle('on');
+  if (el.classList.contains('on')) {
+    if (!_syncState.needs.includes(id)) _syncState.needs.push(id);
+  } else {
+    _syncState.needs = _syncState.needs.filter(n => n !== id);
+  }
+  // Show/hide custom field
+  const cf = document.getElementById('syncCustomField');
+  if (cf) cf.style.display = _syncState.needs.includes('custom') ? 'block' : 'none';
+  // Refresh suggestions when needs change
+  loadSyncSuggestions();
+}
+
+function toggleSyncTiming(id, el) {
+  el.classList.toggle('on');
+  const cb = el.querySelector('input[type=checkbox]');
+  if (el.classList.contains('on')) {
+    if (!_syncState.timing.includes(id)) _syncState.timing.push(id);
+    if (cb) cb.checked = true;
+  } else {
+    _syncState.timing = _syncState.timing.filter(t => t !== id);
+    if (cb) cb.checked = false;
+  }
+}
+
+function applySyncSuggestion(text) {
+  // Add to custom request
+  _syncState.customRequest = (_syncState.customRequest ? _syncState.customRequest + '\n' : '') + text;
+  // Auto-select custom tile
+  if (!_syncState.needs.includes('custom')) {
+    _syncState.needs.push('custom');
+    const tile = document.getElementById('syncTile_custom');
+    if (tile) tile.classList.add('on');
+    const cf = document.getElementById('syncCustomField');
+    if (cf) cf.style.display = 'block';
+  }
+  const ta = document.getElementById('syncCustomReq');
+  if (ta) ta.value = _syncState.customRequest;
+  showToast('✓ Suggestion added to your request');
+}
+
+async function loadSyncSuggestions() {
+  const container = document.getElementById('syncSuggestions');
+  if (!container) return;
+  container.innerHTML = '<div class="sync-ai-loading"><span></span><span></span><span></span></div>';
+
+  const dest = _syncState.destination || (profile.destinations||[])[0] || 'your destination';
+  const needs = _syncState.needs.length ? _syncState.needs.join(', ') : 'general travel';
+  const style = profile.travelStyle || 'Luxury';
+  const arrival = _syncState.arrival || 'upcoming trip';
+
+  try {
+    const res = await fetch('https://api.anthropic.com/v1/messages', {
+      method: 'POST',
+      headers: { 'Content-Type': 'application/json' },
+      body: JSON.stringify({
+        model: 'claude-sonnet-4-20250514',
+        max_tokens: 400,
+        messages: [{
+          role: 'user',
+          content: `You are BagFree's smart delivery suggestion engine. Generate exactly 4 short, specific, actionable delivery suggestions for this traveler.
+
+Traveler: ${style} travel style
+Destination: ${dest}
+Arrival: ${arrival}
+Selected needs: ${needs}
+
+Rules:
+- Each suggestion is ONE short sentence (max 12 words)
+- Start with an emoji relevant to the suggestion
+- Make suggestions specific to the destination/season/style
+- Focus on what BagFree can physically deliver to a hotel room
+- Think: clothing items, grooming kits, wellness products, work gear, local essentials
+
+Return ONLY a JSON array of 4 strings, no markdown, no explanation:
+["suggestion 1","suggestion 2","suggestion 3","suggestion 4"]`
+        }]
+      })
+    });
+    const data = await res.json();
+    const raw = data.content?.[0]?.text || '[]';
+    const suggestions = JSON.parse(raw.replace(/```json|```/g,'').trim());
+    container.innerHTML = suggestions.map(s => `
+      <div class="sync-suggestion" onclick="applySyncSuggestion('${s.replace(/'/g,"\\'")}')">
+        ${s} <span style="float:right;font-size:0.55rem;color:var(--gold);opacity:0.7">+ add</span>
+      </div>`).join('');
+  } catch(e) {
+    // Fallback static suggestions
+    const fallbacks = [
+      `🧥 Pack a tailored trench — ${dest} evenings run cool`,
+      `💊 Wellness kit with melatonin for your first night`,
+      `🪥 Full grooming kit in your room before check-in`,
+      `👔 One smart-casual outfit for dinner reservations`,
+    ];
+    container.innerHTML = fallbacks.map(s => `
+      <div class="sync-suggestion" onclick="applySyncSuggestion('${s.replace(/'/g,"\\'")}')">
+        ${s} <span style="float:right;font-size:0.55rem;color:var(--gold);opacity:0.7">+ add</span>
+      </div>`).join('');
+  }
+}
+
+async function submitBagfreeSync() {
+  const dest = _syncState.destination || document.getElementById('syncDest')?.value;
+  if (!dest) { showToast('⚠ Please add your destination first'); toggleSyncTripForm(); return; }
+  if (_syncState.needs.length === 0) { showToast('⚠ Please select at least one item category'); return; }
+
+  const btn = document.querySelector('.sync-cta');
+  if (btn) { btn.textContent = 'Submitting…'; btn.disabled = true; }
+
+  const payload = {
+    traveler_name: profile.name || '',
+    traveler_email: profile.email || '',
+    travel_style: profile.travelStyle || '',
+    destination: _syncState.destination,
+    hotel: _syncState.hotel,
+    arrival_date: _syncState.arrival,
+    arrival_time: _syncState.arrivalTime,
+    needs: _syncState.needs,
+    timing: _syncState.timing,
+    custom_request: _syncState.customRequest,
+    status: 'pending',
+    created_at: new Date().toISOString()
+  };
+
+  try {
+    if (window.supabase) {
+      await window.supabase.from('bagfree_sync_orders').insert([payload]);
+    }
+    // Also send to advisor email as backup
+    await fetch('https://formspree.io/f/mqeyrykl', {
+      method: 'POST',
+      headers: { 'Content-Type': 'application/json', Accept: 'application/json' },
+      body: JSON.stringify({ type: 'BAGFREE SYNC ORDER', ...payload })
+    });
+    if (btn) { btn.textContent = '✓ Order Received — We\'ll handle it'; btn.style.background = 'var(--green)'; btn.style.color = 'var(--white)'; }
+    showToast('✦ BagFree Sync confirmed — everything will be waiting for you');
+  } catch(e) {
+    if (btn) { btn.textContent = 'Have Everything Waiting for Me ✦'; btn.disabled = false; }
+    showToast('⚠ Connection issue — please try again');
+  }
+}
+
+window.buildBagfreeSyncPanel = buildBagfreeSyncPanel;
+window.toggleSyncTripForm = toggleSyncTripForm;
+window.toggleSyncNeed = toggleSyncNeed;
+window.toggleSyncTiming = toggleSyncTiming;
+window.applySyncSuggestion = applySyncSuggestion;
+window.submitBagfreeSync = submitBagfreeSync;
+
+// ── LOCAL CURATOR MARKETPLACE ─────────────────────────────────────────────
+const CURATORS_DATA = [
+  { id:'c1', name:'Maison Rivière', city:'Paris', country:'France', type:'Local Styling Session · Cultural Kit', tags:['Luxury','Parisian','Linen'], price:'From $280', badge:'featured', tab:['browse','stylists','kits'], desc:'Curated Parisian wardrobes delivered to your hotel. Speciality: Left Bank artisan linen and silk.' },
+  { id:'c2', name:'Tokyo Wabi Studio', city:'Tokyo', country:'Japan', type:'Cultural Immersion Kit · Rental', tags:['Minimalist','Traditional','Modern'], price:'From $180', badge:'new', tab:['browse','kits','rentals'], desc:'Handpicked kimono, yukata and modern Japanese-inspired pieces for your stay in Tokyo.' },
+  { id:'c3', name:'Amalfi Atelier', city:'Rome', country:'Italy', type:'Personal Shopping · Delivery', tags:['Coastal','Linen','Italian'], price:'From $320', badge:'featured', tab:['browse','stylists'], desc:'Italian Riviera linen sets and coastal luxury — sourced from local artisans, in your room by noon.' },
+  { id:'c4', name:'Seminyak Style Co.', city:'Bali', country:'Indonesia', type:'Styling Session · Wardrobe Delivery', tags:['Boho','Resort','Wellness'], price:'From $120', badge:'new', tab:['browse','stylists','rentals'], desc:'Resort-ready Bali wardrobes curated for the wellness traveler. Batik, linen, and handwoven pieces.' },
+  { id:'c5', name:'The London Edit', city:'London', country:'United Kingdom', type:'Personal Shopping · Styling', tags:['Classic','British','Luxury'], price:'From $350', badge:'featured', tab:['browse','stylists'], desc:'London luxury personal shopping with a Savile Row sensibility. Delivered anywhere in Zone 1.' },
+  { id:'c6', name:'Caribbean Colour Co.', city:'Caribbean', country:'Regional', type:'Cultural Kit · Outfit Rental', tags:['Vibrant','Island','Resort'], price:'From $95', badge:'new', tab:['browse','kits','rentals'], desc:'Island-inspired looks for the Caribbean traveler — bright linen, handmade accessories, local designers.' },
+];
+
+let _curatorFilter = 'all';
+let _curatorTab = 'browse';
+
+function openCuratorMarket() {
+  document.getElementById('curatorModal').style.display = 'flex';
+  renderCurators();
+}
+function closeCuratorMarket() {
+  document.getElementById('curatorModal').style.display = 'none';
+}
+
+function switchCuratorTab(tab, btn) {
+  _curatorTab = tab;
+  document.querySelectorAll('.curator-tab').forEach(b => b.classList.remove('active'));
+  btn.classList.add('active');
+  renderCurators();
+}
+
+function setCuratorFilter(city, btn) {
+  _curatorFilter = city;
+  document.querySelectorAll('.curator-filter').forEach(b => b.classList.remove('active'));
+  btn.classList.add('active');
+  renderCurators();
+}
+
+function filterCurators() { renderCurators(); }
+
+function renderCurators() {
+  const search = (document.getElementById('curatorSearch')?.value || '').toLowerCase();
+  const grid = document.getElementById('curatorGrid');
+  const empty = document.getElementById('curatorEmpty');
+
+  let filtered = CURATORS_DATA.filter(c => {
+    const matchTab = _curatorTab === 'browse' || c.tab.includes(_curatorTab);
+    const matchCity = _curatorFilter === 'all' || c.city === _curatorFilter || c.country === _curatorFilter;
+    const matchSearch = !search || c.name.toLowerCase().includes(search) || c.city.toLowerCase().includes(search) || c.tags.some(t => t.toLowerCase().includes(search));
+    return matchTab && matchCity && matchSearch;
+  });
+
+  if (filtered.length === 0) {
+    grid.innerHTML = '';
+    empty.style.display = 'block';
+    return;
+  }
+  empty.style.display = 'none';
+
+  grid.innerHTML = filtered.map(c => `
+    <div class="curator-card${c.badge==='featured'?' featured':''}" onclick="openCuratorDetail('${c.id}')">
+      ${c.badge ? `<div class="curator-badge ${c.badge}">${c.badge==='featured'?'✦ Featured':'New'}</div>` : ''}
+      <div class="curator-city">${c.city} · ${c.country}</div>
+      <div class="curator-name">${c.name}</div>
+      <div class="curator-type">${c.type}</div>
+      <div class="curator-tags">${c.tags.map(t=>`<span class="curator-tag">${t}</span>`).join('')}</div>
+      <div style="font-size:0.62rem;color:rgba(253,252,248,0.4);line-height:1.65;margin-bottom:0.75rem">${c.desc}</div>
+      <div style="display:flex;align-items:center;justify-content:space-between">
+        <div class="curator-price">${c.price} <span>/ service</span></div>
+        <button style="background:transparent;border:1px solid rgba(201,169,110,0.35);color:var(--gold);padding:3px 10px;font-size:0.52rem;letter-spacing:1.5px;text-transform:uppercase;cursor:pointer;font-family:var(--ff-body);transition:all 0.2s" onmouseover="this.style.background='rgba(201,169,110,0.1)'" onmouseout="this.style.background='transparent'">Book →</button>
+      </div>
+    </div>
+  `).join('');
+}
+
+function openCuratorDetail(id) {
+  const c = CURATORS_DATA.find(x => x.id === id);
+  if (!c) return;
+  showToast(`📩 Connecting you with ${c.name} in ${c.city}…`);
+  // Could open a booking sub-modal — for now routes to advisor
+  setTimeout(() => openAdvisor(), 800);
+}
+
+window.openCuratorMarket = openCuratorMarket;
+window.closeCuratorMarket = closeCuratorMarket;
+window.switchCuratorTab = switchCuratorTab;
+window.setCuratorFilter = setCuratorFilter;
+window.filterCurators = filterCurators;
+window.openCuratorDetail = openCuratorDetail;
+
+// ── VENDOR SIGNUP ─────────────────────────────────────────────────────────
+let _vStep = 0;
+let _vServices = [];
+
+function openVendorSignup() {
+  _vStep = 0;
+  _vServices = [];
+  document.getElementById('vendorSignupModal').style.display = 'flex';
+  document.getElementById('vSubmitSuccess').style.display = 'none';
+  document.getElementById('vSubmitErr').style.display = 'none';
+  document.getElementById('vNavRow').style.display = 'flex';
+  document.querySelectorAll('.vendor-chip').forEach(c => c.classList.remove('on'));
+  showVendorStep(0);
+}
+
+function closeVendorSignup() {
+  document.getElementById('vendorSignupModal').style.display = 'none';
+}
+
+function showVendorStep(idx) {
+  document.querySelectorAll('.vendor-step').forEach((s,i) => s.classList.toggle('active', i===idx));
+  const dots = document.querySelectorAll('.vendor-prog-dot');
+  dots.forEach((d,i) => d.classList.toggle('done', i<=idx));
+  document.getElementById('vBackBtn').style.display = idx > 0 ? 'block' : 'none';
+  document.getElementById('vNextBtn').textContent = idx === 3 ? 'Submit Application →' : 'Next →';
+  if (idx === 3) buildVendorReview();
+}
+
+function toggleVChip(el, service) {
+  el.classList.toggle('on');
+  if (el.classList.contains('on')) {
+    if (!_vServices.includes(service)) _vServices.push(service);
+  } else {
+    _vServices = _vServices.filter(s => s !== service);
+  }
+}
+
+function vendorBack() {
+  if (_vStep > 0) { _vStep--; showVendorStep(_vStep); }
+}
+
+function vendorNext() {
+  if (_vStep === 3) { submitVendorApplication(); return; }
+  // Basic validation
+  if (_vStep === 0) {
+    const name = document.getElementById('vName').value.trim();
+    const email = document.getElementById('vEmail').value.trim();
+    const biz = document.getElementById('vBusiness').value.trim();
+    const city = document.getElementById('vCity').value.trim();
+    if (!name || !email || !biz || !city) { showToast('⚠ Please fill in all required fields'); return; }
+  }
+  if (_vStep === 1 && _vServices.length === 0) { showToast('⚠ Please select at least one service type'); return; }
+  _vStep++;
+  showVendorStep(_vStep);
+}
+
+function buildVendorReview() {
+  document.getElementById('vReviewContent').innerHTML = `
+    <div style="margin-bottom:0.5rem"><span style="color:var(--gold);font-size:0.5rem;letter-spacing:2px;text-transform:uppercase">Name</span><br>${document.getElementById('vName').value}</div>
+    <div style="margin-bottom:0.5rem"><span style="color:var(--gold);font-size:0.5rem;letter-spacing:2px;text-transform:uppercase">Business</span><br>${document.getElementById('vBusiness').value}</div>
+    <div style="margin-bottom:0.5rem"><span style="color:var(--gold);font-size:0.5rem;letter-spacing:2px;text-transform:uppercase">City</span><br>${document.getElementById('vCity').value}</div>
+    <div style="margin-bottom:0.5rem"><span style="color:var(--gold);font-size:0.5rem;letter-spacing:2px;text-transform:uppercase">Services</span><br>${_vServices.join(', ') || '—'}</div>
+    <div style="margin-bottom:0.5rem"><span style="color:var(--gold);font-size:0.5rem;letter-spacing:2px;text-transform:uppercase">Price range</span><br>${document.getElementById('vPrice').value || '—'}</div>
+    <div><span style="color:var(--gold);font-size:0.5rem;letter-spacing:2px;text-transform:uppercase">Description</span><br>${document.getElementById('vDesc').value || '—'}</div>
+  `;
+}
+
+async function submitVendorApplication() {
+  const btn = document.getElementById('vNextBtn');
+  btn.disabled = true; btn.textContent = 'Submitting…';
+  const payload = {
+    name: document.getElementById('vName').value.trim(),
+    email: document.getElementById('vEmail').value.trim(),
+    business_name: document.getElementById('vBusiness').value.trim(),
+    city: document.getElementById('vCity').value.trim(),
+    social: document.getElementById('vSocial').value.trim(),
+    services: _vServices,
+    price_range: document.getElementById('vPrice').value,
+    description: document.getElementById('vDesc').value.trim(),
+    delivery: document.getElementById('vDelivery').value,
+    lead_time: document.getElementById('vLead').value,
+    languages: document.getElementById('vLangs').value.trim(),
+    capacity: document.getElementById('vCapacity').value,
+    status: 'pending',
+    submitted_at: new Date().toISOString()
+  };
+  try {
+    const { error } = await window.supabase.from('curator_applications').insert([payload]);
+    if (error) throw error;
+    document.getElementById('vSubmitSuccess').style.display = 'block';
+    document.getElementById('vStep3').querySelector('.vendor-prog') && null;
+    document.querySelectorAll('.vendor-step').forEach(s => s.style.display = 'none');
+    document.getElementById('vSubmitSuccess').style.display = 'block';
+    document.getElementById('vNavRow').style.display = 'none';
+    showToast('✓ Application submitted — we\'ll be in touch within 48 hours');
+  } catch(e) {
+    document.getElementById('vSubmitErr').textContent = 'Submission failed. Please email hello@bagfree.app directly.';
+    document.getElementById('vSubmitErr').style.display = 'block';
+    btn.disabled = false; btn.textContent = 'Submit Application →';
+  }
+}
+
+window.openVendorSignup = openVendorSignup;
+window.closeVendorSignup = closeVendorSignup;
+window.vendorNext = vendorNext;
+window.vendorBack = vendorBack;
+window.toggleVChip = toggleVChip;
+
 // ── DASHBOARD TOUR ────────────────────────────────────────────────────────
 const TOUR_STEPS = [
   {
@@ -2783,8 +3712,8 @@ const TOUR_STEPS = [
   },
   {
     sel: '.trip-bar',
-    title: 'Trip Planner',
-    body: 'Enter any destination to generate a custom itinerary. Claude builds a day-by-day plan based on your travel style and the number of days you select.',
+    title: 'AI Travel Brain',
+    body: 'Describe your trip in plain language — destination, vibe, budget, duration. Claude builds a full itinerary, packing list, weather brief, and plots the route on the map.',
     pos: 'bottom', wide: true
   },
   {
@@ -2998,6 +3927,7 @@ function toggleLeftCustomise() {
 
 // ── CUSTOMISE PANELS ──────────────────────────────────────────────────────
 const PANELS = [
+  { id: 'panelSync',        label: '🧳 BagFree Sync' },
   { id: 'panelFeaturedTrip', label: 'Featured Journey' },
   { id: 'panelCollective',   label: 'Travel Collective' },
   { id: 'panelAlerts',       label: 'Travel Intelligence' },
@@ -3030,6 +3960,7 @@ function applyPanels(init) {
   PANELS.forEach(p => {
     const el = document.getElementById(p.id);
     if (el) el.style.display = visible.includes(p.id) ? 'block' : 'none';
+    if (p.id === 'panelSync' && visible.includes(p.id)) buildBagfreeSyncPanel();
   });
   if (!init) {
     toggleCustomise();
