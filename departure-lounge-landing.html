@@ -506,12 +506,33 @@ body{padding-top:36px}
   <div class="cost-cards">
     <!-- Traditional -->
     <div class="cost-card trad">
-      <div class="cost-card-label trad-l"><span style="font-size:1.2rem">🧳</span> Traveling with luggage</div>
+      <div class="cost-card-label trad-l" style="justify-content:space-between">
+        <div style="display:flex;align-items:center;gap:0.6rem"><span style="font-size:1.2rem">🧳</span> Traveling with luggage</div>
+        <button onclick="(function(){var p=document.getElementById('lpHiddenPanel');var b=this;var open=p.style.display==='none'||!p.style.display;p.style.display=open?'block':'none';b.style.background=open?'rgba(239,159,39,0.2)':'rgba(239,159,39,0.08)';}).call(this)" title="See hidden costs" style="background:rgba(239,159,39,0.08);border:1px solid rgba(239,159,39,0.35);color:rgba(239,159,39,0.9);padding:3px 10px;font-size:0.52rem;letter-spacing:1.5px;text-transform:uppercase;cursor:pointer;font-family:var(--fb);transition:all 0.2s;white-space:nowrap;flex-shrink:0">⚠ Hidden costs</button>
+      </div>
+
+      <div id="lpHiddenPanel" style="display:none;background:rgba(239,159,39,0.05);border:1px solid rgba(239,159,39,0.2);margin-bottom:1.25rem;padding:1rem">
+        <div style="font-size:0.52rem;letter-spacing:2px;text-transform:uppercase;color:rgba(239,159,39,0.8);margin-bottom:0.85rem">⚠ The costs you can't put a number on</div>
+        <div style="display:flex;flex-direction:column;gap:0">
+          <div style="display:flex;gap:0.75rem;padding:0.6rem 0;border-bottom:1px solid rgba(239,159,39,0.1)"><span style="font-size:1rem;flex-shrink:0">😤</span><div><div style="font-size:0.72rem;color:rgba(253,252,248,0.8);font-weight:500;margin-bottom:2px">Stress & anxiety</div><div style="font-size:0.62rem;color:rgba(253,252,248,0.4);line-height:1.6">Packing the night before. Did you forget something? Will it fit? Will it go over weight?</div></div></div>
+          <div style="display:flex;gap:0.75rem;padding:0.6rem 0;border-bottom:1px solid rgba(239,159,39,0.1)"><span style="font-size:1rem;flex-shrink:0">⏱️</span><div><div style="font-size:0.72rem;color:rgba(253,252,248,0.8);font-weight:500;margin-bottom:2px">2+ hours of your life</div><div style="font-size:0.62rem;color:rgba(253,252,248,0.4);line-height:1.6">Check-in queues, bag drop, baggage claim. Every. Single. Trip.</div></div></div>
+          <div style="display:flex;gap:0.75rem;padding:0.6rem 0;border-bottom:1px solid rgba(239,159,39,0.1)"><span style="font-size:1rem;flex-shrink:0">😩</span><div><div style="font-size:0.72rem;color:rgba(253,252,248,0.8);font-weight:500;margin-bottom:2px">Fatigue</div><div style="font-size:0.62rem;color:rgba(253,252,248,0.4);line-height:1.6">Lugging heavy bags through airports, trains, hotel lobbies. You arrive exhausted.</div></div></div>
+          <div style="display:flex;gap:0.75rem;padding:0.6rem 0;border-bottom:1px solid rgba(239,159,39,0.1)"><span style="font-size:1rem;flex-shrink:0">✈️</span><div><div style="font-size:0.72rem;color:rgba(253,252,248,0.8);font-weight:500;margin-bottom:2px">Overhead bin wars</div><div style="font-size:0.62rem;color:rgba(253,252,248,0.4);line-height:1.6">The silent panic boarding last. Will there be space for your carry-on?</div></div></div>
+          <div style="display:flex;gap:0.75rem;padding:0.6rem 0;border-bottom:1px solid rgba(239,159,39,0.1)"><span style="font-size:1rem;flex-shrink:0">🚻</span><div><div style="font-size:0.72rem;color:rgba(253,252,248,0.8);font-weight:500;margin-bottom:2px">Dragging bags everywhere</div><div style="font-size:0.62rem;color:rgba(253,252,248,0.4);line-height:1.6">Bathroom, café, hotel lobby check-in. Your bag goes everywhere you go.</div></div></div>
+          <div style="display:flex;gap:0.75rem;padding:0.6rem 0;border-bottom:1px solid rgba(239,159,39,0.1)"><span style="font-size:1rem;flex-shrink:0">📦</span><div><div style="font-size:0.72rem;color:rgba(253,252,248,0.8);font-weight:500;margin-bottom:2px">Lost or damaged bags</div><div style="font-size:0.62rem;color:rgba(253,252,248,0.4);line-height:1.6">1 in 200 bags is lost or delayed. Airlines pay far less than items are worth.</div></div></div>
+          <div style="display:flex;gap:0.75rem;padding:0.6rem 0;border-bottom:1px solid rgba(239,159,39,0.1)"><span style="font-size:1rem;flex-shrink:0">🌡️</span><div><div style="font-size:0.72rem;color:rgba(253,252,248,0.8);font-weight:500;margin-bottom:2px">Wrong clothes for the weather</div><div style="font-size:0.62rem;color:rgba(253,252,248,0.4);line-height:1.6">You packed for what you expected. Weather had other plans.</div></div></div>
+          <div style="display:flex;gap:0.75rem;padding:0.6rem 0;border-bottom:1px solid rgba(239,159,39,0.1)"><span style="font-size:1rem;flex-shrink:0">🏨</span><div><div style="font-size:0.72rem;color:rgba(253,252,248,0.8);font-weight:500;margin-bottom:2px">Late hotel arrivals</div><div style="font-size:0.62rem;color:rgba(253,252,248,0.4);line-height:1.6">Waiting for your room at 2pm with nowhere to put your bags.</div></div></div>
+          <div style="display:flex;gap:0.75rem;padding:0.6rem 0"><span style="font-size:1rem;flex-shrink:0">💸</span><div><div style="font-size:0.72rem;color:rgba(253,252,248,0.8);font-weight:500;margin-bottom:2px">Airline fee surprises</div><div style="font-size:0.62rem;color:rgba(253,252,248,0.4);line-height:1.6">The fee changed. The weight limit was lower. The scale said 23.2kg.</div></div></div>
+        </div>
+        <div style="margin-top:0.85rem;font-size:0.58rem;color:rgba(239,159,39,0.55);font-style:italic;text-align:center">None of these appear in the total above — but every traveler feels them.</div>
+      </div>
+
       <div id="lp-trad-items"></div>
       <div class="cost-subtotal">
         <div class="cost-subtotal-label">Estimated total</div>
         <div class="cost-subtotal-val trad-val" id="lp-trad-total"></div>
       </div>
+      <div style="font-size:0.6rem;color:rgba(239,159,39,0.5);margin-top:0.4rem;text-align:right;font-style:italic">+ hidden costs not shown above ⚠</div>
     </div>
 
     <!-- VS divider -->
@@ -573,13 +594,20 @@ function lpCalc() {
   const style  = document.getElementById('lp-style').value;
 
   // ── TRADITIONAL ──
-  const checked   = bagFee * 2;
+  const checked    = bagFee * 2;
   const overweight = Math.round(bagFee * 0.4);
-  const laundry   = days >= 7 ? 85 : days >= 5 ? 55 : 30;
+  const laundry    = days >= 7 ? 85 : days >= 5 ? 55 : 30;
   const forgotten  = days >= 7 ? 95 : 65;
   const airportTime = 120;
-  const stress    = 50;
-  const tradTotal = checked + overweight + laundry + forgotten + airportTime + stress;
+  const stress     = 50;
+  const preShopping = { luxury:480, business:280, leisure:180, wellness:220 }[style] || 180;
+  const shopLabel   = {
+    luxury:   'Pre-trip shopping (clothes, toiletries, accessories)',
+    business: 'Pre-trip shopping (shirts, shoes, grooming)',
+    leisure:  'Pre-trip shopping (clothes, sunscreen, toiletries)',
+    wellness: 'Pre-trip shopping (activewear, supplements, gear)',
+  }[style] || 'Pre-trip shopping';
+  const tradTotal = checked + overweight + laundry + forgotten + airportTime + stress + preShopping;
 
   const kits = {
     luxury:   { name:'Luxury Wardrobe Kit',  price:480 },
@@ -599,6 +627,7 @@ function lpCalc() {
   document.getElementById('lp-trad-items').innerHTML = [
     ['Checked bag fee (round trip)', '$' + checked, 'red'],
     ['Overweight bag risk (avg)', '$' + overweight, 'red'],
+    [shopLabel, '$' + preShopping, 'red'],
     ['Hotel laundry (' + days + ' days)', '$' + laundry, 'red'],
     ['Forgotten & replacement items', '$' + forgotten, 'red'],
     ['Time cost — 2hrs bag check & claim', '$' + airportTime, 'red'],
@@ -612,6 +641,7 @@ function lpCalc() {
   // Render BagFree items
   document.getElementById('lp-bf-items').innerHTML = [
     ['Checked bag fee', '$0', 'green'],
+    ['Pre-trip shopping', '$0', 'green'],
     ['Hotel laundry', '$0', 'green'],
     ['Forgotten items', '$0', 'green'],
     ['Time cost', '$0', 'green'],
