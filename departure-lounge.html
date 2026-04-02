@@ -1333,6 +1333,17 @@ function _launchDashboardCore(){
   updateNearMeBtn();
   initCustomisePanels();
   initLeftCustomisePanels();
+  // Always start with all panels hidden — user picks what they want
+  LEFT_PANELS.forEach(p => {
+    const el = document.getElementById(p.elId);
+    if (el) el.style.display = 'none';
+  });
+  PANELS.forEach(p => {
+    const el = document.getElementById(p.id);
+    if (el) el.style.display = 'none';
+  });
+  localStorage.removeItem('bf_panels');
+  localStorage.removeItem('bf_left_panels');
   injectHummingbirdAvatar();
   // Show promo banner after a short delay
   setTimeout(showPromoBanner, 2500);
