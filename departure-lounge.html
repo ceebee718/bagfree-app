@@ -435,6 +435,11 @@ button,input,select,textarea{font-family:var(--ff-body)}
 .cost-input-label{font-size:0.48rem;letter-spacing:2px;text-transform:uppercase;color:var(--gold)}
 .cost-sel{background:var(--noir2);border:1px solid var(--border);color:var(--white);padding:0.4rem 0.5rem;font-size:0.72rem;outline:none;font-family:var(--ff-body);width:100%;transition:border-color 0.2s}
 .cost-sel:focus{border-color:rgba(201,169,110,0.4)}
+
+/* PERSONALIZE TILES */
+.pz-tile{border:1px solid var(--border);padding:0.7rem 0.6rem;cursor:pointer;text-align:center;font-size:0.72rem;color:var(--mist);transition:all 0.2s;background:transparent;line-height:1.4}
+.pz-tile:hover{border-color:rgba(201,169,110,0.35);color:var(--white)}
+.pz-tile.pz-on{border-color:var(--gold);color:var(--gold);background:rgba(201,169,110,0.08)}
 </style>
 <script src="https://unpkg.com/leaflet@1.9.4/dist/leaflet.js"></script>
 <script type="module">
@@ -1602,9 +1607,12 @@ window._supabaseLaunchPatch = async function() {
       <div>
         <label style="display:block;font-size:0.5rem;letter-spacing:2px;text-transform:uppercase;color:var(--gold);margin-bottom:0.75rem">How do you travel?</label>
         <div style="display:grid;grid-template-columns:1fr 1fr 1fr;gap:6px" id="pz-style-grid">
-          ${['Luxury Cruise','Cultural Immersion','Adventure & Wellness','Culinary Journey','Business Travel','Family Adventure'].map(s=>`
-            <div onclick="pzSelectStyle(this,'${s}')" style="border:1px solid var(--border);padding:0.75rem 0.5rem;cursor:pointer;text-align:center;font-size:0.65rem;color:var(--mist);transition:all 0.2s;background:transparent" onmouseover="if(!this.classList.contains('pz-on'))this.style.borderColor='rgba(201,169,110,0.3)'" onmouseout="if(!this.classList.contains('pz-on'))this.style.borderColor='var(--border)'">${s}</div>
-          `).join('')}
+          <div onclick="pzSelectStyle(this,'Luxury Cruise')" class="pz-tile">Luxury Cruise</div>
+          <div onclick="pzSelectStyle(this,'Cultural Immersion')" class="pz-tile">Cultural Immersion</div>
+          <div onclick="pzSelectStyle(this,'Adventure & Wellness')" class="pz-tile">Adventure & Wellness</div>
+          <div onclick="pzSelectStyle(this,'Culinary Journey')" class="pz-tile">Culinary Journey</div>
+          <div onclick="pzSelectStyle(this,'Business Travel')" class="pz-tile">Business Travel</div>
+          <div onclick="pzSelectStyle(this,'Family Adventure')" class="pz-tile">Family Adventure</div>
         </div>
       </div>
 
@@ -1612,9 +1620,13 @@ window._supabaseLaunchPatch = async function() {
       <div>
         <label style="display:block;font-size:0.5rem;letter-spacing:2px;text-transform:uppercase;color:var(--gold);margin-bottom:0.75rem">Dream destinations (pick any)</label>
         <div style="display:flex;flex-wrap:wrap;gap:6px" id="pz-dest-grid">
-          ${['Europe','Caribbean','Asia Pacific','Americas','Middle East','Africa','Antarctica'].map(d=>`
-            <div onclick="pzToggleDest(this,'${d}')" style="border:1px solid var(--border);padding:0.4rem 0.85rem;cursor:pointer;font-size:0.65rem;color:var(--mist);transition:all 0.2s;background:transparent">${d}</div>
-          `).join('')}
+          <div onclick="pzToggleDest(this,'Europe')" class="pz-tile">Europe</div>
+          <div onclick="pzToggleDest(this,'Caribbean')" class="pz-tile">Caribbean</div>
+          <div onclick="pzToggleDest(this,'Asia Pacific')" class="pz-tile">Asia Pacific</div>
+          <div onclick="pzToggleDest(this,'Americas')" class="pz-tile">Americas</div>
+          <div onclick="pzToggleDest(this,'Middle East')" class="pz-tile">Middle East</div>
+          <div onclick="pzToggleDest(this,'Africa')" class="pz-tile">Africa</div>
+          <div onclick="pzToggleDest(this,'Antarctica')" class="pz-tile">Antarctica</div>
         </div>
       </div>
 
@@ -1622,9 +1634,12 @@ window._supabaseLaunchPatch = async function() {
       <div>
         <label style="display:block;font-size:0.5rem;letter-spacing:2px;text-transform:uppercase;color:var(--gold);margin-bottom:0.75rem">Biggest travel frustration?</label>
         <div style="display:grid;grid-template-columns:1fr 1fr;gap:6px" id="pz-pain-grid">
-          ${['Overpacking','Lost luggage','Wrong adapters','Hotel laundry costs','Forgotten essentials','Checking bags'].map(p=>`
-            <div onclick="pzSelectPain(this,'${p}')" style="border:1px solid var(--border);padding:0.6rem 0.75rem;cursor:pointer;font-size:0.65rem;color:var(--mist);transition:all 0.2s;background:transparent">${p}</div>
-          `).join('')}
+          <div onclick="pzSelectPain(this,'Overpacking')" class="pz-tile">Overpacking</div>
+          <div onclick="pzSelectPain(this,'Lost luggage')" class="pz-tile">Lost luggage</div>
+          <div onclick="pzSelectPain(this,'Wrong adapters')" class="pz-tile">Wrong adapters</div>
+          <div onclick="pzSelectPain(this,'Hotel laundry costs')" class="pz-tile">Hotel laundry costs</div>
+          <div onclick="pzSelectPain(this,'Forgotten essentials')" class="pz-tile">Forgotten essentials</div>
+          <div onclick="pzSelectPain(this,'Checking bags')" class="pz-tile">Checking bags</div>
         </div>
       </div>
 
