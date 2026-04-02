@@ -1466,12 +1466,12 @@ function hpCalc() {
   const overweight = Math.round(140 * 0.2);
   const laundry    = days >= 7 ? 85 : days >= 5 ? 55 : 30;
   const forgotten  = days >= 7 ? 95 : 65;
-  const tradTotal = checked + overweight + laundry + forgotten + preShopping;
+
   const preShopping = {
-    luxury:   480,  // designer outfits, premium toiletries, new luggage accessories
-    business: 280,  // shirts, shoes, grooming kit
-    leisure:  180,  // casual clothes, sunscreen, toiletries
-    wellness: 220,  // activewear, supplements, recovery gear
+    luxury:   480,
+    business: 280,
+    leisure:  180,
+    wellness: 220,
   }[style] || 180;
 
   const tradTotal = checked + overweight + laundry + forgotten + preShopping;
@@ -1525,8 +1525,9 @@ function hpCalc() {
   const sv = document.getElementById('hp-saving');
   if (sv) sv.textContent = saving > 0 ? '$'+saving : '—';
 }
-// Init after React renders
-setTimeout(hpCalc, 800);
+// Init after React renders — use longer delay + retry to be safe
+setTimeout(hpCalc, 1200);
+setTimeout(hpCalc, 2500);
 </script>
 </body>
 </html>
