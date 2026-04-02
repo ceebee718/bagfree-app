@@ -773,11 +773,7 @@ window._supabaseLaunchPatch = async function() {
       Your data is encrypted and never sold.
     </div>
 
-    <div class="auth-divider"><span class="auth-divider-text">or</span></div>
-    <button onclick="enterAsGuest()" style="width:100%;background:transparent;border:1px solid var(--border);color:var(--mist);padding:0.85rem;font-size:0.68rem;letter-spacing:2px;text-transform:uppercase;cursor:pointer;font-family:var(--ff-body);transition:all 0.2s;margin-bottom:0.5rem" onmouseover="this.style.borderColor='rgba(201,169,110,0.35)';this.style.color='var(--white)'" onmouseout="this.style.borderColor='var(--border)';this.style.color='var(--mist)'">
-      Continue as Guest →
-    </button>
-    <div style="font-size:0.58rem;color:rgba(253,252,248,0.22);text-align:center;line-height:1.7">Explore the dashboard freely · Create a free account to save trips,<br>set up BagFree Sync, and unlock all features</div>
+
   </div>
 </div>
 
@@ -1684,14 +1680,7 @@ window._supabaseLaunchPatch = async function() {
   </div>
 </div>
 
-<!-- GUEST BANNER -->
-<div id="guestBanner" style="display:none;position:fixed;top:52px;left:0;right:0;z-index:600;background:rgba(201,169,110,0.1);border-bottom:1px solid rgba(201,169,110,0.3);padding:0.55rem 1.5rem;align-items:center;justify-content:space-between;gap:1rem;flex-wrap:wrap">
-  <div style="display:flex;align-items:center;gap:0.6rem;font-size:0.68rem;color:rgba(253,252,248,0.7)">
-    <span style="font-size:0.8rem">👤</span>
-    <span>You're exploring as a <strong style="color:var(--gold)">Guest</strong> — map, destinations, and live data are fully available. Create a free account to unlock Sync, Itinerary Builder, and AI planning.</span>
-  </div>
-  <button onclick="document.getElementById('authOverlay').style.display='flex';window._isGuest=false;document.getElementById('guestBanner').style.display='none'" style="background:var(--gold);color:var(--noir);border:none;padding:0.4rem 1.1rem;font-size:0.58rem;font-weight:600;letter-spacing:2px;text-transform:uppercase;cursor:pointer;white-space:nowrap;font-family:var(--ff-body);flex-shrink:0">Create Free Account</button>
-</div>
+
 
 <div id="depositModal" style="display:none;position:fixed;inset:0;background:rgba(0,0,0,0.88);z-index:500;align-items:center;justify-content:center;padding:1.5rem">
   <div style="background:var(--noir2);border:1px solid var(--border-hi);max-width:500px;width:100%;padding:2rem;position:relative;max-height:88vh;overflow-y:auto">
@@ -3892,7 +3881,6 @@ function openBagfreeSyncFromTrip() {
 }
 
 function openSyncModal() {
-  if (!requireAuth('sync')) return;
   // Pre-fill from active trip
   const destEl = document.getElementById('sm-dest');
   const hotelEl = document.getElementById('sm-hotel');
@@ -3990,11 +3978,6 @@ function aiRenderResponse(raw) {
 
 async function sendAIBrain() {
   if (_aiBrainStreaming) return;
-  // Guest limit — 1 AI message
-  if (window._isGuest && window._guestAIUsed >= 1) {
-    requireAuth('ai-brain');
-    return;
-  }
   const inp = document.getElementById('aiBrainInput');
   const sendBtn = document.getElementById('aiBrainSendBtn');
   const text = inp.value.trim();
@@ -4012,7 +3995,6 @@ async function sendAIBrain() {
   // Add user message to UI and history
   aiAppendMessage('user', text);
   _aiBrainHistory.push({ role: 'user', content: text });
-  if (window._isGuest) window._guestAIUsed++;
 
   // Add assistant placeholder
   aiAppendMessage('assistant', '');
@@ -4410,7 +4392,6 @@ const CAT_COLORS = {
 };
 
 function openItineraryBuilder() {
-  if (!requireAuth('itinerary')) return;
   // Pre-fill from active state
   const dest = document.querySelector('.dest-card.active .dest-name');
   if (dest) document.getElementById('sibDest').value = dest.textContent;
@@ -4717,7 +4698,6 @@ function sibSetUpSync() {
 }
 
 function sibSaveItinerary() {
-  if (!requireAuth('itinerary')) return;
   const dest = document.getElementById('sibDest').value || window._activeTrip.destination || 'Trip';
   // Update active trip with latest days
   setActiveTrip({ destination: dest, days: _sibDays });
@@ -4821,7 +4801,6 @@ function renderCurators() {
 }
 
 function openCuratorDetail(id) {
-  if (!requireAuth('curator')) return;
   const c = CURATORS_DATA.find(x => x.id === id);
   if (!c) return;
   showToast(`📩 Connecting you with ${c.name} in ${c.city}…`);
@@ -4841,7 +4820,6 @@ let _vStep = 0;
 let _vServices = [];
 
 function openVendorSignup() {
-  if (!requireAuth('collective')) return;
   _vStep = 0;
   _vServices = [];
   document.getElementById('vendorSignupModal').style.display = 'flex';
@@ -5225,68 +5203,11 @@ function toggleMobilePanel(side) {
 }
 window.toggleMobilePanel = toggleMobilePanel;
 
-// ── GUEST MODE ────────────────────────────────────────────────────────────
-window._isGuest = false;
-
-function enterAsGuest() {
-  window._isGuest = true;
-  // Set minimal guest profile
-  profile.name = 'Guest';
-  profile.travelStyle = 'Luxury';
-  profile.destinations = [];
-  profile.homeCity = '';
-  window.profile = profile;
-  document.getElementById('authOverlay').style.display = 'none';
-  _launchDashboardCore();
-  // Show guest banner after dashboard loads
-  setTimeout(showGuestBanner, 800);
-}
-
-function showGuestBanner() {
-  const banner = document.getElementById('guestBanner');
-  if (banner) banner.style.display = 'flex';
-}
-
-// Gate function — call before any feature that requires an account
-function requireAuth(featureName) {
-  if (!window._isGuest) return true; // logged in, proceed
-  showGuestUpgradePrompt(featureName);
-  return false;
-}
-
-function showGuestUpgradePrompt(feature) {
-  const msg = {
-    'sync':       'BagFree Sync requires a free account so we can confirm your delivery.',
-    'itinerary':  'Save your itinerary by creating a free account — it takes 30 seconds.',
-    'collective': 'Join the Travel Collective by creating a free account.',
-    'personalize':'Create a free account to save your travel preferences.',
-    'curator':    'Book a curator by creating a free account.',
-    'ai-brain':   'You\'ve used your guest AI message. Create a free account for unlimited planning.',
-  }[feature] || 'Create a free account to unlock this feature.';
-
-  // Reuse toast but styled differently
-  const t = document.getElementById('bfToast');
-  if (!t) return;
-  t.innerHTML = `<div style="display:flex;align-items:center;gap:0.85rem;flex-wrap:wrap">
-    <span style="flex:1">${msg}</span>
-    <button onclick="document.getElementById('authOverlay').style.display='flex';window._isGuest=false;document.getElementById('guestBanner').style.display='none'" style="background:var(--gold);color:var(--noir);border:none;padding:0.4rem 1rem;font-size:0.6rem;font-weight:600;letter-spacing:2px;text-transform:uppercase;cursor:pointer;white-space:nowrap;font-family:var(--ff-body)">Create Free Account</button>
-  </div>`;
-  t.style.cssText = 'position:fixed;bottom:1.5rem;left:50%;transform:translateX(-50%);background:var(--noir2);border:1px solid rgba(201,169,110,0.5);color:var(--white);padding:1rem 1.25rem;font-size:0.75rem;z-index:9999;max-width:520px;width:90%;box-shadow:0 8px 32px rgba(0,0,0,0.6);opacity:1;pointer-events:all';
-  clearTimeout(t._guestTimer);
-  t._guestTimer = setTimeout(() => { t.innerHTML=''; t.style.cssText=''; }, 8000);
-}
-
-// Track AI brain guest usage
-window._guestAIUsed = 0;
-
-window.enterAsGuest = enterAsGuest;
-window.requireAuth = requireAuth;
 
 // ── PERSONALIZE MODAL ─────────────────────────────────────────────────────
 let _pzStyle = '', _pzDests = [], _pzPain = '';
 
 function openPersonalizeModal() {
-  if (!requireAuth('personalize')) return;
   // Pre-fill from existing profile
   if (profile.name) document.getElementById('pz-name').value = profile.name;
   if (profile.homeCity) document.getElementById('pz-city').value = profile.homeCity;
