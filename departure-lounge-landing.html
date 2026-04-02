@@ -598,8 +598,6 @@ function lpCalc() {
   const overweight = Math.round(bagFee * 0.4);
   const laundry    = days >= 7 ? 85 : days >= 5 ? 55 : 30;
   const forgotten  = days >= 7 ? 95 : 65;
-  const airportTime = 120;
-  const stress     = 50;
   const preShopping = { luxury:480, business:280, leisure:180, wellness:220 }[style] || 180;
   const shopLabel   = {
     luxury:   'Pre-trip shopping (clothes, toiletries, accessories)',
@@ -607,7 +605,7 @@ function lpCalc() {
     leisure:  'Pre-trip shopping (clothes, sunscreen, toiletries)',
     wellness: 'Pre-trip shopping (activewear, supplements, gear)',
   }[style] || 'Pre-trip shopping';
-  const tradTotal = checked + overweight + laundry + forgotten + airportTime + stress + preShopping;
+  const tradTotal = checked + overweight + laundry + forgotten + preShopping;
 
   const kits = {
     luxury:   { name:'Luxury Wardrobe Kit',  price:480 },
@@ -630,8 +628,6 @@ function lpCalc() {
     [shopLabel, '$' + preShopping, 'red'],
     ['Hotel laundry (' + days + ' days)', '$' + laundry, 'red'],
     ['Forgotten & replacement items', '$' + forgotten, 'red'],
-    ['Time cost — 2hrs bag check & claim', '$' + airportTime, 'red'],
-    ['Stress buffer & misc', '$' + stress, 'red'],
   ].map(([n,v,c]) => `
     <div class="cost-item">
       <div class="cost-item-name">${n}</div>
@@ -644,7 +640,6 @@ function lpCalc() {
     ['Pre-trip shopping', '$0', 'green'],
     ['Hotel laundry', '$0', 'green'],
     ['Forgotten items', '$0', 'green'],
-    ['Time cost', '$0', 'green'],
     [kit.name + ' · Valet by Nuor', '$' + kit.price, 'gold'],
     ['Local curator curation', '$' + curator, 'gold'],
     ['Hotel delivery fee', '$' + delivery, 'gold'],
