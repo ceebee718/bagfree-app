@@ -224,7 +224,7 @@ body{padding-top:36px}
   <div class="dgrid">
 
     <!-- ROME — Colosseum -->
-    <div class="dc bg-rome">
+    <div class="dc bg-rome" style="cursor:pointer;" onclick="openDestModal('rome')">
       <div class="dci"></div>
       <div class="dco"></div>
       <div class="dc-landmark">
@@ -256,11 +256,11 @@ body{padding-top:36px}
           </g>
         </svg>
       </div>
-      <div class="dcc"><div class="dscore">92% match</div><div class="dname">Rome</div><div class="dcountry">Italy · Mediterranean</div><div class="dreason">Perfect Mediterranean family adventure with world-class art, culture and cuisine</div></div>
+      <div class="dcc"><div class="dscore">92% match</div><div class="dname">Rome</div><div class="dcountry">Italy · Mediterranean</div><div class="dreason">Perfect Mediterranean family adventure with world-class art, culture and cuisine</div><div style="margin-top:1rem;"><span style="font-size:0.58rem;letter-spacing:2px;text-transform:uppercase;color:rgba(201,169,110,0.7);border:1px solid rgba(201,169,110,0.3);padding:3px 10px;display:inline-block;transition:all 0.2s;">Explore ✦</span></div></div>
     </div>
 
     <!-- PARIS — Eiffel Tower -->
-    <div class="dc bg-paris">
+    <div class="dc bg-paris" style="cursor:pointer;" onclick="openDestModal('paris')">
       <div class="dci"></div>
       <div class="dco"></div>
       <div class="dc-landmark">
@@ -292,11 +292,11 @@ body{padding-top:36px}
           </g>
         </svg>
       </div>
-      <div class="dcc"><div class="dscore">88% match</div><div class="dname">Paris</div><div class="dcountry">France · Europe</div><div class="dreason">European cultural capital with family-friendly museums and exceptional cuisine</div></div>
+      <div class="dcc"><div class="dscore">88% match</div><div class="dname">Paris</div><div class="dcountry">France · Europe</div><div class="dreason">European cultural capital with family-friendly museums and exceptional cuisine</div><div style="margin-top:1rem;"><span style="font-size:0.58rem;letter-spacing:2px;text-transform:uppercase;color:rgba(201,169,110,0.7);border:1px solid rgba(201,169,110,0.3);padding:3px 10px;display:inline-block;transition:all 0.2s;">Explore ✦</span></div></div>
     </div>
 
     <!-- ST. VINCENT — Palm + island silhouette -->
-    <div class="dc bg-svg">
+    <div class="dc bg-svg" style="cursor:pointer;" onclick="openDestModal('svg')">
       <div class="dci"></div>
       <div class="dco"></div>
       <div class="dc-landmark">
@@ -331,11 +331,11 @@ body{padding-top:36px}
           </g>
         </svg>
       </div>
-      <div class="dcc"><div class="dscore">96% match</div><div class="dname">St. Vincent</div><div class="dcountry">Caribbean · BagFree Trip</div><div class="dreason">Your Christmas Collective destination — BagFree kit delivered to your room</div></div>
+      <div class="dcc"><div class="dscore">96% match</div><div class="dname">St. Vincent</div><div class="dcountry">Caribbean · BagFree Trip</div><div class="dreason">Your Christmas Collective destination — BagFree kit delivered to your room</div><div style="margin-top:1rem;"><span style="font-size:0.58rem;letter-spacing:2px;text-transform:uppercase;color:rgba(201,169,110,0.7);border:1px solid rgba(201,169,110,0.3);padding:3px 10px;display:inline-block;transition:all 0.2s;">Explore ✦</span></div></div>
     </div>
 
     <!-- TOKYO — Mount Fuji + Torii gate -->
-    <div class="dc bg-tokyo">
+    <div class="dc bg-tokyo" style="cursor:pointer;" onclick="openDestModal('tokyo')">
       <div class="dci"></div>
       <div class="dco"></div>
       <div class="dc-landmark">
@@ -365,11 +365,11 @@ body{padding-top:36px}
           </g>
         </svg>
       </div>
-      <div class="dcc"><div class="dscore">45% match</div><div class="dname">Tokyo</div><div class="dcountry">Japan · Asia Pacific</div><div class="dreason">Extraordinary culture but outside your preferred Mediterranean regions</div></div>
+      <div class="dcc"><div class="dscore">45% match</div><div class="dname">Tokyo</div><div class="dcountry">Japan · Asia Pacific</div><div class="dreason">Extraordinary culture but outside your preferred Mediterranean regions</div><div style="margin-top:1rem;"><span style="font-size:0.58rem;letter-spacing:2px;text-transform:uppercase;color:rgba(201,169,110,0.7);border:1px solid rgba(201,169,110,0.3);padding:3px 10px;display:inline-block;transition:all 0.2s;">Explore ✦</span></div></div>
     </div>
 
     <!-- LONDON — Big Ben + Westminster -->
-    <div class="dc bg-london">
+    <div class="dc bg-london" style="cursor:pointer;" onclick="openDestModal('london')">
       <div class="dci"></div>
       <div class="dco"></div>
       <div class="dc-landmark">
@@ -403,7 +403,7 @@ body{padding-top:36px}
           </g>
         </svg>
       </div>
-      <div class="dcc"><div class="dscore">84% match</div><div class="dname">London</div><div class="dcountry">United Kingdom · Europe</div><div class="dreason">World-class theater and museums, excellent family destination</div></div>
+      <div class="dcc"><div class="dscore">84% match</div><div class="dname">London</div><div class="dcountry">United Kingdom · Europe</div><div class="dreason">World-class theater and museums, excellent family destination</div><div style="margin-top:1rem;"><span style="font-size:0.58rem;letter-spacing:2px;text-transform:uppercase;color:rgba(201,169,110,0.7);border:1px solid rgba(201,169,110,0.3);padding:3px 10px;display:inline-block;transition:all 0.2s;">Explore ✦</span></div></div>
     </div>
 
   </div>
@@ -750,5 +750,228 @@ window.addEventListener('scroll',()=>document.getElementById('nav').classList.to
 const obs=new IntersectionObserver(entries=>{entries.forEach(e=>{if(e.isIntersecting){e.target.classList.add('up');obs.unobserve(e.target)}})},{threshold:0.1})
 document.querySelectorAll('.reveal').forEach(el=>obs.observe(el))
 </script>
+
+<!-- DESTINATION INTELLIGENCE MODAL -->
+<div id="destModal" style="display:none;position:fixed;inset:0;z-index:9999;pointer-events:none;">
+  <!-- Backdrop -->
+  <div id="destBackdrop" onclick="closeDestModal()" style="position:absolute;inset:0;background:rgba(7,7,10,0.85);backdrop-filter:blur(6px);pointer-events:all;opacity:0;transition:opacity 0.4s ease;"></div>
+  <!-- Panel -->
+  <div id="destPanel" style="position:absolute;top:0;right:0;bottom:0;width:min(600px,95vw);background:var(--n2);border-left:1px solid var(--brd);overflow-y:auto;pointer-events:all;transform:translateX(100%);transition:transform 0.45s cubic-bezier(0.22,1,0.36,1);display:flex;flex-direction:column;">
+    <!-- Header -->
+    <div id="destHeader" style="padding:2.5rem 2.5rem 1.5rem;border-bottom:1px solid var(--brd);position:sticky;top:0;background:var(--n2);z-index:10;">
+      <div style="display:flex;align-items:flex-start;justify-content:space-between;gap:1rem;">
+        <div>
+          <div id="destRegion" style="font-size:0.55rem;letter-spacing:3px;text-transform:uppercase;color:var(--g);margin-bottom:0.4rem;"></div>
+          <div id="destName" style="font-family:var(--fd);font-size:2.8rem;font-weight:300;line-height:1;color:var(--w);"></div>
+          <div id="destTagline" style="font-size:0.82rem;color:rgba(253,252,248,0.5);margin-top:0.5rem;font-style:italic;"></div>
+        </div>
+        <button onclick="closeDestModal()" style="background:transparent;border:1px solid var(--brd);color:rgba(253,252,248,0.4);width:36px;height:36px;cursor:pointer;font-size:1rem;flex-shrink:0;margin-top:4px;transition:all 0.2s;" onmouseover="this.style.borderColor='var(--g)';this.style.color='var(--g)'" onmouseout="this.style.borderColor='var(--brd)';this.style.color='rgba(253,252,248,0.4)'">✕</button>
+      </div>
+    </div>
+    <!-- Body -->
+    <div style="padding:2rem 2.5rem;flex:1;">
+
+      <!-- Quick facts grid -->
+      <div style="display:grid;grid-template-columns:1fr 1fr;gap:1px;background:var(--brd);border:1px solid var(--brd);margin-bottom:2rem;">
+        <div style="background:var(--n3);padding:1rem;">
+          <div style="font-size:0.52rem;letter-spacing:2px;text-transform:uppercase;color:rgba(253,252,248,0.35);margin-bottom:0.3rem;">Language</div>
+          <div id="destLanguage" style="font-size:0.85rem;color:var(--w);"></div>
+        </div>
+        <div style="background:var(--n3);padding:1rem;">
+          <div style="font-size:0.52rem;letter-spacing:2px;text-transform:uppercase;color:rgba(253,252,248,0.35);margin-bottom:0.3rem;">Currency</div>
+          <div id="destCurrency" style="font-size:0.85rem;color:var(--w);"></div>
+        </div>
+        <div style="background:var(--n3);padding:1rem;">
+          <div style="font-size:0.52rem;letter-spacing:2px;text-transform:uppercase;color:rgba(253,252,248,0.35);margin-bottom:0.3rem;">Best Time to Visit</div>
+          <div id="destBestTime" style="font-size:0.85rem;color:var(--w);"></div>
+        </div>
+        <div style="background:var(--n3);padding:1rem;">
+          <div style="font-size:0.52rem;letter-spacing:2px;text-transform:uppercase;color:rgba(253,252,248,0.35);margin-bottom:0.3rem;">Visa (US Passport)</div>
+          <div id="destVisa" style="font-size:0.82rem;color:var(--w);"></div>
+        </div>
+      </div>
+
+      <!-- Flight cost -->
+      <div style="border:1px solid var(--brd);padding:1.25rem;margin-bottom:2rem;background:var(--n3);">
+        <div style="font-size:0.52rem;letter-spacing:2px;text-transform:uppercase;color:var(--g);margin-bottom:0.5rem;">✦ Average Flight Cost</div>
+        <div id="destFlight" style="font-size:1.1rem;color:var(--w);font-family:var(--fd);font-weight:300;"></div>
+        <div style="font-size:0.6rem;color:rgba(253,252,248,0.3);margin-top:0.3rem;">Estimated round trip · prices vary by season and availability</div>
+      </div>
+
+      <!-- BagFree availability -->
+      <div id="destBagfreeBox" style="border:1px solid rgba(93,202,165,0.3);padding:1.25rem;margin-bottom:2rem;background:rgba(93,202,165,0.05);">
+        <div style="font-size:0.52rem;letter-spacing:2px;text-transform:uppercase;color:#5DCAA5;margin-bottom:0.5rem;">◈ BagFree Status</div>
+        <div id="destBagfree" style="font-size:0.85rem;color:var(--w);"></div>
+      </div>
+
+      <!-- Things to do -->
+      <div style="margin-bottom:2rem;">
+        <div style="font-size:0.55rem;letter-spacing:3px;text-transform:uppercase;color:var(--g);margin-bottom:1.25rem;">Things to Do</div>
+        <div id="destThings" style="display:flex;flex-direction:column;gap:0;"></div>
+      </div>
+
+      <!-- CTA -->
+      <div style="border-top:1px solid var(--brd);padding-top:1.5rem;text-align:center;">
+        <div style="font-size:0.62rem;color:rgba(253,252,248,0.35);margin-bottom:1rem;letter-spacing:1px;">Plan this trip with BagFree — everything delivered to your hotel.</div>
+        <a href="/departure-lounge-landing#signin" onclick="closeDestModal()" style="display:inline-block;background:linear-gradient(135deg,var(--g),#b8893e);color:#0A0A08;padding:0.85rem 2.5rem;font-size:0.65rem;font-weight:500;letter-spacing:2.5px;text-transform:uppercase;text-decoration:none;transition:opacity 0.2s;" onmouseover="this.style.opacity=0.85" onmouseout="this.style.opacity=1">Enter the Departure Lounge ✦</a>
+      </div>
+
+    </div>
+  </div>
+</div>
+
+<script>
+// ── DESTINATION DATA ──
+const DEST_INTEL = {
+  rome: {
+    name:'Rome', region:'Italy · Mediterranean · Europe',
+    tagline:'Where ancient streets meet modern luxury.',
+    language:'Italian', currency:'Euro (€)',
+    visa:'Visa-free · 90 days (US passport)',
+    bestTime:'April–June, September–October',
+    flight:'$620–$980 from Tampa / Orlando (round trip)',
+    bagfree:'Available · Same-day delivery at select Rome hotels',
+    things:[
+      ['◈','The Colosseum','Skip the queue with pre-booked tickets. Best at golden hour.'],
+      ['◇','Vatican Museums','Book the first slot — crowds thin by 8am.'],
+      ['⬡','Trastevere','The neighbourhood Rome forgot to ruin. Dinner only.'],
+      ['◁','Borghese Gallery','Bernini sculptures that will stop you cold. Booking essential.'],
+      ['◦','Campo de\' Fiori','Morning market, aperitivo in the evening. Live like a local.'],
+    ]
+  },
+  paris: {
+    name:'Paris', region:'France · Western Europe',
+    tagline:'The city that makes everything feel effortless.',
+    language:'French', currency:'Euro (€)',
+    visa:'Visa-free · 90 days (US passport)',
+    bestTime:'May–June, September',
+    flight:'$680–$1,050 from Tampa / Orlando (round trip)',
+    bagfree:'Available · Delivery to central Paris hotels',
+    things:[
+      ['◈','The Louvre at Dawn','Enter at opening — the Winged Victory is yours alone.'],
+      ['◇','Marais District','Art galleries, falafel, and the best people-watching in Europe.'],
+      ['⬡','Musée d\'Orsay','The Impressionists. Better than the Louvre. Don\'t tell anyone.'],
+      ['◁','Seine at Sunset','Walk from Notre-Dame to the Eiffel Tower. No plan needed.'],
+      ['◦','Montmartre','Sacré-Cœur at sunrise before the tourists arrive.'],
+    ]
+  },
+  svg: {
+    name:'St. Vincent', region:'St. Vincent & the Grenadines · Caribbean',
+    tagline:'Untouched Caribbean — no crowds, no compromise.',
+    language:'English', currency:'Eastern Caribbean Dollar (XCD)',
+    visa:'Visa-free (US passport)',
+    bestTime:'December–May (dry season)',
+    flight:'$420–$680 from Tampa / Orlando (round trip)',
+    bagfree:'Available · Resort delivery on Bequia & mainland',
+    things:[
+      ['◈','Bequia Island','A 45-min ferry from Kingstown. The Caribbean of 30 years ago.'],
+      ['◇','La Soufrière Hike','Active volcano trek. Two hours up, views that reframe everything.'],
+      ['⬡','Tobago Cays','Private catamaran to uninhabited islands. Sea turtles guaranteed.'],
+      ['◁','Black Sand Beaches','Dark volcanic sand, warm water, almost no one else there.'],
+      ['◦','Wallilabou Bay','Where Pirates of the Caribbean was filmed. Still looks like it.'],
+    ]
+  },
+  tokyo: {
+    name:'Tokyo', region:'Japan · Asia Pacific',
+    tagline:'Precision, beauty, and a city that never overwhelms.',
+    language:'Japanese', currency:'Japanese Yen (¥)',
+    visa:'Visa-free · 90 days (US passport)',
+    bestTime:'March–May (cherry blossom), October–November',
+    flight:'$780–$1,200 from Tampa / Orlando (round trip)',
+    bagfree:'Coming soon · Available via partner network',
+    things:[
+      ['◈','Shinjuku Gyoen','Tokyo\'s best park. Cherry blossoms in spring, quiet year-round.'],
+      ['◇','Tsukiji Outer Market','Breakfast here. Tuna sashimi at 7am changes your life.'],
+      ['⬡','Yanaka District','Old Tokyo that survived the bombs. Temples, cats, craft shops.'],
+      ['◁','teamLab Borderless','Digital art that defies description. Book weeks ahead.'],
+      ['◦','Shibuya at Midnight','The crossing, the neon, the energy. Nothing else like it.'],
+    ]
+  },
+  london: {
+    name:'London', region:'United Kingdom · Europe',
+    tagline:'Culture, class, and a city that rewards the curious.',
+    language:'English', currency:'British Pound (£)',
+    visa:'Visa-free · 6 months (US passport)',
+    bestTime:'May–September',
+    flight:'$560–$920 from Tampa / Orlando (round trip)',
+    bagfree:'Available · Delivery to central London hotels',
+    things:[
+      ['◈','Borough Market','London\'s best food market. Go hungry on a Thursday morning.'],
+      ['◇','Tate Modern','Free entry. World-class modern art. The Turbine Hall alone is worth it.'],
+      ['⬡','Columbia Road Flower Market','Sunday mornings only. The city at its most human.'],
+      ['◁','Hampstead Heath','A proper wild park in Zone 2. Views across the whole city.'],
+      ['◦','Soho at Dusk','From Bar Italia to the Jazz Café. London\'s most alive square mile.'],
+    ]
+  }
+};
+
+window.openDestModal = function(key) {
+  const d = DEST_INTEL[key];
+  if (!d) return;
+
+  document.getElementById('destRegion').textContent = d.region;
+  document.getElementById('destName').textContent = d.name;
+  document.getElementById('destTagline').textContent = d.tagline;
+  document.getElementById('destLanguage').textContent = d.language;
+  document.getElementById('destCurrency').textContent = d.currency;
+  document.getElementById('destVisa').textContent = d.visa;
+  document.getElementById('destBestTime').textContent = d.bestTime;
+  document.getElementById('destFlight').textContent = d.flight;
+  document.getElementById('destBagfree').textContent = d.bagfree;
+
+  // BagFree box color
+  const bfBox = document.getElementById('destBagfreeBox');
+  if (d.bagfree.includes('Coming soon')) {
+    bfBox.style.borderColor = 'rgba(201,169,110,0.3)';
+    bfBox.style.background = 'rgba(201,169,110,0.05)';
+    bfBox.querySelector('div').style.color = 'var(--g)';
+  } else {
+    bfBox.style.borderColor = 'rgba(93,202,165,0.3)';
+    bfBox.style.background = 'rgba(93,202,165,0.05)';
+    bfBox.querySelector('div').style.color = '#5DCAA5';
+  }
+
+  // Things to do
+  const thingsEl = document.getElementById('destThings');
+  thingsEl.innerHTML = d.things.map(([icon, title, desc]) => `
+    <div style="display:flex;gap:0.85rem;padding:0.85rem 0;border-bottom:1px solid rgba(201,169,110,0.08);">
+      <span style="color:rgba(201,169,110,0.6);font-size:0.9rem;flex-shrink:0;margin-top:2px;">${icon}</span>
+      <div>
+        <div style="font-size:0.78rem;color:rgba(253,252,248,0.9);font-weight:500;margin-bottom:3px;">${title}</div>
+        <div style="font-size:0.68rem;color:rgba(253,252,248,0.45);line-height:1.65;">${desc}</div>
+      </div>
+    </div>
+  `).join('');
+
+  // Show modal
+  const modal = document.getElementById('destModal');
+  const panel = document.getElementById('destPanel');
+  const backdrop = document.getElementById('destBackdrop');
+  modal.style.display = 'block';
+  modal.style.pointerEvents = 'all';
+  document.body.style.overflow = 'hidden';
+  requestAnimationFrame(() => {
+    backdrop.style.opacity = '1';
+    panel.style.transform = 'translateX(0)';
+  });
+};
+
+window.closeDestModal = function() {
+  const modal = document.getElementById('destModal');
+  const panel = document.getElementById('destPanel');
+  const backdrop = document.getElementById('destBackdrop');
+  backdrop.style.opacity = '0';
+  panel.style.transform = 'translateX(100%)';
+  setTimeout(() => {
+    modal.style.display = 'none';
+    modal.style.pointerEvents = 'none';
+    document.body.style.overflow = '';
+  }, 450);
+};
+
+// Close on Escape key
+document.addEventListener('keydown', e => { if (e.key === 'Escape') closeDestModal(); });
+</script>
+
 </body>
 </html>
