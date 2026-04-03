@@ -1818,11 +1818,11 @@ function hpCalc() {
   const days  = parseInt(s['hp-days']  || document.getElementById('hp-days')?.value  || 7);
   const style = s['hp-style'] || document.getElementById('hp-style')?.value || 'leisure';
 
-  // Traditional costs — vary by style
-  const checked    = 140;
-  const overweight = Math.round(140 * 0.2);
-  const laundry    = days >= 7 ? 85 : days >= 5 ? 55 : 30;
-  const forgotten  = days >= 7 ? 95 : 65;
+  // Traditional costs — vary by days and style
+  const checked    = days >= 10 ? 210 : 140;  // 2 bags for longer trips
+  const overweight = Math.round(checked * 0.2);
+  const laundry    = days >= 14 ? 160 : days >= 10 ? 120 : days >= 7 ? 85 : days >= 5 ? 55 : 30;
+  const forgotten  = days >= 14 ? 160 : days >= 10 ? 130 : days >= 7 ? 95 : 65;
 
   const preShopping = {
     luxury:   480,
@@ -1833,12 +1833,13 @@ function hpCalc() {
 
   const tradTotal = checked + overweight + laundry + forgotten + preShopping;
 
-  // BagFree costs
-  const kits     = { luxury:480, leisure:220, business:320, wellness:280 };
-  const curators = { luxury:280, leisure:130, business:180, wellness:140 };
-  const kitPrice = kits[style]    || 220;
-  const curator  = curators[style] || 130;
-  const delivery = 35;
+  // BagFree costs — scale with trip length
+  const kitBase   = { luxury:480, leisure:220, business:320, wellness:280 };
+  const curators  = { luxury:280, leisure:130, business:180, wellness:140 };
+  const kitMult   = days >= 14 ? 1.6 : days >= 10 ? 1.3 : 1.0;
+  const kitPrice  = Math.round((kitBase[style] || 220) * kitMult);
+  const curator   = curators[style] || 130;
+  const delivery  = 35;
   const bfTotal  = kitPrice + curator + delivery;
   const saving   = tradTotal - bfTotal;
 
