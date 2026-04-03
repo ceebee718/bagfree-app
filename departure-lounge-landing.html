@@ -683,6 +683,31 @@ document.addEventListener('DOMContentLoaded', lpCalc);
       style="position:absolute;inset:0;width:100%;height:100%;object-fit:cover;object-position:center 40%;opacity:0.55;pointer-events:none;z-index:0;">
     <!-- Extra dark overlay for text readability -->
     <div style="position:absolute;inset:0;background:linear-gradient(to top,rgba(2,13,6,0.82) 0%,rgba(2,13,6,0.35) 55%,rgba(2,13,6,0.1) 100%);z-index:1;pointer-events:none;"></div>
+    <!-- St. Vincent & the Grenadines flag overlay -->
+    <div style="position:absolute;top:1.25rem;right:1.25rem;z-index:5;opacity:0.55;
+                width:90px;height:54px;overflow:hidden;
+                box-shadow:0 2px 12px rgba(0,0,0,0.4);
+                border:1px solid rgba(255,255,255,0.15);">
+      <svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 900 600" width="90" height="54">
+        <!-- Blue stripe (left) -->
+        <rect x="0" y="0" width="233" height="600" fill="#009E60"/>
+        <!-- Gold stripe (center) -->
+        <rect x="233" y="0" width="434" height="600" fill="#F4D01A"/>
+        <!-- Green stripe (right) -->
+        <rect x="667" y="0" width="233" height="600" fill="#009E60"/>
+
+        <!-- Three green diamonds arranged in V pattern -->
+        <!-- Left diamond -->
+        <polygon points="330,180 390,300 330,420 270,300"
+                 fill="#009E60" stroke="#000" stroke-width="3"/>
+        <!-- Center diamond (higher) -->
+        <polygon points="450,120 510,240 450,360 390,240"
+                 fill="#009E60" stroke="#000" stroke-width="3"/>
+        <!-- Right diamond -->
+        <polygon points="570,180 630,300 570,420 510,300"
+                 fill="#009E60" stroke="#000" stroke-width="3"/>
+      </svg>
+    </div>
     <div class="cvbadge" style="position:relative;z-index:2;">Now forming · 9 spots left</div>
     <div class="cvname" style="position:relative;z-index:2;">St. Vincent &amp;<br>The Grenadines</div>
     <div class="cvdates" style="position:relative;z-index:2;">Dec 15 — Dec 28, 2026 · 13 days</div>
