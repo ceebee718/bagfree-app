@@ -104,6 +104,17 @@ select option{background:#1A1A17!important;color:#FDFCF8!important}
   100%{transform:scale(1.08) translate3d(-0.6%, -0.8%, 0)}
 }
 
+
+.bf-hero-primary,.bf-hero-secondary{transition:transform .22s ease,box-shadow .22s ease,background .22s ease,border-color .22s ease,opacity .22s ease,color .22s ease}
+.bf-hero-primary:hover{transform:translateY(-2px);box-shadow:0 14px 34px rgba(201,169,110,0.18);background:linear-gradient(135deg,#d8b06a,#b8893e)}
+.bf-hero-secondary:hover{transform:translateY(-2px);opacity:1;border-color:rgba(201,169,110,0.34);color:var(--white);background:rgba(253,252,248,0.03)}
+.bf-trusted-row{display:flex;align-items:center;gap:.85rem;margin:-.25rem 0 2.25rem 0;color:rgba(253,252,248,0.56);font-size:.76rem;letter-spacing:1.1px;text-transform:uppercase}
+.bf-trusted-dots{display:flex;align-items:center;gap:.45rem}
+.bf-trusted-dots span{width:7px;height:7px;border-radius:50%;background:rgba(201,169,110,.82);box-shadow:0 0 0 1px rgba(201,169,110,.18)}
+.bf-scroll-cue{position:absolute;left:50%;bottom:1.35rem;transform:translateX(-50%);z-index:4;display:flex;flex-direction:column;align-items:center;gap:.45rem;color:rgba(253,252,248,.56);font-size:.6rem;letter-spacing:3px;text-transform:uppercase;pointer-events:none}
+.bf-scroll-cue-line{width:1px;height:34px;background:linear-gradient(to bottom,rgba(201,169,110,.82),rgba(201,169,110,0));animation:bfScrollCue 1.8s ease-in-out infinite}
+@keyframes bfScrollCue{0%,100%{transform:translateY(0);opacity:.45}50%{transform:translateY(8px);opacity:1}}
+
 </style>
 </head>
 <body>
@@ -382,13 +393,13 @@ function Home({setPage}) {
               <span style={{width:32,height:1,background:'var(--gold)',display:'inline-block'}}></span>
               <span>Arrive to everything</span>
             </div>
-            <h1 style={{fontFamily:'var(--ff-display)',fontSize:'clamp(3.2rem,5vw,5.8rem)',fontWeight:300,lineHeight:0.98,letterSpacing:'-2.4px',marginBottom:'1.75rem',color:'var(--white)',maxWidth:560}}>
+            <h1 style={{fontFamily:'var(--ff-display)',fontSize:'clamp(3.2rem,5vw,5.8rem)',fontWeight:300,lineHeight:0.95,letterSpacing:'-2.9px',marginBottom:'1.65rem',color:'var(--white)',maxWidth:560}}>
               Travel lighter.<br />Move <em style={{fontStyle:'italic',color:'var(--gold)'}}>freely.</em>
             </h1>
-            <p style={{fontSize:'1.02rem',color:'rgba(253,252,248,0.76)',lineHeight:1.95,maxWidth:430,marginBottom:'2.5rem',fontWeight:300}}>
+            <p style={{fontSize:'1.02rem',color:'rgba(253,252,248,0.76)',lineHeight:1.95,maxWidth:430,marginBottom:'2.15rem',fontWeight:300}}>
               Your essentials, curated and delivered to your hotel before you arrive. We take care of everything — so you don’t have to.
             </p>
-            <div style={{display:'flex',flexDirection:'column',gap:'0.65rem',marginBottom:'2.5rem'}}>
+            <div style={{display:'flex',flexDirection:'column',gap:'0.65rem',marginBottom:'2.05rem'}}>
               {['No luggage to check or carry','No waiting at baggage claim','Everything waiting at arrival','Same-day delivery — Tampa & Orlando'].map((t, i) => (
                 <div key={i} style={{display:'flex',alignItems:'center',gap:'0.85rem',fontSize:'0.9rem',color:'rgba(253,252,248,0.65)'}}>
                   <span style={{color:'var(--gold)',fontSize:'0.8rem',flexShrink:0}}>✓</span>
@@ -396,13 +407,17 @@ function Home({setPage}) {
                 </div>
               ))}
             </div>
-            <div style={{display:'flex',gap:'1rem',flexWrap:'wrap',marginBottom:'3rem'}}>
-              <button onClick={() => setPage('vendors')} style={{background:'linear-gradient(135deg,var(--gold),#b8893e)',color:'var(--noir)',padding:'1.1rem 2.8rem',border:'none',fontSize:'0.75rem',fontWeight:600,letterSpacing:'3px',textTransform:'uppercase',cursor:'pointer',fontFamily:'var(--ff-body)'}}>
+            <div style={{display:'flex',gap:'1rem',flexWrap:'wrap',marginTop:'1.75rem',marginBottom:'1.15rem'}}>
+              <button className="bf-hero-primary" onClick={() => setPage('vendors')} style={{background:'linear-gradient(135deg,var(--gold),#b8893e)',color:'var(--noir)',padding:'1.1rem 2.8rem',border:'none',fontSize:'0.75rem',fontWeight:600,letterSpacing:'3px',textTransform:'uppercase',cursor:'pointer',fontFamily:'var(--ff-body)'}}>
                 Get Started
               </button>
-              <button onClick={() => window.open('/departure-lounge-landing','_self')} style={{background:'rgba(253,252,248,0.01)',color:'rgba(253,252,248,0.76)',padding:'1.1rem 2.2rem',border:'1.5px solid rgba(253,252,248,0.2)',fontSize:'0.75rem',letterSpacing:'2.5px',textTransform:'uppercase',cursor:'pointer',fontFamily:'var(--ff-body)',opacity:0.82}}>
+              <button className="bf-hero-secondary" onClick={() => window.open('/departure-lounge-landing','_self')} style={{background:'rgba(253,252,248,0.01)',color:'rgba(253,252,248,0.76)',padding:'1.1rem 2.2rem',border:'1.5px solid rgba(253,252,248,0.2)',fontSize:'0.75rem',letterSpacing:'2.5px',textTransform:'uppercase',cursor:'pointer',fontFamily:'var(--ff-body)',opacity:0.82}}>
                 Enter the Lounge ↗
               </button>
+            </div>
+            <div className="bf-trusted-row">
+              <div className="bf-trusted-dots"><span></span><span></span><span></span></div>
+              <span>Trusted by travelers in Tampa & Orlando</span>
             </div>
             <div className="bf-stats" style={{display:'flex',gap:'3.5rem',paddingTop:'2rem',borderTop:'1px solid rgba(253,252,248,0.12)',flexWrap:'wrap'}}>
               {[['38+','Products'],['6','Destinations'],['Same-Day','Tampa & Orlando'],['Valet By Nuor','Partner']].map(([n, l]) => (
@@ -418,6 +433,10 @@ function Home({setPage}) {
           <img ref={heroImageRef} src="hero.png" alt="BagFree hero" style={{position:'absolute',inset:0,width:'100%',height:'100%',objectFit:'cover',objectPosition:'68% 45%',filter:'brightness(0.92) contrast(1.05)',transform:'scale(1.04)',transition:'transform 180ms ease-out',willChange:'transform',animation:'bfHeroDrift 16s ease-in-out infinite alternate'}} />
           <div style={{position:'absolute',inset:0,background:'linear-gradient(to right,rgba(10,10,8,0.78) 0%,rgba(10,10,8,0.55) 35%,rgba(10,10,8,0.18) 60%,transparent 80%)'}}></div>
           <div style={{position:'absolute',bottom:0,left:0,right:0,height:180,background:'linear-gradient(to top,var(--noir),transparent)'}}></div>
+        </div>
+        <div className="bf-scroll-cue">
+          <span>Scroll</span>
+          <span className="bf-scroll-cue-line"></span>
         </div>
       </div>
 
