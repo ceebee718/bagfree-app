@@ -920,40 +920,56 @@ window._userCityLoaded = false;
       const country = data.country_code || '';
 
       // Map to nearest major airport city
-      const airportMap = {
-        // Florida
-        'Tampa': 'Tampa', 'St. Petersburg': 'Tampa', 'Clearwater': 'Tampa',
-        'Sarasota': 'Tampa', 'Bradenton': 'Tampa',
-        'Orlando': 'Orlando', 'Kissimmee': 'Orlando', 'Sanford': 'Orlando',
-        'Miami': 'Miami', 'Fort Lauderdale': 'Miami', 'Boca Raton': 'Miami',
-        'Jacksonville': 'Jacksonville',
-        // Other major US
-        'New York': 'New York', 'Brooklyn': 'New York', 'Queens': 'New York',
-        'Los Angeles': 'Los Angeles', 'Long Beach': 'Los Angeles',
-        'Chicago': 'Chicago',
-        'Houston': 'Houston',
-        'Dallas': 'Dallas', 'Fort Worth': 'Dallas',
-        'Atlanta': 'Atlanta',
-        'Phoenix': 'Phoenix',
-        'Philadelphia': 'Philadelphia',
-        'San Antonio': 'San Antonio',
-        'San Diego': 'San Diego',
-        'Denver': 'Denver',
-        'Seattle': 'Seattle',
-        'Boston': 'Boston',
-        'Nashville': 'Nashville',
-        'Charlotte': 'Charlotte',
-        'Las Vegas': 'Las Vegas',
-        'Austin': 'Austin',
+      // State to nearest major airport mapping
+      const stateAirport = {
+        'FL': 'Tampa', 'GA': 'Atlanta', 'NY': 'New York', 'CA': 'Los Angeles',
+        'TX': 'Dallas', 'IL': 'Chicago', 'WA': 'Seattle', 'MA': 'Boston',
+        'CO': 'Denver', 'NV': 'Las Vegas', 'AZ': 'Phoenix', 'PA': 'Philadelphia',
+        'NC': 'Charlotte', 'TN': 'Nashville', 'OH': 'Columbus', 'MI': 'Detroit',
+        'MN': 'Minneapolis', 'MO': 'St. Louis', 'OR': 'Portland', 'MD': 'Baltimore',
+        'VA': 'Washington DC', 'DC': 'Washington DC', 'SC': 'Charlotte',
+        'AL': 'Atlanta', 'MS': 'Atlanta', 'LA': 'New Orleans', 'AR': 'Dallas',
+        'OK': 'Dallas', 'KS': 'Dallas', 'NE': 'Denver', 'IA': 'Chicago',
+        'WI': 'Chicago', 'IN': 'Chicago', 'KY': 'Nashville', 'WV': 'Washington DC',
+        'CT': 'New York', 'NJ': 'New York', 'DE': 'Philadelphia', 'RI': 'Boston',
+        'NH': 'Boston', 'VT': 'Boston', 'ME': 'Boston', 'UT': 'Denver',
+        'NM': 'Phoenix', 'ID': 'Seattle', 'MT': 'Denver', 'WY': 'Denver',
+        'ND': 'Minneapolis', 'SD': 'Minneapolis', 'AK': 'Anchorage', 'HI': 'Honolulu',
       };
 
-      const mappedCity = airportMap[city] || city;
+      // City overrides for well-known cities
+      const cityOverride = {
+        'Miami': 'Miami', 'Fort Lauderdale': 'Miami', 'Boca Raton': 'Miami',
+        'West Palm Beach': 'Miami', 'Pompano Beach': 'Miami', 'Hollywood': 'Miami',
+        'Orlando': 'Orlando', 'Kissimmee': 'Orlando', 'Sanford': 'Orlando',
+        'Daytona Beach': 'Orlando', 'Ocala': 'Orlando', 'Gainesville': 'Orlando',
+        'Jacksonville': 'Jacksonville', 'Tallahassee': 'Tallahassee',
+        'New York': 'New York', 'Brooklyn': 'New York', 'Queens': 'New York',
+        'Newark': 'New York', 'Jersey City': 'New York', 'Bronx': 'New York',
+        'Los Angeles': 'Los Angeles', 'Long Beach': 'Los Angeles',
+        'Anaheim': 'Los Angeles', 'Burbank': 'Los Angeles', 'Glendale': 'Los Angeles',
+        'San Francisco': 'San Francisco', 'Oakland': 'San Francisco', 'San Jose': 'San Francisco',
+        'Houston': 'Houston', 'Dallas': 'Dallas', 'Fort Worth': 'Dallas',
+        'Chicago': 'Chicago', 'Atlanta': 'Atlanta', 'Phoenix': 'Phoenix',
+        'Philadelphia': 'Philadelphia', 'San Antonio': 'San Antonio',
+        'San Diego': 'San Diego', 'Denver': 'Denver', 'Seattle': 'Seattle',
+        'Boston': 'Boston', 'Nashville': 'Nashville', 'Charlotte': 'Charlotte',
+        'Las Vegas': 'Las Vegas', 'Austin': 'Austin', 'Portland': 'Portland',
+        'Minneapolis': 'Minneapolis', 'Detroit': 'Detroit', 'Baltimore': 'Baltimore',
+        'Washington': 'Washington DC', 'New Orleans': 'New Orleans',
+      };
+
+      let mappedCity = cityOverride[city];
+      if (!mappedCity) {
+        // Fall back to state-level airport
+        mappedCity = stateAirport[region] || city;
+      }
 
       if (country === 'US') {
         window._userCity = mappedCity;
       } else {
-        // International — use country capital or major city
-        window._userCity = `${city}, ${data.country_name || country}`;
+        // International user — show their country's capital or city
+        window._userCity = `${data.city}, ${data.country_name || country}`;
       }
       window._userCityLoaded = true;
     }
