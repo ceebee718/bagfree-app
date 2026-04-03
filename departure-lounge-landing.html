@@ -907,7 +907,7 @@ const DEST_INTEL = {
 
 
 // ── USER LOCATION DETECTION ──
-window._userCity = 'Tampa / Orlando'; // default
+window._userCity = 'Tampa International (TPA)'; // default
 window._userCityLoaded = false;
 
 (async function detectLocation() {
@@ -922,41 +922,64 @@ window._userCityLoaded = false;
       // Map to nearest major airport city
       // State to nearest major airport mapping
       const stateAirport = {
-        'FL': 'Tampa', 'GA': 'Atlanta', 'NY': 'New York', 'CA': 'Los Angeles',
-        'TX': 'Dallas', 'IL': 'Chicago', 'WA': 'Seattle', 'MA': 'Boston',
-        'CO': 'Denver', 'NV': 'Las Vegas', 'AZ': 'Phoenix', 'PA': 'Philadelphia',
-        'NC': 'Charlotte', 'TN': 'Nashville', 'OH': 'Columbus', 'MI': 'Detroit',
-        'MN': 'Minneapolis', 'MO': 'St. Louis', 'OR': 'Portland', 'MD': 'Baltimore',
-        'VA': 'Washington DC', 'DC': 'Washington DC', 'SC': 'Charlotte',
-        'AL': 'Atlanta', 'MS': 'Atlanta', 'LA': 'New Orleans', 'AR': 'Dallas',
-        'OK': 'Dallas', 'KS': 'Dallas', 'NE': 'Denver', 'IA': 'Chicago',
-        'WI': 'Chicago', 'IN': 'Chicago', 'KY': 'Nashville', 'WV': 'Washington DC',
-        'CT': 'New York', 'NJ': 'New York', 'DE': 'Philadelphia', 'RI': 'Boston',
-        'NH': 'Boston', 'VT': 'Boston', 'ME': 'Boston', 'UT': 'Denver',
-        'NM': 'Phoenix', 'ID': 'Seattle', 'MT': 'Denver', 'WY': 'Denver',
-        'ND': 'Minneapolis', 'SD': 'Minneapolis', 'AK': 'Anchorage', 'HI': 'Honolulu',
+        'FL': 'Tampa International (TPA)', 'GA': 'Hartsfield-Jackson Atlanta (ATL)',
+        'NY': 'JFK International (JFK)', 'CA': 'Los Angeles International (LAX)',
+        'TX': 'Dallas/Fort Worth International (DFW)', 'IL': 'O'Hare International (ORD)',
+        'WA': 'Seattle-Tacoma International (SEA)', 'MA': 'Boston Logan (BOS)',
+        'CO': 'Denver International (DEN)', 'NV': 'Harry Reid International (LAS)',
+        'AZ': 'Phoenix Sky Harbor (PHX)', 'PA': 'Philadelphia International (PHL)',
+        'NC': 'Charlotte Douglas (CLT)', 'TN': 'Nashville International (BNA)',
+        'OH': 'John Glenn Columbus (CMH)', 'MI': 'Detroit Metropolitan (DTW)',
+        'MN': 'Minneapolis-Saint Paul (MSP)', 'MO': 'Lambert St. Louis (STL)',
+        'OR': 'Portland International (PDX)', 'MD': 'Baltimore/Washington (BWI)',
+        'VA': 'Ronald Reagan Washington (DCA)', 'DC': 'Ronald Reagan Washington (DCA)',
+        'SC': 'Charlotte Douglas (CLT)', 'AL': 'Hartsfield-Jackson Atlanta (ATL)',
+        'MS': 'Hartsfield-Jackson Atlanta (ATL)', 'LA': 'Louis Armstrong New Orleans (MSY)',
+        'AR': 'Dallas/Fort Worth International (DFW)', 'OK': 'Dallas/Fort Worth International (DFW)',
+        'KS': 'Dallas/Fort Worth International (DFW)', 'NE': 'Denver International (DEN)',
+        'IA': 'O'Hare International (ORD)', 'WI': 'O'Hare International (ORD)',
+        'IN': 'O'Hare International (ORD)', 'KY': 'Nashville International (BNA)',
+        'WV': 'Ronald Reagan Washington (DCA)', 'CT': 'JFK International (JFK)',
+        'NJ': 'Newark Liberty International (EWR)', 'DE': 'Philadelphia International (PHL)',
+        'RI': 'Boston Logan (BOS)', 'NH': 'Boston Logan (BOS)',
+        'VT': 'Boston Logan (BOS)', 'ME': 'Boston Logan (BOS)',
+        'UT': 'Salt Lake City International (SLC)', 'NM': 'Phoenix Sky Harbor (PHX)',
+        'ID': 'Seattle-Tacoma International (SEA)', 'MT': 'Denver International (DEN)',
+        'WY': 'Denver International (DEN)', 'ND': 'Minneapolis-Saint Paul (MSP)',
+        'SD': 'Minneapolis-Saint Paul (MSP)', 'AK': 'Ted Stevens Anchorage (ANC)',
+        'HI': 'Daniel K. Inouye Honolulu (HNL)',
       };
 
       // City overrides for well-known cities
       const cityOverride = {
-        'Miami': 'Miami', 'Fort Lauderdale': 'Miami', 'Boca Raton': 'Miami',
-        'West Palm Beach': 'Miami', 'Pompano Beach': 'Miami', 'Hollywood': 'Miami',
-        'Orlando': 'Orlando', 'Kissimmee': 'Orlando', 'Sanford': 'Orlando',
-        'Daytona Beach': 'Orlando', 'Ocala': 'Orlando', 'Gainesville': 'Orlando',
-        'Jacksonville': 'Jacksonville', 'Tallahassee': 'Tallahassee',
-        'New York': 'New York', 'Brooklyn': 'New York', 'Queens': 'New York',
-        'Newark': 'New York', 'Jersey City': 'New York', 'Bronx': 'New York',
-        'Los Angeles': 'Los Angeles', 'Long Beach': 'Los Angeles',
-        'Anaheim': 'Los Angeles', 'Burbank': 'Los Angeles', 'Glendale': 'Los Angeles',
-        'San Francisco': 'San Francisco', 'Oakland': 'San Francisco', 'San Jose': 'San Francisco',
-        'Houston': 'Houston', 'Dallas': 'Dallas', 'Fort Worth': 'Dallas',
-        'Chicago': 'Chicago', 'Atlanta': 'Atlanta', 'Phoenix': 'Phoenix',
-        'Philadelphia': 'Philadelphia', 'San Antonio': 'San Antonio',
-        'San Diego': 'San Diego', 'Denver': 'Denver', 'Seattle': 'Seattle',
-        'Boston': 'Boston', 'Nashville': 'Nashville', 'Charlotte': 'Charlotte',
-        'Las Vegas': 'Las Vegas', 'Austin': 'Austin', 'Portland': 'Portland',
-        'Minneapolis': 'Minneapolis', 'Detroit': 'Detroit', 'Baltimore': 'Baltimore',
-        'Washington': 'Washington DC', 'New Orleans': 'New Orleans',
+        'Miami': 'Miami International (MIA)', 'Fort Lauderdale': 'Fort Lauderdale-Hollywood (FLL)',
+        'Boca Raton': 'Fort Lauderdale-Hollywood (FLL)', 'West Palm Beach': 'Palm Beach International (PBI)',
+        'Pompano Beach': 'Fort Lauderdale-Hollywood (FLL)', 'Hollywood': 'Fort Lauderdale-Hollywood (FLL)',
+        'Orlando': 'Orlando International (MCO)', 'Kissimmee': 'Orlando International (MCO)',
+        'Sanford': 'Orlando Sanford International (SFB)', 'Daytona Beach': 'Orlando International (MCO)',
+        'Ocala': 'Orlando International (MCO)', 'Gainesville': 'Gainesville Regional (GNV)',
+        'Jacksonville': 'Jacksonville International (JAX)', 'Tallahassee': 'Tallahassee International (TLH)',
+        'New York': 'JFK International (JFK)', 'Brooklyn': 'JFK International (JFK)',
+        'Queens': 'JFK International (JFK)', 'Newark': 'Newark Liberty (EWR)',
+        'Jersey City': 'Newark Liberty (EWR)', 'Bronx': 'JFK International (JFK)',
+        'Los Angeles': 'Los Angeles International (LAX)', 'Long Beach': 'Los Angeles International (LAX)',
+        'Anaheim': 'Los Angeles International (LAX)', 'Burbank': 'Bob Hope Burbank (BUR)',
+        'San Francisco': 'San Francisco International (SFO)', 'Oakland': 'Oakland International (OAK)',
+        'San Jose': 'Norman Y. Mineta San Jose (SJC)',
+        'Houston': 'George Bush Intercontinental (IAH)', 'Dallas': 'Dallas/Fort Worth International (DFW)',
+        'Fort Worth': 'Dallas/Fort Worth International (DFW)', 'Chicago': 'O'Hare International (ORD)',
+        'Atlanta': 'Hartsfield-Jackson Atlanta (ATL)', 'Phoenix': 'Phoenix Sky Harbor (PHX)',
+        'Philadelphia': 'Philadelphia International (PHL)', 'San Antonio': 'San Antonio International (SAT)',
+        'San Diego': 'San Diego International (SAN)', 'Denver': 'Denver International (DEN)',
+        'Seattle': 'Seattle-Tacoma International (SEA)', 'Boston': 'Boston Logan (BOS)',
+        'Nashville': 'Nashville International (BNA)', 'Charlotte': 'Charlotte Douglas (CLT)',
+        'Las Vegas': 'Harry Reid International (LAS)', 'Austin': 'Austin-Bergstrom (AUS)',
+        'Portland': 'Portland International (PDX)', 'Minneapolis': 'Minneapolis-Saint Paul (MSP)',
+        'Detroit': 'Detroit Metropolitan (DTW)', 'Baltimore': 'Baltimore/Washington (BWI)',
+        'Washington': 'Ronald Reagan Washington (DCA)', 'New Orleans': 'Louis Armstrong New Orleans (MSY)',
+        'Tampa': 'Tampa International (TPA)', 'St. Petersburg': 'Tampa International (TPA)',
+        'Clearwater': 'Tampa International (TPA)', 'Sarasota': 'Sarasota-Bradenton (SRQ)',
+        'Bradenton': 'Sarasota-Bradenton (SRQ)',
       };
 
       let mappedCity = cityOverride[city];
@@ -990,8 +1013,8 @@ window.openDestModal = function(key) {
   document.getElementById('destVisa').textContent = d.visa;
   document.getElementById('destBestTime').textContent = d.bestTime;
   // Replace city name with user's detected city
-  const userCity = window._userCity || 'Tampa / Orlando';
-  const flightText = d.flight.replace('Tampa / Orlando', userCity);
+  const userCity = window._userCity || 'Tampa International (TPA)';
+  const flightText = d.flight.replace('Tampa International (TPA)', userCity);
   document.getElementById('destFlight').textContent = flightText;
   document.getElementById('destBagfree').textContent = d.bagfree;
 
