@@ -699,9 +699,9 @@ document.addEventListener('DOMContentLoaded', lpCalc);
       <div class="ci-row">BagFree Christmas Kit delivered to your room before arrival</div>
       <div class="ci-row">BagFree concierge group chat for the full trip</div>
     </div>
-    <div class="ci-price">$3,800</div>
-    <div class="ci-sub">per person · land only · $500 deposit secures your spot</div>
-    <a href="departure-lounge.html" class="btn-r">Reserve My Spot →</a>
+    <div class="ci-price">$3,200 – $5,500</div>
+    <div class="ci-sub">per person · land only · price varies by room type &amp; group size · $500 deposit holds your spot</div>
+    <button onclick="openSVGSurvey()" class="btn-r" style="background:linear-gradient(135deg,#C9A96E,#b8893e);color:#0A0A08;border:none;cursor:pointer;font-family:'Jost',sans-serif;width:100%;text-align:center;">Fill Out Interest Survey →</button>
   </div>
 </section>
 
@@ -1076,6 +1076,278 @@ window.closeDestModal = function() {
 
 // Close on Escape key
 document.addEventListener('keydown', e => { if (e.key === 'Escape') closeDestModal(); });
+</script>
+
+
+<style>
+.sq{display:flex;flex-direction:column;gap:0.5rem;}
+.sq-label{font-size:0.78rem;color:rgba(253,252,248,0.9);font-weight:500;line-height:1.5;}
+.sq-hint{font-size:0.62rem;color:rgba(253,252,248,0.35);letter-spacing:0.5px;}
+.sq-req{color:rgba(201,169,110,0.8);}
+.sq-checks,.sq-radios{display:flex;flex-direction:column;gap:0.5rem;margin-top:0.25rem;}
+.sq-check,.sq-radio{display:flex;align-items:flex-start;gap:0.6rem;font-size:0.75rem;color:rgba(253,252,248,0.65);cursor:pointer;line-height:1.5;}
+.sq-check input,.sq-radio input{margin-top:3px;flex-shrink:0;accent-color:#C9A96E;}
+.sq-check:hover,.sq-radio:hover{color:rgba(253,252,248,0.9);}
+</style>
+
+<!-- ST. VINCENT INTEREST SURVEY MODAL -->
+<div id="svgSurveyModal" style="display:none;position:fixed;inset:0;z-index:9999;">
+  <div onclick="closeSVGSurvey()" style="position:absolute;inset:0;background:rgba(7,7,10,0.88);backdrop-filter:blur(8px);"></div>
+  <div style="position:absolute;top:50%;left:50%;transform:translate(-50%,-50%);
+              width:min(680px,95vw);max-height:90vh;overflow-y:auto;
+              background:#111110;border:1px solid rgba(201,169,110,0.2);
+              display:flex;flex-direction:column;">
+
+    <!-- Header -->
+    <div style="padding:2rem 2.5rem 1.5rem;border-bottom:1px solid rgba(201,169,110,0.12);
+                position:sticky;top:0;background:#111110;z-index:10;display:flex;align-items:flex-start;justify-content:space-between;">
+      <div>
+        <div style="font-size:0.52rem;letter-spacing:3px;text-transform:uppercase;color:rgba(201,169,110,0.7);margin-bottom:0.4rem;">BagFree Christmas Collective · 2026</div>
+        <div style="font-family:'Cormorant Garamond',serif;font-size:1.8rem;font-weight:300;color:#FDFCF8;line-height:1.1;">St. Vincent &<br>The Grenadines</div>
+        <div style="font-size:0.72rem;color:rgba(253,252,248,0.45);margin-top:0.5rem;">Help us curate the perfect trip for you. Takes 2 minutes.</div>
+      </div>
+      <button onclick="closeSVGSurvey()" style="background:transparent;border:1px solid rgba(201,169,110,0.2);color:rgba(253,252,248,0.4);width:32px;height:32px;cursor:pointer;font-size:0.9rem;flex-shrink:0;margin-top:4px;"
+        onmouseover="this.style.borderColor='rgba(201,169,110,0.6)'" onmouseout="this.style.borderColor='rgba(201,169,110,0.2)'">✕</button>
+    </div>
+
+    <!-- Form -->
+    <form id="svgSurveyForm" onsubmit="submitSVGSurvey(event)" style="padding:2rem 2.5rem;display:flex;flex-direction:column;gap:1.75rem;">
+
+      <!-- Q1: Activities -->
+      <div class="sq">
+        <div class="sq-label">What activities interest you most in St. Vincent? <span class="sq-req">*</span></div>
+        <div class="sq-hint">Select all that apply</div>
+        <div class="sq-checks">
+          <label class="sq-check"><input type="checkbox" name="activities" value="hiking"> Hiking &amp; nature (La Soufrière volcano)</label>
+          <label class="sq-check"><input type="checkbox" name="activities" value="sailing"> Sailing &amp; catamaran trips</label>
+          <label class="sq-check"><input type="checkbox" name="activities" value="snorkelling"> Snorkelling &amp; diving</label>
+          <label class="sq-check"><input type="checkbox" name="activities" value="beaches"> Beach relaxation</label>
+          <label class="sq-check"><input type="checkbox" name="activities" value="culture"> Local culture &amp; village tours</label>
+          <label class="sq-check"><input type="checkbox" name="activities" value="food"> Food &amp; culinary experiences</label>
+          <label class="sq-check"><input type="checkbox" name="activities" value="wellness"> Wellness &amp; spa</label>
+          <label class="sq-check"><input type="checkbox" name="activities" value="photography"> Photography &amp; sightseeing</label>
+        </div>
+      </div>
+
+      <!-- Q2: Grenadines Islands -->
+      <div class="sq">
+        <div class="sq-label">Which Grenadines islands would you like to visit? <span class="sq-req">*</span></div>
+        <div class="sq-checks">
+          <label class="sq-check"><input type="checkbox" name="islands" value="bequia"> Bequia</label>
+          <label class="sq-check"><input type="checkbox" name="islands" value="mustique"> Mustique</label>
+          <label class="sq-check"><input type="checkbox" name="islands" value="tobago_cays"> Tobago Cays</label>
+          <label class="sq-check"><input type="checkbox" name="islands" value="canouan"> Canouan</label>
+          <label class="sq-check"><input type="checkbox" name="islands" value="union"> Union Island</label>
+          <label class="sq-check"><input type="checkbox" name="islands" value="all"> All of them — surprise me</label>
+        </div>
+      </div>
+
+      <!-- Q3: Spiritual / Christian -->
+      <div class="sq">
+        <div class="sq-label">Are you interested in spiritual or faith-based experiences?</div>
+        <div class="sq-radios">
+          <label class="sq-radio"><input type="radio" name="spiritual" value="yes_christian"> Yes — Christian retreat / worship experience</label>
+          <label class="sq-radio"><input type="radio" name="spiritual" value="yes_general"> Yes — general spiritual / mindfulness</label>
+          <label class="sq-radio"><input type="radio" name="spiritual" value="both"> Both</label>
+          <label class="sq-radio"><input type="radio" name="spiritual" value="no"> Not a priority for me</label>
+        </div>
+      </div>
+
+      <!-- Q4: Food preferences -->
+      <div class="sq">
+        <div class="sq-label">What are your food preferences? <span class="sq-req">*</span></div>
+        <div class="sq-checks">
+          <label class="sq-check"><input type="checkbox" name="food" value="local"> Local Caribbean cuisine</label>
+          <label class="sq-check"><input type="checkbox" name="food" value="seafood"> Fresh seafood</label>
+          <label class="sq-check"><input type="checkbox" name="food" value="vegetarian"> Vegetarian / vegan options</label>
+          <label class="sq-check"><input type="checkbox" name="food" value="halal"> Halal</label>
+          <label class="sq-check"><input type="checkbox" name="food" value="gluten_free"> Gluten-free</label>
+          <label class="sq-check"><input type="checkbox" name="food" value="fine_dining"> Fine dining experiences</label>
+          <label class="sq-check"><input type="checkbox" name="food" value="street_food"> Street food &amp; local markets</label>
+          <label class="sq-check"><input type="checkbox" name="food" value="no_restrictions"> No restrictions</label>
+        </div>
+      </div>
+
+      <!-- Q5: Travel timing -->
+      <div class="sq">
+        <div class="sq-label">When do you typically travel? <span class="sq-req">*</span></div>
+        <div class="sq-radios">
+          <label class="sq-radio"><input type="radio" name="timing" value="school_hols"> School holidays (I have children)</label>
+          <label class="sq-radio"><input type="radio" name="timing" value="jan_march"> January – March</label>
+          <label class="sq-radio"><input type="radio" name="timing" value="april_june"> April – June</label>
+          <label class="sq-radio"><input type="radio" name="timing" value="july_aug"> July – August</label>
+          <label class="sq-radio"><input type="radio" name="timing" value="sept_oct"> September – October</label>
+          <label class="sq-radio"><input type="radio" name="timing" value="nov_dec"> November – December</label>
+          <label class="sq-radio"><input type="radio" name="timing" value="flexible"> Flexible — whenever the deal is right</label>
+        </div>
+      </div>
+
+      <!-- Q6: Group size -->
+      <div class="sq">
+        <div class="sq-label">How many people typically travel with you? <span class="sq-req">*</span></div>
+        <div class="sq-radios">
+          <label class="sq-radio"><input type="radio" name="group_size" value="solo"> Just me</label>
+          <label class="sq-radio"><input type="radio" name="group_size" value="couple"> 2 (couple or friend)</label>
+          <label class="sq-radio"><input type="radio" name="group_size" value="small"> 3–4 people</label>
+          <label class="sq-radio"><input type="radio" name="group_size" value="medium"> 5–8 people</label>
+          <label class="sq-radio"><input type="radio" name="group_size" value="large"> 9+ (large group or family reunion)</label>
+        </div>
+      </div>
+
+      <!-- Q7: Budget -->
+      <div class="sq">
+        <div class="sq-label">What is your typical per-person travel budget (excluding flights)? <span class="sq-req">*</span></div>
+        <div class="sq-radios">
+          <label class="sq-radio"><input type="radio" name="budget" value="under_2k"> Under $2,000</label>
+          <label class="sq-radio"><input type="radio" name="budget" value="2k_3500"> $2,000 – $3,500</label>
+          <label class="sq-radio"><input type="radio" name="budget" value="3500_5k"> $3,500 – $5,000</label>
+          <label class="sq-radio"><input type="radio" name="budget" value="5k_8k"> $5,000 – $8,000</label>
+          <label class="sq-radio"><input type="radio" name="budget" value="over_8k"> $8,000+</label>
+        </div>
+      </div>
+
+      <!-- Q8: International experience -->
+      <div class="sq">
+        <div class="sq-label">How much international travel experience do you have?</div>
+        <div class="sq-radios">
+          <label class="sq-radio"><input type="radio" name="experience" value="first"> This would be my first international trip</label>
+          <label class="sq-radio"><input type="radio" name="experience" value="few"> A few trips (2–5 countries)</label>
+          <label class="sq-radio"><input type="radio" name="experience" value="moderate"> Moderate (6–15 countries)</label>
+          <label class="sq-radio"><input type="radio" name="experience" value="frequent"> Frequent traveller (15+ countries)</label>
+        </div>
+      </div>
+
+      <!-- Q9: Cruise interest -->
+      <div class="sq">
+        <div class="sq-label">Are you interested in future BagFree cruise events?</div>
+        <div class="sq-radios">
+          <label class="sq-radio"><input type="radio" name="cruise" value="yes_definitely"> Yes — definitely, keep me informed</label>
+          <label class="sq-radio"><input type="radio" name="cruise" value="yes_maybe"> Possibly, depending on destination &amp; price</label>
+          <label class="sq-radio"><input type="radio" name="cruise" value="caribbean"> Yes — Caribbean cruises specifically</label>
+          <label class="sq-radio"><input type="radio" name="cruise" value="mediterranean"> Yes — Mediterranean cruises specifically</label>
+          <label class="sq-radio"><input type="radio" name="cruise" value="no"> Not interested in cruises</label>
+        </div>
+      </div>
+
+      <!-- Q10: Specific excursions -->
+      <div class="sq">
+        <div class="sq-label">Which excursions interest you most?</div>
+        <div class="sq-checks">
+          <label class="sq-check"><input type="checkbox" name="excursions" value="volcano"> La Soufrière volcano hike</label>
+          <label class="sq-check"><input type="checkbox" name="excursions" value="tobago_cays_snorkel"> Tobago Cays snorkelling with sea turtles</label>
+          <label class="sq-check"><input type="checkbox" name="excursions" value="private_sailboat"> Private sailboat charter</label>
+          <label class="sq-check"><input type="checkbox" name="excursions" value="whale_watching"> Whale &amp; dolphin watching</label>
+          <label class="sq-check"><input type="checkbox" name="excursions" value="botanical"> Botanical Gardens &amp; waterfall tours</label>
+          <label class="sq-check"><input type="checkbox" name="excursions" value="local_village"> Local village immersion</label>
+          <label class="sq-check"><input type="checkbox" name="excursions" value="rum_tasting"> Rum distillery &amp; tasting</label>
+          <label class="sq-check"><input type="checkbox" name="excursions" value="sunset_cruise"> Sunset dinner cruise</label>
+          <label class="sq-check"><input type="checkbox" name="excursions" value="fishing"> Deep-sea fishing</label>
+        </div>
+      </div>
+
+      <!-- Q11: Accommodation preference -->
+      <div class="sq">
+        <div class="sq-label">What accommodation style do you prefer?</div>
+        <div class="sq-radios">
+          <label class="sq-radio"><input type="radio" name="accommodation" value="boutique"> Boutique hotel (intimate, character)</label>
+          <label class="sq-radio"><input type="radio" name="accommodation" value="resort"> Full-service resort</label>
+          <label class="sq-radio"><input type="radio" name="accommodation" value="villa"> Private villa or rental</label>
+          <label class="sq-radio"><input type="radio" name="accommodation" value="eco"> Eco-lodge / nature retreat</label>
+          <label class="sq-radio"><input type="radio" name="accommodation" value="flexible"> Flexible — best value for quality</label>
+        </div>
+      </div>
+
+      <!-- Q12: Contact -->
+      <div class="sq">
+        <div class="sq-label">Your name &amp; email <span class="sq-req">*</span></div>
+        <div style="display:flex;flex-direction:column;gap:0.75rem;">
+          <input type="text" name="name" placeholder="Full name" required
+            style="background:#1A1A17;border:1px solid rgba(201,169,110,0.2);color:#FDFCF8;padding:0.75rem 1rem;font-size:0.85rem;font-family:'Jost',sans-serif;outline:none;width:100%;"
+            onfocus="this.style.borderColor='rgba(201,169,110,0.5)'" onblur="this.style.borderColor='rgba(201,169,110,0.2)'">
+          <input type="email" name="email" placeholder="Email address" required
+            style="background:#1A1A17;border:1px solid rgba(201,169,110,0.2);color:#FDFCF8;padding:0.75rem 1rem;font-size:0.85rem;font-family:'Jost',sans-serif;outline:none;width:100%;"
+            onfocus="this.style.borderColor='rgba(201,169,110,0.5)'" onblur="this.style.borderColor='rgba(201,169,110,0.2)'">
+        </div>
+      </div>
+
+      <!-- Q13: Anything else -->
+      <div class="sq">
+        <div class="sq-label">Anything else you'd like us to know?</div>
+        <textarea name="notes" placeholder="Dietary needs, accessibility requirements, special occasions, questions..." rows="3"
+          style="background:#1A1A17;border:1px solid rgba(201,169,110,0.2);color:#FDFCF8;padding:0.75rem 1rem;font-size:0.85rem;font-family:'Jost',sans-serif;outline:none;width:100%;resize:vertical;"
+          onfocus="this.style.borderColor='rgba(201,169,110,0.5)'" onblur="this.style.borderColor='rgba(201,169,110,0.2)'"></textarea>
+      </div>
+
+      <!-- Submit -->
+      <div id="svgSurveyError" style="display:none;color:rgba(226,75,74,0.9);font-size:0.72rem;"></div>
+      <button type="submit" id="svgSubmitBtn"
+        style="background:linear-gradient(135deg,#C9A96E,#b8893e);color:#0A0A08;border:none;padding:1rem;font-size:0.68rem;font-weight:500;letter-spacing:2.5px;text-transform:uppercase;cursor:pointer;font-family:'Jost',sans-serif;transition:opacity 0.2s;"
+        onmouseover="this.style.opacity='0.88'" onmouseout="this.style.opacity='1'">
+        Submit My Interest ✦
+      </button>
+      <div style="font-size:0.58rem;color:rgba(253,252,248,0.3);text-align:center;letter-spacing:0.5px;">
+        Your data is encrypted and never sold. We'll be in touch with trip details.
+      </div>
+
+    </form>
+  </div>
+</div>
+
+<script>
+window.openSVGSurvey = function() {
+  const modal = document.getElementById('svgSurveyModal');
+  modal.style.display = 'block';
+  document.body.style.overflow = 'hidden';
+};
+window.closeSVGSurvey = function() {
+  document.getElementById('svgSurveyModal').style.display = 'none';
+  document.body.style.overflow = '';
+};
+window.submitSVGSurvey = async function(e) {
+  e.preventDefault();
+  const btn = document.getElementById('svgSubmitBtn');
+  const errEl = document.getElementById('svgSurveyError');
+  btn.disabled = true;
+  btn.textContent = 'Submitting...';
+  errEl.style.display = 'none';
+
+  const form = document.getElementById('svgSurveyForm');
+  const data = new FormData(form);
+  const payload = {};
+  for (let [k,v] of data.entries()) {
+    if (payload[k]) {
+      payload[k] = Array.isArray(payload[k]) ? [...payload[k], v] : [payload[k], v];
+    } else {
+      payload[k] = v;
+    }
+  }
+
+  try {
+    await fetch('https://formspree.io/f/mwpkrqka', {
+      method: 'POST',
+      headers: {'Content-Type':'application/json', 'Accept':'application/json'},
+      body: JSON.stringify(payload)
+    });
+    // Show thank you
+    form.innerHTML = `
+      <div style="text-align:center;padding:3rem 1rem;">
+        <div style="font-size:2rem;color:rgba(201,169,110,0.7);margin-bottom:1rem;">✦</div>
+        <div style="font-family:'Cormorant Garamond',serif;font-size:2rem;font-weight:300;color:#FDFCF8;margin-bottom:0.75rem;">Thank you</div>
+        <p style="font-size:0.85rem;color:rgba(253,252,248,0.5);line-height:1.8;max-width:360px;margin:0 auto 2rem;">
+          We have your interest on file. As spots fill we will reach out with full trip details and pricing tailored to your preferences.
+        </p>
+        <button onclick="closeSVGSurvey()" style="background:transparent;border:1px solid rgba(201,169,110,0.4);color:rgba(201,169,110,0.8);padding:0.65rem 2rem;font-size:0.62rem;letter-spacing:2px;text-transform:uppercase;cursor:pointer;font-family:'Jost',sans-serif;">
+          Close
+        </button>
+      </div>`;
+  } catch(err) {
+    errEl.textContent = 'Something went wrong. Please try again.';
+    errEl.style.display = 'block';
+    btn.disabled = false;
+    btn.textContent = 'Submit My Interest ✦';
+  }
+};
+document.addEventListener('keydown', e => { if(e.key==='Escape') closeSVGSurvey(); });
 </script>
 
 </body>
