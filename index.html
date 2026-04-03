@@ -94,6 +94,16 @@ select option{background:#1A1A17!important;color:#FDFCF8!important}
   .bf-nav{padding:0.65rem 1rem !important;}
   .bf-section-pad{padding-left:1rem !important; padding-right:1rem !important;}
 }
+
+@keyframes bfFadeUp{
+  from{opacity:0;transform:translateY(28px)}
+  to{opacity:1;transform:translateY(0)}
+}
+@keyframes bfHeroDrift{
+  0%{transform:scale(1.04) translate3d(0,0,0)}
+  100%{transform:scale(1.08) translate3d(-0.6%, -0.8%, 0)}
+}
+
 </style>
 </head>
 <body>
@@ -342,13 +352,32 @@ function Nav({page, setPage}) {
 
 // ── HOME ──────────────────────────────────────────────────────────────────────
 function Home({setPage}) {
+  const heroImageRef = React.useRef(null);
+  const heroContentRef = React.useRef(null);
+
+  React.useEffect(() => {
+    const onScroll = () => {
+      const y = Math.min(window.scrollY || 0, 320);
+      if (heroImageRef.current) {
+        heroImageRef.current.style.transform = `scale(1.04) translate3d(0, ${y * 0.08}px, 0)`;
+      }
+      if (heroContentRef.current) {
+        heroContentRef.current.style.transform = `translate3d(0, ${y * 0.035}px, 0)`;
+        heroContentRef.current.style.opacity = String(Math.max(0.72, 1 - y / 900));
+      }
+    };
+    onScroll();
+    window.addEventListener('scroll', onScroll, { passive: true });
+    return () => window.removeEventListener('scroll', onScroll);
+  }, []);
+
   return (
     <div style={{paddingTop:60}}>
 
 
       <div style={{minHeight:'100vh',position:'relative',overflow:'hidden',display:'flex',alignItems:'stretch'}}>
         <div style={{position:'relative',zIndex:2,background:'var(--noir)',display:'flex',alignItems:'center',width:'50%',flexShrink:0}}>
-          <div style={{padding:'10rem 5rem 6rem 6rem',width:'100%'}}>
+          <div ref={heroContentRef} style={{padding:'10rem 5rem 6rem 6rem',width:'100%',transition:'transform 180ms ease-out, opacity 180ms ease-out',willChange:'transform, opacity',animation:'bfFadeUp 900ms ease-out'}}>
             <div style={{fontSize:'0.62rem',letterSpacing:'5px',textTransform:'uppercase',color:'var(--gold)',marginBottom:'2rem',display:'flex',alignItems:'center',gap:'1rem'}}>
               <span style={{width:32,height:1,background:'var(--gold)',display:'inline-block'}}></span>
               <span>Arrive to everything</span>
@@ -386,8 +415,8 @@ function Home({setPage}) {
           </div>
         </div>
         <div style={{flex:1,position:'relative',overflow:'hidden',background:'var(--noir)'}}>
-          <img src="hero.png" alt="BagFree hero" style={{position:'absolute',inset:0,width:'100%',height:'100%',objectFit:'cover',objectPosition:'68% 45%',filter:'brightness(0.94) contrast(1.03)'}} />
-          <div style={{position:'absolute',inset:0,background:'linear-gradient(to right,rgba(10,10,8,0.75) 0%,rgba(10,10,8,0.55) 35%,rgba(10,10,8,0.2) 60%,transparent 80%)'}}></div>
+          <img ref={heroImageRef} src="hero.png" alt="BagFree hero" style={{position:'absolute',inset:0,width:'100%',height:'100%',objectFit:'cover',objectPosition:'68% 45%',filter:'brightness(0.92) contrast(1.05)',transform:'scale(1.04)',transition:'transform 180ms ease-out',willChange:'transform',animation:'bfHeroDrift 16s ease-in-out infinite alternate'}} />
+          <div style={{position:'absolute',inset:0,background:'linear-gradient(to right,rgba(10,10,8,0.78) 0%,rgba(10,10,8,0.55) 35%,rgba(10,10,8,0.18) 60%,transparent 80%)'}}></div>
           <div style={{position:'absolute',bottom:0,left:0,right:0,height:180,background:'linear-gradient(to top,var(--noir),transparent)'}}></div>
         </div>
       </div>
