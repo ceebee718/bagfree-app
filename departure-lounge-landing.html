@@ -688,7 +688,58 @@ document.addEventListener('DOMContentLoaded', lpCalc);
     <div class="cvdates" style="position:relative;z-index:2;">Dec 15 — Dec 28, 2026 · 13 days</div>
     <div class="cvbar" style="position:relative;z-index:2;"><div class="cvb"><div class="cvf"></div></div><div class="cvc">3 of 12 filled</div></div>
   </div>
-  <div class="ci">
+  <div class="ci" style="position:relative;">
+    <!-- QR Code + Share -->
+    <div id="qrShareBox" style="position:absolute;top:2rem;right:2rem;display:flex;flex-direction:column;align-items:flex-end;gap:0.5rem;z-index:10;">
+      <!-- Share button -->
+      <button onclick="toggleQR()" title="Share this trip"
+        style="display:flex;align-items:center;gap:0.5rem;background:transparent;border:1px solid rgba(201,169,110,0.3);color:rgba(201,169,110,0.8);padding:0.35rem 0.75rem;font-size:0.58rem;letter-spacing:1.5px;text-transform:uppercase;cursor:pointer;font-family:'Jost',sans-serif;transition:all 0.2s;"
+        onmouseover="this.style.borderColor='rgba(201,169,110,0.7)';this.style.color='#C9A96E'"
+        onmouseout="this.style.borderColor='rgba(201,169,110,0.3)';this.style.color='rgba(201,169,110,0.8)'">
+        <svg width="12" height="12" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2"><rect x="3" y="3" width="7" height="7"/><rect x="14" y="3" width="7" height="7"/><rect x="3" y="14" width="7" height="7"/><rect x="14" y="14" width="3" height="3"/></svg>
+        Share Trip
+      </button>
+
+      <!-- QR panel (hidden by default) -->
+      <div id="qrPanel" style="display:none;background:#111110;border:1px solid rgba(201,169,110,0.25);padding:1.25rem;text-align:center;min-width:200px;">
+        <div style="font-size:0.52rem;letter-spacing:2px;text-transform:uppercase;color:rgba(201,169,110,0.6);margin-bottom:0.75rem;">Scan to share</div>
+        <!-- QR code via QR Server API -->
+        <img src="https://api.qrserver.com/v1/create-qr-code/?size=160x160&data=https://bagfree.app/departure-lounge-landing#collective&bgcolor=111110&color=C9A96E&margin=8"
+             alt="QR Code" width="160" height="160"
+             style="display:block;margin:0 auto 0.85rem;">
+        <div style="font-size:0.58rem;color:rgba(253,252,248,0.35);margin-bottom:1rem;line-height:1.6;">
+          Point camera at QR code<br>to open this trip page
+        </div>
+        <!-- Social share links -->
+        <div style="display:flex;flex-direction:column;gap:0.4rem;">
+          <a href="https://wa.me/?text=Join%20me%20on%20the%20BagFree%20Christmas%20Collective%20to%20St.%20Vincent%20%26%20The%20Grenadines%21%20https://bagfree.app/departure-lounge-landing#collective"
+             target="_blank"
+             style="display:flex;align-items:center;justify-content:center;gap:0.5rem;padding:0.45rem;background:rgba(37,211,102,0.1);border:1px solid rgba(37,211,102,0.2);color:rgba(37,211,102,0.9);font-size:0.6rem;letter-spacing:1px;text-transform:uppercase;text-decoration:none;transition:background 0.2s;"
+             onmouseover="this.style.background='rgba(37,211,102,0.2)'" onmouseout="this.style.background='rgba(37,211,102,0.1)'">
+            WhatsApp
+          </a>
+          <a href="https://www.facebook.com/sharer/sharer.php?u=https://bagfree.app/departure-lounge-landing#collective"
+             target="_blank"
+             style="display:flex;align-items:center;justify-content:center;gap:0.5rem;padding:0.45rem;background:rgba(24,119,242,0.1);border:1px solid rgba(24,119,242,0.2);color:rgba(100,160,255,0.9);font-size:0.6rem;letter-spacing:1px;text-transform:uppercase;text-decoration:none;transition:background 0.2s;"
+             onmouseover="this.style.background='rgba(24,119,242,0.2)'" onmouseout="this.style.background='rgba(24,119,242,0.1)'">
+            Facebook
+          </a>
+          <a href="https://twitter.com/intent/tweet?text=Join%20me%20on%20the%20BagFree%20Christmas%20Collective%20to%20St.%20Vincent%20%26%20The%20Grenadines%21&url=https://bagfree.app/departure-lounge-landing#collective"
+             target="_blank"
+             style="display:flex;align-items:center;justify-content:center;gap:0.5rem;padding:0.45rem;background:rgba(29,161,242,0.1);border:1px solid rgba(29,161,242,0.2);color:rgba(100,190,255,0.9);font-size:0.6rem;letter-spacing:1px;text-transform:uppercase;text-decoration:none;transition:background 0.2s;"
+             onmouseover="this.style.background='rgba(29,161,242,0.2)'" onmouseout="this.style.background='rgba(29,161,242,0.1)'">
+            X / Twitter
+          </a>
+          <button onclick="copyTripLink()"
+             style="padding:0.45rem;background:rgba(201,169,110,0.08);border:1px solid rgba(201,169,110,0.2);color:rgba(201,169,110,0.8);font-size:0.6rem;letter-spacing:1px;text-transform:uppercase;cursor:pointer;font-family:'Jost',sans-serif;transition:background 0.2s;"
+             onmouseover="this.style.background='rgba(201,169,110,0.15)'" onmouseout="this.style.background='rgba(201,169,110,0.08)'"
+             id="copyLinkBtn">
+            Copy Link
+          </button>
+        </div>
+      </div>
+    </div>
+
     <div class="ci-ey">BagFree Christmas Collective</div>
     <h2 class="ci-h">Don't travel alone<br>unless you want to</h2>
     <p class="ci-b">The Departure Lounge matches you with BagFree members heading to the same destinations — same taste level, different perspectives. Our curated group trips fill fast.</p>
@@ -1348,6 +1399,29 @@ window.submitSVGSurvey = async function(e) {
   }
 };
 document.addEventListener('keydown', e => { if(e.key==='Escape') closeSVGSurvey(); });
+</script>
+
+
+<script>
+window.toggleQR = function() {
+  const p = document.getElementById('qrPanel');
+  p.style.display = p.style.display === 'none' ? 'block' : 'none';
+};
+window.copyTripLink = function() {
+  navigator.clipboard.writeText('https://bagfree.app/departure-lounge-landing#collective').then(() => {
+    const btn = document.getElementById('copyLinkBtn');
+    btn.textContent = 'Copied! ✓';
+    setTimeout(() => { btn.textContent = 'Copy Link'; }, 2000);
+  });
+};
+// Close QR panel when clicking outside
+document.addEventListener('click', function(e) {
+  const box = document.getElementById('qrShareBox');
+  if (box && !box.contains(e.target)) {
+    const p = document.getElementById('qrPanel');
+    if (p) p.style.display = 'none';
+  }
+});
 </script>
 
 </body>
