@@ -2918,6 +2918,25 @@ function initMap() {
     if (!window._selectionMode) activateSelectionMode();
   });
 
+  window.deactivateSelectionMode = function() {
+    window._selectionMode = false;
+    if (document.getElementById('leafletMap')) document.getElementById('leafletMap').style.cursor = '';
+    const label = document.getElementById('mapTripLabel');
+    if (label) {
+      label.style.background = '';
+      label.style.border = '';
+      label.style.color = '';
+      label.style.letterSpacing = '';
+      label.textContent = 'The World · Your Journey Awaits';
+    }
+    const rc = document.getElementById('rightContent');
+    if (rc) rc.innerHTML = `
+      <div class="no-dest" style="cursor:pointer" onclick="if(window._map)window._map.fire('dblclick',{latlng:window._map.getCenter()})" title="Double-click to explore">
+        <div class="no-dest-icon" style="animation:glw 2s ease-in-out infinite">✦</div>
+        <div class="no-dest-text">Double-click the map to explore any region</div>
+      </div>`;
+  };
+
   function activateSelectionMode() {
     window._selectionMode = true;
     // Switch map to dark basemap
@@ -2952,24 +2971,6 @@ function initMap() {
       </div>`;
   }
 
-  window.deactivateSelectionMode = function() {
-    window._selectionMode = false;
-    if (document.getElementById('leafletMap')) document.getElementById('leafletMap').style.cursor = '';
-    const label = document.getElementById('mapTripLabel');
-    if (label) {
-      label.style.background = '';
-      label.style.border = '';
-      label.style.color = '';
-      label.style.letterSpacing = '';
-      label.textContent = 'The World · Your Journey Awaits';
-    }
-    const rc = document.getElementById('rightContent');
-    if (rc) rc.innerHTML = `
-      <div class="no-dest" style="cursor:pointer" onclick="if(window._map)window._map.fire('dblclick',{latlng:window._map.getCenter()})" title="Double-click to explore">
-        <div class="no-dest-icon" style="animation:glw 2s ease-in-out infinite">✦</div>
-        <div class="no-dest-text">Double-click the map to explore any region</div>
-      </div>`;
-  };
   window.deactivateSelectionMode(); // init default state
 
   // Map click — only fires in selection mode OR always for quick explore
