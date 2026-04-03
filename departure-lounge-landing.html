@@ -905,6 +905,63 @@ const DEST_INTEL = {
   }
 };
 
+
+// ── USER LOCATION DETECTION ──
+window._userCity = 'Tampa / Orlando'; // default
+window._userCityLoaded = false;
+
+(async function detectLocation() {
+  try {
+    const res = await fetch('https://ipapi.co/json/');
+    const data = await res.json();
+    if (data && data.city) {
+      const city = data.city;
+      const region = data.region_code || '';
+      const country = data.country_code || '';
+
+      // Map to nearest major airport city
+      const airportMap = {
+        // Florida
+        'Tampa': 'Tampa', 'St. Petersburg': 'Tampa', 'Clearwater': 'Tampa',
+        'Sarasota': 'Tampa', 'Bradenton': 'Tampa',
+        'Orlando': 'Orlando', 'Kissimmee': 'Orlando', 'Sanford': 'Orlando',
+        'Miami': 'Miami', 'Fort Lauderdale': 'Miami', 'Boca Raton': 'Miami',
+        'Jacksonville': 'Jacksonville',
+        // Other major US
+        'New York': 'New York', 'Brooklyn': 'New York', 'Queens': 'New York',
+        'Los Angeles': 'Los Angeles', 'Long Beach': 'Los Angeles',
+        'Chicago': 'Chicago',
+        'Houston': 'Houston',
+        'Dallas': 'Dallas', 'Fort Worth': 'Dallas',
+        'Atlanta': 'Atlanta',
+        'Phoenix': 'Phoenix',
+        'Philadelphia': 'Philadelphia',
+        'San Antonio': 'San Antonio',
+        'San Diego': 'San Diego',
+        'Denver': 'Denver',
+        'Seattle': 'Seattle',
+        'Boston': 'Boston',
+        'Nashville': 'Nashville',
+        'Charlotte': 'Charlotte',
+        'Las Vegas': 'Las Vegas',
+        'Austin': 'Austin',
+      };
+
+      const mappedCity = airportMap[city] || city;
+
+      if (country === 'US') {
+        window._userCity = mappedCity;
+      } else {
+        // International — use country capital or major city
+        window._userCity = `${city}, ${data.country_name || country}`;
+      }
+      window._userCityLoaded = true;
+    }
+  } catch(e) {
+    // silently fall back to default
+  }
+})();
+
 window.openDestModal = function(key) {
   const d = DEST_INTEL[key];
   if (!d) return;
@@ -916,7 +973,10 @@ window.openDestModal = function(key) {
   document.getElementById('destCurrency').textContent = d.currency;
   document.getElementById('destVisa').textContent = d.visa;
   document.getElementById('destBestTime').textContent = d.bestTime;
-  document.getElementById('destFlight').textContent = d.flight;
+  // Replace city name with user's detected city
+  const userCity = window._userCity || 'Tampa / Orlando';
+  const flightText = d.flight.replace('Tampa / Orlando', userCity);
+  document.getElementById('destFlight').textContent = flightText;
   document.getElementById('destBagfree').textContent = d.bagfree;
 
   // BagFree box color
