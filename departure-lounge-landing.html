@@ -656,6 +656,45 @@ function lpCalc() {
 // Run on load
 document.addEventListener('DOMContentLoaded', lpCalc);
 </script>
+<script>
+// Destination Intelligence — defined early so inline onclick works
+const DEST_DATA={rome:{name:'Rome',region:'Italy · Mediterranean',tagline:'Where ancient streets meet modern luxury.',language:'Italian',currency:'Euro (€)',visa:'Visa-free · 90 days',bestTime:'April–June, Sep–Oct',flight:'$620–$980 from Tampa International (TPA)',bagfree:'Available · Same-day delivery at select Rome hotels',things:[['◈','The Colosseum','Skip the queue with pre-booked tickets. Best at golden hour.'],['◇','Vatican Museums','Book the first slot — crowds thin by 8am.'],['⬡','Trastevere','The neighbourhood Rome forgot to ruin. Dinner only.'],['◁','Borghese Gallery','Bernini sculptures that will stop you cold.'],['◦',"Campo de' Fiori",'Morning market, aperitivo in the evening.']]},paris:{name:'Paris',region:'France · Western Europe',tagline:'The city that makes everything feel effortless.',language:'French',currency:'Euro (€)',visa:'Visa-free · 90 days',bestTime:'May–June, September',flight:'$680–$1,050 from Tampa International (TPA)',bagfree:'Available · Delivery to central Paris hotels',things:[['◈','The Louvre at Dawn','Enter at opening — the Winged Victory is yours alone.'],['◇','Marais District','Art galleries, falafel, best people-watching in Europe.'],['⬡',"Musée d'Orsay",'The Impressionists. Better than the Louvre.'],['◁','Seine at Sunset','Walk from Notre-Dame to the Eiffel Tower.'],['◦','Montmartre','Sacré-Cœur at sunrise.']]},svg:{name:'St. Vincent',region:'SVG · Caribbean',tagline:'Untouched Caribbean — no crowds, no compromise.',language:'English',currency:'Eastern Caribbean Dollar (XCD)',visa:'Visa-free',bestTime:'December–May',flight:'$420–$680 from Tampa International (TPA)',bagfree:'Available · Resort delivery on Bequia & mainland',things:[['◈','Bequia Island','The Caribbean of 30 years ago.'],['◇','La Soufrière Hike','Views that reframe everything.'],['⬡','Tobago Cays','Sea turtles guaranteed.'],['◁','Black Sand Beaches','Dark volcanic sand, almost no one there.'],['◦','Wallilabou Bay','Where Pirates of the Caribbean was filmed.']]},tokyo:{name:'Tokyo',region:'Japan · Asia Pacific',tagline:'Precision, beauty, and a city that never overwhelms.',language:'Japanese',currency:'Japanese Yen (¥)',visa:'Visa-free · 90 days',bestTime:'March–May, Oct–Nov',flight:'$780–$1,200 from Tampa International (TPA)',bagfree:'Coming soon · Available via partner network',things:[['◈','Shinjuku Gyoen','Cherry blossoms in spring, quiet year-round.'],['◇','Tsukiji Outer Market','Tuna sashimi at 7am changes your life.'],['⬡','Yanaka District','Old Tokyo that survived the bombs.'],['◁','teamLab Borderless','Digital art that defies description.'],['◦','Shibuya at Midnight','The crossing, the neon, the energy.']]},london:{name:'London',region:'United Kingdom · Europe',tagline:'Culture, class, and a city that rewards the curious.',language:'English',currency:'British Pound (£)',visa:'Visa-free · 6 months',bestTime:'May–September',flight:'$560–$920 from Tampa International (TPA)',bagfree:'Available · Delivery to central London hotels',things:[['◈','Borough Market','Go hungry on a Thursday morning.'],['◇','Tate Modern','Free entry. World-class modern art.'],['⬡','Columbia Road','Sunday mornings only.'],['◁','Hampstead Heath','Views across the whole city.'],['◦','Soho at Dusk',"London's most alive square mile."]]}};
+
+function openDestModal(key){
+  var d=DEST_DATA[key];if(!d)return;
+  var city=window._userCity||'Tampa International (TPA)';
+  document.getElementById('destRegion').textContent=d.region;
+  document.getElementById('destName').textContent=d.name;
+  document.getElementById('destTagline').textContent=d.tagline;
+  document.getElementById('destLanguage').textContent=d.language;
+  document.getElementById('destCurrency').textContent=d.currency;
+  document.getElementById('destVisa').textContent=d.visa;
+  document.getElementById('destBestTime').textContent=d.bestTime;
+  document.getElementById('destFlight').textContent=d.flight.replace('Tampa International (TPA)',city);
+  document.getElementById('destBagfree').textContent=d.bagfree;
+  var bfBox=document.getElementById('destBagfreeBox');
+  if(d.bagfree.indexOf('Coming')>=0){bfBox.style.borderColor='rgba(201,169,110,0.3)';bfBox.style.background='rgba(201,169,110,0.05)';bfBox.querySelector('div').style.color='rgba(201,169,110,0.8)';}
+  else{bfBox.style.borderColor='rgba(93,202,165,0.3)';bfBox.style.background='rgba(93,202,165,0.05)';bfBox.querySelector('div').style.color='#5DCAA5';}
+  document.getElementById('destThings').innerHTML=d.things.map(function(t){return '<div style="display:flex;gap:0.85rem;padding:0.85rem 0;border-bottom:1px solid rgba(201,169,110,0.08);"><span style="color:rgba(201,169,110,0.6);font-size:0.9rem;flex-shrink:0;margin-top:2px;">'+t[0]+'</span><div><div style="font-size:0.82rem;color:rgba(253,252,248,0.9);font-weight:500;margin-bottom:3px;">'+t[1]+'</div><div style="font-size:0.72rem;color:rgba(253,252,248,0.45);line-height:1.65;">'+t[2]+'</div></div></div>';}).join('');
+  var modal=document.getElementById('destModal');
+  var panel=document.getElementById('destPanel');
+  var backdrop=document.getElementById('destBackdrop');
+  modal.style.display='block';modal.style.pointerEvents='all';
+  document.body.style.overflow='hidden';
+  setTimeout(function(){backdrop.style.opacity='1';panel.style.transform='translateX(0)';},10);
+}
+function closeDestModal(){
+  var panel=document.getElementById('destPanel');
+  var backdrop=document.getElementById('destBackdrop');
+  backdrop.style.opacity='0';panel.style.transform='translateX(100%)';
+  setTimeout(function(){
+    var modal=document.getElementById('destModal');
+    modal.style.display='none';modal.style.pointerEvents='none';
+    document.body.style.overflow='';
+  },450);
+}
+</script>
+
 
 <section class="ffsec" id="all-features">
   <div class="ff-head reveal"><div class="eyebrow">Everything inside</div><h2 class="big-title" style="font-size:clamp(2.2rem,4vw,3.5rem)">12 features. One lounge.</h2></div>
