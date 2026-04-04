@@ -333,7 +333,7 @@ function Nav({page, setPage}) {
         </div>
         <div className="bf-nav-links" style={{display:'flex',gap:'2rem',alignItems:'center'}}>
           {[['home','Destinations'],['vendors','Marketplace'],['cruise','Cruise'],['supplier','Suppliers']].map(([p,l])=>(
-            <span key={p} onClick={()=>{setPage(p);if(p==='home')setTimeout(()=>window.hpCalc&&window.hpCalc(),300);}} style={{fontSize:'0.84rem',color:page===p?'var(--gold)':'rgba(253,252,248,0.85)',letterSpacing:'1.5px',textTransform:'uppercase',cursor:'pointer',transition:'color 0.2s',fontWeight:400}}>{l}</span>
+            <span key={p} onClick={()=>{setPage('home');if(p==='home'){setTimeout(()=>{window.hpCalc&&window.hpCalc();const el=document.getElementById('destinations');if(el)el.scrollIntoView({behavior:'smooth'});},300);}else{setPage(p);}}} style={{fontSize:'0.84rem',color:page===p?'var(--gold)':'rgba(253,252,248,0.85)',letterSpacing:'1.5px',textTransform:'uppercase',cursor:'pointer',transition:'color 0.2s',fontWeight:400}}>{l}</span>
           ))}
           <span onClick={(e)=>{e.stopPropagation();window.open('/departure-lounge-landing','_self');}}
             style={{fontSize:'0.78rem',color:'var(--gold)',letterSpacing:'1.5px',textTransform:'uppercase',border:'1px solid var(--border-hi)',padding:'0.3rem 0.85rem',display:'inline-flex',alignItems:'center',gap:'0.4rem',cursor:'pointer'}}>
@@ -664,7 +664,7 @@ function Home({setPage}) {
     </div>
 
       {/* DESTINATIONS */}
-      <div className="bf-section-pad" style={{padding:'3rem 2rem',position:'relative',overflow:'hidden',backgroundImage:"url('https://images.unsplash.com/photo-1505118380757-91f5f5632de0?w=1800&q=80')",backgroundSize:'cover',backgroundPosition:'center 60%'}}>
+      <div id="destinations" className="bf-section-pad" style={{padding:'3rem 2rem',position:'relative',overflow:'hidden',backgroundImage:"url('https://images.unsplash.com/photo-1505118380757-91f5f5632de0?w=1800&q=80')",backgroundSize:'cover',backgroundPosition:'center 60%'}}>
 
         {/* Dark overlay */}
         <div style={{position:'absolute',inset:0,background:'linear-gradient(135deg, rgba(8,20,40,0.88) 0%, rgba(5,30,20,0.84) 50%, rgba(8,20,40,0.90) 100%)',pointerEvents:'none'}}/>
