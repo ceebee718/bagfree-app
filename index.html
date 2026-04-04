@@ -664,7 +664,7 @@ function Home({setPage}) {
     </div>
 
       {/* DESTINATIONS */}
-      <div className="bf-section-pad" style={{padding:'3rem 3rem',position:'relative',overflow:'hidden',backgroundImage:"url('https://images.unsplash.com/photo-1505118380757-91f5f5632de0?w=1800&q=80')",backgroundSize:'cover',backgroundPosition:'center 60%'}}>
+      <div className="bf-section-pad" style={{padding:'3rem 2rem',position:'relative',overflow:'hidden',backgroundImage:"url('https://images.unsplash.com/photo-1505118380757-91f5f5632de0?w=1800&q=80')",backgroundSize:'cover',backgroundPosition:'center 60%'}}>
 
         {/* Dark overlay */}
         <div style={{position:'absolute',inset:0,background:'linear-gradient(135deg, rgba(8,20,40,0.88) 0%, rgba(5,30,20,0.84) 50%, rgba(8,20,40,0.90) 100%)',pointerEvents:'none'}}/>
@@ -686,7 +686,7 @@ function Home({setPage}) {
         <div style={{fontSize:'0.65rem',letterSpacing:'3px',textTransform:'uppercase',color:'var(--gold-dim)',marginBottom:'1rem',display:'flex',alignItems:'center',gap:'0.75rem'}}>
           <span style={{width:16,height:1,background:'var(--gold-dim)',display:'inline-block'}}/>United States
         </div>
-        <div className="bf-grid-3" style={{display:'grid',gridTemplateColumns:'repeat(3,1fr)',gap:1,background:'rgba(10,10,8,0.15)',border:'1px solid rgba(10,10,8,0.12)'}}>
+        <div className="bf-grid-3" style={{display:'grid',gridTemplateColumns:'repeat(3,1fr)',gap:1,background:'rgba(0,0,0,0.08)',border:'1px solid rgba(0,0,0,0.1)'}}>
           {[
             {name:'Tampa Bay',state:'FL',sameDay:true,desc:'Our flagship city. Same-day delivery to all major hotels and resorts.',code:'TPA'},
             {name:'Orlando',state:'FL',sameDay:true,desc:'Theme park to resort — essentials delivered before you check in.',code:'MCO'},
@@ -696,7 +696,7 @@ function Home({setPage}) {
             {name:'Savannah',state:'GA',sameDay:false,desc:'Historic district hotels and boutique properties. Weekend getaways.',code:'SAV'},
           ].map((d)=>(
             <div key={d.name} onClick={()=>setPage('vendors')}
-              style={{background:'#C8BFA8',padding:'2.5rem 2rem',cursor:'pointer',transition:'background 0.25s',position:'relative'}}
+              style={{background:'#C8BFA8',padding:'1.75rem 1.5rem',cursor:'pointer',transition:'background 0.25s',position:'relative'}}
               onMouseEnter={e=>e.currentTarget.style.background='#BAB09A'}
               onMouseLeave={e=>e.currentTarget.style.background='#C8BFA8'}>
               {d.sameDay && (
