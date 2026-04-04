@@ -29,7 +29,7 @@
   --gold:#C9A96E;
   --gold-light:#E8D5B0;
   --gold-dim:#8A6F45;
-  --gold-xlight:#C8BFA8;
+  --gold-xlight:#C9A96E;
   --white:#FDFCF8;
   --mist:rgba(253,252,248,0.5);
   --mist-low:rgba(253,252,248,0.15);
@@ -696,9 +696,9 @@ function Home({setPage}) {
             {name:'Savannah',state:'GA',sameDay:false,desc:'Historic district hotels and boutique properties. Weekend getaways.',code:'SAV'},
           ].map((d)=>(
             <div key={d.name} onClick={()=>setPage('vendors')}
-              style={{background:'#C8BFA8',padding:'1.75rem 1.5rem',cursor:'pointer',transition:'background 0.25s',position:'relative'}}
-              onMouseEnter={e=>e.currentTarget.style.background='#BAB09A'}
-              onMouseLeave={e=>e.currentTarget.style.background='#C8BFA8'}>
+              style={{background:'var(--gold)',padding:'1.75rem 1.5rem',cursor:'pointer',transition:'background 0.25s',position:'relative'}}
+              onMouseEnter={e=>e.currentTarget.style.background='#DDD3B8'}
+              onMouseLeave={e=>e.currentTarget.style.background='var(--gold)'}>
               {d.sameDay && (
                 <div style={{position:'absolute',top:'1.25rem',right:'1.25rem',fontSize:'0.60rem',letterSpacing:'1.5px',textTransform:'uppercase',color:'rgba(100,75,30,0.9)',border:'1px solid rgba(100,75,30,0.35)',padding:'3px 8px',background:'rgba(100,75,30,0.1)'}}>
                   Same-Day
