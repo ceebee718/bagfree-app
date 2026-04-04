@@ -2860,26 +2860,6 @@ const AIRPORT_COORDS = {
   'NGB':[29.83,121.46],'GOL':[15.38,73.83],'NRT':[35.76,140.38],
 };
 
-// deactivateSelectionMode available immediately on window
-  window.deactivateSelectionMode = function() {
-    window._selectionMode = false;
-    if (document.getElementById('leafletMap')) document.getElementById('leafletMap').style.cursor = '';
-    const label = document.getElementById('mapTripLabel');
-    if (label) {
-      label.style.background = '';
-      label.style.border = '';
-      label.style.color = '';
-      label.style.letterSpacing = '';
-      label.textContent = 'The World · Your Journey Awaits';
-    }
-    const rc = document.getElementById('rightContent');
-    if (rc) rc.innerHTML = `
-      <div class="no-dest" style="cursor:pointer" onclick="if(window._map)window._map.fire('dblclick',{latlng:window._map.getCenter()})" title="Double-click to explore">
-        <div class="no-dest-icon" style="animation:glw 2s ease-in-out infinite">✦</div>
-        <div class="no-dest-text">Double-click the map to explore any region</div>
-      </div>`;
-  };
-
 function initMap() {
   if (_map) return;
 
@@ -2938,6 +2918,24 @@ function initMap() {
     if (!window._selectionMode) activateSelectionMode();
   });
 
+  window.deactivateSelectionMode = function() {
+    window._selectionMode = false;
+    if (document.getElementById('leafletMap')) document.getElementById('leafletMap').style.cursor = '';
+    const label = document.getElementById('mapTripLabel');
+    if (label) {
+      label.style.background = '';
+      label.style.border = '';
+      label.style.color = '';
+      label.style.letterSpacing = '';
+      label.textContent = 'The World · Your Journey Awaits';
+    }
+    const rc = document.getElementById('rightContent');
+    if (rc) rc.innerHTML = `
+      <div class="no-dest" style="cursor:pointer" onclick="if(window._map)window._map.fire('dblclick',{latlng:window._map.getCenter()})" title="Double-click to explore">
+        <div class="no-dest-icon" style="animation:glw 2s ease-in-out infinite">✦</div>
+        <div class="no-dest-text">Double-click the map to explore any region</div>
+      </div>`;
+  };
 
   function activateSelectionMode() {
     window._selectionMode = true;
@@ -4208,14 +4206,9 @@ Keep tone: refined, knowledgeable, like a well-traveled concierge friend. Bold k
 
   try {
     const fullPrompt = systemPrompt + '\n\nUser: ' + _aiBrainHistory.map(m=>m.role+': '+m.content).join('\n');
-    const res = await fetch('https://api.anthropic.com/v1/messages', {
+    const res = await fetch('/api/ai-brain', {
       method: 'POST',
-      headers: {
-        'Content-Type': 'application/json',
-        'x-api-key': '',
-        'anthropic-version': '2023-06-01',
-        'anthropic-dangerous-direct-browser-access': 'true'
-      },
+      headers: { 'Content-Type': 'application/json' },
       body: JSON.stringify({
         model: 'claude-sonnet-4-20250514',
         max_tokens: 2000,
