@@ -29,7 +29,7 @@
   --gold:#C9A96E;
   --gold-light:#E8D5B0;
   --gold-dim:#8A6F45;
-  --gold-xlight:#F5EDD8;
+  --gold-xlight:#C8BFA8;
   --white:#FDFCF8;
   --mist:rgba(253,252,248,0.5);
   --mist-low:rgba(253,252,248,0.15);
@@ -494,7 +494,7 @@ function Home({setPage}) {
 
               {/* Hidden costs reveal panel */}
               <div id="hiddenCostPanel" style={{display:'none',background:'rgba(239,159,39,0.05)',border:'1px solid rgba(239,159,39,0.2)',marginBottom:'1.25rem',padding:'1rem'}}>
-                <div style={{fontSize:'0.60rem',letterSpacing:'2px',textTransform:'uppercase',color:'rgba(239,159,39,0.8)',marginBottom:'0.85rem'}}>⚠ The costs you can't put a number on</div>
+                <div style={{fontSize:'0.60rem',letterSpacing:'2px',textTransform:'uppercase',color:'rgba(239,159,39,0.8)',marginBottom:'0.85rem'}}>⚠ The costs you can&apos;t put a number on</div>
                 {[
                   ['◈','Stress & anxiety','Packing the night before. Did you forget something? Will it fit? Will it go over weight?'],
                   ['◷','2+ hours of your life','Check-in queues, bag drop, baggage claim. Every. Single. Trip.'],
@@ -597,7 +597,7 @@ function Home({setPage}) {
               <VendorLogo vendor={VENDORS[0]} height={60} dark={false} />
             </div>
             <div style={{fontSize:'0.90rem',letterSpacing:'1.5px',textTransform:'uppercase',color:'rgba(8,14,26,0.5)',marginBottom:'0.75rem'}}>Clothing · Wellness · Essentials</div>
-            <div style={{fontSize:'1.05rem',color:'rgba(8,14,26,0.7)',lineHeight:1.8,marginBottom:'1rem',fontWeight:300}}>The founding supplier of BagFree. Emergency travel kits, men's and women's wear, wellness kits, and the exclusive SNUGL collection.</div>
+            <div style={{fontSize:'1.05rem',color:'rgba(8,14,26,0.7)',lineHeight:1.8,marginBottom:'1rem',fontWeight:300}}>The founding supplier of BagFree. Emergency travel kits, men&apos;s and women&apos;s wear, wellness kits, and the exclusive SNUGL collection.</div>
             <div style={{display:'flex',alignItems:'center',gap:'0.5rem',marginBottom:'1rem'}}>
               <span style={{color:'#8B6914',fontSize:'0.98rem',letterSpacing:'1px'}}>★★★★★</span>
               <span style={{fontSize:'0.72rem',color:'rgba(8,14,26,0.55)',letterSpacing:'1px',fontWeight:400}}>5.0 · Trusted founding partner</span>
@@ -615,7 +615,7 @@ function Home({setPage}) {
               <VendorLogo vendor={VENDORS[1]} height={80} dark={true} />
             </div>
             <div style={{fontSize:'0.90rem',letterSpacing:'1.5px',textTransform:'uppercase',color:'rgba(201,169,110,0.5)',marginBottom:'0.75rem'}}>Comfort · Travel · Wellness</div>
-            <div style={{fontSize:'1.05rem',color:'rgba(245,237,216,0.7)',lineHeight:1.8,marginBottom:'1rem',fontWeight:300}}>The revolutionary travel comfort product from Valet By Nuor's exclusive collection.</div>
+            <div style={{fontSize:'1.05rem',color:'rgba(245,237,216,0.7)',lineHeight:1.8,marginBottom:'1rem',fontWeight:300}}>The revolutionary travel comfort product from Valet By Nuor&apos;s exclusive collection.</div>
             <div style={{display:'flex',alignItems:'center',gap:'0.5rem',marginBottom:'1rem'}}>
               <span style={{color:'var(--gold)',fontSize:'0.98rem',letterSpacing:'1px'}}>★★★★★</span>
               <span style={{fontSize:'0.72rem',color:'rgba(253,252,248,0.4)',letterSpacing:'1px',fontWeight:400}}>5.0 · Verified purchase</span>
@@ -638,7 +638,7 @@ function Home({setPage}) {
               <span style={{width:16,height:1,background:'var(--gold)',display:'inline-block'}}/>Premium Supplier Slot
             </div>
             <div style={{fontFamily:'var(--ff-display)',fontSize:'1.6rem',fontWeight:300,color:'var(--white)',marginBottom:'0.5rem',lineHeight:1.1}}>Your Brand<br/><em style={{color:'var(--gold)',fontStyle:'italic'}}>Here</em></div>
-            <div style={{fontSize:'0.90rem',color:'rgba(253,252,248,0.4)',lineHeight:1.8,marginBottom:'1.5rem',fontWeight:300,flex:1}}>We only partner with premium travel brands that match our guests' standards. Applications are reviewed and vetted before approval.</div>
+            <div style={{fontSize:'0.90rem',color:'rgba(253,252,248,0.4)',lineHeight:1.8,marginBottom:'1.5rem',fontWeight:300,flex:1}}>We only partner with premium travel brands that match our guests&apos; standards. Applications are reviewed and vetted before approval.</div>
             <div style={{display:'flex',flexDirection:'column',gap:'0.5rem',marginBottom:'1.5rem',width:'100%'}}>
               {[['✦','Premium brand standard required'],['✦','Valet by Nuor fulfillment network'],['✦','Access to luxury traveler audience']].map(([icon,text],i)=>(
                 <div key={i} style={{display:'flex',alignItems:'center',gap:'0.6rem',fontSize:'0.82rem',color:'rgba(253,252,248,0.5)'}}>
@@ -696,11 +696,11 @@ function Home({setPage}) {
             {name:'Savannah',state:'GA',sameDay:false,desc:'Historic district hotels and boutique properties. Weekend getaways.',code:'SAV'},
           ].map((d)=>(
             <div key={d.name} onClick={()=>setPage('vendors')}
-              style={{background:'#E8DFC8',padding:'2.5rem 2rem',cursor:'pointer',transition:'background 0.25s',position:'relative'}}
-              onMouseEnter={e=>e.currentTarget.style.background='rgba(201,169,110,0.25)'}
-              onMouseLeave={e=>e.currentTarget.style.background='#E8DFC8'}>
+              style={{background:'#C8BFA8',padding:'2.5rem 2rem',cursor:'pointer',transition:'background 0.25s',position:'relative'}}
+              onMouseEnter={e=>e.currentTarget.style.background='#BAB09A'}
+              onMouseLeave={e=>e.currentTarget.style.background='#C8BFA8'}>
               {d.sameDay && (
-                <div style={{position:'absolute',top:'1.25rem',right:'1.25rem',fontSize:'0.60rem',letterSpacing:'1.5px',textTransform:'uppercase',color:'var(--gold)',border:'1px solid rgba(201,169,110,0.4)',padding:'3px 8px',background:'rgba(201,169,110,0.08)'}}>
+                <div style={{position:'absolute',top:'1.25rem',right:'1.25rem',fontSize:'0.60rem',letterSpacing:'1.5px',textTransform:'uppercase',color:'rgba(100,75,30,0.9)',border:'1px solid rgba(100,75,30,0.35)',padding:'3px 8px',background:'rgba(100,75,30,0.1)'}}>
                   Same-Day
                 </div>
               )}
@@ -708,7 +708,7 @@ function Home({setPage}) {
               <div style={{fontFamily:'var(--ff-display)',fontSize:'1.5rem',fontWeight:300,color:'var(--noir)',marginBottom:'4px',lineHeight:1.1}}>{d.name}</div>
               <div style={{fontSize:'0.70rem',letterSpacing:'2px',textTransform:'uppercase',color:'var(--gold-dim)',marginBottom:'1rem'}}>{d.state}</div>
               <div style={{width:20,height:1,background:'rgba(8,14,26,0.2)',marginBottom:'1rem'}}/>
-              <div style={{fontSize:'0.88rem',color:'rgba(253,252,248,0.6)',lineHeight:1.8,fontWeight:300,marginBottom:'1.25rem'}}>{d.desc}</div>
+              <div style={{fontSize:'0.88rem',color:'rgba(10,10,8,0.65)',lineHeight:1.8,fontWeight:300,marginBottom:'1.25rem'}}>{d.desc}</div>
               <div style={{fontSize:'0.72rem',letterSpacing:'2px',textTransform:'uppercase',color:'var(--gold-dim)',display:'flex',alignItems:'center',gap:'0.5rem'}}>
                 Shop vendors <span style={{fontSize:'0.82rem'}}>→</span>
               </div>
@@ -813,7 +813,7 @@ function Home({setPage}) {
               onMouseEnter={e=>!d.comingSoon&&(e.currentTarget.style.background=d.bgHover)}
               onMouseLeave={e=>(e.currentTarget.style.background=d.bg)}>
               {!d.comingSoon && (
-                <div style={{position:'absolute',top:'1.25rem',right:'1.25rem',fontSize:'0.60rem',letterSpacing:'1.5px',textTransform:'uppercase',color:'var(--gold)',border:'1px solid rgba(201,169,110,0.4)',padding:'3px 8px',background:'rgba(201,169,110,0.08)'}}>
+                <div style={{position:'absolute',top:'1.25rem',right:'1.25rem',fontSize:'0.60rem',letterSpacing:'1.5px',textTransform:'uppercase',color:'rgba(100,75,30,0.9)',border:'1px solid rgba(100,75,30,0.35)',padding:'3px 8px',background:'rgba(100,75,30,0.1)'}}>
                   International
                 </div>
               )}
@@ -878,7 +878,7 @@ function Home({setPage}) {
       <div style={{padding:'7rem 3rem',background:'var(--noir)',textAlign:'center',position:'relative',overflow:'hidden'}}>
         <div style={{position:'absolute',top:'50%',left:'50%',transform:'translate(-50%,-50%)',width:700,height:350,background:'radial-gradient(ellipse,rgba(201,169,110,0.07) 0%,transparent 70%)',pointerEvents:'none'}}/>
         <h2 style={{fontFamily:'var(--ff-display)',fontSize:'clamp(2.5rem,5vw,5rem)',fontWeight:300,lineHeight:1.1,marginBottom:'1.5rem',position:'relative'}}>
-          Lost luggage?<br/><em style={{color:'var(--gold)',fontStyle:'italic'}}>We've got you.</em>
+          Lost luggage?<br/><em style={{color:'var(--gold)',fontStyle:'italic'}}>We&apos;ve got you.</em>
         </h2>
         <p style={{fontSize:'1.02rem',color:'var(--mist)',marginBottom:'3rem',fontWeight:300,position:'relative'}}>Same-day emergency delivery in Tampa & Orlando. Hours, not days.</p>
         <div style={{display:'flex',gap:'1rem',justifyContent:'center',flexWrap:'wrap',position:'relative'}}>
@@ -1331,7 +1331,7 @@ function SupplierPortal() {
                   {form.agreedToCommission && <span style={{color:'var(--noir)',fontSize:'0.88rem',fontWeight:700}}>✓</span>}
                 </div>
                 <div>
-                  <div style={{fontSize:'0.90rem',color:'var(--white)',fontWeight:400,marginBottom:6}}>I agree to BagFree's commission structure</div>
+                  <div style={{fontSize:'0.90rem',color:'var(--white)',fontWeight:400,marginBottom:6}}>I agree to BagFree&apos;s commission structure</div>
                   <div style={{fontSize:'0.84rem',color:'var(--mist)',lineHeight:1.8}}>
                     {form.commissionPlan==='annual'
                       ? 'BagFree earns 8% commission on all sales plus a $199/year listing fee. Includes featured placement, Verified Partner badge, and home page listing. 12-month commitment.'
@@ -1475,7 +1475,7 @@ function LoungeTileModal({feature, onClose}) {
         <div style={{padding:'1.75rem 2rem'}}>
           <p style={{fontSize:'1.00rem',color:'rgba(253,252,248,0.75)',lineHeight:1.9,fontWeight:300,marginBottom:'1.75rem'}}>{feature.description}</p>
           <div style={{fontSize:'0.70rem',letterSpacing:'3px',textTransform:'uppercase',color:feature.accentColor,marginBottom:'1rem',display:'flex',alignItems:'center',gap:'0.75rem'}}>
-            <span style={{width:16,height:1,background:feature.accentColor,display:'inline-block',opacity:0.5}}/>What's included
+            <span style={{width:16,height:1,background:feature.accentColor,display:'inline-block',opacity:0.5}}/>What&apos;s included
           </div>
           <div style={{display:'flex',flexDirection:'column',gap:'0.65rem',marginBottom:'2rem'}}>
             {feature.details.map(d=>(
@@ -1630,7 +1630,7 @@ function CruisePage({setPage}) {
       <div id="cruise-kits" style={{padding:'4rem 2rem 6rem',background:'rgba(201,169,110,0.03)',borderTop:'1px solid var(--border)'}}>
         <div style={{maxWidth:1100,margin:'0 auto'}}>
           <div style={{textAlign:'center',marginBottom:'3rem'}}>
-            <div style={{fontSize:'0.70rem',letterSpacing:'4px',textTransform:'uppercase',color:'var(--gold)',marginBottom:'0.75rem'}}>What's included</div>
+            <div style={{fontSize:'0.70rem',letterSpacing:'4px',textTransform:'uppercase',color:'var(--gold)',marginBottom:'0.75rem'}}>What&apos;s included</div>
             <h2 style={{fontFamily:'var(--ff-display)',fontSize:'clamp(2rem,4vw,3.2rem)',fontWeight:300}}>Choose your cruise kit</h2>
           </div>
           <div style={{display:'grid',gridTemplateColumns:'repeat(auto-fill,minmax(240px,1fr))',gap:1,background:'var(--border)'}}>
@@ -1661,7 +1661,7 @@ function CruisePage({setPage}) {
               Cruises are the<br/><em style={{color:'var(--gold)',fontStyle:'italic'}}>perfect</em> BagFree trip
             </h2>
             <p style={{fontSize:'1.00rem',color:'rgba(253,252,248,0.55)',lineHeight:1.9,marginBottom:'2rem'}}>
-              You know your ship, your ports, your schedule weeks in advance. That's all we need to have everything waiting on board before you arrive.
+              You know your ship, your ports, your schedule weeks in advance. That&apos;s all we need to have everything waiting on board before you arrive.
             </p>
             {[
               'No dragging bags through airports and terminals',
@@ -1695,7 +1695,7 @@ function CruisePage({setPage}) {
           <div style={{textAlign:'center',marginBottom:'3rem'}}>
             <div style={{fontSize:'0.70rem',letterSpacing:'4px',textTransform:'uppercase',color:'var(--gold)',marginBottom:'0.75rem'}}>Order before you board</div>
             <h2 style={{fontFamily:'var(--ff-display)',fontSize:'clamp(1.8rem,3.5vw,2.8rem)',fontWeight:300,marginBottom:'0.75rem'}}>Get everything waiting</h2>
-            <p style={{fontSize:'0.95rem',color:'rgba(253,252,248,0.45)',lineHeight:1.8}}>Fill in your details and we'll confirm your order within 2 hours.</p>
+            <p style={{fontSize:'0.95rem',color:'rgba(253,252,248,0.45)',lineHeight:1.8}}>Fill in your details and we&apos;ll confirm your order within 2 hours.</p>
           </div>
 
           {submitted ? (
@@ -1703,7 +1703,7 @@ function CruisePage({setPage}) {
               <div style={{fontSize:'2rem',marginBottom:'1rem'}}>✦</div>
               <div style={{fontFamily:'var(--ff-display)',fontSize:'1.6rem',fontWeight:300,color:'var(--green)',marginBottom:'0.75rem'}}>Order received</div>
               <div style={{fontSize:'0.95rem',color:'rgba(253,252,248,0.55)',lineHeight:1.8}}>
-                We'll confirm your cruise kit within 2 hours and coordinate delivery to your port. Check your email at <strong style={{color:'var(--white)'}}>{form.email}</strong>.
+                We&apos;ll confirm your cruise kit within 2 hours and coordinate delivery to your port. Check your email at <strong style={{color:'var(--white)'}}>{form.email}</strong>.
               </div>
             </div>
           ) : (
