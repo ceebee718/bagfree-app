@@ -88,11 +88,11 @@ input{font-family:var(--fb)}
 .turn-bar-fill{height:100%;background:linear-gradient(90deg,var(--gold),#b8893e);border-radius:3px;transition:width 0.4s}
 
 /* MAP */
-.map-area{position:relative;flex:1;background:var(--noir)}
-.map-container{position:relative;width:100%;height:100%;min-height:500px;overflow:hidden;background:radial-gradient(ellipse at 30% 40%,rgba(201,169,110,0.08),transparent 50%),linear-gradient(160deg,#04080F,#06101A,#04080F)}
-.map-grid{position:absolute;inset:0;background-image:linear-gradient(rgba(201,169,110,0.04) 1px,transparent 1px),linear-gradient(90deg,rgba(201,169,110,0.04) 1px,transparent 1px);background-size:40px 40px;pointer-events:none}
-.map-label{position:absolute;transform:translate(-50%,-50%);background:rgba(8,14,26,0.8);border:1px solid rgba(201,169,110,0.2);padding:3px 10px;font-size:0.55rem;letter-spacing:2px;text-transform:uppercase;color:rgba(253,252,248,0.6);white-space:nowrap;pointer-events:none}
-.map-slot{position:absolute;transform:translate(-50%,-50%);width:40px;height:40px;border-radius:50%;border:2px dashed rgba(201,169,110,0.35);display:flex;align-items:center;justify-content:center;cursor:pointer;transition:all 0.25s;background:rgba(201,169,110,0.05)}
+.map-area{position:relative;flex:1;background:#0D2137;min-height:500px}
+.map-container{position:relative;width:100%;height:100%;min-height:500px;overflow:hidden;background:#0D2137}
+.map-grid{position:absolute;inset:0;background-image:linear-gradient(rgba(201,169,110,0.06) 1px,transparent 1px),linear-gradient(90deg,rgba(201,169,110,0.06) 1px,transparent 1px);background-size:40px 40px;pointer-events:none;z-index:4}
+.map-label{position:absolute;transform:translate(-50%,-150%);background:rgba(8,14,26,0.88);border:1px solid rgba(201,169,110,0.3);padding:3px 10px;font-size:0.55rem;letter-spacing:2px;text-transform:uppercase;color:rgba(253,252,248,0.8);white-space:nowrap;pointer-events:none;z-index:9}
+.map-slot{position:absolute;transform:translate(-50%,-50%);width:40px;height:40px;border-radius:50%;border:2px dashed rgba(201,169,110,0.5);display:flex;align-items:center;justify-content:center;cursor:pointer;transition:all 0.25s;background:rgba(8,14,26,0.7);z-index:8}
 .map-slot:hover{border-color:var(--gold);background:rgba(201,169,110,0.15);transform:translate(-50%,-50%) scale(1.15)}
 .map-slot.filled{border-style:solid;border-color:rgba(201,169,110,0.5);background:rgba(8,14,26,0.85);cursor:default}
 .map-slot.filled:hover{transform:translate(-50%,-50%) scale(1)}
@@ -161,7 +161,7 @@ input{font-family:var(--fb)}
 .end-btns{display:flex;gap:0.75rem;justify-content:center;flex-wrap:wrap}
 
 /* PLACEMENT TOOLTIP */
-.placement-tooltip{position:absolute;background:rgba(8,14,26,0.95);border:1px solid var(--brd);padding:0.75rem 1rem;font-size:0.7rem;color:var(--mist);pointer-events:none;z-index:50;min-width:160px;display:none}
+.placement-tooltip{position:absolute;background:rgba(8,14,26,0.95);border:1px solid var(--brd);padding:0.75rem 1rem;font-size:0.7rem;color:var(--mist);pointer-events:none;z-index:20;min-width:160px;display:none}
 .placement-tooltip.visible{display:block}
 
 /* BAGFREE HIGHLIGHT */
@@ -175,6 +175,130 @@ input{font-family:var(--fb)}
 </style>
 </head>
 <body>
+
+<!-- AUTH GATE -->
+<div id="auth-gate" style="position:fixed;inset:0;z-index:99999;background:linear-gradient(160deg,#04080F,#080E1A,#04080F);display:flex;align-items:center;justify-content:center;flex-direction:column;gap:2rem;padding:2rem;">
+  
+  <!-- Background grid -->
+  <div style="position:absolute;inset:0;background-image:linear-gradient(rgba(201,169,110,0.03) 1px,transparent 1px),linear-gradient(90deg,rgba(201,169,110,0.03) 1px,transparent 1px);background-size:40px 40px;pointer-events:none;"></div>
+
+  <div style="position:relative;z-index:1;text-align:center;max-width:420px;width:100%;">
+    <!-- Logo / eyebrow -->
+    <div style="font-size:0.52rem;letter-spacing:4px;text-transform:uppercase;color:rgba(201,169,110,0.6);margin-bottom:1.5rem;display:flex;align-items:center;justify-content:center;gap:0.75rem;">
+      <span style="width:30px;height:1px;background:rgba(201,169,110,0.4);display:inline-block;"></span>
+      BagFree · Departure Lounge
+      <span style="width:30px;height:1px;background:rgba(201,169,110,0.4);display:inline-block;"></span>
+    </div>
+    <h1 style="font-family:'Cormorant Garamond',serif;font-size:2.2rem;font-weight:300;color:#FDFCF8;line-height:1.1;margin-bottom:0.5rem;">
+      Tourism DX
+    </h1>
+    <p style="font-size:0.78rem;color:rgba(253,252,248,0.45);margin-bottom:2.5rem;line-height:1.7;">
+      Sign in with your Departure Lounge account to play.
+    </p>
+
+    <!-- Auth form -->
+    <div style="background:var(--n2,#0D1525);border:1px solid rgba(201,169,110,0.18);padding:2rem;">
+      <div id="auth-error" style="display:none;background:rgba(226,75,74,0.1);border:1px solid rgba(226,75,74,0.3);color:rgba(226,75,74,0.9);font-size:0.72rem;padding:0.65rem 0.85rem;margin-bottom:1.25rem;text-align:left;"></div>
+
+      <div style="margin-bottom:1rem;">
+        <label style="font-size:0.55rem;letter-spacing:2px;text-transform:uppercase;color:rgba(201,169,110,0.7);display:block;margin-bottom:0.4rem;">Email</label>
+        <input id="auth-email" type="email" placeholder="your@email.com"
+          style="width:100%;background:#131D30;border:1px solid rgba(201,169,110,0.2);color:#FDFCF8;padding:0.75rem 1rem;font-size:0.85rem;font-family:'Jost',sans-serif;outline:none;transition:border-color 0.2s;"
+          onfocus="this.style.borderColor='rgba(201,169,110,0.5)'"
+          onblur="this.style.borderColor='rgba(201,169,110,0.2)'"
+          onkeydown="if(event.key==='Enter')document.getElementById('auth-password').focus()">
+      </div>
+
+      <div style="margin-bottom:1.5rem;">
+        <label style="font-size:0.55rem;letter-spacing:2px;text-transform:uppercase;color:rgba(201,169,110,0.7);display:block;margin-bottom:0.4rem;">Password</label>
+        <input id="auth-password" type="password" placeholder="••••••••"
+          style="width:100%;background:#131D30;border:1px solid rgba(201,169,110,0.2);color:#FDFCF8;padding:0.75rem 1rem;font-size:0.85rem;font-family:'Jost',sans-serif;outline:none;transition:border-color 0.2s;"
+          onfocus="this.style.borderColor='rgba(201,169,110,0.5)'"
+          onblur="this.style.borderColor='rgba(201,169,110,0.2)'"
+          onkeydown="if(event.key==='Enter')signInToGame()">
+      </div>
+
+      <button id="auth-btn" onclick="signInToGame()"
+        style="width:100%;background:linear-gradient(135deg,#C9A96E,#b8893e);color:#0A0A08;border:none;padding:0.9rem;font-size:0.65rem;font-weight:600;letter-spacing:2.5px;text-transform:uppercase;cursor:pointer;font-family:'Jost',sans-serif;transition:opacity 0.2s;"
+        onmouseover="this.style.opacity='0.88'" onmouseout="this.style.opacity='1'">
+        Sign In &amp; Play ✦
+      </button>
+
+      <div style="margin-top:1.25rem;font-size:0.65rem;color:rgba(253,252,248,0.3);text-align:center;">
+        Don&apos;t have an account?
+        <a href="/departure-lounge-landing" style="color:rgba(201,169,110,0.7);text-decoration:none;margin-left:4px;" onmouseover="this.style.color='#C9A96E'" onmouseout="this.style.color='rgba(201,169,110,0.7)'">Join the Departure Lounge →</a>
+      </div>
+    </div>
+
+    <div style="margin-top:1.5rem;font-size:0.6rem;color:rgba(253,252,248,0.2);letter-spacing:1px;">
+      Members only · BagFree Destination Lab
+    </div>
+  </div>
+</div>
+
+<!-- SUPABASE AUTH SCRIPT -->
+<script type="module">
+  import { createClient } from 'https://cdn.jsdelivr.net/npm/@supabase/supabase-js/+esm';
+
+  const supabase = createClient('https://hoipvmhwjxdipbnnxdwd.supabase.co', 'sb_publishable_YpauWHKsHKClPTxMfLIL3g_s4hCkP5H');
+  window._supabase = supabase;
+
+  // Check existing session on load
+  async function checkSession() {
+    const { data: { session } } = await supabase.auth.getSession();
+    if (session && session.user) {
+      // Already logged in — hide gate, pre-fill player name
+      document.getElementById('auth-gate').style.display = 'none';
+      const email = session.user.email || '';
+      const name = session.user.user_metadata?.full_name || email.split('@')[0] || 'Player';
+      const nameInput = document.getElementById('player-name');
+      if (nameInput) nameInput.value = name;
+    }
+  }
+
+  window.signInToGame = async function() {
+    const email = document.getElementById('auth-email').value.trim();
+    const password = document.getElementById('auth-password').value;
+    const btn = document.getElementById('auth-btn');
+    const errEl = document.getElementById('auth-error');
+
+    if (!email || !password) {
+      errEl.textContent = 'Please enter your email and password.';
+      errEl.style.display = 'block';
+      return;
+    }
+
+    btn.disabled = true;
+    btn.textContent = 'Signing in...';
+    errEl.style.display = 'none';
+
+    const { data, error } = await supabase.auth.signInWithPassword({ email, password });
+
+    if (error) {
+      errEl.textContent = error.message === 'Invalid login credentials'
+        ? 'Incorrect email or password.'
+        : error.message;
+      errEl.style.display = 'block';
+      btn.disabled = false;
+      btn.textContent = 'Sign In & Play ✦';
+      return;
+    }
+
+    // Success
+    const name = data.user?.user_metadata?.full_name || email.split('@')[0] || 'Player';
+    const nameInput = document.getElementById('player-name');
+    if (nameInput) nameInput.value = name;
+
+    // Animate gate out
+    const gate = document.getElementById('auth-gate');
+    gate.style.transition = 'opacity 0.5s ease';
+    gate.style.opacity = '0';
+    setTimeout(() => gate.style.display = 'none', 500);
+  };
+
+  checkSession();
+</script>
+
 
 <!-- NAV -->
 <nav id="tdx-nav">
@@ -270,7 +394,7 @@ input{font-family:var(--fb)}
           <option value="urban-bay">Urban Bay — Coastal Republic</option>
           <option value="rome">Rome — Italy</option>
           <option value="tokyo">Tokyo — Japan</option>
-          <option value="st-vincent">St. Vincent — Caribbean</option>
+          <option value="st-vincent">St. Vincent &amp; The Grenadines — Caribbean</option>
           <option value="custom">✦ Custom Destination</option>
         </select>
       </div>
@@ -370,9 +494,9 @@ input{font-family:var(--fb)}
     <div class="map-area">
       <div class="map-container" id="map-container">
         <div class="map-grid"></div>
-        <div id="map-slots-container"></div>
-        <div id="map-labels-container"></div>
-        <div class="map-legend">
+        <div id="map-slots-container" style="position:absolute;inset:0;z-index:8;"></div>
+        <div id="map-labels-container" style="position:absolute;inset:0;z-index:7;"></div>
+        <div class="map-legend" style="z-index:15;position:relative">
           <div style="color:var(--gold);font-size:0.58rem;letter-spacing:2px;text-transform:uppercase;margin-bottom:0.4rem;">◈ Open slots — click to place selected project</div>
           <div style="display:flex;gap:1rem;flex-wrap:wrap;">
             <span>⬡ = Open slot</span>
@@ -501,7 +625,7 @@ const DESTINATIONS = {
     ]
   },
   'st-vincent': {
-    name:'St. Vincent', country:'St. Vincent & the Grenadines',
+    name:'St. Vincent & The Grenadines', country:'Caribbean · BagFree Collective Trip',
     budget:110,
     metrics:{tourism:58,economy:48,localLife:78,unemployment:38,traffic:22,crime:28,pollution:20,sustainability:80,energy:65},
     slots:[
@@ -720,6 +844,98 @@ function renderMap() {
   const labels = document.getElementById('map-labels-container');
   container.innerHTML = '';
   labels.innerHTML = '';
+
+  // ── Day/Night cycle overlay ──
+  const mapEl = document.getElementById('map-container');
+  const hour = new Date().getHours();
+  const min = new Date().getMinutes();
+  const timeDecimal = hour + min/60;
+
+  // Remove existing overlays
+  const existing = mapEl.querySelectorAll('.dn-overlay,.time-display,.land-mass');
+  existing.forEach(e => e.remove());
+
+  // Day/night color
+  let skyColor, ambientOpacity, timeLabel, timeIcon;
+  if (timeDecimal >= 6 && timeDecimal < 9) {
+    skyColor='rgba(255,180,80,0.15)'; ambientOpacity=0.3; timeIcon='🌅'; timeLabel='Dawn';
+  } else if (timeDecimal >= 9 && timeDecimal < 17) {
+    skyColor='rgba(100,160,255,0.08)'; ambientOpacity=0.0; timeIcon='☀'; timeLabel='Day';
+  } else if (timeDecimal >= 17 && timeDecimal < 20) {
+    skyColor='rgba(255,120,50,0.18)'; ambientOpacity=0.2; timeIcon='🌇'; timeLabel='Dusk';
+  } else {
+    skyColor='rgba(10,20,60,0.45)'; ambientOpacity=0.55; timeIcon='🌙'; timeLabel='Night';
+  }
+
+  // Sky overlay
+  const dnOverlay = document.createElement('div');
+  dnOverlay.className = 'dn-overlay';
+  dnOverlay.style.cssText = `position:absolute;inset:0;background:${skyColor};pointer-events:none;z-index:2;transition:background 2s;`;
+  mapEl.appendChild(dnOverlay);
+
+  // Night darkness
+  if (ambientOpacity > 0) {
+    const darkOverlay = document.createElement('div');
+    darkOverlay.className = 'dn-overlay';
+    darkOverlay.style.cssText = `position:absolute;inset:0;background:rgba(4,8,20,${ambientOpacity});pointer-events:none;z-index:3;`;
+    mapEl.appendChild(darkOverlay);
+  }
+
+  // Time display badge
+  const timeEl = document.createElement('div');
+  timeEl.className = 'time-display';
+  const hh = String(hour).padStart(2,'0');
+  const mm = String(min).padStart(2,'0');
+  timeEl.style.cssText = 'position:absolute;top:1rem;right:1rem;background:rgba(8,14,26,0.88);border:1px solid rgba(201,169,110,0.25);padding:0.4rem 0.85rem;font-size:0.65rem;color:rgba(201,169,110,0.9);letter-spacing:1.5px;z-index:10;display:flex;align-items:center;gap:0.4rem;font-family:"Jost",sans-serif;';
+  timeEl.innerHTML = `<span>${timeIcon}</span><span>${hh}:${mm} Local</span><span style="color:rgba(253,252,248,0.4);font-size:0.58rem;">${timeLabel}</span>`;
+  mapEl.appendChild(timeEl);
+
+  // ── Land masses — destination-specific SVG shapes ──
+  const destLands = {
+    'coastal-isle': `<ellipse cx="35%" cy="45%" rx="18%" ry="12%" fill="#1A4A2A" opacity="0.85"/><ellipse cx="68%" cy="60%" rx="10%" ry="7%" fill="#1A4A2A" opacity="0.75"/>`,
+    'mountain-coast': `<path d="M10%,70% Q20%,20% 40%,30% Q55%,15% 70%,35% Q85%,25% 90%,60% Q70%,80% 40%,75% Z" fill="#2A3E28" opacity="0.85"/>`,
+    'urban-bay': `<path d="M5%,80% Q15%,40% 35%,35% Q60%,25% 80%,40% Q90%,55% 85%,75% Q60%,85% 30%,80% Z" fill="#1E3828" opacity="0.8"/>`,
+    'rome': `<path d="M8%,75% Q20%,30% 45%,25% Q70%,20% 88%,45% Q92%,65% 80%,80% Q55%,88% 25%,82% Z" fill="#2E3E20" opacity="0.85"/><ellipse cx="75%" cy="72%" rx="8%" ry="5%" fill="#2A3820" opacity="0.7"/>`,
+    'tokyo': `<path d="M5%,80% Q25%,35% 50%,28% Q72%,22% 88%,50% Q90%,70% 75%,82% Q50%,90% 20%,85% Z" fill="#223428" opacity="0.85"/><ellipse cx="80%" cy="40%" rx="6%" ry="4%" fill="#1E2E20" opacity="0.65"/>`,
+    'st-vincent': `<ellipse cx="30%" cy="50%" rx="10%" ry="16%" fill="#1A4228" opacity="0.9"/><ellipse cx="55%" cy="42%" rx="5%" ry="8%" fill="#1A4228" opacity="0.8"/><ellipse cx="68%" cy="55%" rx="4%" ry="6%" fill="#1A4228" opacity="0.75"/><ellipse cx="78%" cy="63%" rx="3%" ry="5%" fill="#1A4228" opacity="0.7"/><ellipse cx="85%" cy="70%" rx="3%" ry="4%" fill="#1A4228" opacity="0.65"/>`,
+    'custom': `<ellipse cx="40%" cy="48%" rx="20%" ry="14%" fill="#1E3C26" opacity="0.8"/><ellipse cx="70%" cy="55%" rx="12%" ry="9%" fill="#1E3C26" opacity="0.7"/>`,
+  };
+
+  const landSvg = document.createElement('div');
+  landSvg.className = 'land-mass';
+  landSvg.style.cssText = 'position:absolute;inset:0;pointer-events:none;z-index:1;';
+  const destKey = G.destId || 'coastal-isle';
+  const landShape = destLands[destKey] || destLands['custom'];
+  // Use a 1000x600 viewBox so we can use real numbers
+  const destLandsSVG = {
+    'coastal-isle': `<ellipse cx="350" cy="270" rx="180" ry="120" fill="#1B4D2E"/><ellipse cx="680" cy="360" rx="100" ry="70" fill="#1B4D2E"/><ellipse cx="820" cy="180" rx="60" ry="40" fill="#163F26"/>`,
+    'mountain-coast': `<path d="M80,500 Q180,100 380,180 Q520,80 680,220 Q830,140 900,380 Q720,500 400,470 Z" fill="#223D1E"/>`,
+    'urban-bay': `<path d="M40,520 Q130,240 330,210 Q580,140 800,260 Q900,360 840,490 Q600,550 280,510 Z" fill="#1E3C22"/>`,
+    'rome': `<path d="M60,480 Q180,180 420,150 Q680,120 860,280 Q920,400 800,510 Q540,570 220,530 Z" fill="#2A3E1A"/><ellipse cx="760" cy="440" rx="80" ry="50" fill="#243418"/>`,
+    'tokyo': `<path d="M40,510 Q230,200 490,170 Q720,130 880,310 Q910,450 750,530 Q490,580 180,545 Z" fill="#1E3420"/><ellipse cx="810" cy="240" rx="65" ry="42" fill="#1A2E1C"/>`,
+    'st-vincent': `<ellipse cx="280" cy="300" rx="95" ry="165" fill="#1A4A2A"/><ellipse cx="520" cy="240" rx="52" ry="85" fill="#1A4A2A"/><ellipse cx="650" cy="330" rx="40" ry="62" fill="#1A4A2A"/><ellipse cx="750" cy="410" rx="32" ry="50" fill="#1A4228"/><ellipse cx="840" cy="480" rx="28" ry="42" fill="#163E24"/>`,
+    'custom': `<ellipse cx="400" cy="300" rx="210" ry="150" fill="#1E3C26"/><ellipse cx="700" cy="350" rx="130" ry="95" fill="#1A3822"/>`,
+  };
+  const landShapeSVG = destLandsSVG[destKey] || destLandsSVG['custom'];
+
+  landSvg.innerHTML = `<svg viewBox="0 0 1000 600" preserveAspectRatio="xMidYMid slice" width="100%" height="100%" xmlns="http://www.w3.org/2000/svg" style="position:absolute;inset:0;display:block;">
+    <defs>
+      <radialGradient id="oceanDepth" cx="50%" cy="50%" r="70%">
+        <stop offset="0%" stop-color="#0F2A45"/>
+        <stop offset="100%" stop-color="#071522"/>
+      </radialGradient>
+    </defs>
+    <!-- Ocean -->
+    <rect width="1000" height="600" fill="url(#oceanDepth)"/>
+    <!-- Ocean shimmer lines -->
+    <path d="M0,510 Q125,495 250,510 Q375,525 500,510 Q625,495 750,510 Q875,525 1000,510 L1000,600 L0,600 Z" fill="rgba(15,42,69,0.5)"/>
+    <path d="M0,550 Q125,538 250,550 Q375,562 500,550 Q625,538 750,550 Q875,562 1000,550 L1000,600 L0,600 Z" fill="rgba(10,28,50,0.4)"/>
+    <!-- Land -->
+    ${landShapeSVG}
+    <!-- Coastline edge highlight -->
+    <path d="M0,590 Q250,580 500,590 Q750,600 1000,590" stroke="rgba(93,202,165,0.12)" stroke-width="2" fill="none"/>
+  </svg>`;
+  mapEl.insertBefore(landSvg, mapEl.firstChild);
 
   G.slots.forEach(slot => {
     // Label
