@@ -590,7 +590,7 @@ function Home({setPage}) {
           <div
             onClick={()=>window.open('https://valetbynuor.com','_blank')}
             style={{background:'var(--gold)',padding:'2rem',cursor:'pointer',transition:'all 0.25s',position:'relative'}}
-            onMouseEnter={e=>e.currentTarget.style.background='var(--gold-light)'}
+            onMouseEnter={e=>e.currentTarget.style.background='#DDD3B8'}
             onMouseLeave={e=>e.currentTarget.style.background='var(--gold)'}>
             <div style={{position:'absolute',top:'1rem',right:'1rem',fontSize:'0.75rem',letterSpacing:'1.5px',textTransform:'uppercase',color:'var(--noir)',border:'1px solid rgba(8,14,26,0.3)',padding:'2px 8px',background:'rgba(8,14,26,0.1)'}}>Official Partner</div>
             <div style={{marginBottom:'1rem'}}>
@@ -686,7 +686,7 @@ function Home({setPage}) {
         <div style={{fontSize:'0.65rem',letterSpacing:'3px',textTransform:'uppercase',color:'var(--gold-dim)',marginBottom:'1rem',display:'flex',alignItems:'center',gap:'0.75rem'}}>
           <span style={{width:16,height:1,background:'var(--gold-dim)',display:'inline-block'}}/>United States
         </div>
-        <div className="bf-grid-3" style={{display:'grid',gridTemplateColumns:'repeat(3,1fr)',gap:1,background:'rgba(255,255,255,0.06)',border:'1px solid rgba(255,255,255,0.08)'}}>
+        <div className="bf-grid-3" style={{display:'grid',gridTemplateColumns:'repeat(3,1fr)',gap:1,background:'rgba(10,10,8,0.15)',border:'1px solid rgba(10,10,8,0.12)'}}>
           {[
             {name:'Tampa Bay',state:'FL',sameDay:true,desc:'Our flagship city. Same-day delivery to all major hotels and resorts.',code:'TPA'},
             {name:'Orlando',state:'FL',sameDay:true,desc:'Theme park to resort — essentials delivered before you check in.',code:'MCO'},
@@ -696,9 +696,9 @@ function Home({setPage}) {
             {name:'Savannah',state:'GA',sameDay:false,desc:'Historic district hotels and boutique properties. Weekend getaways.',code:'SAV'},
           ].map((d)=>(
             <div key={d.name} onClick={()=>setPage('vendors')}
-              style={{background:'var(--gold-xlight)',padding:'2.5rem 2rem',cursor:'pointer',transition:'background 0.25s',position:'relative'}}
+              style={{background:'#E8DFC8',padding:'2.5rem 2rem',cursor:'pointer',transition:'background 0.25s',position:'relative'}}
               onMouseEnter={e=>e.currentTarget.style.background='rgba(201,169,110,0.25)'}
-              onMouseLeave={e=>e.currentTarget.style.background='var(--gold-xlight)'}>
+              onMouseLeave={e=>e.currentTarget.style.background='#E8DFC8'}>
               {d.sameDay && (
                 <div style={{position:'absolute',top:'1.25rem',right:'1.25rem',fontSize:'0.60rem',letterSpacing:'1.5px',textTransform:'uppercase',color:'var(--gold)',border:'1px solid rgba(201,169,110,0.4)',padding:'3px 8px',background:'rgba(201,169,110,0.08)'}}>
                   Same-Day
