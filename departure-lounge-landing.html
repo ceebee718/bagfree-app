@@ -170,6 +170,10 @@ body{padding-top:36px}
   <div class="nav-links">
     <a href="#features" class="nav-link">Features</a>
     <a href="#collective" class="nav-link">Collective</a>
+    <a href="/tourism-dx" style="display:inline-flex;align-items:center;gap:0.4rem;font-size:0.60rem;letter-spacing:1.5px;text-transform:uppercase;color:rgba(253,252,248,0.7);border:1px solid rgba(201,169,110,0.25);padding:5px 12px;transition:all 0.2s;font-family:var(--fb);text-decoration:none;" onmouseover="this.style.borderColor='rgba(201,169,110,0.6)';this.style.color='#C9A96E'" onmouseout="this.style.borderColor='rgba(201,169,110,0.25)';this.style.color='rgba(253,252,248,0.7)'">
+      <svg width="11" height="11" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2"><polygon points="12 2 15.09 8.26 22 9.27 17 14.14 18.18 21.02 12 17.77 5.82 21.02 7 14.14 2 9.27 8.91 8.26 12 2"/></svg>
+      Tourism DX
+    </a>
     <a href="departure-lounge.html" class="nav-enter">Enter The Lounge →</a>
   </div>
 </nav>
@@ -184,6 +188,24 @@ body{padding-top:36px}
       <a href="departure-lounge.html" class="cta-main">Enter The Lounge →</a>
       <a href="#features" class="cta-ghost">Explore features</a>
     </div>
+
+    <!-- Tourism DX badge -->
+    <a href="/tourism-dx" style="display:inline-flex;align-items:center;gap:0.7rem;margin-top:1.25rem;padding:0.6rem 1.1rem;background:rgba(8,14,26,0.7);border:1px solid rgba(201,169,110,0.25);backdrop-filter:blur(8px);text-decoration:none;transition:all 0.25s;cursor:pointer;"
+      onmouseover="this.style.borderColor='rgba(201,169,110,0.6)';this.style.background='rgba(8,14,26,0.9)'"
+      onmouseout="this.style.borderColor='rgba(201,169,110,0.25)';this.style.background='rgba(8,14,26,0.7)'">
+      <!-- Shield/badge icon -->
+      <svg width="22" height="22" viewBox="0 0 24 24" fill="none" xmlns="http://www.w3.org/2000/svg">
+        <path d="M12 2L3 7V13C3 17.55 6.84 21.74 12 23C17.16 21.74 21 17.55 21 13V7L12 2Z"
+          fill="rgba(201,169,110,0.15)" stroke="#C9A96E" stroke-width="1.5" stroke-linejoin="round"/>
+        <polygon points="12,7 13.5,10.5 17,11 14.5,13.5 15,17 12,15.5 9,17 9.5,13.5 7,11 10.5,10.5"
+          fill="#C9A96E" opacity="0.9"/>
+      </svg>
+      <div>
+        <div style="font-size:0.52rem;letter-spacing:2.5px;text-transform:uppercase;color:rgba(201,169,110,0.6);margin-bottom:2px;">Destination Lab</div>
+        <div style="font-size:0.72rem;font-weight:500;color:#FDFCF8;letter-spacing:0.5px;font-family:'Jost',sans-serif;">Play the Tourism DX Simulator</div>
+      </div>
+      <svg width="12" height="12" viewBox="0 0 24 24" fill="none" stroke="rgba(201,169,110,0.6)" stroke-width="2"><path d="M5 12h14M12 5l7 7-7 7"/></svg>
+    </a>
   </div>
   <div class="hero-features" id="features">
     <div class="hf"><span class="hf-icon"><svg viewBox="0 0 24 24"><circle cx="12" cy="12" r="3"/><circle cx="12" cy="12" r="8"/><line x1="12" y1="2" x2="12" y2="4"/><line x1="12" y1="20" x2="12" y2="22"/><line x1="2" y1="12" x2="4" y2="12"/><line x1="20" y1="12" x2="22" y2="12"/></svg></span><div class="hf-title">AI Destination Matching</div><div class="hf-sub">Claude scores destinations 0–99 for you personally with a specific reason for each.</div><span class="hf-tag t-ai">Claude AI</span></div>
@@ -994,5 +1016,26 @@ document.addEventListener('click',function(e){const box=document.getElementById(
 document.addEventListener('keydown',e=>{if(e.key==='Escape'){closeDestModal&&closeDestModal();closeSVGSurvey&&closeSVGSurvey();}});
 document.querySelectorAll('.dc.bg-rome,.dc.bg-paris,.dc.bg-svg,.dc.bg-tokyo,.dc.bg-london').forEach(el=>{const key=Array.from(el.classList).find(c=>c.startsWith('bg-'))?.replace('bg-','');if(key){el.style.cursor='pointer';el.onclick=()=>openDestModal(key);}});
 </script>
+
+<!-- FLOATING TOURISM DX CTA -->
+<div id="tdx-float" style="position:fixed;bottom:2rem;right:2rem;z-index:8888;display:flex;flex-direction:column;align-items:flex-end;gap:0.5rem;">
+  <div id="tdx-float-label" style="background:rgba(8,14,26,0.95);border:1px solid rgba(201,169,110,0.3);padding:0.5rem 0.85rem;font-size:0.6rem;letter-spacing:1.5px;text-transform:uppercase;color:rgba(201,169,110,0.9);display:none;white-space:nowrap;">
+    Build the perfect destination
+  </div>
+  <a href="/tourism-dx"
+    style="display:flex;align-items:center;gap:0.6rem;background:linear-gradient(135deg,#C9A96E,#b8893e);color:#0A0A08;padding:0.75rem 1.25rem;font-size:0.62rem;font-weight:600;letter-spacing:2px;text-transform:uppercase;text-decoration:none;box-shadow:0 4px 24px rgba(201,169,110,0.3);transition:all 0.25s;font-family:'Jost',sans-serif;"
+    onmouseover="this.style.boxShadow='0 6px 32px rgba(201,169,110,0.5)';document.getElementById('tdx-float-label').style.display='block'"
+    onmouseout="this.style.boxShadow='0 4px 24px rgba(201,169,110,0.3)';document.getElementById('tdx-float-label').style.display='none'">
+    <svg width="14" height="14" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2.5"><polygon points="12 2 15.09 8.26 22 9.27 17 14.14 18.18 21.02 12 17.77 5.82 21.02 7 14.14 2 9.27 8.91 8.26 12 2"/></svg>
+    Play Tourism DX
+  </a>
+</div>
+
+<style>
+@keyframes tdx-pulse{0%,100%{box-shadow:0 4px 24px rgba(201,169,110,0.3)}50%{box-shadow:0 4px 32px rgba(201,169,110,0.55)}}
+#tdx-float a{animation:tdx-pulse 2.5s ease-in-out infinite}
+#tdx-float a:hover{animation:none}
+</style>
+
 </body>
 </html>
