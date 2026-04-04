@@ -291,7 +291,7 @@ function VendorLogo({vendor, height=60, dark=false}) {
           <div style={{fontFamily:'var(--ff-display)',fontSize:'1.65rem',fontWeight:300,letterSpacing:'4px',textTransform:'uppercase',color:dark?'var(--gold-light)':'var(--noir)',lineHeight:1}}>
             Valet
           </div>
-          <div style={{fontFamily:'var(--ff-display)',fontSize:'0.7rem',fontWeight:300,letterSpacing:'6px',textTransform:'uppercase',color:dark?'rgba(201,169,110,0.6)':'rgba(8,14,26,0.45)',marginTop:4}}>
+          <div style={{fontFamily:'var(--ff-display)',fontSize:'0.82rem',fontWeight:300,letterSpacing:'6px',textTransform:'uppercase',color:dark?'rgba(201,169,110,0.6)':'rgba(8,14,26,0.45)',marginTop:4}}>
             By Nuor
           </div>
         </div>
@@ -303,7 +303,7 @@ function VendorLogo({vendor, height=60, dark=false}) {
           <div style={{fontFamily:'var(--ff-display)',fontSize:'1.8rem',fontWeight:300,letterSpacing:'5px',textTransform:'uppercase',color:'var(--gold)',lineHeight:1}}>
             SNUGL
           </div>
-          <div style={{fontFamily:'var(--ff-body)',fontSize:'0.55rem',fontWeight:400,letterSpacing:'4px',textTransform:'uppercase',color:'rgba(201,169,110,0.5)',marginTop:5}}>
+          <div style={{fontFamily:'var(--ff-body)',fontSize:'0.62rem',fontWeight:400,letterSpacing:'4px',textTransform:'uppercase',color:'rgba(201,169,110,0.5)',marginTop:5}}>
             Pod™ Collection
           </div>
         </div>
@@ -333,10 +333,10 @@ function Nav({page, setPage}) {
         </div>
         <div className="bf-nav-links" style={{display:'flex',gap:'2rem',alignItems:'center'}}>
           {[['home','Destinations'],['vendors','Marketplace'],['cruise','Cruise'],['supplier','Suppliers']].map(([p,l])=>(
-            <span key={p} onClick={()=>{setPage(p);if(p==='home')setTimeout(()=>window.hpCalc&&window.hpCalc(),300);}} style={{fontSize:'0.72rem',color:page===p?'var(--gold)':'rgba(253,252,248,0.85)',letterSpacing:'1.5px',textTransform:'uppercase',cursor:'pointer',transition:'color 0.2s',fontWeight:400}}>{l}</span>
+            <span key={p} onClick={()=>{setPage(p);if(p==='home')setTimeout(()=>window.hpCalc&&window.hpCalc(),300);}} style={{fontSize:'0.84rem',color:page===p?'var(--gold)':'rgba(253,252,248,0.85)',letterSpacing:'1.5px',textTransform:'uppercase',cursor:'pointer',transition:'color 0.2s',fontWeight:400}}>{l}</span>
           ))}
           <span onClick={(e)=>{e.stopPropagation();window.open('/departure-lounge-landing','_self');}}
-            style={{fontSize:'0.68rem',color:'var(--gold)',letterSpacing:'1.5px',textTransform:'uppercase',border:'1px solid var(--border-hi)',padding:'0.3rem 0.85rem',display:'inline-flex',alignItems:'center',gap:'0.4rem',cursor:'pointer'}}>
+            style={{fontSize:'0.78rem',color:'var(--gold)',letterSpacing:'1.5px',textTransform:'uppercase',border:'1px solid var(--border-hi)',padding:'0.3rem 0.85rem',display:'inline-flex',alignItems:'center',gap:'0.4rem',cursor:'pointer'}}>
             <span style={{width:5,height:5,borderRadius:'50%',background:'var(--gold)',display:'inline-block'}}/>Departure Lounge
           </span>
         </div>
@@ -353,12 +353,12 @@ function Nav({page, setPage}) {
           <div style={{width:40,height:1,background:'var(--border)'}}/>
           {[['home','Destinations'],['vendors','Marketplace'],['cruise','Cruise'],['supplier','Suppliers']].map(([p,l])=>(
             <span key={p} onClick={()=>{setPage(p);setMenuOpen(false);if(p==='home')setTimeout(()=>window.hpCalc&&window.hpCalc(),300);}}
-              style={{fontSize:'0.9rem',color:page===p?'var(--gold)':'rgba(253,252,248,0.85)',letterSpacing:'3px',textTransform:'uppercase',cursor:'pointer',fontWeight:300}}>
+              style={{fontSize:'1.02rem',color:page===p?'var(--gold)':'rgba(253,252,248,0.85)',letterSpacing:'3px',textTransform:'uppercase',cursor:'pointer',fontWeight:300}}>
               {l}
             </span>
           ))}
           <span onClick={()=>{window.open('/departure-lounge-landing','_self');setMenuOpen(false);}}
-            style={{fontSize:'0.8rem',color:'var(--gold)',letterSpacing:'2px',textTransform:'uppercase',border:'1px solid var(--border-hi)',padding:'0.65rem 1.5rem',cursor:'pointer',display:'flex',alignItems:'center',gap:'0.5rem',marginTop:'0.5rem'}}>
+            style={{fontSize:'0.92rem',color:'var(--gold)',letterSpacing:'2px',textTransform:'uppercase',border:'1px solid var(--border-hi)',padding:'0.65rem 1.5rem',cursor:'pointer',display:'flex',alignItems:'center',gap:'0.5rem',marginTop:'0.5rem'}}>
             <span style={{width:6,height:6,borderRadius:'50%',background:'var(--gold)',display:'inline-block'}}/>Departure Lounge
           </span>
         </div>
@@ -395,29 +395,29 @@ function Home({setPage}) {
       <div style={{minHeight:'100vh',position:'relative',overflow:'hidden',display:'flex',alignItems:'stretch'}} className="bf-hero-wrap">
         <div className="bf-hero-left" style={{position:'relative',zIndex:2,background:'var(--noir)',display:'flex',alignItems:'center',width:'50%',flexShrink:0}}>
           <div ref={heroContentRef} style={{padding:'6rem 5rem 6rem 6rem',width:'100%',className:'bf-hero-content',transition:'transform 180ms ease-out, opacity 180ms ease-out',willChange:'transform, opacity',animation:'bfFadeUp 900ms ease-out'}}>
-            <div style={{fontSize:'0.62rem',letterSpacing:'5px',textTransform:'uppercase',color:'var(--gold)',marginBottom:'2rem',display:'flex',alignItems:'center',gap:'1rem'}}>
+            <div style={{fontSize:'0.72rem',letterSpacing:'5px',textTransform:'uppercase',color:'var(--gold)',marginBottom:'2rem',display:'flex',alignItems:'center',gap:'1rem'}}>
               <span style={{width:32,height:1,background:'var(--gold)',display:'inline-block'}}></span>
               <span>Arrive to everything</span>
             </div>
             <h1 style={{fontFamily:'var(--ff-display)',fontSize:'clamp(3.2rem,5vw,5.8rem)',fontWeight:300,lineHeight:1.08,letterSpacing:'-2.9px',marginBottom:'1.65rem',color:'var(--white)',maxWidth:560}}>
               BagFree.<br />Travel, <em style={{fontStyle:'italic',color:'var(--gold)'}}>Redefined.</em>
             </h1>
-            <p style={{fontSize:'1.02rem',color:'rgba(253,252,248,0.76)',lineHeight:1.7,maxWidth:'100%',marginBottom:'2.15rem',fontWeight:300}}>
-              The way travel should feel.<span style={{display:'block',marginTop:'0.6rem',fontSize:'0.88rem',color:'rgba(253,252,248,0.5)',fontWeight:300}}>Arrive to everything. No bags. No lines. No friction.</span>
+            <p style={{fontSize:'1.12rem',color:'rgba(253,252,248,0.76)',lineHeight:1.7,maxWidth:'100%',marginBottom:'2.15rem',fontWeight:300}}>
+              The way travel should feel.<span style={{display:'block',marginTop:'0.6rem',fontSize:'1.00rem',color:'rgba(253,252,248,0.5)',fontWeight:300}}>Arrive to everything. No bags. No lines. No friction.</span>
             </p>
             <div style={{display:'flex',flexDirection:'column',gap:'0.65rem',marginBottom:'2.05rem'}}>
               {['No luggage to check or carry','No waiting at baggage claim','Everything waiting at arrival','Same-day delivery — Tampa & Orlando'].map((t, i) => (
-                <div key={i} style={{display:'flex',alignItems:'center',gap:'0.85rem',fontSize:'0.9rem',color:'rgba(253,252,248,0.65)'}}>
-                  <span style={{color:'var(--gold)',fontSize:'0.8rem',flexShrink:0}}>✓</span>
+                <div key={i} style={{display:'flex',alignItems:'center',gap:'0.85rem',fontSize:'1.02rem',color:'rgba(253,252,248,0.65)'}}>
+                  <span style={{color:'var(--gold)',fontSize:'0.92rem',flexShrink:0}}>✓</span>
                   <span>{t}</span>
                 </div>
               ))}
             </div>
             <div style={{display:'flex',gap:'1rem',flexWrap:'wrap',marginTop:'1.75rem',marginBottom:'1.15rem'}}>
-              <button className="bf-hero-primary" onClick={() => setPage('vendors')} style={{background:'linear-gradient(135deg,var(--gold),#b8893e)',color:'var(--noir)',padding:'1.1rem 2.8rem',border:'none',fontSize:'0.75rem',fontWeight:600,letterSpacing:'3px',textTransform:'uppercase',cursor:'pointer',fontFamily:'var(--ff-body)'}}>
+              <button className="bf-hero-primary" onClick={() => setPage('vendors')} style={{background:'linear-gradient(135deg,var(--gold),#b8893e)',color:'var(--noir)',padding:'1.1rem 2.8rem',border:'none',fontSize:'0.88rem',fontWeight:600,letterSpacing:'3px',textTransform:'uppercase',cursor:'pointer',fontFamily:'var(--ff-body)'}}>
                 Get Started
               </button>
-              <button className="bf-hero-secondary" onClick={() => window.open('/departure-lounge-landing','_self')} style={{background:'rgba(253,252,248,0.01)',color:'rgba(253,252,248,0.76)',padding:'1.1rem 2.2rem',border:'1.5px solid rgba(253,252,248,0.2)',fontSize:'0.75rem',letterSpacing:'2.5px',textTransform:'uppercase',cursor:'pointer',fontFamily:'var(--ff-body)',opacity:0.82}}>
+              <button className="bf-hero-secondary" onClick={() => window.open('/departure-lounge-landing','_self')} style={{background:'rgba(253,252,248,0.01)',color:'rgba(253,252,248,0.76)',padding:'1.1rem 2.2rem',border:'1.5px solid rgba(253,252,248,0.2)',fontSize:'0.88rem',letterSpacing:'2.5px',textTransform:'uppercase',cursor:'pointer',fontFamily:'var(--ff-body)',opacity:0.82}}>
                 Enter the Lounge ↗
               </button>
             </div>
@@ -429,7 +429,7 @@ function Home({setPage}) {
               {[['38+','Products'],['6','Destinations'],['Same-Day','Tampa & Orlando'],['Valet By Nuor','Partner']].map(([n, l]) => (
                 <div key={l}>
                   <div style={{fontFamily:'var(--ff-display)',fontSize:'2rem',fontWeight:300,color:'var(--gold)',lineHeight:1}}>{n}</div>
-                  <div style={{fontSize:'0.58rem',letterSpacing:'2px',textTransform:'uppercase',color:'rgba(253,252,248,0.4)',marginTop:5}}>{l}</div>
+                  <div style={{fontSize:'0.65rem',letterSpacing:'2px',textTransform:'uppercase',color:'rgba(253,252,248,0.4)',marginTop:5}}>{l}</div>
                 </div>
               ))}
             </div>
@@ -449,11 +449,11 @@ function Home({setPage}) {
       <div style={{padding:'5rem 3rem',background:'var(--noir)'}}>
         <div style={{maxWidth:860,margin:'0 auto'}}>
           <div style={{textAlign:'center',marginBottom:'2.5rem'}}>
-            <div style={{fontSize:'0.52rem',letterSpacing:'4px',textTransform:'uppercase',color:'var(--gold)',marginBottom:'0.75rem'}}>The real math</div>
+            <div style={{fontSize:'0.60rem',letterSpacing:'4px',textTransform:'uppercase',color:'var(--gold)',marginBottom:'0.75rem'}}>The real math</div>
             <h2 style={{fontFamily:'var(--ff-display)',fontSize:'clamp(2.2rem,4vw,3.8rem)',fontWeight:300,lineHeight:1.1,marginBottom:'0.85rem'}}>
               What does luggage <em style={{color:'var(--gold)',fontStyle:'italic'}}>actually</em> cost you?
             </h2>
-            <p style={{fontSize:'0.78rem',color:'var(--mist)',lineHeight:1.85,maxWidth:440,margin:'0 auto'}}>Most travelers never add it up. When you do, the number is surprising.</p>
+            <p style={{fontSize:'0.90rem',color:'var(--mist)',lineHeight:1.85,maxWidth:440,margin:'0 auto'}}>Most travelers never add it up. When you do, the number is surprising.</p>
           </div>
 
           {/* Controls */}
@@ -463,9 +463,9 @@ function Home({setPage}) {
               {id:'hp-style',label:'Travel style',opts:[['luxury','Luxury'],['leisure','Leisure'],['business','Business'],['wellness','Wellness']],def:'leisure'},
             ].map(f=>(
               <div key={f.id} style={{display:'flex',flexDirection:'column',gap:4}}>
-                <label style={{fontSize:'0.6rem',letterSpacing:'2px',textTransform:'uppercase',color:'var(--gold)'}}>{f.label}</label>
+                <label style={{fontSize:'0.70rem',letterSpacing:'2px',textTransform:'uppercase',color:'var(--gold)'}}>{f.label}</label>
                 <select id={f.id} defaultValue={f.def} onChange={(e)=>{window._hpState=window._hpState||{};window._hpState[f.id]=e.target.value;hpCalc();}}
-                  style={{background:'var(--noir-2)',border:'1px solid var(--border)',color:'var(--white)',padding:'0.55rem 1rem',fontSize:'0.9rem',fontFamily:'var(--ff-body)',outline:'none',cursor:'pointer',minWidth:140,colorScheme:'dark'}}>
+                  style={{background:'var(--noir-2)',border:'1px solid var(--border)',color:'var(--white)',padding:'0.55rem 1rem',fontSize:'1.02rem',fontFamily:'var(--ff-body)',outline:'none',cursor:'pointer',minWidth:140,colorScheme:'dark'}}>
                   {f.opts.map(([v,l])=><option key={v} value={v} style={{background:'#131D30',color:'#FDFCF8'}}>{l}</option>)}
                 </select>
               </div>
@@ -476,9 +476,9 @@ function Home({setPage}) {
           <div style={{display:'grid',gridTemplateColumns:'1fr auto 1fr',gap:0,alignItems:'stretch'}}>
             {/* Traditional */}
             <div style={{background:'rgba(226,75,74,0.04)',border:'1px solid rgba(226,75,74,0.18)',padding:'2.5rem',position:'relative'}}>
-              <div style={{fontSize:'0.7rem',letterSpacing:'2.5px',textTransform:'uppercase',color:'rgba(253,252,248,0.85)',marginBottom:'1.5rem',display:'flex',alignItems:'center',justifyContent:'space-between'}}>
+              <div style={{fontSize:'0.82rem',letterSpacing:'2.5px',textTransform:'uppercase',color:'rgba(253,252,248,0.85)',marginBottom:'1.5rem',display:'flex',alignItems:'center',justifyContent:'space-between'}}>
                 <div style={{display:'flex',alignItems:'center',gap:'0.5rem'}}>
-                  <span style={{fontSize:'1rem'}}>🧳</span> Traveling with luggage
+                  <span style={{fontSize:'1.10rem'}}>🧳</span> Traveling with luggage
                 </div>
                 <button id="hiddenCostBtn" onClick={()=>{
                   const p=document.getElementById('hiddenCostPanel');
@@ -487,14 +487,14 @@ function Home({setPage}) {
                   p.style.display=open?'block':'none';
                   b.style.background=open?'rgba(239,159,39,0.2)':'rgba(239,159,39,0.08)';
                   b.style.borderColor=open?'rgba(239,159,39,0.7)':'rgba(239,159,39,0.35)';
-                }} title="See hidden costs of traveling with luggage" style={{background:'rgba(239,159,39,0.08)',border:'1px solid rgba(239,159,39,0.35)',color:'rgba(239,159,39,0.9)',padding:'3px 8px',fontSize:'0.55rem',letterSpacing:'1.5px',textTransform:'uppercase',cursor:'pointer',display:'flex',alignItems:'center',gap:'5px',fontFamily:'var(--ff-body)',transition:'all 0.2s',whiteSpace:'nowrap',flexShrink:0}}>
+                }} title="See hidden costs of traveling with luggage" style={{background:'rgba(239,159,39,0.08)',border:'1px solid rgba(239,159,39,0.35)',color:'rgba(239,159,39,0.9)',padding:'3px 8px',fontSize:'0.62rem',letterSpacing:'1.5px',textTransform:'uppercase',cursor:'pointer',display:'flex',alignItems:'center',gap:'5px',fontFamily:'var(--ff-body)',transition:'all 0.2s',whiteSpace:'nowrap',flexShrink:0}}>
                   ⚠ Hidden costs
                 </button>
               </div>
 
               {/* Hidden costs reveal panel */}
               <div id="hiddenCostPanel" style={{display:'none',background:'rgba(239,159,39,0.05)',border:'1px solid rgba(239,159,39,0.2)',marginBottom:'1.25rem',padding:'1rem'}}>
-                <div style={{fontSize:'0.52rem',letterSpacing:'2px',textTransform:'uppercase',color:'rgba(239,159,39,0.8)',marginBottom:'0.85rem'}}>⚠ The costs you can't put a number on</div>
+                <div style={{fontSize:'0.60rem',letterSpacing:'2px',textTransform:'uppercase',color:'rgba(239,159,39,0.8)',marginBottom:'0.85rem'}}>⚠ The costs you can't put a number on</div>
                 {[
                   ['◈','Stress & anxiety','Packing the night before. Did you forget something? Will it fit? Will it go over weight?'],
                   ['◷','2+ hours of your life','Check-in queues, bag drop, baggage claim. Every. Single. Trip.'],
@@ -507,22 +507,22 @@ function Home({setPage}) {
                   ['◦','Airline fee surprises','The fee changed. The weight limit was lower. The scale said 23.2kg.'],
                 ].map(([icon,title,desc],i)=>(
                   <div key={i} style={{display:'flex',gap:'0.75rem',padding:'0.55rem 0',borderBottom:'1px solid rgba(239,159,39,0.1)'}}>
-                    <span style={{fontSize:'0.9rem',flexShrink:0,color:'rgba(201,169,110,0.6)',fontWeight:300,lineHeight:1,marginTop:'2px'}}>{icon}</span>
+                    <span style={{fontSize:'1.02rem',flexShrink:0,color:'rgba(201,169,110,0.6)',fontWeight:300,lineHeight:1,marginTop:'2px'}}>{icon}</span>
                     <div>
-                      <div style={{fontSize:'0.72rem',color:'rgba(253,252,248,0.85)',fontWeight:500,marginBottom:2}}>{title}</div>
-                      <div style={{fontSize:'0.65rem',color:'rgba(253,252,248,0.4)',lineHeight:1.6}}>{desc}</div>
+                      <div style={{fontSize:'0.84rem',color:'rgba(253,252,248,0.85)',fontWeight:500,marginBottom:2}}>{title}</div>
+                      <div style={{fontSize:'0.75rem',color:'rgba(253,252,248,0.4)',lineHeight:1.6}}>{desc}</div>
                     </div>
                   </div>
                 ))}
-                <div style={{marginTop:'0.75rem',fontSize:'0.6rem',color:'rgba(239,159,39,0.55)',fontStyle:'italic',textAlign:'center'}}>None of these appear in the total above — but every traveler feels them.</div>
+                <div style={{marginTop:'0.75rem',fontSize:'0.70rem',color:'rgba(239,159,39,0.55)',fontStyle:'italic',textAlign:'center'}}>None of these appear in the total above — but every traveler feels them.</div>
               </div>
 
               <div id="hp-trad-items"></div>
               <div style={{display:'flex',justifyContent:'space-between',alignItems:'baseline',marginTop:'1.25rem',paddingTop:'1rem',borderTop:'1px solid rgba(253,252,248,0.1)'}}>
-                <div style={{fontSize:'0.65rem',letterSpacing:'2px',textTransform:'uppercase',color:'rgba(253,252,248,0.35)'}}>Estimated total</div>
+                <div style={{fontSize:'0.75rem',letterSpacing:'2px',textTransform:'uppercase',color:'rgba(253,252,248,0.35)'}}>Estimated total</div>
                 <div id="hp-trad-total" style={{fontFamily:'var(--ff-display)',fontSize:'2.8rem',fontWeight:300,color:'rgba(253,252,248,0.85)'}}></div>
               </div>
-              <div style={{fontSize:'0.7rem',color:'rgba(239,159,39,0.5)',marginTop:'0.6rem',textAlign:'right',fontStyle:'italic'}}>+ hidden costs not shown above ⚠</div>
+              <div style={{fontSize:'0.82rem',color:'rgba(239,159,39,0.5)',marginTop:'0.6rem',textAlign:'right',fontStyle:'italic'}}>+ hidden costs not shown above ⚠</div>
             </div>
 
             {/* VS */}
@@ -530,18 +530,18 @@ function Home({setPage}) {
               <div style={{fontFamily:'var(--ff-display)',fontSize:'2rem',fontWeight:300,color:'rgba(253,252,248,0.1)'}}>vs</div>
               <div style={{background:'rgba(93,202,165,0.1)',border:'1px solid rgba(93,202,165,0.3)',padding:'0.75rem 1rem',textAlign:'center'}}>
                 <div id="hp-saving" style={{fontFamily:'var(--ff-display)',fontSize:'2.2rem',fontWeight:300,color:'var(--green)',lineHeight:1}}></div>
-                <div style={{fontSize:'0.46rem',letterSpacing:'2px',textTransform:'uppercase',color:'rgba(93,202,165,0.7)',marginTop:3}}>you save</div>
+                <div style={{fontSize:'0.52rem',letterSpacing:'2px',textTransform:'uppercase',color:'rgba(93,202,165,0.7)',marginTop:3}}>you save</div>
               </div>
             </div>
 
             {/* BagFree */}
             <div style={{background:'rgba(201,169,110,0.05)',border:'1px solid rgba(201,169,110,0.28)',padding:'2.5rem'}}>
-              <div style={{fontSize:'0.7rem',letterSpacing:'2.5px',textTransform:'uppercase',color:'var(--gold)',marginBottom:'1.5rem',display:'flex',alignItems:'center',gap:'0.5rem'}}>
-                <span style={{fontSize:'1rem'}}>✦</span> Traveling BagFree
+              <div style={{fontSize:'0.82rem',letterSpacing:'2.5px',textTransform:'uppercase',color:'var(--gold)',marginBottom:'1.5rem',display:'flex',alignItems:'center',gap:'0.5rem'}}>
+                <span style={{fontSize:'1.10rem'}}>✦</span> Traveling BagFree
               </div>
               <div id="hp-bf-items"></div>
               <div style={{display:'flex',justifyContent:'space-between',alignItems:'baseline',marginTop:'1.25rem',paddingTop:'1rem',borderTop:'1px solid rgba(253,252,248,0.1)'}}>
-                <div style={{fontSize:'0.65rem',letterSpacing:'2px',textTransform:'uppercase',color:'rgba(253,252,248,0.35)'}}>Estimated total</div>
+                <div style={{fontSize:'0.75rem',letterSpacing:'2px',textTransform:'uppercase',color:'rgba(253,252,248,0.35)'}}>Estimated total</div>
                 <div id="hp-bf-total" style={{fontFamily:'var(--ff-display)',fontSize:'2.8rem',fontWeight:300,color:'var(--gold)'}}></div>
               </div>
             </div>
@@ -550,11 +550,11 @@ function Home({setPage}) {
           {/* CTA */}
           <div style={{display:'flex',gap:'0.85rem',justifyContent:'center',marginTop:'2.5rem',flexWrap:'wrap'}}>
             <button onClick={()=>window.open('/how-it-works','_self')}
-              style={{background:'linear-gradient(135deg,var(--gold),#b8893e)',color:'var(--noir)',border:'none',padding:'0.85rem 2.2rem',fontSize:'0.68rem',fontWeight:500,letterSpacing:'2.5px',textTransform:'uppercase'}}>
+              style={{background:'linear-gradient(135deg,var(--gold),#b8893e)',color:'var(--noir)',border:'none',padding:'0.85rem 2.2rem',fontSize:'0.78rem',fontWeight:500,letterSpacing:'2.5px',textTransform:'uppercase'}}>
               How It Works ✦
             </button>
             <button onClick={()=>window.open('https://valetbynuor.com','_blank')}
-              style={{background:'transparent',color:'var(--mist)',border:'1px solid var(--border)',padding:'0.85rem 1.75rem',fontSize:'0.68rem',letterSpacing:'2px',textTransform:'uppercase'}}>
+              style={{background:'transparent',color:'var(--mist)',border:'1px solid var(--border)',padding:'0.85rem 1.75rem',fontSize:'0.78rem',letterSpacing:'2px',textTransform:'uppercase'}}>
               Shop Kits ↗
             </button>
           </div>
@@ -576,14 +576,14 @@ function Home({setPage}) {
         }}/>
         <div style={{position:'absolute',inset:0,background:'linear-gradient(to bottom,rgba(8,14,26,0.6) 0%,rgba(8,14,26,0.3) 40%,rgba(8,14,26,0.7) 100%)'}}/>
         <div style={{position:'relative',zIndex:1}}>
-        <div style={{fontSize:'0.72rem',letterSpacing:'4px',textTransform:'uppercase',color:'var(--gold)',marginBottom:'1.5rem',display:'flex',alignItems:'center',gap:'1rem'}}>
+        <div style={{fontSize:'0.84rem',letterSpacing:'4px',textTransform:'uppercase',color:'var(--gold)',marginBottom:'1.5rem',display:'flex',alignItems:'center',gap:'1rem'}}>
           <span style={{width:24,height:1,background:'var(--gold-dim)',display:'inline-block'}}/>The Marketplace
         </div>
         <div style={{display:'flex',justifyContent:'space-between',alignItems:'flex-end',marginBottom:'3rem',flexWrap:'wrap',gap:'1rem'}}>
           <h2 style={{fontFamily:'var(--ff-display)',fontSize:'clamp(2rem,4vw,3.5rem)',fontWeight:300,letterSpacing:'-0.3px'}}>
             Curated <em style={{color:'var(--gold)',fontStyle:'italic'}}>suppliers</em><br/>one destination
           </h2>
-          <button onClick={()=>setPage('vendors')} style={{background:'transparent',color:'var(--gold)',padding:'0.75rem 1.75rem',border:'1px solid var(--border-hi)',fontSize:'0.68rem',letterSpacing:'2px',textTransform:'uppercase'}}>View All Vendors →</button>
+          <button onClick={()=>setPage('vendors')} style={{background:'transparent',color:'var(--gold)',padding:'0.75rem 1.75rem',border:'1px solid var(--border-hi)',fontSize:'0.78rem',letterSpacing:'2px',textTransform:'uppercase'}}>View All Vendors →</button>
         </div>
         <div style={{display:'grid',gridTemplateColumns:'repeat(auto-fill,minmax(300px,1fr))',gap:1,background:'var(--border)',border:'1px solid var(--border)'}}>
           {/* Valet By Nuor card */}
@@ -592,17 +592,17 @@ function Home({setPage}) {
             style={{background:'var(--gold)',padding:'2rem',cursor:'pointer',transition:'all 0.25s',position:'relative'}}
             onMouseEnter={e=>e.currentTarget.style.background='var(--gold-light)'}
             onMouseLeave={e=>e.currentTarget.style.background='var(--gold)'}>
-            <div style={{position:'absolute',top:'1rem',right:'1rem',fontSize:'0.65rem',letterSpacing:'1.5px',textTransform:'uppercase',color:'var(--noir)',border:'1px solid rgba(8,14,26,0.3)',padding:'2px 8px',background:'rgba(8,14,26,0.1)'}}>Official Partner</div>
+            <div style={{position:'absolute',top:'1rem',right:'1rem',fontSize:'0.75rem',letterSpacing:'1.5px',textTransform:'uppercase',color:'var(--noir)',border:'1px solid rgba(8,14,26,0.3)',padding:'2px 8px',background:'rgba(8,14,26,0.1)'}}>Official Partner</div>
             <div style={{marginBottom:'1rem'}}>
               <VendorLogo vendor={VENDORS[0]} height={60} dark={false} />
             </div>
-            <div style={{fontSize:'0.78rem',letterSpacing:'1.5px',textTransform:'uppercase',color:'rgba(8,14,26,0.5)',marginBottom:'0.75rem'}}>Clothing · Wellness · Essentials</div>
-            <div style={{fontSize:'0.92rem',color:'rgba(8,14,26,0.7)',lineHeight:1.8,marginBottom:'1rem',fontWeight:300}}>The founding supplier of BagFree. Emergency travel kits, men's and women's wear, wellness kits, and the exclusive SNUGL collection.</div>
+            <div style={{fontSize:'0.90rem',letterSpacing:'1.5px',textTransform:'uppercase',color:'rgba(8,14,26,0.5)',marginBottom:'0.75rem'}}>Clothing · Wellness · Essentials</div>
+            <div style={{fontSize:'1.05rem',color:'rgba(8,14,26,0.7)',lineHeight:1.8,marginBottom:'1rem',fontWeight:300}}>The founding supplier of BagFree. Emergency travel kits, men's and women's wear, wellness kits, and the exclusive SNUGL collection.</div>
             <div style={{display:'flex',alignItems:'center',gap:'0.5rem',marginBottom:'1rem'}}>
-              <span style={{color:'#8B6914',fontSize:'0.85rem',letterSpacing:'1px'}}>★★★★★</span>
-              <span style={{fontSize:'0.62rem',color:'rgba(8,14,26,0.55)',letterSpacing:'1px',fontWeight:400}}>5.0 · Trusted founding partner</span>
+              <span style={{color:'#8B6914',fontSize:'0.98rem',letterSpacing:'1px'}}>★★★★★</span>
+              <span style={{fontSize:'0.72rem',color:'rgba(8,14,26,0.55)',letterSpacing:'1px',fontWeight:400}}>5.0 · Trusted founding partner</span>
             </div>
-            <div style={{fontSize:'0.72rem',letterSpacing:'2px',textTransform:'uppercase',color:'var(--noir)',display:'flex',alignItems:'center',gap:'0.5rem',fontWeight:500}}>Shop Now →</div>
+            <div style={{fontSize:'0.84rem',letterSpacing:'2px',textTransform:'uppercase',color:'var(--noir)',display:'flex',alignItems:'center',gap:'0.5rem',fontWeight:500}}>Shop Now →</div>
           </div>
 
           {/* SNUGL card */}
@@ -614,17 +614,17 @@ function Home({setPage}) {
             <div style={{marginBottom:'1rem'}}>
               <VendorLogo vendor={VENDORS[1]} height={80} dark={true} />
             </div>
-            <div style={{fontSize:'0.78rem',letterSpacing:'1.5px',textTransform:'uppercase',color:'rgba(201,169,110,0.5)',marginBottom:'0.75rem'}}>Comfort · Travel · Wellness</div>
-            <div style={{fontSize:'0.92rem',color:'rgba(245,237,216,0.7)',lineHeight:1.8,marginBottom:'1rem',fontWeight:300}}>The revolutionary travel comfort product from Valet By Nuor's exclusive collection.</div>
+            <div style={{fontSize:'0.90rem',letterSpacing:'1.5px',textTransform:'uppercase',color:'rgba(201,169,110,0.5)',marginBottom:'0.75rem'}}>Comfort · Travel · Wellness</div>
+            <div style={{fontSize:'1.05rem',color:'rgba(245,237,216,0.7)',lineHeight:1.8,marginBottom:'1rem',fontWeight:300}}>The revolutionary travel comfort product from Valet By Nuor's exclusive collection.</div>
             <div style={{display:'flex',alignItems:'center',gap:'0.5rem',marginBottom:'1rem'}}>
-              <span style={{color:'var(--gold)',fontSize:'0.85rem',letterSpacing:'1px'}}>★★★★★</span>
-              <span style={{fontSize:'0.62rem',color:'rgba(253,252,248,0.4)',letterSpacing:'1px',fontWeight:400}}>5.0 · Verified purchase</span>
+              <span style={{color:'var(--gold)',fontSize:'0.98rem',letterSpacing:'1px'}}>★★★★★</span>
+              <span style={{fontSize:'0.72rem',color:'rgba(253,252,248,0.4)',letterSpacing:'1px',fontWeight:400}}>5.0 · Verified purchase</span>
             </div>
-            <div style={{fontSize:'0.82rem',color:'rgba(245,237,216,0.6)',lineHeight:1.75,fontStyle:'italic',marginBottom:'1rem',borderLeft:'2px solid var(--gold-dim)',paddingLeft:'0.75rem'}}>
+            <div style={{fontSize:'0.95rem',color:'rgba(245,237,216,0.6)',lineHeight:1.75,fontStyle:'italic',marginBottom:'1rem',borderLeft:'2px solid var(--gold-dim)',paddingLeft:'0.75rem'}}>
               "My baby loves sitting in this pod. Very soft and cute."
-              <span style={{display:'block',marginTop:'0.35rem',fontSize:'0.6rem',letterSpacing:'1.5px',textTransform:'uppercase',fontStyle:'normal',color:'rgba(245,237,216,0.35)'}}>— Selena, verified buyer</span>
+              <span style={{display:'block',marginTop:'0.35rem',fontSize:'0.70rem',letterSpacing:'1.5px',textTransform:'uppercase',fontStyle:'normal',color:'rgba(245,237,216,0.35)'}}>— Selena, verified buyer</span>
             </div>
-            <div style={{fontSize:'0.72rem',letterSpacing:'2px',textTransform:'uppercase',color:'var(--gold)',display:'flex',alignItems:'center',gap:'0.5rem',fontWeight:500}}>Shop Now →</div>
+            <div style={{fontSize:'0.84rem',letterSpacing:'2px',textTransform:'uppercase',color:'var(--gold)',display:'flex',alignItems:'center',gap:'0.5rem',fontWeight:500}}>Shop Now →</div>
           </div>
 
           {/* Apply card — Premium only */}
@@ -634,19 +634,19 @@ function Home({setPage}) {
             onMouseEnter={e=>e.currentTarget.style.background='var(--noir-3)'}
             onMouseLeave={e=>e.currentTarget.style.background='var(--noir-2)'}>
             <div style={{position:'absolute',top:0,left:0,right:0,height:'2px',background:'linear-gradient(90deg,transparent,rgba(201,169,110,0.4),transparent)'}}/>
-            <div style={{fontSize:'0.52rem',letterSpacing:'3px',textTransform:'uppercase',color:'var(--gold)',marginBottom:'1.25rem',display:'flex',alignItems:'center',gap:'0.5rem'}}>
+            <div style={{fontSize:'0.60rem',letterSpacing:'3px',textTransform:'uppercase',color:'var(--gold)',marginBottom:'1.25rem',display:'flex',alignItems:'center',gap:'0.5rem'}}>
               <span style={{width:16,height:1,background:'var(--gold)',display:'inline-block'}}/>Premium Supplier Slot
             </div>
             <div style={{fontFamily:'var(--ff-display)',fontSize:'1.6rem',fontWeight:300,color:'var(--white)',marginBottom:'0.5rem',lineHeight:1.1}}>Your Brand<br/><em style={{color:'var(--gold)',fontStyle:'italic'}}>Here</em></div>
-            <div style={{fontSize:'0.78rem',color:'rgba(253,252,248,0.4)',lineHeight:1.8,marginBottom:'1.5rem',fontWeight:300,flex:1}}>We only partner with premium travel brands that match our guests' standards. Applications are reviewed and vetted before approval.</div>
+            <div style={{fontSize:'0.90rem',color:'rgba(253,252,248,0.4)',lineHeight:1.8,marginBottom:'1.5rem',fontWeight:300,flex:1}}>We only partner with premium travel brands that match our guests' standards. Applications are reviewed and vetted before approval.</div>
             <div style={{display:'flex',flexDirection:'column',gap:'0.5rem',marginBottom:'1.5rem',width:'100%'}}>
               {[['✦','Premium brand standard required'],['✦','Valet by Nuor fulfillment network'],['✦','Access to luxury traveler audience']].map(([icon,text],i)=>(
-                <div key={i} style={{display:'flex',alignItems:'center',gap:'0.6rem',fontSize:'0.7rem',color:'rgba(253,252,248,0.5)'}}>
-                  <span style={{color:'var(--gold)',fontSize:'0.55rem'}}>{icon}</span>{text}
+                <div key={i} style={{display:'flex',alignItems:'center',gap:'0.6rem',fontSize:'0.82rem',color:'rgba(253,252,248,0.5)'}}>
+                  <span style={{color:'var(--gold)',fontSize:'0.62rem'}}>{icon}</span>{text}
                 </div>
               ))}
             </div>
-            <div style={{fontSize:'0.68rem',letterSpacing:'2px',textTransform:'uppercase',color:'var(--gold)',border:'1px solid rgba(201,169,110,0.35)',padding:'0.6rem 1.5rem',display:'inline-flex',alignItems:'center',gap:'0.5rem',transition:'all 0.2s'}}>
+            <div style={{fontSize:'0.78rem',letterSpacing:'2px',textTransform:'uppercase',color:'var(--gold)',border:'1px solid rgba(201,169,110,0.35)',padding:'0.6rem 1.5rem',display:'inline-flex',alignItems:'center',gap:'0.5rem',transition:'all 0.2s'}}>
               Apply for Vetting →
             </div>
           </div>
@@ -655,9 +655,9 @@ function Home({setPage}) {
           <div style={{background:'linear-gradient(135deg,rgba(201,169,110,0.03),rgba(201,169,110,0.01))',padding:'2rem',display:'flex',flexDirection:'column',justifyContent:'center',alignItems:'center',textAlign:'center',border:'1px dashed rgba(201,169,110,0.1)',position:'relative',overflow:'hidden',minHeight:280}}>
             <div style={{position:'absolute',inset:0,backgroundImage:'radial-gradient(circle at 50% 50%, rgba(201,169,110,0.05) 0%, transparent 70%)',pointerEvents:'none'}}/>
             <div style={{fontSize:'1.8rem',color:'rgba(201,169,110,0.15)',marginBottom:'1rem',letterSpacing:'-2px',fontFamily:'var(--ff-display)',fontWeight:300}}>Reserved</div>
-            <div style={{fontSize:'0.55rem',letterSpacing:'3px',textTransform:'uppercase',color:'rgba(201,169,110,0.25)',marginBottom:'0.75rem'}}>Premium slot · By invitation</div>
+            <div style={{fontSize:'0.62rem',letterSpacing:'3px',textTransform:'uppercase',color:'rgba(201,169,110,0.25)',marginBottom:'0.75rem'}}>Premium slot · By invitation</div>
             <div style={{width:32,height:1,background:'rgba(201,169,110,0.2)',margin:'0 auto 0.75rem'}}/>
-            <div style={{fontSize:'0.7rem',color:'rgba(253,252,248,0.2)',lineHeight:1.7,maxWidth:200}}>Only brands that meet our luxury traveler standard are considered</div>
+            <div style={{fontSize:'0.82rem',color:'rgba(253,252,248,0.2)',lineHeight:1.7,maxWidth:200}}>Only brands that meet our luxury traveler standard are considered</div>
           </div>
         </div>
       </div>
@@ -670,20 +670,20 @@ function Home({setPage}) {
         <div style={{position:'absolute',inset:0,background:'linear-gradient(135deg, rgba(8,20,40,0.88) 0%, rgba(5,30,20,0.84) 50%, rgba(8,20,40,0.90) 100%)',pointerEvents:'none'}}/>
         <div style={{display:'flex',justifyContent:'space-between',alignItems:'flex-end',marginBottom:'2rem',flexWrap:'wrap',gap:'1rem',position:'relative',zIndex:1}}>
           <div>
-            <div style={{fontSize:'0.62rem',letterSpacing:'4px',textTransform:'uppercase',color:'var(--gold-dim)',marginBottom:'1rem',display:'flex',alignItems:'center',gap:'1rem'}}>
+            <div style={{fontSize:'0.72rem',letterSpacing:'4px',textTransform:'uppercase',color:'var(--gold-dim)',marginBottom:'1rem',display:'flex',alignItems:'center',gap:'1rem'}}>
               <span style={{width:24,height:1,background:'var(--gold-dim)',display:'inline-block'}}/>Now Serving
             </div>
             <h2 style={{fontFamily:'var(--ff-display)',fontSize:'clamp(2rem,4vw,3.5rem)',fontWeight:300,letterSpacing:'-0.3px',color:'var(--white)'}}>
               Florida, Georgia & <em style={{fontStyle:'italic',color:'var(--gold)'}}>The Caribbean</em>
             </h2>
           </div>
-          <div style={{fontSize:'0.72rem',color:'rgba(253,252,248,0.55)',fontWeight:300,maxWidth:320,lineHeight:1.8,textAlign:'right'}}>
+          <div style={{fontSize:'0.84rem',color:'rgba(253,252,248,0.55)',fontWeight:300,maxWidth:320,lineHeight:1.8,textAlign:'right'}}>
             Same-day delivery in Tampa & Orlando.<br/>Next-day across all other US destinations.<br/>International delivery to Caribbean islands.
           </div>
         </div>
 
         <div style={{position:'relative',zIndex:1}}>
-        <div style={{fontSize:'0.58rem',letterSpacing:'3px',textTransform:'uppercase',color:'var(--gold-dim)',marginBottom:'1rem',display:'flex',alignItems:'center',gap:'0.75rem'}}>
+        <div style={{fontSize:'0.65rem',letterSpacing:'3px',textTransform:'uppercase',color:'var(--gold-dim)',marginBottom:'1rem',display:'flex',alignItems:'center',gap:'0.75rem'}}>
           <span style={{width:16,height:1,background:'var(--gold-dim)',display:'inline-block'}}/>United States
         </div>
         <div className="bf-grid-3" style={{display:'grid',gridTemplateColumns:'repeat(3,1fr)',gap:1,background:'rgba(255,255,255,0.06)',border:'1px solid rgba(255,255,255,0.08)'}}>
@@ -700,17 +700,17 @@ function Home({setPage}) {
               onMouseEnter={e=>e.currentTarget.style.background='rgba(201,169,110,0.25)'}
               onMouseLeave={e=>e.currentTarget.style.background='var(--gold-xlight)'}>
               {d.sameDay && (
-                <div style={{position:'absolute',top:'1.25rem',right:'1.25rem',fontSize:'0.52rem',letterSpacing:'1.5px',textTransform:'uppercase',color:'var(--gold)',border:'1px solid rgba(201,169,110,0.4)',padding:'3px 8px',background:'rgba(201,169,110,0.08)'}}>
+                <div style={{position:'absolute',top:'1.25rem',right:'1.25rem',fontSize:'0.60rem',letterSpacing:'1.5px',textTransform:'uppercase',color:'var(--gold)',border:'1px solid rgba(201,169,110,0.4)',padding:'3px 8px',background:'rgba(201,169,110,0.08)'}}>
                   Same-Day
                 </div>
               )}
-              <div style={{fontFamily:'var(--ff-display)',fontSize:'0.7rem',fontWeight:300,letterSpacing:'4px',color:'var(--gold-dim)',marginBottom:'0.85rem',textTransform:'uppercase'}}>{d.code}</div>
+              <div style={{fontFamily:'var(--ff-display)',fontSize:'0.82rem',fontWeight:300,letterSpacing:'4px',color:'var(--gold-dim)',marginBottom:'0.85rem',textTransform:'uppercase'}}>{d.code}</div>
               <div style={{fontFamily:'var(--ff-display)',fontSize:'1.5rem',fontWeight:300,color:'var(--noir)',marginBottom:'4px',lineHeight:1.1}}>{d.name}</div>
-              <div style={{fontSize:'0.6rem',letterSpacing:'2px',textTransform:'uppercase',color:'var(--gold-dim)',marginBottom:'1rem'}}>{d.state}</div>
+              <div style={{fontSize:'0.70rem',letterSpacing:'2px',textTransform:'uppercase',color:'var(--gold-dim)',marginBottom:'1rem'}}>{d.state}</div>
               <div style={{width:20,height:1,background:'rgba(8,14,26,0.2)',marginBottom:'1rem'}}/>
-              <div style={{fontSize:'0.75rem',color:'rgba(253,252,248,0.6)',lineHeight:1.8,fontWeight:300,marginBottom:'1.25rem'}}>{d.desc}</div>
-              <div style={{fontSize:'0.62rem',letterSpacing:'2px',textTransform:'uppercase',color:'var(--gold-dim)',display:'flex',alignItems:'center',gap:'0.5rem'}}>
-                Shop vendors <span style={{fontSize:'0.7rem'}}>→</span>
+              <div style={{fontSize:'0.88rem',color:'rgba(253,252,248,0.6)',lineHeight:1.8,fontWeight:300,marginBottom:'1.25rem'}}>{d.desc}</div>
+              <div style={{fontSize:'0.72rem',letterSpacing:'2px',textTransform:'uppercase',color:'var(--gold-dim)',display:'flex',alignItems:'center',gap:'0.5rem'}}>
+                Shop vendors <span style={{fontSize:'0.82rem'}}>→</span>
               </div>
             </div>
           ))}
@@ -775,7 +775,7 @@ function Home({setPage}) {
         </svg>
 
         <div style={{position:'relative',zIndex:1}}>
-        <div style={{fontSize:'0.58rem',letterSpacing:'3px',textTransform:'uppercase',color:'var(--gold)',marginBottom:'1rem',display:'flex',alignItems:'center',gap:'0.75rem'}}>
+        <div style={{fontSize:'0.65rem',letterSpacing:'3px',textTransform:'uppercase',color:'var(--gold)',marginBottom:'1rem',display:'flex',alignItems:'center',gap:'0.75rem'}}>
           <span style={{width:16,height:1,background:'var(--gold)',display:'inline-block'}}/>The Caribbean
         </div>
         <div className="bf-grid-3" style={{display:'grid',gridTemplateColumns:'repeat(3,1fr)',gap:1,background:'rgba(255,255,255,0.08)',border:'1px solid rgba(255,255,255,0.12)'}}>
@@ -813,18 +813,18 @@ function Home({setPage}) {
               onMouseEnter={e=>!d.comingSoon&&(e.currentTarget.style.background=d.bgHover)}
               onMouseLeave={e=>(e.currentTarget.style.background=d.bg)}>
               {!d.comingSoon && (
-                <div style={{position:'absolute',top:'1.25rem',right:'1.25rem',fontSize:'0.52rem',letterSpacing:'1.5px',textTransform:'uppercase',color:'var(--gold)',border:'1px solid rgba(201,169,110,0.4)',padding:'3px 8px',background:'rgba(201,169,110,0.08)'}}>
+                <div style={{position:'absolute',top:'1.25rem',right:'1.25rem',fontSize:'0.60rem',letterSpacing:'1.5px',textTransform:'uppercase',color:'var(--gold)',border:'1px solid rgba(201,169,110,0.4)',padding:'3px 8px',background:'rgba(201,169,110,0.08)'}}>
                   International
                 </div>
               )}
-              <div style={{fontFamily:'var(--ff-display)',fontSize:'0.7rem',fontWeight:300,letterSpacing:'4px',color:d.accentColor,marginBottom:'0.85rem',textTransform:'uppercase'}}>{d.code}</div>
+              <div style={{fontFamily:'var(--ff-display)',fontSize:'0.82rem',fontWeight:300,letterSpacing:'4px',color:d.accentColor,marginBottom:'0.85rem',textTransform:'uppercase'}}>{d.code}</div>
               <div style={{fontFamily:'var(--ff-display)',fontSize:'1.5rem',fontWeight:300,color:d.nameColor,marginBottom:'4px',lineHeight:1.1}}>{d.name}</div>
-              <div style={{fontSize:'0.6rem',letterSpacing:'2px',textTransform:'uppercase',color:d.accentColor,marginBottom:'1rem'}}>{d.state}</div>
+              <div style={{fontSize:'0.70rem',letterSpacing:'2px',textTransform:'uppercase',color:d.accentColor,marginBottom:'1rem'}}>{d.state}</div>
               <div style={{width:20,height:1,background:d.dividerColor,marginBottom:'1rem'}}/>
-              <div style={{fontSize:'0.75rem',color:d.textColor,lineHeight:1.8,fontWeight:300,marginBottom:'1.25rem'}}>{d.desc}</div>
+              <div style={{fontSize:'0.88rem',color:d.textColor,lineHeight:1.8,fontWeight:300,marginBottom:'1.25rem'}}>{d.desc}</div>
               {!d.comingSoon && (
-                <div style={{fontSize:'0.62rem',letterSpacing:'2px',textTransform:'uppercase',color:d.accentColor,display:'flex',alignItems:'center',gap:'0.5rem'}}>
-                  Shop vendors <span style={{fontSize:'0.7rem'}}>→</span>
+                <div style={{fontSize:'0.72rem',letterSpacing:'2px',textTransform:'uppercase',color:d.accentColor,display:'flex',alignItems:'center',gap:'0.5rem'}}>
+                  Shop vendors <span style={{fontSize:'0.82rem'}}>→</span>
                 </div>
               )}
             </div>
@@ -841,16 +841,16 @@ function Home({setPage}) {
 
         {/* Header */}
         <div style={{textAlign:'center',padding:'6rem 3rem 4rem',position:'relative'}}>
-          <div style={{fontSize:'0.58rem',letterSpacing:'4px',textTransform:'uppercase',color:'var(--gold)',marginBottom:'1.5rem',display:'flex',alignItems:'center',justifyContent:'center',gap:'1rem'}}>
+          <div style={{fontSize:'0.65rem',letterSpacing:'4px',textTransform:'uppercase',color:'var(--gold)',marginBottom:'1.5rem',display:'flex',alignItems:'center',justifyContent:'center',gap:'1rem'}}>
             <span style={{width:32,height:1,background:'var(--gold-dim)',display:'inline-block'}}/>Now Available<span style={{width:32,height:1,background:'var(--gold-dim)',display:'inline-block'}}/>
           </div>
           <h2 style={{fontFamily:'var(--ff-display)',fontSize:'clamp(2.5rem,5vw,4.5rem)',fontWeight:300,lineHeight:1.05,letterSpacing:'-1px',marginBottom:'1.25rem'}}>
             The Departure <em style={{color:'var(--gold)',fontStyle:'italic'}}>Lounge</em>
           </h2>
-          <p style={{fontSize:'0.92rem',color:'var(--mist)',lineHeight:1.9,maxWidth:580,margin:'0 auto 1rem',fontWeight:300}}>
+          <p style={{fontSize:'1.05rem',color:'var(--mist)',lineHeight:1.9,maxWidth:580,margin:'0 auto 1rem',fontWeight:300}}>
             Your personal luxury travel intelligence platform. Before you pack a single bag — or decide not to — let the Lounge map your journey.
           </p>
-          <p style={{fontSize:'0.82rem',color:'rgba(253,252,248,0.4)',lineHeight:1.8,maxWidth:480,margin:'0 auto',fontWeight:300}}>
+          <p style={{fontSize:'0.95rem',color:'rgba(253,252,248,0.4)',lineHeight:1.8,maxWidth:480,margin:'0 auto',fontWeight:300}}>
             Destination intelligence. Safety briefings. Cultural guides. Concert listings. Live flight maps. Embassy contacts. All in one place, built for the traveler who arrives prepared.
           </p>
         </div>
@@ -864,10 +864,10 @@ function Home({setPage}) {
         <div style={{padding:'3rem',textAlign:'center',display:'flex',flexDirection:'column',alignItems:'center',gap:'1.25rem'}}>
           <button
             onClick={()=>window.open('/departure-lounge-landing','_self')}
-            style={{background:'var(--gold)',color:'var(--noir)',padding:'1rem 3rem',border:'none',fontSize:'0.72rem',fontWeight:500,letterSpacing:'3px',textTransform:'uppercase',cursor:'pointer'}}>
+            style={{background:'var(--gold)',color:'var(--noir)',padding:'1rem 3rem',border:'none',fontSize:'0.84rem',fontWeight:500,letterSpacing:'3px',textTransform:'uppercase',cursor:'pointer'}}>
             Enter the Departure Lounge ↗
           </button>
-          <div style={{fontSize:'0.68rem',color:'rgba(253,252,248,0.3)',letterSpacing:'1.5px'}}>
+          <div style={{fontSize:'0.78rem',color:'rgba(253,252,248,0.3)',letterSpacing:'1.5px'}}>
             Free with every BagFree order · No account required
           </div>
         </div>
@@ -880,10 +880,10 @@ function Home({setPage}) {
         <h2 style={{fontFamily:'var(--ff-display)',fontSize:'clamp(2.5rem,5vw,5rem)',fontWeight:300,lineHeight:1.1,marginBottom:'1.5rem',position:'relative'}}>
           Lost luggage?<br/><em style={{color:'var(--gold)',fontStyle:'italic'}}>We've got you.</em>
         </h2>
-        <p style={{fontSize:'0.9rem',color:'var(--mist)',marginBottom:'3rem',fontWeight:300,position:'relative'}}>Same-day emergency delivery in Tampa & Orlando. Hours, not days.</p>
+        <p style={{fontSize:'1.02rem',color:'var(--mist)',marginBottom:'3rem',fontWeight:300,position:'relative'}}>Same-day emergency delivery in Tampa & Orlando. Hours, not days.</p>
         <div style={{display:'flex',gap:'1rem',justifyContent:'center',flexWrap:'wrap',position:'relative'}}>
-          <button onClick={()=>setPage('vendors')} style={{background:'var(--gold)',color:'var(--noir)',padding:'1rem 2.5rem',border:'none',fontSize:'0.72rem',fontWeight:500,letterSpacing:'3px',textTransform:'uppercase'}}>Shop Emergency Kits</button>
-          <button onClick={()=>window.open('/departure-lounge-landing','_self')} style={{background:'transparent',color:'var(--mist)',padding:'1rem 2rem',border:'1px solid var(--mist-low)',fontSize:'0.72rem',letterSpacing:'2.5px',textTransform:'uppercase'}}>Enter the Lounge ↗</button>
+          <button onClick={()=>setPage('vendors')} style={{background:'var(--gold)',color:'var(--noir)',padding:'1rem 2.5rem',border:'none',fontSize:'0.84rem',fontWeight:500,letterSpacing:'3px',textTransform:'uppercase'}}>Shop Emergency Kits</button>
+          <button onClick={()=>window.open('/departure-lounge-landing','_self')} style={{background:'transparent',color:'var(--mist)',padding:'1rem 2rem',border:'1px solid var(--mist-low)',fontSize:'0.84rem',letterSpacing:'2.5px',textTransform:'uppercase'}}>Enter the Lounge ↗</button>
         </div>
       </div>
     </div>
@@ -907,17 +907,17 @@ function VendorMarketplace({setPage, setActiveVendor}) {
   return (
     <div style={{paddingTop:60}}>
       <div style={{padding:'5rem 3rem 4rem',background:'var(--gold)',position:'relative',overflow:'hidden'}}>
-        <div style={{fontSize:'0.62rem',letterSpacing:'4px',textTransform:'uppercase',color:'rgba(8,14,26,0.5)',marginBottom:'1.25rem',display:'flex',alignItems:'center',gap:'1rem',position:'relative'}}>
+        <div style={{fontSize:'0.72rem',letterSpacing:'4px',textTransform:'uppercase',color:'rgba(8,14,26,0.5)',marginBottom:'1.25rem',display:'flex',alignItems:'center',gap:'1rem',position:'relative'}}>
           <span style={{width:24,height:1,background:'var(--noir)',opacity:0.3,display:'inline-block'}}/>BagFree Marketplace
         </div>
         <h1 style={{fontFamily:'var(--ff-display)',fontSize:'clamp(2.5rem,5vw,4.5rem)',fontWeight:300,color:'var(--noir)',letterSpacing:'-0.5px',position:'relative'}}>
           Our <em style={{fontStyle:'italic'}}>Supplier</em> Network
         </h1>
-        <p style={{fontSize:'0.9rem',color:'rgba(8,14,26,0.6)',marginTop:'1rem',maxWidth:500,lineHeight:1.8,fontWeight:300,position:'relative'}}>Browse verified suppliers delivering to your destination. Click any vendor to explore their products.</p>
+        <p style={{fontSize:'1.02rem',color:'rgba(8,14,26,0.6)',marginTop:'1rem',maxWidth:500,lineHeight:1.8,fontWeight:300,position:'relative'}}>Browse verified suppliers delivering to your destination. Click any vendor to explore their products.</p>
       </div>
       <div style={{padding:'3rem',background:'var(--noir)'}}>
         {loading ? (
-          <div style={{textAlign:'center',padding:'3rem',color:'var(--mist)',fontSize:'0.78rem',letterSpacing:'2px',textTransform:'uppercase'}}>
+          <div style={{textAlign:'center',padding:'3rem',color:'var(--mist)',fontSize:'0.90rem',letterSpacing:'2px',textTransform:'uppercase'}}>
             <div style={{animation:'pulse 1.5s ease-in-out infinite',display:'inline-block'}}>Loading suppliers...</div>
           </div>
         ) : (
@@ -943,9 +943,9 @@ function VendorCard({vendor:v, setPage, setActiveVendor}) {
       onMouseLeave={e=>e.currentTarget.style.background='var(--noir-2)'}>
       <div style={{fontSize:'2.5rem',color:'var(--border-hi)',marginBottom:'1rem',fontWeight:100}}>+</div>
       <div style={{fontFamily:'var(--ff-display)',fontSize:'1.4rem',fontWeight:300,color:'var(--mist)',marginBottom:'0.5rem'}}>Your Brand Here</div>
-      <div style={{fontSize:'0.72rem',letterSpacing:'2px',textTransform:'uppercase',color:'var(--gold)',marginBottom:'1rem'}}>Open Supplier Slot</div>
-      <div style={{fontSize:'0.78rem',color:'var(--mist)',lineHeight:1.7,maxWidth:260}}>{v.desc}</div>
-      <div style={{marginTop:'1.5rem',fontSize:'0.65rem',letterSpacing:'2.5px',textTransform:'uppercase',color:'var(--gold)',border:'1px solid var(--border-hi)',padding:'0.5rem 1.25rem'}}>Apply to Join →</div>
+      <div style={{fontSize:'0.84rem',letterSpacing:'2px',textTransform:'uppercase',color:'var(--gold)',marginBottom:'1rem'}}>Open Supplier Slot</div>
+      <div style={{fontSize:'0.90rem',color:'var(--mist)',lineHeight:1.7,maxWidth:260}}>{v.desc}</div>
+      <div style={{marginTop:'1.5rem',fontSize:'0.75rem',letterSpacing:'2.5px',textTransform:'uppercase',color:'var(--gold)',border:'1px solid var(--border-hi)',padding:'0.5rem 1.25rem'}}>Apply to Join →</div>
     </div>
   );
 
@@ -958,7 +958,7 @@ function VendorCard({vendor:v, setPage, setActiveVendor}) {
       onMouseLeave={e=>e.currentTarget.style.background=v.highlight?'var(--noir-3)':'var(--noir-2)'}
       onClick={()=>isShop?window.open(v.url,'_blank'):null}>
       {(v.highlight || v.id==='snugl') && (
-        <div style={{position:'absolute',top:'1.25rem',right:'1.25rem',fontSize:'0.55rem',letterSpacing:'1.5px',textTransform:'uppercase',color:'var(--gold)',border:'1px solid var(--border-hi)',padding:'3px 10px',background:'rgba(201,169,110,0.08)'}}>Official Partner</div>
+        <div style={{position:'absolute',top:'1.25rem',right:'1.25rem',fontSize:'0.62rem',letterSpacing:'1.5px',textTransform:'uppercase',color:'var(--gold)',border:'1px solid var(--border-hi)',padding:'3px 10px',background:'rgba(201,169,110,0.08)'}}>Official Partner</div>
       )}
       <div style={{marginBottom:'1.25rem',minHeight:'3rem',display:'flex',alignItems:'center'}}>
         {isLogoVendor
@@ -973,13 +973,13 @@ function VendorCard({vendor:v, setPage, setActiveVendor}) {
       {isLogoVendor && (
         <div style={{marginBottom:'0.35rem'}}/>
       )}
-      <div style={{fontSize:'0.62rem',letterSpacing:'2px',textTransform:'uppercase',color:(v.highlight||v.id==='snugl')?'var(--gold)':'var(--mist)',marginBottom:'0.5rem'}}>{v.category}</div>
-      <div style={{fontSize:'0.7rem',color:'var(--mist)',marginBottom:'1.25rem',letterSpacing:'0.5px'}}>{v.dest}</div>
-      <p style={{fontSize:'0.82rem',color:'var(--mist)',lineHeight:1.8,marginBottom:'1.5rem',fontWeight:300}}>{v.desc}</p>
+      <div style={{fontSize:'0.72rem',letterSpacing:'2px',textTransform:'uppercase',color:(v.highlight||v.id==='snugl')?'var(--gold)':'var(--mist)',marginBottom:'0.5rem'}}>{v.category}</div>
+      <div style={{fontSize:'0.82rem',color:'var(--mist)',marginBottom:'1.25rem',letterSpacing:'0.5px'}}>{v.dest}</div>
+      <p style={{fontSize:'0.95rem',color:'var(--mist)',lineHeight:1.8,marginBottom:'1.5rem',fontWeight:300}}>{v.desc}</p>
       {v.products.length > 0 && (
         <div style={{display:'flex',flexWrap:'wrap',gap:6,marginBottom:'1.5rem'}}>
           {v.products.map(p=>(
-            <span key={p} style={{fontSize:'0.62rem',color:(v.highlight||v.id==='snugl')?'var(--gold-dim)':'var(--mist)',border:`1px solid ${(v.highlight||v.id==='snugl')?'var(--border)':'rgba(253,252,248,0.08)'}`,padding:'3px 10px',letterSpacing:'0.5px'}}>{p}</span>
+            <span key={p} style={{fontSize:'0.72rem',color:(v.highlight||v.id==='snugl')?'var(--gold-dim)':'var(--mist)',border:`1px solid ${(v.highlight||v.id==='snugl')?'var(--border)':'rgba(253,252,248,0.08)'}`,padding:'3px 10px',letterSpacing:'0.5px'}}>{p}</span>
           ))}
         </div>
       )}
@@ -987,13 +987,13 @@ function VendorCard({vendor:v, setPage, setActiveVendor}) {
         {isShop ? (
           <button
             onClick={(e)=>{e.stopPropagation();window.open(v.url,'_blank');}}
-            style={{background:'var(--gold)',color:'var(--noir)',padding:'0.75rem 1.75rem',border:'none',fontSize:'0.68rem',fontWeight:500,letterSpacing:'2.5px',textTransform:'uppercase',width:'100%',cursor:'pointer',fontFamily:'var(--ff-body)'}}>
+            style={{background:'var(--gold)',color:'var(--noir)',padding:'0.75rem 1.75rem',border:'none',fontSize:'0.78rem',fontWeight:500,letterSpacing:'2.5px',textTransform:'uppercase',width:'100%',cursor:'pointer',fontFamily:'var(--ff-body)'}}>
             Shop {v.name} ↗
           </button>
         ) : (
           <button
             onClick={(e)=>{e.stopPropagation();setPage('supplier');}}
-            style={{background:'transparent',color:'var(--gold)',padding:'0.75rem 1.75rem',border:'1px solid var(--border-hi)',fontSize:'0.68rem',fontWeight:400,letterSpacing:'2.5px',textTransform:'uppercase',width:'100%',cursor:'pointer',transition:'all 0.2s',fontFamily:'var(--ff-body)'}}
+            style={{background:'transparent',color:'var(--gold)',padding:'0.75rem 1.75rem',border:'1px solid var(--border-hi)',fontSize:'0.78rem',fontWeight:400,letterSpacing:'2.5px',textTransform:'uppercase',width:'100%',cursor:'pointer',transition:'all 0.2s',fontFamily:'var(--ff-body)'}}
             onMouseEnter={e=>{e.currentTarget.style.background='rgba(201,169,110,0.08)';e.currentTarget.style.borderColor='var(--gold)';}}
             onMouseLeave={e=>{e.currentTarget.style.background='transparent';e.currentTarget.style.borderColor='var(--border-hi)';}}>
             Apply to List Your Brand →
@@ -1021,13 +1021,13 @@ function ProductsPage({setPage}) {
   return (
     <div style={{paddingTop:60}}>
       <div style={{padding:'1.5rem 2.5rem',background:'var(--noir-2)',borderBottom:'1px solid var(--border)',display:'flex',gap:'1rem',flexWrap:'wrap',alignItems:'center'}}>
-        <span onClick={()=>setPage('vendors')} style={{fontSize:'0.68rem',letterSpacing:'2px',textTransform:'uppercase',color:'var(--gold)',cursor:'pointer',marginRight:'0.5rem'}}>← Vendors</span>
+        <span onClick={()=>setPage('vendors')} style={{fontSize:'0.78rem',letterSpacing:'2px',textTransform:'uppercase',color:'var(--gold)',cursor:'pointer',marginRight:'0.5rem'}}>← Vendors</span>
         <input value={search} onChange={e=>setSearch(e.target.value)} placeholder="Search products..."
-          style={{flex:1,minWidth:180,background:'var(--mist-xlow)',border:'1px solid var(--border)',color:'var(--white)',padding:'0.6rem 1rem',fontSize:'0.85rem',outline:'none'}}/>
+          style={{flex:1,minWidth:180,background:'var(--mist-xlow)',border:'1px solid var(--border)',color:'var(--white)',padding:'0.6rem 1rem',fontSize:'0.98rem',outline:'none'}}/>
         <div style={{display:'flex',gap:6,flexWrap:'wrap'}}>
           {CATEGORIES.map(c=>(
             <button key={c.id} onClick={()=>setCat(c.id)}
-              style={{background:cat===c.id?'var(--gold)':'transparent',color:cat===c.id?'var(--noir)':'var(--mist)',border:`1px solid ${cat===c.id?'var(--gold)':'var(--border)'}`,padding:'0.45rem 0.9rem',fontSize:'0.65rem',letterSpacing:'1.5px',textTransform:'uppercase'}}>
+              style={{background:cat===c.id?'var(--gold)':'transparent',color:cat===c.id?'var(--noir)':'var(--mist)',border:`1px solid ${cat===c.id?'var(--gold)':'var(--border)'}`,padding:'0.45rem 0.9rem',fontSize:'0.75rem',letterSpacing:'1.5px',textTransform:'uppercase'}}>
               {c.icon} {c.label}
             </button>
           ))}
@@ -1035,13 +1035,13 @@ function ProductsPage({setPage}) {
       </div>
       <div style={{padding:'2rem 2.5rem',background:'var(--noir)'}}>
         <div style={{display:'flex',alignItems:'center',justifyContent:'space-between',marginBottom:'1.5rem'}}>
-          <div style={{fontSize:'0.78rem',color:'var(--mist)'}}>{filtered.length} products · Valet By Nuor</div>
-          <a href="https://valetbynuor.com" target="_blank" style={{fontSize:'0.68rem',letterSpacing:'2px',textTransform:'uppercase',color:'var(--gold)',textDecoration:'none'}}>Visit valetbynuor.com ↗</a>
+          <div style={{fontSize:'0.90rem',color:'var(--mist)'}}>{filtered.length} products · Valet By Nuor</div>
+          <a href="https://valetbynuor.com" target="_blank" style={{fontSize:'0.78rem',letterSpacing:'2px',textTransform:'uppercase',color:'var(--gold)',textDecoration:'none'}}>Visit valetbynuor.com ↗</a>
         </div>
         {filtered.length === 0 ? (
           <div style={{textAlign:'center',padding:'5rem',color:'var(--mist)'}}>
             <div style={{fontFamily:'var(--ff-display)',fontSize:'2rem',fontWeight:300,marginBottom:'0.75rem'}}>No products found</div>
-            <button onClick={()=>{setSearch('');setCat('all');}} style={{background:'var(--gold)',color:'var(--noir)',padding:'0.7rem 2rem',border:'none',fontSize:'0.68rem',letterSpacing:'2px',textTransform:'uppercase',marginTop:'1rem'}}>Clear Filters</button>
+            <button onClick={()=>{setSearch('');setCat('all');}} style={{background:'var(--gold)',color:'var(--noir)',padding:'0.7rem 2rem',border:'none',fontSize:'0.78rem',letterSpacing:'2px',textTransform:'uppercase',marginTop:'1rem'}}>Clear Filters</button>
           </div>
         ) : (
           <div style={{display:'grid',gridTemplateColumns:'repeat(auto-fill,minmax(250px,1fr))',gap:12}}>
@@ -1051,15 +1051,15 @@ function ProductsPage({setPage}) {
                 onMouseEnter={e=>e.currentTarget.style.borderColor='var(--border-hi)'}
                 onMouseLeave={e=>e.currentTarget.style.borderColor='var(--border)'}
                 onClick={()=>setSelected(p)}>
-                {p.tag && <div style={{fontSize:'0.55rem',letterSpacing:'1.5px',textTransform:'uppercase',color:'var(--gold)',border:'1px solid var(--border-hi)',padding:'2px 8px',display:'inline-block',marginBottom:'0.75rem'}}>{p.tag}</div>}
+                {p.tag && <div style={{fontSize:'0.62rem',letterSpacing:'1.5px',textTransform:'uppercase',color:'var(--gold)',border:'1px solid var(--border-hi)',padding:'2px 8px',display:'inline-block',marginBottom:'0.75rem'}}>{p.tag}</div>}
                 <div style={{fontSize:'2.5rem',opacity:0.4,marginBottom:'0.75rem'}}>{p.icon}</div>
-                <div style={{fontSize:'0.58rem',letterSpacing:'2px',textTransform:'uppercase',color:'var(--gold-dim)',marginBottom:'0.35rem'}}>{CATEGORIES.find(c=>c.id===p.category)?.label}</div>
-                <div style={{fontFamily:'var(--ff-display)',fontSize:'1.05rem',fontWeight:300,color:'var(--white)',marginBottom:'0.5rem',lineHeight:1.25}}>{p.name}</div>
-                <div style={{fontSize:'0.72rem',color:'var(--mist)',lineHeight:1.7,marginBottom:'0.75rem'}}>{p.desc.slice(0,75)}...</div>
+                <div style={{fontSize:'0.65rem',letterSpacing:'2px',textTransform:'uppercase',color:'var(--gold-dim)',marginBottom:'0.35rem'}}>{CATEGORIES.find(c=>c.id===p.category)?.label}</div>
+                <div style={{fontFamily:'var(--ff-display)',fontSize:'1.15rem',fontWeight:300,color:'var(--white)',marginBottom:'0.5rem',lineHeight:1.25}}>{p.name}</div>
+                <div style={{fontSize:'0.84rem',color:'var(--mist)',lineHeight:1.7,marginBottom:'0.75rem'}}>{p.desc.slice(0,75)}...</div>
                 <div style={{fontFamily:'var(--ff-display)',fontSize:'1.3rem',fontWeight:300,color:'var(--gold)',marginBottom:'0.75rem'}}>{p.price ? `$${p.price}` : 'View'}</div>
                 <button
                   onClick={e=>{e.stopPropagation();window.open(p.url,'_blank');}}
-                  style={{width:'100%',background:'transparent',color:'var(--gold)',padding:'0.55rem',border:'1px solid var(--border-hi)',fontSize:'0.62rem',letterSpacing:'2px',textTransform:'uppercase'}}>
+                  style={{width:'100%',background:'transparent',color:'var(--gold)',padding:'0.55rem',border:'1px solid var(--border-hi)',fontSize:'0.72rem',letterSpacing:'2px',textTransform:'uppercase'}}>
                   {p.price ? `Shop Now — $${p.price} ↗` : 'View Collection ↗'}
                 </button>
               </div>
@@ -1075,27 +1075,27 @@ function ProductDetail({product:p, onBack}) {
   return (
     <div style={{paddingTop:60,minHeight:'100vh',background:'var(--noir)'}}>
       <div style={{padding:'1.25rem 2.5rem',borderBottom:'1px solid var(--border)',background:'var(--noir-2)'}}>
-        <span onClick={onBack} style={{fontSize:'0.68rem',letterSpacing:'2px',textTransform:'uppercase',color:'var(--gold)',cursor:'pointer'}}>← Back</span>
+        <span onClick={onBack} style={{fontSize:'0.78rem',letterSpacing:'2px',textTransform:'uppercase',color:'var(--gold)',cursor:'pointer'}}>← Back</span>
       </div>
       <div style={{display:'grid',gridTemplateColumns:'1fr 1fr',gap:'4rem',maxWidth:1000,margin:'0 auto',padding:'4rem 2.5rem'}}>
         <div>
           <div style={{background:'var(--noir-3)',border:'1px solid var(--border)',display:'flex',alignItems:'center',justifyContent:'center',height:340,fontSize:'8rem',opacity:0.3}}>{p.icon}</div>
           <div style={{marginTop:'1rem',padding:'1.25rem',background:'var(--mist-xlow)',border:'1px solid var(--border)'}}>
-            <div style={{fontSize:'0.6rem',letterSpacing:'2px',textTransform:'uppercase',color:'var(--gold)',marginBottom:'0.5rem'}}>Fulfilled by Valet By Nuor</div>
-            <div style={{fontSize:'0.78rem',color:'var(--mist)',lineHeight:1.8}}>Delivered to your hotel, airport, or accommodation. Same-day available in Tampa & Orlando.</div>
+            <div style={{fontSize:'0.70rem',letterSpacing:'2px',textTransform:'uppercase',color:'var(--gold)',marginBottom:'0.5rem'}}>Fulfilled by Valet By Nuor</div>
+            <div style={{fontSize:'0.90rem',color:'var(--mist)',lineHeight:1.8}}>Delivered to your hotel, airport, or accommodation. Same-day available in Tampa & Orlando.</div>
           </div>
         </div>
         <div>
-          <div style={{fontSize:'0.6rem',letterSpacing:'3px',textTransform:'uppercase',color:'var(--gold-dim)',marginBottom:'0.75rem'}}>{CATEGORIES.find(c=>c.id===p.category)?.label} · Valet By Nuor</div>
+          <div style={{fontSize:'0.70rem',letterSpacing:'3px',textTransform:'uppercase',color:'var(--gold-dim)',marginBottom:'0.75rem'}}>{CATEGORIES.find(c=>c.id===p.category)?.label} · Valet By Nuor</div>
           <h1 style={{fontFamily:'var(--ff-display)',fontSize:'2.5rem',fontWeight:300,lineHeight:1.1,marginBottom:'1.5rem'}}>{p.name}</h1>
-          <p style={{fontSize:'0.9rem',color:'var(--mist)',lineHeight:1.9,marginBottom:'2rem',fontWeight:300}}>{p.desc}</p>
+          <p style={{fontSize:'1.02rem',color:'var(--mist)',lineHeight:1.9,marginBottom:'2rem',fontWeight:300}}>{p.desc}</p>
           <div style={{fontFamily:'var(--ff-display)',fontSize:'2.5rem',fontWeight:300,color:'var(--gold)',marginBottom:'2rem'}}>{p.price ? `$${p.price}` : 'View Pricing'}</div>
-          <button onClick={()=>window.open(p.url,'_blank')} style={{width:'100%',background:'var(--gold)',color:'var(--noir)',padding:'1rem',border:'none',fontSize:'0.72rem',fontWeight:500,letterSpacing:'3px',textTransform:'uppercase'}}>
+          <button onClick={()=>window.open(p.url,'_blank')} style={{width:'100%',background:'var(--gold)',color:'var(--noir)',padding:'1rem',border:'none',fontSize:'0.84rem',fontWeight:500,letterSpacing:'3px',textTransform:'uppercase'}}>
             {p.price ? `Shop on Valet By Nuor — $${p.price} ↗` : 'View Collection ↗'}
           </button>
           <div style={{marginTop:'1.5rem',display:'flex',flexDirection:'column',gap:'0.6rem'}}>
             {['Delivered to your hotel','Same-day in Tampa & Orlando','Brand new from Valet By Nuor','Call (813) 816-2448 for help'].map(f=>(
-              <div key={f} style={{display:'flex',gap:'0.75rem',alignItems:'center',fontSize:'0.78rem',color:'var(--mist)'}}><span style={{color:'var(--gold)',fontSize:'0.6rem'}}>◆</span>{f}</div>
+              <div key={f} style={{display:'flex',gap:'0.75rem',alignItems:'center',fontSize:'0.90rem',color:'var(--mist)'}}><span style={{color:'var(--gold)',fontSize:'0.70rem'}}>◆</span>{f}</div>
             ))}
           </div>
         </div>
@@ -1113,35 +1113,35 @@ function HotelConcierge() {
   if (done) return (
     <div style={{paddingTop:60,minHeight:'100vh',display:'flex',alignItems:'center',justifyContent:'center',flexDirection:'column',textAlign:'center',padding:'4rem 2rem',background:'var(--noir)'}}>
       <div style={{fontFamily:'var(--ff-display)',fontSize:'4rem',fontWeight:300,marginBottom:'1rem'}}>Request <em style={{color:'var(--gold)',fontStyle:'italic'}}>Received</em></div>
-      <p style={{fontSize:'0.9rem',color:'var(--mist)',lineHeight:1.9,maxWidth:480,marginBottom:'1.5rem'}}>Thank you, <strong style={{color:'var(--white)'}}>{form.name}</strong>. Our travel concierge will contact you at <strong style={{color:'var(--white)'}}>{form.email}</strong> within 24 hours with hotel options for <strong style={{color:'var(--white)'}}>{form.dest}</strong>.</p>
-      <div style={{fontSize:'0.85rem',color:'var(--gold)',marginBottom:'2rem'}}>(813) 816-2448 · support@valetbynuor.com</div>
+      <p style={{fontSize:'1.02rem',color:'var(--mist)',lineHeight:1.9,maxWidth:480,marginBottom:'1.5rem'}}>Thank you, <strong style={{color:'var(--white)'}}>{form.name}</strong>. Our travel concierge will contact you at <strong style={{color:'var(--white)'}}>{form.email}</strong> within 24 hours with hotel options for <strong style={{color:'var(--white)'}}>{form.dest}</strong>.</p>
+      <div style={{fontSize:'0.98rem',color:'var(--gold)',marginBottom:'2rem'}}>(813) 816-2448 · support@valetbynuor.com</div>
     </div>
   );
 
   return (
     <div style={{paddingTop:60,minHeight:'100vh',background:'var(--noir)'}}>
       <div style={{padding:'4rem 3rem 3rem',background:'var(--gold)'}}>
-        <div style={{fontSize:'0.62rem',letterSpacing:'4px',textTransform:'uppercase',color:'rgba(8,14,26,0.5)',marginBottom:'1rem'}}>Travel Concierge</div>
+        <div style={{fontSize:'0.72rem',letterSpacing:'4px',textTransform:'uppercase',color:'rgba(8,14,26,0.5)',marginBottom:'1rem'}}>Travel Concierge</div>
         <h1 style={{fontFamily:'var(--ff-display)',fontSize:'clamp(2.5rem,5vw,4rem)',fontWeight:300,color:'var(--noir)'}}>Book your <em style={{fontStyle:'italic'}}>perfect stay</em></h1>
-        <p style={{fontSize:'0.88rem',color:'rgba(8,14,26,0.6)',marginTop:'1rem',maxWidth:500,lineHeight:1.8,fontWeight:300}}>Exclusive hotel rates not available to the public. Our travel agents handle everything — you just show up.</p>
+        <p style={{fontSize:'1.00rem',color:'rgba(8,14,26,0.6)',marginTop:'1rem',maxWidth:500,lineHeight:1.8,fontWeight:300}}>Exclusive hotel rates not available to the public. Our travel agents handle everything — you just show up.</p>
       </div>
       <div style={{maxWidth:700,margin:'0 auto',padding:'3rem 2rem'}}>
         <div style={{display:'flex',flexDirection:'column',gap:'1.1rem'}}>
           <div className="bf-form-2col" style={{display:'grid',gridTemplateColumns:'1fr 1fr',gap:'1rem'}}>
             {[['name','Full Name','text'],['email','Email','email']].map(([k,l,t])=>(
               <div key={k}>
-                <div style={{fontSize:'0.6rem',letterSpacing:'2px',textTransform:'uppercase',color:'var(--mist)',marginBottom:'0.4rem'}}>{l}</div>
-                <input type={t} value={form[k]} onChange={e=>f(k,e.target.value)} style={{width:'100%',background:'var(--mist-xlow)',border:'1px solid var(--border)',color:'var(--white)',padding:'0.75rem 1rem',fontSize:'0.88rem',outline:'none'}}/>
+                <div style={{fontSize:'0.70rem',letterSpacing:'2px',textTransform:'uppercase',color:'var(--mist)',marginBottom:'0.4rem'}}>{l}</div>
+                <input type={t} value={form[k]} onChange={e=>f(k,e.target.value)} style={{width:'100%',background:'var(--mist-xlow)',border:'1px solid var(--border)',color:'var(--white)',padding:'0.75rem 1rem',fontSize:'1.00rem',outline:'none'}}/>
               </div>
             ))}
           </div>
           <div>
-            <div style={{fontSize:'0.6rem',letterSpacing:'2px',textTransform:'uppercase',color:'var(--mist)',marginBottom:'0.4rem'}}>Phone / WhatsApp</div>
-            <input type="tel" value={form.phone} onChange={e=>f('phone',e.target.value)} style={{width:'100%',background:'var(--mist-xlow)',border:'1px solid var(--border)',color:'var(--white)',padding:'0.75rem 1rem',fontSize:'0.88rem',outline:'none'}}/>
+            <div style={{fontSize:'0.70rem',letterSpacing:'2px',textTransform:'uppercase',color:'var(--mist)',marginBottom:'0.4rem'}}>Phone / WhatsApp</div>
+            <input type="tel" value={form.phone} onChange={e=>f('phone',e.target.value)} style={{width:'100%',background:'var(--mist-xlow)',border:'1px solid var(--border)',color:'var(--white)',padding:'0.75rem 1rem',fontSize:'1.00rem',outline:'none'}}/>
           </div>
           <div>
-            <div style={{fontSize:'0.6rem',letterSpacing:'2px',textTransform:'uppercase',color:'var(--mist)',marginBottom:'0.4rem'}}>Destination</div>
-            <select value={form.dest} onChange={e=>f('dest',e.target.value)} style={{width:'100%',background:'var(--noir-3)',border:'1px solid var(--border)',color:form.dest?'var(--white)':'var(--mist)',padding:'0.75rem 1rem',fontSize:'0.88rem',outline:'none'}}>
+            <div style={{fontSize:'0.70rem',letterSpacing:'2px',textTransform:'uppercase',color:'var(--mist)',marginBottom:'0.4rem'}}>Destination</div>
+            <select value={form.dest} onChange={e=>f('dest',e.target.value)} style={{width:'100%',background:'var(--noir-3)',border:'1px solid var(--border)',color:form.dest?'var(--white)':'var(--mist)',padding:'0.75rem 1rem',fontSize:'1.00rem',outline:'none'}}>
               <option value="">Select destination...</option>
               {DESTINATIONS.map(d=><option key={d.id} value={d.name}>{d.name}, {d.state}</option>)}
               <option value="Other">Other</option>
@@ -1150,21 +1150,21 @@ function HotelConcierge() {
           <div className="bf-form-2col" style={{display:'grid',gridTemplateColumns:'1fr 1fr',gap:'1rem'}}>
             {[['checkin','Check-in'],['checkout','Check-out']].map(([k,l])=>(
               <div key={k}>
-                <div style={{fontSize:'0.6rem',letterSpacing:'2px',textTransform:'uppercase',color:'var(--mist)',marginBottom:'0.4rem'}}>{l}</div>
-                <input type="date" value={form[k]} onChange={e=>f(k,e.target.value)} style={{width:'100%',background:'var(--mist-xlow)',border:'1px solid var(--border)',color:'var(--white)',padding:'0.75rem 1rem',fontSize:'0.88rem',outline:'none',colorScheme:'dark'}}/>
+                <div style={{fontSize:'0.70rem',letterSpacing:'2px',textTransform:'uppercase',color:'var(--mist)',marginBottom:'0.4rem'}}>{l}</div>
+                <input type="date" value={form[k]} onChange={e=>f(k,e.target.value)} style={{width:'100%',background:'var(--mist-xlow)',border:'1px solid var(--border)',color:'var(--white)',padding:'0.75rem 1rem',fontSize:'1.00rem',outline:'none',colorScheme:'dark'}}/>
               </div>
             ))}
           </div>
           <div className="bf-form-2col" style={{display:'grid',gridTemplateColumns:'1fr 1fr',gap:'1rem'}}>
             <div>
-              <div style={{fontSize:'0.6rem',letterSpacing:'2px',textTransform:'uppercase',color:'var(--mist)',marginBottom:'0.4rem'}}>Guests</div>
-              <select value={form.guests} onChange={e=>f('guests',e.target.value)} style={{width:'100%',background:'var(--noir-3)',border:'1px solid var(--border)',color:'var(--white)',padding:'0.75rem 1rem',fontSize:'0.88rem',outline:'none'}}>
+              <div style={{fontSize:'0.70rem',letterSpacing:'2px',textTransform:'uppercase',color:'var(--mist)',marginBottom:'0.4rem'}}>Guests</div>
+              <select value={form.guests} onChange={e=>f('guests',e.target.value)} style={{width:'100%',background:'var(--noir-3)',border:'1px solid var(--border)',color:'var(--white)',padding:'0.75rem 1rem',fontSize:'1.00rem',outline:'none'}}>
                 {['1','2','3','4','5','6+'].map(n=><option key={n} value={n}>{n} {n==='1'?'guest':'guests'}</option>)}
               </select>
             </div>
             <div>
-              <div style={{fontSize:'0.6rem',letterSpacing:'2px',textTransform:'uppercase',color:'var(--mist)',marginBottom:'0.4rem'}}>Budget / Night</div>
-              <select value={form.budget} onChange={e=>f('budget',e.target.value)} style={{width:'100%',background:'var(--noir-3)',border:'1px solid var(--border)',color:form.budget?'var(--white)':'var(--mist)',padding:'0.75rem 1rem',fontSize:'0.88rem',outline:'none'}}>
+              <div style={{fontSize:'0.70rem',letterSpacing:'2px',textTransform:'uppercase',color:'var(--mist)',marginBottom:'0.4rem'}}>Budget / Night</div>
+              <select value={form.budget} onChange={e=>f('budget',e.target.value)} style={{width:'100%',background:'var(--noir-3)',border:'1px solid var(--border)',color:form.budget?'var(--white)':'var(--mist)',padding:'0.75rem 1rem',fontSize:'1.00rem',outline:'none'}}>
                 <option value="">Select...</option>
                 <option value="under100">Under $100</option>
                 <option value="100-200">$100 to $200</option>
@@ -1175,20 +1175,20 @@ function HotelConcierge() {
             </div>
           </div>
           <div>
-            <div style={{fontSize:'0.6rem',letterSpacing:'2px',textTransform:'uppercase',color:'var(--mist)',marginBottom:'0.75rem'}}>Trip Type</div>
+            <div style={{fontSize:'0.70rem',letterSpacing:'2px',textTransform:'uppercase',color:'var(--mist)',marginBottom:'0.75rem'}}>Trip Type</div>
             <div style={{display:'grid',gridTemplateColumns:'repeat(3,1fr)',gap:8}}>
               {[['leisure','Leisure'],['business','Business'],['family','Family'],['romantic','Romantic'],['wedding','Wedding'],['other','Other']].map(([v,l])=>(
-                <div key={v} onClick={()=>f('type',v)} style={{padding:'0.75rem',border:`1px solid ${form.type===v?'var(--border-hi)':'var(--border)'}`,cursor:'pointer',fontSize:'0.75rem',color:form.type===v?'var(--white)':'var(--mist)',background:form.type===v?'var(--mist-xlow)':'transparent',textAlign:'center'}}>{l}</div>
+                <div key={v} onClick={()=>f('type',v)} style={{padding:'0.75rem',border:`1px solid ${form.type===v?'var(--border-hi)':'var(--border)'}`,cursor:'pointer',fontSize:'0.88rem',color:form.type===v?'var(--white)':'var(--mist)',background:form.type===v?'var(--mist-xlow)':'transparent',textAlign:'center'}}>{l}</div>
               ))}
             </div>
           </div>
           <div>
-            <div style={{fontSize:'0.6rem',letterSpacing:'2px',textTransform:'uppercase',color:'var(--mist)',marginBottom:'0.4rem'}}>Special Requests</div>
-            <textarea value={form.requests} onChange={e=>f('requests',e.target.value)} rows={3} placeholder="Ocean view, pet-friendly, early check-in..." style={{width:'100%',background:'var(--mist-xlow)',border:'1px solid var(--border)',color:'var(--white)',padding:'0.75rem 1rem',fontSize:'0.85rem',outline:'none',resize:'vertical',fontFamily:'var(--ff-body)',lineHeight:1.7}}/>
+            <div style={{fontSize:'0.70rem',letterSpacing:'2px',textTransform:'uppercase',color:'var(--mist)',marginBottom:'0.4rem'}}>Special Requests</div>
+            <textarea value={form.requests} onChange={e=>f('requests',e.target.value)} rows={3} placeholder="Ocean view, pet-friendly, early check-in..." style={{width:'100%',background:'var(--mist-xlow)',border:'1px solid var(--border)',color:'var(--white)',padding:'0.75rem 1rem',fontSize:'0.98rem',outline:'none',resize:'vertical',fontFamily:'var(--ff-body)',lineHeight:1.7}}/>
           </div>
           <button
             onClick={async()=>{if(form.name&&form.email&&form.dest){await submitToFormspree({type:'HOTEL REQUEST',...form,source:'BagFree Hotel Concierge'});setDone(true);}}}
-            style={{background:'var(--gold)',color:'var(--noir)',padding:'1rem',border:'none',fontSize:'0.72rem',fontWeight:500,letterSpacing:'3px',textTransform:'uppercase',opacity:(!form.name||!form.email||!form.dest)?0.4:1}}>
+            style={{background:'var(--gold)',color:'var(--noir)',padding:'1rem',border:'none',fontSize:'0.84rem',fontWeight:500,letterSpacing:'3px',textTransform:'uppercase',opacity:(!form.name||!form.email||!form.dest)?0.4:1}}>
             Submit Hotel Request
           </button>
         </div>
@@ -1210,23 +1210,23 @@ function SupplierPortal() {
   if (done) return (
     <div style={{paddingTop:60,minHeight:'100vh',display:'flex',alignItems:'center',justifyContent:'center',flexDirection:'column',textAlign:'center',padding:'4rem 2rem',background:'var(--noir)'}}>
       <div style={{fontFamily:'var(--ff-display)',fontSize:'4rem',fontWeight:300,marginBottom:'1rem'}}>Application <em style={{color:'var(--gold)',fontStyle:'italic'}}>Received</em></div>
-      <p style={{fontSize:'0.9rem',color:'var(--mist)',lineHeight:1.9,maxWidth:480,marginBottom:'1.5rem'}}>Thank you, <strong style={{color:'var(--white)'}}>{form.biz}</strong>. We will review your application and reach out to <strong style={{color:'var(--white)'}}>{form.email}</strong> within 3 business days.</p>
-      <div style={{fontSize:'0.7rem',color:'var(--gold)',letterSpacing:'2px',textTransform:'uppercase'}}>BagFree Supplier Network · Fulfilled by Valet By Nuor</div>
+      <p style={{fontSize:'1.02rem',color:'var(--mist)',lineHeight:1.9,maxWidth:480,marginBottom:'1.5rem'}}>Thank you, <strong style={{color:'var(--white)'}}>{form.biz}</strong>. We will review your application and reach out to <strong style={{color:'var(--white)'}}>{form.email}</strong> within 3 business days.</p>
+      <div style={{fontSize:'0.82rem',color:'var(--gold)',letterSpacing:'2px',textTransform:'uppercase'}}>BagFree Supplier Network · Fulfilled by Valet By Nuor</div>
     </div>
   );
 
   return (
     <div style={{paddingTop:60,minHeight:'100vh',background:'var(--noir)'}}>
       <div style={{padding:'4rem 3rem 3rem',background:'var(--gold)'}}>
-        <div style={{fontSize:'0.62rem',letterSpacing:'4px',textTransform:'uppercase',color:'rgba(8,14,26,0.5)',marginBottom:'1rem'}}>Supplier Application</div>
+        <div style={{fontSize:'0.72rem',letterSpacing:'4px',textTransform:'uppercase',color:'rgba(8,14,26,0.5)',marginBottom:'1rem'}}>Supplier Application</div>
         <h1 style={{fontFamily:'var(--ff-display)',fontSize:'clamp(2.5rem,5vw,4rem)',fontWeight:300,color:'var(--noir)'}}>Join the <em style={{fontStyle:'italic'}}>BagFree</em> Network</h1>
-        <p style={{fontSize:'0.88rem',color:'rgba(8,14,26,0.6)',marginTop:'1rem',maxWidth:500,lineHeight:1.8,fontWeight:300}}>Reach bag-free travelers in Florida and Georgia. Delivery handled by Valet By Nuor.</p>
+        <p style={{fontSize:'1.00rem',color:'rgba(8,14,26,0.6)',marginTop:'1rem',maxWidth:500,lineHeight:1.8,fontWeight:300}}>Reach bag-free travelers in Florida and Georgia. Delivery handled by Valet By Nuor.</p>
       </div>
       <div style={{maxWidth:700,margin:'0 auto',padding:'3rem 2rem'}}>
         <div style={{display:'flex',marginBottom:'3rem',border:'1px solid var(--border)'}}>
           {['Business Info','Products','Details'].map((s,i)=>(
             <div key={s}
-              style={{flex:1,padding:'0.85rem',textAlign:'center',fontSize:'0.62rem',letterSpacing:'2px',textTransform:'uppercase',background:step===i+1?'var(--gold)':step>i+1?'var(--mist-xlow)':'transparent',color:step===i+1?'var(--noir)':'var(--mist)',borderRight:i<2?'1px solid var(--border)':'none',cursor:step>i+1?'pointer':'default'}}
+              style={{flex:1,padding:'0.85rem',textAlign:'center',fontSize:'0.72rem',letterSpacing:'2px',textTransform:'uppercase',background:step===i+1?'var(--gold)':step>i+1?'var(--mist-xlow)':'transparent',color:step===i+1?'var(--noir)':'var(--mist)',borderRight:i<2?'1px solid var(--border)':'none',cursor:step>i+1?'pointer':'default'}}
               onClick={()=>step>i+1&&setStep(i+1)}>
               {i+1}. {s}
             </div>
@@ -1237,47 +1237,47 @@ function SupplierPortal() {
           <div style={{display:'flex',flexDirection:'column',gap:'1.1rem'}}>
             {[['biz','Business Name'],['contact','Contact Person'],['email','Email'],['phone','Phone'],['website','Website (optional)']].map(([k,l])=>(
               <div key={k}>
-                <div style={{fontSize:'0.6rem',letterSpacing:'2px',textTransform:'uppercase',color:'var(--mist)',marginBottom:'0.4rem'}}>{l}</div>
-                <input value={form[k]} onChange={e=>setForm({...form,[k]:e.target.value})} style={{width:'100%',background:'var(--mist-xlow)',border:'1px solid var(--border)',color:'var(--white)',padding:'0.75rem 1rem',fontSize:'0.88rem',outline:'none'}}/>
+                <div style={{fontSize:'0.70rem',letterSpacing:'2px',textTransform:'uppercase',color:'var(--mist)',marginBottom:'0.4rem'}}>{l}</div>
+                <input value={form[k]} onChange={e=>setForm({...form,[k]:e.target.value})} style={{width:'100%',background:'var(--mist-xlow)',border:'1px solid var(--border)',color:'var(--white)',padding:'0.75rem 1rem',fontSize:'1.00rem',outline:'none'}}/>
               </div>
             ))}
-            <button onClick={()=>form.biz&&form.email&&setStep(2)} style={{background:'var(--gold)',color:'var(--noir)',padding:'1rem',border:'none',fontSize:'0.7rem',fontWeight:500,letterSpacing:'3px',textTransform:'uppercase',opacity:(!form.biz||!form.email)?0.4:1}}>Continue →</button>
+            <button onClick={()=>form.biz&&form.email&&setStep(2)} style={{background:'var(--gold)',color:'var(--noir)',padding:'1rem',border:'none',fontSize:'0.82rem',fontWeight:500,letterSpacing:'3px',textTransform:'uppercase',opacity:(!form.biz||!form.email)?0.4:1}}>Continue →</button>
           </div>
         )}
 
         {step===2 && (
           <div style={{display:'flex',flexDirection:'column',gap:'1.5rem'}}>
             <div>
-              <div style={{fontSize:'0.6rem',letterSpacing:'2px',textTransform:'uppercase',color:'var(--mist)',marginBottom:'0.75rem'}}>Category</div>
+              <div style={{fontSize:'0.70rem',letterSpacing:'2px',textTransform:'uppercase',color:'var(--mist)',marginBottom:'0.75rem'}}>Category</div>
               <div style={{display:'grid',gridTemplateColumns:'repeat(2,1fr)',gap:8}}>
                 {[["Men's Wear",'👔'],["Women's Wear",'👗'],['Wellness','💊'],['Baby & Family','🍼'],['Tech','📷'],['Other','✦']].map(([c,icon])=>(
-                  <div key={c} onClick={()=>setForm({...form,category:c})} style={{padding:'0.75rem 1rem',border:`1px solid ${form.category===c?'var(--border-hi)':'var(--border)'}`,cursor:'pointer',fontSize:'0.78rem',color:form.category===c?'var(--white)':'var(--mist)',background:form.category===c?'var(--mist-xlow)':'transparent'}}>
+                  <div key={c} onClick={()=>setForm({...form,category:c})} style={{padding:'0.75rem 1rem',border:`1px solid ${form.category===c?'var(--border-hi)':'var(--border)'}`,cursor:'pointer',fontSize:'0.90rem',color:form.category===c?'var(--white)':'var(--mist)',background:form.category===c?'var(--mist-xlow)':'transparent'}}>
                     {icon} {c}
                   </div>
                 ))}
               </div>
             </div>
             <div>
-              <div style={{fontSize:'0.6rem',letterSpacing:'2px',textTransform:'uppercase',color:'var(--mist)',marginBottom:'0.75rem'}}>Destinations</div>
+              <div style={{fontSize:'0.70rem',letterSpacing:'2px',textTransform:'uppercase',color:'var(--mist)',marginBottom:'0.75rem'}}>Destinations</div>
               <div style={{display:'grid',gridTemplateColumns:'repeat(2,1fr)',gap:8}}>
                 {DESTINATIONS.map(d=>(
-                  <div key={d.id} onClick={()=>toggleDest(d.id)} style={{padding:'0.75rem 1rem',border:`1px solid ${form.destinations.includes(d.id)?'var(--border-hi)':'var(--border)'}`,cursor:'pointer',fontSize:'0.78rem',color:form.destinations.includes(d.id)?'var(--white)':'var(--mist)',background:form.destinations.includes(d.id)?'var(--mist-xlow)':'transparent',display:'flex',alignItems:'center',gap:'0.5rem'}}>
+                  <div key={d.id} onClick={()=>toggleDest(d.id)} style={{padding:'0.75rem 1rem',border:`1px solid ${form.destinations.includes(d.id)?'var(--border-hi)':'var(--border)'}`,cursor:'pointer',fontSize:'0.90rem',color:form.destinations.includes(d.id)?'var(--white)':'var(--mist)',background:form.destinations.includes(d.id)?'var(--mist-xlow)':'transparent',display:'flex',alignItems:'center',gap:'0.5rem'}}>
                     {d.img} {d.name}
                   </div>
                 ))}
               </div>
             </div>
             <div>
-              <div style={{fontSize:'0.6rem',letterSpacing:'2px',textTransform:'uppercase',color:'var(--mist)',marginBottom:'0.5rem'}}>Model</div>
+              <div style={{fontSize:'0.70rem',letterSpacing:'2px',textTransform:'uppercase',color:'var(--mist)',marginBottom:'0.5rem'}}>Model</div>
               <div style={{display:'flex',gap:8}}>
                 {[['rent','Rent Only'],['own','Sell Only'],['both','Both']].map(([v,l])=>(
-                  <div key={v} onClick={()=>setForm({...form,model:v})} style={{flex:1,padding:'0.75rem',border:`1px solid ${form.model===v?'var(--border-hi)':'var(--border)'}`,cursor:'pointer',fontSize:'0.72rem',color:form.model===v?'var(--white)':'var(--mist)',background:form.model===v?'var(--mist-xlow)':'transparent',textAlign:'center'}}>{l}</div>
+                  <div key={v} onClick={()=>setForm({...form,model:v})} style={{flex:1,padding:'0.75rem',border:`1px solid ${form.model===v?'var(--border-hi)':'var(--border)'}`,cursor:'pointer',fontSize:'0.84rem',color:form.model===v?'var(--white)':'var(--mist)',background:form.model===v?'var(--mist-xlow)':'transparent',textAlign:'center'}}>{l}</div>
                 ))}
               </div>
             </div>
             <div style={{display:'flex',gap:'1rem'}}>
-              <button onClick={()=>setStep(1)} style={{background:'transparent',color:'var(--mist)',padding:'0.9rem 1.5rem',border:'1px solid var(--border)',fontSize:'0.68rem',letterSpacing:'2px',textTransform:'uppercase'}}>Back</button>
-              <button onClick={()=>form.category&&form.destinations.length>0&&setStep(3)} style={{flex:1,background:'var(--gold)',color:'var(--noir)',padding:'1rem',border:'none',fontSize:'0.7rem',fontWeight:500,letterSpacing:'3px',textTransform:'uppercase',opacity:(!form.category||form.destinations.length===0)?0.4:1}}>Continue →</button>
+              <button onClick={()=>setStep(1)} style={{background:'transparent',color:'var(--mist)',padding:'0.9rem 1.5rem',border:'1px solid var(--border)',fontSize:'0.78rem',letterSpacing:'2px',textTransform:'uppercase'}}>Back</button>
+              <button onClick={()=>form.category&&form.destinations.length>0&&setStep(3)} style={{flex:1,background:'var(--gold)',color:'var(--noir)',padding:'1rem',border:'none',fontSize:'0.82rem',fontWeight:500,letterSpacing:'3px',textTransform:'uppercase',opacity:(!form.category||form.destinations.length===0)?0.4:1}}>Continue →</button>
             </div>
           </div>
         )}
@@ -1285,38 +1285,38 @@ function SupplierPortal() {
         {step===3 && (
           <div style={{display:'flex',flexDirection:'column',gap:'1.25rem'}}>
             <div>
-              <div style={{fontSize:'0.6rem',letterSpacing:'2px',textTransform:'uppercase',color:'var(--mist)',marginBottom:'0.4rem'}}>Tell us about your products</div>
-              <textarea value={form.description} onChange={e=>setForm({...form,description:e.target.value})} rows={5} placeholder="Describe your products and why you would be a great BagFree supplier..." style={{width:'100%',background:'var(--mist-xlow)',border:'1px solid var(--border)',color:'var(--white)',padding:'0.75rem 1rem',fontSize:'0.88rem',outline:'none',resize:'vertical',fontFamily:'var(--ff-body)',lineHeight:1.7}}/>
+              <div style={{fontSize:'0.70rem',letterSpacing:'2px',textTransform:'uppercase',color:'var(--mist)',marginBottom:'0.4rem'}}>Tell us about your products</div>
+              <textarea value={form.description} onChange={e=>setForm({...form,description:e.target.value})} rows={5} placeholder="Describe your products and why you would be a great BagFree supplier..." style={{width:'100%',background:'var(--mist-xlow)',border:'1px solid var(--border)',color:'var(--white)',padding:'0.75rem 1rem',fontSize:'1.00rem',outline:'none',resize:'vertical',fontFamily:'var(--ff-body)',lineHeight:1.7}}/>
             </div>
-            <div style={{padding:'1.1rem',background:'var(--mist-xlow)',border:'1px solid var(--border)',fontSize:'0.78rem',color:'var(--mist)',lineHeight:1.8}}>
+            <div style={{padding:'1.1rem',background:'var(--mist-xlow)',border:'1px solid var(--border)',fontSize:'0.90rem',color:'var(--mist)',lineHeight:1.8}}>
               <span style={{color:'var(--gold)'}}>Logistics:</span> All BagFree suppliers integrate with Valet By Nuor for fulfillment across Florida and Georgia.
             </div>
             <div>
-              <div style={{fontSize:'0.6rem',letterSpacing:'2px',textTransform:'uppercase',color:'var(--mist)',marginBottom:'0.75rem'}}>Commission Plan</div>
+              <div style={{fontSize:'0.70rem',letterSpacing:'2px',textTransform:'uppercase',color:'var(--mist)',marginBottom:'0.75rem'}}>Commission Plan</div>
               <div style={{display:'grid',gridTemplateColumns:'1fr 1fr',gap:8,marginBottom:'1rem'}}>
                 <div onClick={()=>setForm({...form,commissionPlan:'monthly'})}
                   style={{padding:'1rem',border:`1px solid ${form.commissionPlan==='monthly'?'var(--border-hi)':'var(--border)'}`,cursor:'pointer',background:form.commissionPlan==='monthly'?'var(--mist-xlow)':'transparent',transition:'all 0.2s'}}>
-                  <div style={{fontSize:'0.62rem',letterSpacing:'2px',textTransform:'uppercase',color:'var(--mist)',marginBottom:6}}>Month-to-Month</div>
+                  <div style={{fontSize:'0.72rem',letterSpacing:'2px',textTransform:'uppercase',color:'var(--mist)',marginBottom:6}}>Month-to-Month</div>
                   <div style={{fontFamily:'var(--ff-display)',fontSize:'1.8rem',fontWeight:300,color:'var(--white)',lineHeight:1,marginBottom:4}}>15%</div>
-                  <div style={{fontSize:'0.72rem',color:'var(--mist)',marginBottom:8}}>No upfront fee · No commitment</div>
+                  <div style={{fontSize:'0.84rem',color:'var(--mist)',marginBottom:8}}>No upfront fee · No commitment</div>
                   <div style={{display:'flex',flexDirection:'column',gap:4}}>
                     {['Standard marketplace listing','No badge','Standard delivery priority','Not featured on home page'].map(b=>(
-                      <div key={b} style={{display:'flex',gap:6,alignItems:'center',fontSize:'0.65rem',color:'var(--mist)'}}>
-                        <span style={{color:'var(--mist)',fontSize:'0.6rem'}}>—</span>{b}
+                      <div key={b} style={{display:'flex',gap:6,alignItems:'center',fontSize:'0.75rem',color:'var(--mist)'}}>
+                        <span style={{color:'var(--mist)',fontSize:'0.70rem'}}>—</span>{b}
                       </div>
                     ))}
                   </div>
                 </div>
                 <div onClick={()=>setForm({...form,commissionPlan:'annual'})}
                   style={{padding:'1rem',border:`1px solid ${form.commissionPlan==='annual'?'var(--gold)':'var(--border)'}`,cursor:'pointer',background:form.commissionPlan==='annual'?'var(--mist-xlow)':'transparent',transition:'all 0.2s',position:'relative'}}>
-                  <div style={{position:'absolute',top:'0.6rem',right:'0.6rem',fontSize:'0.55rem',letterSpacing:'1.5px',textTransform:'uppercase',color:'var(--gold)',border:'1px solid var(--border-hi)',padding:'2px 6px'}}>Best Value</div>
-                  <div style={{fontSize:'0.62rem',letterSpacing:'2px',textTransform:'uppercase',color:'var(--mist)',marginBottom:6}}>Annual Partner</div>
+                  <div style={{position:'absolute',top:'0.6rem',right:'0.6rem',fontSize:'0.62rem',letterSpacing:'1.5px',textTransform:'uppercase',color:'var(--gold)',border:'1px solid var(--border-hi)',padding:'2px 6px'}}>Best Value</div>
+                  <div style={{fontSize:'0.72rem',letterSpacing:'2px',textTransform:'uppercase',color:'var(--mist)',marginBottom:6}}>Annual Partner</div>
                   <div style={{fontFamily:'var(--ff-display)',fontSize:'1.8rem',fontWeight:300,color:'var(--gold)',lineHeight:1,marginBottom:4}}>8%</div>
-                  <div style={{fontSize:'0.72rem',color:'var(--mist)',marginBottom:8}}>$199/year · 12-month agreement</div>
+                  <div style={{fontSize:'0.84rem',color:'var(--mist)',marginBottom:8}}>$199/year · 12-month agreement</div>
                   <div style={{display:'flex',flexDirection:'column',gap:4}}>
                     {['Featured placement in marketplace','Verified Partner badge','Priority Valet By Nuor delivery','Listed on BagFree home page'].map(b=>(
-                      <div key={b} style={{display:'flex',gap:6,alignItems:'center',fontSize:'0.65rem',color:'var(--gold-dim)'}}>
-                        <span style={{color:'var(--gold)',fontSize:'0.6rem'}}>◆</span>{b}
+                      <div key={b} style={{display:'flex',gap:6,alignItems:'center',fontSize:'0.75rem',color:'var(--gold-dim)'}}>
+                        <span style={{color:'var(--gold)',fontSize:'0.70rem'}}>◆</span>{b}
                       </div>
                     ))}
                   </div>
@@ -1328,11 +1328,11 @@ function SupplierPortal() {
               onClick={()=>setForm({...form,agreedToCommission:!form.agreedToCommission})}>
               <div style={{display:'flex',gap:'1rem',alignItems:'flex-start'}}>
                 <div style={{width:20,height:20,border:`1px solid ${form.agreedToCommission?'var(--gold)':'var(--border-hi)'}`,background:form.agreedToCommission?'var(--gold)':'transparent',flexShrink:0,marginTop:2,display:'flex',alignItems:'center',justifyContent:'center',transition:'all 0.2s'}}>
-                  {form.agreedToCommission && <span style={{color:'var(--noir)',fontSize:'0.75rem',fontWeight:700}}>✓</span>}
+                  {form.agreedToCommission && <span style={{color:'var(--noir)',fontSize:'0.88rem',fontWeight:700}}>✓</span>}
                 </div>
                 <div>
-                  <div style={{fontSize:'0.78rem',color:'var(--white)',fontWeight:400,marginBottom:6}}>I agree to BagFree's commission structure</div>
-                  <div style={{fontSize:'0.72rem',color:'var(--mist)',lineHeight:1.8}}>
+                  <div style={{fontSize:'0.90rem',color:'var(--white)',fontWeight:400,marginBottom:6}}>I agree to BagFree's commission structure</div>
+                  <div style={{fontSize:'0.84rem',color:'var(--mist)',lineHeight:1.8}}>
                     {form.commissionPlan==='annual'
                       ? 'BagFree earns 8% commission on all sales plus a $199/year listing fee. Includes featured placement, Verified Partner badge, and home page listing. 12-month commitment.'
                       : 'BagFree earns 15% commission on all sales. No upfront fee, no commitment. Standard marketplace listing.'
@@ -1342,7 +1342,7 @@ function SupplierPortal() {
               </div>
             </div>
             <div style={{display:'flex',gap:'1rem'}}>
-              <button onClick={()=>setStep(2)} style={{background:'transparent',color:'var(--mist)',padding:'0.9rem 1.5rem',border:'1px solid var(--border)',fontSize:'0.68rem',letterSpacing:'2px',textTransform:'uppercase'}}>Back</button>
+              <button onClick={()=>setStep(2)} style={{background:'transparent',color:'var(--mist)',padding:'0.9rem 1.5rem',border:'1px solid var(--border)',fontSize:'0.78rem',letterSpacing:'2px',textTransform:'uppercase'}}>Back</button>
               <button
                 onClick={async()=>{
                   if(form.agreedToCommission){
@@ -1360,7 +1360,7 @@ function SupplierPortal() {
                     setDone(true);
                   }
                 }}
-                style={{flex:1,background:'var(--gold)',color:'var(--noir)',padding:'1rem',border:'none',fontSize:'0.7rem',fontWeight:500,letterSpacing:'3px',textTransform:'uppercase',opacity:!form.agreedToCommission?0.4:1}}>
+                style={{flex:1,background:'var(--gold)',color:'var(--noir)',padding:'1rem',border:'none',fontSize:'0.82rem',fontWeight:500,letterSpacing:'3px',textTransform:'uppercase',opacity:!form.agreedToCommission?0.4:1}}>
                 Submit Application
               </button>
             </div>
@@ -1469,31 +1469,31 @@ function LoungeTileModal({feature, onClose}) {
         <div style={{background:feature.color,borderBottom:'1px solid var(--border)',padding:'2rem 2rem 1.5rem'}}>
           <div style={{fontSize:'2.5rem',color:feature.accentColor,marginBottom:'0.75rem',lineHeight:1}}>{feature.icon}</div>
           <div style={{fontFamily:'var(--ff-display)',fontSize:'1.8rem',fontWeight:300,color:'var(--white)',lineHeight:1.1,marginBottom:'0.35rem'}}>{feature.title}</div>
-          <div style={{fontSize:'0.62rem',letterSpacing:'2px',textTransform:'uppercase',color:feature.accentColor,opacity:0.8}}>{feature.sub}</div>
+          <div style={{fontSize:'0.72rem',letterSpacing:'2px',textTransform:'uppercase',color:feature.accentColor,opacity:0.8}}>{feature.sub}</div>
         </div>
         {/* Body */}
         <div style={{padding:'1.75rem 2rem'}}>
-          <p style={{fontSize:'0.88rem',color:'rgba(253,252,248,0.75)',lineHeight:1.9,fontWeight:300,marginBottom:'1.75rem'}}>{feature.description}</p>
-          <div style={{fontSize:'0.6rem',letterSpacing:'3px',textTransform:'uppercase',color:feature.accentColor,marginBottom:'1rem',display:'flex',alignItems:'center',gap:'0.75rem'}}>
+          <p style={{fontSize:'1.00rem',color:'rgba(253,252,248,0.75)',lineHeight:1.9,fontWeight:300,marginBottom:'1.75rem'}}>{feature.description}</p>
+          <div style={{fontSize:'0.70rem',letterSpacing:'3px',textTransform:'uppercase',color:feature.accentColor,marginBottom:'1rem',display:'flex',alignItems:'center',gap:'0.75rem'}}>
             <span style={{width:16,height:1,background:feature.accentColor,display:'inline-block',opacity:0.5}}/>What's included
           </div>
           <div style={{display:'flex',flexDirection:'column',gap:'0.65rem',marginBottom:'2rem'}}>
             {feature.details.map(d=>(
-              <div key={d} style={{display:'flex',gap:'0.85rem',alignItems:'flex-start',fontSize:'0.8rem',color:'rgba(253,252,248,0.65)',lineHeight:1.7}}>
-                <span style={{color:feature.accentColor,fontSize:'0.55rem',flexShrink:0,marginTop:5}}>◆</span>{d}
+              <div key={d} style={{display:'flex',gap:'0.85rem',alignItems:'flex-start',fontSize:'0.92rem',color:'rgba(253,252,248,0.65)',lineHeight:1.7}}>
+                <span style={{color:feature.accentColor,fontSize:'0.62rem',flexShrink:0,marginTop:5}}>◆</span>{d}
               </div>
             ))}
           </div>
           <button
             onClick={()=>window.open('/departure-lounge-landing','_self')}
-            style={{width:'100%',background:'var(--gold)',color:'var(--noir)',padding:'0.85rem',border:'none',fontSize:'0.68rem',fontWeight:500,letterSpacing:'3px',textTransform:'uppercase',cursor:'pointer',fontFamily:'var(--ff-body)'}}>
+            style={{width:'100%',background:'var(--gold)',color:'var(--noir)',padding:'0.85rem',border:'none',fontSize:'0.78rem',fontWeight:500,letterSpacing:'3px',textTransform:'uppercase',cursor:'pointer',fontFamily:'var(--ff-body)'}}>
             Enter the Departure Lounge ↗
           </button>
         </div>
         {/* Close */}
         <button
           onClick={onClose}
-          style={{position:'absolute',top:'1rem',right:'1rem',background:'transparent',border:'1px solid var(--border)',color:'var(--mist)',width:28,height:28,display:'flex',alignItems:'center',justifyContent:'center',cursor:'pointer',fontSize:'0.7rem',fontFamily:'var(--ff-body)'}}>
+          style={{position:'absolute',top:'1rem',right:'1rem',background:'transparent',border:'1px solid var(--border)',color:'var(--mist)',width:28,height:28,display:'flex',alignItems:'center',justifyContent:'center',cursor:'pointer',fontSize:'0.82rem',fontFamily:'var(--ff-body)'}}>
           ✕
         </button>
       </div>
@@ -1514,9 +1514,9 @@ function LoungeTiles() {
             onMouseEnter={e=>{e.currentTarget.style.background='var(--noir-4)';e.currentTarget.querySelector('.tile-arrow').style.opacity='1';}}
             onMouseLeave={e=>{e.currentTarget.style.background='var(--noir-3)';e.currentTarget.querySelector('.tile-arrow').style.opacity='0';}}>
             <div style={{fontSize:'1.75rem',marginBottom:'0.7rem',color:'var(--gold)'}}>{f.icon}</div>
-            <div style={{fontSize:'0.78rem',color:'var(--white)',fontWeight:400,marginBottom:3}}>{f.label}</div>
-            <div style={{fontSize:'0.62rem',color:'var(--mist)'}}>{f.sub}</div>
-            <div className="tile-arrow" style={{position:'absolute',bottom:'0.85rem',right:'0.85rem',fontSize:'0.6rem',color:'var(--gold)',opacity:0,transition:'opacity 0.2s',letterSpacing:'1px'}}>
+            <div style={{fontSize:'0.90rem',color:'var(--white)',fontWeight:400,marginBottom:3}}>{f.label}</div>
+            <div style={{fontSize:'0.72rem',color:'var(--mist)'}}>{f.sub}</div>
+            <div className="tile-arrow" style={{position:'absolute',bottom:'0.85rem',right:'0.85rem',fontSize:'0.70rem',color:'var(--gold)',opacity:0,transition:'opacity 0.2s',letterSpacing:'1px'}}>
               Learn more →
             </div>
           </div>
@@ -1565,26 +1565,26 @@ function CruisePage({setPage}) {
       <div style={{position:'relative',minHeight:'70vh',display:'flex',flexDirection:'column',justifyContent:'center',alignItems:'center',textAlign:'center',padding:'5rem 2rem',overflow:'hidden',background:'linear-gradient(180deg,rgba(6,10,20,0) 0%,rgba(6,10,20,0.7) 100%)',backgroundImage:"url('https://images.unsplash.com/photo-1548574505-5e239809ee19?w=1800&q=80')",backgroundSize:'cover',backgroundPosition:'center 40%'}}>
         <div style={{position:'absolute',inset:0,background:'linear-gradient(180deg,rgba(8,14,26,0.5) 0%,rgba(8,14,26,0.85) 100%)'}}/>
         <div style={{position:'relative',zIndex:1}}>
-          <div style={{fontSize:'0.62rem',letterSpacing:'5px',textTransform:'uppercase',color:'var(--gold)',marginBottom:'1.5rem',display:'flex',alignItems:'center',gap:'1rem',justifyContent:'center'}}>
+          <div style={{fontSize:'0.72rem',letterSpacing:'5px',textTransform:'uppercase',color:'var(--gold)',marginBottom:'1.5rem',display:'flex',alignItems:'center',gap:'1rem',justifyContent:'center'}}>
             <span style={{width:32,height:1,background:'var(--gold)',display:'inline-block'}}/>BagFree · Cruise Edition<span style={{width:32,height:1,background:'var(--gold)',display:'inline-block'}}/>
           </div>
           <h1 style={{fontFamily:'var(--ff-display)',fontSize:'clamp(3rem,7vw,6rem)',fontWeight:300,lineHeight:1.0,letterSpacing:'-1px',marginBottom:'1.5rem',color:'var(--white)'}}>
             Skip the luggage.<br/><em style={{color:'var(--gold)',fontStyle:'italic'}}>Board with nothing.</em>
           </h1>
-          <p style={{fontSize:'1.05rem',color:'rgba(253,252,248,0.75)',lineHeight:1.9,maxWidth:560,marginBottom:'2.5rem',fontWeight:300}}>
+          <p style={{fontSize:'1.15rem',color:'rgba(253,252,248,0.75)',lineHeight:1.9,maxWidth:560,marginBottom:'2.5rem',fontWeight:300}}>
             Your cruise-ready kit delivered to the port before you board. Everything waiting in your cabin. Travel lighter, arrive fresher.
           </p>
           <div style={{display:'flex',gap:'1rem',justifyContent:'center',flexWrap:'wrap'}}>
             <button onClick={()=>document.getElementById('cruise-order').scrollIntoView({behavior:'smooth'})}
-              style={{background:'linear-gradient(135deg,var(--gold),#b8893e)',color:'var(--noir)',border:'none',padding:'1rem 2.5rem',fontSize:'0.75rem',fontWeight:500,letterSpacing:'3px',textTransform:'uppercase',cursor:'pointer',fontFamily:'var(--ff-body)'}}>
+              style={{background:'linear-gradient(135deg,var(--gold),#b8893e)',color:'var(--noir)',border:'none',padding:'1rem 2.5rem',fontSize:'0.88rem',fontWeight:500,letterSpacing:'3px',textTransform:'uppercase',cursor:'pointer',fontFamily:'var(--ff-body)'}}>
               Order Before You Board ✦
             </button>
             <button onClick={()=>document.getElementById('cruise-kits').scrollIntoView({behavior:'smooth'})}
-              style={{background:'transparent',color:'var(--white)',border:'1px solid rgba(253,252,248,0.35)',padding:'1rem 2rem',fontSize:'0.72rem',letterSpacing:'2.5px',textTransform:'uppercase',cursor:'pointer',fontFamily:'var(--ff-body)'}}>
+              style={{background:'transparent',color:'var(--white)',border:'1px solid rgba(253,252,248,0.35)',padding:'1rem 2rem',fontSize:'0.84rem',letterSpacing:'2.5px',textTransform:'uppercase',cursor:'pointer',fontFamily:'var(--ff-body)'}}>
               See What's Included
             </button>
           </div>
-          <div style={{marginTop:'2rem',fontSize:'0.65rem',color:'rgba(253,252,248,0.4)',letterSpacing:'1.5px'}}>
+          <div style={{marginTop:'2rem',fontSize:'0.75rem',color:'rgba(253,252,248,0.4)',letterSpacing:'1.5px'}}>
             ⚡ Same-day delivery · Tampa · Orlando · Miami · Savannah
           </div>
         </div>
@@ -1597,7 +1597,7 @@ function CruisePage({setPage}) {
             <div key={i}>
               <div style={{fontSize:'1.6rem',marginBottom:'0.5rem'}}>{icon}</div>
               <div style={{fontFamily:'var(--ff-display)',fontSize:'2.2rem',fontWeight:300,color:'var(--gold)',lineHeight:1,marginBottom:'0.4rem'}}>{stat}</div>
-              <div style={{fontSize:'0.72rem',color:'rgba(253,252,248,0.45)',lineHeight:1.6}}>{label}</div>
+              <div style={{fontSize:'0.84rem',color:'rgba(253,252,248,0.45)',lineHeight:1.6}}>{label}</div>
             </div>
           ))}
         </div>
@@ -1606,7 +1606,7 @@ function CruisePage({setPage}) {
       {/* HOW IT WORKS */}
       <div style={{padding:'6rem 2rem',maxWidth:1000,margin:'0 auto'}}>
         <div style={{textAlign:'center',marginBottom:'4rem'}}>
-          <div style={{fontSize:'0.6rem',letterSpacing:'4px',textTransform:'uppercase',color:'var(--gold)',marginBottom:'0.75rem'}}>Simple process</div>
+          <div style={{fontSize:'0.70rem',letterSpacing:'4px',textTransform:'uppercase',color:'var(--gold)',marginBottom:'0.75rem'}}>Simple process</div>
           <h2 style={{fontFamily:'var(--ff-display)',fontSize:'clamp(2rem,4vw,3.2rem)',fontWeight:300}}>How BagFree Cruise works</h2>
         </div>
         <div style={{display:'grid',gridTemplateColumns:'repeat(4,1fr)',gap:'1px',background:'var(--border)',border:'1px solid var(--border)'}}>
@@ -1619,8 +1619,8 @@ function CruisePage({setPage}) {
             <div key={n} style={{background:'var(--noir-2)',padding:'2rem 1.5rem',position:'relative'}}>
               <div style={{fontFamily:'var(--ff-display)',fontSize:'3.5rem',fontWeight:300,color:'rgba(201,169,110,0.07)',position:'absolute',top:'0.75rem',right:'1rem',lineHeight:1}}>{n}</div>
               <div style={{fontSize:'1.8rem',marginBottom:'1rem'}}>{icon}</div>
-              <div style={{fontSize:'0.85rem',color:'var(--white)',fontWeight:500,marginBottom:'0.5rem'}}>{title}</div>
-              <div style={{fontSize:'0.78rem',color:'rgba(253,252,248,0.45)',lineHeight:1.7}}>{desc}</div>
+              <div style={{fontSize:'0.98rem',color:'var(--white)',fontWeight:500,marginBottom:'0.5rem'}}>{title}</div>
+              <div style={{fontSize:'0.90rem',color:'rgba(253,252,248,0.45)',lineHeight:1.7}}>{desc}</div>
             </div>
           ))}
         </div>
@@ -1630,7 +1630,7 @@ function CruisePage({setPage}) {
       <div id="cruise-kits" style={{padding:'4rem 2rem 6rem',background:'rgba(201,169,110,0.03)',borderTop:'1px solid var(--border)'}}>
         <div style={{maxWidth:1100,margin:'0 auto'}}>
           <div style={{textAlign:'center',marginBottom:'3rem'}}>
-            <div style={{fontSize:'0.6rem',letterSpacing:'4px',textTransform:'uppercase',color:'var(--gold)',marginBottom:'0.75rem'}}>What's included</div>
+            <div style={{fontSize:'0.70rem',letterSpacing:'4px',textTransform:'uppercase',color:'var(--gold)',marginBottom:'0.75rem'}}>What's included</div>
             <h2 style={{fontFamily:'var(--ff-display)',fontSize:'clamp(2rem,4vw,3.2rem)',fontWeight:300}}>Choose your cruise kit</h2>
           </div>
           <div style={{display:'grid',gridTemplateColumns:'repeat(auto-fill,minmax(240px,1fr))',gap:1,background:'var(--border)'}}>
@@ -1639,14 +1639,14 @@ function CruisePage({setPage}) {
                 style={{background:form.kit===id?'rgba(201,169,110,0.1)':'var(--noir-2)',padding:'2rem',cursor:'pointer',transition:'all 0.25s',border:form.kit===id?'2px solid rgba(201,169,110,0.6)':'2px solid transparent'}}
                 onMouseEnter={e=>e.currentTarget.style.background='rgba(201,169,110,0.07)'}
                 onMouseLeave={e=>e.currentTarget.style.background=form.kit===id?'rgba(201,169,110,0.1)':'var(--noir-2)'}>
-                {form.kit===id && <div style={{fontSize:'0.52rem',letterSpacing:'2px',textTransform:'uppercase',color:'var(--gold)',marginBottom:'0.75rem'}}>✦ Selected</div>}
+                {form.kit===id && <div style={{fontSize:'0.60rem',letterSpacing:'2px',textTransform:'uppercase',color:'var(--gold)',marginBottom:'0.75rem'}}>✦ Selected</div>}
                 <div style={{fontFamily:'var(--ff-display)',fontSize:'1.3rem',fontWeight:300,color:'var(--white)',marginBottom:'0.25rem'}}>{name}</div>
                 <div style={{fontFamily:'var(--ff-display)',fontSize:'1.8rem',fontWeight:300,color:'var(--gold)',marginBottom:'0.75rem'}}>{price}</div>
-                <div style={{fontSize:'0.72rem',color:'rgba(253,252,248,0.45)',lineHeight:1.7}}>{items}</div>
+                <div style={{fontSize:'0.84rem',color:'rgba(253,252,248,0.45)',lineHeight:1.7}}>{items}</div>
               </div>
             ))}
           </div>
-          <div style={{textAlign:'center',marginTop:'1.5rem',fontSize:'0.68rem',color:'rgba(253,252,248,0.3)'}}>
+          <div style={{textAlign:'center',marginTop:'1.5rem',fontSize:'0.78rem',color:'rgba(253,252,248,0.3)'}}>
             All kits include same-day port delivery · Powered by Valet by Nuor
           </div>
         </div>
@@ -1656,11 +1656,11 @@ function CruisePage({setPage}) {
       <div style={{padding:'6rem 2rem',maxWidth:1000,margin:'0 auto'}}>
         <div style={{display:'grid',gridTemplateColumns:'1fr 1fr',gap:'4rem',alignItems:'center'}}>
           <div>
-            <div style={{fontSize:'0.6rem',letterSpacing:'4px',textTransform:'uppercase',color:'var(--gold)',marginBottom:'0.75rem'}}>The cruise case</div>
+            <div style={{fontSize:'0.70rem',letterSpacing:'4px',textTransform:'uppercase',color:'var(--gold)',marginBottom:'0.75rem'}}>The cruise case</div>
             <h2 style={{fontFamily:'var(--ff-display)',fontSize:'clamp(1.8rem,3.5vw,2.8rem)',fontWeight:300,marginBottom:'1.5rem',lineHeight:1.1}}>
               Cruises are the<br/><em style={{color:'var(--gold)',fontStyle:'italic'}}>perfect</em> BagFree trip
             </h2>
-            <p style={{fontSize:'0.88rem',color:'rgba(253,252,248,0.55)',lineHeight:1.9,marginBottom:'2rem'}}>
+            <p style={{fontSize:'1.00rem',color:'rgba(253,252,248,0.55)',lineHeight:1.9,marginBottom:'2rem'}}>
               You know your ship, your ports, your schedule weeks in advance. That's all we need to have everything waiting on board before you arrive.
             </p>
             {[
@@ -1671,20 +1671,20 @@ function CruisePage({setPage}) {
               'Return home with nothing to unpack or wash',
             ].map((t,i)=>(
               <div key={i} style={{display:'flex',gap:'0.75rem',marginBottom:'0.75rem',alignItems:'flex-start'}}>
-                <span style={{color:'var(--gold)',fontSize:'0.6rem',marginTop:4,flexShrink:0}}>◆</span>
-                <span style={{fontSize:'0.85rem',color:'rgba(253,252,248,0.65)',lineHeight:1.6}}>{t}</span>
+                <span style={{color:'var(--gold)',fontSize:'0.70rem',marginTop:4,flexShrink:0}}>◆</span>
+                <span style={{fontSize:'0.98rem',color:'rgba(253,252,248,0.65)',lineHeight:1.6}}>{t}</span>
               </div>
             ))}
           </div>
           <div style={{background:'rgba(201,169,110,0.05)',border:'1px solid var(--border)',padding:'2.5rem'}}>
-            <div style={{fontSize:'0.6rem',letterSpacing:'3px',textTransform:'uppercase',color:'var(--gold)',marginBottom:'1.25rem'}}>Serving all major cruise lines</div>
+            <div style={{fontSize:'0.70rem',letterSpacing:'3px',textTransform:'uppercase',color:'var(--gold)',marginBottom:'1.25rem'}}>Serving all major cruise lines</div>
             {ships.slice(0,-1).map((s,i)=>(
               <div key={i} style={{display:'flex',alignItems:'center',gap:'0.75rem',padding:'0.65rem 0',borderBottom:'1px solid rgba(253,252,248,0.05)'}}>
                 <span style={{width:6,height:6,borderRadius:'50%',background:'var(--gold)',opacity:0.5,flexShrink:0,display:'inline-block'}}/>
-                <span style={{fontSize:'0.85rem',color:'rgba(253,252,248,0.6)'}}>{s}</span>
+                <span style={{fontSize:'0.98rem',color:'rgba(253,252,248,0.6)'}}>{s}</span>
               </div>
             ))}
-            <div style={{marginTop:'1.25rem',fontSize:'0.72rem',color:'rgba(253,252,248,0.3)',fontStyle:'italic'}}>+ all other cruise lines. If your ship departs from our cities, we deliver.</div>
+            <div style={{marginTop:'1.25rem',fontSize:'0.84rem',color:'rgba(253,252,248,0.3)',fontStyle:'italic'}}>+ all other cruise lines. If your ship departs from our cities, we deliver.</div>
           </div>
         </div>
       </div>
@@ -1693,16 +1693,16 @@ function CruisePage({setPage}) {
       <div id="cruise-order" style={{padding:'6rem 2rem',background:'rgba(201,169,110,0.04)',borderTop:'1px solid var(--border)'}}>
         <div style={{maxWidth:640,margin:'0 auto'}}>
           <div style={{textAlign:'center',marginBottom:'3rem'}}>
-            <div style={{fontSize:'0.6rem',letterSpacing:'4px',textTransform:'uppercase',color:'var(--gold)',marginBottom:'0.75rem'}}>Order before you board</div>
+            <div style={{fontSize:'0.70rem',letterSpacing:'4px',textTransform:'uppercase',color:'var(--gold)',marginBottom:'0.75rem'}}>Order before you board</div>
             <h2 style={{fontFamily:'var(--ff-display)',fontSize:'clamp(1.8rem,3.5vw,2.8rem)',fontWeight:300,marginBottom:'0.75rem'}}>Get everything waiting</h2>
-            <p style={{fontSize:'0.82rem',color:'rgba(253,252,248,0.45)',lineHeight:1.8}}>Fill in your details and we'll confirm your order within 2 hours.</p>
+            <p style={{fontSize:'0.95rem',color:'rgba(253,252,248,0.45)',lineHeight:1.8}}>Fill in your details and we'll confirm your order within 2 hours.</p>
           </div>
 
           {submitted ? (
             <div style={{background:'rgba(93,202,165,0.1)',border:'1px solid rgba(93,202,165,0.35)',padding:'3rem',textAlign:'center'}}>
               <div style={{fontSize:'2rem',marginBottom:'1rem'}}>✦</div>
               <div style={{fontFamily:'var(--ff-display)',fontSize:'1.6rem',fontWeight:300,color:'var(--green)',marginBottom:'0.75rem'}}>Order received</div>
-              <div style={{fontSize:'0.82rem',color:'rgba(253,252,248,0.55)',lineHeight:1.8}}>
+              <div style={{fontSize:'0.95rem',color:'rgba(253,252,248,0.55)',lineHeight:1.8}}>
                 We'll confirm your cruise kit within 2 hours and coordinate delivery to your port. Check your email at <strong style={{color:'var(--white)'}}>{form.email}</strong>.
               </div>
             </div>
@@ -1711,54 +1711,54 @@ function CruisePage({setPage}) {
               {/* Kit selector reminder */}
               <div style={{background:'rgba(201,169,110,0.08)',border:'1px solid rgba(201,169,110,0.25)',padding:'1rem 1.25rem',display:'flex',justifyContent:'space-between',alignItems:'center'}}>
                 <div>
-                  <div style={{fontSize:'0.52rem',letterSpacing:'2px',textTransform:'uppercase',color:'var(--gold)',marginBottom:'3px'}}>Selected kit</div>
-                  <div style={{fontSize:'0.9rem',color:'var(--white)'}}>{kits.find(k=>k.id===form.kit)?.name} · {kits.find(k=>k.id===form.kit)?.price}</div>
+                  <div style={{fontSize:'0.60rem',letterSpacing:'2px',textTransform:'uppercase',color:'var(--gold)',marginBottom:'3px'}}>Selected kit</div>
+                  <div style={{fontSize:'1.02rem',color:'var(--white)'}}>{kits.find(k=>k.id===form.kit)?.name} · {kits.find(k=>k.id===form.kit)?.price}</div>
                 </div>
                 <button onClick={()=>document.getElementById('cruise-kits').scrollIntoView({behavior:'smooth'})}
-                  style={{background:'transparent',border:'1px solid var(--border)',color:'var(--mist)',padding:'4px 10px',fontSize:'0.6rem',letterSpacing:'1.5px',textTransform:'uppercase',cursor:'pointer',fontFamily:'var(--ff-body)'}}>Change</button>
+                  style={{background:'transparent',border:'1px solid var(--border)',color:'var(--mist)',padding:'4px 10px',fontSize:'0.70rem',letterSpacing:'1.5px',textTransform:'uppercase',cursor:'pointer',fontFamily:'var(--ff-body)'}}>Change</button>
               </div>
 
               <div style={{display:'grid',gridTemplateColumns:'1fr 1fr',gap:'0.85rem'}}>
                 {[['name','Your name','text'],['email','Email address','email'],['phone','Phone number','tel'],['date','Boarding date','date']].map(([k,ph,t])=>(
                   <div key={k} style={{display:'flex',flexDirection:'column',gap:4}}>
-                    <label style={{fontSize:'0.52rem',letterSpacing:'2px',textTransform:'uppercase',color:'var(--gold)'}}>{ph}</label>
+                    <label style={{fontSize:'0.60rem',letterSpacing:'2px',textTransform:'uppercase',color:'var(--gold)'}}>{ph}</label>
                     <input type={t} value={form[k]} onChange={e=>setForm(f=>({...f,[k]:e.target.value}))}
                       placeholder={t==='date'?'':ph}
-                      style={{background:'var(--noir-2)',border:'1px solid var(--border)',color:'var(--white)',padding:'0.65rem 0.85rem',fontSize:'0.88rem',outline:'none',fontFamily:'var(--ff-body)',colorScheme:'dark'}}/>
+                      style={{background:'var(--noir-2)',border:'1px solid var(--border)',color:'var(--white)',padding:'0.65rem 0.85rem',fontSize:'1.00rem',outline:'none',fontFamily:'var(--ff-body)',colorScheme:'dark'}}/>
                   </div>
                 ))}
               </div>
 
               <div style={{display:'flex',flexDirection:'column',gap:4}}>
-                <label style={{fontSize:'0.52rem',letterSpacing:'2px',textTransform:'uppercase',color:'var(--gold)'}}> Cruise ship</label>
+                <label style={{fontSize:'0.60rem',letterSpacing:'2px',textTransform:'uppercase',color:'var(--gold)'}}> Cruise ship</label>
                 <select value={form.ship} onChange={e=>setForm(f=>({...f,ship:e.target.value}))}
-                  style={{background:'var(--noir-2)',border:'1px solid var(--border)',color:'var(--white)',padding:'0.65rem 0.85rem',fontSize:'0.88rem',outline:'none',fontFamily:'var(--ff-body)',colorScheme:'dark'}}>
+                  style={{background:'var(--noir-2)',border:'1px solid var(--border)',color:'var(--white)',padding:'0.65rem 0.85rem',fontSize:'1.00rem',outline:'none',fontFamily:'var(--ff-body)',colorScheme:'dark'}}>
                   <option value=''>Select cruise line</option>
                   {ships.map(s=><option key={s} value={s}>{s}</option>)}
                 </select>
               </div>
 
               <div style={{display:'flex',flexDirection:'column',gap:4}}>
-                <label style={{fontSize:'0.52rem',letterSpacing:'2px',textTransform:'uppercase',color:'var(--gold)'}}> Departure port</label>
+                <label style={{fontSize:'0.60rem',letterSpacing:'2px',textTransform:'uppercase',color:'var(--gold)'}}> Departure port</label>
                 <select value={form.port} onChange={e=>setForm(f=>({...f,port:e.target.value}))}
-                  style={{background:'var(--noir-2)',border:'1px solid var(--border)',color:'var(--white)',padding:'0.65rem 0.85rem',fontSize:'0.88rem',outline:'none',fontFamily:'var(--ff-body)',colorScheme:'dark'}}>
+                  style={{background:'var(--noir-2)',border:'1px solid var(--border)',color:'var(--white)',padding:'0.65rem 0.85rem',fontSize:'1.00rem',outline:'none',fontFamily:'var(--ff-body)',colorScheme:'dark'}}>
                   <option value=''>Select departure port</option>
                   {ports.map(p=><option key={p} value={p}>{p}</option>)}
                 </select>
               </div>
 
               <div style={{display:'flex',flexDirection:'column',gap:4}}>
-                <label style={{fontSize:'0.52rem',letterSpacing:'2px',textTransform:'uppercase',color:'var(--gold)'}}> Special requests (optional)</label>
+                <label style={{fontSize:'0.60rem',letterSpacing:'2px',textTransform:'uppercase',color:'var(--gold)'}}> Special requests (optional)</label>
                 <textarea value={form.notes} onChange={e=>setForm(f=>({...f,notes:e.target.value}))} rows={3}
                   placeholder="Sizes, preferences, dietary needs, specific items..."
-                  style={{background:'var(--noir-2)',border:'1px solid var(--border)',color:'var(--white)',padding:'0.65rem 0.85rem',fontSize:'0.88rem',outline:'none',fontFamily:'var(--ff-body)',resize:'none'}}/>
+                  style={{background:'var(--noir-2)',border:'1px solid var(--border)',color:'var(--white)',padding:'0.65rem 0.85rem',fontSize:'1.00rem',outline:'none',fontFamily:'var(--ff-body)',resize:'none'}}/>
               </div>
 
               <button onClick={submitOrder}
-                style={{background:'linear-gradient(135deg,var(--gold),#b8893e)',color:'var(--noir)',border:'none',padding:'1.1rem',fontSize:'0.78rem',fontWeight:600,letterSpacing:'3px',textTransform:'uppercase',cursor:'pointer',fontFamily:'var(--ff-body)',marginTop:'0.5rem'}}>
+                style={{background:'linear-gradient(135deg,var(--gold),#b8893e)',color:'var(--noir)',border:'none',padding:'1.1rem',fontSize:'0.90rem',fontWeight:600,letterSpacing:'3px',textTransform:'uppercase',cursor:'pointer',fontFamily:'var(--ff-body)',marginTop:'0.5rem'}}>
                 Have Everything Waiting For Me ✦
               </button>
-              <div style={{textAlign:'center',fontSize:'0.62rem',color:'rgba(253,252,248,0.25)',lineHeight:1.7}}>
+              <div style={{textAlign:'center',fontSize:'0.72rem',color:'rgba(253,252,248,0.25)',lineHeight:1.7}}>
                 Delivered to your port before you board · Powered by Valet by Nuor · (813) 816-2448
               </div>
             </div>
@@ -1805,10 +1805,10 @@ function App() {
       {page==='cruise' && <CruisePage setPage={navigate}/>}
       <footer style={{background:'var(--noir-2)',padding:'2rem 3rem',display:'flex',justifyContent:'space-between',alignItems:'center',borderTop:'1px solid var(--border)',flexWrap:'wrap',gap:'1rem'}}>
         <div style={{fontFamily:'var(--ff-display)',fontSize:'1.2rem',fontWeight:300,letterSpacing:'3px',textTransform:'uppercase'}}>Bag<span style={{color:'var(--gold)'}}>Free</span></div>
-        <div style={{fontSize:'0.68rem',color:'var(--mist)',letterSpacing:'1px'}}>
+        <div style={{fontSize:'0.78rem',color:'var(--mist)',letterSpacing:'1px'}}>
           Powered by Valet By Nuor · <a href="https://valetbynuor.com" target="_blank" style={{color:'var(--gold)',textDecoration:'none'}}>valetbynuor.com</a> · (813) 816-2448
         </div>
-        <div style={{fontSize:'0.65rem',color:'var(--mist)'}}>© 2026 BagFree · All rights reserved</div>
+        <div style={{fontSize:'0.75rem',color:'var(--mist)'}}>© 2026 BagFree · All rights reserved</div>
       </footer>
     </>
   );
