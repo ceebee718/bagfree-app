@@ -1,0 +1,1135 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+<meta charset="UTF-8">
+<meta name="viewport" content="width=device-width, initial-scale=1.0">
+<title>Tourism DX — Powered by BagFree</title>
+<link href="https://fonts.googleapis.com/css2?family=Cormorant+Garamond:ital,wght@0,300;0,400;0,600;1,300;1,400&family=Jost:wght@300;400;500;600&display=swap" rel="stylesheet">
+<style>
+*{box-sizing:border-box;margin:0;padding:0}
+:root{
+  --noir:#080E1A;--n2:#0D1525;--n3:#131D30;--n4:#1A253D;
+  --gold:#C9A96E;--gold-dim:#8A6F45;--gold-light:#E8D5B0;
+  --white:#FDFCF8;--mist:rgba(253,252,248,0.55);
+  --green:#5DCAA5;--amber:#EF9F27;--red:#E24B4A;--blue:#4A9EDD;
+  --brd:rgba(201,169,110,0.18);
+  --ff:'Cormorant Garamond',Georgia,serif;
+  --fb:'Jost',sans-serif;
+}
+html,body{height:100%;background:var(--noir);color:var(--white);font-family:var(--fb);overflow-x:hidden}
+a{color:inherit;text-decoration:none}
+button{cursor:pointer;font-family:var(--fb)}
+select{font-family:var(--fb)}
+input{font-family:var(--fb)}
+
+/* NAV */
+#tdx-nav{position:fixed;top:0;left:0;right:0;z-index:100;background:rgba(8,14,26,0.96);backdrop-filter:blur(20px);border-bottom:1px solid var(--brd);padding:0.75rem 2rem;display:flex;align-items:center;justify-content:space-between}
+.tdx-logo{font-family:var(--ff);font-size:1.1rem;font-weight:300;color:var(--gold);letter-spacing:1px}
+.tdx-logo span{color:var(--white);font-size:0.7rem;letter-spacing:3px;text-transform:uppercase;display:block;margin-top:2px;font-family:var(--fb)}
+.nav-back{font-size:0.62rem;letter-spacing:2px;text-transform:uppercase;color:var(--mist);border:1px solid var(--brd);padding:5px 12px;transition:all 0.2s}
+.nav-back:hover{color:var(--gold);border-color:var(--gold)}
+
+/* SETUP SCREEN */
+#setup-screen{min-height:100vh;display:flex;align-items:center;justify-content:center;padding:5rem 2rem 2rem;flex-direction:column;gap:2rem}
+.setup-card{background:var(--n2);border:1px solid var(--brd);padding:3rem;max-width:700px;width:100%}
+.setup-eyebrow{font-size:0.55rem;letter-spacing:4px;text-transform:uppercase;color:var(--gold);margin-bottom:1rem}
+.setup-title{font-family:var(--ff);font-size:clamp(2rem,4vw,3.2rem);font-weight:300;line-height:1.1;margin-bottom:1rem}
+.setup-sub{font-size:0.88rem;color:var(--mist);line-height:1.9;margin-bottom:2rem}
+.setup-grid{display:grid;grid-template-columns:1fr 1fr;gap:1rem;margin-bottom:2rem}
+.setup-field label{font-size:0.58rem;letter-spacing:2px;text-transform:uppercase;color:var(--gold-dim);display:block;margin-bottom:0.5rem}
+.setup-field select,.setup-field input{width:100%;background:var(--n3);border:1px solid var(--brd);color:var(--white);padding:0.75rem 1rem;font-size:0.85rem;outline:none;transition:border-color 0.2s}
+.setup-field select:focus,.setup-field input:focus{border-color:var(--gold)}
+.turn-cards{display:flex;gap:0.75rem;flex-wrap:wrap;margin-bottom:0.5rem}
+.turn-card{background:var(--n3);border:1px solid var(--brd);padding:0.6rem 1.2rem;font-size:0.78rem;font-weight:500;transition:all 0.2s;color:var(--mist)}
+.turn-card.active{background:rgba(201,169,110,0.15);border-color:var(--gold);color:var(--gold)}
+.turn-card:hover{border-color:rgba(201,169,110,0.5);color:var(--white)}
+.turn-custom{display:flex;gap:0.5rem;align-items:center;margin-top:0.5rem}
+.turn-custom input{background:var(--n3);border:1px solid var(--brd);color:var(--white);padding:0.5rem 0.75rem;width:80px;font-size:0.85rem;outline:none}
+.btn-primary{background:linear-gradient(135deg,var(--gold),#b8893e);color:#0A0A08;border:none;padding:1rem 2.5rem;font-size:0.65rem;letter-spacing:2.5px;text-transform:uppercase;font-weight:600;transition:opacity 0.2s;font-family:var(--fb)}
+.btn-primary:hover{opacity:0.88}
+.btn-ghost{background:transparent;border:1px solid var(--brd);color:var(--mist);padding:0.75rem 1.5rem;font-size:0.62rem;letter-spacing:2px;text-transform:uppercase;transition:all 0.2s}
+.btn-ghost:hover{border-color:var(--gold);color:var(--gold)}
+
+/* GAME SCREEN */
+#game-screen{display:none;padding-top:60px;min-height:100vh}
+.game-header{background:var(--n2);border-bottom:1px solid var(--brd);padding:1rem 2rem;display:flex;align-items:center;justify-content:space-between;gap:1rem;flex-wrap:wrap}
+.game-title{font-family:var(--ff);font-size:1.4rem;font-weight:300;color:var(--white)}
+.game-title em{color:var(--gold);font-style:italic}
+.game-meta{display:flex;align-items:center;gap:1rem;flex-wrap:wrap}
+.meta-pill{background:var(--n3);border:1px solid var(--brd);padding:0.35rem 0.85rem;font-size:0.62rem;letter-spacing:1.5px;text-transform:uppercase;color:var(--mist)}
+.meta-pill span{color:var(--gold);font-weight:500}
+.btn-end-turn{background:linear-gradient(135deg,var(--gold),#b8893e);color:#0A0A08;border:none;padding:0.6rem 1.5rem;font-size:0.6rem;letter-spacing:2px;text-transform:uppercase;font-weight:600}
+.btn-end-turn:disabled{opacity:0.4;cursor:not-allowed}
+
+.game-layout{display:grid;grid-template-columns:280px 1fr 300px;gap:0;min-height:calc(100vh - 115px)}
+
+/* LEFT PANEL */
+.left-panel{background:var(--n2);border-right:1px solid var(--brd);padding:1.25rem;overflow-y:auto;display:flex;flex-direction:column;gap:1rem}
+.panel-section{border:1px solid var(--brd);padding:1rem}
+.panel-label{font-size:0.52rem;letter-spacing:3px;text-transform:uppercase;color:var(--gold);margin-bottom:0.75rem}
+.metric-row{display:flex;justify-content:space-between;align-items:center;margin-bottom:0.6rem}
+.metric-name{font-size:0.72rem;color:var(--mist);display:flex;align-items:center;gap:0.4rem}
+.metric-val{font-size:0.78rem;font-weight:500}
+.metric-bar{height:4px;background:rgba(255,255,255,0.08);margin-top:3px;margin-bottom:0.6rem;border-radius:2px;overflow:hidden}
+.metric-bar-fill{height:100%;border-radius:2px;transition:width 0.5s ease}
+.metric-positive .metric-bar-fill{background:var(--green)}
+.metric-negative .metric-bar-fill{background:var(--red)}
+.metric-neutral .metric-bar-fill{background:var(--amber)}
+
+.score-display{text-align:center;padding:1rem 0}
+.score-number{font-family:var(--ff);font-size:3rem;font-weight:300;color:var(--gold);line-height:1}
+.score-label{font-size:0.52rem;letter-spacing:3px;text-transform:uppercase;color:var(--mist);margin-top:0.3rem}
+.rank-badge{background:linear-gradient(135deg,rgba(201,169,110,0.2),rgba(201,169,110,0.05));border:1px solid var(--brd);padding:0.5rem 1rem;text-align:center;margin-top:0.75rem}
+.rank-name{font-family:var(--ff);font-size:1.1rem;color:var(--gold);font-weight:300}
+.rank-sub{font-size:0.55rem;letter-spacing:2px;text-transform:uppercase;color:var(--mist);margin-top:2px}
+
+.turn-progress{margin-top:0.5rem}
+.turn-bar{height:6px;background:rgba(255,255,255,0.06);border-radius:3px;overflow:hidden;margin-top:0.4rem}
+.turn-bar-fill{height:100%;background:linear-gradient(90deg,var(--gold),#b8893e);border-radius:3px;transition:width 0.4s}
+
+/* MAP */
+.map-area{position:relative;flex:1;background:var(--noir)}
+.map-container{position:relative;width:100%;height:100%;min-height:500px;overflow:hidden;background:radial-gradient(ellipse at 30% 40%,rgba(201,169,110,0.08),transparent 50%),linear-gradient(160deg,#04080F,#06101A,#04080F)}
+.map-grid{position:absolute;inset:0;background-image:linear-gradient(rgba(201,169,110,0.04) 1px,transparent 1px),linear-gradient(90deg,rgba(201,169,110,0.04) 1px,transparent 1px);background-size:40px 40px;pointer-events:none}
+.map-label{position:absolute;transform:translate(-50%,-50%);background:rgba(8,14,26,0.8);border:1px solid rgba(201,169,110,0.2);padding:3px 10px;font-size:0.55rem;letter-spacing:2px;text-transform:uppercase;color:rgba(253,252,248,0.6);white-space:nowrap;pointer-events:none}
+.map-slot{position:absolute;transform:translate(-50%,-50%);width:40px;height:40px;border-radius:50%;border:2px dashed rgba(201,169,110,0.35);display:flex;align-items:center;justify-content:center;cursor:pointer;transition:all 0.25s;background:rgba(201,169,110,0.05)}
+.map-slot:hover{border-color:var(--gold);background:rgba(201,169,110,0.15);transform:translate(-50%,-50%) scale(1.15)}
+.map-slot.filled{border-style:solid;border-color:rgba(201,169,110,0.5);background:rgba(8,14,26,0.85);cursor:default}
+.map-slot.filled:hover{transform:translate(-50%,-50%) scale(1)}
+.slot-icon{font-size:1.1rem}
+.slot-plus{font-size:1.1rem;color:rgba(201,169,110,0.5)}
+.slot-label{position:absolute;top:calc(100% + 4px);left:50%;transform:translateX(-50%);white-space:nowrap;font-size:0.52rem;letter-spacing:1px;color:rgba(253,252,248,0.5);pointer-events:none}
+.map-legend{position:absolute;bottom:1rem;left:1rem;background:rgba(8,14,26,0.9);border:1px solid var(--brd);padding:0.75rem 1rem;font-size:0.6rem;color:var(--mist)}
+
+/* RIGHT PANEL */
+.right-panel{background:var(--n2);border-left:1px solid var(--brd);padding:1.25rem;overflow-y:auto;display:flex;flex-direction:column;gap:1rem}
+
+/* PROJECT CARDS */
+.project-grid{display:flex;flex-direction:column;gap:0.5rem;max-height:400px;overflow-y:auto}
+.project-card{border:1px solid var(--brd);padding:0.75rem;cursor:pointer;transition:all 0.2s;background:var(--n3)}
+.project-card:hover{border-color:rgba(201,169,110,0.4);background:var(--n4)}
+.project-card.selected{border-color:var(--gold);background:rgba(201,169,110,0.08)}
+.project-card.unaffordable{opacity:0.4;cursor:not-allowed}
+.project-header{display:flex;justify-content:space-between;align-items:flex-start;gap:0.5rem}
+.project-name{font-size:0.8rem;font-weight:500;color:var(--white)}
+.project-cost{font-size:0.65rem;color:var(--gold);border:1px solid var(--brd);padding:2px 7px;white-space:nowrap}
+.project-cat{font-size:0.52rem;letter-spacing:2px;text-transform:uppercase;color:var(--gold-dim);margin-top:2px}
+.project-impacts{display:grid;grid-template-columns:1fr 1fr;gap:2px;margin-top:0.5rem;font-size:0.6rem;color:var(--mist)}
+.impact-pos{color:rgba(93,202,165,0.9)}
+.impact-neg{color:rgba(226,75,74,0.9)}
+.impact-neu{color:var(--mist)}
+
+/* ADVISOR LOG */
+.log-list{display:flex;flex-direction:column;gap:0.4rem;max-height:200px;overflow-y:auto}
+.log-entry{font-size:0.68rem;color:var(--mist);line-height:1.6;padding:0.5rem 0.6rem;border-left:2px solid var(--brd)}
+.log-entry.log-good{border-left-color:var(--green);color:rgba(93,202,165,0.85)}
+.log-entry.log-warn{border-left-color:var(--amber);color:rgba(239,159,39,0.85)}
+.log-entry.log-bad{border-left-color:var(--red);color:rgba(226,75,74,0.85)}
+.log-entry.log-info{border-left-color:var(--gold);color:rgba(201,169,110,0.85)}
+
+/* LEADERBOARD MODAL */
+#lb-modal{display:none;position:fixed;inset:0;z-index:9999}
+#lb-backdrop{position:absolute;inset:0;background:rgba(4,8,15,0.9);backdrop-filter:blur(8px)}
+#lb-panel{position:absolute;top:50%;left:50%;transform:translate(-50%,-50%);width:min(680px,95vw);max-height:90vh;overflow-y:auto;background:var(--n2);border:1px solid var(--brd)}
+.lb-header{padding:2rem 2.5rem 1.5rem;border-bottom:1px solid var(--brd);display:flex;justify-content:space-between;align-items:flex-start}
+.lb-title{font-family:var(--ff);font-size:2rem;font-weight:300;color:var(--white)}
+.lb-body{padding:2rem 2.5rem}
+.lb-row{display:flex;align-items:center;gap:1rem;padding:0.85rem 0;border-bottom:1px solid rgba(201,169,110,0.08)}
+.lb-rank{font-family:var(--ff);font-size:1.5rem;font-weight:300;color:var(--gold-dim);width:2rem;text-align:center;flex-shrink:0}
+.lb-rank.top{color:var(--gold)}
+.lb-info{flex:1}
+.lb-player{font-size:0.85rem;color:var(--white);font-weight:500}
+.lb-dest{font-size:0.65rem;color:var(--mist);letter-spacing:1px;margin-top:2px}
+.lb-rank-badge{font-size:0.6rem;letter-spacing:1.5px;text-transform:uppercase;color:var(--gold);border:1px solid var(--brd);padding:2px 8px;margin-top:3px;display:inline-block}
+.lb-score{font-family:var(--ff);font-size:1.6rem;font-weight:300;color:var(--gold)}
+.lb-turns{font-size:0.6rem;color:var(--mist);text-align:right;margin-top:2px}
+.lb-submit{padding:1.5rem 2.5rem;border-top:1px solid var(--brd);display:flex;gap:1rem;align-items:center}
+.lb-input{flex:1;background:var(--n3);border:1px solid var(--brd);color:var(--white);padding:0.65rem 1rem;font-size:0.85rem;outline:none}
+.lb-input:focus{border-color:var(--gold)}
+
+/* END GAME MODAL */
+#end-modal{display:none;position:fixed;inset:0;z-index:9998}
+#end-backdrop{position:absolute;inset:0;background:rgba(4,8,15,0.92);backdrop-filter:blur(10px)}
+#end-panel{position:absolute;top:50%;left:50%;transform:translate(-50%,-50%);width:min(560px,92vw);background:var(--n2);border:1px solid var(--brd);padding:3rem;text-align:center}
+.end-score{font-family:var(--ff);font-size:5rem;font-weight:300;color:var(--gold);line-height:1}
+.end-rank{font-size:0.6rem;letter-spacing:3px;text-transform:uppercase;color:var(--mist);margin-top:0.5rem}
+.end-rank-name{font-family:var(--ff);font-size:1.8rem;font-weight:300;color:var(--white);margin-top:0.25rem}
+.end-stats{display:grid;grid-template-columns:repeat(3,1fr);gap:1px;background:var(--brd);margin:2rem 0;border:1px solid var(--brd)}
+.end-stat{background:var(--n3);padding:1rem;text-align:center}
+.end-stat-val{font-family:var(--ff);font-size:1.4rem;font-weight:300;color:var(--gold)}
+.end-stat-label{font-size:0.52rem;letter-spacing:2px;text-transform:uppercase;color:var(--mist);margin-top:3px}
+.end-btns{display:flex;gap:0.75rem;justify-content:center;flex-wrap:wrap}
+
+/* PLACEMENT TOOLTIP */
+.placement-tooltip{position:absolute;background:rgba(8,14,26,0.95);border:1px solid var(--brd);padding:0.75rem 1rem;font-size:0.7rem;color:var(--mist);pointer-events:none;z-index:50;min-width:160px;display:none}
+.placement-tooltip.visible{display:block}
+
+/* BAGFREE HIGHLIGHT */
+.bagfree-effect{animation:bagfree-pulse 2s ease-in-out}
+@keyframes bagfree-pulse{0%,100%{box-shadow:none}50%{box-shadow:0 0 20px rgba(93,202,165,0.4)}}
+
+@media(max-width:900px){
+  .game-layout{grid-template-columns:1fr}
+  .left-panel,.right-panel{max-height:300px}
+}
+</style>
+</head>
+<body>
+
+<!-- NAV -->
+<nav id="tdx-nav">
+  <div class="tdx-logo">
+    Tourism DX
+    <span>Powered by BagFree</span>
+  </div>
+  <div style="display:flex;gap:0.75rem;align-items:center;">
+    <button class="btn-ghost" onclick="openLeaderboard()">⬡ Leaderboard</button>
+    <a href="/departure-lounge-landing" class="nav-back">← Departure Lounge</a>
+  </div>
+</nav>
+
+<!-- SETUP SCREEN -->
+<div id="setup-screen" style="background:linear-gradient(160deg,#04080F 0%,#080E1A 50%,#04080F 100%);">
+
+  <!-- Hero marketing block -->
+  <div style="text-align:center;max-width:900px;width:100%;padding:0 2rem;margin-bottom:3rem;">
+    <div style="font-size:0.58rem;letter-spacing:5px;text-transform:uppercase;color:rgba(201,169,110,0.6);margin-bottom:1.5rem;display:flex;align-items:center;justify-content:center;gap:1rem;">
+      <span style="width:40px;height:1px;background:rgba(201,169,110,0.4);display:inline-block;"></span>
+      BagFree · Destination Lab
+      <span style="width:40px;height:1px;background:rgba(201,169,110,0.4);display:inline-block;"></span>
+    </div>
+    <h1 style="font-family:var(--ff);font-size:clamp(3rem,7vw,6.5rem);font-weight:300;line-height:0.95;letter-spacing:-2px;color:#FDFCF8;margin-bottom:1.5rem;">
+      Tourism<br><em style="font-style:italic;color:var(--gold)">DX</em>
+    </h1>
+    <div style="font-size:clamp(1rem,2vw,1.4rem);color:rgba(253,252,248,0.55);font-family:var(--ff);font-weight:300;letter-spacing:1px;margin-bottom:1rem;">
+      The Destination Management Simulator
+    </div>
+    <p style="font-size:0.92rem;color:rgba(253,252,248,0.45);line-height:2;max-width:620px;margin:0 auto 2.5rem;">
+      Place attractions, infrastructure, and BagFree services across real destinations. Watch tourism, economy, crime, pollution, and unemployment respond in real time. Compete on the global leaderboard.
+    </p>
+
+    <!-- Feature pills -->
+    <div style="display:flex;gap:0.5rem;flex-wrap:wrap;justify-content:center;margin-bottom:3rem;">
+      <span style="font-size:0.62rem;letter-spacing:1.5px;text-transform:uppercase;border:1px solid rgba(201,169,110,0.25);padding:5px 14px;color:rgba(201,169,110,0.8);">Turn-Based Strategy</span>
+      <span style="font-size:0.62rem;letter-spacing:1.5px;text-transform:uppercase;border:1px solid rgba(201,169,110,0.25);padding:5px 14px;color:rgba(201,169,110,0.8);">25+ Attractions</span>
+      <span style="font-size:0.62rem;letter-spacing:1.5px;text-transform:uppercase;border:1px solid rgba(201,169,110,0.25);padding:5px 14px;color:rgba(201,169,110,0.8);">9 Live Metrics</span>
+      <span style="font-size:0.62rem;letter-spacing:1.5px;text-transform:uppercase;border:1px solid rgba(201,169,110,0.25);padding:5px 14px;color:rgba(201,169,110,0.8);">Real Destinations</span>
+      <span style="font-size:0.62rem;letter-spacing:1.5px;text-transform:uppercase;border:1px solid rgba(93,202,165,0.35);padding:5px 14px;color:rgba(93,202,165,0.8);">◈ BagFree Effect</span>
+      <span style="font-size:0.62rem;letter-spacing:1.5px;text-transform:uppercase;border:1px solid rgba(201,169,110,0.25);padding:5px 14px;color:rgba(201,169,110,0.8);">Global Leaderboard</span>
+    </div>
+
+    <!-- Metrics preview -->
+    <div style="display:grid;grid-template-columns:repeat(3,1fr);gap:1px;background:rgba(201,169,110,0.1);border:1px solid rgba(201,169,110,0.1);max-width:600px;margin:0 auto 3rem;">
+      <div style="background:var(--n2);padding:1rem;text-align:center;">
+        <div style="font-family:var(--ff);font-size:1.8rem;font-weight:300;color:var(--gold);">9</div>
+        <div style="font-size:0.55rem;letter-spacing:2px;text-transform:uppercase;color:rgba(253,252,248,0.4);margin-top:3px;">Impact Metrics</div>
+      </div>
+      <div style="background:var(--n2);padding:1rem;text-align:center;">
+        <div style="font-family:var(--ff);font-size:1.8rem;font-weight:300;color:var(--gold);">25+</div>
+        <div style="font-size:0.55rem;letter-spacing:2px;text-transform:uppercase;color:rgba(253,252,248,0.4);margin-top:3px;">Attractions</div>
+      </div>
+      <div style="background:var(--n2);padding:1rem;text-align:center;">
+        <div style="font-family:var(--ff);font-size:1.8rem;font-weight:300;color:var(--gold);">6</div>
+        <div style="font-size:0.55rem;letter-spacing:2px;text-transform:uppercase;color:rgba(253,252,248,0.4);margin-top:3px;">Destinations</div>
+      </div>
+    </div>
+
+    <!-- Rank ladder teaser -->
+    <div style="margin-bottom:3rem;">
+      <div style="font-size:0.55rem;letter-spacing:3px;text-transform:uppercase;color:rgba(201,169,110,0.5);margin-bottom:1rem;">Earn your rank</div>
+      <div style="display:flex;justify-content:center;gap:0.4rem;flex-wrap:wrap;align-items:center;">
+        <span style="font-size:0.6rem;color:rgba(253,252,248,0.3);border:1px solid rgba(255,255,255,0.06);padding:3px 10px;">Newcomer</span>
+        <span style="color:rgba(201,169,110,0.3);font-size:0.7rem;">→</span>
+        <span style="font-size:0.6rem;color:rgba(253,252,248,0.4);border:1px solid rgba(201,169,110,0.15);padding:3px 10px;">City Strategist</span>
+        <span style="color:rgba(201,169,110,0.3);font-size:0.7rem;">→</span>
+        <span style="font-size:0.6rem;color:rgba(201,169,110,0.7);border:1px solid rgba(201,169,110,0.3);padding:3px 10px;">Tourism Architect</span>
+        <span style="color:rgba(201,169,110,0.3);font-size:0.7rem;">→</span>
+        <span style="font-size:0.6rem;color:rgba(201,169,110,1);border:1px solid rgba(201,169,110,0.5);padding:3px 10px;">Global Curator</span>
+        <span style="color:rgba(93,202,165,0.5);font-size:0.7rem;">→</span>
+        <span style="font-size:0.6rem;color:#5DCAA5;border:1px solid rgba(93,202,165,0.4);padding:3px 10px;">◈ BagFree Pioneer</span>
+      </div>
+    </div>
+  </div>
+
+  <!-- Game setup card -->
+  <div class="setup-card">
+    <div class="setup-eyebrow">Configure Your Game</div>
+    <h2 class="setup-title" style="font-size:1.8rem;">Choose your destination.<br>Set your turns. Begin.</h2>
+    <p class="setup-sub" style="font-size:0.82rem;">Select a real or custom destination, name yourself, and decide how many turns you want. Every turn counts on the global leaderboard.</p>
+
+    <div class="setup-grid">
+      <div class="setup-field">
+        <label>Your Name</label>
+        <input type="text" id="player-name" placeholder="Enter your name" maxlength="30">
+      </div>
+      <div class="setup-field">
+        <label>Destination</label>
+        <select id="dest-select">
+          <option value="coastal-isle">Coastal Isle — Generic Island</option>
+          <option value="mountain-coast">Mountain Coast — Highland Nation</option>
+          <option value="urban-bay">Urban Bay — Coastal Republic</option>
+          <option value="rome">Rome — Italy</option>
+          <option value="tokyo">Tokyo — Japan</option>
+          <option value="st-vincent">St. Vincent — Caribbean</option>
+          <option value="custom">✦ Custom Destination</option>
+        </select>
+      </div>
+    </div>
+
+    <div id="custom-dest-fields" style="display:none;margin-bottom:1.5rem;">
+      <div class="setup-grid">
+        <div class="setup-field">
+          <label>Destination Name</label>
+          <input type="text" id="custom-name" placeholder="e.g. Nova Bay">
+        </div>
+        <div class="setup-field">
+          <label>Country / Region</label>
+          <input type="text" id="custom-country" placeholder="e.g. South Atlantic">
+        </div>
+      </div>
+      <div class="setup-field" style="margin-bottom:1rem;">
+        <label>Starting Budget ($M)</label>
+        <input type="number" id="custom-budget" placeholder="100" min="50" max="300" value="120">
+      </div>
+    </div>
+
+    <div class="setup-field" style="margin-bottom:1.5rem;">
+      <label>Number of Turns</label>
+      <div class="turn-cards">
+        <button class="turn-card active" data-turns="10">10 Turns<br><span style="font-size:0.55rem;color:var(--mist)">Quick game</span></button>
+        <button class="turn-card" data-turns="20">20 Turns<br><span style="font-size:0.55rem;color:var(--mist)">Standard</span></button>
+        <button class="turn-card" data-turns="30">30 Turns<br><span style="font-size:0.55rem;color:var(--mist)">Extended</span></button>
+        <button class="turn-card" data-turns="50">50 Turns<br><span style="font-size:0.55rem;color:var(--mist)">Marathon</span></button>
+        <button class="turn-card" data-turns="custom">Custom</button>
+      </div>
+      <div class="turn-custom" id="custom-turns-input" style="display:none">
+        <input type="number" id="custom-turns-val" min="5" max="100" value="15" placeholder="Turns">
+        <span style="font-size:0.72rem;color:var(--mist)">turns (5–100)</span>
+      </div>
+    </div>
+
+    <div style="display:flex;gap:0.75rem;flex-wrap:wrap;">
+      <button class="btn-primary" onclick="startGame()">Start Simulation ✦</button>
+      <button class="btn-ghost" onclick="openLeaderboard()">View Leaderboard</button>
+    </div>
+  </div>
+</div>
+
+<!-- GAME SCREEN -->
+<div id="game-screen">
+  <div class="game-header">
+    <div>
+      <div class="game-title" id="game-dest-title">Coastal Isle</div>
+      <div style="font-size:0.6rem;letter-spacing:2px;text-transform:uppercase;color:var(--mist);margin-top:3px;" id="game-player-label">Regional Planner</div>
+    </div>
+    <div class="game-meta">
+      <div class="meta-pill">Turn <span id="hdr-turn">1</span> of <span id="hdr-max-turn">10</span></div>
+      <div class="meta-pill">Budget <span id="hdr-budget">$120M</span></div>
+      <div class="meta-pill">Score <span id="hdr-score">0</span></div>
+      <div class="meta-pill" id="hdr-rank-pill">Rank: <span>Newcomer</span></div>
+      <button class="btn-end-turn" id="end-turn-btn" onclick="endTurn()">End Turn →</button>
+      <button class="btn-ghost" onclick="openLeaderboard()" style="padding:0.5rem 0.85rem;font-size:0.58rem;">⬡ Board</button>
+    </div>
+  </div>
+
+  <div class="game-layout">
+    <!-- LEFT: Metrics + Score -->
+    <div class="left-panel">
+      <div class="panel-section">
+        <div class="panel-label">Destination Score</div>
+        <div class="score-display">
+          <div class="score-number" id="score-display">0</div>
+          <div class="score-label">Overall Rating</div>
+        </div>
+        <div class="rank-badge">
+          <div class="rank-name" id="rank-name-display">Newcomer</div>
+          <div class="rank-sub" id="rank-sub-display">Getting started</div>
+        </div>
+        <div class="turn-progress" style="margin-top:1rem;">
+          <div style="display:flex;justify-content:space-between;font-size:0.58rem;color:var(--mist);">
+            <span>Turn Progress</span><span id="turn-progress-label">1 / 10</span>
+          </div>
+          <div class="turn-bar"><div class="turn-bar-fill" id="turn-bar" style="width:0%"></div></div>
+        </div>
+      </div>
+
+      <div class="panel-section">
+        <div class="panel-label">Live Metrics</div>
+        <div id="metrics-display"></div>
+      </div>
+
+      <div class="panel-section">
+        <div class="panel-label">Budget</div>
+        <div style="font-family:var(--ff);font-size:2rem;font-weight:300;color:var(--gold)" id="budget-display">$120M</div>
+        <div style="font-size:0.65rem;color:var(--mist);margin-top:0.3rem;">Replenishes each turn from tourism income</div>
+        <button class="btn-ghost" style="width:100%;margin-top:0.75rem;padding:0.5rem;" onclick="undoLast()">↩ Undo Last Placement</button>
+      </div>
+    </div>
+
+    <!-- CENTER: MAP -->
+    <div class="map-area">
+      <div class="map-container" id="map-container">
+        <div class="map-grid"></div>
+        <div id="map-slots-container"></div>
+        <div id="map-labels-container"></div>
+        <div class="map-legend">
+          <div style="color:var(--gold);font-size:0.58rem;letter-spacing:2px;text-transform:uppercase;margin-bottom:0.4rem;">◈ Open slots — click to place selected project</div>
+          <div style="display:flex;gap:1rem;flex-wrap:wrap;">
+            <span>⬡ = Open slot</span>
+            <span>Icon = Placed attraction</span>
+          </div>
+        </div>
+        <div id="placement-tooltip" class="placement-tooltip"></div>
+      </div>
+    </div>
+
+    <!-- RIGHT: Projects + Log -->
+    <div class="right-panel">
+      <div class="panel-section">
+        <div class="panel-label">Selected Project</div>
+        <div id="selected-project-display" style="font-size:0.82rem;color:var(--white);margin-bottom:0.3rem;font-weight:500;">Airport Upgrade</div>
+        <div id="selected-project-desc" style="font-size:0.68rem;color:var(--mist);line-height:1.6;margin-bottom:0.75rem;"></div>
+        <div id="selected-project-impacts" style="display:grid;grid-template-columns:1fr 1fr;gap:3px;font-size:0.62rem;"></div>
+      </div>
+
+      <div class="panel-section">
+        <div class="panel-label">Project Library — Choose & Place on Map</div>
+        <div class="project-grid" id="project-grid"></div>
+      </div>
+
+      <div class="panel-section">
+        <div class="panel-label">Advisor Feed</div>
+        <div class="log-list" id="log-list"></div>
+      </div>
+    </div>
+  </div>
+</div>
+
+<!-- LEADERBOARD MODAL -->
+<div id="lb-modal">
+  <div id="lb-backdrop" onclick="closeLeaderboard()"></div>
+  <div id="lb-panel">
+    <div class="lb-header">
+      <div>
+        <div style="font-size:0.52rem;letter-spacing:3px;text-transform:uppercase;color:var(--gold);margin-bottom:0.5rem;">Tourism DX · Global Rankings</div>
+        <div class="lb-title">Destination Leaderboard</div>
+      </div>
+      <button onclick="closeLeaderboard()" class="btn-ghost" style="padding:0.4rem 0.75rem;font-size:0.7rem;">✕</button>
+    </div>
+    <div class="lb-body" id="lb-body">
+      <div style="text-align:center;padding:2rem;color:var(--mist);font-size:0.82rem;">Loading scores...</div>
+    </div>
+  </div>
+</div>
+
+<!-- END GAME MODAL -->
+<div id="end-modal">
+  <div id="end-backdrop"></div>
+  <div id="end-panel">
+    <div style="font-size:0.55rem;letter-spacing:3px;text-transform:uppercase;color:var(--gold);margin-bottom:1rem;">Game Complete</div>
+    <div class="end-score" id="end-score-display">0</div>
+    <div class="end-rank" id="end-rank-label">Final Rank</div>
+    <div class="end-rank-name" id="end-rank-name">Newcomer</div>
+    <div class="end-stats" id="end-stats"></div>
+    <div style="margin-bottom:1.5rem;">
+      <div style="font-size:0.6rem;letter-spacing:2px;text-transform:uppercase;color:var(--mist);margin-bottom:0.5rem;">Submit your score</div>
+      <div style="display:flex;gap:0.5rem;">
+        <input type="text" class="lb-input" id="submit-name-input" placeholder="Your name" maxlength="30">
+        <button class="btn-primary" onclick="submitScore()" style="white-space:nowrap;padding:0.65rem 1.25rem;font-size:0.6rem;">Submit ✦</button>
+      </div>
+      <div id="submit-status" style="font-size:0.65rem;color:var(--green);margin-top:0.5rem;display:none;">Score submitted! ✓</div>
+    </div>
+    <div class="end-btns">
+      <button class="btn-primary" onclick="resetToSetup()">Play Again</button>
+      <button class="btn-ghost" onclick="openLeaderboard()">View Leaderboard</button>
+      <a href="/departure-lounge-landing" class="btn-ghost" style="display:inline-block;">← Back to Lounge</a>
+    </div>
+  </div>
+</div>
+
+<script>
+// ── DESTINATIONS ──────────────────────────────────────────────────────────────
+const DESTINATIONS = {
+  'coastal-isle': {
+    name:'Coastal Isle', country:'Generic Island Region',
+    budget:120,
+    metrics:{tourism:54,economy:60,localLife:70,unemployment:28,traffic:28,crime:22,pollution:30,sustainability:74,energy:55},
+    slots:[
+      {x:18,y:26,label:'Old Port'},{x:67,y:21,label:'Airport'},{x:41,y:58,label:'Town Center'},
+      {x:77,y:67,label:'South Beach'},{x:25,y:70,label:'Fishing Village'},{x:55,y:35,label:'Central Park'},
+      {x:85,y:40,label:'Marina'},{x:10,y:50,label:'Historic District'},
+    ]
+  },
+  'mountain-coast': {
+    name:'Mountain Coast', country:'Generic Highland Nation',
+    budget:105,
+    metrics:{tourism:46,economy:52,localLife:76,unemployment:32,traffic:18,crime:18,pollution:18,sustainability:82,energy:60},
+    slots:[
+      {x:23,y:18,label:'Cliff District'},{x:62,y:29,label:'Regional Airstrip'},{x:49,y:56,label:'Cultural Quarter'},
+      {x:80,y:76,label:'Marine Reserve'},{x:15,y:60,label:'Valley Village'},{x:70,y:45,label:'Summit Trail'},
+      {x:38,y:30,label:'Heritage Site'},{x:88,y:20,label:'Scenic Overlook'},
+    ]
+  },
+  'urban-bay': {
+    name:'Urban Bay', country:'Generic Coastal Republic',
+    budget:140,
+    metrics:{tourism:62,economy:66,localLife:63,unemployment:22,traffic:39,crime:27,pollution:42,sustainability:58,energy:48},
+    slots:[
+      {x:17,y:31,label:'Business Port'},{x:58,y:18,label:'International Airport'},{x:42,y:54,label:'Downtown'},
+      {x:73,y:70,label:'Waterfront Strip'},{x:28,y:65,label:'Arts District'},{x:82,y:35,label:'Tech Quarter'},
+      {x:50,y:80,label:'South Shore'},{x:12,y:15,label:'Industrial Zone'},
+    ]
+  },
+  'rome': {
+    name:'Rome', country:'Italy · Mediterranean',
+    budget:160,
+    metrics:{tourism:85,economy:72,localLife:65,unemployment:18,traffic:72,crime:32,pollution:55,sustainability:50,energy:45},
+    slots:[
+      {x:35,y:40,label:'Colosseum Area'},{x:55,y:25,label:'Vatican Quarter'},{x:70,y:55,label:'Trastevere'},
+      {x:20,y:60,label:'Campo de Fiori'},{x:80,y:30,label:'Borghese Gardens'},{x:45,y:70,label:'Forum District'},
+      {x:15,y:30,label:'Piazza Navona'},{x:65,y:75,label:'Testaccio'},
+    ]
+  },
+  'tokyo': {
+    name:'Tokyo', country:'Japan · Asia Pacific',
+    budget:180,
+    metrics:{tourism:82,economy:85,localLife:72,unemployment:8,traffic:65,crime:12,pollution:48,sustainability:62,energy:40},
+    slots:[
+      {x:30,y:35,label:'Shibuya'},{x:60,y:20,label:'Shinjuku'},{x:75,y:50,label:'Akihabara'},
+      {x:20,y:65,label:'Asakusa'},{x:50,y:60,label:'Roppongi'},{x:82,y:72,label:'Odaiba'},
+      {x:40,y:20,label:'Harajuku'},{x:10,y:45,label:'Yanaka'},
+    ]
+  },
+  'st-vincent': {
+    name:'St. Vincent', country:'St. Vincent & the Grenadines',
+    budget:110,
+    metrics:{tourism:58,economy:48,localLife:78,unemployment:38,traffic:22,crime:28,pollution:20,sustainability:80,energy:65},
+    slots:[
+      {x:25,y:30,label:'Kingstown Port'},{x:60,y:20,label:'E.T. Joshua Airport'},{x:45,y:55,label:'Botanical Garden'},
+      {x:75,y:65,label:'Villa Beach'},{x:15,y:65,label:'Bequia Ferry'},{x:80,y:35,label:'Tobago Cays'},
+      {x:35,y:75,label:'La Soufrière'},{x:65,y:80,label:'Mustique'},
+    ]
+  },
+};
+
+// ── PROJECT LIBRARY ───────────────────────────────────────────────────────────
+const PROJECTS = [
+  // Infrastructure
+  {id:'airport',name:'Airport Upgrade',cat:'Infrastructure',icon:'✈',cost:18,
+   impact:{tourism:9,economy:5,localLife:-2,unemployment:-3,traffic:8,crime:1,pollution:-4,sustainability:-3,energy:-5},
+   desc:'Increases international access. Boosts visitor flow but adds congestion and emissions.'},
+  {id:'transit',name:'Transit Network',cat:'Mobility',icon:'🚌',cost:14,
+   impact:{tourism:5,economy:3,localLife:6,unemployment:-2,traffic:-10,crime:-1,pollution:4,sustainability:6,energy:3},
+   desc:'Reduces gridlock and car dependency. Improves movement and local quality of life.'},
+  {id:'roads',name:'Road Expansion',cat:'Infrastructure',icon:'🛣',cost:12,
+   impact:{tourism:3,economy:4,localLife:-1,unemployment:-2,traffic:5,crime:0,pollution:-6,sustainability:-4,energy:-3},
+   desc:'Easier access to more areas but increases vehicle dependency and pollution.'},
+  {id:'port',name:'Cruise Port',cat:'Infrastructure',icon:'⚓',cost:22,
+   impact:{tourism:12,economy:8,localLife:-4,unemployment:-5,traffic:9,crime:2,pollution:-7,sustainability:-5,energy:-6},
+   desc:'Major cruise arrivals and spending but heavy environmental and congestion costs.'},
+
+  // Hospitality
+  {id:'resort',name:'Luxury Resort',cat:'Hospitality',icon:'🏨',cost:22,
+   impact:{tourism:10,economy:7,localLife:-5,unemployment:-4,traffic:5,crime:2,pollution:-5,sustainability:-4,energy:-7},
+   desc:'Drives high-spend tourism and prestige but pressures housing and local resources.'},
+  {id:'boutique',name:'Boutique Hotels',cat:'Hospitality',icon:'🏩',cost:14,
+   impact:{tourism:6,economy:4,localLife:2,unemployment:-3,traffic:2,crime:0,pollution:-1,sustainability:2,energy:-2},
+   desc:'Lower impact, higher authenticity. Attracts quality visitors without mass tourism pressure.'},
+  {id:'bagfree',name:'BagFree Hub',cat:'BagFree',icon:'◈',cost:16,
+   impact:{tourism:8,economy:6,localLife:5,unemployment:-4,traffic:-4,crime:-1,pollution:3,sustainability:5,energy:2},
+   desc:'BagFree delivery hubs at hotels eliminate luggage friction. Airport throughput rises, tourist stress drops, and local employment grows. A unique multiplier for the region.'},
+  {id:'hostel',name:'Backpacker Hub',cat:'Hospitality',icon:'🎒',cost:8,
+   impact:{tourism:5,economy:3,localLife:1,unemployment:-2,traffic:1,crime:1,pollution:-1,sustainability:1,energy:-1},
+   desc:'Budget travel draw. High volume, lower spend, but good for year-round occupancy.'},
+
+  // Culture & Entertainment
+  {id:'festival',name:'Cultural Festival',cat:'Culture',icon:'🎭',cost:10,
+   impact:{tourism:7,economy:4,localLife:3,unemployment:-2,traffic:6,crime:1,pollution:-1,sustainability:0,energy:-2},
+   desc:'Seasonal demand surge and global attention. Adds event pressure on infrastructure.'},
+  {id:'museum',name:'Heritage Center',cat:'Heritage',icon:'🏛',cost:15,
+   impact:{tourism:5,economy:3,localLife:6,unemployment:-3,traffic:1,crime:-1,pollution:0,sustainability:2,energy:-1},
+   desc:'Strengthens cultural identity and extends average visitor stay.'},
+  {id:'stadium',name:'Sports Stadium',cat:'Entertainment',icon:'🏟',cost:25,
+   impact:{tourism:8,economy:6,localLife:-2,unemployment:-5,traffic:12,crime:3,pollution:-5,sustainability:-4,energy:-8},
+   desc:'Major events draw. Significant traffic and energy cost but strong economic return.'},
+  {id:'casino',name:'Casino & Resort',cat:'Entertainment',icon:'🎰',cost:28,
+   impact:{tourism:10,economy:9,localLife:-6,unemployment:-6,traffic:8,crime:6,pollution:-4,sustainability:-5,energy:-9},
+   desc:'High revenue, high risk. Crime and social impacts must be managed carefully.'},
+  {id:'arts',name:'Arts District',cat:'Culture',icon:'🎨',cost:11,
+   impact:{tourism:4,economy:3,localLife:7,unemployment:-3,traffic:1,crime:-2,pollution:1,sustainability:3,energy:0},
+   desc:'Creative economy driver. Improves livability and attracts quality visitors.'},
+
+  // Nature & Sustainability
+  {id:'eco',name:'Eco Park',cat:'Nature',icon:'🌿',cost:12,
+   impact:{tourism:5,economy:2,localLife:5,unemployment:-2,traffic:0,crime:-1,pollution:4,sustainability:9,energy:5},
+   desc:'Supports eco-tourism and local pride while building long-term sustainability.'},
+  {id:'beach',name:'Beach Renewal',cat:'Scenic',icon:'🏖',cost:13,
+   impact:{tourism:6,economy:3,localLife:4,unemployment:-2,traffic:2,crime:0,pollution:3,sustainability:6,energy:2},
+   desc:'Restored shorelines improve destination image and long-term appeal.'},
+  {id:'solar',name:'Solar Grid',cat:'Sustainability',icon:'☀',cost:16,
+   impact:{tourism:2,economy:2,localLife:4,unemployment:-2,traffic:0,crime:0,pollution:6,sustainability:8,energy:12},
+   desc:'Clean energy infrastructure reduces carbon footprint and long-term energy costs.'},
+  {id:'wildlife',name:'Wildlife Sanctuary',cat:'Nature',icon:'🦁',cost:14,
+   impact:{tourism:6,economy:2,localLife:5,unemployment:-1,traffic:-1,crime:-1,pollution:5,sustainability:10,energy:3},
+   desc:'Eco-tourism anchor. Protects biodiversity while drawing conservation travellers.'},
+  {id:'gardens',name:'Botanical Gardens',cat:'Nature',icon:'🌺',cost:10,
+   impact:{tourism:4,economy:2,localLife:6,unemployment:-2,traffic:0,crime:-1,pollution:3,sustainability:7,energy:2},
+   desc:'Green space investment improves quality of life and visitor experience.'},
+
+  // Community & Safety
+  {id:'safety',name:'Safety Program',cat:'Community',icon:'🛡',cost:11,
+   impact:{tourism:4,economy:1,localLife:7,unemployment:-1,traffic:0,crime:-9,pollution:0,sustainability:1,energy:0},
+   desc:'Reduces crime risk, improves visitor confidence and resident quality of life.'},
+  {id:'housing',name:'Affordable Housing',cat:'Community',icon:'🏘',cost:15,
+   impact:{tourism:-1,economy:2,localLife:9,unemployment:-5,traffic:1,crime:-5,pollution:-1,sustainability:3,energy:0},
+   desc:'Directly addresses displacement and unemployment. Reduces social tension from tourism.'},
+  {id:'school',name:'Education Hub',cat:'Community',icon:'🎓',cost:13,
+   impact:{tourism:1,economy:3,localLife:8,unemployment:-8,traffic:1,crime:-4,pollution:0,sustainability:4,energy:0},
+   desc:'Long-term investment in local workforce. Reduces unemployment and crime over time.'},
+  {id:'hospital',name:'Medical Centre',cat:'Community',icon:'🏥',cost:14,
+   impact:{tourism:2,economy:2,localLife:9,unemployment:-3,traffic:2,crime:-2,pollution:0,sustainability:2,energy:-2},
+   desc:'Essential infrastructure for growing destinations. Improves local and visitor safety.'},
+  {id:'market',name:'Local Market',cat:'Community',icon:'🛒',cost:8,
+   impact:{tourism:3,economy:4,localLife:5,unemployment:-4,traffic:1,crime:-1,pollution:0,sustainability:2,energy:0},
+   desc:'Economic vitality at street level. Supports small business and local employment.'},
+
+  // Technology & Business
+  {id:'cowork',name:'Co-Work District',cat:'Tech',icon:'💻',cost:12,
+   impact:{tourism:3,economy:6,localLife:3,unemployment:-6,traffic:0,crime:0,pollution:0,sustainability:2,energy:-2},
+   desc:'Digital nomad attraction. Diversifies the economy beyond seasonal tourism.'},
+  {id:'convention',name:'Convention Center',cat:'Business',icon:'🏢',cost:20,
+   impact:{tourism:8,economy:8,localLife:-2,unemployment:-5,traffic:7,crime:1,pollution:-3,sustainability:-2,energy:-5},
+   desc:'Business travel driver. Reduces seasonal dependence and increases average spend.'},
+];
+
+// ── RANKS ─────────────────────────────────────────────────────────────────────
+const RANKS = [
+  {min:0,  name:'Newcomer',        sub:'Just getting started'},
+  {min:20, name:'Local Planner',   sub:'Beginning to make an impact'},
+  {min:35, name:'City Strategist', sub:'Thinking beyond the basics'},
+  {min:48, name:'Regional Director',sub:'Balancing growth and livability'},
+  {min:60, name:'Tourism Architect',sub:'Building destination excellence'},
+  {min:70, name:'Urban Visionary', sub:'Shaping the future of travel'},
+  {min:78, name:'Global Curator',  sub:'World-class destination management'},
+  {min:86, name:'Destination Legend',sub:'Rare mastery across all metrics'},
+  {min:94, name:'BagFree Pioneer', sub:'Maximum impact. Minimum friction.'},
+];
+
+// ── GAME STATE ────────────────────────────────────────────────────────────────
+let G = {};
+
+function initGame(destId, playerName, maxTurns, customDest) {
+  const base = customDest || DESTINATIONS[destId];
+  G = {
+    destId, playerName, maxTurns,
+    turn: 1,
+    budget: base.budget,
+    destName: customDest ? customDest.name : base.name,
+    destCountry: customDest ? customDest.country : base.country,
+    metrics: {...base.metrics},
+    placements: [],
+    placedThisTurn: [],
+    log: [],
+    slots: base.slots.map((s,i) => ({...s, id:i, filled:false, projectId:null})),
+    selectedProjectId: PROJECTS[0].id,
+    gameOver: false,
+  };
+}
+
+function getScore() {
+  const m = G.metrics;
+  return Math.round(Math.max(0, Math.min(100,
+    m.tourism       * 0.20 +
+    m.economy       * 0.15 +
+    m.localLife     * 0.15 +
+    (100-m.unemployment) * 0.12 +
+    (100-m.traffic) * 0.08 +
+    (100-m.crime)   * 0.10 +
+    (100-m.pollution)* 0.08 +
+    m.sustainability * 0.08 +
+    m.energy        * 0.04
+  )));
+}
+
+function getRank(score) {
+  let rank = RANKS[0];
+  for (const r of RANKS) { if (score >= r.min) rank = r; }
+  return rank;
+}
+
+// ── METRIC CONFIG ─────────────────────────────────────────────────────────────
+const METRIC_CONFIG = [
+  {key:'tourism',      label:'Tourism',       icon:'✈', good:true,  color:'#5DCAA5'},
+  {key:'economy',      label:'Economy',       icon:'💰',good:true,  color:'#5DCAA5'},
+  {key:'localLife',    label:'Local Life',    icon:'👥',good:true,  color:'#5DCAA5'},
+  {key:'unemployment', label:'Unemployment',  icon:'📉',good:false, color:'#E24B4A'},
+  {key:'traffic',      label:'Traffic',       icon:'🚗',good:false, color:'#EF9F27'},
+  {key:'crime',        label:'Crime',         icon:'🛡',good:false, color:'#E24B4A'},
+  {key:'pollution',    label:'Pollution',     icon:'💨',good:false, color:'#EF9F27'},
+  {key:'sustainability',label:'Sustainability',icon:'🌿',good:true, color:'#5DCAA5'},
+  {key:'energy',       label:'Energy Score',  icon:'⚡',good:true,  color:'#5DCAA5'},
+];
+
+// ── RENDER ────────────────────────────────────────────────────────────────────
+function renderMetrics() {
+  const el = document.getElementById('metrics-display');
+  el.innerHTML = METRIC_CONFIG.map(mc => {
+    const val = Math.round(G.metrics[mc.key]);
+    const display = mc.good ? val : 100 - val;
+    const pct = Math.max(0, Math.min(100, mc.good ? val : 100-val));
+    const color = mc.good
+      ? (val >= 60 ? '#5DCAA5' : val >= 40 ? '#EF9F27' : '#E24B4A')
+      : (val <= 30 ? '#5DCAA5' : val <= 55 ? '#EF9F27' : '#E24B4A');
+    return `
+      <div class="metric-row">
+        <span class="metric-name">${mc.icon} ${mc.label}</span>
+        <span class="metric-val" style="color:${color}">${val}</span>
+      </div>
+      <div class="metric-bar">
+        <div class="metric-bar-fill" style="width:${pct}%;background:${color}"></div>
+      </div>`;
+  }).join('');
+}
+
+function renderScore() {
+  const score = getScore();
+  const rank = getRank(score);
+  document.getElementById('score-display').textContent = score;
+  document.getElementById('rank-name-display').textContent = rank.name;
+  document.getElementById('rank-sub-display').textContent = rank.sub;
+  document.getElementById('hdr-score').textContent = score;
+  document.getElementById('hdr-rank-pill').innerHTML = `Rank: <span>${rank.name}</span>`;
+}
+
+function renderBudget() {
+  const b = G.budget.toFixed(1);
+  document.getElementById('budget-display').textContent = `$${b}M`;
+  document.getElementById('hdr-budget').textContent = `$${b}M`;
+}
+
+function renderTurnProgress() {
+  const pct = ((G.turn - 1) / G.maxTurns) * 100;
+  document.getElementById('turn-bar').style.width = pct + '%';
+  document.getElementById('turn-progress-label').textContent = `${G.turn} / ${G.maxTurns}`;
+  document.getElementById('hdr-turn').textContent = G.turn;
+  document.getElementById('hdr-max-turn').textContent = G.maxTurns;
+}
+
+function renderMap() {
+  const container = document.getElementById('map-slots-container');
+  const labels = document.getElementById('map-labels-container');
+  container.innerHTML = '';
+  labels.innerHTML = '';
+
+  G.slots.forEach(slot => {
+    // Label
+    const lbl = document.createElement('div');
+    lbl.className = 'map-label';
+    lbl.style.left = slot.x + '%';
+    lbl.style.top = slot.y + '%';
+    lbl.textContent = slot.label;
+    labels.appendChild(lbl);
+
+    // Slot
+    const div = document.createElement('div');
+    div.className = 'map-slot' + (slot.filled ? ' filled' : '');
+    div.style.left = slot.x + '%';
+    div.style.top = (slot.y + 8) + '%';
+
+    if (slot.filled) {
+      const proj = PROJECTS.find(p => p.id === slot.projectId);
+      div.innerHTML = `<span class="slot-icon">${proj ? proj.icon : '?'}</span>`;
+      div.title = proj ? proj.name : '';
+      // BagFree special glow
+      if (slot.projectId === 'bagfree') {
+        div.style.borderColor = 'var(--green)';
+        div.style.background = 'rgba(93,202,165,0.15)';
+      }
+      div.addEventListener('mouseenter', e => showTooltip(e, proj, slot));
+      div.addEventListener('mouseleave', hideTooltip);
+    } else {
+      div.innerHTML = `<span class="slot-plus">⬡</span>`;
+      div.addEventListener('click', () => placeProject(slot.id));
+      div.addEventListener('mouseenter', e => showSlotTooltip(e, slot));
+      div.addEventListener('mouseleave', hideTooltip);
+    }
+    container.appendChild(div);
+  });
+}
+
+function showTooltip(e, proj, slot) {
+  const tt = document.getElementById('placement-tooltip');
+  tt.innerHTML = `<strong style="color:var(--gold)">${proj.name}</strong><br>
+    <span style="color:var(--mist);font-size:0.6rem">${proj.cat} · Placed Turn ${slot.placedTurn || '?'}</span><br>
+    <span style="color:var(--mist);font-size:0.62rem;margin-top:4px;display:block">${proj.desc.slice(0,80)}…</span>`;
+  tt.style.left = (e.offsetX + 15) + 'px';
+  tt.style.top = (e.offsetY - 20) + 'px';
+  tt.classList.add('visible');
+}
+function showSlotTooltip(e, slot) {
+  const proj = PROJECTS.find(p => p.id === G.selectedProjectId);
+  if (!proj) return;
+  const tt = document.getElementById('placement-tooltip');
+  tt.innerHTML = `<strong style="color:var(--gold)">Place: ${proj.name}</strong><br>
+    <span style="color:var(--mist);font-size:0.6rem">Cost: $${proj.cost}M · ${slot.label}</span>`;
+  tt.style.left = (e.offsetX + 15) + 'px';
+  tt.style.top = (e.offsetY - 20) + 'px';
+  tt.classList.add('visible');
+}
+function hideTooltip() {
+  document.getElementById('placement-tooltip').classList.remove('visible');
+}
+
+function renderProjects() {
+  const grid = document.getElementById('project-grid');
+  grid.innerHTML = PROJECTS.map(p => {
+    const affordable = G.budget >= p.cost;
+    const selected = p.id === G.selectedProjectId;
+    const isBagfree = p.id === 'bagfree';
+    return `<div class="project-card ${selected ? 'selected' : ''} ${!affordable ? 'unaffordable' : ''}"
+      onclick="${affordable ? `selectProject('${p.id}')` : ''}"
+      style="${isBagfree ? 'border-color:rgba(93,202,165,0.4);' : ''}">
+      <div class="project-header">
+        <div>
+          <div class="project-name">${p.icon} ${p.name}</div>
+          <div class="project-cat" style="${isBagfree ? 'color:var(--green)' : ''}">${p.cat}</div>
+        </div>
+        <div class="project-cost">$${p.cost}M</div>
+      </div>
+      <div class="project-impacts">
+        ${['tourism','economy','localLife','unemployment','crime','pollution','sustainability','energy'].map(k => {
+          const v = p.impact[k];
+          const good = !['unemployment','traffic','crime','pollution'].includes(k);
+          const positive = good ? v > 0 : v < 0;
+          const cls = v === 0 ? 'impact-neu' : positive ? 'impact-pos' : 'impact-neg';
+          const sign = v > 0 ? '+' : '';
+          return `<span class="${cls}">${k.charAt(0).toUpperCase()+k.slice(1,4)} ${sign}${v}</span>`;
+        }).join('')}
+      </div>
+    </div>`;
+  }).join('');
+}
+
+function renderSelectedProject() {
+  const proj = PROJECTS.find(p => p.id === G.selectedProjectId);
+  if (!proj) return;
+  document.getElementById('selected-project-display').textContent = `${proj.icon} ${proj.name}`;
+  document.getElementById('selected-project-desc').textContent = proj.desc;
+  const impacts = document.getElementById('selected-project-impacts');
+  impacts.innerHTML = Object.entries(proj.impact).map(([k, v]) => {
+    const good = !['unemployment','traffic','crime','pollution'].includes(k);
+    const positive = good ? v > 0 : v < 0;
+    const cls = v === 0 ? 'impact-neu' : positive ? 'impact-pos' : 'impact-neg';
+    const sign = v > 0 ? '+' : '';
+    return `<span class="${cls}" style="font-size:0.62rem">${k} ${sign}${v}</span>`;
+  }).join('');
+}
+
+function renderLog() {
+  const list = document.getElementById('log-list');
+  list.innerHTML = G.log.slice(0, 12).map(entry => {
+    const cls = entry.type === 'good' ? 'log-good' : entry.type === 'bad' ? 'log-bad' : entry.type === 'warn' ? 'log-warn' : 'log-info';
+    return `<div class="log-entry ${cls}">${entry.msg}</div>`;
+  }).join('');
+}
+
+function addLog(msg, type = 'info') {
+  G.log.unshift({msg, type});
+}
+
+function renderAll() {
+  renderMetrics();
+  renderScore();
+  renderBudget();
+  renderTurnProgress();
+  renderMap();
+  renderProjects();
+  renderSelectedProject();
+  renderLog();
+}
+
+// ── ACTIONS ───────────────────────────────────────────────────────────────────
+function selectProject(id) {
+  G.selectedProjectId = id;
+  renderProjects();
+  renderSelectedProject();
+}
+
+function placeProject(slotId) {
+  const proj = PROJECTS.find(p => p.id === G.selectedProjectId);
+  if (!proj) return;
+  if (G.budget < proj.cost) {
+    addLog(`Insufficient budget for ${proj.name}. ($${proj.cost}M needed)`, 'bad');
+    renderLog();
+    return;
+  }
+  const slot = G.slots.find(s => s.id === slotId);
+  if (!slot || slot.filled) return;
+
+  // Apply
+  slot.filled = true;
+  slot.projectId = proj.id;
+  slot.placedTurn = G.turn;
+  G.budget -= proj.cost;
+  G.placedThisTurn.push({slotId, proj, prevMetrics: {...G.metrics}, prevBudget: G.budget + proj.cost});
+
+  // Apply impacts
+  Object.entries(proj.impact).forEach(([k, v]) => {
+    G.metrics[k] = Math.max(0, Math.min(100, (G.metrics[k] || 0) + v));
+  });
+
+  // BagFree special message
+  if (proj.id === 'bagfree') {
+    addLog(`BagFree Hub placed at ${slot.label}! Airport efficiency ↑, tourist stress ↓, local jobs created.`, 'good');
+  } else {
+    addLog(`${proj.name} placed at ${slot.label}. Cost: $${proj.cost}M.`, 'info');
+  }
+
+  // Auto-checks
+  if (G.metrics.crime > 60) addLog('Warning: Crime levels are rising. Consider a Safety Program.', 'warn');
+  if (G.metrics.pollution > 65) addLog('Warning: Pollution is affecting destination appeal.', 'warn');
+  if (G.metrics.unemployment > 55) addLog('High unemployment is creating social tension.', 'warn');
+  if (G.metrics.tourism > 80) addLog('Tourism is booming — manage capacity carefully.', 'good');
+
+  renderAll();
+}
+
+function undoLast() {
+  if (G.placedThisTurn.length === 0) {
+    addLog('Nothing to undo this turn.', 'warn');
+    renderLog();
+    return;
+  }
+  const last = G.placedThisTurn.pop();
+  const slot = G.slots.find(s => s.id === last.slotId);
+  if (slot) { slot.filled = false; slot.projectId = null; slot.placedTurn = null; }
+  G.metrics = {...last.prevMetrics};
+  G.budget = last.prevBudget;
+  addLog(`${last.proj.name} removed. Budget refunded.`, 'info');
+  renderAll();
+}
+
+function endTurn() {
+  if (G.gameOver) return;
+
+  // Passive metric changes per turn
+  const placed = G.placements.concat(G.placedThisTurn.map(p => p.proj));
+  const bagfreeCount = G.slots.filter(s => s.projectId === 'bagfree').length;
+  const ecoCount = G.slots.filter(s => ['eco','solar','wildlife','gardens'].includes(s.projectId)).length;
+  const safetyCount = G.slots.filter(s => ['safety','housing','school','hospital'].includes(s.projectId)).length;
+  const transitCount = G.slots.filter(s => s.projectId === 'transit').length;
+
+  // Natural drift
+  G.metrics.tourism    = Math.min(100, G.metrics.tourism + 0.5 + bagfreeCount * 0.8);
+  G.metrics.economy    = Math.min(100, G.metrics.economy + 0.3 + bagfreeCount * 0.5);
+  G.metrics.traffic    = Math.min(100, G.metrics.traffic + 0.4 - transitCount * 0.8);
+  G.metrics.crime      = Math.min(100, G.metrics.crime + 0.2 - safetyCount * 0.6);
+  G.metrics.pollution  = Math.min(100, G.metrics.pollution + 0.3 - ecoCount * 0.7);
+  G.metrics.sustainability = Math.min(100, G.metrics.sustainability + ecoCount * 0.5 - 0.2);
+  G.metrics.unemployment = Math.max(0, G.metrics.unemployment - 0.3);
+  Object.keys(G.metrics).forEach(k => { G.metrics[k] = Math.max(0, Math.min(100, G.metrics[k])); });
+
+  // Budget income from tourism
+  const income = 3 + (G.metrics.tourism / 10) + bagfreeCount * 2;
+  G.budget = Math.min(G.budget + income, 999);
+
+  // Commit placements
+  G.placements = G.placements.concat(G.placedThisTurn.map(p => p.proj));
+  G.placedThisTurn = [];
+
+  // Year-end advisor messages
+  if (G.turn % 5 === 0) {
+    const score = getScore();
+    const rank = getRank(score);
+    addLog(`End of Turn ${G.turn} — Score: ${score} · Rank: ${rank.name}`, 'info');
+  }
+  if (G.metrics.localLife < 40) addLog('Residents are overwhelmed by tourism pressure. Address quality of life urgently.', 'bad');
+  if (G.metrics.sustainability > 75) addLog('Your sustainable practices are becoming a global model.', 'good');
+
+  G.turn++;
+
+  if (G.turn > G.maxTurns) {
+    G.gameOver = true;
+    renderAll();
+    setTimeout(showEndGame, 600);
+    return;
+  }
+
+  renderAll();
+  addLog(`Turn ${G.turn} begins. Budget replenished: +$${income.toFixed(1)}M.`, 'info');
+  renderLog();
+}
+
+// ── SETUP FLOW ────────────────────────────────────────────────────────────────
+let selectedTurns = 10;
+
+document.querySelectorAll('.turn-card').forEach(btn => {
+  btn.addEventListener('click', () => {
+    document.querySelectorAll('.turn-card').forEach(b => b.classList.remove('active'));
+    btn.classList.add('active');
+    const t = btn.dataset.turns;
+    if (t === 'custom') {
+      document.getElementById('custom-turns-input').style.display = 'flex';
+      selectedTurns = parseInt(document.getElementById('custom-turns-val').value) || 15;
+    } else {
+      document.getElementById('custom-turns-input').style.display = 'none';
+      selectedTurns = parseInt(t);
+    }
+  });
+});
+
+document.getElementById('dest-select').addEventListener('change', function() {
+  document.getElementById('custom-dest-fields').style.display =
+    this.value === 'custom' ? 'block' : 'none';
+});
+
+function startGame() {
+  const playerName = document.getElementById('player-name').value.trim() || 'Anonymous Planner';
+  const destId = document.getElementById('dest-select').value;
+  const maxTurns = selectedTurns;
+  let customDest = null;
+
+  if (destId === 'custom') {
+    const name = document.getElementById('custom-name').value.trim() || 'Custom Destination';
+    const country = document.getElementById('custom-country').value.trim() || 'Unknown Region';
+    const budget = parseInt(document.getElementById('custom-budget').value) || 120;
+    customDest = {
+      name, country, budget,
+      metrics:{tourism:50,economy:55,localLife:65,unemployment:35,traffic:30,crime:25,pollution:30,sustainability:60,energy:50},
+      slots:[
+        {x:20,y:25,label:'District A'},{x:55,y:20,label:'District B'},{x:80,y:30,label:'District C'},
+        {x:15,y:60,label:'District D'},{x:45,y:55,label:'District E'},{x:75,y:65,label:'District F'},
+        {x:35,y:75,label:'District G'},{x:65,y:80,label:'District H'},
+      ]
+    };
+  }
+
+  initGame(destId === 'custom' ? 'custom' : destId, playerName, maxTurns, customDest);
+
+  document.getElementById('setup-screen').style.display = 'none';
+  document.getElementById('game-screen').style.display = 'block';
+  document.getElementById('game-dest-title').innerHTML = `<em style="color:var(--gold)">${G.destName}</em> — ${G.destCountry}`;
+  document.getElementById('game-player-label').textContent = `${playerName} · ${maxTurns}-Turn Game`;
+
+  addLog(`Welcome, ${playerName}. You are now managing ${G.destName}. Use your ${maxTurns} turns wisely.`, 'info');
+  addLog('Click any ⬡ slot on the map to place your selected project. End your turn when ready.', 'info');
+  renderAll();
+}
+
+function resetToSetup() {
+  closeEndGame();
+  document.getElementById('game-screen').style.display = 'none';
+  document.getElementById('setup-screen').style.display = 'flex';
+}
+
+// ── END GAME ─────────────────────────────────────────────────────────────────
+function showEndGame() {
+  const score = getScore();
+  const rank = getRank(score);
+  document.getElementById('end-score-display').textContent = score;
+  document.getElementById('end-rank-name').textContent = rank.name;
+  document.getElementById('end-rank-label').textContent = rank.sub;
+  document.getElementById('submit-name-input').value = G.playerName;
+
+  const m = G.metrics;
+  document.getElementById('end-stats').innerHTML = [
+    {label:'Tourism', val: Math.round(m.tourism)},
+    {label:'Economy', val: Math.round(m.economy)},
+    {label:'Local Life', val: Math.round(m.localLife)},
+    {label:'Unemployment', val: Math.round(m.unemployment)+'%'},
+    {label:'Crime', val: Math.round(m.crime)},
+    {label:'Sustainability', val: Math.round(m.sustainability)},
+  ].map(s => `<div class="end-stat">
+    <div class="end-stat-val">${s.val}</div>
+    <div class="end-stat-label">${s.label}</div>
+  </div>`).join('');
+
+  document.getElementById('end-modal').style.display = 'block';
+}
+
+function closeEndGame() {
+  document.getElementById('end-modal').style.display = 'none';
+  document.getElementById('submit-status').style.display = 'none';
+}
+
+// ── LEADERBOARD ───────────────────────────────────────────────────────────────
+async function openLeaderboard() {
+  document.getElementById('lb-modal').style.display = 'block';
+  renderLeaderboard();
+}
+
+function closeLeaderboard() {
+  document.getElementById('lb-modal').style.display = 'none';
+}
+
+async function renderLeaderboard() {
+  const body = document.getElementById('lb-body');
+  body.innerHTML = '<div style="text-align:center;padding:2rem;color:var(--mist)">Loading...</div>';
+
+  let scores = [];
+  try {
+    const res = await window.storage.list('tdx-score-');
+    if (res && res.keys) {
+      for (const key of res.keys) {
+        try {
+          const entry = await window.storage.get(key, true);
+          if (entry) scores.push(JSON.parse(entry.value));
+        } catch(e) {}
+      }
+    }
+  } catch(e) {}
+
+  // Add some seed data if empty
+  if (scores.length === 0) {
+    scores = [
+      {name:'BagFree Team', dest:'Urban Bay', score:82, rank:'Global Curator', turns:20},
+      {name:'Demo Player', dest:'Rome', score:71, rank:'Tourism Architect', turns:10},
+    ];
+  }
+
+  scores.sort((a,b) => b.score - a.score);
+  const top = scores.slice(0,20);
+
+  body.innerHTML = top.length === 0
+    ? '<div style="text-align:center;padding:2rem;color:var(--mist)">No scores yet. Be the first!</div>'
+    : top.map((s,i) => `
+      <div class="lb-row">
+        <div class="lb-rank ${i < 3 ? 'top' : ''}">${i+1}</div>
+        <div class="lb-info">
+          <div class="lb-player">${s.name}</div>
+          <div class="lb-dest">${s.dest}</div>
+          <div class="lb-rank-badge">${s.rank}</div>
+        </div>
+        <div>
+          <div class="lb-score">${s.score}</div>
+          <div class="lb-turns">${s.turns} turns</div>
+        </div>
+      </div>`).join('');
+}
+
+async function submitScore() {
+  const name = document.getElementById('submit-name-input').value.trim() || G.playerName;
+  const score = getScore();
+  const rank = getRank(score);
+  const entry = {
+    name, dest: G.destName, score,
+    rank: rank.name, turns: G.maxTurns,
+    ts: Date.now()
+  };
+  try {
+    await window.storage.set(`tdx-score-${Date.now()}`, JSON.stringify(entry), true);
+    document.getElementById('submit-status').style.display = 'block';
+    document.getElementById('submit-status').textContent = 'Score submitted to leaderboard! ✓';
+  } catch(e) {
+    document.getElementById('submit-status').style.display = 'block';
+    document.getElementById('submit-status').style.color = 'var(--amber)';
+    document.getElementById('submit-status').textContent = 'Score saved locally.';
+  }
+}
+
+document.addEventListener('keydown', e => {
+  if (e.key === 'Escape') { closeLeaderboard(); closeEndGame(); }
+});
+</script>
+</body>
+</html>
