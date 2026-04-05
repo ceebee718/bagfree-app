@@ -33,11 +33,6 @@
   status = 200
 
 [[redirects]]
-  from = "/shop/*"
-  to = "/shop.html"
-  status = 200
-
-[[redirects]]
   from = "/api/track-vendor"
   to = "/.netlify/functions/track-vendor"
   status = 200
