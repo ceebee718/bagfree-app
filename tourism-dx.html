@@ -685,9 +685,9 @@ const DESTINATIONS = {
     budget:110,
     metrics:{tourism:58,economy:48,localLife:78,unemployment:38,traffic:22,crime:28,pollution:20,sustainability:80,energy:65},
     slots:[
-      {x:25,y:30,label:'Kingstown Port'},{x:60,y:20,label:'E.T. Joshua Airport'},{x:45,y:55,label:'Botanical Garden'},
-      {x:75,y:65,label:'Villa Beach'},{x:15,y:65,label:'Bequia Ferry'},{x:80,y:35,label:'Tobago Cays'},
-      {x:35,y:75,label:'La Soufrière'},{x:65,y:80,label:'Mustique'},
+      {x:18,y:38,label:'Kingstown Port'},{x:52,y:22,label:'E.T. Joshua Airport'},{x:28,y:50,label:'Botanical Garden'},
+      {x:58,y:58,label:'Villa Beach'},{x:20,y:68,label:'Bequia Ferry'},{x:78,y:38,label:'Tobago Cays'},
+      {x:22,y:18,label:'La Soufrière'},{x:74,y:75,label:'Mustique'},
     ]
   },
 };
@@ -967,23 +967,43 @@ function renderMap() {
 
 
   // Photo-realistic map backgrounds per destination
+  const DEST_MAP_COORDS = {
+    'coastal-isle':   { lon:-61.20, lat:13.15,  zoom:12 },
+    'mountain-coast': { lon:-5.40,  lat:57.10,  zoom:11 },
+    'urban-bay':      { lon:151.21, lat:-33.87, zoom:12 },
+    'rome':           { lon:12.492, lat:41.890, zoom:13 },
+    'tokyo':          { lon:139.76, lat:35.676, zoom:12 },
+    'st-vincent':     { lon:-61.22, lat:13.16,  zoom:11 },
+    'custom':         { lon:-61.20, lat:13.15,  zoom:12 },
+  };
+
+  function getMapUrl(destKey) {
+    const coords = DEST_MAP_COORDS[destKey] || DEST_MAP_COORDS['custom'];
+    return `/api/mapbox-tile?lon=${coords.lon}&lat=${coords.lat}&zoom=${coords.zoom}`;
+  }
+
   const destMapBg = {
-    'coastal-isle':   { img: '/map-aerial.png', filter: 'brightness(1.0) saturate(1.1)', tint: 'rgba(0,40,80,0.15)' },
-    'mountain-coast': { img: '/map-aerial.png', filter: 'brightness(0.85) saturate(0.9) hue-rotate(20deg)', tint: 'rgba(20,40,20,0.25)' },
-    'urban-bay':      { img: '/map-aerial.png', filter: 'brightness(0.9) saturate(1.2) hue-rotate(-10deg)', tint: 'rgba(0,20,60,0.2)' },
-    'rome':           { img: '/map-aerial.png', filter: 'brightness(1.05) saturate(0.85) sepia(0.15)', tint: 'rgba(60,40,0,0.2)' },
-    'tokyo':          { img: '/map-aerial.png', filter: 'brightness(0.95) saturate(1.15) hue-rotate(180deg)', tint: 'rgba(0,20,50,0.2)' },
-    'st-vincent':     { img: '/map-aerial.png', filter: 'brightness(1.1) saturate(1.3)', tint: 'rgba(0,60,40,0.1)' },
-    'custom':         { img: '/map-aerial.png', filter: 'brightness(1.0) saturate(1.0)', tint: 'rgba(0,20,40,0.2)' },
+    'coastal-isle':   { img: getMapUrl('coastal-isle'),   tint: 'rgba(0,0,0,0.08)' },
+    'mountain-coast': { img: getMapUrl('mountain-coast'), tint: 'rgba(0,0,0,0.08)' },
+    'urban-bay':      { img: getMapUrl('urban-bay'),      tint: 'rgba(0,0,0,0.08)' },
+    'rome':           { img: getMapUrl('rome'),           tint: 'rgba(0,0,0,0.08)' },
+    'tokyo':          { img: getMapUrl('tokyo'),          tint: 'rgba(0,0,0,0.08)' },
+    'st-vincent':     { img: getMapUrl('st-vincent'),     tint: 'rgba(0,0,0,0.05)' },
+    'custom':         { img: getMapUrl('custom'),         tint: 'rgba(0,0,0,0.1)'  },
   };
   const mapBg = destMapBg[destKey] || destMapBg['custom'];
 
   landSvg.innerHTML = `
+    <div style="position:absolute;inset:0;background:#0A1E35;display:flex;align-items:center;justify-content:center;" id="map-loading-bg">
+      <div style="font-size:0.6rem;letter-spacing:2px;text-transform:uppercase;color:rgba(201,169,110,0.5);">Loading satellite imagery...</div>
+    </div>
     <img src="${mapBg.img}"
-      style="position:absolute;inset:0;width:100%;height:100%;object-fit:cover;filter:${mapBg.filter};"
-      draggable="false">
+      style="position:absolute;inset:0;width:100%;height:100%;object-fit:cover;filter:brightness(1.05) saturate(1.15);opacity:0;transition:opacity 0.6s ease;"
+      draggable="false"
+      onload="this.style.opacity='1';const bg=document.getElementById('map-loading-bg');if(bg)bg.style.display='none';"
+      onerror="this.style.display='none';">
     <div style="position:absolute;inset:0;background:${mapBg.tint};pointer-events:none;"></div>
-    <div style="position:absolute;inset:0;background:linear-gradient(to bottom, rgba(8,14,26,0.35) 0%, transparent 30%, transparent 70%, rgba(8,14,26,0.5) 100%);pointer-events:none;"></div>
+    <div style="position:absolute;inset:0;background:linear-gradient(to bottom, rgba(8,14,26,0.3) 0%, transparent 25%, transparent 75%, rgba(8,14,26,0.45) 100%);pointer-events:none;"></div>
   `;
   landSvg.style.cssText = 'position:absolute;inset:0;pointer-events:none;z-index:1;';
   mapEl.insertBefore(landSvg, mapEl.firstChild);
