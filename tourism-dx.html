@@ -635,19 +635,29 @@ const DESTINATIONS = {
     budget:120,
     metrics:{tourism:54,economy:60,localLife:70,unemployment:28,traffic:28,crime:22,pollution:30,sustainability:74,energy:55},
     slots:[
-      {x:18,y:26,label:'Old Port'},{x:67,y:21,label:'Airport'},{x:41,y:58,label:'Town Center'},
-      {x:77,y:67,label:'South Beach'},{x:25,y:70,label:'Fishing Village'},{x:55,y:35,label:'Central Park'},
-      {x:85,y:40,label:'Marina'},{x:10,y:50,label:'Historic District'},
+      {x:22,y:55,label:'Port-au-Prince'},
+      {x:65,y:22,label:'Toussaint Airport'},
+      {x:40,y:42,label:'Pétionville'},
+      {x:72,y:62,label:'Côte des Arcadins'},
+      {x:15,y:72,label:'Carrefour Bay'},
+      {x:52,y:35,label:'Champ de Mars'},
+      {x:80,y:38,label:'Fort Dimanche'},
+      {x:35,y:68,label:'Martissant'},
     ]
   },
   'mountain-coast': {
-    name:'Mountain Coast', country:'Generic Highland Nation',
+    name:'Mountain Coast', country:'Jamaica · Blue Mountains',
     budget:105,
     metrics:{tourism:46,economy:52,localLife:76,unemployment:32,traffic:18,crime:18,pollution:18,sustainability:82,energy:60},
     slots:[
-      {x:23,y:18,label:'Cliff District'},{x:62,y:29,label:'Regional Airstrip'},{x:49,y:56,label:'Cultural Quarter'},
-      {x:80,y:76,label:'Marine Reserve'},{x:15,y:60,label:'Valley Village'},{x:70,y:45,label:'Summit Trail'},
-      {x:38,y:30,label:'Heritage Site'},{x:88,y:20,label:'Scenic Overlook'},
+      {x:20,y:45,label:'Port Antonio'},
+      {x:60,y:22,label:'Blue Mountain Peak'},
+      {x:42,y:55,label:'Rio Grande Valley'},
+      {x:75,y:68,label:'Frenchman's Cove'},
+      {x:15,y:65,label:'Errol Flynn Marina'},
+      {x:68,y:38,label:'Coffee Plantation'},
+      {x:35,y:32,label:'Ecclesdown Road'},
+      {x:82,y:25,label:'Winnifred Beach'},
     ]
   },
   'urban-bay': {
@@ -685,9 +695,14 @@ const DESTINATIONS = {
     budget:110,
     metrics:{tourism:58,economy:48,localLife:78,unemployment:38,traffic:22,crime:28,pollution:20,sustainability:80,energy:65},
     slots:[
-      {x:18,y:38,label:'Kingstown Port'},{x:52,y:22,label:'E.T. Joshua Airport'},{x:28,y:50,label:'Botanical Garden'},
-      {x:58,y:58,label:'Villa Beach'},{x:20,y:68,label:'Bequia Ferry'},{x:78,y:38,label:'Tobago Cays'},
-      {x:22,y:18,label:'La Soufrière'},{x:74,y:75,label:'Mustique'},
+      {x:15,y:55,label:'Kingstown Port'},
+      {x:62,y:18,label:'E.T. Joshua Airport'},
+      {x:35,y:42,label:'Botanical Garden'},
+      {x:72,y:48,label:'Mesopotamia Valley'},
+      {x:12,y:72,label:'Arnos Vale'},
+      {x:52,y:72,label:'Calliaqua Beach'},
+      {x:78,y:72,label:'Brighton Beach'},
+      {x:42,y:28,label:'Belmont Estate'},
     ]
   },
 };
@@ -968,13 +983,13 @@ function renderMap() {
 
   // Photo-realistic map backgrounds per destination
   const DEST_MAP_COORDS = {
-    'coastal-isle':   { lon:-61.20, lat:13.15,  zoom:12 },
-    'mountain-coast': { lon:-5.40,  lat:57.10,  zoom:11 },
+    'coastal-isle':   { lon:-72.33, lat:18.54,  zoom:12 }, // Haiti — Port-au-Prince
+    'mountain-coast': { lon:-76.45, lat:18.18,  zoom:12 }, // Jamaica — Blue Mountains
     'urban-bay':      { lon:151.21, lat:-33.87, zoom:12 },
     'rome':           { lon:12.492, lat:41.890, zoom:13 },
     'tokyo':          { lon:139.76, lat:35.676, zoom:12 },
     'st-vincent':     { lon:-61.22, lat:13.16,  zoom:11 },
-    'custom':         { lon:-61.20, lat:13.15,  zoom:12 },
+    'custom':         { lon:-72.33, lat:18.54,  zoom:12 },
   };
 
   function getMapUrl(destKey) {
