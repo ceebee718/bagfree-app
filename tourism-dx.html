@@ -982,31 +982,17 @@ function renderMap() {
 
 
   // Photo-realistic map backgrounds per destination
-  const DEST_MAP_COORDS = {
-    'coastal-isle':   { lon:-72.33, lat:18.54,  zoom:12 }, // Haiti — Port-au-Prince
-    'mountain-coast': { lon:-76.45, lat:18.18,  zoom:12 }, // Jamaica — Blue Mountains
-    'urban-bay':      { lon:151.21, lat:-33.87, zoom:12 },
-    'rome':           { lon:12.492, lat:41.890, zoom:13 },
-    'tokyo':          { lon:139.76, lat:35.676, zoom:12 },
-    'st-vincent':     { lon:-61.22, lat:13.16,  zoom:11 },
-    'custom':         { lon:-72.33, lat:18.54,  zoom:12 },
-  };
-
-  function getMapUrl(destKey) {
-    const coords = DEST_MAP_COORDS[destKey] || DEST_MAP_COORDS['custom'];
-    return `/api/mapbox-tile?lon=${coords.lon}&lat=${coords.lat}&zoom=${coords.zoom}`;
-  }
-
+  // Static map images — no API calls, no charges
   const destMapBg = {
-    'coastal-isle':   { img: getMapUrl('coastal-isle'),   tint: 'rgba(0,0,0,0.08)' },
-    'mountain-coast': { img: getMapUrl('mountain-coast'), tint: 'rgba(0,0,0,0.08)' },
-    'urban-bay':      { img: getMapUrl('urban-bay'),      tint: 'rgba(0,0,0,0.08)' },
-    'rome':           { img: getMapUrl('rome'),           tint: 'rgba(0,0,0,0.08)' },
-    'tokyo':          { img: getMapUrl('tokyo'),          tint: 'rgba(0,0,0,0.08)' },
-    'st-vincent':     { img: getMapUrl('st-vincent'),     tint: 'rgba(0,0,0,0.05)' },
-    'custom':         { img: getMapUrl('custom'),         tint: 'rgba(0,0,0,0.1)'  },
+    'coastal-isle':   { img: '/maps/coastal-isle.jpg',   tint: 'rgba(0,0,0,0.08)' },
+    'mountain-coast': { img: '/maps/mountain-coast.jpg', tint: 'rgba(0,0,0,0.08)' },
+    'urban-bay':      { img: '/maps/urban-bay.jpg',      tint: 'rgba(0,0,0,0.08)' },
+    'rome':           { img: '/maps/rome.jpg',           tint: 'rgba(0,0,0,0.08)' },
+    'tokyo':          { img: '/maps/tokyo.jpg',          tint: 'rgba(0,0,0,0.08)' },
+    'st-vincent':     { img: '/maps/st-vincent.jpg',     tint: 'rgba(0,0,0,0.05)' },
+    'custom':         { img: '/maps/coastal-isle.jpg',   tint: 'rgba(0,0,0,0.1)'  },
   };
-  const mapBg = destMapBg[destKey] || destMapBg['custom'];
+    const mapBg = destMapBg[destKey] || destMapBg['custom'];
 
   landSvg.innerHTML = `
     <div style="position:absolute;inset:0;background:#0A1E35;display:flex;align-items:center;justify-content:center;" id="map-loading-bg">
