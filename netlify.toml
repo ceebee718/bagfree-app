@@ -12,8 +12,17 @@
   to = "/departure-lounge.html"
   status = 200
 
+[[redirects]]
+  from = "/tourism-dx"
+  to = "/tourism-dx.html"
+  status = 200
 
 [[redirects]]
   from = "/api/ai-brain"
   to = "/.netlify/functions/ai-brain"
+  status = 200
+
+[[redirects]]
+  from = "/api/mapbox-tile"
+  to = "/.netlify/functions/mapbox-tile"
   status = 200
