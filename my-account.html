@@ -229,6 +229,10 @@ input,textarea,select{font-family:var(--fb)}
         <svg width="14" height="14" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2"><path d="M1 12s4-8 11-8 11 8 11 8-4 8-11 8-11-8-11-8z"/><circle cx="12" cy="12" r="3"/></svg>
         Preview Card
       </div>
+      <div class="sidebar-item" onclick="showSection('products',this)">
+        <svg width="14" height="14" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2"><path d="M6 2L3 6v14a2 2 0 0 0 2 2h14a2 2 0 0 0 2-2V6l-3-4z"/><line x1="3" y1="6" x2="21" y2="6"/><path d="M16 10a4 4 0 0 1-8 0"/></svg>
+        My Products
+      </div>
 
       <div class="sidebar-label">Subscription</div>
       <div class="sidebar-item" onclick="showSection('plan',this)">
@@ -474,6 +478,87 @@ input,textarea,select{font-family:var(--fb)}
             Cancelling removes your listing from BagFree at the end of your current billing period. Your data is saved and you can reapply at any time.
           </div>
           <button class="btn-danger" onclick="document.getElementById('cancel-modal').classList.add('open')">Cancel My Subscription</button>
+        </div>
+      </div>
+
+
+      <!-- PRODUCTS -->
+      <div id="section-products" class="section">
+        <div class="card" style="margin-bottom:1.25rem;">
+          <div style="display:flex;align-items:center;justify-content:space-between;flex-wrap:wrap;gap:1rem;">
+            <div>
+              <div class="card-title">My Products</div>
+              <div style="font-size:0.75rem;color:var(--mist);line-height:1.7;">These appear on your public BagFree shop page. Customers click to go to your website.</div>
+            </div>
+            <div style="display:flex;gap:0.6rem;align-items:center;">
+              <a id="shop-page-link" href="#" target="_blank" class="btn-ghost" style="font-size:0.58rem;padding:6px 12px;">View My Shop Page ↗</a>
+              <button class="btn-save" onclick="openAddProduct()" style="padding:0.6rem 1.25rem;font-size:0.6rem;">+ Add Product</button>
+            </div>
+          </div>
+        </div>
+
+        <!-- Add/Edit Product Form -->
+        <div id="product-form-card" class="card" style="display:none;border-color:rgba(201,169,110,0.35);">
+          <div class="card-title" id="product-form-title">Add Product</div>
+
+          <!-- Image upload -->
+          <div style="margin-bottom:1.25rem;">
+            <label style="font-size:0.55rem;letter-spacing:2px;text-transform:uppercase;color:var(--gold-dim);display:block;margin-bottom:0.5rem;">Product Image</label>
+            <div style="display:flex;align-items:center;gap:1rem;">
+              <div id="pf-img-preview" style="width:80px;height:80px;background:var(--n3);border:1px solid var(--brd);display:flex;align-items:center;justify-content:center;font-size:1.8rem;overflow:hidden;flex-shrink:0;">◈</div>
+              <div>
+                <label class="upload-btn" style="display:inline-block;cursor:pointer;">
+                  Upload Photo
+                  <input type="file" id="pf-image-input" accept="image/*" style="display:none;" onchange="handleProductImage(this)">
+                </label>
+                <div style="font-size:0.65rem;color:var(--mist);margin-top:0.35rem;">Square images look best. Max 2MB.</div>
+                <div id="pf-img-status" style="font-size:0.62rem;color:var(--green);margin-top:0.25rem;display:none;"></div>
+              </div>
+            </div>
+            <input type="hidden" id="pf-image-url">
+          </div>
+
+          <div class="field-row">
+            <div class="field">
+              <label>Product Name *</label>
+              <input type="text" id="pf-name" placeholder="e.g. Summer Floral Dress">
+            </div>
+            <div class="field">
+              <label>Category</label>
+              <input type="text" id="pf-category" placeholder="e.g. Dresses">
+            </div>
+          </div>
+          <div class="field">
+            <label>Description</label>
+            <textarea id="pf-desc" rows="3" placeholder="Brief description of the product..."></textarea>
+          </div>
+          <div class="field-row">
+            <div class="field">
+              <label>Price (USD)</label>
+              <input type="number" id="pf-price" placeholder="49.99" step="0.01" min="0">
+            </div>
+            <div class="field">
+              <label>Product URL (your website)</label>
+              <input type="text" id="pf-url" placeholder="https://yoursite.com/product">
+            </div>
+          </div>
+          <div class="field" style="display:flex;align-items:center;gap:0.75rem;">
+            <input type="checkbox" id="pf-instock" checked style="width:16px;height:16px;accent-color:var(--gold);">
+            <label for="pf-instock" style="font-size:0.78rem;color:var(--mist);letter-spacing:0;text-transform:none;">In stock</label>
+          </div>
+          <input type="hidden" id="pf-editing-id">
+
+          <div style="display:flex;gap:0.75rem;margin-top:0.5rem;">
+            <button class="btn-save" onclick="saveProduct()">Save Product</button>
+            <button class="btn-ghost" onclick="closeProductForm()">Cancel</button>
+          </div>
+        </div>
+
+        <!-- Products list -->
+        <div id="products-list"></div>
+        <div id="no-products-msg" style="display:none;" class="card" style="text-align:center;padding:3rem;color:var(--mist);">
+          <div style="font-family:var(--ff);font-size:2rem;font-weight:300;color:rgba(201,169,110,0.3);margin-bottom:0.75rem;">◈</div>
+          <div style="font-size:0.85rem;">No products yet. Add your first product above.</div>
         </div>
       </div>
 
@@ -752,6 +837,7 @@ window.saveProfile = async function() {
   if (error) { showToast('Error saving: ' + error.message, true); return; }
   Object.assign(window._profile, updates);
   renderPreview(window._profile);
+  loadProducts();
   document.getElementById('sidebar-biz').textContent = updates.business_name;
   document.getElementById('page-title').textContent = updates.business_name;
   showToast('Profile saved ✓');
@@ -852,7 +938,161 @@ function showToast(msg, isError=false) {
   setTimeout(()=>t.style.display='none', 3500);
 }
 
+
+// ── PRODUCTS ──────────────────────────────────────────────────────────────────
+let _products = [];
+let _editingProductId = null;
+
+function slugify(str) {
+  return (str || '').toLowerCase().replace(/[^a-z0-9]+/g, '-').replace(/^-|-$/, '');
+}
+
+async function loadProducts() {
+  const p = window._profile;
+  if (!p) return;
+
+  // Set shop page link
+  const shopLink = document.getElementById('shop-page-link');
+  if (shopLink) shopLink.href = '/shop/' + slugify(p.business_name);
+
+  const { data: products } = await window._sb.from('vendor_products')
+    .select('*').eq('vendor_id', p.id).order('sort_order', { ascending: true });
+
+  _products = products || [];
+  renderProductsList(_products);
+}
+
+function renderProductsList(products) {
+  const list = document.getElementById('products-list');
+  const empty = document.getElementById('no-products-msg');
+
+  if (!products || products.length === 0) {
+    list.innerHTML = '';
+    if (empty) empty.style.display = 'block';
+    return;
+  }
+  if (empty) empty.style.display = 'none';
+
+  list.innerHTML = products.map(p => `
+    <div class="card" style="display:flex;align-items:center;gap:1.25rem;padding:1rem 1.25rem;margin-bottom:1px;">
+      <div style="width:56px;height:56px;background:var(--n3);border:1px solid var(--brd);overflow:hidden;flex-shrink:0;display:flex;align-items:center;justify-content:center;font-size:1.4rem;">
+        ${p.image_url ? `<img src="${p.image_url}" style="width:100%;height:100%;object-fit:cover;">` : '◈'}
+      </div>
+      <div style="flex:1;min-width:0;">
+        <div style="font-size:0.88rem;font-weight:500;color:var(--white);white-space:nowrap;overflow:hidden;text-overflow:ellipsis;">${p.name}</div>
+        <div style="font-size:0.65rem;color:var(--mist);margin-top:2px;">${p.category || '—'} · ${p.price ? '$'+Number(p.price).toFixed(2) : 'No price'}</div>
+        <div style="font-size:0.6rem;margin-top:3px;color:${p.in_stock ? 'var(--green)' : 'var(--red)'};">${p.in_stock ? '● In stock' : '● Out of stock'}</div>
+      </div>
+      <div style="display:flex;gap:0.5rem;flex-shrink:0;">
+        ${p.product_url ? `<a href="${p.product_url}" target="_blank" class="btn-ghost" style="padding:4px 10px;font-size:0.55rem;">↗</a>` : ''}
+        <button class="btn-ghost" onclick="editProduct('${p.id}')" style="padding:4px 10px;font-size:0.55rem;">Edit</button>
+        <button class="btn-danger" onclick="deleteProduct('${p.id}')" style="padding:4px 10px;font-size:0.55rem;">Delete</button>
+      </div>
+    </div>`).join('');
+}
+
+window.openAddProduct = function() {
+  _editingProductId = null;
+  document.getElementById('pf-name').value = '';
+  document.getElementById('pf-category').value = '';
+  document.getElementById('pf-desc').value = '';
+  document.getElementById('pf-price').value = '';
+  document.getElementById('pf-url').value = '';
+  document.getElementById('pf-instock').checked = true;
+  document.getElementById('pf-image-url').value = '';
+  document.getElementById('pf-img-preview').innerHTML = '◈';
+  document.getElementById('pf-img-status').style.display = 'none';
+  document.getElementById('product-form-title').textContent = 'Add Product';
+  document.getElementById('pf-editing-id').value = '';
+  document.getElementById('product-form-card').style.display = 'block';
+  document.getElementById('product-form-card').scrollIntoView({ behavior: 'smooth' });
+};
+
+window.editProduct = function(id) {
+  const p = _products.find(x => x.id === id);
+  if (!p) return;
+  _editingProductId = id;
+  document.getElementById('pf-name').value = p.name || '';
+  document.getElementById('pf-category').value = p.category || '';
+  document.getElementById('pf-desc').value = p.description || '';
+  document.getElementById('pf-price').value = p.price || '';
+  document.getElementById('pf-url').value = p.product_url || '';
+  document.getElementById('pf-instock').checked = !!p.in_stock;
+  document.getElementById('pf-image-url').value = p.image_url || '';
+  document.getElementById('pf-img-preview').innerHTML = p.image_url
+    ? `<img src="${p.image_url}" style="width:100%;height:100%;object-fit:cover;">`
+    : '◈';
+  document.getElementById('product-form-title').textContent = 'Edit Product';
+  document.getElementById('pf-editing-id').value = id;
+  document.getElementById('product-form-card').style.display = 'block';
+  document.getElementById('product-form-card').scrollIntoView({ behavior: 'smooth' });
+};
+
+window.closeProductForm = function() {
+  document.getElementById('product-form-card').style.display = 'none';
+  _editingProductId = null;
+};
+
+window.handleProductImage = async function(input) {
+  const file = input.files[0];
+  if (!file) return;
+  if (file.size > 2*1024*1024) { showToast('Image must be under 2MB', true); return; }
+  const status = document.getElementById('pf-img-status');
+  status.textContent = 'Uploading...'; status.style.display = 'block'; status.style.color = 'var(--mist)';
+  const p = window._profile;
+  const ext = file.name.split('.').pop();
+  const path = `${p.user_id}/product-${Date.now()}.${ext}`;
+  const { error } = await window._sb.storage.from('vendor-images').upload(path, file, { upsert: false });
+  if (error) { status.textContent = 'Upload failed'; status.style.color = 'var(--red)'; return; }
+  const { data: { publicUrl } } = window._sb.storage.from('vendor-images').getPublicUrl(path);
+  document.getElementById('pf-image-url').value = publicUrl;
+  document.getElementById('pf-img-preview').innerHTML = `<img src="${publicUrl}" style="width:100%;height:100%;object-fit:cover;">`;
+  status.textContent = 'Image uploaded ✓'; status.style.color = 'var(--green)';
+};
+
+window.saveProduct = async function() {
+  const p = window._profile;
+  if (!p) return;
+  const name = document.getElementById('pf-name').value.trim();
+  if (!name) { showToast('Product name is required', true); return; }
+
+  const payload = {
+    vendor_id:   p.id,
+    name,
+    category:    document.getElementById('pf-category').value.trim(),
+    description: document.getElementById('pf-desc').value.trim(),
+    price:       parseFloat(document.getElementById('pf-price').value) || null,
+    product_url: document.getElementById('pf-url').value.trim(),
+    in_stock:    document.getElementById('pf-instock').checked,
+    image_url:   document.getElementById('pf-image-url').value || null,
+    updated_at:  new Date().toISOString(),
+  };
+
+  const editId = document.getElementById('pf-editing-id').value;
+  let error;
+  if (editId) {
+    ({ error } = await window._sb.from('vendor_products').update(payload).eq('id', editId));
+  } else {
+    payload.sort_order = _products.length;
+    ({ error } = await window._sb.from('vendor_products').insert(payload));
+  }
+
+  if (error) { showToast('Error saving: ' + error.message, true); return; }
+  closeProductForm();
+  await loadProducts();
+  showToast(editId ? 'Product updated ✓' : 'Product added ✓');
+};
+
+window.deleteProduct = async function(id) {
+  if (!confirm('Delete this product? This cannot be undone.')) return;
+  const { error } = await window._sb.from('vendor_products').delete().eq('id', id);
+  if (error) { showToast('Error: ' + error.message, true); return; }
+  await loadProducts();
+  showToast('Product deleted');
+};
+
 checkSession();
+
 </script>
 </body>
 </html>
