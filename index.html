@@ -730,7 +730,7 @@ function Home({setPage}) {
             {name:'Atlanta',state:'GA',sameDay:false,desc:'Buckhead, Midtown, Airport corridor. Business and leisure.',code:'ATL'},
             {name:'Savannah',state:'GA',sameDay:false,desc:'Historic district hotels and boutique properties. Weekend getaways.',code:'SAV'},
           ].map((d)=>(
-            <div key={d.name} onClick={()=>setPage('vendors')}
+            <div key={d.name} onClick={()=>{window._activeDestCity=d.name;setPage('vendors');}}
               style={{background:'var(--gold)',padding:'1.75rem 1.5rem',cursor:'pointer',transition:'background 0.25s',position:'relative'}}
               onMouseEnter={e=>e.currentTarget.style.background='#DDD3B8'}
               onMouseLeave={e=>e.currentTarget.style.background='var(--gold)'}>
@@ -843,7 +843,7 @@ function Home({setPage}) {
               textColor:'rgba(253,252,248,0.35)',nameColor:'rgba(253,252,248,0.5)',
             },
           ].map((d)=>(
-            <div key={d.name} onClick={()=>!d.comingSoon&&setPage('vendors')}
+            <div key={d.name} onClick={()=>{if(!d.comingSoon){window._activeDestCity=d.name;setPage('vendors');}}}
               style={{background:d.bg,padding:'2.5rem 2rem',cursor:d.comingSoon?'default':'pointer',transition:'background 0.3s',position:'relative',opacity:d.comingSoon?0.7:1}}
               onMouseEnter={e=>!d.comingSoon&&(e.currentTarget.style.background=d.bgHover)}
               onMouseLeave={e=>(e.currentTarget.style.background=d.bg)}>
@@ -937,7 +937,17 @@ function VendorMarketplace({setPage, setActiveVendor}) {
   // Static vendors (always shown) + approved Airtable vendors + apply slots
   const staticCore = VENDORS.filter(v => v.color !== 'apply');
   const applySlots = VENDORS.filter(v => v.color === 'apply');
-  const allVendors = [...staticCore, ...atVendors, ...applySlots];
+  const activeCity = window._activeDestCity || null;
+
+  // Filter vendors by destination — vendors with specific city dest only show for that city
+  const filteredCore = staticCore.filter(v => {
+    if (!activeCity) return true;
+    // Gifts By Selena is Tampa Bay only
+    if (v.id === 'gifts-by-selena') return activeCity === 'Tampa Bay';
+    return true;
+  });
+
+  const allVendors = [...filteredCore, ...atVendors, ...applySlots];
 
   return (
     <div style={{paddingTop:60}}>
@@ -949,6 +959,12 @@ function VendorMarketplace({setPage, setActiveVendor}) {
           Our <em style={{fontStyle:'italic'}}>Supplier</em> Network
         </h1>
         <p style={{fontSize:'1.02rem',color:'rgba(8,14,26,0.6)',marginTop:'1rem',maxWidth:500,lineHeight:1.8,fontWeight:300,position:'relative'}}>Browse verified suppliers delivering to your destination. Click any vendor to explore their products.</p>
+        {activeCity && (
+          <div style={{display:'inline-flex',alignItems:'center',gap:'0.75rem',marginTop:'1rem',background:'rgba(8,14,26,0.15)',border:'1px solid rgba(8,14,26,0.25)',padding:'0.4rem 0.85rem',position:'relative'}}>
+            <span style={{fontSize:'0.62rem',letterSpacing:'2px',textTransform:'uppercase',color:'rgba(8,14,26,0.7)'}}>Showing vendors for {activeCity}</span>
+            <span onClick={()=>{window._activeDestCity=null;setPage('vendors');}} style={{fontSize:'0.70rem',color:'rgba(8,14,26,0.5)',cursor:'pointer',marginLeft:'0.25rem'}}>✕ Clear</span>
+          </div>
+        )}
       </div>
       <div style={{padding:'3rem',background:'var(--noir)'}}>
         {loading ? (
