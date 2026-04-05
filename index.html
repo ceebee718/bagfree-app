@@ -561,7 +561,7 @@ function Home({setPage}) {
               style={{background:'linear-gradient(135deg,var(--gold),#b8893e)',color:'var(--noir)',border:'none',padding:'0.85rem 2.2rem',fontSize:'0.78rem',fontWeight:500,letterSpacing:'2.5px',textTransform:'uppercase'}}>
               How It Works ✦
             </button>
-            <button onClick={()=>window.open('https://valetbynuor.com','_blank')}
+            <button onClick={()=>window.open('/shop/valet-by-nuor','_self')}
               style={{background:'transparent',color:'var(--mist)',border:'1px solid var(--border)',padding:'0.85rem 1.75rem',fontSize:'0.78rem',letterSpacing:'2px',textTransform:'uppercase'}}>
               Shop Kits ↗
             </button>
@@ -615,7 +615,7 @@ function Home({setPage}) {
 
           {/* SNUGL card */}
           <div
-            onClick={()=>window.open('https://snuglpod.com','_blank')}
+            onClick={()=>window.open('/shop/snugl-pod','_self')}
             style={{background:'#1C1A12',padding:'2rem',cursor:'pointer',transition:'all 0.25s',position:'relative'}}
             onMouseEnter={e=>e.currentTarget.style.background='#252210'}
             onMouseLeave={e=>e.currentTarget.style.background='#1C1A12'}>
@@ -637,7 +637,7 @@ function Home({setPage}) {
 
           {/* Gifts By Selena card */}
           <div
-            onClick={()=>window.open('https://giftsbyselena.com','_blank')}
+            onClick={()=>window.open('/shop/gifts-by-selena','_self')}
             style={{background:'#1A1218',padding:'2rem',cursor:'pointer',transition:'all 0.25s',position:'relative'}}
             onMouseEnter={e=>e.currentTarget.style.background='#231820'}
             onMouseLeave={e=>e.currentTarget.style.background='#1A1218'}>
@@ -1049,9 +1049,9 @@ function VendorCard({vendor:v, setPage, setActiveVendor}) {
       <div style={{marginTop:'auto'}}>
         {isShop ? (
           <button
-            onClick={(e)=>{e.stopPropagation();window.open(v.url,'_blank');}}
+            onClick={(e)=>{e.stopPropagation();window.open('/shop/'+v.name.toLowerCase().replace(/[^a-z0-9]+/g,'-').replace(/^-|-$/g,''),'_self');}}
             style={{background:'var(--gold)',color:'var(--noir)',padding:'0.75rem 1.75rem',border:'none',fontSize:'0.78rem',fontWeight:500,letterSpacing:'2.5px',textTransform:'uppercase',width:'100%',cursor:'pointer',fontFamily:'var(--ff-body)'}}>
-            Shop {v.name} ↗
+            Shop {v.name} →
           </button>
         ) : (
           <button
