@@ -42,7 +42,4 @@
   to = "/.netlify/functions/track-vendor"
   status = 200
 
-[[redirects]]
-  from = "/tourism-dx"
-  to = "/tourism-dx.html"
-  status = 200
+
