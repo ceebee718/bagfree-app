@@ -26,3 +26,13 @@
   from = "/api/mapbox-tile"
   to = "/.netlify/functions/mapbox-tile"
   status = 200
+
+[[redirects]]
+  from = "/my-account"
+  to = "/my-account.html"
+  status = 200
+
+[[redirects]]
+  from = "/api/track-vendor"
+  to = "/.netlify/functions/track-vendor"
+  status = 200
