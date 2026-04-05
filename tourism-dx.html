@@ -89,10 +89,10 @@ input{font-family:var(--fb)}
 
 /* MAP */
 .map-area{position:relative;flex:1;background:#0A1E35;min-height:600px}
-.map-container{position:relative;width:100%;height:100%;min-height:600px;overflow:hidden;background:#0A1E35}
+.map-container{position:relative;width:100%;height:100%;min-height:650px;overflow:hidden;background:#0A1E35}
 .map-grid{position:absolute;inset:0;background-image:linear-gradient(rgba(201,169,110,0.06) 1px,transparent 1px),linear-gradient(90deg,rgba(201,169,110,0.06) 1px,transparent 1px);background-size:40px 40px;pointer-events:none;z-index:4}
-.map-label{position:absolute;transform:translate(-50%,-150%);background:rgba(8,14,26,0.88);border:1px solid rgba(201,169,110,0.3);padding:3px 10px;font-size:0.55rem;letter-spacing:2px;text-transform:uppercase;color:rgba(253,252,248,0.8);white-space:nowrap;pointer-events:none;z-index:9}
-.map-slot{position:absolute;transform:translate(-50%,-50%);width:40px;height:40px;border-radius:50%;border:2px dashed rgba(201,169,110,0.5);display:flex;align-items:center;justify-content:center;cursor:pointer;transition:all 0.25s;background:rgba(8,14,26,0.7);z-index:8}
+.map-label{position:absolute;transform:translate(-50%,-150%);background:rgba(4,8,16,0.92);border:1px solid rgba(201,169,110,0.5);padding:4px 12px;font-size:0.55rem;letter-spacing:2px;text-transform:uppercase;color:#FDFCF8;white-space:nowrap;pointer-events:none;z-index:9;box-shadow:0 2px 8px rgba(0,0,0,0.6)}
+.map-slot{position:absolute;transform:translate(-50%,-50%);width:44px;height:44px;border-radius:50%;border:2px dashed rgba(201,169,110,0.9);display:flex;align-items:center;justify-content:center;cursor:pointer;transition:all 0.25s;background:rgba(8,14,26,0.82);z-index:8;box-shadow:0 2px 12px rgba(0,0,0,0.5)}
 .map-slot:hover{border-color:var(--gold);background:rgba(201,169,110,0.15);transform:translate(-50%,-50%) scale(1.15)}
 .map-slot.filled{border-style:solid;border-color:rgba(201,169,110,0.5);background:rgba(8,14,26,0.85);cursor:default}
 .map-slot.filled:hover{transform:translate(-50%,-50%) scale(1)}
@@ -963,63 +963,29 @@ function renderMap() {
   const destKey = G.destId || 'coastal-isle';
   const landShape = destLands[destKey] || destLands['custom'];
   // Use a 1000x600 viewBox so we can use real numbers
-  const destLandsSVG = {
-    // Large zoomed-in land masses filling most of the map
-    'coastal-isle': `
-      <ellipse cx="420" cy="320" rx="340" ry="250" fill="#1B4D2E"/>
-      <ellipse cx="820" cy="430" rx="180" ry="140" fill="#1B4D2E"/>
-      <path d="M100,400 Q200,200 450,180 Q600,160 700,280 Q760,350 740,480 Q600,560 350,520 Q180,490 100,400Z" fill="#1E5530"/>
-      <ellipse cx="860" cy="200" rx="100" ry="70" fill="#163F26"/>`,
-    'mountain-coast': `
-      <path d="M-50,580 Q100,50 350,100 Q550,30 750,180 Q950,80 1050,350 Q980,580 650,560 Q350,580 -50,580Z" fill="#223D1E"/>
-      <path d="M200,400 Q280,180 480,200 Q620,190 700,320 Q720,430 600,490 Q400,510 200,400Z" fill="#2A4A22" opacity="0.6"/>`,
-    'urban-bay': `
-      <path d="M-80,600 Q80,180 320,140 Q620,60 880,200 Q1050,320 980,530 Q750,620 400,590 Q100,580 -80,600Z" fill="#1E3C22"/>
-      <path d="M300,350 Q400,200 580,220 Q720,230 800,340 Q820,440 700,500 Q520,530 350,480 Q280,430 300,350Z" fill="#243E24" opacity="0.7"/>`,
-    'rome': `
-      <path d="M-100,650 Q50,100 300,80 Q550,40 800,160 Q1000,260 980,500 Q840,620 500,640 Q200,650 -100,650Z" fill="#2A3E1A"/>
-      <path d="M680,380 Q780,300 900,340 Q980,400 960,500 Q880,560 780,530 Q680,480 680,380Z" fill="#243018"/>
-      <ellipse cx="850" cy="200" rx="120" ry="80" fill="#1E2E14"/>`,
-    'tokyo': `
-      <path d="M-50,600 Q100,150 400,100 Q700,40 950,200 Q1100,340 1050,560 Q800,640 450,630 Q150,620 -50,600Z" fill="#1E3420"/>
-      <path d="M300,300 Q420,150 620,160 Q780,170 860,290 Q900,390 820,470 Q660,530 460,510 Q310,480 300,300Z" fill="#243620" opacity="0.6"/>
-      <ellipse cx="920" cy="180" rx="130" ry="80" fill="#1A2E1C"/>`,
-    'st-vincent': `
-      <ellipse cx="230" cy="310" rx="165" ry="290" fill="#1A4A2A"/>
-      <ellipse cx="560" cy="210" rx="90" ry="155" fill="#1A4A2A"/>
-      <ellipse cx="720" cy="340" rx="70" ry="120" fill="#1A4228"/>
-      <ellipse cx="830" cy="450" rx="55" ry="95" fill="#163E24"/>
-      <ellipse cx="920" cy="540" rx="45" ry="78" fill="#123820"/>
-      <path d="M150,250 Q230,100 310,180 Q360,230 340,380 Q300,450 230,420 Q150,380 150,250Z" fill="#22562E" opacity="0.5"/>`,
-    'custom': `
-      <ellipse cx="420" cy="320" rx="300" ry="220" fill="#1E3C26"/>
-      <ellipse cx="780" cy="400" rx="200" ry="160" fill="#1A3822"/>
-      <path d="M200,450 Q280,250 460,240 Q600,230 680,340 Q720,430 640,510 Q480,550 310,510 Q210,480 200,450Z" fill="#243E28" opacity="0.6"/>`,
-  };
-  const landShapeSVG = destLandsSVG[destKey] || destLandsSVG['custom'];
+  // Photo map backgrounds used instead of SVG shapes
 
-  landSvg.innerHTML = `<svg viewBox="0 0 1000 600" preserveAspectRatio="xMidYMid slice" width="100%" height="100%" xmlns="http://www.w3.org/2000/svg" style="position:absolute;inset:0;display:block;">
-    <defs>
-      <radialGradient id="oceanDepth" cx="50%" cy="50%" r="70%">
-        <stop offset="0%" stop-color="#0F2A45"/>
-        <stop offset="100%" stop-color="#071522"/>
-      </radialGradient>
-      <pattern id="terrainPattern" x="0" y="0" width="40" height="40" patternUnits="userSpaceOnUse">
-        <circle cx="20" cy="20" r="0.8" fill="rgba(255,255,255,0.4)"/>
-      </pattern>
-    </defs>
-    <!-- Ocean -->
-    <rect width="1000" height="600" fill="url(#oceanDepth)"/>
-    <!-- Ocean shimmer lines -->
-    <path d="M0,510 Q125,495 250,510 Q375,525 500,510 Q625,495 750,510 Q875,525 1000,510 L1000,600 L0,600 Z" fill="rgba(15,42,69,0.5)"/>
-    <path d="M0,550 Q125,538 250,550 Q375,562 500,550 Q625,538 750,550 Q875,562 1000,550 L1000,600 L0,600 Z" fill="rgba(10,28,50,0.4)"/>
-    <!-- Land -->
-    ${landShapeSVG}
-    <!-- Terrain texture overlay -->
-    <rect width="1000" height="600" fill="url(#terrainPattern)" opacity="0.08"/>
-    <!-- Coastline edge highlight -->
-    <path d="M0,590 Q250,580 500,590 Q750,600 1000,590" stroke="rgba(93,202,165,0.12)" stroke-width="2" fill="none"/>
-  </svg>`;
+
+  // Photo-realistic map backgrounds per destination
+  const destMapBg = {
+    'coastal-isle':   { img: '/map-aerial.png', filter: 'brightness(1.0) saturate(1.1)', tint: 'rgba(0,40,80,0.15)' },
+    'mountain-coast': { img: '/map-aerial.png', filter: 'brightness(0.85) saturate(0.9) hue-rotate(20deg)', tint: 'rgba(20,40,20,0.25)' },
+    'urban-bay':      { img: '/map-aerial.png', filter: 'brightness(0.9) saturate(1.2) hue-rotate(-10deg)', tint: 'rgba(0,20,60,0.2)' },
+    'rome':           { img: '/map-aerial.png', filter: 'brightness(1.05) saturate(0.85) sepia(0.15)', tint: 'rgba(60,40,0,0.2)' },
+    'tokyo':          { img: '/map-aerial.png', filter: 'brightness(0.95) saturate(1.15) hue-rotate(180deg)', tint: 'rgba(0,20,50,0.2)' },
+    'st-vincent':     { img: '/map-aerial.png', filter: 'brightness(1.1) saturate(1.3)', tint: 'rgba(0,60,40,0.1)' },
+    'custom':         { img: '/map-aerial.png', filter: 'brightness(1.0) saturate(1.0)', tint: 'rgba(0,20,40,0.2)' },
+  };
+  const mapBg = destMapBg[destKey] || destMapBg['custom'];
+
+  landSvg.innerHTML = `
+    <img src="${mapBg.img}"
+      style="position:absolute;inset:0;width:100%;height:100%;object-fit:cover;filter:${mapBg.filter};"
+      draggable="false">
+    <div style="position:absolute;inset:0;background:${mapBg.tint};pointer-events:none;"></div>
+    <div style="position:absolute;inset:0;background:linear-gradient(to bottom, rgba(8,14,26,0.35) 0%, transparent 30%, transparent 70%, rgba(8,14,26,0.5) 100%);pointer-events:none;"></div>
+  `;
+  landSvg.style.cssText = 'position:absolute;inset:0;pointer-events:none;z-index:1;';
   mapEl.insertBefore(landSvg, mapEl.firstChild);
 
   G.slots.forEach(slot => {
