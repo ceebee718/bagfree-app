@@ -416,8 +416,44 @@ input,textarea,select{font-family:var(--fb)}
             </div>
           </div>
 
-          <div style="background:rgba(239,159,39,0.06);border:1px solid rgba(239,159,39,0.2);padding:1rem;margin-bottom:1.25rem;font-size:0.78rem;color:rgba(239,159,39,0.85);line-height:1.7;">
-            ⏱ Your 6-month free trial is active. After the trial ends your subscription auto-converts to your chosen plan — no action needed. You can upgrade, downgrade or cancel at any time before then.
+          <div id="trial-banner" style="background:rgba(239,159,39,0.06);border:1px solid rgba(239,159,39,0.3);padding:1.25rem;margin-bottom:1.25rem;">
+            <div style="display:flex;align-items:flex-start;gap:0.75rem;">
+              <span style="color:var(--amber);font-size:1rem;flex-shrink:0;margin-top:2px;">⏱</span>
+              <div style="flex:1;">
+                <div style="font-size:0.72rem;font-weight:600;color:var(--amber);letter-spacing:1px;margin-bottom:0.4rem;text-transform:uppercase;">Free Trial Active — Basic Tier Features Only</div>
+                <div style="font-size:0.78rem;color:rgba(253,252,248,0.6);line-height:1.8;margin-bottom:0.85rem;">
+                  During your trial you are listed as a <strong style="color:var(--white)">Basic vendor</strong> regardless of the plan you selected. To unlock priority placement, newsletter features, or home page listing right now — activate your paid plan early below.
+                </div>
+                <div style="display:grid;grid-template-columns:repeat(3,1fr);gap:8px;margin-bottom:1rem;">
+                  <div style="background:rgba(255,255,255,0.03);border:1px solid rgba(255,255,255,0.07);padding:0.75rem;text-align:center;">
+                    <div style="font-size:0.55rem;letter-spacing:2px;text-transform:uppercase;color:var(--mist);margin-bottom:0.3rem;">Basic</div>
+                    <div style="font-size:0.65rem;color:rgba(253,252,248,0.4);line-height:1.6;">City listing only · Standard position</div>
+                    <div style="font-size:0.6rem;color:var(--amber);margin-top:0.4rem;">← You are here</div>
+                  </div>
+                  <div style="background:rgba(201,169,110,0.08);border:1px solid rgba(201,169,110,0.3);padding:0.75rem;text-align:center;">
+                    <div style="font-size:0.55rem;letter-spacing:2px;text-transform:uppercase;color:var(--gold);margin-bottom:0.3rem;">Premium</div>
+                    <div style="font-size:0.65rem;color:rgba(253,252,248,0.55);line-height:1.6;">Priority placement · Newsletter · Gift bag</div>
+                    <div style="font-size:0.62rem;color:var(--gold);margin-top:0.4rem;font-family:var(--ff);font-size:0.9rem;">$99<span style="font-size:0.55rem;font-family:var(--fb)">/mo</span></div>
+                  </div>
+                  <div style="background:rgba(201,169,110,0.12);border:1px solid var(--gold);padding:0.75rem;text-align:center;">
+                    <div style="font-size:0.55rem;letter-spacing:2px;text-transform:uppercase;color:var(--gold);margin-bottom:0.3rem;">Elite</div>
+                    <div style="font-size:0.65rem;color:rgba(253,252,248,0.55);line-height:1.6;">Home page · All cities · Top placement</div>
+                    <div style="font-size:0.62rem;color:var(--gold);margin-top:0.4rem;font-family:var(--ff);font-size:0.9rem;">$199<span style="font-size:0.55rem;font-family:var(--fb)">/mo</span></div>
+                  </div>
+                </div>
+                <div style="display:flex;gap:0.6rem;flex-wrap:wrap;">
+                  <button onclick="activatePaidPlan('premium')" style="background:linear-gradient(135deg,var(--gold),#b8893e);color:#0A0A08;border:none;padding:0.6rem 1.25rem;font-size:0.6rem;font-weight:600;letter-spacing:2px;text-transform:uppercase;cursor:pointer;font-family:var(--fb);">
+                    Activate Premium Now
+                  </button>
+                  <button onclick="activatePaidPlan('elite')" style="background:transparent;border:1px solid var(--gold);color:var(--gold);padding:0.6rem 1.25rem;font-size:0.6rem;letter-spacing:2px;text-transform:uppercase;cursor:pointer;font-family:var(--fb);">
+                    Go Elite
+                  </button>
+                  <div style="font-size:0.65rem;color:rgba(253,252,248,0.3);display:flex;align-items:center;padding-left:0.25rem;">
+                    Or keep trial · auto-converts at month 6
+                  </div>
+                </div>
+              </div>
+            </div>
           </div>
         </div>
 
@@ -577,6 +613,12 @@ function renderApp(p) {
   document.getElementById('plan-trial-date').textContent = trialEnd;
   document.getElementById('plan-name-display').textContent = (p.plan||'basic').charAt(0).toUpperCase()+(p.plan||'basic').slice(1)+' Plan';
 
+  // Only show trial upgrade banner if still on trial
+  const trialBanner = document.getElementById('trial-banner');
+  if (trialBanner) {
+    trialBanner.style.display = (p.plan_status === 'trial') ? 'block' : 'none';
+  }
+
   const statusMap = {trial:'trial',active:'active',cancelled:'cancelled'};
   const sc = statusMap[p.plan_status] || 'trial';
   const sl = {trial:'Free Trial Active',active:'Active',cancelled:'Cancelled'}[sc];
@@ -735,6 +777,30 @@ window.handleImageUpload = async function(input) {
   document.getElementById('preview-avatar').innerHTML = imgHtml;
   status.textContent = 'Image updated ✓'; status.style.color = 'var(--green)';
   showToast('Profile image updated ✓');
+};
+
+window.activatePaidPlan = async function(planId) {
+  // Opens Stripe payment link for immediate activation
+  const stripeLinks = {
+    premium: 'https://buy.stripe.com/bagfree-premium',
+    elite:   'https://buy.stripe.com/bagfree-elite',
+    basic:   'https://buy.stripe.com/bagfree-basic',
+  };
+  const link = stripeLinks[planId];
+  if (!link) return;
+
+  // Update plan selection in DB first so we know what they chose
+  const p = window._profile;
+  if (p) {
+    await window._sb.from('vendor_profiles')
+      .update({ plan: planId, updated_at: new Date().toISOString() })
+      .eq('id', p.id);
+    window._profile.plan = planId;
+  }
+
+  // Open Stripe checkout
+  showToast('Redirecting to secure payment...');
+  setTimeout(() => window.open(link, '_blank'), 800);
 };
 
 window.upgradePlan = async function(planId) {
