@@ -1,0 +1,375 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+<meta charset="UTF-8">
+<meta name="viewport" content="width=device-width, initial-scale=1.0">
+<title>Shop — BagFree</title>
+<meta name="description" content="Shop curated products from BagFree vendors delivered to your hotel.">
+<link href="https://fonts.googleapis.com/css2?family=Cormorant+Garamond:ital,wght@0,300;0,400;0,600;1,300;1,400&family=Jost:wght@300;400;500;600&display=swap" rel="stylesheet">
+<style>
+*{box-sizing:border-box;margin:0;padding:0}
+:root{
+  --noir:#080E1A;--n2:#0D1525;--n3:#131D30;--n4:#1A253D;
+  --gold:#C9A96E;--gold-dim:#8A6F45;--gold-light:#E8D5B0;
+  --white:#FDFCF8;--mist:rgba(253,252,248,0.55);
+  --green:#5DCAA5;--red:#E24B4A;
+  --brd:rgba(201,169,110,0.18);
+  --ff:'Cormorant Garamond',Georgia,serif;
+  --fb:'Jost',sans-serif;
+}
+html,body{min-height:100%;background:var(--noir);color:var(--white);font-family:var(--fb)}
+
+/* NAV */
+#nav{position:fixed;top:0;left:0;right:0;z-index:100;background:rgba(8,14,26,0.97);backdrop-filter:blur(16px);border-bottom:1px solid var(--brd);padding:0.75rem 2rem;display:flex;align-items:center;justify-content:space-between;gap:1rem}
+.nav-logo{font-family:var(--ff);font-size:1.1rem;font-weight:300;color:var(--gold);text-decoration:none;letter-spacing:1px}
+.nav-back{font-size:0.6rem;letter-spacing:2px;text-transform:uppercase;color:var(--mist);text-decoration:none;border:1px solid var(--brd);padding:5px 12px;transition:all 0.2s}
+.nav-back:hover{color:var(--gold);border-color:var(--gold)}
+
+/* VENDOR HERO */
+.vendor-hero{padding:6rem 2rem 3rem;background:var(--n2);border-bottom:1px solid var(--brd);position:relative;overflow:hidden}
+.vendor-hero-inner{max-width:1100px;margin:0 auto;display:flex;align-items:center;gap:2.5rem;flex-wrap:wrap}
+.vendor-avatar{width:88px;height:88px;border:1px solid var(--brd);overflow:hidden;flex-shrink:0;display:flex;align-items:center;justify-content:center;font-size:2.5rem;background:var(--n3)}
+.vendor-avatar img{width:100%;height:100%;object-fit:cover}
+.vendor-info{flex:1}
+.vendor-eyebrow{font-size:0.55rem;letter-spacing:3px;text-transform:uppercase;color:var(--gold);margin-bottom:0.5rem}
+.vendor-name{font-family:var(--ff);font-size:clamp(1.8rem,4vw,3rem);font-weight:300;color:var(--white);line-height:1.1;margin-bottom:0.5rem}
+.vendor-cat{font-size:0.72rem;letter-spacing:2px;text-transform:uppercase;color:var(--mist);margin-bottom:0.75rem}
+.vendor-desc{font-size:0.88rem;color:var(--mist);line-height:1.8;max-width:520px}
+.vendor-meta{display:flex;align-items:center;gap:0.75rem;margin-top:1.25rem;flex-wrap:wrap}
+.vendor-city-tag{font-size:0.58rem;letter-spacing:1.5px;text-transform:uppercase;border:1px solid rgba(201,169,110,0.25);padding:3px 10px;color:rgba(201,169,110,0.7)}
+.vendor-plan-tag{font-size:0.58rem;letter-spacing:1.5px;text-transform:uppercase;padding:3px 10px;color:var(--noir);background:var(--gold)}
+.vendor-website-btn{font-size:0.6rem;letter-spacing:2px;text-transform:uppercase;color:var(--gold);border:1px solid rgba(201,169,110,0.35);padding:6px 14px;text-decoration:none;transition:all 0.2s;display:inline-flex;align-items:center;gap:0.4rem}
+.vendor-website-btn:hover{background:rgba(201,169,110,0.08)}
+
+/* AMBIENT GLOW */
+.hero-glow{position:absolute;top:-50%;right:-10%;width:600px;height:600px;background:radial-gradient(ellipse,rgba(201,169,110,0.05),transparent 70%);pointer-events:none}
+
+/* PRODUCTS */
+.products-section{max-width:1100px;margin:0 auto;padding:3rem 2rem}
+.products-header{display:flex;align-items:center;justify-content:space-between;margin-bottom:2rem;flex-wrap:wrap;gap:1rem}
+.products-title{font-family:var(--ff);font-size:1.8rem;font-weight:300;color:var(--white)}
+.products-count{font-size:0.68rem;letter-spacing:2px;text-transform:uppercase;color:var(--mist)}
+
+/* FILTER PILLS */
+.filter-bar{display:flex;gap:0.5rem;flex-wrap:wrap;margin-bottom:2rem}
+.filter-pill{font-size:0.6rem;letter-spacing:1.5px;text-transform:uppercase;border:1px solid var(--brd);padding:5px 14px;cursor:pointer;transition:all 0.2s;color:var(--mist);background:transparent}
+.filter-pill:hover{border-color:rgba(201,169,110,0.4);color:var(--white)}
+.filter-pill.active{border-color:var(--gold);color:var(--gold);background:rgba(201,169,110,0.08)}
+
+/* PRODUCT GRID */
+.product-grid{display:grid;grid-template-columns:repeat(auto-fill,minmax(260px,1fr));gap:1px;background:var(--brd);border:1px solid var(--brd)}
+.product-card{background:var(--n2);cursor:pointer;transition:background 0.2s;position:relative;display:flex;flex-direction:column}
+.product-card:hover{background:var(--n3)}
+.product-card:hover .product-img-overlay{opacity:1}
+.product-img-wrap{position:relative;width:100%;padding-bottom:100%;overflow:hidden;background:var(--n3);flex-shrink:0}
+.product-img{position:absolute;inset:0;width:100%;height:100%;object-fit:cover;transition:transform 0.4s ease}
+.product-card:hover .product-img{transform:scale(1.04)}
+.product-img-overlay{position:absolute;inset:0;background:rgba(8,14,26,0.55);display:flex;align-items:center;justify-content:center;opacity:0;transition:opacity 0.25s}
+.product-img-placeholder{position:absolute;inset:0;display:flex;align-items:center;justify-content:center;font-size:3.5rem;opacity:0.2}
+.overlay-btn{background:linear-gradient(135deg,var(--gold),#b8893e);color:#0A0A08;border:none;padding:0.65rem 1.5rem;font-size:0.6rem;font-weight:600;letter-spacing:2px;text-transform:uppercase;cursor:pointer;font-family:var(--fb)}
+.product-body{padding:1.25rem;flex:1;display:flex;flex-direction:column}
+.product-cat{font-size:0.52rem;letter-spacing:2px;text-transform:uppercase;color:var(--gold-dim);margin-bottom:0.4rem}
+.product-name{font-family:var(--ff);font-size:1.15rem;font-weight:300;color:var(--white);line-height:1.2;margin-bottom:0.5rem}
+.product-desc{font-size:0.75rem;color:var(--mist);line-height:1.7;margin-bottom:0.85rem;flex:1}
+.product-footer{display:flex;align-items:center;justify-content:space-between;margin-top:auto;padding-top:0.75rem;border-top:1px solid rgba(255,255,255,0.05)}
+.product-price{font-family:var(--ff);font-size:1.4rem;font-weight:300;color:var(--gold)}
+.product-buy-btn{font-size:0.58rem;letter-spacing:1.5px;text-transform:uppercase;color:var(--gold);border:1px solid rgba(201,169,110,0.35);padding:5px 12px;text-decoration:none;transition:all 0.2s;display:inline-flex;align-items:center;gap:0.3rem;cursor:pointer;background:transparent;font-family:var(--fb)}
+.product-buy-btn:hover{background:rgba(201,169,110,0.1);border-color:var(--gold)}
+.product-oos{position:absolute;top:0.75rem;left:0.75rem;font-size:0.52rem;letter-spacing:1.5px;text-transform:uppercase;background:rgba(226,75,74,0.85);color:var(--white);padding:3px 8px}
+
+/* EMPTY STATE */
+.empty-state{text-align:center;padding:5rem 2rem;color:var(--mist)}
+.empty-icon{font-family:var(--ff);font-size:4rem;font-weight:300;color:rgba(201,169,110,0.2);margin-bottom:1rem}
+.empty-text{font-size:0.88rem;line-height:1.8}
+
+/* DELIVERY STRIP */
+.delivery-strip{background:rgba(201,169,110,0.05);border-top:1px solid var(--brd);border-bottom:1px solid var(--brd);padding:1.25rem 2rem;margin:0}
+.delivery-strip-inner{max-width:1100px;margin:0 auto;display:flex;align-items:center;justify-content:center;gap:3rem;flex-wrap:wrap}
+.delivery-item{display:flex;align-items:center;gap:0.6rem;font-size:0.72rem;color:var(--mist)}
+.delivery-item svg{color:var(--gold);flex-shrink:0}
+
+/* NOT FOUND */
+.not-found{min-height:80vh;display:flex;align-items:center;justify-content:center;text-align:center;padding:2rem;flex-direction:column;gap:1rem}
+
+/* LOADING */
+.skeleton{background:linear-gradient(90deg,var(--n2) 25%,var(--n3) 50%,var(--n2) 75%);background-size:200% 100%;animation:shimmer 1.4s infinite}
+@keyframes shimmer{0%{background-position:200% 0}100%{background-position:-200% 0}}
+
+@media(max-width:640px){
+  .vendor-hero-inner{flex-direction:column;align-items:flex-start}
+  .delivery-strip-inner{gap:1.5rem}
+  .product-grid{grid-template-columns:repeat(auto-fill,minmax(160px,1fr))}
+}
+</style>
+</head>
+<body>
+
+<!-- NAV -->
+<nav id="nav">
+  <a href="/" class="nav-logo">BagFree</a>
+  <div style="display:flex;align-items:center;gap:0.75rem;">
+    <a href="/#vendors" class="nav-back">← All Vendors</a>
+    <a href="/departure-lounge-landing" class="nav-back" style="border-color:rgba(201,169,110,0.3);color:rgba(201,169,110,0.8);">Departure Lounge</a>
+  </div>
+</nav>
+
+<!-- CONTENT -->
+<div id="content" style="padding-top:60px;">
+
+  <!-- Loading state -->
+  <div id="loading-state" style="padding:6rem 2rem 3rem;max-width:1100px;margin:0 auto;">
+    <div style="display:flex;gap:2rem;align-items:center;margin-bottom:3rem;">
+      <div class="skeleton" style="width:88px;height:88px;flex-shrink:0;"></div>
+      <div style="flex:1;">
+        <div class="skeleton" style="height:12px;width:120px;margin-bottom:0.75rem;"></div>
+        <div class="skeleton" style="height:28px;width:260px;margin-bottom:0.5rem;"></div>
+        <div class="skeleton" style="height:10px;width:180px;"></div>
+      </div>
+    </div>
+    <div style="display:grid;grid-template-columns:repeat(auto-fill,minmax(260px,1fr));gap:1px;">
+      <div class="skeleton" style="height:340px;"></div><div class="skeleton" style="height:340px;"></div><div class="skeleton" style="height:340px;"></div><div class="skeleton" style="height:340px;"></div>
+    </div>
+  </div>
+
+  <!-- Not found state -->
+  <div id="not-found" class="not-found" style="display:none;">
+    <div style="font-family:var(--ff);font-size:3rem;font-weight:300;color:rgba(201,169,110,0.3);">◈</div>
+    <div style="font-family:var(--ff);font-size:2rem;font-weight:300;">Vendor not found</div>
+    <div style="font-size:0.85rem;color:var(--mist);">This vendor doesn't exist or is no longer active on BagFree.</div>
+    <a href="/#vendors" style="margin-top:1rem;font-size:0.62rem;letter-spacing:2px;text-transform:uppercase;color:var(--gold);text-decoration:none;border:1px solid rgba(201,169,110,0.35);padding:8px 18px;">View All Vendors →</a>
+  </div>
+
+  <!-- Vendor content -->
+  <div id="vendor-content" style="display:none;">
+
+    <!-- Vendor Hero -->
+    <div class="vendor-hero">
+      <div class="hero-glow"></div>
+      <div class="vendor-hero-inner">
+        <div class="vendor-avatar" id="v-avatar">🏪</div>
+        <div class="vendor-info">
+          <div class="vendor-eyebrow">BagFree Curated Vendor</div>
+          <div class="vendor-name" id="v-name">—</div>
+          <div class="vendor-cat" id="v-cat">—</div>
+          <div class="vendor-desc" id="v-desc">—</div>
+          <div class="vendor-meta">
+            <div id="v-cities"></div>
+            <div id="v-plan-badge"></div>
+            <a id="v-website-btn" href="#" target="_blank" class="vendor-website-btn">
+              Visit Website <svg width="10" height="10" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2"><path d="M18 13v6a2 2 0 0 1-2 2H5a2 2 0 0 1-2-2V8a2 2 0 0 1 2-2h6"/><polyline points="15 3 21 3 21 9"/><line x1="10" y1="14" x2="21" y2="3"/></svg>
+            </a>
+          </div>
+        </div>
+      </div>
+    </div>
+
+    <!-- Delivery strip -->
+    <div class="delivery-strip">
+      <div class="delivery-strip-inner">
+        <div class="delivery-item">
+          <svg width="14" height="14" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2"><polyline points="20 6 9 17 4 12"/></svg>
+          Delivered to your hotel
+        </div>
+        <div class="delivery-item">
+          <svg width="14" height="14" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2"><circle cx="12" cy="12" r="10"/><polyline points="12 6 12 12 16 14"/></svg>
+          Same-day Tampa & Orlando
+        </div>
+        <div class="delivery-item">
+          <svg width="14" height="14" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2"><path d="M12 22s8-4 8-10V5l-8-3-8 3v7c0 6 8 10 8 10z"/></svg>
+          Vetted by BagFree
+        </div>
+        <div class="delivery-item">
+          <svg width="14" height="14" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2"><rect x="1" y="3" width="15" height="13"/><polygon points="16 8 20 8 23 11 23 16 16 16 16 8"/><circle cx="5.5" cy="18.5" r="2.5"/><circle cx="18.5" cy="18.5" r="2.5"/></svg>
+          Powered by Valet by Nuor
+        </div>
+      </div>
+    </div>
+
+    <!-- Products -->
+    <div class="products-section">
+      <div class="products-header">
+        <div class="products-title">Products</div>
+        <div class="products-count" id="products-count">—</div>
+      </div>
+      <div class="filter-bar" id="filter-bar"></div>
+      <div class="product-grid" id="product-grid"></div>
+      <div id="no-products" class="empty-state" style="display:none;">
+        <div class="empty-icon">◈</div>
+        <div class="empty-text">No products in this category.<br>Check back soon.</div>
+      </div>
+    </div>
+
+    <!-- Bottom CTA -->
+    <div style="background:var(--n2);border-top:1px solid var(--brd);padding:4rem 2rem;text-align:center;">
+      <div style="font-size:0.6rem;letter-spacing:3px;text-transform:uppercase;color:var(--gold);margin-bottom:0.75rem;">Arrive to everything</div>
+      <div style="font-family:var(--ff);font-size:clamp(1.8rem,4vw,3rem);font-weight:300;margin-bottom:1rem;">
+        Need it at your hotel before you arrive?
+      </div>
+      <div style="font-size:0.85rem;color:var(--mist);line-height:1.8;max-width:480px;margin:0 auto 2rem;">
+        BagFree coordinates delivery of curated products to your hotel room before you check in. No bags. No queues.
+      </div>
+      <a href="/departure-lounge-landing" style="display:inline-block;background:linear-gradient(135deg,var(--gold),#b8893e);color:#0A0A08;padding:0.9rem 2.5rem;font-size:0.65rem;font-weight:600;letter-spacing:2.5px;text-transform:uppercase;text-decoration:none;">
+        Enter The Departure Lounge ✦
+      </a>
+    </div>
+
+  </div>
+</div>
+
+<script type="module">
+import { createClient } from 'https://cdn.jsdelivr.net/npm/@supabase/supabase-js/+esm';
+const sb = createClient('https://hoipvmhwjxdipbnnxdwd.supabase.co', 'sb_publishable_YpauWHKsHKClPTxMfLIL3g_s4hCkP5H');
+
+// Get vendor slug from URL path e.g. /shop/gifts-by-selena
+const slug = window.location.pathname.replace('/shop/', '').replace(/\/$/, '').toLowerCase();
+
+let allProducts = [];
+let activeFilter = 'all';
+
+async function loadVendor() {
+  if (!slug) { showNotFound(); return; }
+
+  // Match slug to business_name (slugified)
+  const { data: vendors } = await sb.from('vendor_profiles')
+    .select('*').eq('approved', true);
+
+  if (!vendors) { showNotFound(); return; }
+
+  // Find vendor by slug match
+  const vendor = vendors.find(v => slugify(v.business_name) === slug);
+  if (!vendor) { showNotFound(); return; }
+
+  // Load products
+  const { data: products } = await sb.from('vendor_products')
+    .select('*').eq('vendor_id', vendor.id)
+    .order('sort_order', { ascending: true });
+
+  allProducts = products || [];
+
+  renderVendor(vendor, allProducts);
+}
+
+function slugify(str) {
+  return (str || '').toLowerCase().replace(/[^a-z0-9]+/g, '-').replace(/^-|-$/g, '');
+}
+
+function renderVendor(vendor, products) {
+  document.getElementById('loading-state').style.display = 'none';
+  document.getElementById('vendor-content').style.display = 'block';
+
+  // Update page title and meta
+  document.title = vendor.business_name + ' — BagFree';
+
+  // Avatar
+  const avatarEl = document.getElementById('v-avatar');
+  if (vendor.profile_image_url) {
+    avatarEl.innerHTML = `<img src="${vendor.profile_image_url}" alt="${vendor.business_name}">`;
+  }
+
+  // Info
+  document.getElementById('v-name').textContent = vendor.business_name;
+  document.getElementById('v-cat').textContent = vendor.category || '';
+  document.getElementById('v-desc').textContent = vendor.description || '';
+
+  // Cities
+  const cities = vendor.cities || [];
+  document.getElementById('v-cities').innerHTML = cities.map(c =>
+    `<span class="vendor-city-tag">${c.replace(/-/g,' ').replace(/\w/g,l=>l.toUpperCase())}</span>`
+  ).join('');
+
+  // Plan badge
+  const planLabels = { elite: 'Elite Partner', premium: 'Premium Partner', basic: 'Partner' };
+  if (vendor.plan === 'elite' || vendor.plan === 'premium') {
+    document.getElementById('v-plan-badge').innerHTML =
+      `<span class="vendor-plan-tag">${planLabels[vendor.plan]}</span>`;
+  }
+
+  // Website button
+  const websiteBtn = document.getElementById('v-website-btn');
+  if (vendor.website) {
+    websiteBtn.href = vendor.website.startsWith('http') ? vendor.website : 'https://' + vendor.website;
+    websiteBtn.style.display = 'inline-flex';
+  } else {
+    websiteBtn.style.display = 'none';
+  }
+
+  // Products count
+  document.getElementById('products-count').textContent = products.length + ' product' + (products.length !== 1 ? 's' : '');
+
+  // Build category filters
+  const cats = ['all', ...new Set(products.map(p => p.category).filter(Boolean))];
+  const filterBar = document.getElementById('filter-bar');
+  filterBar.innerHTML = cats.map(c => `
+    <div class="filter-pill ${c === 'all' ? 'active' : ''}" onclick="setFilter('${c}', this)">
+      ${c === 'all' ? 'All Products' : c}
+    </div>`).join('');
+
+  renderProducts(products);
+}
+
+function renderProducts(products) {
+  const filtered = activeFilter === 'all'
+    ? products
+    : products.filter(p => p.category === activeFilter);
+
+  const grid = document.getElementById('product-grid');
+  const noProducts = document.getElementById('no-products');
+
+  if (filtered.length === 0) {
+    grid.style.display = 'none';
+    noProducts.style.display = 'block';
+    return;
+  }
+
+  grid.style.display = 'grid';
+  noProducts.style.display = 'none';
+
+  grid.innerHTML = filtered.map(p => {
+    const price = p.price ? '$' + Number(p.price).toFixed(2) : 'View price';
+    const link = p.product_url || '#';
+    const imgContent = p.image_url
+      ? `<img class="product-img" src="${p.image_url}" alt="${p.name}" loading="lazy">`
+      : `<div class="product-img-placeholder">◈</div>`;
+
+    return `
+      <div class="product-card" onclick="window.open('${link}','_blank')">
+        ${!p.in_stock ? '<div class="product-oos">Out of Stock</div>' : ''}
+        <div class="product-img-wrap">
+          ${imgContent}
+          <div class="product-img-overlay">
+            <button class="overlay-btn" onclick="event.stopPropagation();window.open('${link}','_blank')">
+              Shop Now ↗
+            </button>
+          </div>
+        </div>
+        <div class="product-body">
+          ${p.category ? `<div class="product-cat">${p.category}</div>` : ''}
+          <div class="product-name">${p.name}</div>
+          ${p.description ? `<div class="product-desc">${p.description}</div>` : '<div class="product-desc"></div>'}
+          <div class="product-footer">
+            <div class="product-price">${price}</div>
+            <a class="product-buy-btn" href="${link}" target="_blank" onclick="event.stopPropagation()">
+              Buy <svg width="9" height="9" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2.5"><path d="M18 13v6a2 2 0 0 1-2 2H5a2 2 0 0 1-2-2V8a2 2 0 0 1 2-2h6"/><polyline points="15 3 21 3 21 9"/><line x1="10" y1="14" x2="21" y2="3"/></svg>
+            </a>
+          </div>
+        </div>
+      </div>`;
+  }).join('');
+}
+
+window.setFilter = function(cat, el) {
+  activeFilter = cat;
+  document.querySelectorAll('.filter-pill').forEach(p => p.classList.remove('active'));
+  el.classList.add('active');
+  renderProducts(allProducts);
+};
+
+function showNotFound() {
+  document.getElementById('loading-state').style.display = 'none';
+  document.getElementById('not-found').style.display = 'flex';
+}
+
+loadVendor();
+</script>
+</body>
+</html>
