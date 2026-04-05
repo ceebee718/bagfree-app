@@ -1266,7 +1266,7 @@ function SupplierPortal() {
   const [done, setDone] = React.useState(false);
   const [form, setForm] = React.useState({
     biz:'', contact:'', email:'', phone:'', website:'',
-    category:'', destinations:[], description:'', plan:''
+    category:'', destinations:[], description:'', plan:'', bizTypes:[]
   });
 
   function toggleDest(d) {
@@ -1349,7 +1349,7 @@ function SupplierPortal() {
         You&apos;re on the <em style={{color:'var(--gold)',fontStyle:'italic'}}>list</em>
       </h1>
       <p style={{fontSize:'1.02rem',color:'var(--mist)',lineHeight:1.9,maxWidth:520,marginBottom:'2rem'}}>
-        Thank you, <strong style={{color:'var(--white)'}}>{form.biz}</strong>. Our team will review your application and reach out to <strong style={{color:'var(--white)'}}>{form.email}</strong> within 3 business days. Once approved, you&apos;ll receive a link to activate your chosen subscription plan.
+        Thank you, <strong style={{color:'var(--white)'}}>{form.biz}</strong>. Our team will review your application and reach out to <strong style={{color:'var(--white)'}}>{form.email}</strong> within 3 business days. Once approved, your listing goes live free for 6 months — then auto-converts to your chosen plan. No reapplication needed.
       </p>
       <div style={{background:'rgba(201,169,110,0.08)',border:'1px solid rgba(201,169,110,0.25)',padding:'1.5rem 2.5rem',marginBottom:'2rem',textAlign:'left',maxWidth:420}}>
         <div style={{fontSize:'0.60rem',letterSpacing:'3px',textTransform:'uppercase',color:'var(--gold)',marginBottom:'0.75rem'}}>Your application summary</div>
@@ -1493,10 +1493,69 @@ function SupplierPortal() {
         {/* STEP 3 — Choose Plan */}
         {step===3 && (
           <div style={{display:'flex',flexDirection:'column',gap:'1.5rem'}}>
+            {/* Business Type — Free Trial Eligibility */}
+            <div style={{marginBottom:'1.5rem'}}>
+              <div style={{fontSize:'0.60rem',letterSpacing:'3px',textTransform:'uppercase',color:'var(--gold)',marginBottom:'0.5rem'}}>Business Type</div>
+              <div style={{fontSize:'0.80rem',color:'var(--mist)',lineHeight:1.7,marginBottom:'1rem'}}>
+                Select all that apply. Qualifying businesses receive a <strong style={{color:'var(--green)'}}>6-month free trial</strong> on their chosen plan — no card required until month 7.
+              </div>
+              <div style={{display:'grid',gridTemplateColumns:'1fr 1fr',gap:8,marginBottom:'0.75rem'}}>
+                {[
+                  {id:'micro',    label:'Micro Business',    icon:'🌱', desc:'Under 10 employees'},
+                  {id:'minority', label:'Minority Owned',    icon:'✊', desc:'Minority-owned & operated'},
+                  {id:'veteran',  label:'Veteran Owned',     icon:'🎖', desc:'Military veteran owned'},
+                  {id:'female',   label:'Female Owned',      icon:'⭐', desc:'Woman-owned business'},
+                ].map(bt=>(
+                  <div key={bt.id}
+                    onClick={()=>setForm(f=>({...f,
+                      bizTypes: f.bizTypes?.includes(bt.id)
+                        ? f.bizTypes.filter(x=>x!==bt.id)
+                        : [...(f.bizTypes||[]), bt.id]
+                    }))}
+                    style={{
+                      padding:'0.85rem 1rem',
+                      border:`1px solid ${form.bizTypes?.includes(bt.id)?'rgba(93,202,165,0.5)':'var(--border)'}`,
+                      background:form.bizTypes?.includes(bt.id)?'rgba(93,202,165,0.06)':'transparent',
+                      cursor:'pointer',transition:'all 0.2s',
+                      display:'flex',alignItems:'center',gap:'0.65rem'
+                    }}>
+                    <span style={{fontSize:'1.1rem'}}>{bt.icon}</span>
+                    <div>
+                      <div style={{fontSize:'0.80rem',color:form.bizTypes?.includes(bt.id)?'var(--white)':'var(--mist)',fontWeight:form.bizTypes?.includes(bt.id)?500:400}}>{bt.label}</div>
+                      <div style={{fontSize:'0.62rem',color:'rgba(253,252,248,0.35)',marginTop:1}}>{bt.desc}</div>
+                    </div>
+                    {form.bizTypes?.includes(bt.id) && <span style={{marginLeft:'auto',color:'var(--green)',fontSize:'0.75rem',flexShrink:0}}>✓</span>}
+                  </div>
+                ))}
+              </div>
+
+              {/* Free trial banner */}
+              {form.bizTypes?.length > 0 && (
+                <div style={{background:'rgba(93,202,165,0.08)',border:'1px solid rgba(93,202,165,0.3)',padding:'1rem 1.25rem',display:'flex',alignItems:'center',gap:'1rem'}}>
+                  <div style={{fontSize:'1.5rem',flexShrink:0}}>🎉</div>
+                  <div>
+                    <div style={{fontSize:'0.75rem',fontWeight:600,color:'var(--green)',letterSpacing:'1px',marginBottom:'2px'}}>
+                      You qualify for a 6-month free trial!
+                    </div>
+                    <div style={{fontSize:'0.75rem',color:'rgba(253,252,248,0.55)',lineHeight:1.6}}>
+                      As a {form.bizTypes.map(t=>t==='micro'?'micro business':t==='minority'?'minority-owned':t==='veteran'?'veteran-owned':'female-owned').join(' & ')} business, your first 6 months are on us. Choose your plan below — you won&apos;t be charged until month 7.
+                    </div>
+                  </div>
+                </div>
+              )}
+
+              {form.bizTypes?.length === 0 && (
+                <div style={{fontSize:'0.72rem',color:'rgba(253,252,248,0.3)',fontStyle:'italic',paddingLeft:'0.25rem'}}>
+                  Not applicable? Leave unselected and proceed to choose your plan below.
+                </div>
+              )}
+            </div>
+
             <div>
               <div style={{fontSize:'0.60rem',letterSpacing:'3px',textTransform:'uppercase',color:'var(--gold)',marginBottom:'0.35rem'}}>Subscription Plans</div>
               <div style={{fontSize:'0.85rem',color:'var(--mist)',lineHeight:1.7,marginBottom:'1.5rem'}}>
                 Select the plan that fits your goals. Payment is activated <strong style={{color:'var(--white)'}}>after your application is approved</strong> — you won&apos;t be charged now.
+                {form.bizTypes?.length > 0 && <strong style={{color:'var(--green)'}}> Your 6-month free trial applies automatically.</strong>}
               </div>
 
               <div style={{display:'flex',flexDirection:'column',gap:'1rem'}}>
@@ -1574,9 +1633,23 @@ function SupplierPortal() {
               </div>
             )}
 
-            <div style={{background:'rgba(93,202,165,0.06)',border:'1px solid rgba(93,202,165,0.2)',padding:'1rem 1.25rem',fontSize:'0.82rem',color:'rgba(253,252,248,0.55)',lineHeight:1.8,display:'flex',gap:'0.75rem',alignItems:'flex-start'}}>
-              <span style={{color:'var(--green)',flexShrink:0}}>ℹ</span>
-              <span>You won&apos;t be charged today. Once your application is approved, you&apos;ll receive a secure Stripe payment link to activate your subscription. You can change plans at any time.</span>
+            {/* 6 months free promo */}
+            <div style={{background:'linear-gradient(135deg,rgba(93,202,165,0.12),rgba(93,202,165,0.06))',border:'1px solid rgba(93,202,165,0.35)',padding:'1.25rem',marginBottom:'0.25rem'}}>
+              <div style={{display:'flex',alignItems:'center',gap:'0.6rem',marginBottom:'0.6rem'}}>
+                <svg width="14" height="14" viewBox="0 0 24 24" fill="none" stroke="#5DCAA5" strokeWidth="2.5"><circle cx="12" cy="8" r="6"/><path d="M12 14v8M8 18h8"/></svg>
+                <span style={{fontSize:'0.62rem',letterSpacing:'2.5px',textTransform:'uppercase',color:'var(--green)',fontWeight:600}}>Founding Vendor Offer</span>
+              </div>
+              <div style={{fontSize:'0.92rem',color:'var(--white)',fontWeight:500,marginBottom:'0.4rem'}}>
+                6 months free — then auto-converts to your chosen plan
+              </div>
+              <div style={{fontSize:'0.80rem',color:'rgba(253,252,248,0.55)',lineHeight:1.8}}>
+                Once approved, your listing goes live immediately at no charge for 6 months. At the end of the free period your Stripe subscription activates automatically on the plan you selected — no reapplication, no interruption. Cancel anytime before the 6 months ends.
+              </div>
+            </div>
+
+            <div style={{background:'rgba(255,255,255,0.03)',border:'1px solid rgba(255,255,255,0.07)',padding:'1rem 1.25rem',fontSize:'0.78rem',color:'rgba(253,252,248,0.4)',lineHeight:1.8,display:'flex',gap:'0.75rem',alignItems:'flex-start'}}>
+              <span style={{color:'rgba(201,169,110,0.6)',flexShrink:0}}>ℹ</span>
+              <span>You won&apos;t be charged during the 6-month free period. We&apos;ll send a Stripe setup link after approval to save your payment details — your card is only charged after month 6.</span>
             </div>
 
             <div style={{display:'flex',gap:'1rem'}}>
@@ -1594,7 +1667,7 @@ function SupplierPortal() {
                       website: form.website || 'N/A',
                       category: form.category,
                       cities: form.destinations.join(', '),
-                      planSelected: PLANS.find(p=>p.id===form.plan)?.name + ' — ' + PLANS.find(p=>p.id===form.plan)?.price + '/mo',
+                      planSelected: PLANS.find(p=>p.id===form.plan)?.name + ' — ' + PLANS.find(p=>p.id===form.plan)?.price + '/mo (6 months free, then auto-converts)',
                       description: form.description,
                       source:'BagFree Supplier Portal v2',
                     }),
@@ -1609,7 +1682,7 @@ function SupplierPortal() {
             </div>
 
             <div style={{textAlign:'center',fontSize:'0.72rem',color:'rgba(253,252,248,0.25)',lineHeight:1.7}}>
-              Subscription activated via Stripe after approval · Cancel anytime · BagFree Supplier Network
+              6 months free · Auto-converts to chosen plan · Cancel before month 6 to avoid charges · BagFree Supplier Network
             </div>
           </div>
         )}
