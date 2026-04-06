@@ -1,14 +1,10 @@
-const { createClient } = require('@supabase/supabase-js');
-
 exports.handler = async (event) => {
   if (event.httpMethod !== 'POST') {
     return { statusCode: 405, body: 'Method not allowed' };
   }
 
-  const supabase = createClient(
-    process.env.SUPABASE_URL,
-    process.env.SUPABASE_SERVICE_KEY // service role key — set in Netlify env vars
-  );
+  const SUPABASE_URL = process.env.SUPABASE_URL || 'https://hoipvmhwjxdipbnnxdwd.supabase.co';
+  const SUPABASE_KEY = process.env.SUPABASE_SERVICE_KEY || process.env.SUPABASE_KEY;
 
   let body;
   try { body = JSON.parse(event.body); } catch { return { statusCode: 400, body: 'Invalid JSON' }; }
@@ -18,16 +14,33 @@ exports.handler = async (event) => {
 
   const today = new Date().toISOString().split('T')[0];
   const cityKey = city || 'unknown';
+  const isView = event_type === 'view';
 
-  // Upsert stat row for today
-  const { error } = await supabase.rpc('upsert_vendor_stat', {
-    p_vendor_id: vendor_id,
-    p_date: today,
-    p_city: cityKey,
-    p_views: event_type === 'view' ? 1 : 0,
-    p_clicks: event_type === 'click' ? 1 : 0,
-  });
+  // Use Supabase REST API directly with fetch — no npm package needed
+  const response = await fetch(
+    `${SUPABASE_URL}/rest/v1/vendor_stats`,
+    {
+      method: 'POST',
+      headers: {
+        'apikey': SUPABASE_KEY,
+        'Authorization': `Bearer ${SUPABASE_KEY}`,
+        'Content-Type': 'application/json',
+        'Prefer': 'resolution=merge-duplicates'
+      },
+      body: JSON.stringify({
+        vendor_id,
+        stat_date: today,
+        city: cityKey,
+        card_views: isView ? 1 : 0,
+        website_clicks: isView ? 0 : 1,
+      })
+    }
+  );
 
-  if (error) return { statusCode: 500, body: error.message };
+  if (!response.ok) {
+    const err = await response.text();
+    return { statusCode: 500, body: err };
+  }
+
   return { statusCode: 200, body: 'OK' };
 };
