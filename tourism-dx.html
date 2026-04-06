@@ -168,6 +168,32 @@ input{font-family:var(--fb)}
 .bagfree-effect{animation:bagfree-pulse 2s ease-in-out}
 @keyframes bagfree-pulse{0%,100%{box-shadow:none}50%{box-shadow:0 0 20px rgba(93,202,165,0.4)}}
 
+/* HEATMAP + EVENT ENGINE */
+.heatmap-canvas{position:absolute;inset:0;pointer-events:none;z-index:5;opacity:0;transition:opacity 0.3s ease}
+.heatmap-canvas.active{opacity:0.92}
+.map-topbar{position:absolute;top:1rem;left:1rem;z-index:16;display:flex;gap:0.5rem;flex-wrap:wrap;max-width:70%}
+.map-chip{background:rgba(8,14,26,0.88);border:1px solid var(--brd);padding:0.45rem 0.75rem;font-size:0.58rem;letter-spacing:1.6px;text-transform:uppercase;color:var(--mist);cursor:pointer;transition:all 0.2s}
+.map-chip:hover{border-color:rgba(201,169,110,0.45);color:var(--white)}
+.map-chip.active{border-color:var(--gold);color:var(--gold);background:rgba(201,169,110,0.12)}
+.turn-summary{display:grid;grid-template-columns:1fr 1fr;gap:0.45rem;font-size:0.62rem;color:var(--mist)}
+.turn-summary .good{color:var(--green)}
+.turn-summary .bad{color:var(--red)}
+.turn-summary .neutral{color:var(--amber)}
+.event-card{border:1px solid rgba(74,158,221,0.28);background:rgba(74,158,221,0.05)}
+.event-headline{font-family:var(--ff);font-size:1.25rem;font-weight:300;color:var(--white)}
+.event-choice{width:100%;text-align:left;background:var(--n3);border:1px solid var(--brd);padding:0.9rem 1rem;margin-top:0.6rem;transition:all 0.2s;color:var(--white)}
+.event-choice:hover{border-color:var(--gold);background:var(--n4)}
+.event-choice-title{font-size:0.72rem;letter-spacing:1.3px;text-transform:uppercase;color:var(--gold);margin-bottom:0.3rem}
+.event-choice-text{font-size:0.68rem;color:var(--mist);line-height:1.6}
+#event-modal{display:none;position:fixed;inset:0;z-index:9997}
+#event-backdrop{position:absolute;inset:0;background:rgba(4,8,15,0.9);backdrop-filter:blur(8px)}
+#event-panel{position:absolute;top:50%;left:50%;transform:translate(-50%,-50%);width:min(680px,94vw);background:var(--n2);border:1px solid var(--brd);padding:2rem 2.25rem}
+.event-impacts{display:grid;grid-template-columns:repeat(3,1fr);gap:0.4rem;margin-top:0.8rem}
+.event-impact{font-size:0.62rem;padding:0.45rem 0.5rem;background:rgba(255,255,255,0.03);border:1px solid rgba(255,255,255,0.06)}
+.event-impact.good{color:var(--green)}
+.event-impact.bad{color:var(--red)}
+.event-impact.neutral{color:var(--amber)}
+
 @media(max-width:900px){
   .game-layout{grid-template-columns:1fr}
   .left-panel,.right-panel{max-height:300px}
@@ -496,6 +522,13 @@ input{font-family:var(--fb)}
     <!-- CENTER: MAP -->
     <div class="map-area">
       <div class="map-container" id="map-container">
+        <canvas id="map-heatmap" class="heatmap-canvas"></canvas>
+        <div class="map-topbar">
+          <button class="map-chip active" id="heatmap-off-btn" onclick="setHeatmapMode('off')">Heatmap Off</button>
+          <button class="map-chip" id="heatmap-tourism-btn" onclick="setHeatmapMode('tourism')">Tourism Flow</button>
+          <button class="map-chip" id="heatmap-traffic-btn" onclick="setHeatmapMode('traffic')">Traffic Stress</button>
+          <button class="map-chip" id="heatmap-localLife-btn" onclick="setHeatmapMode('localLife')">Local Life</button>
+        </div>
         <div class="map-grid"></div>
         <div id="map-slots-container" style="position:absolute;inset:0;z-index:8;"></div>
         <div id="map-labels-container" style="position:absolute;inset:0;z-index:7;"></div>
@@ -527,6 +560,12 @@ input{font-family:var(--fb)}
       <div class="panel-section">
         <div class="panel-label">Advisor Feed</div>
         <div class="log-list" id="log-list"></div>
+      </div>
+
+      <div class="panel-section event-card">
+        <div class="panel-label" style="color:var(--blue)">Turn Intelligence</div>
+        <div id="turn-summary" class="turn-summary"></div>
+        <div style="font-size:0.62rem;color:var(--mist);line-height:1.6;margin-top:0.8rem;">Dynamic events will trigger as your destination evolves. Strong tourism can attract opportunity, but pressure can spark disruption.</div>
       </div>
 
       <!-- INNOVATION LAB -->
@@ -598,6 +637,27 @@ input{font-family:var(--fb)}
     </div>
     <div class="lb-body" id="lb-body">
       <div style="text-align:center;padding:2rem;color:var(--mist);font-size:0.82rem;">Loading scores...</div>
+    </div>
+  </div>
+</div>
+
+<!-- EVENT MODAL -->
+<div id="event-modal">
+  <div id="event-backdrop"></div>
+  <div id="event-panel">
+    <div style="font-size:0.55rem;letter-spacing:3px;text-transform:uppercase;color:var(--blue);margin-bottom:0.8rem;">Dynamic Event</div>
+    <div class="event-headline" id="event-title">Regional Shock</div>
+    <div id="event-body" style="font-size:0.76rem;color:var(--mist);line-height:1.8;margin-top:0.75rem;"></div>
+    <div id="event-impacts" class="event-impacts"></div>
+    <div style="margin-top:1rem;display:grid;grid-template-columns:1fr 1fr;gap:0.75rem;">
+      <button class="event-choice" id="event-choice-a" onclick="resolveEventChoice('a')">
+        <div class="event-choice-title" id="event-choice-a-title">Act Now</div>
+        <div class="event-choice-text" id="event-choice-a-text"></div>
+      </button>
+      <button class="event-choice" id="event-choice-b" onclick="resolveEventChoice('b')">
+        <div class="event-choice-title" id="event-choice-b-title">Hold Course</div>
+        <div class="event-choice-text" id="event-choice-b-text"></div>
+      </button>
     </div>
   </div>
 </div>
@@ -825,6 +885,11 @@ function initGame(destId, playerName, maxTurns, customDest) {
     placements: [],
     placedThisTurn: [],
     log: [],
+    eventHistory: [],
+    turnDelta: {},
+    pendingEvent: null,
+    pendingIncome: 0,
+    heatmapMode: 'off',
     slots: base.slots.map((s,i) => ({...s, id:i, filled:false, projectId:null})),
     selectedProjectId: PROJECTS[0].id,
     gameOver: false,
@@ -864,6 +929,181 @@ const METRIC_CONFIG = [
   {key:'sustainability',label:'Sustainability',icon:'🌿',good:true, color:'#5DCAA5'},
   {key:'energy',       label:'Energy Score',  icon:'⚡',good:true,  color:'#5DCAA5'},
 ];
+
+const HEATMAP_META = {
+  tourism:{label:'Tourism Flow', color:'rgba(201,169,110,0.55)'},
+  traffic:{label:'Traffic Stress', color:'rgba(226,75,74,0.55)'},
+  localLife:{label:'Local Life', color:'rgba(93,202,165,0.5)'}
+};
+
+const EVENT_LIBRARY = [
+  {
+    id:'viral-video',
+    title:'A travel creator goes viral',
+    body:'A creator posts a cinematic reel of your destination. Demand is surging faster than infrastructure can react.',
+    impacts:{tourism:8, economy:4, traffic:5, localLife:-2},
+    a:{title:'Lean into the spotlight', text:'Boost promotion and welcome the surge.', impact:{tourism:5, economy:3, traffic:4, pollution:-2}},
+    b:{title:'Manage the rollout', text:'Limit promotion and direct visitors into managed zones.', impact:{tourism:2, localLife:3, traffic:-2, sustainability:2}}
+  },
+  {
+    id:'storm-warning',
+    title:'Storm season pressures the coast',
+    body:'Weather warnings threaten beach activity and transport reliability. Prepared destinations recover faster.',
+    impacts:{tourism:-4, economy:-2, localLife:-1},
+    a:{title:'Fund resilience measures', text:'Reinforce infrastructure and support residents.', impact:{budget:-6, localLife:4, sustainability:3, traffic:-1}},
+    b:{title:'Absorb the disruption', text:'Preserve budget and recover later.', impact:{tourism:-3, crime:1, localLife:-2}}
+  },
+  {
+    id:'housing-pushback',
+    title:'Residents push back on rising costs',
+    body:'Local leaders warn that growth is making daily life less affordable in key districts.',
+    impacts:{localLife:-5, crime:2, tourism:-1},
+    a:{title:'Launch support package', text:'Protect residents with housing and community support.', impact:{budget:-7, localLife:6, crime:-2, economy:1}},
+    b:{title:'Stay focused on growth', text:'Keep capital aimed at visitors and private development.', impact:{tourism:3, economy:2, localLife:-4, crime:2}}
+  },
+  {
+    id:'airline-deal',
+    title:'An airline wants a direct route deal',
+    body:'A new route could unlock visitors quickly, but the added flow will stress mobility.',
+    impacts:{tourism:4, economy:2},
+    a:{title:'Secure the route', text:'Pay incentives to bring in direct arrivals.', impact:{budget:-5, tourism:6, economy:3, traffic:4}},
+    b:{title:'Delay until transit improves', text:'Protect local movement until systems catch up.', impact:{localLife:2, traffic:-2, tourism:-1}}
+  },
+  {
+    id:'green-award',
+    title:'Your sustainability work gets noticed',
+    body:'International press highlights your cleaner, more balanced development path.',
+    impacts:{tourism:3, sustainability:5, localLife:2},
+    a:{title:'Turn it into a campaign', text:'Promote the award globally.', impact:{tourism:4, economy:2, traffic:2}},
+    b:{title:'Keep investment local', text:'Convert the attention into community upgrades.', impact:{localLife:4, sustainability:2, economy:1}}
+  }
+];
+
+function applyImpactObject(impact = {}) {
+  Object.entries(impact).forEach(([k,v]) => {
+    if (k === 'budget') {
+      G.budget = Math.max(0, Math.min(999, G.budget + v));
+    } else if (typeof G.metrics[k] === 'number') {
+      G.metrics[k] = Math.max(0, Math.min(100, G.metrics[k] + v));
+    }
+  });
+}
+
+function computeTurnDelta(prevMetrics, prevBudget) {
+  const delta = {};
+  Object.keys(G.metrics).forEach(k => delta[k] = Math.round((G.metrics[k] - prevMetrics[k]) * 10) / 10);
+  delta.budget = Math.round((G.budget - prevBudget) * 10) / 10;
+  return delta;
+}
+
+function getHeatmapIntensity(project, mode) {
+  if (!project) return 0;
+  const raw = project.impact?.[mode] || 0;
+  if (mode === 'traffic') return Math.max(0, raw);
+  if (mode === 'tourism') return Math.max(0, raw);
+  if (mode === 'localLife') return Math.abs(raw);
+  return Math.abs(raw);
+}
+
+function drawHeatmap() {
+  const canvas = document.getElementById('map-heatmap');
+  if (!canvas) return;
+  const mode = G.heatmapMode || 'off';
+  const map = document.getElementById('map-container');
+  const rect = map.getBoundingClientRect();
+  canvas.width = Math.max(300, Math.floor(rect.width));
+  canvas.height = Math.max(300, Math.floor(rect.height));
+  const ctx = canvas.getContext('2d');
+  ctx.clearRect(0,0,canvas.width,canvas.height);
+
+  document.querySelectorAll('.map-chip').forEach(btn => btn.classList.remove('active'));
+  const activeBtn = document.getElementById(`heatmap-${mode}-btn`);
+  if (activeBtn) activeBtn.classList.add('active');
+
+  if (mode === 'off') {
+    canvas.classList.remove('active');
+    return;
+  }
+  canvas.classList.add('active');
+  const color = HEATMAP_META[mode]?.color || 'rgba(201,169,110,0.5)';
+
+  G.slots.forEach(slot => {
+    if (!slot.filled) return;
+    const proj = slot.customProject || PROJECTS.find(p => p.id === slot.projectId);
+    if (!proj) return;
+    const intensity = getHeatmapIntensity(proj, mode);
+    if (!intensity) return;
+    const x = (slot.x / 100) * canvas.width;
+    const y = ((slot.y + 8) / 100) * canvas.height;
+    const radius = 55 + intensity * 6;
+    const gradient = ctx.createRadialGradient(x, y, 0, x, y, radius);
+    gradient.addColorStop(0, color);
+    gradient.addColorStop(1, 'rgba(0,0,0,0)');
+    ctx.fillStyle = gradient;
+    ctx.beginPath();
+    ctx.arc(x, y, radius, 0, Math.PI * 2);
+    ctx.fill();
+  });
+}
+
+function setHeatmapMode(mode) {
+  G.heatmapMode = mode;
+  drawHeatmap();
+}
+
+function maybeCreateEvent() {
+  if (G.turn <= 1) return null;
+  const pressure = ((G.metrics.traffic + G.metrics.crime + G.metrics.pollution) / 3) - ((G.metrics.localLife + G.metrics.sustainability) / 4);
+  const shouldTrigger = G.turn % 2 === 0 || pressure > 8 || Math.random() < 0.28;
+  if (!shouldTrigger) return null;
+  const index = Math.floor(Math.random() * EVENT_LIBRARY.length);
+  return JSON.parse(JSON.stringify(EVENT_LIBRARY[index]));
+}
+
+function renderTurnSummary() {
+  const el = document.getElementById('turn-summary');
+  if (!el) return;
+  const delta = G.turnDelta || {};
+  const keys = ['tourism','economy','localLife','traffic','crime','sustainability'];
+  el.innerHTML = keys.map(k => {
+    const val = typeof delta[k] === 'number' ? delta[k] : 0;
+    const isNegativeMetric = ['traffic','crime'].includes(k);
+    const improved = isNegativeMetric ? val < 0 : val > 0;
+    const cls = val === 0 ? 'neutral' : improved ? 'good' : 'bad';
+    const sign = val > 0 ? '+' : '';
+    return `<div class="${cls}">${k}: ${sign}${val}</div>`;
+  }).join('');
+}
+
+function openEventModal(eventObj) {
+  G.pendingEvent = eventObj;
+  document.getElementById('event-title').textContent = eventObj.title;
+  document.getElementById('event-body').textContent = eventObj.body;
+  document.getElementById('event-choice-a-title').textContent = eventObj.a.title;
+  document.getElementById('event-choice-a-text').textContent = eventObj.a.text;
+  document.getElementById('event-choice-b-title').textContent = eventObj.b.title;
+  document.getElementById('event-choice-b-text').textContent = eventObj.b.text;
+  const allImpacts = Object.entries(eventObj.impacts || {}).slice(0,6).map(([k,v]) => {
+    const badMetric = ['traffic','crime','pollution','unemployment'].includes(k);
+    const cls = v === 0 ? 'neutral' : ((badMetric ? v < 0 : v > 0) ? 'good' : 'bad');
+    const sign = v > 0 ? '+' : '';
+    return `<div class="event-impact ${cls}">${k} ${sign}${v}</div>`;
+  }).join('');
+  document.getElementById('event-impacts').innerHTML = allImpacts;
+  document.getElementById('event-modal').style.display = 'block';
+}
+
+function resolveEventChoice(choiceKey) {
+  const eventObj = G.pendingEvent;
+  if (!eventObj) return;
+  applyImpactObject(eventObj.impacts || {});
+  applyImpactObject(eventObj[choiceKey]?.impact || {});
+  addLog(`${eventObj.title}: ${eventObj[choiceKey].title}.`, 'warn');
+  G.eventHistory.unshift({title:eventObj.title, choice:eventObj[choiceKey].title, turn:G.turn});
+  G.pendingEvent = null;
+  document.getElementById('event-modal').style.display = 'none';
+  finalizeTurn();
+}
 
 // ── RENDER ────────────────────────────────────────────────────────────────────
 function renderMetrics() {
@@ -1138,6 +1378,8 @@ function renderAll() {
   renderProjects();
   renderSelectedProject();
   renderLog();
+  renderTurnSummary();
+  drawHeatmap();
 }
 
 // ── ACTIONS ───────────────────────────────────────────────────────────────────
@@ -1182,6 +1424,8 @@ function placeProject(slotId) {
   if (G.metrics.pollution > 65) addLog('Warning: Pollution is affecting destination appeal.', 'warn');
   if (G.metrics.unemployment > 55) addLog('High unemployment is creating social tension.', 'warn');
   if (G.metrics.tourism > 80) addLog('Tourism is booming — manage capacity carefully.', 'good');
+  if (slot.label.toLowerCase().includes('airport') && ['airport','bagfree','transit'].includes(proj.id)) addLog(`Mobility pressure is concentrating around ${slot.label}. Watch traffic and local life.`, 'warn');
+  if (slot.label.toLowerCase().includes('beach') && ['resort','beach','festival'].includes(proj.id)) addLog(`Visitor density around ${slot.label} is rising. Coastal protections may be needed.`, 'info');
 
   renderAll();
 }
@@ -1202,43 +1446,60 @@ function undoLast() {
 }
 
 function endTurn() {
-  if (G.gameOver) return;
+  if (G.gameOver || G.pendingEvent) return;
 
-  // Passive metric changes per turn
-  const placed = G.placements.concat(G.placedThisTurn.map(p => p.proj));
+  const prevMetrics = {...G.metrics};
+  const prevBudget = G.budget;
+
   const bagfreeCount = G.slots.filter(s => s.projectId === 'bagfree').length;
   const ecoCount = G.slots.filter(s => ['eco','solar','wildlife','gardens'].includes(s.projectId)).length;
   const safetyCount = G.slots.filter(s => ['safety','housing','school','hospital'].includes(s.projectId)).length;
   const transitCount = G.slots.filter(s => s.projectId === 'transit').length;
+  const hospitalityCount = G.slots.filter(s => ['resort','boutique','hostel','casino'].includes(s.projectId)).length;
+  const cultureCount = G.slots.filter(s => ['festival','museum','arts','stadium'].includes(s.projectId)).length;
 
-  // Natural drift
-  G.metrics.tourism    = Math.min(100, G.metrics.tourism + 0.5 + bagfreeCount * 0.8);
-  G.metrics.economy    = Math.min(100, G.metrics.economy + 0.3 + bagfreeCount * 0.5);
-  G.metrics.traffic    = Math.min(100, G.metrics.traffic + 0.4 - transitCount * 0.8);
-  G.metrics.crime      = Math.min(100, G.metrics.crime + 0.2 - safetyCount * 0.6);
-  G.metrics.pollution  = Math.min(100, G.metrics.pollution + 0.3 - ecoCount * 0.7);
-  G.metrics.sustainability = Math.min(100, G.metrics.sustainability + ecoCount * 0.5 - 0.2);
-  G.metrics.unemployment = Math.max(0, G.metrics.unemployment - 0.3);
-  Object.keys(G.metrics).forEach(k => { G.metrics[k] = Math.max(0, Math.min(100, G.metrics[k])); });
+  G.metrics.tourism = Math.min(100, G.metrics.tourism + 0.4 + bagfreeCount * 0.8 + hospitalityCount * 0.35 + cultureCount * 0.25);
+  G.metrics.economy = Math.min(100, G.metrics.economy + 0.35 + bagfreeCount * 0.45 + hospitalityCount * 0.25);
+  G.metrics.traffic = Math.min(100, G.metrics.traffic + 0.55 + hospitalityCount * 0.3 + cultureCount * 0.3 - transitCount * 0.9);
+  G.metrics.crime = Math.min(100, G.metrics.crime + 0.18 + hospitalityCount * 0.08 - safetyCount * 0.7);
+  G.metrics.pollution = Math.min(100, G.metrics.pollution + 0.28 + hospitalityCount * 0.15 - ecoCount * 0.75);
+  G.metrics.sustainability = Math.min(100, G.metrics.sustainability + ecoCount * 0.55 - hospitalityCount * 0.12 - 0.15);
+  G.metrics.unemployment = Math.max(0, G.metrics.unemployment - 0.28 - hospitalityCount * 0.05 - bagfreeCount * 0.08);
+  G.metrics.localLife = Math.max(0, Math.min(100, G.metrics.localLife + ecoCount * 0.18 + safetyCount * 0.2 + transitCount * 0.15 - hospitalityCount * 0.16 - Math.max((G.metrics.traffic - 55), 0) * 0.05));
+  G.metrics.energy = Math.max(0, Math.min(100, G.metrics.energy + ecoCount * 0.25 - hospitalityCount * 0.22 + transitCount * 0.05));
 
-  // Budget income from tourism
-  const income = 3 + (G.metrics.tourism / 10) + bagfreeCount * 2;
+  const income = 3 + (G.metrics.tourism / 10) + bagfreeCount * 1.5 + Math.max(G.metrics.economy - 50, 0) / 20;
   G.budget = Math.min(G.budget + income, 999);
+  G.pendingIncome = income;
 
-  // Commit placements
   G.placements = G.placements.concat(G.placedThisTurn.map(p => p.proj));
   G.placedThisTurn = [];
+  G.turnDelta = computeTurnDelta(prevMetrics, prevBudget);
 
-  // Year-end advisor messages
+  const eventObj = maybeCreateEvent();
+  if (eventObj) {
+    renderAll();
+    openEventModal(eventObj);
+    return;
+  }
+
+  finalizeTurn();
+}
+
+function finalizeTurn() {
+  const income = G.pendingIncome || 0;
+  if (G.metrics.localLife < 40) addLog('Residents are overwhelmed by tourism pressure. Address quality of life urgently.', 'bad');
+  if (G.metrics.sustainability > 75) addLog('Your sustainable practices are becoming a global model.', 'good');
+  if (G.metrics.traffic > 70) addLog('Congestion is spreading beyond key visitor zones.', 'warn');
+  if (G.metrics.crime > 55) addLog('Security conditions are beginning to affect visitor confidence.', 'bad');
   if (G.turn % 5 === 0) {
     const score = getScore();
     const rank = getRank(score);
     addLog(`End of Turn ${G.turn} — Score: ${score} · Rank: ${rank.name}`, 'info');
   }
-  if (G.metrics.localLife < 40) addLog('Residents are overwhelmed by tourism pressure. Address quality of life urgently.', 'bad');
-  if (G.metrics.sustainability > 75) addLog('Your sustainable practices are becoming a global model.', 'good');
 
   G.turn++;
+  G.pendingIncome = 0;
 
   if (G.turn > G.maxTurns) {
     G.gameOver = true;
@@ -1251,6 +1512,7 @@ function endTurn() {
   addLog(`Turn ${G.turn} begins. Budget replenished: +$${income.toFixed(1)}M.`, 'info');
   renderLog();
 }
+
 
 // ── SETUP FLOW ────────────────────────────────────────────────────────────────
 let selectedTurns = 10;
@@ -1420,8 +1682,14 @@ async function submitScore() {
 }
 
 document.addEventListener('keydown', e => {
-  if (e.key === 'Escape') { closeLeaderboard(); closeEndGame(); }
+  if (e.key === 'Escape') {
+    closeLeaderboard();
+    closeEndGame();
+    document.getElementById('event-modal').style.display = 'none';
+    G.pendingEvent = null;
+  }
 });
+window.addEventListener('resize', () => drawHeatmap());
 </script>
 
 <script>
