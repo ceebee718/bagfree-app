@@ -882,7 +882,6 @@ function initGame(destId, playerName, maxTurns, customDest) {
     destName: customDest ? customDest.name : base.name,
     destCountry: customDest ? customDest.country : base.country,
     metrics: {...base.metrics},
-    placements: [],
     placedThisTurn: [],
     log: [],
     eventHistory: [],
@@ -1053,7 +1052,7 @@ function setHeatmapMode(mode) {
 
 function maybeCreateEvent() {
   if (G.turn <= 1) return null;
-  const pressure = ((G.metrics.traffic + G.metrics.crime + G.metrics.pollution) / 3) - ((G.metrics.localLife + G.metrics.sustainability) / 4);
+  const pressure = ((G.metrics.traffic + G.metrics.crime + G.metrics.pollution) / 3) - ((G.metrics.localLife + G.metrics.sustainability) / 2);
   const shouldTrigger = G.turn % 2 === 0 || pressure > 8 || Math.random() < 0.28;
   if (!shouldTrigger) return null;
   const index = Math.floor(Math.random() * EVENT_LIBRARY.length);
@@ -1150,79 +1149,10 @@ function renderTurnProgress() {
   document.getElementById('hdr-max-turn').textContent = G.maxTurns;
 }
 
-function renderMap() {
-  const container = document.getElementById('map-slots-container');
-  const labels = document.getElementById('map-labels-container');
-  container.innerHTML = '';
-  labels.innerHTML = '';
-
-  // ── Day/Night cycle overlay ──
+function initMapBackground() {
   const mapEl = document.getElementById('map-container');
-  const hour = new Date().getHours();
-  const min = new Date().getMinutes();
-  const timeDecimal = hour + min/60;
 
-  // Remove existing overlays
-  const existing = mapEl.querySelectorAll('.dn-overlay,.time-display,.land-mass');
-  existing.forEach(e => e.remove());
-
-  // Day/night color
-  let skyColor, ambientOpacity, timeLabel, timeIcon;
-  if (timeDecimal >= 6 && timeDecimal < 9) {
-    skyColor='rgba(255,180,80,0.15)'; ambientOpacity=0.3; timeIcon='🌅'; timeLabel='Dawn';
-  } else if (timeDecimal >= 9 && timeDecimal < 17) {
-    skyColor='rgba(100,160,255,0.08)'; ambientOpacity=0.0; timeIcon='☀'; timeLabel='Day';
-  } else if (timeDecimal >= 17 && timeDecimal < 20) {
-    skyColor='rgba(255,120,50,0.18)'; ambientOpacity=0.2; timeIcon='🌇'; timeLabel='Dusk';
-  } else {
-    skyColor='rgba(10,20,60,0.45)'; ambientOpacity=0.55; timeIcon='🌙'; timeLabel='Night';
-  }
-
-  // Sky overlay
-  const dnOverlay = document.createElement('div');
-  dnOverlay.className = 'dn-overlay';
-  dnOverlay.style.cssText = `position:absolute;inset:0;background:${skyColor};pointer-events:none;z-index:2;transition:background 2s;`;
-  mapEl.appendChild(dnOverlay);
-
-  // Night darkness
-  if (ambientOpacity > 0) {
-    const darkOverlay = document.createElement('div');
-    darkOverlay.className = 'dn-overlay';
-    darkOverlay.style.cssText = `position:absolute;inset:0;background:rgba(4,8,20,${ambientOpacity});pointer-events:none;z-index:3;`;
-    mapEl.appendChild(darkOverlay);
-  }
-
-  // Time display badge
-  const timeEl = document.createElement('div');
-  timeEl.className = 'time-display';
-  const hh = String(hour).padStart(2,'0');
-  const mm = String(min).padStart(2,'0');
-  timeEl.style.cssText = 'position:absolute;top:1rem;right:1rem;background:rgba(8,14,26,0.88);border:1px solid rgba(201,169,110,0.25);padding:0.4rem 0.85rem;font-size:0.65rem;color:rgba(201,169,110,0.9);letter-spacing:1.5px;z-index:10;display:flex;align-items:center;gap:0.4rem;font-family:"Jost",sans-serif;';
-  timeEl.innerHTML = `<span>${timeIcon}</span><span>${hh}:${mm} Local</span><span style="color:rgba(253,252,248,0.4);font-size:0.58rem;">${timeLabel}</span>`;
-  mapEl.appendChild(timeEl);
-
-  // ── Land masses — destination-specific SVG shapes ──
-  const destLands = {
-    'coastal-isle': `<ellipse cx="35%" cy="45%" rx="18%" ry="12%" fill="#1A4A2A" opacity="0.85"/><ellipse cx="68%" cy="60%" rx="10%" ry="7%" fill="#1A4A2A" opacity="0.75"/>`,
-    'mountain-coast': `<path d="M10%,70% Q20%,20% 40%,30% Q55%,15% 70%,35% Q85%,25% 90%,60% Q70%,80% 40%,75% Z" fill="#2A3E28" opacity="0.85"/>`,
-    'urban-bay': `<path d="M5%,80% Q15%,40% 35%,35% Q60%,25% 80%,40% Q90%,55% 85%,75% Q60%,85% 30%,80% Z" fill="#1E3828" opacity="0.8"/>`,
-    'rome': `<path d="M8%,75% Q20%,30% 45%,25% Q70%,20% 88%,45% Q92%,65% 80%,80% Q55%,88% 25%,82% Z" fill="#2E3E20" opacity="0.85"/><ellipse cx="75%" cy="72%" rx="8%" ry="5%" fill="#2A3820" opacity="0.7"/>`,
-    'tokyo': `<path d="M5%,80% Q25%,35% 50%,28% Q72%,22% 88%,50% Q90%,70% 75%,82% Q50%,90% 20%,85% Z" fill="#223428" opacity="0.85"/><ellipse cx="80%" cy="40%" rx="6%" ry="4%" fill="#1E2E20" opacity="0.65"/>`,
-    'st-vincent': `<ellipse cx="30%" cy="50%" rx="10%" ry="16%" fill="#1A4228" opacity="0.9"/><ellipse cx="55%" cy="42%" rx="5%" ry="8%" fill="#1A4228" opacity="0.8"/><ellipse cx="68%" cy="55%" rx="4%" ry="6%" fill="#1A4228" opacity="0.75"/><ellipse cx="78%" cy="63%" rx="3%" ry="5%" fill="#1A4228" opacity="0.7"/><ellipse cx="85%" cy="70%" rx="3%" ry="4%" fill="#1A4228" opacity="0.65"/>`,
-    'custom': `<ellipse cx="40%" cy="48%" rx="20%" ry="14%" fill="#1E3C26" opacity="0.8"/><ellipse cx="70%" cy="55%" rx="12%" ry="9%" fill="#1E3C26" opacity="0.7"/>`,
-  };
-
-  const landSvg = document.createElement('div');
-  landSvg.className = 'land-mass';
-  landSvg.style.cssText = 'position:absolute;inset:0;pointer-events:none;z-index:1;';
-  const destKey = G.destId || 'coastal-isle';
-  const landShape = destLands[destKey] || destLands['custom'];
-  // Use a 1000x600 viewBox so we can use real numbers
-  // Photo map backgrounds used instead of SVG shapes
-
-
-  // Photo-realistic map backgrounds per destination
-  // Static map images — no API calls, no charges
+  // ── Land masses — built once per game ──
   const destMapBg = {
     'coastal-isle':   { img: '/maps/coastal-isle.jpg',   tint: 'rgba(0,0,0,0.08)' },
     'mountain-coast': { img: '/maps/mountain-coast.jpg', tint: 'rgba(0,0,0,0.08)' },
@@ -1232,8 +1162,15 @@ function renderMap() {
     'st-vincent':     { img: '/maps/st-vincent.jpg',     tint: 'rgba(0,0,0,0.05)' },
     'custom':         { img: '/maps/coastal-isle.jpg',   tint: 'rgba(0,0,0,0.1)'  },
   };
-    const mapBg = destMapBg[destKey] || destMapBg['custom'];
+  const destKey = G.destId || 'coastal-isle';
+  const mapBg = destMapBg[destKey] || destMapBg['custom'];
 
+  const existing = mapEl.querySelectorAll('.land-mass');
+  existing.forEach(e => e.remove());
+
+  const landSvg = document.createElement('div');
+  landSvg.className = 'land-mass';
+  landSvg.style.cssText = 'position:absolute;inset:0;pointer-events:none;z-index:1;';
   landSvg.innerHTML = `
     <div style="position:absolute;inset:0;background:#0A1E35;display:flex;align-items:center;justify-content:center;" id="map-loading-bg">
       <div style="font-size:0.6rem;letter-spacing:2px;text-transform:uppercase;color:rgba(201,169,110,0.5);">Loading satellite imagery...</div>
@@ -1246,8 +1183,57 @@ function renderMap() {
     <div style="position:absolute;inset:0;background:${mapBg.tint};pointer-events:none;"></div>
     <div style="position:absolute;inset:0;background:linear-gradient(to bottom, rgba(8,14,26,0.3) 0%, transparent 25%, transparent 75%, rgba(8,14,26,0.45) 100%);pointer-events:none;"></div>
   `;
-  landSvg.style.cssText = 'position:absolute;inset:0;pointer-events:none;z-index:1;';
   mapEl.insertBefore(landSvg, mapEl.firstChild);
+}
+
+function updateDayNightOverlay() {
+  const mapEl = document.getElementById('map-container');
+  mapEl.querySelectorAll('.dn-overlay,.time-display').forEach(e => e.remove());
+
+  const hour = new Date().getHours();
+  const min = new Date().getMinutes();
+  const timeDecimal = hour + min / 60;
+
+  let skyColor, ambientOpacity, timeLabel, timeIcon;
+  if (timeDecimal >= 6 && timeDecimal < 9) {
+    skyColor='rgba(255,180,80,0.15)'; ambientOpacity=0.3; timeIcon='🌅'; timeLabel='Dawn';
+  } else if (timeDecimal >= 9 && timeDecimal < 17) {
+    skyColor='rgba(100,160,255,0.08)'; ambientOpacity=0.0; timeIcon='☀'; timeLabel='Day';
+  } else if (timeDecimal >= 17 && timeDecimal < 20) {
+    skyColor='rgba(255,120,50,0.18)'; ambientOpacity=0.2; timeIcon='🌇'; timeLabel='Dusk';
+  } else {
+    skyColor='rgba(10,20,60,0.45)'; ambientOpacity=0.55; timeIcon='🌙'; timeLabel='Night';
+  }
+
+  const dnOverlay = document.createElement('div');
+  dnOverlay.className = 'dn-overlay';
+  dnOverlay.style.cssText = `position:absolute;inset:0;background:${skyColor};pointer-events:none;z-index:2;transition:background 2s;`;
+  mapEl.appendChild(dnOverlay);
+
+  if (ambientOpacity > 0) {
+    const darkOverlay = document.createElement('div');
+    darkOverlay.className = 'dn-overlay';
+    darkOverlay.style.cssText = `position:absolute;inset:0;background:rgba(4,8,20,${ambientOpacity});pointer-events:none;z-index:3;`;
+    mapEl.appendChild(darkOverlay);
+  }
+
+  const hh = String(hour).padStart(2,'0');
+  const mm = String(min).padStart(2,'0');
+  const timeEl = document.createElement('div');
+  timeEl.className = 'time-display';
+  timeEl.style.cssText = 'position:absolute;top:1rem;right:1rem;background:rgba(8,14,26,0.88);border:1px solid rgba(201,169,110,0.25);padding:0.4rem 0.85rem;font-size:0.65rem;color:rgba(201,169,110,0.9);letter-spacing:1.5px;z-index:10;display:flex;align-items:center;gap:0.4rem;font-family:"Jost",sans-serif;';
+  timeEl.innerHTML = `<span>${timeIcon}</span><span>${hh}:${mm} Local</span><span style="color:rgba(253,252,248,0.4);font-size:0.58rem;">${timeLabel}</span>`;
+  mapEl.appendChild(timeEl);
+}
+
+function renderMap() {
+  const container = document.getElementById('map-slots-container');
+  const labels = document.getElementById('map-labels-container');
+  container.innerHTML = '';
+  labels.innerHTML = '';
+
+  // Update day/night overlay (lightweight — only touches overlay divs)
+  updateDayNightOverlay();
 
   G.slots.forEach(slot => {
     // Label
@@ -1294,8 +1280,11 @@ function showTooltip(e, proj, slot) {
   tt.innerHTML = `<strong style="color:var(--gold)">${proj.name}</strong><br>
     <span style="color:var(--mist);font-size:0.6rem">${proj.cat} · Placed Turn ${slot.placedTurn || '?'}</span><br>
     <span style="color:var(--mist);font-size:0.62rem;margin-top:4px;display:block">${proj.desc.slice(0,80)}…</span>`;
-  tt.style.left = (e.offsetX + 15) + 'px';
-  tt.style.top = (e.offsetY - 20) + 'px';
+  const mapRect = document.getElementById('map-container').getBoundingClientRect();
+  const x = Math.min(e.clientX - mapRect.left + 15, mapRect.width - 180);
+  const y = Math.max(e.clientY - mapRect.top - 20, 4);
+  tt.style.left = x + 'px';
+  tt.style.top = y + 'px';
   tt.classList.add('visible');
 }
 function showSlotTooltip(e, slot) {
@@ -1304,8 +1293,11 @@ function showSlotTooltip(e, slot) {
   const tt = document.getElementById('placement-tooltip');
   tt.innerHTML = `<strong style="color:var(--gold)">Place: ${proj.name}</strong><br>
     <span style="color:var(--mist);font-size:0.6rem">Cost: $${proj.cost}M · ${slot.label}</span>`;
-  tt.style.left = (e.offsetX + 15) + 'px';
-  tt.style.top = (e.offsetY - 20) + 'px';
+  const mapRect = document.getElementById('map-container').getBoundingClientRect();
+  const x = Math.min(e.clientX - mapRect.left + 15, mapRect.width - 180);
+  const y = Math.max(e.clientY - mapRect.top - 20, 4);
+  tt.style.left = x + 'px';
+  tt.style.top = y + 'px';
   tt.classList.add('visible');
 }
 function hideTooltip() {
@@ -1438,7 +1430,7 @@ function undoLast() {
   }
   const last = G.placedThisTurn.pop();
   const slot = G.slots.find(s => s.id === last.slotId);
-  if (slot) { slot.filled = false; slot.projectId = null; slot.placedTurn = null; }
+  if (slot) { slot.filled = false; slot.projectId = null; slot.placedTurn = null; slot.customProject = null; }
   G.metrics = {...last.prevMetrics};
   G.budget = last.prevBudget;
   addLog(`${last.proj.name} removed. Budget refunded.`, 'info');
@@ -1472,7 +1464,6 @@ function endTurn() {
   G.budget = Math.min(G.budget + income, 999);
   G.pendingIncome = income;
 
-  G.placements = G.placements.concat(G.placedThisTurn.map(p => p.proj));
   G.placedThisTurn = [];
   G.turnDelta = computeTurnDelta(prevMetrics, prevBudget);
 
@@ -1565,6 +1556,8 @@ function startGame() {
   document.getElementById('game-dest-title').innerHTML = `<em style="color:var(--gold)">${G.destName}</em> — ${G.destCountry}`;
   document.getElementById('game-player-label').textContent = `${playerName} · ${maxTurns}-Turn Game`;
 
+  initMapBackground(); // Build land/photo layer once per game
+
   addLog(`Welcome, ${playerName}. You are now managing ${G.destName}. Use your ${maxTurns} turns wisely.`, 'info');
   addLog('Click any ⬡ slot on the map to place your selected project. End your turn when ready.', 'info');
   renderAll();
@@ -1621,6 +1614,7 @@ async function renderLeaderboard() {
   body.innerHTML = '<div style="text-align:center;padding:2rem;color:var(--mist)">Loading...</div>';
 
   let scores = [];
+  let loadError = false;
   try {
     const res = await window.storage.list('tdx-score-');
     if (res && res.keys) {
@@ -1631,10 +1625,12 @@ async function renderLeaderboard() {
         } catch(e) {}
       }
     }
-  } catch(e) {}
+  } catch(e) {
+    loadError = true;
+  }
 
-  // Add some seed data if empty
-  if (scores.length === 0) {
+  // Show seed data only if board is genuinely empty (not on failure)
+  if (!loadError && scores.length === 0) {
     scores = [
       {name:'BagFree Team', dest:'Urban Bay', score:82, rank:'Global Curator', turns:20},
       {name:'Demo Player', dest:'Rome', score:71, rank:'Tourism Architect', turns:10},
@@ -1643,6 +1639,11 @@ async function renderLeaderboard() {
 
   scores.sort((a,b) => b.score - a.score);
   const top = scores.slice(0,20);
+
+  if (loadError) {
+    body.innerHTML = '<div style="text-align:center;padding:2rem;color:rgba(239,159,39,0.8);font-size:0.75rem;">Could not load leaderboard. Check your connection and try again.</div>';
+    return;
+  }
 
   body.innerHTML = top.length === 0
     ? '<div style="text-align:center;padding:2rem;color:var(--mist)">No scores yet. Be the first!</div>'
@@ -1920,6 +1921,22 @@ window.resetInnovation = function() {
 
 // Override renderMap to handle custom projects
 const _origRenderMap = window.renderMap;
+window.renderMap = function() {
+  if (typeof _origRenderMap === 'function') _origRenderMap();
+  // Re-apply custom project styling after map renders
+  if (!G || !G.slots) return;
+  G.slots.forEach(slot => {
+    if (slot.filled && slot.customProject) {
+      const slotEls = document.querySelectorAll('.map-slot.filled');
+      slotEls.forEach(el => {
+        if (el.title === slot.customProject.name) {
+          el.style.borderColor = 'rgba(93,202,165,0.6)';
+          el.style.background = 'rgba(93,202,165,0.12)';
+        }
+      });
+    }
+  });
+};
 </script>
 
 </body>
