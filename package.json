@@ -2,5 +2,8 @@
   "name": "bagfree",
   "version": "1.0.0",
   "description": "BagFree travel platform",
-  "private": true
+  "private": true,
+  "dependencies": {
+    "stripe": "^14.0.0"
+  }
 }
