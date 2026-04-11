@@ -621,9 +621,9 @@ function Home({setPage}) {
           {/* Apply card — Premium only */}
           <div
             onClick={()=>setPage('supplier')}
-            style={{background:'var(--noir-2)',padding:'2rem',cursor:'pointer',transition:'all 0.25s',display:'flex',flexDirection:'column',justifyContent:'flex-start',alignItems:'flex-start',border:'1px solid rgba(201,169,110,0.15)',position:'relative',overflow:'hidden'}}
-            onMouseEnter={e=>e.currentTarget.style.background='var(--noir-3)'}
-            onMouseLeave={e=>e.currentTarget.style.background='var(--noir-2)'}>
+            style={{background:'#2a2a2a',padding:'2rem',cursor:'pointer',transition:'all 0.25s',display:'flex',flexDirection:'column',justifyContent:'flex-start',alignItems:'flex-start',border:'1px solid rgba(201,169,110,0.15)',position:'relative',overflow:'hidden'}}
+            onMouseEnter={e=>e.currentTarget.style.background='#333333'}
+            onMouseLeave={e=>e.currentTarget.style.background='#2a2a2a'}>
             <div style={{position:'absolute',top:0,left:0,right:0,height:'2px',background:'linear-gradient(90deg,transparent,rgba(201,169,110,0.4),transparent)'}}/>
             <div style={{fontSize:'0.60rem',letterSpacing:'3px',textTransform:'uppercase',color:'var(--gold)',marginBottom:'1.25rem',display:'flex',alignItems:'center',gap:'0.5rem'}}>
               <span style={{width:16,height:1,background:'var(--gold)',display:'inline-block'}}/>Premium Supplier Slot
