@@ -541,7 +541,7 @@ function Home({setPage}) {
               style={{background:'linear-gradient(135deg,var(--gold),#b8893e)',color:'var(--noir)',border:'none',padding:'0.85rem 2.2rem',fontSize:'0.78rem',fontWeight:500,letterSpacing:'2.5px',textTransform:'uppercase'}}>
               How It Works ✦
             </button>
-            <button onClick={()=>window.open('https://bagfree.app/shop','_self')}
+            <button onClick={()=>{window.location.hash='shop';}}
               style={{background:'transparent',color:'var(--mist)',border:'1px solid var(--border)',padding:'0.85rem 1.75rem',fontSize:'0.78rem',letterSpacing:'2px',textTransform:'uppercase'}}>
               Shop Kits ↗
             </button>
@@ -576,7 +576,7 @@ function Home({setPage}) {
         <div style={{display:'grid',gridTemplateColumns:'repeat(auto-fill,minmax(300px,1fr))',gap:1,background:'var(--border)',border:'1px solid var(--border)'}}>
           {/* Valet By Nuor card */}
           <div
-            onClick={()=>window.open('https://bagfree.app/shop','_self')}
+            onClick={()=>{window.location.hash='shop';}}
             style={{background:'var(--gold)',padding:'2rem',cursor:'pointer',transition:'all 0.25s',position:'relative'}}
             onMouseEnter={e=>e.currentTarget.style.background='#DDD3B8'}
             onMouseLeave={e=>e.currentTarget.style.background='var(--gold)'}>
@@ -2046,6 +2046,64 @@ function CruisePage({setPage}) {
   );
 }
 
+// ── SHOP LANDING ──────────────────────────────────────────────────────────────
+function ShopLanding({setPage}) {
+  return (
+    <div style={{background:'var(--noir)',minHeight:'100vh',padding:'5rem 2rem 4rem',fontFamily:'var(--ff-display)'}}>
+      <div style={{maxWidth:860,margin:'0 auto'}}>
+        <div style={{display:'flex',alignItems:'center',justifyContent:'center',gap:'1rem',marginBottom:'1.25rem'}}>
+          <span style={{width:24,height:1,background:'rgba(201,169,110,0.35)',display:'inline-block'}}/>
+          <span style={{fontFamily:'var(--ff-body)',fontSize:'11px',letterSpacing:'4px',color:'rgba(201,169,110,0.65)',textTransform:'uppercase'}}>The Collection</span>
+          <span style={{width:24,height:1,background:'rgba(201,169,110,0.35)',display:'inline-block'}}/>
+        </div>
+        <h1 style={{fontSize:'clamp(2.4rem,5vw,3.5rem)',fontWeight:300,color:'var(--white)',textAlign:'center',letterSpacing:'-0.5px',marginBottom:'0.6rem',lineHeight:1.1}}>Shop BagFree</h1>
+        <p style={{fontFamily:'var(--ff-body)',fontSize:'13px',color:'rgba(245,237,216,0.4)',textAlign:'center',letterSpacing:'1px',marginBottom:'4rem',fontWeight:300}}>Delivered to your hotel before you arrive</p>
+        <div style={{display:'grid',gridTemplateColumns:'repeat(auto-fit,minmax(280px,1fr))',gap:1,background:'rgba(201,169,110,0.1)',marginBottom:'3rem'}}>
+          <a href="https://bagfree.app/shop/mens" style={{background:'var(--noir-2)',padding:'2.75rem 2.25rem',textDecoration:'none',display:'flex',flexDirection:'column',alignItems:'flex-start',border:'1px solid rgba(201,169,110,0.12)',position:'relative',overflow:'hidden',transition:'background 0.25s',cursor:'pointer'}}
+            onMouseEnter={e=>e.currentTarget.style.background='var(--noir-3)'}
+            onMouseLeave={e=>e.currentTarget.style.background='var(--noir-2)'}>
+            <div style={{position:'absolute',top:0,left:0,right:0,height:'2px',background:'linear-gradient(90deg,transparent,rgba(201,169,110,0.4),transparent)'}}/>
+            <div style={{fontFamily:'var(--ff-body)',fontSize:'10px',letterSpacing:'3px',color:'rgba(201,169,110,0.55)',textTransform:'uppercase',marginBottom:'1.5rem',display:'flex',alignItems:'center',gap:8}}>
+              <span style={{width:16,height:1,background:'rgba(201,169,110,0.35)',display:'inline-block'}}/>For him
+            </div>
+            <div style={{fontSize:'2.4rem',fontWeight:300,color:'var(--white)',marginBottom:'1rem',lineHeight:1.1}}>Men&apos;s</div>
+            <div style={{fontFamily:'var(--ff-body)',fontSize:'13px',color:'rgba(245,237,216,0.45)',lineHeight:1.8,marginBottom:'1.75rem',fontWeight:300,flex:1}}>Everything from a full 7-day wardrobe to individual essentials. Dress shirts, casual wear, grooming kits, and more.</div>
+            <div style={{width:'100%',marginBottom:'2rem'}}>
+              {['7-Day travel bundles','Dress shirts & chinos','Grooming & toiletry kits','Casual & athletic wear'].map((item,i)=>(
+                <div key={i} style={{fontFamily:'var(--ff-body)',fontSize:'11px',color:'rgba(245,237,216,0.3)',letterSpacing:'0.5px',padding:'6px 0',borderBottom:'0.5px solid rgba(201,169,110,0.08)'}}>
+                  <span style={{color:'rgba(201,169,110,0.35)',fontSize:8,marginRight:8}}>✦</span>{item}
+                </div>
+              ))}
+            </div>
+            <div style={{fontFamily:'var(--ff-body)',fontSize:'11px',letterSpacing:'2.5px',textTransform:'uppercase',color:'var(--gold)',border:'1px solid rgba(201,169,110,0.3)',padding:'0.65rem 1.5rem',display:'inline-flex',alignItems:'center',gap:8}}>Shop men&apos;s →</div>
+          </a>
+          <a href="https://bagfree.app/shop/womens" style={{background:'var(--noir-2)',padding:'2.75rem 2.25rem',textDecoration:'none',display:'flex',flexDirection:'column',alignItems:'flex-start',border:'1px solid rgba(201,169,110,0.12)',position:'relative',overflow:'hidden',transition:'background 0.25s',cursor:'pointer'}}
+            onMouseEnter={e=>e.currentTarget.style.background='var(--noir-3)'}
+            onMouseLeave={e=>e.currentTarget.style.background='var(--noir-2)'}>
+            <div style={{position:'absolute',top:0,left:0,right:0,height:'2px',background:'linear-gradient(90deg,transparent,rgba(201,169,110,0.4),transparent)'}}/>
+            <div style={{fontFamily:'var(--ff-body)',fontSize:'10px',letterSpacing:'3px',color:'rgba(201,169,110,0.55)',textTransform:'uppercase',marginBottom:'1.5rem',display:'flex',alignItems:'center',gap:8}}>
+              <span style={{width:16,height:1,background:'rgba(201,169,110,0.35)',display:'inline-block'}}/>For her
+            </div>
+            <div style={{fontSize:'2.4rem',fontWeight:300,color:'var(--white)',marginBottom:'1rem',lineHeight:1.1}}>Women&apos;s</div>
+            <div style={{fontFamily:'var(--ff-body)',fontSize:'13px',color:'rgba(245,237,216,0.45)',lineHeight:1.8,marginBottom:'1.75rem',fontWeight:300,flex:1}}>Curated pieces for every occasion. From resort wear and dresses to essentials and the exclusive Nuor Edit rental collection.</div>
+            <div style={{width:'100%',marginBottom:'2rem'}}>
+              {['7-Day essentials bundle','Dresses & resort wear','The Nuor Edit — Tampa only','Toiletry & stay fresh kits'].map((item,i)=>(
+                <div key={i} style={{fontFamily:'var(--ff-body)',fontSize:'11px',color:'rgba(245,237,216,0.3)',letterSpacing:'0.5px',padding:'6px 0',borderBottom:'0.5px solid rgba(201,169,110,0.08)'}}>
+                  <span style={{color:'rgba(201,169,110,0.35)',fontSize:8,marginRight:8}}>✦</span>{item}
+                </div>
+              ))}
+            </div>
+            <div style={{fontFamily:'var(--ff-body)',fontSize:'11px',letterSpacing:'2.5px',textTransform:'uppercase',color:'var(--gold)',border:'1px solid rgba(201,169,110,0.3)',padding:'0.65rem 1.5rem',display:'inline-flex',alignItems:'center',gap:8}}>Shop women&apos;s →</div>
+          </a>
+        </div>
+        <div style={{fontFamily:'var(--ff-body)',fontSize:'11px',color:'rgba(245,237,216,0.2)',textAlign:'center',letterSpacing:'2px',textTransform:'uppercase'}}>
+          Same-day delivery <span style={{color:'rgba(201,169,110,0.3)',margin:'0 8px'}}>·</span> Savannah <span style={{color:'rgba(201,169,110,0.3)',margin:'0 8px'}}>·</span> Atlanta <span style={{color:'rgba(201,169,110,0.3)',margin:'0 8px'}}>·</span> Tampa <span style={{color:'rgba(201,169,110,0.3)',margin:'0 8px'}}>·</span> Orlando
+        </div>
+      </div>
+    </div>
+  );
+}
+
 // ── APP ───────────────────────────────────────────────────────────────────────
 function App() {
   const [page, setPage] = useState(() => {
@@ -2074,6 +2132,7 @@ function App() {
     <>
       <Nav page={page} setPage={navigate}/>
       {page==='home' && <Home setPage={navigate}/>}
+      {page==='shop' && <ShopLanding setPage={navigate}/>}
       {page==='vendors' && <VendorMarketplace setPage={navigate} setActiveVendor={setActiveVendor}/>}
       {page==='products' && <ProductsPage setPage={navigate}/>}
       {page==='hotel' && <HotelConcierge/>}
