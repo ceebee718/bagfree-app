@@ -189,9 +189,9 @@ const VENDORS = [
     badge:'Shop Now'
   },
   {
-    id:'gifts-by-selena', name:'Gifts By Selena', tag:'Curated Partner', icon:'🎁',
+    id:'nuor-edit', name:'The Nuor Edit', tag:'Curated Partner', icon:'◈',
     category:'Clothing · Women\'s · Tampa, FL', dest:'Tampa Bay, FL',
-    desc:'Discover handpicked fashion curated for the stylish woman on the go. Gifts by Selena selects elegant and convenient women\'s clothing for visitors to the Tampa Bay area. Currently serving Tampa Bay only.',
+    desc:'The rental wardrobe of Valet By Nuor. Curated by Selena — a Tampa-based artist. Rent for your stay, keep what you love. Delivered to your hotel before you arrive. Tampa Bay only.',
     highlight:false, url:'https://giftsbyselena.com', color:'selena',
     products:['Dresses','Tops & Blouses','Accessories','Resort Wear','Travel Outfits'],
     badge:'Shop Now'
@@ -632,9 +632,9 @@ function Home({setPage}) {
             <div style={{fontSize:'0.84rem',letterSpacing:'2px',textTransform:'uppercase',color:'var(--gold)',display:'flex',alignItems:'center',gap:'0.5rem',fontWeight:500}}>Shop Now →</div>
           </div>
 
-          {/* Gifts By Selena card */}
+          {/* The Nuor Edit card */}
           <div
-            onClick={()=>window.open('/shop/gifts-by-selena/order','_self')}
+            onClick={()=>window.open('/shop/nuor-edit/order','_self')}
             style={{background:'var(--gold)',padding:'2rem',cursor:'pointer',transition:'all 0.25s',position:'relative'}}
             onMouseEnter={e=>e.currentTarget.style.background='#DDD3B8'}
             onMouseLeave={e=>e.currentTarget.style.background='var(--gold)'}>
@@ -645,8 +645,8 @@ function Home({setPage}) {
                 <span style={{fontSize:'1.5rem'}}>🎁</span>
               </div>
               <div>
-                <div style={{fontFamily:'var(--ff-display)',fontSize:'1.1rem',fontWeight:300,color:'var(--noir)',letterSpacing:'0.5px',lineHeight:1.2}}>Gifts By Selena</div>
-                <div style={{fontSize:'0.60rem',letterSpacing:'2px',textTransform:'uppercase',color:'rgba(8,14,26,0.5)',marginTop:2}}>Tampa Bay, FL Only</div>
+                <div style={{fontFamily:'var(--ff-display)',fontSize:'1.1rem',fontWeight:300,color:'var(--noir)',letterSpacing:'0.5px',lineHeight:1.2}}>The Nuor Edit</div>
+                <div style={{fontSize:'0.60rem',letterSpacing:'2px',textTransform:'uppercase',color:'rgba(8,14,26,0.5)',marginTop:2}}>Tampa Bay · Rental</div>
               </div>
             </div>
             <div style={{fontSize:'0.90rem',letterSpacing:'1.5px',textTransform:'uppercase',color:'rgba(8,14,26,0.5)',marginBottom:'0.75rem'}}>Clothing · Women&apos;s · Curated</div>
@@ -656,7 +656,7 @@ function Home({setPage}) {
                 <span key={p} style={{fontSize:'0.68rem',color:'rgba(8,14,26,0.6)',border:'1px solid rgba(8,14,26,0.2)',padding:'2px 8px',letterSpacing:'0.5px'}}>{p}</span>
               ))}
             </div>
-            <div style={{fontSize:'0.84rem',letterSpacing:'2px',textTransform:'uppercase',color:'var(--noir)',display:'flex',alignItems:'center',gap:'0.5rem',fontWeight:500}}>Request Custom Order →</div>
+            <div style={{fontSize:'0.84rem',letterSpacing:'2px',textTransform:'uppercase',color:'var(--noir)',display:'flex',alignItems:'center',gap:'0.5rem',fontWeight:500}}>Request Your Edit →</div>
           </div>
 
           {/* Apply card — Premium only */}
@@ -939,8 +939,8 @@ function VendorMarketplace({setPage, setActiveVendor}) {
   // Filter vendors by destination — vendors with specific city dest only show for that city
   const filteredCore = staticCore.filter(v => {
     if (!activeCity) return true;
-    // Gifts By Selena is Tampa Bay only
-    if (v.id === 'gifts-by-selena') return activeCity === 'Tampa Bay';
+    // The Nuor Edit is Tampa Bay only
+    if (v.id === 'nuor-edit') return activeCity === 'Tampa Bay';
     return true;
   });
 
@@ -998,7 +998,7 @@ function VendorCard({vendor:v, setPage, setActiveVendor}) {
   );
 
   const isLogoVendor = v.id === 'valet-by-nuor' || v.id === 'snugl';
-  const isSelena = v.id === 'gifts-by-selena';
+  const isSelena = v.id === 'nuor-edit';
 
   return (
     <div
