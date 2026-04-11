@@ -291,7 +291,10 @@ function VendorLogo({vendor, height=60, dark=false}) {
         </div>
       );
     }
-}>
+    if (vendor.id === 'pod-collection') {
+      return (
+        <div style={{lineHeight:1}}>
+          <div style={{fontFamily:'var(--ff-display)',fontSize:'1.65rem',fontWeight:300,letterSpacing:'4px',textTransform:'uppercase',color:dark?'var(--gold-light)':'var(--noir)',lineHeight:1}}>
             Pod™ Collection
           </div>
         </div>
