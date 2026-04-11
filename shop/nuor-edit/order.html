@@ -1,1 +1,441 @@
 
+<!DOCTYPE html>
+<html lang="en">
+<head>
+<meta charset="UTF-8">
+<meta name="viewport" content="width=device-width, initial-scale=1.0">
+<title>Request Your Edit — The Nuor Edit</title>
+<link href="https://fonts.googleapis.com/css2?family=Cormorant+Garamond:ital,wght@0,300;0,400;0,600;1,300;1,400;1,600&family=Jost:wght@200;300;400;500&display=swap" rel="stylesheet">
+<style>
+*{margin:0;padding:0;box-sizing:border-box}
+:root{
+  --noir:#0D1525;--noir-2:#111C30;--noir-3:#172138;--noir-4:#1E2D45;
+  --gold:#C9A96E;--gold-light:#E8D5B0;--gold-dim:#8A6F45;
+  --white:#FDFCF8;--mist:rgba(253,252,248,0.55);
+  --border:rgba(201,169,110,0.16);--border-hi:rgba(201,169,110,0.42);
+  --ff-display:'Cormorant Garamond',Georgia,serif;--ff-body:'Jost',sans-serif;
+  --green:#5DCAA5;--red:#E24B4A;
+}
+html{scroll-behavior:smooth}
+body{font-family:var(--ff-body);background:var(--noir);color:var(--white);font-weight:300;min-height:100vh}
+::-webkit-scrollbar{width:4px}
+::-webkit-scrollbar-track{background:var(--noir)}
+::-webkit-scrollbar-thumb{background:var(--gold-dim);border-radius:2px}
+
+/* NAV */
+nav{position:fixed;top:0;left:0;right:0;z-index:100;background:rgba(13,21,37,0.96);backdrop-filter:blur(20px);border-bottom:1px solid var(--border);height:60px;display:flex;align-items:center;justify-content:space-between;padding:0 2.5rem}
+.nav-back{font-size:0.58rem;letter-spacing:2.5px;text-transform:uppercase;color:var(--mist);border:1px solid var(--border);padding:5px 14px;text-decoration:none;transition:all 0.2s}
+.nav-back:hover{color:var(--gold);border-color:var(--gold)}
+.nav-brand{font-family:var(--ff-display);font-size:0.9rem;font-weight:300;color:var(--gold);letter-spacing:2px}
+
+/* LAYOUT */
+.page{padding-top:60px;display:grid;grid-template-columns:1fr 1fr;min-height:100vh}
+
+/* LEFT PANEL */
+.left-panel{background:var(--gold);padding:5rem 4rem;display:flex;flex-direction:column;justify-content:center;position:relative;overflow:hidden}
+.left-panel::before{content:'';position:absolute;inset:0;background-image:repeating-linear-gradient(45deg,rgba(8,14,26,0.08) 0,rgba(8,14,26,0.08) 1px,transparent 0,transparent 50%);background-size:20px 20px}
+.left-eyebrow{font-size:0.52rem;letter-spacing:4px;text-transform:uppercase;color:rgba(8,14,26,0.45);margin-bottom:1.5rem;display:flex;align-items:center;gap:0.75rem;position:relative}
+.left-eyebrow::before{content:'';width:24px;height:1px;background:rgba(8,14,26,0.3);display:inline-block}
+.left-title{font-family:var(--ff-display);font-size:clamp(2.8rem,4vw,4.2rem);font-weight:300;color:var(--noir);line-height:1.0;margin-bottom:1rem;position:relative}
+.left-title em{font-style:italic}
+.left-sub{font-size:0.85rem;color:rgba(8,14,26,0.65);line-height:1.9;margin-bottom:2.5rem;max-width:360px;position:relative}
+.process-steps{position:relative;display:flex;flex-direction:column;gap:1.25rem}
+.process-step{display:flex;align-items:flex-start;gap:1rem}
+.step-num{font-family:var(--ff-display);font-size:1.4rem;font-weight:300;color:rgba(8,14,26,0.35);line-height:1;flex-shrink:0;width:24px}
+.step-body{}
+.step-title{font-size:0.72rem;color:var(--noir);font-weight:500;letter-spacing:0.5px;margin-bottom:0.2rem}
+.step-desc{font-size:0.65rem;color:rgba(8,14,26,0.55);line-height:1.7}
+
+/* RIGHT PANEL — FORM */
+.right-panel{background:var(--noir-2);padding:4rem 3.5rem;overflow-y:auto}
+.form-title{font-family:var(--ff-display);font-size:1.6rem;font-weight:300;color:var(--white);margin-bottom:0.4rem}
+.form-sub{font-size:0.7rem;color:var(--mist);margin-bottom:2.5rem;line-height:1.7}
+
+.form-group{margin-bottom:1.4rem}
+.form-row{display:grid;grid-template-columns:1fr 1fr;gap:1rem;margin-bottom:1.4rem}
+label{font-size:0.52rem;letter-spacing:2px;text-transform:uppercase;color:var(--gold-dim);display:block;margin-bottom:0.5rem}
+label span{color:var(--red);margin-left:2px}
+
+input[type=text],input[type=email],input[type=tel],input[type=date],input[type=number],select,textarea{
+  width:100%;background:var(--noir-3);border:1px solid var(--border);color:var(--white);
+  padding:0.75rem 1rem;font-size:0.83rem;font-family:var(--ff-body);font-weight:300;
+  outline:none;transition:border-color 0.2s;-webkit-appearance:none;appearance:none
+}
+input:focus,select:focus,textarea:focus{border-color:var(--gold)}
+input::placeholder,textarea::placeholder{color:rgba(253,252,248,0.25);font-size:0.78rem}
+select{cursor:pointer;background-image:url("data:image/svg+xml,%3Csvg xmlns='http://www.w3.org/2000/svg' width='12' height='8' viewBox='0 0 12 8'%3E%3Cpath d='M1 1l5 5 5-5' stroke='rgba(201,169,110,0.5)' stroke-width='1.5' fill='none'/%3E%3C/svg%3E");background-repeat:no-repeat;background-position:right 1rem center;padding-right:2.5rem}
+select option{background:#172138;color:#FDFCF8}
+textarea{resize:vertical;min-height:110px;line-height:1.7}
+
+/* CHECKBOXES */
+.check-group{display:flex;flex-direction:column;gap:0.6rem;margin-top:0.5rem}
+.check-item{display:flex;align-items:center;gap:0.75rem;cursor:pointer}
+.check-item input[type=checkbox]{width:16px;height:16px;background:var(--noir-3);border:1px solid var(--border);flex-shrink:0;cursor:pointer;accent-color:var(--gold);margin:0;padding:0}
+.check-label{font-size:0.75rem;color:var(--mist);letter-spacing:0.3px}
+
+/* SIZE GRID */
+.size-grid{display:flex;gap:0.5rem;flex-wrap:wrap;margin-top:0.5rem}
+.size-btn{background:var(--noir-3);border:1px solid var(--border);color:var(--mist);padding:6px 14px;font-size:0.68rem;cursor:pointer;font-family:var(--ff-body);transition:all 0.2s;letter-spacing:1px}
+.size-btn.active,.size-btn:hover{border-color:var(--gold);color:var(--gold);background:rgba(201,169,110,0.08)}
+
+/* BUDGET SLIDER */
+.budget-display{font-family:var(--ff-display);font-size:1.5rem;color:var(--gold);font-weight:300;margin-bottom:0.5rem}
+input[type=range]{width:100%;-webkit-appearance:none;height:2px;background:var(--border);outline:none;margin:0.5rem 0}
+input[type=range]::-webkit-slider-thumb{-webkit-appearance:none;width:16px;height:16px;border-radius:50%;background:var(--gold);cursor:pointer}
+input[type=range]::-moz-range-thumb{width:16px;height:16px;border-radius:50%;background:var(--gold);cursor:pointer;border:none}
+
+/* DIVIDER */
+.form-divider{border:none;border-top:1px solid var(--border);margin:2rem 0}
+
+/* SUBMIT */
+.btn-submit{width:100%;background:linear-gradient(135deg,var(--gold),#b8893e);color:var(--noir);border:none;padding:1.1rem;font-size:0.65rem;letter-spacing:3px;text-transform:uppercase;font-weight:600;cursor:pointer;font-family:var(--ff-body);transition:opacity 0.2s;margin-top:0.5rem}
+.btn-submit:hover{opacity:0.88}
+.btn-submit:disabled{opacity:0.4;cursor:not-allowed}
+.form-note{font-size:0.6rem;color:rgba(253,252,248,0.3);text-align:center;margin-top:0.85rem;line-height:1.7}
+
+/* SUCCESS STATE */
+#success-state{display:none;text-align:center;padding:3rem 1rem}
+.success-icon{width:64px;height:64px;border:1px solid var(--gold);border-radius:50%;display:flex;align-items:center;justify-content:center;margin:0 auto 1.5rem;font-size:1.5rem}
+.success-title{font-family:var(--ff-display);font-size:2.2rem;font-weight:300;color:var(--white);margin-bottom:0.75rem}
+.success-title em{color:var(--gold);font-style:italic}
+.success-sub{font-size:0.8rem;color:var(--mist);line-height:1.9;margin-bottom:2rem;max-width:380px;margin-left:auto;margin-right:auto}
+.success-detail{background:var(--noir-3);border:1px solid var(--border);padding:1.25rem 1.5rem;text-align:left;margin-bottom:2rem}
+.success-detail-row{display:flex;justify-content:space-between;align-items:center;padding:0.4rem 0;border-bottom:1px solid rgba(201,169,110,0.08);font-size:0.7rem}
+.success-detail-row:last-child{border-bottom:none}
+.success-detail-label{color:var(--mist);letter-spacing:1px}
+.success-detail-val{color:var(--white);font-weight:400}
+.btn-back{font-size:0.6rem;letter-spacing:2.5px;text-transform:uppercase;color:var(--gold);border:1px solid rgba(201,169,110,0.35);padding:10px 24px;text-decoration:none;display:inline-block;transition:all 0.2s;margin-right:0.75rem;cursor:pointer;background:transparent;font-family:var(--ff-body)}
+.btn-back:hover{background:rgba(201,169,110,0.08)}
+
+/* ERROR */
+.field-error{font-size:0.6rem;color:var(--red);margin-top:0.35rem;display:none}
+.field-error.show{display:block}
+input.error,select.error,textarea.error{border-color:var(--red)}
+
+@media(max-width:860px){
+  .page{grid-template-columns:1fr}
+  .left-panel{padding:3rem 1.5rem;min-height:auto}
+  .right-panel{padding:2.5rem 1.5rem}
+  nav{padding:0 1.25rem}
+  .form-row{grid-template-columns:1fr}
+}
+</style>
+</head>
+<body>
+
+<nav>
+  <div style="display:flex;align-items:center;gap:1.25rem">
+    <a href="/shop/nuor-edit" class="nav-back">← Back to The Nuor Edit</a>
+    <span class="nav-brand">The Nuor <em style="font-style:italic">Edit</em></span>
+  </div>
+  <span style="font-size:0.52rem;letter-spacing:1.5px;text-transform:uppercase;color:rgba(201,169,110,0.7);border:1px solid var(--border);padding:4px 10px">Request Your Edit</span>
+</nav>
+
+<div class="page">
+
+  <!-- LEFT: Info panel -->
+  <div class="left-panel">
+    <div style="position:relative;z-index:1">
+      <div class="left-eyebrow">Request Your Edit</div>
+      <h1 class="left-title">Your edit,<br><em>delivered.</em></h1>
+      <p class="left-sub">Tell us what you're looking for. Selena and the Nuor Edit team will personally review your request and reach out within 24 hours with a curated rental edit delivered to your hotel before you arrive.</p>
+
+      <div class="process-steps">
+        <div class="process-step">
+          <span class="step-num">01</span>
+          <div class="step-body">
+            <div class="step-title">Tell us your style</div>
+            <div class="step-desc">Share your style, sizes, occasion, and hotel details. The more we know, the better we can curate your edit.</div>
+          </div>
+        </div>
+        <div class="process-step">
+          <span class="step-num">02</span>
+          <div class="step-body">
+            <div class="step-title">We get in touch</div>
+            <div class="step-desc">Within 24 hours, Selena or the Nuor Edit team will contact you with a curated rental lookbook tailored to your request.</div>
+          </div>
+        </div>
+        <div class="process-step">
+          <span class="step-num">03</span>
+          <div class="step-body">
+            <div class="step-title">Confirm & we deliver</div>
+            <div class="step-desc">Confirm your rental pieces and Valet By Nuor delivers everything to your hotel room before you check in.</div>
+          </div>
+        </div>
+        <div class="process-step">
+          <span class="step-num">04</span>
+          <div class="step-body">
+            <div class="step-title">Arrive ready</div>
+            <div class="step-desc">Step off the plane with a handbag. Your rental wardrobe is already waiting — curated, pressed, and ready to wear.</div>
+          </div>
+        </div>
+      </div>
+    </div>
+  </div>
+
+  <!-- RIGHT: Form -->
+  <div class="right-panel">
+
+    <!-- FORM -->
+    <div id="form-state">
+      <div class="form-title">Your Edit Request</div>
+      <p class="form-sub">All fields marked <span style="color:var(--red)">*</span> are required. The Nuor Edit team typically responds within 24 hours.</p>
+
+      <!-- Contact info -->
+      <div class="form-row">
+        <div class="form-group" style="margin-bottom:0">
+          <label>Full Name <span>*</span></label>
+          <input type="text" id="f-name" placeholder="Your full name" autocomplete="name">
+          <div class="field-error" id="err-name">Please enter your name</div>
+        </div>
+        <div class="form-group" style="margin-bottom:0">
+          <label>Email Address <span>*</span></label>
+          <input type="email" id="f-email" placeholder="your@email.com" autocomplete="email">
+          <div class="field-error" id="err-email">Please enter a valid email</div>
+        </div>
+      </div>
+
+      <div class="form-row">
+        <div class="form-group" style="margin-bottom:0">
+          <label>Phone Number</label>
+          <input type="tel" id="f-phone" placeholder="+1 (000) 000-0000" autocomplete="tel">
+        </div>
+        <div class="form-group" style="margin-bottom:0">
+          <label>Preferred Contact Method</label>
+          <select id="f-contact">
+            <option value="">Select one</option>
+            <option value="email">Email</option>
+            <option value="phone">Phone call</option>
+            <option value="text">Text / SMS</option>
+            <option value="whatsapp">WhatsApp</option>
+          </select>
+        </div>
+      </div>
+
+      <hr class="form-divider">
+
+      <!-- Trip details -->
+      <div style="font-size:0.58rem;letter-spacing:3px;text-transform:uppercase;color:rgba(201,169,110,0.5);margin-bottom:1.25rem;display:flex;align-items:center;gap:0.75rem"><span style="width:20px;height:1px;background:var(--gold-dim);display:inline-block"></span>Trip Details</div>
+
+      <div class="form-row">
+        <div class="form-group" style="margin-bottom:0">
+          <label>Arrival Date <span>*</span></label>
+          <input type="date" id="f-arrival">
+          <div class="field-error" id="err-arrival">Please select your arrival date</div>
+        </div>
+        <div class="form-group" style="margin-bottom:0">
+          <label>Departure Date</label>
+          <input type="date" id="f-departure">
+        </div>
+      </div>
+
+      <div class="form-group">
+        <label>Hotel Name <span>*</span></label>
+        <input type="text" id="f-hotel" placeholder="e.g. The Tampa Edition, Grand Hyatt Tampa Bay">
+        <div class="field-error" id="err-hotel">Please enter your hotel name</div>
+      </div>
+
+      <hr class="form-divider">
+
+      <!-- Style request -->
+      <div style="font-size:0.58rem;letter-spacing:3px;text-transform:uppercase;color:rgba(201,169,110,0.5);margin-bottom:1.25rem;display:flex;align-items:center;gap:0.75rem"><span style="width:20px;height:1px;background:var(--gold-dim);display:inline-block"></span>Your Style Request</div>
+
+      <div class="form-group">
+        <label>What type of clothing are you looking for? <span>*</span></label>
+        <div class="check-group">
+          <label class="check-item"><input type="checkbox" value="dresses"> <span class="check-label">Dresses & Midi Skirts</span></label>
+          <label class="check-item"><input type="checkbox" value="tops"> <span class="check-label">Tops, Blouses & Shirts</span></label>
+          <label class="check-item"><input type="checkbox" value="sets"> <span class="check-label">Co-ord Sets & Two-Pieces</span></label>
+          <label class="check-item"><input type="checkbox" value="resort"> <span class="check-label">Resort Wear & Kaftans</span></label>
+          <label class="check-item"><input type="checkbox" value="accessories"> <span class="check-label">Accessories & Scarves</span></label>
+          <label class="check-item"><input type="checkbox" value="full"> <span class="check-label">Full Outfit / Let Selena Decide</span></label>
+        </div>
+        <div class="field-error" id="err-type">Please select at least one type</div>
+      </div>
+
+      <div class="form-group">
+        <label>Occasion</label>
+        <select id="f-occasion">
+          <option value="">Select your occasion</option>
+          <option value="resort">Resort / Beach Days</option>
+          <option value="business">Business Travel</option>
+          <option value="dinner">Evening Dining</option>
+          <option value="tourism">Sightseeing & Tourism</option>
+          <option value="wedding">Wedding Guest</option>
+          <option value="mixed">Mixed — All of the above</option>
+          <option value="other">Other (describe below)</option>
+        </select>
+      </div>
+
+      <div class="form-group">
+        <label>Your Sizing</label>
+        <div class="size-grid" id="size-grid">
+          <button type="button" class="size-btn" onclick="selectSize(this)">XS</button>
+          <button type="button" class="size-btn" onclick="selectSize(this)">S</button>
+          <button type="button" class="size-btn" onclick="selectSize(this)">M</button>
+          <button type="button" class="size-btn" onclick="selectSize(this)">L</button>
+          <button type="button" class="size-btn" onclick="selectSize(this)">XL</button>
+          <button type="button" class="size-btn" onclick="selectSize(this)">XXL</button>
+          <button type="button" class="size-btn" onclick="selectSize(this)" style="padding:6px 20px">Plus Size</button>
+          <button type="button" class="size-btn" onclick="selectSize(this)" style="padding:6px 20px">Not Sure</button>
+        </div>
+      </div>
+
+      <div class="form-group">
+        <label>Approximate Budget</label>
+        <div class="budget-display" id="budget-display">$200</div>
+        <input type="range" id="f-budget" min="50" max="1000" step="25" value="200" oninput="updateBudget(this.value)">
+        <div style="display:flex;justify-content:space-between;font-size:0.58rem;color:var(--mist);margin-top:0.3rem"><span>$50</span><span>$1,000+</span></div>
+      </div>
+
+      <div class="form-group">
+        <label>Style Preferences & Special Requests</label>
+        <textarea id="f-notes" placeholder="Tell Selena about your style — colours you love, prints you prefer, how you like things to fit. Any special occasions, events, or requests. The more detail the better..."></textarea>
+      </div>
+
+      <div class="form-group">
+        <label>How did you hear about Gifts By Selena?</label>
+        <select id="f-source">
+          <option value="">Select one</option>
+          <option value="bagfree">BagFree</option>
+          <option value="instagram">Instagram</option>
+          <option value="friend">Friend or family referral</option>
+          <option value="hotel">Hotel concierge</option>
+          <option value="search">Google / web search</option>
+          <option value="other">Other</option>
+        </select>
+      </div>
+
+      <button class="btn-submit" id="submit-btn" onclick="submitForm()">Send My Request to The Nuor Edit ✦</button>
+      <p class="form-note">By submitting this form you agree to be contacted by The Nuor Edit · Valet By Nuor regarding your rental request. Your information is never shared with third parties.</p>
+    </div>
+
+    <!-- SUCCESS STATE -->
+    <div id="success-state">
+      <div class="success-icon">✦</div>
+      <h2 class="success-title">Edit <em>requested</em></h2>
+      <p class="success-sub">The Nuor Edit team has your request and will be in touch within 24 hours with a personalised rental lookbook curated just for you.</p>
+
+      <div class="success-detail" id="success-summary"></div>
+
+      <div style="margin-top:1rem">
+        <button class="btn-back" onclick="window.location.href='/shop/nuor-edit'">← Back to The Nuor Edit</button>
+        <a class="btn-back" href="https://bagfree.app" style="color:var(--gold);border-color:rgba(201,169,110,0.35)">Go to BagFree →</a>
+      </div>
+    </div>
+
+  </div>
+</div>
+
+<script>
+let selectedSize = '';
+
+function selectSize(btn) {
+  document.querySelectorAll('.size-btn').forEach(b => b.classList.remove('active'));
+  btn.classList.add('active');
+  selectedSize = btn.textContent.trim();
+}
+
+function updateBudget(val) {
+  const n = parseInt(val);
+  document.getElementById('budget-display').textContent = n >= 1000 ? '$1,000+' : '$' + n;
+}
+
+function validate() {
+  let ok = true;
+
+  const name = document.getElementById('f-name');
+  const errName = document.getElementById('err-name');
+  if (!name.value.trim()) {
+    name.classList.add('error'); errName.classList.add('show'); ok = false;
+  } else { name.classList.remove('error'); errName.classList.remove('show'); }
+
+  const email = document.getElementById('f-email');
+  const errEmail = document.getElementById('err-email');
+  const emailOk = /^[^\s@]+@[^\s@]+\.[^\s@]+$/.test(email.value.trim());
+  if (!emailOk) {
+    email.classList.add('error'); errEmail.classList.add('show'); ok = false;
+  } else { email.classList.remove('error'); errEmail.classList.remove('show'); }
+
+  const arrival = document.getElementById('f-arrival');
+  const errArrival = document.getElementById('err-arrival');
+  if (!arrival.value) {
+    arrival.classList.add('error'); errArrival.classList.add('show'); ok = false;
+  } else { arrival.classList.remove('error'); errArrival.classList.remove('show'); }
+
+  const hotel = document.getElementById('f-hotel');
+  const errHotel = document.getElementById('err-hotel');
+  if (!hotel.value.trim()) {
+    hotel.classList.add('error'); errHotel.classList.add('show'); ok = false;
+  } else { hotel.classList.remove('error'); errHotel.classList.remove('show'); }
+
+  const checked = [...document.querySelectorAll('.check-group input:checked')];
+  const errType = document.getElementById('err-type');
+  if (checked.length === 0) {
+    errType.classList.add('show'); ok = false;
+  } else { errType.classList.remove('show'); }
+
+  return ok;
+}
+
+function submitForm() {
+  if (!validate()) {
+    document.querySelector('.error')?.scrollIntoView({behavior:'smooth', block:'center'});
+    return;
+  }
+
+  const btn = document.getElementById('submit-btn');
+  btn.disabled = true;
+  btn.textContent = 'Sending...';
+
+  // Collect data
+  const name = document.getElementById('f-name').value.trim();
+  const email = document.getElementById('f-email').value.trim();
+  const phone = document.getElementById('f-phone').value.trim();
+  const arrival = document.getElementById('f-arrival').value;
+  const departure = document.getElementById('f-departure').value;
+  const hotel = document.getElementById('f-hotel').value.trim();
+  const occasion = document.getElementById('f-occasion').value;
+  const budget = document.getElementById('f-budget').value;
+  const budgetDisplay = document.getElementById('budget-display').textContent;
+  const notes = document.getElementById('f-notes').value.trim();
+  const types = [...document.querySelectorAll('.check-group input:checked')].map(c => c.value).join(', ');
+  const contact = document.getElementById('f-contact').value;
+
+  // Format arrival date nicely
+  const arrivalFormatted = arrival ? new Date(arrival + 'T12:00:00').toLocaleDateString('en-US', {weekday:'short', month:'long', day:'numeric', year:'numeric'}) : '—';
+  const departureFormatted = departure ? new Date(departure + 'T12:00:00').toLocaleDateString('en-US', {month:'long', day:'numeric', year:'numeric'}) : '—';
+
+  // Simulate a small delay then show success
+  setTimeout(() => {
+    // Build summary
+    const rows = [
+      ['Name', name],
+      ['Email', email],
+      ['Arrival', arrivalFormatted],
+      ['Departure', departureFormatted],
+      ['Hotel', hotel],
+      ['Looking for', types || '—'],
+      ['Size', selectedSize || 'Not specified'],
+      ['Budget', budgetDisplay],
+    ].filter(([,v]) => v && v !== '—');
+
+    document.getElementById('success-summary').innerHTML = rows.map(([l,v]) => `
+      <div class="success-detail-row">
+        <span class="success-detail-label">${l}</span>
+        <span class="success-detail-val">${v}</span>
+      </div>`).join('');
+
+    document.getElementById('form-state').style.display = 'none';
+    document.getElementById('success-state').style.display = 'block';
+    window.scrollTo({top:0, behavior:'smooth'});
+
+    // Optional: send to a mailto (opens mail client as fallback)
+    // const subject = encodeURIComponent(`Request Your Edit — ${name}`);
+    // const body = encodeURIComponent(`Name: ${name}\nEmail: ${email}\nHotel: ${hotel}\nArrival: ${arrivalFormatted}\nLooking for: ${types}\nSize: ${selectedSize}\nBudget: ${budgetDisplay}\nNotes: ${notes}`);
+    // window.location.href = `mailto:hello@giftsbyselena.com?subject=${subject}&body=${body}`;
+  }, 900);
+}
+</script>
+</body>
+</html>
