@@ -175,7 +175,7 @@ const VENDORS = [
     id:'valet-by-nuor', name:'Valet By Nuor', tag:'Official Partner', icon:'◈',
     category:'Clothing · Wellness · Essentials', dest:'FL & GA',
     desc:'The founding supplier of BagFree. Emergency travel kits, men\'s and women\'s wear, wellness kits, and curated travel essentials. Same-day delivery in Tampa & Orlando.',
-    highlight:true, url:'https://bagfree.app/shop', color:'gold',
+    highlight:true, url:'https://bagfree.app/#shop', color:'gold',
     products:['Men\'s 7-Day Travel Essentials','Women\'s 7-Day Bundle','Travel Wellness Kits','Emergency Kits'],
     badge:'Same-Day Available'
   },
@@ -1005,7 +1005,7 @@ function VendorCard({vendor:v, setPage, setActiveVendor}) {
       <div style={{marginTop:'auto'}}>
         {isShop ? (
           <button
-            onClick={(e)=>{e.stopPropagation();window.open('/shop/'+v.name.toLowerCase().replace(/[^a-z0-9]+/g,'-').replace(/^-|-$/g,''),'_self');}}
+            onClick={(e)=>{e.stopPropagation(); if(v.url.startsWith('https://bagfree.app/#')){window.location.hash=v.url.replace('https://bagfree.app/#','');}else{window.open(v.url,'_self');}}}
             style={{background:'var(--gold)',color:'var(--noir)',padding:'0.75rem 1.75rem',border:'none',fontSize:'0.78rem',fontWeight:500,letterSpacing:'2.5px',textTransform:'uppercase',width:'100%',cursor:'pointer',fontFamily:'var(--ff-body)'}}>
             Shop {v.name} →
           </button>
