@@ -183,7 +183,7 @@ const VENDORS = [
     id:'nuor-edit', name:'The Nuor Edit', tag:'Curated Partner', icon:'◈',
     category:'Clothing · Women\'s · Tampa, FL', dest:'Tampa Bay, FL',
     desc:'The rental wardrobe of Valet By Nuor. Curated by Selena — a Tampa-based artist. Rent for your stay, keep what you love. Delivered to your hotel before you arrive. Tampa Bay only.',
-    highlight:false, url:'https://giftsbyselena.com', color:'selena',
+    highlight:false, url:'https://bagfree.app/shop/nuor-edit/', color:'selena',
     products:['Dresses','Tops & Blouses','Accessories','Resort Wear','Travel Outfits'],
     badge:'Shop Now'
   },
@@ -595,7 +595,7 @@ function Home({setPage}) {
 
           {/* The Nuor Edit card */}
           <div
-            onClick={()=>window.open('/shop/nuor-edit','_self')}
+            onClick={()=>window.open('https://bagfree.app/shop/nuor-edit/','_self')}
             style={{background:'var(--noir-2)',padding:'2rem',cursor:'pointer',transition:'all 0.25s',position:'relative',border:'1px solid rgba(201,169,110,0.1)'}}
             onMouseEnter={e=>e.currentTarget.style.background='var(--noir-3)'}
             onMouseLeave={e=>e.currentTarget.style.background='var(--noir-2)'}>
