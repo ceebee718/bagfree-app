@@ -2046,6 +2046,177 @@ function CruisePage({setPage}) {
   );
 }
 
+// ── SHARED CART LOGIC ─────────────────────────────────────────────────────────
+function useCart() {
+  const [cart, setCart] = useState([]);
+  function addToCart(product) {
+    setCart(prev => {
+      const exists = prev.find(i => i.id === product.id);
+      if (exists) return prev.map(i => i.id === product.id ? {...i, qty: i.qty + 1} : i);
+      return [...prev, {...product, qty: 1}];
+    });
+  }
+  function removeFromCart(id) { setCart(prev => prev.filter(i => i.id !== id)); }
+  function updateQty(id, qty) {
+    if (qty < 1) return removeFromCart(id);
+    setCart(prev => prev.map(i => i.id === id ? {...i, qty} : i));
+  }
+  const total = cart.reduce((sum, i) => sum + i.price * i.qty, 0);
+  const count = cart.reduce((sum, i) => sum + i.qty, 0);
+  return {cart, addToCart, removeFromCart, updateQty, total, count};
+}
+
+async function stripeCheckout(cart) {
+  const res = await fetch('/.netlify/functions/create-checkout', {
+    method: 'POST',
+    headers: {'Content-Type': 'application/json'},
+    body: JSON.stringify({
+      items: cart.map(i => ({id: i.id, name: i.name, price: i.price, qty: i.qty, desc: i.desc}))
+    })
+  });
+  const data = await res.json();
+  if (data.url) window.location.href = data.url;
+  else alert('Checkout error. Please try again.');
+}
+
+// ── CART DRAWER ───────────────────────────────────────────────────────────────
+function CartDrawer({cart, removeFromCart, updateQty, total, onClose, onCheckout, checking}) {
+  return (
+    <div style={{position:'fixed',top:0,right:0,bottom:0,width:'min(400px,100vw)',background:'var(--noir-2)',borderLeft:'1px solid rgba(201,169,110,0.2)',zIndex:1000,display:'flex',flexDirection:'column',boxShadow:'-4px 0 24px rgba(0,0,0,0.4)'}}>
+      <div style={{padding:'1.5rem',borderBottom:'1px solid rgba(201,169,110,0.15)',display:'flex',justifyContent:'space-between',alignItems:'center'}}>
+        <div style={{fontFamily:'var(--ff-display)',fontSize:'1.2rem',fontWeight:300,color:'var(--white)',letterSpacing:'2px'}}>Your Cart</div>
+        <button onClick={onClose} style={{background:'none',border:'none',color:'var(--mist)',cursor:'pointer',fontSize:'1.2rem',padding:'4px 8px'}}>✕</button>
+      </div>
+      <div style={{flex:1,overflowY:'auto',padding:'1rem'}}>
+        {cart.length === 0 ? (
+          <div style={{textAlign:'center',padding:'3rem 1rem',color:'var(--mist)',fontFamily:'var(--ff-body)',fontSize:'14px'}}>Your cart is empty</div>
+        ) : cart.map(item => (
+          <div key={item.id} style={{borderBottom:'1px solid rgba(201,169,110,0.08)',padding:'1rem 0',display:'flex',gap:'0.75rem',alignItems:'flex-start'}}>
+            <div style={{flex:1}}>
+              <div style={{fontFamily:'var(--ff-body)',fontSize:'13px',fontWeight:500,color:'var(--white)',marginBottom:'4px'}}>{item.name}</div>
+              <div style={{fontFamily:'var(--ff-body)',fontSize:'12px',color:'var(--gold)'}}>${(item.price * item.qty).toFixed(2)}</div>
+            </div>
+            <div style={{display:'flex',alignItems:'center',gap:'8px'}}>
+              <button onClick={()=>updateQty(item.id, item.qty-1)} style={{background:'rgba(201,169,110,0.1)',border:'none',color:'var(--gold)',width:24,height:24,cursor:'pointer',fontFamily:'var(--ff-body)',fontSize:'14px'}}>−</button>
+              <span style={{fontFamily:'var(--ff-body)',fontSize:'13px',color:'var(--white)',minWidth:16,textAlign:'center'}}>{item.qty}</span>
+              <button onClick={()=>updateQty(item.id, item.qty+1)} style={{background:'rgba(201,169,110,0.1)',border:'none',color:'var(--gold)',width:24,height:24,cursor:'pointer',fontFamily:'var(--ff-body)',fontSize:'14px'}}>+</button>
+              <button onClick={()=>removeFromCart(item.id)} style={{background:'none',border:'none',color:'rgba(255,255,255,0.3)',cursor:'pointer',fontFamily:'var(--ff-body)',fontSize:'11px',marginLeft:4}}>✕</button>
+            </div>
+          </div>
+        ))}
+      </div>
+      {cart.length > 0 && (
+        <div style={{padding:'1.5rem',borderTop:'1px solid rgba(201,169,110,0.15)'}}>
+          <div style={{display:'flex',justifyContent:'space-between',marginBottom:'1.25rem'}}>
+            <span style={{fontFamily:'var(--ff-body)',fontSize:'13px',color:'var(--mist)'}}>Total</span>
+            <span style={{fontFamily:'var(--ff-body)',fontSize:'16px',fontWeight:500,color:'var(--white)'}}>${total.toFixed(2)}</span>
+          </div>
+          <button
+            onClick={onCheckout}
+            disabled={checking}
+            style={{width:'100%',background:'var(--gold)',color:'var(--noir)',border:'none',padding:'0.9rem',fontFamily:'var(--ff-body)',fontSize:'12px',fontWeight:500,letterSpacing:'2px',textTransform:'uppercase',cursor:checking?'wait':'pointer',opacity:checking?0.7:1}}>
+            {checking ? 'Redirecting...' : 'Checkout →'}
+          </button>
+          <div style={{fontFamily:'var(--ff-body)',fontSize:'10px',color:'rgba(245,237,216,0.3)',textAlign:'center',marginTop:'0.75rem',letterSpacing:'1px'}}>Secure checkout via Stripe</div>
+        </div>
+      )}
+    </div>
+  );
+}
+
+// ── PRODUCT CARD ──────────────────────────────────────────────────────────────
+function ProductCard({product, onAdd}) {
+  const [added, setAdded] = useState(false);
+  function handleAdd() {
+    onAdd(product);
+    setAdded(true);
+    setTimeout(() => setAdded(false), 1200);
+  }
+  return (
+    <div style={{background:'var(--noir-2)',border:'1px solid rgba(201,169,110,0.1)',display:'flex',flexDirection:'column',position:'relative',transition:'border-color 0.2s'}}
+      onMouseEnter={e=>e.currentTarget.style.borderColor='rgba(201,169,110,0.3)'}
+      onMouseLeave={e=>e.currentTarget.style.borderColor='rgba(201,169,110,0.1)'}>
+      {product.tag && (
+        <div style={{position:'absolute',top:'0.75rem',right:'0.75rem',fontFamily:'var(--ff-body)',fontSize:'9px',letterSpacing:'2px',textTransform:'uppercase',background:product.tag==='Sale'?'rgba(201,169,110,0.9)':'rgba(201,169,110,0.15)',color:product.tag==='Sale'?'var(--noir)':'var(--gold)',padding:'3px 8px',border:'1px solid rgba(201,169,110,0.3)'}}>{product.tag}</div>
+      )}
+      <div style={{padding:'1.75rem 1.5rem',flex:1,display:'flex',flexDirection:'column'}}>
+        <div style={{fontSize:'2rem',marginBottom:'0.75rem'}}>{product.icon}</div>
+        <div style={{fontFamily:'var(--ff-display)',fontSize:'1rem',fontWeight:300,color:'var(--white)',marginBottom:'0.5rem',lineHeight:1.3,letterSpacing:'0.3px'}}>{product.name}</div>
+        <div style={{fontFamily:'var(--ff-body)',fontSize:'12px',color:'rgba(245,237,216,0.45)',lineHeight:1.7,marginBottom:'1rem',flex:1,fontWeight:300}}>{product.desc}</div>
+        <div style={{fontFamily:'var(--ff-display)',fontSize:'1.15rem',fontWeight:300,color:'var(--gold)',marginBottom:'1rem'}}>${product.price.toFixed(2)}</div>
+        <button
+          onClick={handleAdd}
+          style={{background:added?'rgba(201,169,110,0.2)':'transparent',color:'var(--gold)',border:'1px solid rgba(201,169,110,0.35)',padding:'0.6rem 1rem',fontFamily:'var(--ff-body)',fontSize:'11px',letterSpacing:'2px',textTransform:'uppercase',cursor:'pointer',transition:'all 0.2s',width:'100%'}}>
+          {added ? '✓ Added' : 'Add to Cart'}
+        </button>
+      </div>
+    </div>
+  );
+}
+
+// ── SHOP PAGE TEMPLATE ────────────────────────────────────────────────────────
+function ShopPage({title, subtitle, gender, products, setPage}) {
+  const {cart, addToCart, removeFromCart, updateQty, total, count} = useCart();
+  const [cartOpen, setCartOpen] = useState(false);
+  const [checking, setChecking] = useState(false);
+
+  async function handleCheckout() {
+    setChecking(true);
+    await stripeCheckout(cart);
+    setChecking(false);
+  }
+
+  return (
+    <div style={{background:'var(--noir)',minHeight:'100vh'}}>
+      {/* Header */}
+      <div style={{background:'var(--noir-2)',borderBottom:'1px solid rgba(201,169,110,0.15)',padding:'1.25rem 2rem',display:'flex',justifyContent:'space-between',alignItems:'center',position:'sticky',top:0,zIndex:100}}>
+        <button onClick={()=>setPage('shop')} style={{background:'none',border:'none',color:'var(--mist)',cursor:'pointer',fontFamily:'var(--ff-body)',fontSize:'12px',letterSpacing:'2px',textTransform:'uppercase',display:'flex',alignItems:'center',gap:'6px'}}>← Shop</button>
+        <div style={{fontFamily:'var(--ff-display)',fontSize:'1.1rem',fontWeight:300,color:'var(--white)',letterSpacing:'3px',textTransform:'uppercase'}}>{title}</div>
+        <button onClick={()=>setCartOpen(true)} style={{background:'none',border:'1px solid rgba(201,169,110,0.3)',color:'var(--gold)',cursor:'pointer',fontFamily:'var(--ff-body)',fontSize:'11px',letterSpacing:'2px',textTransform:'uppercase',padding:'0.5rem 1rem',display:'flex',alignItems:'center',gap:'8px'}}>
+          Cart {count > 0 && <span style={{background:'var(--gold)',color:'var(--noir)',borderRadius:'50%',width:18,height:18,display:'inline-flex',alignItems:'center',justifyContent:'center',fontSize:'10px',fontWeight:700}}>{count}</span>}
+        </button>
+      </div>
+
+      {/* Hero */}
+      <div style={{padding:'3rem 2rem 2rem',textAlign:'center',borderBottom:'1px solid rgba(201,169,110,0.08)'}}>
+        <div style={{fontFamily:'var(--ff-body)',fontSize:'10px',letterSpacing:'4px',color:'rgba(201,169,110,0.55)',textTransform:'uppercase',marginBottom:'1rem',display:'flex',alignItems:'center',justifyContent:'center',gap:'1rem'}}>
+          <span style={{width:20,height:1,background:'rgba(201,169,110,0.3)',display:'inline-block'}}/>
+          BagFree Collection
+          <span style={{width:20,height:1,background:'rgba(201,169,110,0.3)',display:'inline-block'}}/>
+        </div>
+        <h1 style={{fontFamily:'var(--ff-display)',fontSize:'clamp(2rem,4vw,3rem)',fontWeight:300,color:'var(--white)',letterSpacing:'-0.3px',marginBottom:'0.5rem'}}>{subtitle}</h1>
+        <p style={{fontFamily:'var(--ff-body)',fontSize:'13px',color:'rgba(245,237,216,0.4)',fontWeight:300}}>Delivered to your hotel room · Same-day available</p>
+      </div>
+
+      {/* Grid */}
+      <div style={{maxWidth:1100,margin:'0 auto',padding:'2.5rem 1.5rem'}}>
+        <div style={{display:'grid',gridTemplateColumns:'repeat(auto-fill,minmax(260px,1fr))',gap:1,background:'rgba(201,169,110,0.06)'}}>
+          {products.filter(p=>p.category===gender).map(p => (
+            <ProductCard key={p.id} product={p} onAdd={addToCart}/>
+          ))}
+        </div>
+      </div>
+
+      {/* Floating cart button on mobile */}
+      {count > 0 && !cartOpen && (
+        <div style={{position:'fixed',bottom:'2rem',right:'2rem',zIndex:99}}>
+          <button onClick={()=>setCartOpen(true)} style={{background:'var(--gold)',color:'var(--noir)',border:'none',padding:'0.85rem 1.5rem',fontFamily:'var(--ff-body)',fontSize:'12px',fontWeight:500,letterSpacing:'2px',textTransform:'uppercase',cursor:'pointer',display:'flex',alignItems:'center',gap:'8px',boxShadow:'0 4px 20px rgba(0,0,0,0.4)'}}>
+            Cart ({count}) · ${total.toFixed(2)}
+          </button>
+        </div>
+      )}
+
+      {/* Cart overlay */}
+      {cartOpen && (
+        <>
+          <div onClick={()=>setCartOpen(false)} style={{position:'fixed',inset:0,background:'rgba(0,0,0,0.5)',zIndex:999}}/>
+          <CartDrawer cart={cart} removeFromCart={removeFromCart} updateQty={updateQty} total={total} onClose={()=>setCartOpen(false)} onCheckout={handleCheckout} checking={checking}/>
+        </>
+      )}
+    </div>
+  );
+}
+
 // ── SHOP LANDING ──────────────────────────────────────────────────────────────
 function ShopLanding({setPage}) {
   return (
@@ -2059,7 +2230,7 @@ function ShopLanding({setPage}) {
         <h1 style={{fontSize:'clamp(2.4rem,5vw,3.5rem)',fontWeight:300,color:'var(--white)',textAlign:'center',letterSpacing:'-0.5px',marginBottom:'0.6rem',lineHeight:1.1}}>Shop BagFree</h1>
         <p style={{fontFamily:'var(--ff-body)',fontSize:'13px',color:'rgba(245,237,216,0.4)',textAlign:'center',letterSpacing:'1px',marginBottom:'4rem',fontWeight:300}}>Delivered to your hotel before you arrive</p>
         <div style={{display:'grid',gridTemplateColumns:'repeat(auto-fit,minmax(280px,1fr))',gap:1,background:'rgba(201,169,110,0.1)',marginBottom:'3rem'}}>
-          <a href="https://bagfree.app/shop/mens" style={{background:'var(--noir-2)',padding:'2.75rem 2.25rem',textDecoration:'none',display:'flex',flexDirection:'column',alignItems:'flex-start',border:'1px solid rgba(201,169,110,0.12)',position:'relative',overflow:'hidden',transition:'background 0.25s',cursor:'pointer'}}
+          <a href="#shop-mens" onClick={e=>{e.preventDefault();setPage('shop-mens');}} style={{background:'var(--noir-2)',padding:'2.75rem 2.25rem',textDecoration:'none',display:'flex',flexDirection:'column',alignItems:'flex-start',border:'1px solid rgba(201,169,110,0.12)',position:'relative',overflow:'hidden',transition:'background 0.25s',cursor:'pointer'}}
             onMouseEnter={e=>e.currentTarget.style.background='var(--noir-3)'}
             onMouseLeave={e=>e.currentTarget.style.background='var(--noir-2)'}>
             <div style={{position:'absolute',top:0,left:0,right:0,height:'2px',background:'linear-gradient(90deg,transparent,rgba(201,169,110,0.4),transparent)'}}/>
@@ -2077,7 +2248,7 @@ function ShopLanding({setPage}) {
             </div>
             <div style={{fontFamily:'var(--ff-body)',fontSize:'11px',letterSpacing:'2.5px',textTransform:'uppercase',color:'var(--gold)',border:'1px solid rgba(201,169,110,0.3)',padding:'0.65rem 1.5rem',display:'inline-flex',alignItems:'center',gap:8}}>Shop men&apos;s →</div>
           </a>
-          <a href="https://bagfree.app/shop/womens" style={{background:'var(--noir-2)',padding:'2.75rem 2.25rem',textDecoration:'none',display:'flex',flexDirection:'column',alignItems:'flex-start',border:'1px solid rgba(201,169,110,0.12)',position:'relative',overflow:'hidden',transition:'background 0.25s',cursor:'pointer'}}
+          <a href="#shop-womens" onClick={e=>{e.preventDefault();setPage('shop-womens');}} style={{background:'var(--noir-2)',padding:'2.75rem 2.25rem',textDecoration:'none',display:'flex',flexDirection:'column',alignItems:'flex-start',border:'1px solid rgba(201,169,110,0.12)',position:'relative',overflow:'hidden',transition:'background 0.25s',cursor:'pointer'}}
             onMouseEnter={e=>e.currentTarget.style.background='var(--noir-3)'}
             onMouseLeave={e=>e.currentTarget.style.background='var(--noir-2)'}>
             <div style={{position:'absolute',top:0,left:0,right:0,height:'2px',background:'linear-gradient(90deg,transparent,rgba(201,169,110,0.4),transparent)'}}/>
@@ -2133,6 +2304,8 @@ function App() {
       <Nav page={page} setPage={navigate}/>
       {page==='home' && <Home setPage={navigate}/>}
       {page==='shop' && <ShopLanding setPage={navigate}/>}
+      {page==='shop-mens' && <ShopPage title="Men's" subtitle="Men's Collection" gender="mens" products={PRODUCTS} setPage={navigate}/>}
+      {page==='shop-womens' && <ShopPage title="Women's" subtitle="Women's Collection" gender="womens" products={PRODUCTS} setPage={navigate}/>}
       {page==='vendors' && <VendorMarketplace setPage={navigate} setActiveVendor={setActiveVendor}/>}
       {page==='products' && <ProductsPage setPage={navigate}/>}
       {page==='hotel' && <HotelConcierge/>}
