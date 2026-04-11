@@ -175,7 +175,7 @@ const VENDORS = [
     id:'valet-by-nuor', name:'Valet By Nuor', tag:'Official Partner', icon:'◈',
     category:'Clothing · Wellness · Essentials', dest:'FL & GA',
     desc:'The founding supplier of BagFree. Emergency travel kits, men\'s and women\'s wear, wellness kits, and curated travel essentials. Same-day delivery in Tampa & Orlando.',
-    highlight:true, url:'https://valetbynuor.com', color:'gold',
+    highlight:true, url:'https://bagfree.app/shop', color:'gold',
     products:['Men\'s 7-Day Travel Essentials','Women\'s 7-Day Bundle','Travel Wellness Kits','Emergency Kits'],
     badge:'Same-Day Available'
   },
@@ -541,7 +541,7 @@ function Home({setPage}) {
               style={{background:'linear-gradient(135deg,var(--gold),#b8893e)',color:'var(--noir)',border:'none',padding:'0.85rem 2.2rem',fontSize:'0.78rem',fontWeight:500,letterSpacing:'2.5px',textTransform:'uppercase'}}>
               How It Works ✦
             </button>
-            <button onClick={()=>window.open('/shop/valet-by-nuor','_self')}
+            <button onClick={()=>window.open('https://bagfree.app/shop','_self')}
               style={{background:'transparent',color:'var(--mist)',border:'1px solid var(--border)',padding:'0.85rem 1.75rem',fontSize:'0.78rem',letterSpacing:'2px',textTransform:'uppercase'}}>
               Shop Kits ↗
             </button>
@@ -576,7 +576,7 @@ function Home({setPage}) {
         <div style={{display:'grid',gridTemplateColumns:'repeat(auto-fill,minmax(300px,1fr))',gap:1,background:'var(--border)',border:'1px solid var(--border)'}}>
           {/* Valet By Nuor card */}
           <div
-            onClick={()=>window.open('https://valetbynuor.com','_blank')}
+            onClick={()=>window.open('https://bagfree.app/shop','_self')}
             style={{background:'var(--gold)',padding:'2rem',cursor:'pointer',transition:'all 0.25s',position:'relative'}}
             onMouseEnter={e=>e.currentTarget.style.background='#DDD3B8'}
             onMouseLeave={e=>e.currentTarget.style.background='var(--gold)'}>
