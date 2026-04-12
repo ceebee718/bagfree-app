@@ -2231,9 +2231,7 @@ function ShopLanding({setPage}) {
         <p style={{fontFamily:'var(--ff-body)',fontSize:'13px',color:'rgba(245,237,216,0.4)',textAlign:'center',letterSpacing:'1px',marginBottom:'4rem',fontWeight:300}}>Delivered to your hotel before you arrive</p>
         <div style={{display:'grid',gridTemplateColumns:'repeat(auto-fit,minmax(340px,1fr))',gap:'2rem',maxWidth:900,margin:'0 auto 3rem'}}>
           <div style={{display:'flex',flexDirection:'column',height:'100%'}}>
-            <div style={{width:'100%',height:320,background:'var(--noir-3)',display:'flex',alignItems:'center',justifyContent:'center',border:'1px solid rgba(201,169,110,0.1)',borderBottom:'none'}}>
-              <img src="https://raw.githubusercontent.com/ceebee718/bagfree-app/main/images/bagfree-logo.png" alt="BagFree" style={{width:'70%',maxWidth:300,opacity:0.9}}/>
-            </div>
+            <img src="https://raw.githubusercontent.com/ceebee718/bagfree-app/main/images/mens-hero.png" alt="Men's collection" style={{width:'100%',height:320,objectFit:'cover',objectPosition:'center top'}}/>
             <a href="#shop-mens" onClick={e=>{e.preventDefault();setPage('shop-mens');}} style={{background:'var(--noir-2)',padding:'2.5rem 2rem',textDecoration:'none',display:'flex',flexDirection:'column',alignItems:'flex-start',border:'1px solid rgba(201,169,110,0.15)',borderTop:'none',cursor:'pointer',transition:'background 0.25s',flex:1}}
               onMouseEnter={e=>e.currentTarget.style.background='var(--noir-3)'}
               onMouseLeave={e=>e.currentTarget.style.background='var(--noir-2)'}>
@@ -2258,6 +2256,9 @@ function ShopLanding({setPage}) {
               <div style={{fontFamily:'var(--ff-body)',fontSize:'11px',letterSpacing:'2.5px',textTransform:'uppercase',color:'var(--noir)',border:'1px solid rgba(8,14,26,0.35)',padding:'0.65rem 1.5rem',display:'inline-flex',alignItems:'center',gap:8}}>Shop women&apos;s →</div>
             </a>
           </div>
+        </div>
+        <div style={{textAlign:'center',padding:'3rem 0 1rem'}}>
+          <img src="https://raw.githubusercontent.com/ceebee718/bagfree-app/main/images/bagfree-logo.png" alt="BagFree" style={{width:'min(420px,70%)',opacity:0.15}}/>
         </div>
         <div style={{fontFamily:'var(--ff-body)',fontSize:'11px',color:'rgba(245,237,216,0.2)',textAlign:'center',letterSpacing:'2px',textTransform:'uppercase'}}>
           Same-day delivery <span style={{color:'rgba(201,169,110,0.3)',margin:'0 8px'}}>·</span> Savannah <span style={{color:'rgba(201,169,110,0.3)',margin:'0 8px'}}>·</span> Atlanta <span style={{color:'rgba(201,169,110,0.3)',margin:'0 8px'}}>·</span> Tampa <span style={{color:'rgba(201,169,110,0.3)',margin:'0 8px'}}>·</span> Orlando
