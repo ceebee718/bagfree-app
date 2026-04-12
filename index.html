@@ -320,7 +320,7 @@ function Nav({page, setPage}) {
     <>
       <nav className="bf-nav" style={{position:'fixed',top:0,left:0,right:0,zIndex:200,display:'flex',alignItems:'center',justifyContent:'space-between',padding:'1rem 2.5rem',borderBottom:'1px solid var(--border)',background:'rgba(8,14,26,0.97)',backdropFilter:'blur(16px)'}}>
         <div onClick={()=>{setPage('home');setMenuOpen(false);setTimeout(()=>window.hpCalc&&window.hpCalc(),300);}} style={{cursor:'pointer',display:'flex',alignItems:'center'}}>
-          <img src="https://raw.githubusercontent.com/ceebee718/bagfree-app/main/icon-192.png" alt="BagFree" style={{height:60,width:'auto',objectFit:'contain'}}/>
+          <img src="https://raw.githubusercontent.com/ceebee718/bagfree-app/main/images/bagfree-nav-logo.png" alt="BagFree" style={{height:60,width:'auto',objectFit:'contain'}}/>
         </div>
         <div className="bf-nav-links" style={{display:'flex',gap:'2rem',alignItems:'center'}}>
           {[['home','Destinations'],['vendors','Marketplace'],['cruise','Cruise'],['supplier','Suppliers']].map(([p,l])=>(
@@ -339,7 +339,7 @@ function Nav({page, setPage}) {
       {menuOpen && (
         <div style={{position:'fixed',top:0,left:0,right:0,bottom:0,zIndex:199,background:'rgba(8,14,26,0.98)',display:'flex',flexDirection:'column',alignItems:'center',justifyContent:'center',gap:'2.5rem'}}>
           <div onClick={()=>{setPage('home');setMenuOpen(false);setTimeout(()=>window.hpCalc&&window.hpCalc(),300);}} style={{cursor:'pointer'}}>
-            <img src="https://raw.githubusercontent.com/ceebee718/bagfree-app/main/icon-192.png" alt="BagFree" style={{height:64,width:'auto',objectFit:'contain'}}/>
+            <img src="https://raw.githubusercontent.com/ceebee718/bagfree-app/main/images/bagfree-nav-logo.png" alt="BagFree" style={{height:64,width:'auto',objectFit:'contain'}}/>
           </div>
           <div style={{width:40,height:1,background:'var(--border)'}}/>
           {[['home','Destinations'],['vendors','Marketplace'],['cruise','Cruise'],['supplier','Suppliers']].map(([p,l])=>(
