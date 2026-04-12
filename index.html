@@ -2218,6 +2218,44 @@ function ShopPage({title, subtitle, gender, products, setPage}) {
 }
 
 // ── SHOP LANDING ──────────────────────────────────────────────────────────────
+// ── CATEGORY & VENDOR DATA FOR MARKETPLACE FLOW ──────────────────────────────
+const MENS_CATEGORIES = [
+  {id:'kits',label:'Travel Kits',icon:'💼',desc:'Full wardrobe bundles & emergency kits',products:['7-Day Travel Essentials','Business Emergency Kit','Basic Emergency Kit','Stay Fresh Kit']},
+  {id:'shirts',label:'Shirts & Tops',icon:'👔',desc:'Dress shirts, polos, tees & tanks',products:['Long-Sleeve Dress Shirt','Polo Shirt','Crew Neck T-Shirt','Casual Travel Shirt','High Neck Tank']},
+  {id:'bottoms',label:'Bottoms',icon:'👖',desc:'Chinos, shorts & joggers',products:['Casual Chinos','Casual Shorts','Jogger Pants']},
+  {id:'essentials',label:'Essentials',icon:'🧦',desc:'Underwear, socks, belts & undershirts',products:['Boxer Briefs 2-Pack','Dress Socks 3-Pack','Undershirt 2-Pack','Leather Belt']},
+];
+
+const WOMENS_CATEGORIES = [
+  {id:'kits',label:'Travel Kits',icon:'👜',desc:'Full wardrobe bundles & emergency kits',products:['7-Day Essentials Bundle','Business Emergency Kit','Basic Travel Kit','Toiletry Stay Fresh Kit']},
+  {id:'tops',label:'Tops & Dresses',icon:'👗',desc:'Dresses, blouses, tees & sleepwear',products:['V-Neck Travel Tee','Sleepwear','Beach Lounge Set','Swimwear Emergency Set']},
+  {id:'bottoms',label:'Bottoms',icon:'👖',desc:'Chinos, leggings, shorts & athletic wear',products:['Casual Chino Pants','Leggings','Athletic Shorts','Casual Shorts']},
+  {id:'essentials',label:'Essentials',icon:'🧦',desc:'Underwear, socks, belts & undershirts',products:['Boxer Briefs 2-Pack','Casual Ankle Socks 2-Pack','Undershirt 2-Pack','Leather Belt']},
+  {id:'rental',label:'The Nuor Edit',icon:'✦',desc:'Curated rental wardrobe by Selena — Tampa Bay',products:['Dresses','Tops & Blouses','Accessories','Resort Wear'],isRental:true},
+];
+
+// Which vendors carry which category
+const VENDOR_OFFERINGS = {
+  valet: {
+    id:'valet',name:'Valet By Nuor',tag:'Official Partner',tagColor:'var(--gold)',
+    desc:'The founding supplier of BagFree. Premium travel clothing and essentials delivered same-day to your hotel.',
+    badge:'Same-Day Available',badgeColor:'var(--green)',
+    dest:'Tampa · Orlando · Atlanta · Savannah',
+    url:null, // go to shop-mens / shop-womens
+    categories:['kits','shirts','tops','bottoms','essentials'],
+  },
+  nuoredit: {
+    id:'nuoredit',name:'The Nuor Edit',tag:'Rental',tagColor:'#9B8FD4',
+    desc:'Curated rental wardrobe by Selena — a Tampa-based artist. Rent for your stay, keep what you love.',
+    badge:'Tampa Bay Only',badgeColor:'rgba(155,143,212,0.8)',
+    dest:'Tampa Bay, FL',
+    url:'https://bagfree.app/shop/nuor-edit/',
+    categories:['tops','rental','kits'],
+    isRental:true,
+  },
+};
+
+// ── STEP 1: GENDER LANDING (the updated ShopLanding) ─────────────────────────
 function ShopLanding({setPage}) {
   return (
     <div style={{background:'var(--noir)',minHeight:'100vh',padding:'5rem 2rem 4rem',fontFamily:'var(--ff-display)'}}>
@@ -2228,11 +2266,15 @@ function ShopLanding({setPage}) {
           <span style={{width:24,height:1,background:'rgba(201,169,110,0.35)',display:'inline-block'}}/>
         </div>
         <h1 style={{fontSize:'clamp(2.4rem,5vw,3.5rem)',fontWeight:300,color:'var(--white)',textAlign:'center',letterSpacing:'-0.5px',marginBottom:'0.6rem',lineHeight:1.1}}>Shop BagFree</h1>
-        <p style={{fontFamily:'var(--ff-body)',fontSize:'13px',color:'rgba(245,237,216,0.4)',textAlign:'center',letterSpacing:'1px',marginBottom:'4rem',fontWeight:300}}>Delivered to your hotel before you arrive</p>
+        <p style={{fontFamily:'var(--ff-body)',fontSize:'13px',color:'rgba(245,237,216,0.4)',textAlign:'center',letterSpacing:'1px',marginBottom:'0.5rem',fontWeight:300}}>Delivered to your hotel before you arrive</p>
+        <p style={{fontFamily:'var(--ff-body)',fontSize:'11px',color:'rgba(201,169,110,0.4)',textAlign:'center',letterSpacing:'2px',textTransform:'uppercase',marginBottom:'3.5rem'}}>Choose a category → Compare vendors → Shop</p>
+
         <div style={{display:'grid',gridTemplateColumns:'repeat(auto-fit,minmax(340px,1fr))',gap:'2rem',maxWidth:900,margin:'0 auto 3rem'}}>
+          {/* Men's Card */}
           <div style={{display:'flex',flexDirection:'column',height:'100%'}}>
             <img src="https://raw.githubusercontent.com/ceebee718/bagfree-app/main/images/mens-hero.png" alt="Men's collection" style={{width:'100%',height:320,objectFit:'cover',objectPosition:'center top'}}/>
-            <a href="#shop-mens" onClick={e=>{e.preventDefault();setPage('shop-mens');}} style={{background:'var(--noir-2)',padding:'2.5rem 2rem',textDecoration:'none',display:'flex',flexDirection:'column',alignItems:'flex-start',border:'1px solid rgba(201,169,110,0.15)',borderTop:'none',cursor:'pointer',transition:'background 0.25s',flex:1}}
+            <a href="#cat-mens" onClick={e=>{e.preventDefault();setPage('cat-mens');}}
+              style={{background:'var(--noir-2)',padding:'2.5rem 2rem',textDecoration:'none',display:'flex',flexDirection:'column',alignItems:'flex-start',border:'1px solid rgba(201,169,110,0.15)',borderTop:'none',cursor:'pointer',transition:'background 0.25s',flex:1}}
               onMouseEnter={e=>e.currentTarget.style.background='var(--noir-3)'}
               onMouseLeave={e=>e.currentTarget.style.background='var(--noir-2)'}>
               <div style={{fontFamily:'var(--ff-body)',fontSize:'10px',letterSpacing:'3px',color:'rgba(201,169,110,0.55)',textTransform:'uppercase',marginBottom:'1rem',display:'flex',alignItems:'center',gap:8}}>
@@ -2243,9 +2285,11 @@ function ShopLanding({setPage}) {
               <div style={{fontFamily:'var(--ff-body)',fontSize:'11px',letterSpacing:'2.5px',textTransform:'uppercase',color:'var(--gold)',border:'1px solid rgba(201,169,110,0.3)',padding:'0.65rem 1.5rem',display:'inline-flex',alignItems:'center',gap:8}}>Shop men&apos;s →</div>
             </a>
           </div>
+          {/* Women's Card */}
           <div style={{display:'flex',flexDirection:'column',height:'100%'}}>
             <img src="https://raw.githubusercontent.com/ceebee718/bagfree-app/main/images/womens-hero.png" alt="Women's collection" style={{width:'100%',height:320,objectFit:'cover',objectPosition:'center top'}}/>
-            <a href="#shop-womens" onClick={e=>{e.preventDefault();setPage('shop-womens');}} style={{background:'var(--gold)',padding:'2.5rem 2rem',textDecoration:'none',display:'flex',flexDirection:'column',alignItems:'flex-start',border:'1px solid rgba(201,169,110,0.3)',borderTop:'none',cursor:'pointer',transition:'background 0.25s',flex:1}}
+            <a href="#cat-womens" onClick={e=>{e.preventDefault();setPage('cat-womens');}}
+              style={{background:'var(--gold)',padding:'2.5rem 2rem',textDecoration:'none',display:'flex',flexDirection:'column',alignItems:'flex-start',border:'1px solid rgba(201,169,110,0.3)',borderTop:'none',cursor:'pointer',transition:'background 0.25s',flex:1}}
               onMouseEnter={e=>e.currentTarget.style.background='#DDD3B8'}
               onMouseLeave={e=>e.currentTarget.style.background='var(--gold)'}>
               <div style={{fontFamily:'var(--ff-body)',fontSize:'10px',letterSpacing:'3px',color:'rgba(8,14,26,0.55)',textTransform:'uppercase',marginBottom:'1rem',display:'flex',alignItems:'center',gap:8}}>
@@ -2257,11 +2301,231 @@ function ShopLanding({setPage}) {
             </a>
           </div>
         </div>
-        <div style={{textAlign:'center',padding:'3rem 0 1rem'}}>
-          <img src="https://raw.githubusercontent.com/ceebee718/bagfree-app/main/images/bagfree-logo.png" alt="BagFree" style={{width:'min(420px,70%)',opacity:0.15}}/>
-        </div>
+
         <div style={{fontFamily:'var(--ff-body)',fontSize:'11px',color:'rgba(245,237,216,0.2)',textAlign:'center',letterSpacing:'2px',textTransform:'uppercase'}}>
           Same-day delivery <span style={{color:'rgba(201,169,110,0.3)',margin:'0 8px'}}>·</span> Savannah <span style={{color:'rgba(201,169,110,0.3)',margin:'0 8px'}}>·</span> Atlanta <span style={{color:'rgba(201,169,110,0.3)',margin:'0 8px'}}>·</span> Tampa <span style={{color:'rgba(201,169,110,0.3)',margin:'0 8px'}}>·</span> Orlando
+        </div>
+      </div>
+    </div>
+  );
+}
+
+// ── STEP 2: CATEGORY SELECT ───────────────────────────────────────────────────
+function CategorySelectPage({gender, setPage}) {
+  const isMens = gender === 'mens';
+  const categories = isMens ? MENS_CATEGORIES : WOMENS_CATEGORIES;
+  const genderLabel = isMens ? "Men's" : "Women's";
+  const accentColor = isMens ? 'var(--gold)' : 'var(--gold)';
+  const nextPrefix = isMens ? 'vendors-mens' : 'vendors-womens';
+
+  return (
+    <div style={{background:'var(--noir)',minHeight:'100vh',padding:'5rem 2rem 4rem'}}>
+      <div style={{maxWidth:900,margin:'0 auto'}}>
+        {/* Breadcrumb */}
+        <div style={{display:'flex',alignItems:'center',gap:'0.5rem',marginBottom:'2.5rem',fontFamily:'var(--ff-body)',fontSize:'11px',letterSpacing:'2px',textTransform:'uppercase'}}>
+          <span onClick={()=>setPage('shop')} style={{color:'rgba(201,169,110,0.5)',cursor:'pointer',transition:'color 0.2s'}}
+            onMouseEnter={e=>e.currentTarget.style.color='var(--gold)'}
+            onMouseLeave={e=>e.currentTarget.style.color='rgba(201,169,110,0.5)'}>Shop</span>
+          <span style={{color:'rgba(253,252,248,0.2)'}}>›</span>
+          <span style={{color:'rgba(253,252,248,0.7)'}}>{genderLabel}</span>
+        </div>
+
+        {/* Header */}
+        <div style={{marginBottom:'3rem'}}>
+          <div style={{fontFamily:'var(--ff-body)',fontSize:'11px',letterSpacing:'4px',color:'rgba(201,169,110,0.6)',textTransform:'uppercase',marginBottom:'0.85rem',display:'flex',alignItems:'center',gap:'0.75rem'}}>
+            <span style={{width:20,height:1,background:'rgba(201,169,110,0.35)',display:'inline-block'}}/>
+            {genderLabel} Collection
+          </div>
+          <h1 style={{fontFamily:'var(--ff-display)',fontSize:'clamp(2.2rem,4vw,3.2rem)',fontWeight:300,letterSpacing:'-0.3px',lineHeight:1.1,marginBottom:'0.75rem'}}>
+            What are you<br/><em style={{color:'var(--gold)',fontStyle:'italic'}}>looking for?</em>
+          </h1>
+          <p style={{fontFamily:'var(--ff-body)',fontSize:'13px',color:'rgba(245,237,216,0.45)',lineHeight:1.8,maxWidth:460}}>
+            Choose a category to see which vendors on BagFree offer that item — then pick the option that works for you.
+          </p>
+        </div>
+
+        {/* Category Grid */}
+        <div style={{display:'grid',gridTemplateColumns:'repeat(auto-fill,minmax(260px,1fr))',gap:'1px',background:'var(--border)',border:'1px solid var(--border)',marginBottom:'3rem'}}>
+          {categories.map((cat) => (
+            <div key={cat.id}
+              onClick={()=>setPage(`${nextPrefix}-${cat.id}`)}
+              style={{background:'var(--noir-2)',padding:'2rem',cursor:'pointer',transition:'all 0.22s',position:'relative'}}
+              onMouseEnter={e=>{e.currentTarget.style.background='var(--noir-3)';e.currentTarget.querySelector('.cat-arrow').style.transform='translateX(4px)';}}
+              onMouseLeave={e=>{e.currentTarget.style.background='var(--noir-2)';e.currentTarget.querySelector('.cat-arrow').style.transform='translateX(0)';}}
+            >
+              {cat.isRental && (
+                <div style={{position:'absolute',top:'0.85rem',right:'0.85rem',background:'rgba(155,143,212,0.15)',border:'1px solid rgba(155,143,212,0.35)',color:'rgba(155,143,212,0.9)',fontSize:'9px',letterSpacing:'2px',textTransform:'uppercase',padding:'3px 8px',fontFamily:'var(--ff-body)'}}>Rental</div>
+              )}
+              <div style={{fontSize:'2.2rem',marginBottom:'1rem',lineHeight:1}}>{cat.icon}</div>
+              <div style={{fontFamily:'var(--ff-display)',fontSize:'1.5rem',fontWeight:300,color:'var(--white)',marginBottom:'0.4rem',lineHeight:1.1}}>{cat.label}</div>
+              <div style={{fontFamily:'var(--ff-body)',fontSize:'12px',color:'rgba(245,237,216,0.4)',lineHeight:1.7,marginBottom:'1.25rem'}}>{cat.desc}</div>
+              <div style={{display:'flex',flexWrap:'wrap',gap:'0.3rem',marginBottom:'1.25rem'}}>
+                {cat.products.slice(0,3).map(p=>(
+                  <span key={p} style={{fontFamily:'var(--ff-body)',fontSize:'10px',color:'rgba(201,169,110,0.5)',border:'1px solid rgba(201,169,110,0.15)',padding:'2px 7px',letterSpacing:'0.5px'}}>{p}</span>
+                ))}
+                {cat.products.length > 3 && <span style={{fontFamily:'var(--ff-body)',fontSize:'10px',color:'rgba(201,169,110,0.3)',padding:'2px 7px'}}>+{cat.products.length-3} more</span>}
+              </div>
+              <div className="cat-arrow" style={{fontFamily:'var(--ff-body)',fontSize:'11px',letterSpacing:'2px',textTransform:'uppercase',color:'var(--gold)',display:'flex',alignItems:'center',gap:'0.4rem',transition:'transform 0.2s'}}>
+                See vendors →
+              </div>
+            </div>
+          ))}
+        </div>
+
+        {/* Or browse all */}
+        <div style={{textAlign:'center',padding:'1.5rem 0',borderTop:'1px solid var(--border)'}}>
+          <span style={{fontFamily:'var(--ff-body)',fontSize:'11px',color:'rgba(253,252,248,0.3)',letterSpacing:'2px',textTransform:'uppercase',marginRight:'1rem'}}>or</span>
+          <span onClick={()=>setPage(isMens?'shop-mens':'shop-womens')}
+            style={{fontFamily:'var(--ff-body)',fontSize:'11px',letterSpacing:'2px',textTransform:'uppercase',color:'rgba(201,169,110,0.6)',cursor:'pointer',textDecoration:'underline',textDecorationColor:'rgba(201,169,110,0.25)'}}>
+            Browse all {genderLabel.toLowerCase()} products
+          </span>
+        </div>
+      </div>
+    </div>
+  );
+}
+
+// ── STEP 3: VENDOR SELECT ─────────────────────────────────────────────────────
+function VendorSelectPage({gender, categoryId, setPage}) {
+  const isMens = gender === 'mens';
+  const genderLabel = isMens ? "Men's" : "Women's";
+  const categories = isMens ? MENS_CATEGORIES : WOMENS_CATEGORIES;
+  const category = categories.find(c => c.id === categoryId) || categories[0];
+  const catPage = isMens ? 'cat-mens' : 'cat-womens';
+
+  // Determine which vendors carry this category
+  const availableVendors = Object.values(VENDOR_OFFERINGS).filter(v =>
+    v.categories.includes(categoryId) ||
+    (categoryId === 'rental' && v.isRental)
+  );
+
+  // Future vendor slot
+  const futureSlots = Math.max(0, 3 - availableVendors.length);
+
+  function handleVendorClick(vendor) {
+    if (vendor.url) {
+      window.open(vendor.url, '_self');
+    } else {
+      // Go to the full shop page
+      setPage(isMens ? 'shop-mens' : 'shop-womens');
+    }
+  }
+
+  return (
+    <div style={{background:'var(--noir)',minHeight:'100vh',padding:'5rem 2rem 4rem'}}>
+      <div style={{maxWidth:900,margin:'0 auto'}}>
+        {/* Breadcrumb */}
+        <div style={{display:'flex',alignItems:'center',gap:'0.5rem',marginBottom:'2.5rem',fontFamily:'var(--ff-body)',fontSize:'11px',letterSpacing:'2px',textTransform:'uppercase',flexWrap:'wrap'}}>
+          <span onClick={()=>setPage('shop')} style={{color:'rgba(201,169,110,0.4)',cursor:'pointer',transition:'color 0.2s'}}
+            onMouseEnter={e=>e.currentTarget.style.color='var(--gold)'}
+            onMouseLeave={e=>e.currentTarget.style.color='rgba(201,169,110,0.4)'}>Shop</span>
+          <span style={{color:'rgba(253,252,248,0.2)'}}>›</span>
+          <span onClick={()=>setPage(catPage)} style={{color:'rgba(201,169,110,0.4)',cursor:'pointer',transition:'color 0.2s'}}
+            onMouseEnter={e=>e.currentTarget.style.color='var(--gold)'}
+            onMouseLeave={e=>e.currentTarget.style.color='rgba(201,169,110,0.4)'}>{genderLabel}</span>
+          <span style={{color:'rgba(253,252,248,0.2)'}}>›</span>
+          <span style={{color:'rgba(253,252,248,0.7)'}}>{category.label}</span>
+        </div>
+
+        {/* Header */}
+        <div style={{marginBottom:'3rem'}}>
+          <div style={{fontFamily:'var(--ff-body)',fontSize:'11px',letterSpacing:'4px',color:'rgba(201,169,110,0.6)',textTransform:'uppercase',marginBottom:'0.85rem',display:'flex',alignItems:'center',gap:'0.75rem'}}>
+            <span style={{width:20,height:1,background:'rgba(201,169,110,0.35)',display:'inline-block'}}/>
+            {category.icon} {category.label}
+          </div>
+          <h1 style={{fontFamily:'var(--ff-display)',fontSize:'clamp(2rem,4vw,3rem)',fontWeight:300,letterSpacing:'-0.3px',lineHeight:1.1,marginBottom:'0.75rem'}}>
+            Choose your <em style={{color:'var(--gold)',fontStyle:'italic'}}>vendor</em>
+          </h1>
+          <p style={{fontFamily:'var(--ff-body)',fontSize:'13px',color:'rgba(245,237,216,0.45)',lineHeight:1.8,maxWidth:500}}>
+            Multiple suppliers on BagFree offer <strong style={{color:'rgba(245,237,216,0.7)',fontWeight:400}}>{category.label.toLowerCase()}</strong> — each with different styles, price points, and delivery options. Compare and choose.
+          </p>
+        </div>
+
+        {/* Category product tags */}
+        <div style={{display:'flex',gap:'0.4rem',flexWrap:'wrap',marginBottom:'2.5rem'}}>
+          {category.products.map(p=>(
+            <span key={p} style={{fontFamily:'var(--ff-body)',fontSize:'10px',color:'rgba(201,169,110,0.55)',border:'1px solid rgba(201,169,110,0.18)',padding:'3px 10px',letterSpacing:'0.5px',background:'rgba(201,169,110,0.04)'}}>{p}</span>
+          ))}
+        </div>
+
+        {/* Vendor Cards */}
+        <div style={{display:'flex',flexDirection:'column',gap:'1px',background:'var(--border)',border:'1px solid var(--border)',marginBottom:'2rem'}}>
+          {availableVendors.map((vendor) => (
+            <div key={vendor.id}
+              onClick={()=>handleVendorClick(vendor)}
+              style={{background:'var(--noir-2)',padding:'2rem 2.5rem',cursor:'pointer',transition:'all 0.22s',display:'flex',alignItems:'stretch',gap:'2rem',position:'relative',flexWrap:'wrap'}}
+              onMouseEnter={e=>{e.currentTarget.style.background='var(--noir-3)';}}
+              onMouseLeave={e=>{e.currentTarget.style.background='var(--noir-2)';}}
+            >
+              {/* Rental banner */}
+              {vendor.isRental && (
+                <div style={{position:'absolute',top:0,left:0,right:0,height:'2px',background:'linear-gradient(90deg,transparent,rgba(155,143,212,0.7),transparent)'}}/>
+              )}
+
+              {/* Left: Brand */}
+              <div style={{minWidth:200,flex:'0 0 200px'}}>
+                <div style={{display:'inline-flex',alignItems:'center',gap:'0.4rem',padding:'2px 10px',background:vendor.isRental?'rgba(155,143,212,0.1)':'rgba(201,169,110,0.08)',border:`1px solid ${vendor.isRental?'rgba(155,143,212,0.3)':'rgba(201,169,110,0.25)'}`,marginBottom:'0.85rem'}}>
+                  <span style={{fontFamily:'var(--ff-body)',fontSize:'9px',letterSpacing:'2px',textTransform:'uppercase',color:vendor.tagColor}}>{vendor.tag}</span>
+                </div>
+                <div style={{fontFamily:'var(--ff-display)',fontSize:'1.5rem',fontWeight:300,color:'var(--white)',lineHeight:1.15,marginBottom:'0.35rem'}}>{vendor.name}</div>
+                <div style={{fontFamily:'var(--ff-body)',fontSize:'10px',color:'rgba(201,169,110,0.45)',letterSpacing:'1.5px',textTransform:'uppercase',marginBottom:'0.5rem'}}>{vendor.dest}</div>
+                <div style={{display:'inline-flex',alignItems:'center',gap:'0.3rem',padding:'3px 10px',background:'rgba(93,202,165,0.08)',border:`1px solid ${vendor.badgeColor}40`}}>
+                  <span style={{width:5,height:5,borderRadius:'50%',background:vendor.badgeColor,display:'inline-block',flexShrink:0}}/>
+                  <span style={{fontFamily:'var(--ff-body)',fontSize:'9px',letterSpacing:'2px',textTransform:'uppercase',color:vendor.badgeColor}}>{vendor.badge}</span>
+                </div>
+              </div>
+
+              {/* Middle: Description + Products */}
+              <div style={{flex:1,minWidth:220}}>
+                <div style={{fontFamily:'var(--ff-body)',fontSize:'13px',color:'rgba(245,237,216,0.55)',lineHeight:1.85,marginBottom:'1rem'}}>{vendor.desc}</div>
+                {vendor.isRental && (
+                  <div style={{background:'rgba(155,143,212,0.06)',border:'1px solid rgba(155,143,212,0.18)',padding:'0.65rem 1rem',marginBottom:'1rem'}}>
+                    <div style={{fontFamily:'var(--ff-body)',fontSize:'10px',letterSpacing:'2px',textTransform:'uppercase',color:'rgba(155,143,212,0.8)',marginBottom:'0.4rem'}}>✦ Rental program — Tampa Bay only</div>
+                    <div style={{fontFamily:'var(--ff-body)',fontSize:'12px',color:'rgba(155,143,212,0.55)',lineHeight:1.6}}>Rent for your stay, keep what you love. Curated by Selena, a Tampa-based artist.</div>
+                  </div>
+                )}
+                <div style={{display:'flex',gap:'0.4rem',flexWrap:'wrap'}}>
+                  {category.products.slice(0,4).map(p=>(
+                    <span key={p} style={{fontFamily:'var(--ff-body)',fontSize:'10px',color:'rgba(201,169,110,0.45)',border:'1px solid rgba(201,169,110,0.15)',padding:'2px 8px'}}>{p}</span>
+                  ))}
+                </div>
+              </div>
+
+              {/* Right: CTA */}
+              <div style={{display:'flex',flexDirection:'column',alignItems:'flex-end',justifyContent:'center',gap:'0.65rem',flexShrink:0}}>
+                <div style={{fontFamily:'var(--ff-body)',fontSize:'11px',letterSpacing:'2.5px',textTransform:'uppercase',color:vendor.isRental?'rgba(155,143,212,0.9)':'var(--gold)',border:`1px solid ${vendor.isRental?'rgba(155,143,212,0.35)':'var(--border-hi)'}`,padding:'0.75rem 1.4rem',display:'inline-flex',alignItems:'center',gap:'0.5rem',whiteSpace:'nowrap'}}>
+                  {vendor.isRental ? 'Request Edit →' : 'Shop Now →'}
+                </div>
+              </div>
+            </div>
+          ))}
+
+          {/* Future vendor slots */}
+          {[...Array(futureSlots)].map((_,i) => (
+            <div key={`future-${i}`}
+              onClick={()=>setPage('supplier')}
+              style={{background:'rgba(253,252,248,0.015)',padding:'1.75rem 2.5rem',cursor:'pointer',transition:'all 0.22s',display:'flex',alignItems:'center',gap:'1.5rem',border:'1px dashed rgba(253,252,248,0.08)',borderLeft:'none',borderRight:'none',borderTop:'none'}}
+              onMouseEnter={e=>e.currentTarget.style.background='rgba(253,252,248,0.03)'}
+              onMouseLeave={e=>e.currentTarget.style.background='rgba(253,252,248,0.015)'}>
+              <div style={{width:44,height:44,border:'1px dashed rgba(201,169,110,0.25)',display:'flex',alignItems:'center',justifyContent:'center',flexShrink:0}}>
+                <span style={{color:'rgba(201,169,110,0.35)',fontSize:'1.5rem',lineHeight:1}}>+</span>
+              </div>
+              <div style={{flex:1}}>
+                <div style={{fontFamily:'var(--ff-display)',fontSize:'1.1rem',fontWeight:300,color:'rgba(253,252,248,0.3)',marginBottom:'0.2rem'}}>Your Brand Here</div>
+                <div style={{fontFamily:'var(--ff-body)',fontSize:'11px',color:'rgba(253,252,248,0.2)',letterSpacing:'1px'}}>Become a BagFree vendor · Apply for vetting</div>
+              </div>
+              <div style={{fontFamily:'var(--ff-body)',fontSize:'10px',letterSpacing:'2px',textTransform:'uppercase',color:'rgba(201,169,110,0.3)',flexShrink:0}}>Apply →</div>
+            </div>
+          ))}
+        </div>
+
+        {/* Or browse all */}
+        <div style={{textAlign:'center',padding:'1.5rem 0',borderTop:'1px solid var(--border)'}}>
+          <span style={{fontFamily:'var(--ff-body)',fontSize:'11px',color:'rgba(253,252,248,0.3)',letterSpacing:'2px',textTransform:'uppercase',marginRight:'1rem'}}>or</span>
+          <span onClick={()=>setPage(isMens?'shop-mens':'shop-womens')}
+            style={{fontFamily:'var(--ff-body)',fontSize:'11px',letterSpacing:'2px',textTransform:'uppercase',color:'rgba(201,169,110,0.6)',cursor:'pointer',textDecoration:'underline',textDecorationColor:'rgba(201,169,110,0.25)'}}>
+            Browse all {genderLabel.toLowerCase()} products
+          </span>
         </div>
       </div>
     </div>
@@ -2297,6 +2561,19 @@ function App() {
       <Nav page={page} setPage={navigate}/>
       {page==='home' && <Home setPage={navigate}/>}
       {page==='shop' && <ShopLanding setPage={navigate}/>}
+      {page==='cat-mens' && <CategorySelectPage gender="mens" setPage={navigate}/>}
+      {page==='cat-womens' && <CategorySelectPage gender="womens" setPage={navigate}/>}
+      {/* Vendor select pages — mens */}
+      {page==='vendors-mens-kits' && <VendorSelectPage gender="mens" categoryId="kits" setPage={navigate}/>}
+      {page==='vendors-mens-shirts' && <VendorSelectPage gender="mens" categoryId="shirts" setPage={navigate}/>}
+      {page==='vendors-mens-bottoms' && <VendorSelectPage gender="mens" categoryId="bottoms" setPage={navigate}/>}
+      {page==='vendors-mens-essentials' && <VendorSelectPage gender="mens" categoryId="essentials" setPage={navigate}/>}
+      {/* Vendor select pages — womens */}
+      {page==='vendors-womens-kits' && <VendorSelectPage gender="womens" categoryId="kits" setPage={navigate}/>}
+      {page==='vendors-womens-tops' && <VendorSelectPage gender="womens" categoryId="tops" setPage={navigate}/>}
+      {page==='vendors-womens-bottoms' && <VendorSelectPage gender="womens" categoryId="bottoms" setPage={navigate}/>}
+      {page==='vendors-womens-essentials' && <VendorSelectPage gender="womens" categoryId="essentials" setPage={navigate}/>}
+      {page==='vendors-womens-rental' && <VendorSelectPage gender="womens" categoryId="rental" setPage={navigate}/>}
       {page==='shop-mens' && <ShopPage title="Men's" subtitle="Men's Collection" gender="mens" products={PRODUCTS} setPage={navigate}/>}
       {page==='shop-womens' && <ShopPage title="Women's" subtitle="Women's Collection" gender="womens" products={PRODUCTS} setPage={navigate}/>}
       {page==='vendors' && <VendorMarketplace setPage={navigate} setActiveVendor={setActiveVendor}/>}
