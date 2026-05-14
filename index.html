@@ -2393,43 +2393,68 @@ function ShopLanding({setPage}) {
         </div>
         <h1 style={{fontSize:'clamp(2.4rem,5vw,3.5rem)',fontWeight:300,color:'var(--white)',textAlign:'center',letterSpacing:'-0.5px',marginBottom:'0.6rem',lineHeight:1.1}}>Shop BagFree</h1>
         <p style={{fontFamily:'var(--ff-body)',fontSize:'13px',color:'rgba(245,237,216,0.4)',textAlign:'center',letterSpacing:'1px',marginBottom:'0.5rem',fontWeight:300}}>Delivered to your hotel before you arrive</p>
-        <p style={{fontFamily:'var(--ff-body)',fontSize:'11px',color:'rgba(var(--gold-rgb),0.4)',textAlign:'center',letterSpacing:'2px',textTransform:'uppercase',marginBottom:'3.5rem'}}>Choose a category → Compare vendors → Shop</p>
+        <p style={{fontFamily:'var(--ff-body)',fontSize:'11px',color:'rgba(var(--gold-rgb),0.4)',textAlign:'center',letterSpacing:'2px',textTransform:'uppercase',marginBottom:'3.5rem'}}>Choose a vendor → Reserve your arrival</p>
 
-        <div style={{display:'grid',gridTemplateColumns:'repeat(auto-fit,minmax(340px,1fr))',gap:'2rem',maxWidth:900,margin:'0 auto 3rem'}}>
-          {/* Men's Card */}
+        <div style={{display:'grid',gridTemplateColumns:'repeat(auto-fit,minmax(280px,1fr))',gap:'1.5rem',maxWidth:1100,margin:'0 auto 3rem'}}>
+          {/* Valet By Nuor — LIVE */}
           <div style={{display:'flex',flexDirection:'column',height:'100%'}}>
-            <img src="https://raw.githubusercontent.com/ceebee718/bagfree-app/main/images/mens-hero.png" alt="Men's collection" style={{width:'100%',height:320,objectFit:'cover',objectPosition:'center top'}}/>
-            <a href="/departure-lounge-landing.html?gender=mens" onClick={e=>{e.preventDefault();window.location.href='/departure-lounge-landing.html?gender=mens';}}
-              style={{background:'var(--noir-2)',padding:'2.5rem 2rem',textDecoration:'none',display:'flex',flexDirection:'column',alignItems:'flex-start',border:'1px solid rgba(var(--gold-rgb),0.15)',borderTop:'none',cursor:'pointer',transition:'background 0.25s',flex:1}}
+            <img src="https://raw.githubusercontent.com/ceebee718/bagfree-app/main/images/mens-hero.png" alt="Valet By Nuor" style={{width:'100%',height:280,objectFit:'cover',objectPosition:'center top'}}/>
+            <a href="/departure-lounge-landing.html?vendor=valet" onClick={e=>{e.preventDefault();window.location.href='/departure-lounge-landing.html?vendor=valet';}}
+              style={{background:'var(--noir-2)',padding:'2rem 1.75rem',textDecoration:'none',display:'flex',flexDirection:'column',alignItems:'flex-start',border:'1px solid rgba(var(--gold-rgb),0.15)',borderTop:'none',cursor:'pointer',transition:'background 0.25s',flex:1}}
               onMouseEnter={e=>e.currentTarget.style.background='var(--noir-3)'}
               onMouseLeave={e=>e.currentTarget.style.background='var(--noir-2)'}>
-              <div style={{fontFamily:'var(--ff-body)',fontSize:'10px',letterSpacing:'3px',color:'rgba(var(--gold-rgb),0.55)',textTransform:'uppercase',marginBottom:'1rem',display:'flex',alignItems:'center',gap:8}}>
-                <span style={{width:16,height:1,background:'rgba(var(--gold-rgb),0.35)',display:'inline-block'}}/>For him
+              <div style={{fontFamily:'var(--ff-body)',fontSize:'10px',letterSpacing:'3px',color:'rgba(var(--gold-rgb),0.55)',textTransform:'uppercase',marginBottom:'0.9rem',display:'flex',alignItems:'center',gap:8}}>
+                <span style={{width:16,height:1,background:'rgba(var(--gold-rgb),0.35)',display:'inline-block'}}/>Founding supplier
               </div>
-              <div style={{fontSize:'2rem',fontWeight:300,color:'var(--white)',marginBottom:'0.75rem',lineHeight:1.1}}>Men&apos;s</div>
-              <div style={{fontFamily:'var(--ff-body)',fontSize:'13px',color:'rgba(245,237,216,0.45)',lineHeight:1.8,marginBottom:'1.5rem',fontWeight:300,flex:1}}>Everything from a full 7-day wardrobe to individual essentials. Dress shirts, casual wear, grooming kits, and more.</div>
-              <div style={{fontFamily:'var(--ff-body)',fontSize:'11px',letterSpacing:'2.5px',textTransform:'uppercase',color:'var(--gold)',border:'1px solid rgba(var(--gold-rgb),0.3)',padding:'0.65rem 1.5rem',display:'inline-flex',alignItems:'center',gap:8}}>Shop men&apos;s →</div>
+              <div style={{fontFamily:'var(--ff-display)',fontSize:'1.8rem',fontWeight:300,color:'var(--white)',marginBottom:'0.6rem',lineHeight:1.1,letterSpacing:'-0.3px'}}>Valet By Nuor</div>
+              <div style={{fontFamily:'var(--ff-body)',fontSize:'13px',color:'rgba(245,237,216,0.5)',lineHeight:1.7,marginBottom:'1.25rem',fontWeight:300,flex:1}}>Curated travel kits, emergency wardrobe bundles, wellness pouches. Same-day delivery to your hotel.</div>
+              <div style={{fontFamily:'var(--ff-body)',fontSize:'11px',letterSpacing:'2.5px',textTransform:'uppercase',color:'var(--gold)',border:'1px solid rgba(var(--gold-rgb),0.4)',padding:'0.65rem 1.3rem',display:'inline-flex',alignItems:'center',gap:8,background:'rgba(var(--gold-rgb),0.05)'}}>Shop Valet By Nuor →</div>
             </a>
           </div>
-          {/* Women's Card */}
-          <div style={{display:'flex',flexDirection:'column',height:'100%'}}>
-            <img src="https://raw.githubusercontent.com/ceebee718/bagfree-app/main/images/womens-hero.png" alt="Women's collection" style={{width:'100%',height:320,objectFit:'cover',objectPosition:'center top'}}/>
-            <a href="/departure-lounge-landing.html?gender=womens" onClick={e=>{e.preventDefault();window.location.href='/departure-lounge-landing.html?gender=womens';}}
-              style={{background:'var(--gold)',padding:'2.5rem 2rem',textDecoration:'none',display:'flex',flexDirection:'column',alignItems:'flex-start',border:'1px solid rgba(var(--gold-rgb),0.3)',borderTop:'none',cursor:'pointer',transition:'background 0.25s',flex:1}}
-              onMouseEnter={e=>e.currentTarget.style.background='#DDD3B8'}
-              onMouseLeave={e=>e.currentTarget.style.background='var(--gold)'}>
-              <div style={{fontFamily:'var(--ff-body)',fontSize:'10px',letterSpacing:'3px',color:'rgba(var(--bg-rgb),0.55)',textTransform:'uppercase',marginBottom:'1rem',display:'flex',alignItems:'center',gap:8}}>
-                <span style={{width:16,height:1,background:'rgba(var(--bg-rgb),0.35)',display:'inline-block'}}/>For her
+
+          {/* SNUGL — COMING SOON */}
+          <div style={{display:'flex',flexDirection:'column',height:'100%',position:'relative'}}>
+            <div style={{width:'100%',height:280,background:'linear-gradient(135deg,#1A2540 0%,#0D1525 100%)',display:'flex',alignItems:'center',justifyContent:'center',position:'relative',overflow:'hidden'}}>
+              <div style={{position:'absolute',inset:0,background:'radial-gradient(circle at 30% 30%, rgba(var(--gold-rgb),0.18), transparent 60%)',pointerEvents:'none'}}/>
+              <div style={{fontFamily:'var(--ff-display)',fontSize:'3rem',color:'rgba(var(--gold-rgb),0.45)',letterSpacing:'-1px',fontStyle:'italic',position:'relative',zIndex:1}}>SNUGL</div>
+              <div style={{position:'absolute',top:'14px',right:'14px',background:'rgba(var(--gold-rgb),0.9)',color:'var(--noir)',fontSize:'9px',letterSpacing:'2.5px',textTransform:'uppercase',padding:'4px 9px',fontWeight:600}}>Coming Soon</div>
+            </div>
+            <a href="/departure-lounge-landing.html?vendor=snugl" onClick={e=>{e.preventDefault();window.location.href='/departure-lounge-landing.html?vendor=snugl';}}
+              style={{background:'var(--noir-2)',padding:'2rem 1.75rem',textDecoration:'none',display:'flex',flexDirection:'column',alignItems:'flex-start',border:'1px solid rgba(var(--gold-rgb),0.15)',borderTop:'none',cursor:'pointer',transition:'background 0.25s',flex:1,opacity:0.92}}
+              onMouseEnter={e=>{e.currentTarget.style.background='var(--noir-3)';e.currentTarget.style.opacity='1';}}
+              onMouseLeave={e=>{e.currentTarget.style.background='var(--noir-2)';e.currentTarget.style.opacity='0.92';}}>
+              <div style={{fontFamily:'var(--ff-body)',fontSize:'10px',letterSpacing:'3px',color:'rgba(var(--gold-rgb),0.55)',textTransform:'uppercase',marginBottom:'0.9rem',display:'flex',alignItems:'center',gap:8}}>
+                <span style={{width:16,height:1,background:'rgba(var(--gold-rgb),0.35)',display:'inline-block'}}/>Travel comfort
               </div>
-              <div style={{fontSize:'2rem',fontWeight:300,color:'var(--noir)',marginBottom:'0.75rem',lineHeight:1.1}}>Women&apos;s</div>
-              <div style={{fontFamily:'var(--ff-body)',fontSize:'13px',color:'rgba(var(--bg-rgb),0.6)',lineHeight:1.8,marginBottom:'1.5rem',fontWeight:300,flex:1}}>Curated pieces for every occasion. From resort wear and dresses to essentials and the exclusive Nuor Edit rental collection.</div>
-              <div style={{fontFamily:'var(--ff-body)',fontSize:'11px',letterSpacing:'2.5px',textTransform:'uppercase',color:'var(--noir)',border:'1px solid rgba(var(--bg-rgb),0.35)',padding:'0.65rem 1.5rem',display:'inline-flex',alignItems:'center',gap:8}}>Shop women&apos;s →</div>
+              <div style={{fontFamily:'var(--ff-display)',fontSize:'1.8rem',fontWeight:300,color:'var(--white)',marginBottom:'0.6rem',lineHeight:1.1,letterSpacing:'-0.3px'}}>SNUGL</div>
+              <div style={{fontFamily:'var(--ff-body)',fontSize:'13px',color:'rgba(245,237,216,0.5)',lineHeight:1.7,marginBottom:'1.25rem',fontWeight:300,flex:1}}>Premium memory-foam pillows, pods, and travel comfort essentials. Launching soon.</div>
+              <div style={{fontFamily:'var(--ff-body)',fontSize:'11px',letterSpacing:'2.5px',textTransform:'uppercase',color:'rgba(245,237,216,0.55)',border:'1px solid rgba(var(--gold-rgb),0.25)',padding:'0.65rem 1.3rem',display:'inline-flex',alignItems:'center',gap:8}}>Notify me →</div>
+            </a>
+          </div>
+
+          {/* The Nuor Edit — COMING SOON */}
+          <div style={{display:'flex',flexDirection:'column',height:'100%',position:'relative'}}>
+            <div style={{width:'100%',height:280,background:'linear-gradient(135deg,#C9A96E 0%,#8A6F45 100%)',display:'flex',alignItems:'center',justifyContent:'center',position:'relative',overflow:'hidden'}}>
+              <div style={{position:'absolute',inset:0,background:'radial-gradient(circle at 70% 30%, rgba(255,255,255,0.18), transparent 60%)',pointerEvents:'none'}}/>
+              <div style={{fontFamily:'var(--ff-display)',fontSize:'2.2rem',color:'rgba(13,21,37,0.85)',letterSpacing:'-0.5px',fontStyle:'italic',position:'relative',zIndex:1,textAlign:'center',lineHeight:1.1}}>The Nuor<br/>Edit</div>
+              <div style={{position:'absolute',top:'14px',right:'14px',background:'var(--noir)',color:'var(--gold)',fontSize:'9px',letterSpacing:'2.5px',textTransform:'uppercase',padding:'4px 9px',fontWeight:600,border:'1px solid rgba(var(--gold-rgb),0.6)'}}>Coming Soon</div>
+            </div>
+            <a href="/departure-lounge-landing.html?vendor=nuor-edit" onClick={e=>{e.preventDefault();window.location.href='/departure-lounge-landing.html?vendor=nuor-edit';}}
+              style={{background:'var(--noir-2)',padding:'2rem 1.75rem',textDecoration:'none',display:'flex',flexDirection:'column',alignItems:'flex-start',border:'1px solid rgba(var(--gold-rgb),0.15)',borderTop:'none',cursor:'pointer',transition:'background 0.25s',flex:1,opacity:0.92}}
+              onMouseEnter={e=>{e.currentTarget.style.background='var(--noir-3)';e.currentTarget.style.opacity='1';}}
+              onMouseLeave={e=>{e.currentTarget.style.background='var(--noir-2)';e.currentTarget.style.opacity='0.92';}}>
+              <div style={{fontFamily:'var(--ff-body)',fontSize:'10px',letterSpacing:'3px',color:'rgba(var(--gold-rgb),0.55)',textTransform:'uppercase',marginBottom:'0.9rem',display:'flex',alignItems:'center',gap:8}}>
+                <span style={{width:16,height:1,background:'rgba(var(--gold-rgb),0.35)',display:'inline-block'}}/>Rental wardrobe
+              </div>
+              <div style={{fontFamily:'var(--ff-display)',fontSize:'1.8rem',fontWeight:300,color:'var(--white)',marginBottom:'0.6rem',lineHeight:1.1,letterSpacing:'-0.3px'}}>The Nuor Edit</div>
+              <div style={{fontFamily:'var(--ff-body)',fontSize:'13px',color:'rgba(245,237,216,0.5)',lineHeight:1.7,marginBottom:'1.25rem',fontWeight:300,flex:1}}>Curated rental wardrobe. Wear, drop at hotel laundry, we collect and refresh. Launching soon.</div>
+              <div style={{fontFamily:'var(--ff-body)',fontSize:'11px',letterSpacing:'2.5px',textTransform:'uppercase',color:'rgba(245,237,216,0.55)',border:'1px solid rgba(var(--gold-rgb),0.25)',padding:'0.65rem 1.3rem',display:'inline-flex',alignItems:'center',gap:8}}>Notify me →</div>
             </a>
           </div>
         </div>
 
         <div style={{fontFamily:'var(--ff-body)',fontSize:'11px',color:'rgba(245,237,216,0.2)',textAlign:'center',letterSpacing:'2px',textTransform:'uppercase'}}>
-          Same-day delivery <span style={{color:'rgba(var(--gold-rgb),0.3)',margin:'0 8px'}}>·</span> Savannah <span style={{color:'rgba(var(--gold-rgb),0.3)',margin:'0 8px'}}>·</span> Atlanta <span style={{color:'rgba(var(--gold-rgb),0.3)',margin:'0 8px'}}>·</span> Tampa <span style={{color:'rgba(var(--gold-rgb),0.3)',margin:'0 8px'}}>·</span> Orlando
+          Same-day delivery <span style={{color:'rgba(var(--gold-rgb),0.3)',margin:'0 8px'}}>·</span> Savannah <span style={{color:'rgba(var(--gold-rgb),0.3)',margin:'0 8px'}}>·</span> Atlanta <span style={{color:'rgba(var(--gold-rgb),0.3)',margin:'0 8px'}}>·</span> Tampa <span style={{color:'rgba(var(--gold-rgb),0.3)',margin:'0 8px'}}>·</span> Orlando <span style={{color:'rgba(var(--gold-rgb),0.3)',margin:'0 8px'}}>·</span> Next-day Miami
         </div>
       </div>
     </div>
