@@ -1044,15 +1044,24 @@ function updateDates() {
 function pickStyle(style) {
   state.style = style;
   state.kit = buildKit(style, state.gender);
+  // Sync the kit gender toggle to reflect state.gender (matters for URL-param entries)
+  syncGenderToggle();
   renderKit();
   renderReserveSummary();
   goToStep(4);
 }
 
+function syncGenderToggle() {
+  var order = {mens: 0, womens: 1, both: 2};
+  var btns = document.querySelectorAll('.kit-gender-btn');
+  btns.forEach(function(b, i) {
+    b.classList.toggle('active', i === order[state.gender]);
+  });
+}
+
 function setGender(g) {
   state.gender = g;
-  document.querySelectorAll('.kit-gender-btn').forEach(b => b.classList.remove('active'));
-  event.target.classList.add('active');
+  syncGenderToggle();
   state.kit = buildKit(state.style, g);
   renderKit();
 }
@@ -1251,6 +1260,28 @@ syncThemeIcon();
 
 // Initial progress hide on step 0
 updateProgress(0);
+
+// ───────────────────────────────────────────────────────────────────────────
+// URL PARAM: ?gender=mens|womens → pre-set kit gender and skip hero
+// (used when entry comes from the home page Shop Men's / Shop Women's CTAs)
+// ───────────────────────────────────────────────────────────────────────────
+(function handleEntryParams(){
+  try {
+    var params = new URLSearchParams(window.location.search);
+    var g = params.get('gender');
+    if (g === 'mens' || g === 'womens') {
+      state.gender = g;
+      // Subtly tailor the step 1 copy so the user feels acknowledged
+      var sub = document.querySelector('#step1 .step-sub');
+      if (sub) {
+        sub.innerHTML = (g === 'mens' ? "We'll curate <em style=\"color:var(--gold);font-style:normal\">men's</em> essentials for your trip." : "We'll curate <em style=\"color:var(--gold);font-style:normal\">women's</em> essentials for your trip.")
+          + ' Same-day delivery in Tampa &amp; Orlando.';
+      }
+      // Skip the hero and drop them directly at step 1 (city pick)
+      goToStep(1);
+    }
+  } catch(e) {}
+})();
 </script>
 
 </body>
