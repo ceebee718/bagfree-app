@@ -144,7 +144,69 @@ input,select,textarea{outline:none}
 .bundle-filter-btn.active{background:var(--gold);color:var(--noir);font-weight:500;}
 .bundle-filter-btn:hover:not(.active){color:var(--gold)}
 
-.bundle-grid{display:grid;grid-template-columns:repeat(auto-fill,minmax(260px,1fr));gap:1.25rem;width:100%;margin-bottom:7rem;}
+.bundle-grid{display:grid;grid-template-columns:1fr;gap:2rem;width:100%;margin-bottom:7rem;}
+.bundle-grid-inner{display:grid;grid-template-columns:repeat(auto-fill,minmax(260px,1fr));gap:1.25rem;}
+
+/* Vendor section header (visible in "All" view) */
+.vendor-section-header{
+  padding:0 0 1rem;
+  border-bottom:1px solid rgba(var(--gold-rgb),0.12);
+  margin-bottom:1.5rem;
+}
+.vendor-section-name{
+  font-family:var(--ff-display);
+  font-size:1.85rem;font-weight:400;letter-spacing:-0.5px;
+  color:var(--white);
+  display:flex;align-items:center;gap:0.9rem;flex-wrap:wrap;
+}
+.vendor-section-name .cs-pill{
+  font-family:var(--ff-body);
+  font-size:0.6rem;letter-spacing:2.5px;text-transform:uppercase;
+  padding:4px 11px;
+  background:rgba(var(--gold-rgb),0.15);
+  border:1px solid rgba(var(--gold-rgb),0.4);
+  color:var(--gold);
+  font-weight:500;letter-spacing:2.5px;
+}
+.vendor-section-tagline{
+  font-size:0.88rem;color:rgba(var(--text-rgb),0.55);
+  margin-top:0.4rem;line-height:1.6;max-width:560px;
+}
+
+/* Coming Soon vendor card */
+.vendor-coming-soon-card{
+  grid-column:1 / -1;
+  padding:3rem 2rem;
+  background:linear-gradient(135deg, rgba(var(--gold-rgb),0.06), rgba(var(--gold-rgb),0.01));
+  border:1px dashed rgba(var(--gold-rgb),0.35);
+  text-align:center;
+  display:flex;flex-direction:column;align-items:center;gap:1.2rem;
+}
+.vendor-coming-soon-card .cs-icon{
+  font-size:2rem;color:var(--gold);
+  animation:pulse 2.5s ease-in-out infinite;
+}
+.vendor-coming-soon-card .cs-headline{
+  font-family:var(--ff-display);
+  font-size:1.35rem;font-weight:300;
+  color:var(--white);line-height:1.45;letter-spacing:-0.2px;
+  max-width:560px;
+}
+.vendor-coming-soon-card .cs-cta{
+  background:rgba(var(--gold-rgb),0.06);
+  border:1px solid var(--gold);
+  color:var(--gold);
+  padding:0.9rem 2rem;
+  font-size:0.72rem;letter-spacing:3px;text-transform:uppercase;
+  font-family:var(--ff-body);font-weight:500;
+  transition:all 0.3s cubic-bezier(.4,0,.2,1);
+}
+.vendor-coming-soon-card .cs-cta:hover{
+  background:var(--gold);color:var(--noir);transform:translateY(-2px);
+  box-shadow:0 8px 22px rgba(var(--gold-rgb),0.32);
+  letter-spacing:4px;
+}
+
 .bundle-card{background:rgba(var(--gold-rgb),0.03);border:1px solid rgba(var(--gold-rgb),0.18);overflow:hidden;display:flex;flex-direction:column;transition:all 0.3s cubic-bezier(.4,0,.2,1);position:relative;}
 .bundle-card:hover{border-color:rgba(var(--gold-rgb),0.5);background:rgba(var(--gold-rgb),0.06);transform:translateY(-4px);box-shadow:0 18px 40px rgba(0,0,0,0.18);}
 .bundle-card.selected{border-color:var(--gold);background:rgba(var(--gold-rgb),0.12);box-shadow:0 0 0 1px var(--gold), 0 16px 38px rgba(var(--gold-rgb),0.22);}
@@ -501,10 +563,10 @@ input,select,textarea{outline:none}
     <p class="step-sub">Each bundle is curated by Valet By Nuor. Add one for yourself, or multiple for everyone traveling. You can adjust quantities below.</p>
 
     <div class="bundle-filter" id="bundleFilter">
-      <button class="bundle-filter-btn active" data-filter="all" onclick="setBundleFilter('all', this)">All</button>
-      <button class="bundle-filter-btn" data-filter="mens" onclick="setBundleFilter('mens', this)">Men's</button>
-      <button class="bundle-filter-btn" data-filter="womens" onclick="setBundleFilter('womens', this)">Women's</button>
-      <button class="bundle-filter-btn" data-filter="wellness" onclick="setBundleFilter('wellness', this)">Wellness</button>
+      <button class="bundle-filter-btn active" data-filter="all" onclick="setBundleFilter('all', this)">All Vendors</button>
+      <button class="bundle-filter-btn" data-filter="valet" onclick="setBundleFilter('valet', this)">Valet By Nuor</button>
+      <button class="bundle-filter-btn" data-filter="snugl" onclick="setBundleFilter('snugl', this)">SNUGL</button>
+      <button class="bundle-filter-btn" data-filter="nuor-edit" onclick="setBundleFilter('nuor-edit', this)">The Nuor Edit</button>
     </div>
 
     <div class="bundle-grid" id="bundleGrid"></div>
@@ -655,14 +717,42 @@ const HOTELS = {
   Atlanta: ['The St. Regis Atlanta','Four Seasons Hotel Atlanta','The Ritz-Carlton, Atlanta','Mandarin Oriental, Atlanta','The Whitley · Buckhead','W Atlanta · Buckhead','The Westin Peachtree Plaza','Loews Atlanta Hotel','Thompson Atlanta · Buckhead','The Ellis Hotel · Autograph Collection']
 };
 
-// ─── BUNDLES (real data from valetbynuor.com) ───
-// To update inventory: change the `units` value on any bundle. 0 = sold out.
-const BUNDLES = [
+// ─── VENDORS ─── (metadata used by tabs + section headers)
+// To add a new vendor: add an entry here, then add bundles with vendor: '<id>'.
+const VENDORS = [
   {
-    "id": "mens-7day",
+    id: 'valet',
+    name: 'Valet By Nuor',
+    tagline: 'The founding supplier — curated kits, essentials, and wardrobe bundles.',
+    bookable: true
+  },
+  {
+    id: 'snugl',
+    name: 'SNUGL',
+    tagline: 'Travel comfort: memory-foam pillows, pods, and travel comfort essentials.',
+    bookable: false,
+    coming_soon: true,
+    coming_soon_blurb: "SNUGL's full collection arrives soon. Join the early-access list and we'll email you the moment it goes live."
+  },
+  {
+    id: 'nuor-edit',
+    name: 'The Nuor Edit',
+    tagline: 'Curated rental wardrobe by Selena. Wear, return to hotel laundry, we collect.',
+    bookable: false,
+    coming_soon: true,
+    coming_soon_blurb: "Selena's edit launches soon. We'll email you when it goes live so you can be among the first to rent."
+  }
+];
+
+// ─── BUNDLES ─── (real data from valetbynuor.com + SNUGL placeholders)
+// Inventory: change `units`. 0 = sold out (shows Notify Me modal).
+const BUNDLES = [
+  // ── VALET BY NUOR ──
+  {
+    "id": "mens-7day", "vendor": "valet",
     "title": "Men's 7-Day Travel Essentials",
     "category": "mens",
-    "tagline": "A clean, comfortable wardrobe waiting \u2014 curated for warm climates and active days. Essential apparel and hygiene items, delivered to your hotel.",
+    "tagline": "A clean, comfortable wardrobe waiting — curated for warm climates and active days. Essential apparel and hygiene items.",
     "price": 149.0,
     "image": "https://valetbynuor.com/cdn/shop/files/ChatGPTImageJan11_2026_02_58_17PM.png?v=1768161528&width=800",
     "units": 12,
@@ -670,7 +760,7 @@ const BUNDLES = [
     "badge": "Bestseller"
   },
   {
-    "id": "mens-basic",
+    "id": "mens-basic", "vendor": "valet",
     "title": "Men's Basic Emergency Travel Kit",
     "category": "mens",
     "tagline": "T-shirt, underwear, socks. Soft, breathable cotton. The essentials for stress-free packing.",
@@ -680,7 +770,7 @@ const BUNDLES = [
     "url": "https://valetbynuor.com/products/mens-basic-travel-set"
   },
   {
-    "id": "mens-business",
+    "id": "mens-business", "vendor": "valet",
     "title": "Men's Business Emergency Travel Kit",
     "category": "mens",
     "tagline": "Crisp dress shirt, two undershirts, dress socks. For unexpected meetings or travel delays.",
@@ -690,10 +780,10 @@ const BUNDLES = [
     "url": "https://valetbynuor.com/products/mens-business-emergency-travel-kit"
   },
   {
-    "id": "womens-7day",
+    "id": "womens-7day", "vendor": "valet",
     "title": "Women's 7-Day Essentials Bundle",
     "category": "womens",
-    "tagline": "A clean, comfortable wardrobe waiting \u2014 curated for warm climates and active days. Essential apparel and hygiene items, delivered to your hotel.",
+    "tagline": "A clean, comfortable wardrobe waiting — curated for warm climates and active days. Essential apparel and hygiene items.",
     "price": 149.0,
     "image": "https://valetbynuor.com/cdn/shop/files/ChatGPTImageJan11_2026_02_55_15PM.png?v=1768161350&width=800",
     "units": 10,
@@ -701,7 +791,7 @@ const BUNDLES = [
     "badge": "Bestseller"
   },
   {
-    "id": "womens-beach",
+    "id": "womens-beach", "vendor": "valet",
     "title": "Women's Beach Lounge Set",
     "category": "womens",
     "tagline": "Resort-ready essentials. Curated for warm-weather days at the pool, beach, or hotel terrace.",
@@ -711,7 +801,7 @@ const BUNDLES = [
     "url": "https://valetbynuor.com/products/womens-beach-lounge-set"
   },
   {
-    "id": "womens-business",
+    "id": "womens-business", "vendor": "valet",
     "title": "Women's Business Emergency Travel Kit",
     "category": "womens",
     "tagline": "Crisp dress shirt, two undershirts, socks. Stay polished and prepared during business trips.",
@@ -721,7 +811,7 @@ const BUNDLES = [
     "url": "https://valetbynuor.com/products/womens-business-emergency-travel-kit"
   },
   {
-    "id": "womens-sleepwear",
+    "id": "womens-sleepwear", "vendor": "valet",
     "title": "Women's Sleepwear",
     "category": "womens",
     "tagline": "Calming, comfortable sleepwear for hotel nights, time-zone shifts, and quiet evenings.",
@@ -731,7 +821,7 @@ const BUNDLES = [
     "url": "https://valetbynuor.com/products/womens-leisure-set-1"
   },
   {
-    "id": "womens-toiletry",
+    "id": "womens-toiletry", "vendor": "valet",
     "title": "Women's Toiletry Stay Fresh Kit",
     "category": "womens",
     "tagline": "Body wash, lotion, deodorant, toothpaste, travel wipes. Refresh moments wherever you go.",
@@ -741,17 +831,17 @@ const BUNDLES = [
     "url": "https://valetbynuor.com/products/women-s-toiletry-stay-fresh-kit"
   },
   {
-    "id": "energy-focus",
+    "id": "energy-focus", "vendor": "valet",
     "title": "Energy & Focus Travel Kit",
     "category": "wellness",
-    "tagline": "B Vitamins, Ginkgo Biloba & Rhodiola, Cistanche, electrolytes. Steady energy and clarity for long travel days.",
+    "tagline": "B Vitamins, Ginkgo Biloba & Rhodiola, Cistanche, electrolytes. Steady energy for long travel days.",
     "price": 39.0,
     "image": "https://valetbynuor.com/cdn/shop/files/ChatGPTImageMar16_2026_09_02_10PM.png?v=1773709352&width=800",
     "units": 3,
     "url": "https://valetbynuor.com/products/energy-focus-travel-kit"
   },
   {
-    "id": "sleep-recovery",
+    "id": "sleep-recovery", "vendor": "valet",
     "title": "Sleep & Recovery Travel Kit",
     "category": "wellness",
     "tagline": "Ashwagandha, chamomile tea, sleep mask, aromatherapy balm. A calming nighttime routine anywhere.",
@@ -759,7 +849,11 @@ const BUNDLES = [
     "image": "https://valetbynuor.com/cdn/shop/files/ChatGPTImageMar16_2026_08_56_10PM.png?v=1773708994&width=800",
     "units": 7,
     "url": "https://valetbynuor.com/products/sleep-recovery-travel-kit"
-  }
+  },
+  // ── SNUGL and The Nuor Edit are marked coming_soon in VENDORS above —
+  //    they render via renderComingSoonVendor() without needing bundle entries here.
+  //    When real product data is ready, add bundles with vendor:'snugl' or vendor:'nuor-edit'
+  //    AND flip the vendor's coming_soon flag to false (bookable:true).
 ];
 
 // ─── NAVIGATION ───
@@ -824,44 +918,89 @@ function setBundleFilter(filter, btn) {
 
 function renderBundles() {
   const grid = document.getElementById('bundleGrid');
-  const filtered = BUNDLES.filter(b => state.filter === 'all' || b.category === state.filter);
-  grid.innerHTML = filtered.map(b => {
-    const qty = state.selectedBundles[b.id] || 0;
-    const isSelected = qty > 0;
-    const unavailable = (b.units || 0) <= 0;
-    const lowStock = !unavailable && b.units <= 5;
-    const cardClass = ['bundle-card'];
-    if (isSelected) cardClass.push('selected');
-    if (unavailable) cardClass.push('unavailable');
-    return `
-      <div class="${cardClass.join(' ')}" data-bundle-id="${b.id}">
-        <div class="bundle-img-wrap">
-          <img class="bundle-img" src="${b.image}" alt="${b.title}" loading="lazy">
-          ${b.badge ? `<div class="bundle-badge">${b.badge}</div>` : ''}
-          ${lowStock ? `<div class="bundle-stock-badge">Only ${b.units} left</div>` : ''}
-          ${unavailable ? `<div class="bundle-sold-out-overlay"><div class="bundle-sold-out-tag">Sold out</div></div>` : ''}
-          <div class="bundle-selected-check">✓</div>
-        </div>
-        <div class="bundle-body">
-          <div class="bundle-title">${b.title}</div>
-          <div class="bundle-tagline">${b.tagline}</div>
-          <div class="bundle-bottom">
-            <div class="bundle-price">$${b.price % 1 === 0 ? b.price : b.price.toFixed(2)}</div>
-            ${unavailable
-              ? `<button class="bundle-action notify-me" onclick="openNotifyModal('${b.id}')">Notify me</button>`
-              : isSelected
-                ? `<div class="bundle-qty">
-                    <button class="bundle-qty-btn" onclick="changeBundleQty('${b.id}', -1)" aria-label="Decrease">−</button>
-                    <span class="bundle-qty-val">${qty}</span>
-                    <button class="bundle-qty-btn" onclick="changeBundleQty('${b.id}', 1)" aria-label="Increase" ${qty >= b.units ? 'disabled' : ''}>+</button>
-                  </div>`
-                : `<button class="bundle-action" onclick="addBundle('${b.id}')">+ Add</button>`
-            }
-          </div>
+  // Decide which vendors to show
+  const vendorIds = state.filter === 'all'
+    ? VENDORS.map(v => v.id)
+    : [state.filter];
+
+  const sections = vendorIds.map(vid => {
+    const vendor = VENDORS.find(v => v.id === vid);
+    if (!vendor) return '';
+
+    // Coming-soon vendor (Nuor Edit) → render special card
+    if (vendor.coming_soon) {
+      return renderComingSoonVendor(vendor);
+    }
+
+    const vendorBundles = BUNDLES.filter(b => b.vendor === vid);
+    if (vendorBundles.length === 0) return '';
+
+    const header = (state.filter === 'all')
+      ? `<div class="vendor-section-header">
+           <div class="vendor-section-name">${vendor.name}</div>
+           <div class="vendor-section-tagline">${vendor.tagline}</div>
+         </div>`
+      : '';
+
+    const cards = vendorBundles.map(b => renderBundleCard(b)).join('');
+    return header + `<div class="bundle-grid-inner">${cards}</div>`;
+  }).join('');
+
+  grid.innerHTML = sections || '<div style="text-align:center;padding:3rem;color:rgba(var(--text-rgb),0.5)">No bundles in this view.</div>';
+}
+
+function renderBundleCard(b) {
+  const qty = state.selectedBundles[b.id] || 0;
+  const isSelected = qty > 0;
+  const unavailable = (b.units || 0) <= 0;
+  const lowStock = !unavailable && b.units <= 5;
+  const cardClass = ['bundle-card'];
+  if (isSelected) cardClass.push('selected');
+  if (unavailable) cardClass.push('unavailable');
+  return `
+    <div class="${cardClass.join(' ')}" data-bundle-id="${b.id}">
+      <div class="bundle-img-wrap">
+        <img class="bundle-img" src="${b.image}" alt="${b.title}" loading="lazy">
+        ${b.badge ? `<div class="bundle-badge">${b.badge}</div>` : ''}
+        ${lowStock ? `<div class="bundle-stock-badge">Only ${b.units} left</div>` : ''}
+        ${unavailable ? `<div class="bundle-sold-out-overlay"><div class="bundle-sold-out-tag">Sold out</div></div>` : ''}
+        <div class="bundle-selected-check">✓</div>
+      </div>
+      <div class="bundle-body">
+        <div class="bundle-title">${b.title}</div>
+        <div class="bundle-tagline">${b.tagline}</div>
+        <div class="bundle-bottom">
+          <div class="bundle-price">$${b.price % 1 === 0 ? b.price : b.price.toFixed(2)}</div>
+          ${unavailable
+            ? `<button class="bundle-action notify-me" onclick="openNotifyModal('${b.id}')">Notify me</button>`
+            : isSelected
+              ? `<div class="bundle-qty">
+                  <button class="bundle-qty-btn" onclick="changeBundleQty('${b.id}', -1)" aria-label="Decrease">−</button>
+                  <span class="bundle-qty-val">${qty}</span>
+                  <button class="bundle-qty-btn" onclick="changeBundleQty('${b.id}', 1)" aria-label="Increase" ${qty >= b.units ? 'disabled' : ''}>+</button>
+                </div>`
+              : `<button class="bundle-action" onclick="addBundle('${b.id}')">+ Add</button>`
+          }
         </div>
       </div>
-    `;
-  }).join('');
+    </div>
+  `;
+}
+
+function renderComingSoonVendor(vendor) {
+  return `
+    <div class="vendor-section-header">
+      <div class="vendor-section-name">${vendor.name} <span class="cs-pill">Coming Soon</span></div>
+      <div class="vendor-section-tagline">${vendor.tagline}</div>
+    </div>
+    <div class="bundle-grid-inner">
+      <div class="vendor-coming-soon-card">
+        <div class="cs-icon">✦</div>
+        <div class="cs-headline">${vendor.coming_soon_blurb}</div>
+        <button class="cs-cta" onclick="openVendorNotifyModal('${vendor.id}', '${vendor.name.replace(/'/g, "\\'")}')">Notify me when ${vendor.name} launches</button>
+      </div>
+    </div>
+  `;
 }
 
 function addBundle(id) {
@@ -1088,6 +1227,25 @@ async function submitWaitlist(e) {
   }
 }
 
+// Vendor-level Notify Me (for Coming Soon vendors like Nuor Edit)
+function openVendorNotifyModal(vendorId, vendorName) {
+  state.notifyBundleId = '__vendor:' + vendorId;
+  state.notifyVendorName = vendorName;
+  document.getElementById('notifyThumb').src = '';
+  document.getElementById('notifyThumb').alt = vendorName;
+  document.getElementById('notifyThumb').style.display = 'none';
+  document.getElementById('notifyName').textContent = vendorName;
+  document.getElementById('notifyPrice').textContent = 'Launching soon';
+  document.getElementById('notifyForm').style.display = 'block';
+  document.getElementById('notifySuccess').classList.remove('show');
+  document.getElementById('notifyEmail').value = '';
+  document.getElementById('notifySubmitBtn').disabled = false;
+  document.getElementById('notifySubmitBtn').textContent = 'Notify me at launch';
+  document.getElementById('notifyModal').classList.add('show');
+  document.body.style.overflow = 'hidden';
+  setTimeout(function() { document.getElementById('notifyEmail').focus(); }, 100);
+}
+
 // ─── NOTIFY-ME MODAL ───
 function openNotifyModal(bundleId) {
   const bundle = BUNDLES.find(b => b.id === bundleId);
@@ -1095,6 +1253,7 @@ function openNotifyModal(bundleId) {
   // Stash which bundle we're notifying about
   state.notifyBundleId = bundleId;
   // Populate modal preview
+  document.getElementById('notifyThumb').style.display = 'block';
   document.getElementById('notifyThumb').src = bundle.image;
   document.getElementById('notifyThumb').alt = bundle.title;
   document.getElementById('notifyName').textContent = bundle.title;
@@ -1119,22 +1278,43 @@ function closeNotifyModal() {
 async function submitNotify(e) {
   e.preventDefault();
   const email = document.getElementById('notifyEmail').value.trim();
-  const bundle = BUNDLES.find(b => b.id === state.notifyBundleId);
-  if (!email || !bundle) return;
+  const id = state.notifyBundleId;
+  if (!email || !id) return;
   const btn = document.getElementById('notifySubmitBtn');
   btn.disabled = true;
   btn.textContent = 'Adding you...';
 
-  const payload = {
-    _subject: '🔔 BagFree Restock Request: ' + bundle.title,
-    type: 'restock_notify',
-    bundle_id: bundle.id,
-    bundle_title: bundle.title,
-    bundle_price: '$' + bundle.price.toFixed(2),
-    bundle_url: bundle.url,
-    email: email,
-    submitted_at: new Date().toISOString()
-  };
+  let payload;
+  let displayName;
+  if (id.startsWith('__vendor:')) {
+    // Vendor-launch waitlist (e.g. Nuor Edit)
+    const vendorId = id.replace('__vendor:', '');
+    const vendor = VENDORS.find(v => v.id === vendorId);
+    displayName = state.notifyVendorName || (vendor && vendor.name) || vendorId;
+    payload = {
+      _subject: '🚀 BagFree Vendor Launch Waitlist: ' + displayName,
+      type: 'vendor_launch_notify',
+      vendor_id: vendorId,
+      vendor_name: displayName,
+      email: email,
+      submitted_at: new Date().toISOString()
+    };
+  } else {
+    // Bundle restock notify (existing behavior)
+    const bundle = BUNDLES.find(b => b.id === id);
+    if (!bundle) { btn.disabled = false; return; }
+    displayName = bundle.title;
+    payload = {
+      _subject: '🔔 BagFree Restock Request: ' + bundle.title,
+      type: 'restock_notify',
+      bundle_id: bundle.id,
+      bundle_title: bundle.title,
+      bundle_price: '$' + bundle.price.toFixed(2),
+      bundle_url: bundle.url,
+      email: email,
+      submitted_at: new Date().toISOString()
+    };
+  }
 
   try {
     await fetch(FORMSPREE_ENDPOINT, {
@@ -1143,9 +1323,11 @@ async function submitNotify(e) {
       body: JSON.stringify(payload)
     });
     // Show success state
+    // Show success state — copy adapts for vendor vs product-level notifications
     document.getElementById('notifyForm').style.display = 'none';
+    const isVendor = id.startsWith('__vendor:');
     document.getElementById('notifySuccessSub').innerHTML =
-      'We\'ll email <em style="color:var(--gold);font-style:normal">' + email + '</em> the moment <em style="color:var(--gold);font-style:normal">' + bundle.title + '</em> is restocked.';
+      'We\'ll email <em style="color:var(--gold);font-style:normal">' + email + '</em> the moment <em style="color:var(--gold);font-style:normal">' + displayName + '</em> ' + (isVendor ? 'launches.' : 'is restocked.');
     document.getElementById('notifySuccess').classList.add('show');
   } catch (err) {
     btn.disabled = false;
@@ -1181,21 +1363,28 @@ syncThemeIcon();
 
 updateProgress(0);
 
-// ─── URL PARAM: ?gender=mens|womens ───
+// ─── URL PARAM: ?vendor=valet|snugl|nuor-edit (legacy ?gender= routes to valet) ───
 (function handleEntryParams(){
   try {
     var params = new URLSearchParams(window.location.search);
+    var vendor = params.get('vendor');
     var g = params.get('gender');
-    if (g === 'mens' || g === 'womens') {
-      // Pre-set the bundle filter when user reaches step 3
-      state.filter = g;
-      // Visually update the filter buttons (will sync when step 3 renders)
+
+    var targetFilter = null;
+    if (vendor && VENDORS.find(function(v){ return v.id === vendor; })) {
+      targetFilter = vendor;
+    } else if (g === 'mens' || g === 'womens') {
+      // Legacy support — old Shop Men's / Shop Women's links route to Valet
+      targetFilter = 'valet';
+    }
+
+    if (targetFilter) {
+      state.filter = targetFilter;
       setTimeout(function() {
-        var btn = document.querySelector('.bundle-filter-btn[data-filter="' + g + '"]');
-        document.querySelectorAll('.bundle-filter-btn').forEach(b => b.classList.remove('active'));
+        var btn = document.querySelector('.bundle-filter-btn[data-filter="' + targetFilter + '"]');
+        document.querySelectorAll('.bundle-filter-btn').forEach(function(b){ b.classList.remove('active'); });
         if (btn) btn.classList.add('active');
       }, 50);
-      // Drop user directly at step 1 (city pick), skip hero
       goToStep(1);
     }
   } catch(e) {}
