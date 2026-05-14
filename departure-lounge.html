@@ -841,6 +841,120 @@ button,input,select,textarea{font-family:var(--ff-body)}
   }
 }
 
+
+/* Mobile polish: contain Departure Lounge header, command row, and bottom buttons */
+@media (max-width: 768px) {
+  .dl-header {
+    height: auto !important;
+    min-height: 52px !important;
+    padding: 0.55rem 0.85rem !important;
+    gap: 0.5rem !important;
+    overflow: hidden !important;
+  }
+
+  .dl-logo {
+    font-size: 0.78rem !important;
+    letter-spacing: 2px !important;
+    line-height: 1.25 !important;
+    max-width: 58vw !important;
+    overflow: hidden !important;
+  }
+
+  .dl-user {
+    max-width: 36vw !important;
+    overflow: hidden !important;
+    white-space: nowrap !important;
+    text-overflow: ellipsis !important;
+    justify-content: flex-end !important;
+  }
+
+  .dl-user span {
+    white-space: nowrap !important;
+  }
+
+  /* Stack the AI Travel Brain command bar */
+  .map-toolbar {
+    height: auto !important;
+    min-height: 42px !important;
+    flex-wrap: wrap !important;
+    align-items: center !important;
+    padding: 0.75rem !important;
+    gap: 0.6rem !important;
+  }
+
+  .map-toolbar input,
+  .map-toolbar textarea {
+    width: 100% !important;
+    max-width: 100% !important;
+    min-width: 0 !important;
+    flex: 1 1 100% !important;
+  }
+
+  .map-toolbar button {
+    flex: 1 1 auto !important;
+    max-width: 100% !important;
+    white-space: normal !important;
+  }
+
+  #mobileLeftBtn {
+    left: 0.75rem !important;
+    right: auto !important;
+    max-width: calc(50vw - 1rem) !important;
+  }
+
+  #mobileRightBtn {
+    right: 0.75rem !important;
+    left: auto !important;
+    max-width: calc(50vw - 1rem) !important;
+  }
+
+  #mobileLeftBtn,
+  #mobileRightBtn {
+    bottom: calc(0.75rem + env(safe-area-inset-bottom)) !important;
+    font-size: 0.68rem !important;
+    letter-spacing: 1.8px !important;
+    padding: 0.8rem 1rem !important;
+  }
+}
+
+
+/* Mobile polish: tighter Departure Lounge spacing */
+@media (max-width: 768px) {
+  .dl-header {
+    min-height: 46px !important;
+    padding: 0.4rem 0.75rem !important;
+  }
+
+  .dl-logo {
+    font-size: 0.72rem !important;
+    letter-spacing: 1.8px !important;
+    line-height: 1.15 !important;
+  }
+
+  .dl-user {
+    font-size: 0.56rem !important;
+    gap: 0.35rem !important;
+  }
+
+  .map-toolbar {
+    padding: 0.55rem 0.65rem !important;
+    gap: 0.45rem !important;
+  }
+
+  .layer-btn {
+    font-size: 0.5rem !important;
+    padding: 3px 7px !important;
+    letter-spacing: 1px !important;
+  }
+
+  #mobileLeftBtn,
+  #mobileRightBtn {
+    padding: 0.65rem 0.85rem !important;
+    font-size: 0.62rem !important;
+    letter-spacing: 1.5px !important;
+  }
+}
+
 </style>
 <script src="https://unpkg.com/leaflet@1.9.4/dist/leaflet.js"></script>
 <script type="module">
@@ -6037,6 +6151,68 @@ function copyPromo(){
   document.addEventListener('touchmove', function () {
     requestAnimationFrame(lockHorizontalScroll);
   }, { passive: true });
+})();
+</script>
+
+
+
+
+<script id="travel-brain-gesture-lock">
+(function () {
+  let startX = 0;
+  let startY = 0;
+
+  function getTravelBrainPanel() {
+    const header = document.querySelector('.ai-brain-header');
+    if (!header) return null;
+
+    let el = header.parentElement;
+    while (el && el !== document.body) {
+      const rect = el.getBoundingClientRect();
+      if (rect.width > window.innerWidth * 0.7 && rect.height > 200) {
+        return el;
+      }
+      el = el.parentElement;
+    }
+
+    return header.parentElement;
+  }
+
+  function attachGestureLock() {
+    const panel = getTravelBrainPanel();
+    if (!panel || panel.dataset.gestureLocked === "true") return;
+
+    panel.dataset.gestureLocked = "true";
+    panel.style.touchAction = "pan-y";
+    panel.style.overscrollBehaviorX = "contain";
+
+    panel.addEventListener("touchstart", function (e) {
+      const t = e.touches[0];
+      startX = t.clientX;
+      startY = t.clientY;
+    }, { passive: true });
+
+    panel.addEventListener("touchmove", function (e) {
+      const t = e.touches[0];
+      const dx = Math.abs(t.clientX - startX);
+      const dy = Math.abs(t.clientY - startY);
+
+      // Block sideways swipe gestures inside Travel Brain,
+      // but allow normal vertical scrolling.
+      if (dx > dy && dx > 8) {
+        e.preventDefault();
+      }
+    }, { passive: false });
+  }
+
+  window.addEventListener("load", function () {
+    setTimeout(attachGestureLock, 500);
+    setTimeout(attachGestureLock, 1500);
+  });
+
+  document.addEventListener("click", function () {
+    setTimeout(attachGestureLock, 200);
+  });
 })();
 </script>
 
