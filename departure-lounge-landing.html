@@ -516,7 +516,7 @@ input,select,textarea{outline:none}
   <div class="step" id="stepC2">
     <div class="eyebrow"><span class="eyebrow-diamond"></span><span class="eyebrow-line"></span><span>Step 4 — Confirm</span></div>
     <h1 class="step-title">Review and <em>reserve.</em></h1>
-    <p class="step-sub">A confirmation will be sent within 24 hours with your final invoice. No charge today.</p>
+    <p class="step-sub">Secure checkout is powered by Stripe. You'll be charged at the next step and receive an instant receipt. Concierge confirmation within 24 hours.</p>
 
     <div class="confirm-layout">
       <div>
@@ -543,8 +543,8 @@ input,select,textarea{outline:none}
           <div class="reserve-label">Your email</div>
           <input type="email" class="email-input" id="reserveEmail" placeholder="you@example.com" required>
         </div>
-        <button class="reserve-cta" id="reserveBtn" onclick="submitReserve()" disabled>Reserve my arrival</button>
-        <div class="reserve-trust">No charge today · We'll confirm within 24 hours · No bag fees, no surprises</div>
+        <button class="reserve-cta" id="reserveBtn" onclick="submitReserve()" disabled>Reserve & pay securely</button>
+        <div class="reserve-trust">Secure checkout via Stripe · Same-day delivery · Receipt emailed instantly</div>
       </div>
     </div>
 
@@ -598,7 +598,7 @@ input,select,textarea{outline:none}
     <span class="cart-divider">·</span>
     <span class="cart-total" id="cartTotal">$0</span>
   </div>
-  <button class="cart-continue" onclick="goToConfirm()">Continue to reserve →</button>
+  <button class="cart-continue" onclick="goToConfirm()">Continue to checkout →</button>
 </div>
 
 <!-- NOTIFY-ME MODAL -->
@@ -979,52 +979,93 @@ const FORMSPREE_ENDPOINT = 'https://formspree.io/f/mvzvwrkp';
 async function submitReserve() {
   const btn = document.getElementById('reserveBtn');
   btn.disabled = true;
-  btn.textContent = 'Reserving...';
+  btn.textContent = 'Connecting to checkout...';
 
   const ids = Object.keys(state.selectedBundles);
-  const bundleList = ids.map(id => {
-    const b = BUNDLES.find(x => x.id === id);
-    const qty = state.selectedBundles[id];
-    return `${qty}× ${b.title} ($${b.price.toFixed(2)} ea = $${(b.price * qty).toFixed(2)})`;
-  });
-  const total = ids.reduce((s, id) => s + (BUNDLES.find(x => x.id === id).price * state.selectedBundles[id]), 0);
-
-  const payload = {
-    _subject: '🌟 New BagFree Arrival Reservation',
-    type: 'reservation',
-    city: state.city,
-    arrival: state.dateArrive,
-    departure: state.dateDepart,
-    hotel: state.hotel,
-    email: state.email,
-    bundles: bundleList.join('\n'),
-    bundle_total: '$' + total.toFixed(2),
-    submitted_at: new Date().toISOString()
-  };
-
-  try {
-    await fetch(FORMSPREE_ENDPOINT, {
-      method: 'POST',
-      headers: {'Content-Type':'application/json','Accept':'application/json'},
-      body: JSON.stringify(payload)
-    });
-    try {
-      localStorage.setItem('bf-reservation', JSON.stringify({
-        city: state.city, arrival: state.dateArrive, departure: state.dateDepart,
-        hotel: state.hotel, email: state.email,
-        bundles: ids.map(id => ({id, name: BUNDLES.find(b=>b.id===id).title, price: BUNDLES.find(b=>b.id===id).price, qty: state.selectedBundles[id]})),
-        total: total,
-        reserved_at: new Date().toISOString()
-      }));
-    } catch(e) {}
-    document.getElementById('confirmMsg').innerHTML =
-      'We\'ve reserved your arrival at <em style="color:var(--gold)">' + state.hotel + '</em>.<br>' +
-      'A confirmation will arrive at <em style="color:var(--gold)">' + state.email + '</em> within 24 hours with your final itemized invoice and payment link. No charge yet.';
-    goToStep('C');
-  } catch (err) {
+  if (ids.length === 0) {
     btn.disabled = false;
     btn.textContent = 'Reserve my arrival';
-    alert('Something went wrong. Please try again or email hello@bagfree.app');
+    alert('Please select at least one bundle before reserving.');
+    return;
+  }
+
+  // Build the bundle list (with image + qty) for both Stripe AND the lead-tracking submission
+  const bundleCart = ids.map(id => {
+    const b = BUNDLES.find(x => x.id === id);
+    return {
+      id: b.id,
+      title: b.title,
+      price: b.price,
+      image: b.image,
+      qty: state.selectedBundles[id]
+    };
+  });
+  const total = bundleCart.reduce((s, b) => s + b.price * b.qty, 0);
+
+  // 1) Save to localStorage so the dashboard can show a reservation card
+  try {
+    localStorage.setItem('bf-reservation', JSON.stringify({
+      city: state.city, arrival: state.dateArrive, departure: state.dateDepart,
+      hotel: state.hotel, email: state.email,
+      bundles: bundleCart.map(b => ({id: b.id, name: b.title, price: b.price, qty: b.qty})),
+      total: total,
+      reserved_at: new Date().toISOString()
+    }));
+  } catch(e) {}
+
+  // 2) Send a soft "checkout initiated" lead to Formspree.
+  //    This fires BEFORE Stripe so we capture the customer even if they bail at the payment step.
+  //    The real "PAID" notification comes via Stripe webhook → Formspree.
+  try {
+    fetch(FORMSPREE_ENDPOINT, {
+      method: 'POST',
+      headers: {'Content-Type':'application/json','Accept':'application/json'},
+      body: JSON.stringify({
+        _subject: '👀 BagFree checkout started — ' + (state.city || ''),
+        type: 'checkout_initiated',
+        city: state.city,
+        arrival: state.dateArrive,
+        departure: state.dateDepart,
+        hotel: state.hotel,
+        email: state.email,
+        bundles: bundleCart.map(b => `${b.qty}× ${b.title} ($${b.price.toFixed(2)})`).join(' | '),
+        bundle_total: '$' + total.toFixed(2),
+        submitted_at: new Date().toISOString()
+      })
+    });
+  } catch(e) { /* non-blocking */ }
+
+  // 3) Call our Netlify function to create a Stripe Checkout session
+  try {
+    const res = await fetch('/.netlify/functions/create-checkout', {
+      method: 'POST',
+      headers: {'Content-Type':'application/json'},
+      body: JSON.stringify({
+        city: state.city,
+        arrival: state.dateArrive,
+        departure: state.dateDepart,
+        hotel: state.hotel,
+        email: state.email,
+        bundles: bundleCart
+      })
+    });
+    const data = await res.json();
+
+    if (!res.ok || !data.url) {
+      throw new Error(data.error || ('HTTP ' + res.status));
+    }
+
+    // 4) Redirect to Stripe-hosted Checkout. After payment, Stripe will send the
+    //    customer to /thank-you.html and fire a webhook to our server function.
+    window.location.href = data.url;
+  } catch (err) {
+    console.error('Checkout error:', err);
+    btn.disabled = false;
+    btn.textContent = 'Reserve my arrival';
+    alert(
+      "We couldn't open the secure checkout. Please try again, or email hello@bagfree.app and we'll handle the reservation manually.\n\n" +
+      "(Technical detail: " + (err.message || 'unknown error') + ")"
+    );
   }
 }
 
