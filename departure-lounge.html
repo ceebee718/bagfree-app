@@ -5881,5 +5881,98 @@ document.addEventListener('DOMContentLoaded', window.bfSyncThemeIcons);
 // Re-sync after a tick to catch dynamically-rendered icons
 setTimeout(function(){ if (window.bfSyncThemeIcons) window.bfSyncThemeIcons(); }, 100);
 </script>
+
+<script>
+// ── Departure Lounge tactical polish ───────────────────────────────
+(function(){
+  // ORIENTATION BANNER
+  function showOrientIfNew() {
+    try {
+      if (!localStorage.getItem('bf-dl-oriented')) {
+        var banner = document.getElementById('dlOrient');
+        if (banner) banner.style.display = 'flex';
+      }
+    } catch(e) {}
+  }
+  window.dismissOrient = function() {
+    try { localStorage.setItem('bf-dl-oriented', '1'); } catch(e) {}
+    var banner = document.getElementById('dlOrient');
+    if (banner) {
+      banner.style.transition = 'all 0.4s ease';
+      banner.style.opacity = '0';
+      banner.style.transform = 'translateY(-100%)';
+      setTimeout(function(){ banner.style.display = 'none'; }, 400);
+    }
+  };
+
+  // SIDEBAR TABS
+  window.bfSwitchSidebarTab = function(tabName, btn) {
+    document.querySelectorAll('.dl-tab').forEach(function(b){ b.classList.remove('active'); });
+    if (btn) btn.classList.add('active');
+
+    document.querySelectorAll('.sidebar-section[data-tab]').forEach(function(s){
+      if (s.getAttribute('data-tab') === tabName) {
+        s.classList.add('show');
+      } else {
+        s.classList.remove('show');
+      }
+    });
+
+    var slot = document.getElementById('dlReservationSlot');
+    var emptyState = document.getElementById('dlTabEmpty');
+    if (emptyState) emptyState.remove();
+    var hasSections = document.querySelectorAll('.sidebar-section[data-tab="' + tabName + '"]').length > 0;
+    if (!hasSections && slot && slot.parentNode) {
+      var empty = document.createElement('div');
+      empty.id = 'dlTabEmpty';
+      empty.className = 'dl-tab-empty';
+      empty.innerHTML = '<span class="dl-tab-empty-icon">✦</span>Nothing here yet.';
+      slot.parentNode.insertBefore(empty, slot.nextSibling);
+    }
+
+    try { localStorage.setItem('bf-dl-tab', tabName); } catch(e) {}
+  };
+
+  // RESERVATION CARD
+  function renderReservationCard() {
+    try {
+      var raw = localStorage.getItem('bf-reservation');
+      if (!raw) return;
+      var r = JSON.parse(raw);
+      var slot = document.getElementById('dlReservationSlot');
+      if (!slot || !r.hotel) return;
+      var fmt = function(d) {
+        if (!d) return '';
+        var dt = new Date(d + 'T12:00:00');
+        return dt.toLocaleDateString('en-US', {month:'short', day:'numeric'});
+      };
+      slot.style.display = 'block';
+      slot.innerHTML =
+        '<div class="dl-reservation-card" data-tab="my-trip">' +
+          '<div class="dl-reservation-eyebrow">Your reservation</div>' +
+          '<div class="dl-reservation-hotel">' + r.hotel + '</div>' +
+          '<div class="dl-reservation-meta">' + (r.city || '') + ' · ' + fmt(r.arrival) + ' → ' + fmt(r.departure) + '</div>' +
+        '</div>';
+    } catch(e) { /* no reservation yet */ }
+  }
+
+  function init() {
+    showOrientIfNew();
+    renderReservationCard();
+    var savedTab = 'my-trip';
+    try { savedTab = localStorage.getItem('bf-dl-tab') || 'my-trip'; } catch(e) {}
+    var btn = document.querySelector('.dl-tab[data-tabtarget="' + savedTab + '"]');
+    if (window.bfSwitchSidebarTab) {
+      window.bfSwitchSidebarTab(savedTab, btn || document.querySelector('.dl-tab.active'));
+    }
+  }
+  if (document.readyState === 'loading') {
+    document.addEventListener('DOMContentLoaded', init);
+  } else {
+    init();
+  }
+})();
+</script>
+
 </body>
 </html>
