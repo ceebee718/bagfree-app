@@ -4,11 +4,11 @@
 <meta charset="UTF-8">
 <meta name="viewport" content="width=device-width, initial-scale=1.0">
 <title>Reserve Your Arrival — BagFree</title>
-<meta name="description" content="Tell us where you're arriving and we'll have everything waiting at your hotel. Same-day delivery in Tampa & Orlando, powered by Valet By Nuor.">
+<meta name="description" content="Pick your travel bundle. We deliver to your hotel before you arrive. Same-day in Tampa & Orlando, powered by Valet By Nuor.">
 <meta name="theme-color" content="#C9A96E">
 
 <meta property="og:title" content="Reserve Your Arrival — BagFree">
-<meta property="og:description" content="No bags. No lines. We deliver to your hotel before you land.">
+<meta property="og:description" content="Pick your bundle. We deliver to your hotel before you arrive.">
 <meta property="og:image" content="https://bagfree.app/og-image.png">
 <meta property="og:url" content="https://bagfree.app/departure-lounge-landing">
 <meta property="og:type" content="website">
@@ -48,6 +48,7 @@
   --border:rgba(var(--gold-rgb),0.18);
   --border-hi:rgba(var(--gold-rgb),0.48);
   --green:#5DCAA5;
+  --red:#E24B4A;
   --ff-display:'Cormorant Garamond',Georgia,serif;
   --ff-body:'Jost',sans-serif;
 }
@@ -67,554 +68,343 @@
 }
 
 html{scroll-behavior:smooth}
-body{
-  font-family:var(--ff-body);
-  background:var(--noir);
-  color:var(--white);
-  font-weight:300;
-  overflow-x:hidden;
-  min-height:100vh;
-  transition:background-color 0.5s ease, color 0.5s ease;
-}
+body{font-family:var(--ff-body);background:var(--noir);color:var(--white);font-weight:300;overflow-x:hidden;min-height:100vh;transition:background-color 0.5s ease, color 0.5s ease;}
 button,input,select,textarea{font-family:inherit;font-weight:inherit}
 button{cursor:pointer;border:none;background:none;color:inherit}
 input,select,textarea{outline:none}
-
 ::-webkit-scrollbar{width:5px}
 ::-webkit-scrollbar-track{background:var(--noir)}
 ::-webkit-scrollbar-thumb{background:rgba(var(--gold-rgb),0.4);border-radius:3px}
 
 /* ── NAV ── */
-.nav{
-  position:fixed;top:0;left:0;right:0;z-index:100;
-  display:flex;align-items:center;justify-content:space-between;
-  padding:1rem 2.5rem;
-  background:rgba(var(--bg-rgb),0.7);
-  backdrop-filter:blur(18px) saturate(140%);
-  -webkit-backdrop-filter:blur(18px) saturate(140%);
-  border-bottom:1px solid rgba(var(--gold-rgb),0.12);
-  transition:background-color 0.5s ease, border-color 0.5s ease;
-}
-.nav-logo{
-  display:flex;align-items:center;text-decoration:none;
-  transition:transform 0.3s ease, filter 0.3s ease;
-  filter:drop-shadow(0 2px 8px rgba(var(--gold-rgb),0.18));
-}
+.nav{position:fixed;top:0;left:0;right:0;z-index:100;display:flex;align-items:center;justify-content:space-between;padding:1rem 2.5rem;background:rgba(var(--bg-rgb),0.7);backdrop-filter:blur(18px) saturate(140%);-webkit-backdrop-filter:blur(18px) saturate(140%);border-bottom:1px solid rgba(var(--gold-rgb),0.12);transition:background-color 0.5s ease, border-color 0.5s ease;}
+.nav-logo{display:flex;align-items:center;text-decoration:none;transition:transform 0.3s ease, filter 0.3s ease;filter:drop-shadow(0 2px 8px rgba(var(--gold-rgb),0.18));}
 .nav-logo:hover{transform:scale(1.04)}
 .nav-logo img{height:38px;width:auto;display:block}
 .nav-right{display:flex;align-items:center;gap:1.5rem}
-.nav-link{
-  font-size:0.74rem;letter-spacing:2.5px;text-transform:uppercase;
-  color:rgba(var(--text-rgb),0.7);text-decoration:none;
-  transition:color 0.25s;
-}
+.nav-link{font-size:0.74rem;letter-spacing:2.5px;text-transform:uppercase;color:rgba(var(--text-rgb),0.7);text-decoration:none;transition:color 0.25s;}
 .nav-link:hover{color:var(--gold)}
-
-/* Theme toggle */
-.theme-toggle{
-  display:inline-flex;align-items:center;justify-content:center;
-  width:36px;height:36px;border-radius:50%;
-  border:1px solid rgba(var(--gold-rgb),0.32);
-  background:rgba(var(--gold-rgb),0.06);
-  color:var(--gold);
-  transition:all 0.35s cubic-bezier(.4,0,.2,1);
-}
-.theme-toggle:hover{
-  background:rgba(var(--gold-rgb),0.16);
-  border-color:var(--gold);
-  transform:scale(1.06) rotate(15deg);
-  box-shadow:0 4px 14px rgba(var(--gold-rgb),0.25);
-}
+.theme-toggle{display:inline-flex;align-items:center;justify-content:center;width:36px;height:36px;border-radius:50%;border:1px solid rgba(var(--gold-rgb),0.32);background:rgba(var(--gold-rgb),0.06);color:var(--gold);transition:all 0.35s cubic-bezier(.4,0,.2,1);}
+.theme-toggle:hover{background:rgba(var(--gold-rgb),0.16);border-color:var(--gold);transform:scale(1.06) rotate(15deg);box-shadow:0 4px 14px rgba(var(--gold-rgb),0.25);}
 .theme-toggle svg{width:15px;height:15px;stroke:currentColor;fill:none;stroke-width:1.8;stroke-linecap:round;stroke-linejoin:round}
 
-/* ── MAIN STAGE ── */
-.stage{
-  padding-top:6rem;padding-bottom:5rem;
-  min-height:100vh;
-  display:flex;flex-direction:column;
-}
+/* ── STAGE ── */
+.stage{padding-top:6rem;padding-bottom:5rem;min-height:100vh;display:flex;flex-direction:column;}
+.bg-mesh{position:fixed;inset:0;z-index:-1;pointer-events:none;background:radial-gradient(ellipse 70% 50% at 15% 25%, rgba(var(--gold-rgb),0.10), transparent 60%),radial-gradient(ellipse 60% 50% at 85% 75%, rgba(var(--gold-rgb),0.07), transparent 55%);}
 
-.bg-mesh{
-  position:fixed;inset:0;z-index:-1;pointer-events:none;
-  background:
-    radial-gradient(ellipse 70% 50% at 15% 25%, rgba(var(--gold-rgb),0.10), transparent 60%),
-    radial-gradient(ellipse 60% 50% at 85% 75%, rgba(var(--gold-rgb),0.07), transparent 55%);
-}
-
-/* Progress indicator */
-.progress{
-  display:flex;align-items:center;justify-content:center;
-  gap:8px;margin:0 auto 3.5rem;
-  font-size:0.62rem;letter-spacing:3px;text-transform:uppercase;
-  color:rgba(var(--text-rgb),0.4);
-}
-.progress-step{
-  width:22px;height:1px;background:rgba(var(--text-rgb),0.18);
-  transition:all 0.5s cubic-bezier(.4,0,.2,1);
-}
+/* Progress */
+.progress{display:flex;align-items:center;justify-content:center;gap:8px;margin:0 auto 3.5rem;font-size:0.62rem;letter-spacing:3px;text-transform:uppercase;color:rgba(var(--text-rgb),0.4);}
+.progress-step{width:22px;height:1px;background:rgba(var(--text-rgb),0.18);transition:all 0.5s cubic-bezier(.4,0,.2,1);}
 .progress-step.active{background:var(--gold);width:42px}
 .progress-step.done{background:rgba(var(--gold-rgb),0.6)}
 
 /* Step panels */
-.step{
-  display:none;
-  max-width:880px;width:100%;
-  margin:0 auto;padding:0 1.5rem;
-}
-.step.active{
-  display:flex;flex-direction:column;align-items:center;
-  animation:fadeUp 0.6s cubic-bezier(.4,0,.2,1);
-}
-@keyframes fadeUp{
-  from{opacity:0;transform:translateY(18px)}
-  to{opacity:1;transform:translateY(0)}
-}
+.step{display:none;max-width:1080px;width:100%;margin:0 auto;padding:0 1.5rem;}
+.step.active{display:flex;flex-direction:column;align-items:center;animation:fadeUp 0.6s cubic-bezier(.4,0,.2,1);}
+@keyframes fadeUp{from{opacity:0;transform:translateY(18px)}to{opacity:1;transform:translateY(0)}}
 
-/* Step headers */
-.eyebrow{
-  font-size:0.68rem;letter-spacing:4px;text-transform:uppercase;
-  color:var(--gold);
-  display:inline-flex;align-items:center;gap:0.8rem;
-  margin-bottom:1.4rem;
-}
-.eyebrow-diamond{
-  width:7px;height:7px;background:var(--gold);
-  transform:rotate(45deg);
-  box-shadow:0 0 12px rgba(var(--gold-rgb),0.55);
-}
-.eyebrow-line{
-  width:38px;height:1px;
-  background:linear-gradient(to right, var(--gold), rgba(var(--gold-rgb),0.08));
-}
+.eyebrow{font-size:0.68rem;letter-spacing:4px;text-transform:uppercase;color:var(--gold);display:inline-flex;align-items:center;gap:0.8rem;margin-bottom:1.4rem;}
+.eyebrow-diamond{width:7px;height:7px;background:var(--gold);transform:rotate(45deg);box-shadow:0 0 12px rgba(var(--gold-rgb),0.55);}
+.eyebrow-line{width:38px;height:1px;background:linear-gradient(to right, var(--gold), rgba(var(--gold-rgb),0.08));}
 
-.step-title{
-  font-family:var(--ff-display);
-  font-size:clamp(2.6rem,5.5vw,4.5rem);
-  font-weight:300;
-  line-height:1.06;
-  letter-spacing:-1.5px;
-  text-align:center;
-  margin-bottom:1.1rem;
-  color:var(--white);
-}
+.step-title{font-family:var(--ff-display);font-size:clamp(2.6rem,5.5vw,4.5rem);font-weight:300;line-height:1.06;letter-spacing:-1.5px;text-align:center;margin-bottom:1.1rem;color:var(--white);}
 .step-title em{font-style:italic;color:var(--gold);font-weight:300}
+.step-sub{font-size:1.02rem;color:rgba(var(--text-rgb),0.62);line-height:1.8;text-align:center;max-width:560px;margin-bottom:3rem;font-weight:300;}
 
-.step-sub{
-  font-size:1.02rem;
-  color:rgba(var(--text-rgb),0.62);
-  line-height:1.8;
-  text-align:center;
-  max-width:520px;
-  margin-bottom:3rem;
-  font-weight:300;
-}
-
-/* ── HERO (step 0) ── */
+/* HERO */
 #step0 .step-title{font-size:clamp(3rem,7vw,6rem);letter-spacing:-2.2px}
 #step0 .step-sub{font-size:1.1rem;color:rgba(var(--text-rgb),0.7)}
+.trust-strip{display:flex;align-items:center;justify-content:center;gap:2.5rem;flex-wrap:wrap;margin:1.8rem 0 2.6rem;}
+.trust-item{font-size:0.66rem;letter-spacing:2.5px;text-transform:uppercase;color:rgba(var(--text-rgb),0.5);display:flex;align-items:center;gap:0.55rem;}
+.trust-dot{width:5px;height:5px;border-radius:50%;background:var(--gold);box-shadow:0 0 8px rgba(var(--gold-rgb),0.6);}
 
-.trust-strip{
-  display:flex;align-items:center;justify-content:center;
-  gap:2.5rem;flex-wrap:wrap;
-  margin:1.8rem 0 2.6rem;
-}
-.trust-item{
-  font-size:0.66rem;letter-spacing:2.5px;text-transform:uppercase;
-  color:rgba(var(--text-rgb),0.5);
-  display:flex;align-items:center;gap:0.55rem;
-}
-.trust-dot{
-  width:5px;height:5px;border-radius:50%;
-  background:var(--gold);
-  box-shadow:0 0 8px rgba(var(--gold-rgb),0.6);
-}
+.start-cta{background:linear-gradient(135deg,var(--gold) 0%,#d8b06a 50%,#b8893e 100%);color:var(--noir);padding:1.25rem 3.2rem;font-size:0.82rem;font-weight:600;letter-spacing:3.5px;text-transform:uppercase;box-shadow:0 8px 28px rgba(var(--gold-rgb),0.28), inset 0 1px 0 rgba(255,255,255,0.3);transition:all 0.3s cubic-bezier(.4,0,.2,1);}
+.start-cta:hover{transform:translateY(-3px);box-shadow:0 18px 46px rgba(var(--gold-rgb),0.4), inset 0 1px 0 rgba(255,255,255,0.4);letter-spacing:4.5px;}
 
-.start-cta{
-  background:linear-gradient(135deg,var(--gold) 0%,#d8b06a 50%,#b8893e 100%);
-  color:var(--noir);
-  padding:1.25rem 3.2rem;
-  font-size:0.82rem;font-weight:600;
-  letter-spacing:3.5px;text-transform:uppercase;
-  box-shadow:0 8px 28px rgba(var(--gold-rgb),0.28), inset 0 1px 0 rgba(255,255,255,0.3);
-  transition:all 0.3s cubic-bezier(.4,0,.2,1);
-}
-.start-cta:hover{
-  transform:translateY(-3px);
-  box-shadow:0 18px 46px rgba(var(--gold-rgb),0.4), inset 0 1px 0 rgba(255,255,255,0.4);
-  letter-spacing:4.5px;
-}
-
-/* ── Q1 CITY tiles ── */
-.city-grid{
-  display:grid;
-  grid-template-columns:repeat(auto-fit,minmax(220px,1fr));
-  gap:1rem;width:100%;max-width:760px;
-  margin-bottom:2rem;
-}
-.city-tile{
-  background:rgba(var(--gold-rgb),0.03);
-  border:1px solid rgba(var(--gold-rgb),0.18);
-  padding:2.2rem 1.6rem;
-  text-align:center;
-  transition:all 0.3s cubic-bezier(.4,0,.2,1);
-  position:relative;overflow:hidden;
-}
-.city-tile::before{
-  content:'';position:absolute;inset:0;
-  background:linear-gradient(135deg, transparent 40%, rgba(var(--gold-rgb),0.08) 100%);
-  opacity:0;transition:opacity 0.3s;
-}
-.city-tile:hover{
-  border-color:var(--gold);
-  background:rgba(var(--gold-rgb),0.07);
-  transform:translateY(-3px);
-  box-shadow:0 12px 32px rgba(var(--gold-rgb),0.18);
-}
-.city-tile:hover::before{opacity:1}
-.city-name{
-  font-family:var(--ff-display);
-  font-size:1.85rem;font-weight:300;
-  color:var(--white);letter-spacing:-0.5px;
-  margin-bottom:0.35rem;
-  position:relative;z-index:2;
-}
-.city-tag{
-  font-size:0.6rem;letter-spacing:2.5px;text-transform:uppercase;
-  color:var(--gold);
-  position:relative;z-index:2;
-}
+/* CITY tiles */
+.city-grid{display:grid;grid-template-columns:repeat(auto-fit,minmax(220px,1fr));gap:1rem;width:100%;max-width:760px;margin-bottom:2rem;}
+.city-tile{background:rgba(var(--gold-rgb),0.03);border:1px solid rgba(var(--gold-rgb),0.18);padding:2.2rem 1.6rem;text-align:center;transition:all 0.3s cubic-bezier(.4,0,.2,1);position:relative;overflow:hidden;}
+.city-tile:hover{border-color:var(--gold);background:rgba(var(--gold-rgb),0.07);transform:translateY(-3px);box-shadow:0 12px 32px rgba(var(--gold-rgb),0.18);}
+.city-name{font-family:var(--ff-display);font-size:1.85rem;font-weight:300;color:var(--white);letter-spacing:-0.5px;margin-bottom:0.35rem;}
+.city-tag{font-size:0.6rem;letter-spacing:2.5px;text-transform:uppercase;color:var(--gold);}
 .city-tile.other .city-name{font-style:italic;color:rgba(var(--text-rgb),0.55)}
 .city-tile.other .city-tag{color:rgba(var(--text-rgb),0.4)}
 
-/* ── Q2 DATES ── */
-.date-row{
-  display:grid;
-  grid-template-columns:1fr 1fr;
-  gap:1rem;width:100%;max-width:520px;
-  margin-bottom:2rem;
-}
-.date-field{
-  display:flex;flex-direction:column;gap:0.5rem;
-}
-.date-label{
-  font-size:0.62rem;letter-spacing:3px;text-transform:uppercase;
-  color:var(--gold);
-}
-.date-input{
-  background:rgba(var(--gold-rgb),0.04);
-  border:1px solid rgba(var(--gold-rgb),0.25);
-  color:var(--white);
-  padding:1rem 1.1rem;font-size:1rem;
-  font-family:var(--ff-body);
-  transition:border-color 0.25s, background 0.25s;
-  color-scheme:dark;
-}
+/* DATES */
+.date-row{display:grid;grid-template-columns:1fr 1fr;gap:1rem;width:100%;max-width:520px;margin-bottom:2rem;}
+.date-field{display:flex;flex-direction:column;gap:0.5rem;}
+.date-label{font-size:0.62rem;letter-spacing:3px;text-transform:uppercase;color:var(--gold);}
+.date-input{background:rgba(var(--gold-rgb),0.04);border:1px solid rgba(var(--gold-rgb),0.25);color:var(--white);padding:1rem 1.1rem;font-size:1rem;font-family:var(--ff-body);transition:border-color 0.25s, background 0.25s;color-scheme:dark;}
 :root[data-theme="light"] .date-input{color-scheme:light}
 .date-input:focus{border-color:var(--gold);background:rgba(var(--gold-rgb),0.08)}
 
-/* ── Q3 STYLE tiles ── */
-.style-grid{
-  display:grid;
-  grid-template-columns:repeat(auto-fit,minmax(180px,1fr));
-  gap:0.9rem;width:100%;max-width:760px;
-  margin-bottom:2rem;
+/* ─── BUNDLE PICKER ─── */
+.bundle-filter{display:flex;gap:6px;margin-bottom:2rem;border:1px solid rgba(var(--gold-rgb),0.2);padding:4px;width:fit-content;margin-left:auto;margin-right:auto;flex-wrap:wrap;justify-content:center;}
+.bundle-filter-btn{padding:0.5rem 1.1rem;font-size:0.62rem;letter-spacing:2.5px;text-transform:uppercase;color:rgba(var(--text-rgb),0.6);transition:all 0.25s;border:none;background:none;font-family:var(--ff-body);cursor:pointer;}
+.bundle-filter-btn.active{background:var(--gold);color:var(--noir);font-weight:500;}
+.bundle-filter-btn:hover:not(.active){color:var(--gold)}
+
+.bundle-grid{display:grid;grid-template-columns:repeat(auto-fill,minmax(260px,1fr));gap:1.25rem;width:100%;margin-bottom:7rem;}
+.bundle-card{background:rgba(var(--gold-rgb),0.03);border:1px solid rgba(var(--gold-rgb),0.18);overflow:hidden;display:flex;flex-direction:column;transition:all 0.3s cubic-bezier(.4,0,.2,1);position:relative;}
+.bundle-card:hover{border-color:rgba(var(--gold-rgb),0.5);background:rgba(var(--gold-rgb),0.06);transform:translateY(-4px);box-shadow:0 18px 40px rgba(0,0,0,0.18);}
+.bundle-card.selected{border-color:var(--gold);background:rgba(var(--gold-rgb),0.12);box-shadow:0 0 0 1px var(--gold), 0 16px 38px rgba(var(--gold-rgb),0.22);}
+.bundle-card.unavailable{opacity:0.58}
+.bundle-card.unavailable:hover{transform:none;border-color:rgba(var(--gold-rgb),0.18)}
+.bundle-img-wrap{position:relative;aspect-ratio:1/1;background:rgba(0,0,0,0.15);overflow:hidden;}
+.bundle-img{width:100%;height:100%;object-fit:cover;display:block;transition:transform 0.5s ease;}
+.bundle-card:hover .bundle-img:not(.unavailable){transform:scale(1.04)}
+.bundle-badge{position:absolute;top:10px;left:10px;font-size:0.55rem;letter-spacing:2px;text-transform:uppercase;padding:4px 9px;background:var(--gold);color:var(--noir);font-weight:600;}
+.bundle-sold-out-overlay{position:absolute;inset:0;display:flex;align-items:center;justify-content:center;background:rgba(0,0,0,0.45);}
+.bundle-sold-out-tag{padding:0.55rem 1.4rem;background:rgba(var(--bg-rgb),0.9);border:1px solid rgba(var(--text-rgb),0.4);color:var(--white);font-size:0.62rem;letter-spacing:3px;text-transform:uppercase;font-weight:500;}
+.bundle-selected-check{position:absolute;top:10px;right:10px;width:30px;height:30px;border-radius:50%;background:var(--gold);color:var(--noir);display:none;align-items:center;justify-content:center;font-size:0.9rem;font-weight:700;box-shadow:0 4px 12px rgba(var(--gold-rgb),0.5);}
+.bundle-card.selected .bundle-selected-check{display:flex}
+.bundle-body{padding:1.25rem;display:flex;flex-direction:column;flex:1;}
+.bundle-title{font-family:var(--ff-display);font-size:1.18rem;font-weight:400;color:var(--white);line-height:1.25;margin-bottom:0.45rem;letter-spacing:-0.2px;}
+.bundle-tagline{font-size:0.72rem;color:rgba(var(--text-rgb),0.6);line-height:1.6;margin-bottom:1rem;flex:1;}
+.bundle-bottom{display:flex;align-items:center;justify-content:space-between;gap:0.5rem;margin-top:auto;padding-top:0.6rem;border-top:1px solid rgba(var(--gold-rgb),0.12);}
+.bundle-price{font-family:var(--ff-display);font-size:1.5rem;font-weight:400;color:var(--gold);line-height:1;letter-spacing:-0.3px;}
+.bundle-action{font-size:0.58rem;letter-spacing:2.5px;text-transform:uppercase;color:var(--gold);border:1px solid rgba(var(--gold-rgb),0.35);padding:0.55rem 0.85rem;background:rgba(var(--gold-rgb),0.04);transition:all 0.25s;cursor:pointer;font-family:var(--ff-body);font-weight:500;}
+.bundle-action:hover{background:var(--gold);color:var(--noir);border-color:var(--gold);}
+.bundle-card.selected .bundle-action{background:var(--gold);color:var(--noir);border-color:var(--gold);}
+.bundle-card.unavailable .bundle-action{color:rgba(var(--text-rgb),0.4);border-color:rgba(var(--text-rgb),0.15);background:transparent;cursor:default;}
+.bundle-card.unavailable .bundle-action:hover{background:transparent;color:rgba(var(--text-rgb),0.4);border-color:rgba(var(--text-rgb),0.15)}
+/* Notify Me — re-enables interaction on sold-out cards */
+.bundle-card.unavailable .bundle-action.notify-me{
+  color:var(--gold);border-color:rgba(var(--gold-rgb),0.42);
+  background:rgba(var(--gold-rgb),0.06);cursor:pointer;
 }
-.style-tile{
-  background:rgba(var(--gold-rgb),0.03);
-  border:1px solid rgba(var(--gold-rgb),0.18);
-  padding:1.8rem 1.2rem;
-  text-align:center;
-  transition:all 0.3s cubic-bezier(.4,0,.2,1);
-}
-.style-tile:hover{
-  border-color:var(--gold);
-  background:rgba(var(--gold-rgb),0.08);
-  transform:translateY(-3px);
-}
-.style-icon{
-  font-size:1.8rem;margin-bottom:0.8rem;
-  filter:saturate(0.85);
-}
-.style-name{
-  font-family:var(--ff-display);
-  font-size:1.4rem;font-weight:300;
-  color:var(--white);
-  margin-bottom:0.35rem;
-}
-.style-desc{
-  font-size:0.7rem;letter-spacing:1.5px;text-transform:uppercase;
-  color:rgba(var(--text-rgb),0.5);
+.bundle-card.unavailable .bundle-action.notify-me:hover{
+  background:var(--gold);color:var(--noir);border-color:var(--gold);
 }
 
-/* ── KIT REVEAL (step 4) ── */
-#step4 .step-title{text-align:left;width:100%}
-#step4 .step-sub{text-align:left;width:100%;margin-bottom:2.5rem}
-
-.kit-layout{
-  display:grid;
-  grid-template-columns:1.2fr 1fr;
-  gap:3rem;width:100%;
-  align-items:start;
+/* ── NOTIFY-ME MODAL ── */
+.notify-modal{
+  display:none;position:fixed;inset:0;z-index:200;
+  background:rgba(0,0,0,0.7);
+  backdrop-filter:blur(8px);
+  -webkit-backdrop-filter:blur(8px);
+  align-items:center;justify-content:center;
+  padding:1.5rem;animation:fadeIn 0.25s ease;
 }
-@media(max-width:780px){.kit-layout{grid-template-columns:1fr;gap:2rem}}
-
-.kit-items{
-  display:flex;flex-direction:column;gap:0.65rem;
+.notify-modal.show{display:flex}
+@keyframes fadeIn{from{opacity:0}to{opacity:1}}
+.notify-box{
+  background:var(--noir);
+  border:1px solid rgba(var(--gold-rgb),0.3);
+  max-width:440px;width:100%;
+  padding:2rem 2rem 1.75rem;
+  position:relative;
+  animation:notifyRise 0.4s cubic-bezier(.4,0,.2,1);
+  box-shadow:0 30px 80px rgba(0,0,0,0.5);
 }
-.kit-gender-toggle{
-  display:flex;gap:6px;margin-bottom:1.2rem;
-  border:1px solid rgba(var(--gold-rgb),0.2);
-  padding:3px;width:fit-content;
+@keyframes notifyRise{from{opacity:0;transform:translateY(20px) scale(0.97)}to{opacity:1;transform:none}}
+.notify-close{
+  position:absolute;top:0.9rem;right:0.9rem;
+  width:30px;height:30px;border-radius:50%;
+  border:1px solid rgba(var(--gold-rgb),0.25);
+  color:rgba(var(--text-rgb),0.55);
+  display:flex;align-items:center;justify-content:center;
+  font-size:0.85rem;font-family:inherit;
+  background:transparent;transition:all 0.25s;cursor:pointer;
 }
-.kit-gender-btn{
-  padding:0.45rem 1.1rem;
-  font-size:0.62rem;letter-spacing:2.5px;text-transform:uppercase;
-  color:rgba(var(--text-rgb),0.6);
-  transition:all 0.25s;
-}
-.kit-gender-btn.active{
-  background:var(--gold);
-  color:var(--noir);
-  font-weight:500;
-}
-.kit-item{
-  display:flex;align-items:center;
-  padding:0.95rem 1.1rem;
-  background:rgba(var(--gold-rgb),0.04);
-  border:1px solid rgba(var(--gold-rgb),0.12);
-  gap:1rem;
-  transition:all 0.25s;
-}
-.kit-item:hover{
-  border-color:rgba(var(--gold-rgb),0.32);
-  background:rgba(var(--gold-rgb),0.07);
-}
-.kit-item-icon{font-size:1.6rem;flex-shrink:0;width:42px;text-align:center}
-.kit-item-body{flex:1}
-.kit-item-name{
-  font-size:0.92rem;color:var(--white);
-  margin-bottom:2px;
-}
-.kit-item-tag{
-  font-size:0.6rem;letter-spacing:1.8px;text-transform:uppercase;
-  color:rgba(var(--text-rgb),0.42);
-}
-.kit-item-price{
-  font-family:var(--ff-display);
-  font-size:1.1rem;color:var(--gold);
-  font-weight:400;flex-shrink:0;
-}
-.kit-item-remove{
-  width:22px;height:22px;
-  color:rgba(var(--text-rgb),0.32);
-  font-size:1rem;flex-shrink:0;
-  transition:color 0.2s;
-}
-.kit-item-remove:hover{color:var(--gold)}
-
-.kit-total-row{
-  display:flex;align-items:baseline;justify-content:space-between;
-  padding:1.3rem 1.1rem 0;
-  border-top:1px solid rgba(var(--gold-rgb),0.22);
-  margin-top:0.5rem;
-}
-.kit-total-label{
-  font-size:0.7rem;letter-spacing:3px;text-transform:uppercase;
-  color:rgba(var(--text-rgb),0.6);
-}
-.kit-total-amount{
-  font-family:var(--ff-display);
-  font-size:2.4rem;font-weight:300;
-  color:var(--gold);letter-spacing:-0.5px;
-}
-.kit-shop-link{
-  margin-top:1.4rem;padding-top:1rem;
-  border-top:1px solid rgba(var(--gold-rgb),0.12);
-  font-size:0.62rem;letter-spacing:2px;text-transform:uppercase;
-  color:rgba(var(--text-rgb),0.45);
-  text-align:center;
-}
-.kit-shop-link a{color:var(--gold);text-decoration:none}
-.kit-shop-link a:hover{text-decoration:underline}
-
-/* Right side: hotel + reserve */
-.reserve-card{
-  background:linear-gradient(180deg, rgba(var(--gold-rgb),0.04), rgba(var(--gold-rgb),0.01));
-  border:1px solid rgba(var(--gold-rgb),0.22);
-  padding:2rem 1.8rem;
-}
-.reserve-section{margin-bottom:1.4rem}
-.reserve-section:last-child{margin-bottom:0}
-.reserve-label{
-  font-size:0.6rem;letter-spacing:3px;text-transform:uppercase;
-  color:var(--gold);margin-bottom:0.7rem;
+.notify-close:hover{color:var(--gold);border-color:var(--gold)}
+.notify-eyebrow{
+  font-size:0.62rem;letter-spacing:3px;text-transform:uppercase;
+  color:var(--gold);margin-bottom:0.8rem;
   display:flex;align-items:center;gap:0.5rem;
 }
-.reserve-summary{
-  font-size:0.92rem;color:var(--white);
-  line-height:1.7;
+.notify-eyebrow::before{
+  content:'';width:5px;height:5px;background:var(--gold);
+  transform:rotate(45deg);box-shadow:0 0 6px rgba(var(--gold-rgb),0.6);
 }
-.reserve-summary em{color:var(--gold);font-style:normal;font-weight:400}
-
-.hotel-select, .hotel-input{
+.notify-bundle-row{
+  display:flex;gap:1rem;align-items:center;
+  padding:0.85rem;
+  background:rgba(var(--gold-rgb),0.05);
+  border:1px solid rgba(var(--gold-rgb),0.15);
+  margin-bottom:1.4rem;
+}
+.notify-bundle-thumb{
+  width:62px;height:62px;object-fit:cover;
+  flex-shrink:0;background:rgba(0,0,0,0.1);
+}
+.notify-bundle-info{flex:1;min-width:0}
+.notify-bundle-name{
+  font-family:var(--ff-display);font-size:1.05rem;font-weight:400;
+  color:var(--white);line-height:1.25;margin-bottom:3px;
+}
+.notify-bundle-price{
+  font-size:0.72rem;color:var(--gold);letter-spacing:1.5px;
+}
+.notify-title{
+  font-family:var(--ff-display);
+  font-size:1.65rem;font-weight:300;
+  color:var(--white);line-height:1.15;
+  letter-spacing:-0.4px;margin-bottom:0.55rem;
+}
+.notify-title em{color:var(--gold);font-style:italic}
+.notify-sub{
+  font-size:0.88rem;color:rgba(var(--text-rgb),0.62);
+  line-height:1.7;margin-bottom:1.4rem;
+}
+.notify-input{
   width:100%;
   background:rgba(var(--bg-rgb),0.4);
   border:1px solid rgba(var(--gold-rgb),0.25);
   color:var(--white);
-  padding:0.85rem 1rem;
-  font-size:0.94rem;
-  font-family:var(--ff-body);
+  padding:0.95rem 1rem;
+  font-size:0.95rem;font-family:var(--ff-body);
+  margin-bottom:0.85rem;
 }
-.hotel-select:focus, .hotel-input:focus{
-  border-color:var(--gold);
-}
-.hotel-input{margin-top:0.55rem;display:none}
-.hotel-input.show{display:block}
-.hotel-select option{background:var(--noir-2);color:var(--white)}
-:root[data-theme="light"] .hotel-select option{background:#FAF7F0;color:#0D1525}
-
-.email-input{
+.notify-input:focus{border-color:var(--gold)}
+.notify-cta{
   width:100%;
-  background:rgba(var(--bg-rgb),0.4);
-  border:1px solid rgba(var(--gold-rgb),0.25);
-  color:var(--white);
-  padding:0.85rem 1rem;
-  font-size:0.94rem;
-  font-family:var(--ff-body);
-}
-.email-input:focus{border-color:var(--gold)}
-
-.reserve-cta{
-  width:100%;
-  margin-top:0.4rem;
   background:linear-gradient(135deg,var(--gold) 0%,#d8b06a 50%,#b8893e 100%);
   color:var(--noir);
-  padding:1.2rem 1.5rem;
-  font-size:0.82rem;font-weight:600;
-  letter-spacing:3.5px;text-transform:uppercase;
-  box-shadow:0 8px 24px rgba(var(--gold-rgb),0.28), inset 0 1px 0 rgba(255,255,255,0.3);
-  transition:all 0.3s cubic-bezier(.4,0,.2,1);
-}
-.reserve-cta:hover{
-  transform:translateY(-2px);
-  box-shadow:0 16px 38px rgba(var(--gold-rgb),0.42), inset 0 1px 0 rgba(255,255,255,0.4);
-  letter-spacing:4.5px;
-}
-.reserve-cta:disabled{
-  opacity:0.4;cursor:not-allowed;transform:none;
-}
-
-.reserve-trust{
-  margin-top:0.85rem;
-  font-size:0.6rem;color:rgba(var(--text-rgb),0.4);
-  text-align:center;letter-spacing:1.5px;
-  line-height:1.6;
-}
-
-/* Step nav (Back/Next) */
-.step-nav{
-  display:flex;align-items:center;gap:1rem;
-  margin-top:1.5rem;
-}
-.btn-back{
-  font-size:0.7rem;letter-spacing:2.5px;text-transform:uppercase;
-  color:rgba(var(--text-rgb),0.5);
-  padding:0.85rem 1.5rem;
-  border:1px solid rgba(var(--text-rgb),0.18);
-  transition:all 0.25s;
-}
-.btn-back:hover{color:var(--gold);border-color:rgba(var(--gold-rgb),0.4)}
-
-.btn-next{
-  background:linear-gradient(135deg,var(--gold) 0%,#d8b06a 50%,#b8893e 100%);
-  color:var(--noir);
-  padding:1rem 2.4rem;
+  padding:1rem 1.5rem;
   font-size:0.74rem;font-weight:600;
   letter-spacing:3px;text-transform:uppercase;
-  box-shadow:0 6px 20px rgba(var(--gold-rgb),0.22);
+  font-family:var(--ff-body);
+  box-shadow:0 6px 20px rgba(var(--gold-rgb),0.25);
   transition:all 0.3s cubic-bezier(.4,0,.2,1);
 }
-.btn-next:hover{
+.notify-cta:hover:not(:disabled){
   transform:translateY(-2px);
-  box-shadow:0 12px 28px rgba(var(--gold-rgb),0.32);
+  box-shadow:0 14px 32px rgba(var(--gold-rgb),0.38);
+  letter-spacing:4px;
 }
+.notify-cta:disabled{opacity:0.6;cursor:not-allowed}
+.notify-success{
+  display:none;text-align:center;padding:1.5rem 0 0.5rem;
+  animation:fadeUp 0.5s cubic-bezier(.4,0,.2,1);
+}
+.notify-success.show{display:block}
+.notify-success-icon{
+  font-size:2.4rem;color:var(--gold);margin-bottom:0.8rem;
+}
+.notify-success-text{
+  font-family:var(--ff-display);font-size:1.4rem;font-weight:300;
+  color:var(--white);margin-bottom:0.5rem;letter-spacing:-0.2px;
+}
+.notify-success-sub{
+  font-size:0.85rem;color:rgba(var(--text-rgb),0.6);
+  line-height:1.7;margin-bottom:1.4rem;
+}
+.notify-success-btn{
+  font-size:0.65rem;letter-spacing:2.5px;text-transform:uppercase;
+  color:rgba(var(--text-rgb),0.55);
+  padding:0.65rem 1.4rem;border:1px solid rgba(var(--text-rgb),0.18);
+  background:transparent;cursor:pointer;font-family:var(--ff-body);
+}
+.notify-success-btn:hover{color:var(--gold);border-color:var(--gold)}
+
+/* Quantity stepper on selected */
+.bundle-qty{display:none;align-items:center;gap:0.5rem;font-size:0.85rem;}
+.bundle-card.selected .bundle-qty{display:inline-flex}
+.bundle-card.selected .bundle-action{display:none}
+.bundle-qty-btn{width:26px;height:26px;border-radius:50%;background:rgba(var(--gold-rgb),0.15);color:var(--gold);font-size:1rem;line-height:1;display:flex;align-items:center;justify-content:center;cursor:pointer;font-family:var(--ff-body);transition:all 0.2s;border:none;}
+.bundle-qty-btn:hover{background:var(--gold);color:var(--noir);}
+.bundle-qty-val{font-family:var(--ff-display);font-size:1rem;color:var(--white);font-weight:500;min-width:18px;text-align:center;}
+.bundle-qty-remove{margin-left:0.4rem;font-size:0.55rem;letter-spacing:2px;text-transform:uppercase;color:rgba(var(--text-rgb),0.45);cursor:pointer;background:transparent;border:none;font-family:var(--ff-body);}
+.bundle-qty-remove:hover{color:var(--red)}
+
+/* Sticky cart bar */
+.cart-bar{position:fixed;bottom:0;left:0;right:0;z-index:50;background:linear-gradient(180deg, rgba(var(--bg-rgb),0.92), rgba(var(--bg-rgb),0.99));backdrop-filter:blur(20px);-webkit-backdrop-filter:blur(20px);border-top:1px solid var(--gold);padding:0.95rem 2rem;display:none;align-items:center;justify-content:space-between;gap:1rem;flex-wrap:wrap;box-shadow:0 -12px 30px rgba(0,0,0,0.3);transform:translateY(100%);transition:transform 0.4s cubic-bezier(.4,0,.2,1);}
+.cart-bar.show{display:flex;transform:translateY(0);}
+.cart-summary{display:flex;align-items:baseline;gap:1rem;flex-wrap:wrap;}
+.cart-count{font-family:var(--ff-display);font-size:1.4rem;color:var(--gold);font-weight:400;}
+.cart-total{font-family:var(--ff-display);font-size:1.6rem;color:var(--white);font-weight:400;letter-spacing:-0.3px;}
+.cart-divider{color:rgba(var(--text-rgb),0.3);}
+.cart-continue{background:linear-gradient(135deg,var(--gold) 0%,#d8b06a 50%,#b8893e 100%);color:var(--noir);padding:0.95rem 2.2rem;font-size:0.74rem;font-weight:600;letter-spacing:3px;text-transform:uppercase;transition:all 0.3s cubic-bezier(.4,0,.2,1);box-shadow:0 6px 18px rgba(var(--gold-rgb),0.3);font-family:var(--ff-body);}
+.cart-continue:hover{transform:translateY(-2px);box-shadow:0 14px 30px rgba(var(--gold-rgb),0.4);letter-spacing:4px;}
+
+/* CONFIRM step */
+#stepC2 .step-title{text-align:left;width:100%;font-size:clamp(2.2rem,4.5vw,3.5rem);}
+#stepC2 .step-sub{text-align:left;width:100%;margin-bottom:2.5rem;}
+
+.confirm-layout{display:grid;grid-template-columns:1.1fr 1fr;gap:3rem;width:100%;align-items:start;}
+@media(max-width:780px){.confirm-layout{grid-template-columns:1fr;gap:1.5rem}}
+
+.confirm-bundles{display:flex;flex-direction:column;gap:0.7rem;}
+.confirm-bundle{display:flex;align-items:center;gap:0.9rem;padding:0.85rem;background:rgba(var(--gold-rgb),0.04);border:1px solid rgba(var(--gold-rgb),0.15);}
+.confirm-bundle-thumb{width:56px;height:56px;object-fit:cover;flex-shrink:0;background:rgba(0,0,0,0.1);}
+.confirm-bundle-body{flex:1;min-width:0;}
+.confirm-bundle-name{font-size:0.85rem;color:var(--white);line-height:1.3;margin-bottom:2px;}
+.confirm-bundle-qty{font-size:0.62rem;letter-spacing:1.5px;text-transform:uppercase;color:var(--gold);}
+.confirm-bundle-price{font-family:var(--ff-display);font-size:1.05rem;color:var(--gold);flex-shrink:0;}
+.confirm-total-row{display:flex;align-items:baseline;justify-content:space-between;padding-top:1.2rem;margin-top:0.4rem;border-top:1px solid rgba(var(--gold-rgb),0.22);}
+.confirm-total-label{font-size:0.7rem;letter-spacing:3px;text-transform:uppercase;color:rgba(var(--text-rgb),0.6);}
+.confirm-total-amount{font-family:var(--ff-display);font-size:2.4rem;font-weight:300;color:var(--gold);letter-spacing:-0.5px;}
+
+/* Reserve card (right column) */
+.reserve-card{background:linear-gradient(180deg, rgba(var(--gold-rgb),0.04), rgba(var(--gold-rgb),0.01));border:1px solid rgba(var(--gold-rgb),0.22);padding:2rem 1.8rem;}
+.reserve-section{margin-bottom:1.4rem;}
+.reserve-section:last-of-type{margin-bottom:0.8rem}
+.reserve-label{font-size:0.6rem;letter-spacing:3px;text-transform:uppercase;color:var(--gold);margin-bottom:0.7rem;display:flex;align-items:center;gap:0.5rem;}
+.reserve-label::before{content:'';width:5px;height:5px;background:var(--gold);transform:rotate(45deg);box-shadow:0 0 6px rgba(var(--gold-rgb),0.6);}
+.reserve-summary{font-size:0.92rem;color:var(--white);line-height:1.7;}
+.reserve-summary em{color:var(--gold);font-style:normal;font-weight:400;}
+
+.hotel-select, .hotel-input, .email-input{width:100%;background:rgba(var(--bg-rgb),0.4);border:1px solid rgba(var(--gold-rgb),0.25);color:var(--white);padding:0.85rem 1rem;font-size:0.94rem;font-family:var(--ff-body);}
+.hotel-select:focus, .hotel-input:focus, .email-input:focus{border-color:var(--gold);}
+.hotel-input{margin-top:0.55rem;display:none;}
+.hotel-input.show{display:block}
+.hotel-select option{background:var(--noir-2);color:var(--white);}
+:root[data-theme="light"] .hotel-select option{background:#FAF7F0;color:#0D1525;}
+
+.reserve-cta{width:100%;margin-top:0.4rem;background:linear-gradient(135deg,var(--gold) 0%,#d8b06a 50%,#b8893e 100%);color:var(--noir);padding:1.2rem 1.5rem;font-size:0.82rem;font-weight:600;letter-spacing:3.5px;text-transform:uppercase;box-shadow:0 8px 24px rgba(var(--gold-rgb),0.28), inset 0 1px 0 rgba(255,255,255,0.3);transition:all 0.3s cubic-bezier(.4,0,.2,1);}
+.reserve-cta:hover:not(:disabled){transform:translateY(-2px);box-shadow:0 16px 38px rgba(var(--gold-rgb),0.42), inset 0 1px 0 rgba(255,255,255,0.4);letter-spacing:4.5px;}
+.reserve-cta:disabled{opacity:0.4;cursor:not-allowed;transform:none;}
+.reserve-trust{margin-top:0.85rem;font-size:0.6rem;color:rgba(var(--text-rgb),0.4);text-align:center;letter-spacing:1.5px;line-height:1.6;}
+
+/* Step nav */
+.step-nav{display:flex;align-items:center;gap:1rem;margin-top:1.5rem;}
+.btn-back{font-size:0.7rem;letter-spacing:2.5px;text-transform:uppercase;color:rgba(var(--text-rgb),0.5);padding:0.85rem 1.5rem;border:1px solid rgba(var(--text-rgb),0.18);transition:all 0.25s;}
+.btn-back:hover{color:var(--gold);border-color:rgba(var(--gold-rgb),0.4)}
+.btn-next{background:linear-gradient(135deg,var(--gold) 0%,#d8b06a 50%,#b8893e 100%);color:var(--noir);padding:1rem 2.4rem;font-size:0.74rem;font-weight:600;letter-spacing:3px;text-transform:uppercase;box-shadow:0 6px 20px rgba(var(--gold-rgb),0.22);transition:all 0.3s cubic-bezier(.4,0,.2,1);}
+.btn-next:hover{transform:translateY(-2px);box-shadow:0 12px 28px rgba(var(--gold-rgb),0.32);}
 .btn-next:disabled{opacity:0.4;cursor:not-allowed;transform:none}
 
-/* ── HOW IT WORKS strip (after hero) ── */
-.how-strip{
-  margin-top:4rem;padding:3.5rem 1.5rem;
-  border-top:1px solid rgba(var(--gold-rgb),0.1);
-  background:rgba(var(--gold-rgb),0.02);
-}
-.how-inner{
-  max-width:1100px;margin:0 auto;
-  display:grid;grid-template-columns:repeat(3,1fr);gap:2.5rem;
-}
+/* HOW IT WORKS strip */
+.how-strip{margin-top:4rem;padding:3.5rem 1.5rem;border-top:1px solid rgba(var(--gold-rgb),0.1);background:rgba(var(--gold-rgb),0.02);}
+.how-inner{max-width:1100px;margin:0 auto;display:grid;grid-template-columns:repeat(3,1fr);gap:2.5rem;}
 @media(max-width:720px){.how-inner{grid-template-columns:1fr;gap:1.8rem}}
 .how-step{text-align:center}
-.how-step-num{
-  font-family:var(--ff-display);
-  font-size:0.85rem;letter-spacing:3px;
-  color:var(--gold);margin-bottom:0.6rem;
-}
-.how-step-title{
-  font-family:var(--ff-display);
-  font-size:1.6rem;font-weight:300;
-  color:var(--white);margin-bottom:0.5rem;
-}
-.how-step-desc{
-  font-size:0.88rem;color:rgba(var(--text-rgb),0.6);
-  line-height:1.8;max-width:280px;margin:0 auto;
-}
+.how-step-num{font-family:var(--ff-display);font-size:0.85rem;letter-spacing:3px;color:var(--gold);margin-bottom:0.6rem;}
+.how-step-title{font-family:var(--ff-display);font-size:1.6rem;font-weight:300;color:var(--white);margin-bottom:0.5rem;}
+.how-step-desc{font-size:0.88rem;color:rgba(var(--text-rgb),0.6);line-height:1.8;max-width:280px;margin:0 auto;}
 
-/* ── WAITLIST branch ── */
-.waitlist-form{
-  max-width:480px;width:100%;
-  display:flex;flex-direction:column;gap:1rem;
-}
-
-/* ── CONFIRMATION ── */
-.confirm-icon{
-  font-size:3rem;color:var(--gold);
-  margin-bottom:1.2rem;
-  animation:pulse 2s ease-in-out infinite;
-}
+/* Waitlist + confirmation */
+.waitlist-form{max-width:480px;width:100%;display:flex;flex-direction:column;gap:1rem;}
+.confirm-icon{font-size:3rem;color:var(--gold);margin-bottom:1.2rem;animation:pulse 2s ease-in-out infinite;}
 @keyframes pulse{0%,100%{opacity:1}50%{opacity:0.6}}
 
-/* ── FOOTER ── */
-.footer{
-  margin-top:5rem;padding:2.5rem 1.5rem 1.5rem;
-  border-top:1px solid rgba(var(--gold-rgb),0.1);
-  text-align:center;
-}
-.footer-link{
-  font-size:0.66rem;letter-spacing:2.5px;text-transform:uppercase;
-  color:rgba(var(--text-rgb),0.5);
-  text-decoration:none;
-  transition:color 0.25s;
-}
+/* Footer */
+.footer{margin-top:5rem;padding:2.5rem 1.5rem 1.5rem;border-top:1px solid rgba(var(--gold-rgb),0.1);text-align:center;}
+.footer-link{font-size:0.66rem;letter-spacing:2.5px;text-transform:uppercase;color:rgba(var(--text-rgb),0.5);text-decoration:none;transition:color 0.25s;}
 .footer-link:hover{color:var(--gold)}
-.footer-credit{
-  margin-top:1rem;font-size:0.6rem;letter-spacing:1.5px;
-  color:rgba(var(--text-rgb),0.32);
-}
+.footer-credit{margin-top:1rem;font-size:0.6rem;letter-spacing:1.5px;color:rgba(var(--text-rgb),0.32);}
 
-/* Mobile tweaks */
+/* Mobile */
 @media(max-width:600px){
   .nav{padding:0.85rem 1.25rem}
   .nav-right{gap:0.85rem}
   .nav-link.hide-mobile{display:none}
-  .stage{padding-top:5rem;padding-bottom:3rem}
+  .stage{padding-top:5rem;padding-bottom:7rem}
   .step{padding:0 1.25rem}
   .step-title{font-size:clamp(2.1rem,8vw,3.2rem) !important}
   .city-grid{gap:0.7rem}
   .city-tile{padding:1.6rem 1.2rem}
-  .city-name{font-size:1.5rem}
-  .style-grid{gap:0.6rem}
-  .style-tile{padding:1.4rem 0.9rem}
-  .kit-layout{gap:1.5rem}
+  .bundle-grid{grid-template-columns:1fr 1fr;gap:0.85rem}
+  .bundle-body{padding:0.9rem}
+  .bundle-title{font-size:0.92rem}
+  .bundle-tagline{font-size:0.66rem;line-height:1.55}
+  .bundle-price{font-size:1.15rem}
   .reserve-card{padding:1.5rem 1.2rem}
   .progress{margin-bottom:2rem}
+  .cart-bar{padding:0.8rem 1.2rem}
+  .cart-summary{gap:0.5rem;flex-direction:column;align-items:flex-start;}
+  .cart-continue{width:100%}
 }
 </style>
 </head>
@@ -637,7 +427,6 @@ input,select,textarea{outline:none}
 
 <main class="stage">
 
-  <!-- Progress indicator -->
   <div class="progress" id="progress">
     <span id="progressLabel">Step 1 of 4</span>
     <div class="progress-step active"></div>
@@ -646,15 +435,11 @@ input,select,textarea{outline:none}
     <div class="progress-step"></div>
   </div>
 
-  <!-- STEP 0: HERO + Begin -->
+  <!-- STEP 0: HERO -->
   <div class="step active" id="step0">
-    <div class="eyebrow">
-      <span class="eyebrow-diamond"></span>
-      <span class="eyebrow-line"></span>
-      <span>Arrive to everything</span>
-    </div>
+    <div class="eyebrow"><span class="eyebrow-diamond"></span><span class="eyebrow-line"></span><span>Arrive to everything</span></div>
     <h1 class="step-title">Arrive to your hotel.<br><em>Everything waiting.</em></h1>
-    <p class="step-sub">No bags. No lines. We curate, pack, and deliver your travel essentials to your hotel before you arrive. Same-day delivery in Tampa &amp; Orlando.</p>
+    <p class="step-sub">Pick a curated bundle — clothing, toiletries, wellness essentials — and we deliver it to your hotel before you arrive. Same-day in Tampa &amp; Orlando, powered by Valet By Nuor.</p>
     <div class="trust-strip">
       <span class="trust-item"><span class="trust-dot"></span>Same-day delivery</span>
       <span class="trust-item"><span class="trust-dot"></span>Tampa &amp; Orlando</span>
@@ -663,366 +448,332 @@ input,select,textarea{outline:none}
     <button class="start-cta" onclick="goToStep(1)">Reserve my arrival</button>
   </div>
 
-  <!-- STEP 1: City selection -->
+  <!-- STEP 1: City -->
   <div class="step" id="step1">
-    <div class="eyebrow">
-      <span class="eyebrow-diamond"></span>
-      <span class="eyebrow-line"></span>
-      <span>Step 1 — Destination</span>
-    </div>
+    <div class="eyebrow"><span class="eyebrow-diamond"></span><span class="eyebrow-line"></span><span>Step 1 — Destination</span></div>
     <h1 class="step-title">Where are you <em>arriving?</em></h1>
-    <p class="step-sub">We deliver same-day across Tampa &amp; Orlando, with more cities rolling out city by city.</p>
-
+    <p class="step-sub">We deliver same-day across Tampa &amp; Orlando. More cities rolling out city by city.</p>
     <div class="city-grid">
-      <button class="city-tile" onclick="pickCity('Tampa')">
-        <div class="city-name">Tampa</div>
-        <div class="city-tag">Same-Day · FL</div>
-      </button>
-      <button class="city-tile" onclick="pickCity('Orlando')">
-        <div class="city-name">Orlando</div>
-        <div class="city-tag">Same-Day · FL</div>
-      </button>
-      <button class="city-tile other" onclick="pickCity('OTHER')">
-        <div class="city-name">Somewhere else</div>
-        <div class="city-tag">Join the waitlist</div>
-      </button>
+      <button class="city-tile" onclick="pickCity('Tampa')"><div class="city-name">Tampa</div><div class="city-tag">Same-Day · FL</div></button>
+      <button class="city-tile" onclick="pickCity('Orlando')"><div class="city-name">Orlando</div><div class="city-tag">Same-Day · FL</div></button>
+      <button class="city-tile other" onclick="pickCity('OTHER')"><div class="city-name">Somewhere else</div><div class="city-tag">Join the waitlist</div></button>
     </div>
-
-    <div class="step-nav">
-      <button class="btn-back" onclick="goToStep(0)">← Back</button>
-    </div>
+    <div class="step-nav"><button class="btn-back" onclick="goToStep(0)">← Back</button></div>
   </div>
 
   <!-- STEP 2: Dates -->
   <div class="step" id="step2">
-    <div class="eyebrow">
-      <span class="eyebrow-diamond"></span>
-      <span class="eyebrow-line"></span>
-      <span>Step 2 — When</span>
-    </div>
+    <div class="eyebrow"><span class="eyebrow-diamond"></span><span class="eyebrow-line"></span><span>Step 2 — When</span></div>
     <h1 class="step-title">When are you <em>arriving?</em></h1>
-    <p class="step-sub">Pick your arrival and departure dates. We need at least 24 hours notice for same-day setup.</p>
-
+    <p class="step-sub">Pick your arrival and departure dates. We need at least 24 hours for same-day setup.</p>
     <div class="date-row">
-      <div class="date-field">
-        <label class="date-label">Arrival</label>
-        <input type="date" class="date-input" id="dateArrive" onchange="updateDates()">
-      </div>
-      <div class="date-field">
-        <label class="date-label">Departure</label>
-        <input type="date" class="date-input" id="dateDepart" onchange="updateDates()">
-      </div>
+      <div class="date-field"><label class="date-label">Arrival</label><input type="date" class="date-input" id="dateArrive" onchange="updateDates()"></div>
+      <div class="date-field"><label class="date-label">Departure</label><input type="date" class="date-input" id="dateDepart" onchange="updateDates()"></div>
     </div>
-
     <div class="step-nav">
       <button class="btn-back" onclick="goToStep(1)">← Back</button>
       <button class="btn-next" id="nextDates" onclick="goToStep(3)" disabled>Continue →</button>
     </div>
   </div>
 
-  <!-- STEP 3: Style -->
+  <!-- STEP 3: BUNDLE PICKER -->
   <div class="step" id="step3">
-    <div class="eyebrow">
-      <span class="eyebrow-diamond"></span>
-      <span class="eyebrow-line"></span>
-      <span>Step 3 — Your trip</span>
-    </div>
-    <h1 class="step-title">What kind of trip is it?</h1>
-    <p class="step-sub">We'll curate a kit to match. You can adjust anything on the next screen.</p>
+    <div class="eyebrow"><span class="eyebrow-diamond"></span><span class="eyebrow-line"></span><span>Step 3 — Choose your bundles</span></div>
+    <h1 class="step-title">Pick your <em>bundle(s).</em></h1>
+    <p class="step-sub">Each bundle is curated by Valet By Nuor. Add one for yourself, or multiple for everyone traveling. You can adjust quantities below.</p>
 
-    <div class="style-grid">
-      <button class="style-tile" onclick="pickStyle('luxury')">
-        <div class="style-icon">✦</div>
-        <div class="style-name">Luxury</div>
-        <div class="style-desc">Curated · 7-day</div>
-      </button>
-      <button class="style-tile" onclick="pickStyle('leisure')">
-        <div class="style-icon">◇</div>
-        <div class="style-name">Leisure</div>
-        <div class="style-desc">Beach · Relaxed</div>
-      </button>
-      <button class="style-tile" onclick="pickStyle('business')">
-        <div class="style-icon">◆</div>
-        <div class="style-name">Business</div>
-        <div class="style-desc">Sharp · Efficient</div>
-      </button>
-      <button class="style-tile" onclick="pickStyle('wellness')">
-        <div class="style-icon">◈</div>
-        <div class="style-name">Wellness</div>
-        <div class="style-desc">Recovery · Calm</div>
-      </button>
+    <div class="bundle-filter" id="bundleFilter">
+      <button class="bundle-filter-btn active" data-filter="all" onclick="setBundleFilter('all', this)">All</button>
+      <button class="bundle-filter-btn" data-filter="mens" onclick="setBundleFilter('mens', this)">Men's</button>
+      <button class="bundle-filter-btn" data-filter="womens" onclick="setBundleFilter('womens', this)">Women's</button>
+      <button class="bundle-filter-btn" data-filter="wellness" onclick="setBundleFilter('wellness', this)">Wellness</button>
     </div>
 
-    <div class="step-nav">
-      <button class="btn-back" onclick="goToStep(2)">← Back</button>
-    </div>
+    <div class="bundle-grid" id="bundleGrid"></div>
+
+    <div class="step-nav"><button class="btn-back" onclick="goToStep(2)">← Back</button></div>
   </div>
 
-  <!-- STEP 4: Kit reveal + Reserve -->
-  <div class="step" id="step4">
-    <div class="eyebrow">
-      <span class="eyebrow-diamond"></span>
-      <span class="eyebrow-line"></span>
-      <span>Step 4 — Your arrival</span>
-    </div>
-    <h1 class="step-title">Here's what's <em>waiting for you.</em></h1>
-    <p class="step-sub" id="step4Sub">A curated kit, delivered to your hotel before you land. Remove anything you don't need.</p>
+  <!-- STEP 4: CONFIRM (Cart + Hotel + Email + Reserve) -->
+  <div class="step" id="stepC2">
+    <div class="eyebrow"><span class="eyebrow-diamond"></span><span class="eyebrow-line"></span><span>Step 4 — Confirm</span></div>
+    <h1 class="step-title">Review and <em>reserve.</em></h1>
+    <p class="step-sub">A confirmation will be sent within 24 hours with your final invoice. No charge today.</p>
 
-    <div class="kit-layout">
-      <div class="kit-side">
-        <div class="kit-gender-toggle">
-          <button class="kit-gender-btn active" onclick="setGender('mens')">His</button>
-          <button class="kit-gender-btn" onclick="setGender('womens')">Hers</button>
-          <button class="kit-gender-btn" onclick="setGender('both')">Both</button>
-        </div>
-        <div class="kit-items" id="kitItems"></div>
-        <div class="kit-total-row">
-          <div class="kit-total-label">Kit Total</div>
-          <div class="kit-total-amount" id="kitTotal">$0</div>
-        </div>
-        <div class="kit-shop-link">
-          Need something specific? <a href="https://valetbynuor.com" target="_blank" rel="noopener">Browse the full Valet By Nuor catalog ↗</a>
+    <div class="confirm-layout">
+      <div>
+        <div class="confirm-bundles" id="confirmBundles"></div>
+        <div class="confirm-total-row">
+          <div class="confirm-total-label">Total</div>
+          <div class="confirm-total-amount" id="confirmTotal">$0</div>
         </div>
       </div>
 
       <div class="reserve-card">
         <div class="reserve-section">
-          <div class="reserve-label"><span class="eyebrow-diamond" style="width:5px;height:5px"></span>Your arrival</div>
+          <div class="reserve-label">Your arrival</div>
           <div class="reserve-summary" id="reserveSummary"></div>
         </div>
-
         <div class="reserve-section">
-          <div class="reserve-label"><span class="eyebrow-diamond" style="width:5px;height:5px"></span>Your hotel</div>
+          <div class="reserve-label">Your hotel</div>
           <select class="hotel-select" id="hotelSelect" onchange="updateHotelChoice()">
             <option value="">Select your hotel...</option>
           </select>
           <input type="text" class="hotel-input" id="hotelOther" placeholder="Enter your hotel name">
         </div>
-
         <div class="reserve-section">
-          <div class="reserve-label"><span class="eyebrow-diamond" style="width:5px;height:5px"></span>Your email</div>
+          <div class="reserve-label">Your email</div>
           <input type="email" class="email-input" id="reserveEmail" placeholder="you@example.com" required>
         </div>
-
         <button class="reserve-cta" id="reserveBtn" onclick="submitReserve()" disabled>Reserve my arrival</button>
-
         <div class="reserve-trust">No charge today · We'll confirm within 24 hours · No bag fees, no surprises</div>
       </div>
     </div>
 
-    <div class="step-nav">
-      <button class="btn-back" onclick="goToStep(3)">← Back</button>
-    </div>
+    <div class="step-nav"><button class="btn-back" onclick="goToStep(3)">← Back to bundles</button></div>
   </div>
 
-  <!-- STEP W: Waitlist (other city) -->
+  <!-- WAITLIST -->
   <div class="step" id="stepW">
-    <div class="eyebrow">
-      <span class="eyebrow-diamond"></span>
-      <span class="eyebrow-line"></span>
-      <span>Coming soon</span>
-    </div>
+    <div class="eyebrow"><span class="eyebrow-diamond"></span><span class="eyebrow-line"></span><span>Coming soon</span></div>
     <h1 class="step-title">We're rolling out <em>city by city.</em></h1>
-    <p class="step-sub">Tell us where you're headed and we'll let you know when BagFree comes to your city.</p>
-
+    <p class="step-sub">Tell us where you're headed and we'll notify you when BagFree comes to your city.</p>
     <form class="waitlist-form" onsubmit="submitWaitlist(event)">
       <input type="text" class="email-input" id="waitCity" placeholder="What city are you in?" required>
       <input type="email" class="email-input" id="waitEmail" placeholder="Your email" required>
       <button type="submit" class="reserve-cta">Notify me when you launch</button>
     </form>
-
-    <div class="step-nav">
-      <button class="btn-back" onclick="goToStep(1)">← Back</button>
-    </div>
+    <div class="step-nav"><button class="btn-back" onclick="goToStep(1)">← Back</button></div>
   </div>
 
-  <!-- STEP C: Confirmation -->
+  <!-- CONFIRMATION -->
   <div class="step" id="stepC">
     <div class="confirm-icon">✦</div>
     <h1 class="step-title">Your arrival is <em>reserved.</em></h1>
-    <p class="step-sub" id="confirmMsg">We've received your request. We'll confirm everything within 24 hours by email.</p>
-
+    <p class="step-sub" id="confirmMsg">We've received your request. We'll confirm within 24 hours by email.</p>
     <div class="step-nav">
       <a href="/" class="btn-back" style="text-decoration:none">← Back to BagFree</a>
       <a href="/departure-lounge.html" class="btn-next" style="text-decoration:none">Explore the Lounge →</a>
     </div>
   </div>
 
-  <!-- STEP H: How it works (visible on step 0 as a strip) -->
+  <!-- HOW IT WORKS strip (visible only on step 0) -->
   <div class="how-strip" id="howStrip">
     <div class="how-inner">
-      <div class="how-step">
-        <div class="how-step-num">— ONE —</div>
-        <div class="how-step-title">Tell us where</div>
-        <div class="how-step-desc">Your city, your dates, your trip style. Three quick questions.</div>
-      </div>
-      <div class="how-step">
-        <div class="how-step-num">— TWO —</div>
-        <div class="how-step-title">We curate &amp; deliver</div>
-        <div class="how-step-desc">A kit picked for your trip, delivered to your hotel before you arrive.</div>
-      </div>
-      <div class="how-step">
-        <div class="how-step-num">— THREE —</div>
-        <div class="how-step-title">Arrive to everything</div>
-        <div class="how-step-desc">Walk in. It's waiting. No bags, no lines, no friction.</div>
-      </div>
+      <div class="how-step"><div class="how-step-num">— ONE —</div><div class="how-step-title">Tell us where</div><div class="how-step-desc">Your city, your dates, your bundles. Four quick steps.</div></div>
+      <div class="how-step"><div class="how-step-num">— TWO —</div><div class="how-step-title">We deliver</div><div class="how-step-desc">Curated bundles from Valet By Nuor delivered to your hotel before you arrive.</div></div>
+      <div class="how-step"><div class="how-step-num">— THREE —</div><div class="how-step-title">Arrive to everything</div><div class="how-step-desc">Walk in. It's waiting. No bags, no lines, no friction.</div></div>
     </div>
   </div>
 
   <footer class="footer">
-    <a href="/" class="footer-link">BagFree.app</a>
-    &nbsp;·&nbsp;
-    <a href="https://valetbynuor.com" class="footer-link" target="_blank" rel="noopener">Valet By Nuor</a>
-    &nbsp;·&nbsp;
-    <a href="/departure-lounge.html" class="footer-link">Full Lounge ↗</a>
+    <a href="/" class="footer-link">BagFree.app</a>&nbsp;·&nbsp;<a href="https://valetbynuor.com" class="footer-link" target="_blank" rel="noopener">Valet By Nuor</a>&nbsp;·&nbsp;<a href="/departure-lounge.html" class="footer-link">Full Lounge ↗</a>
     <div class="footer-credit">Same-day delivery · Tampa &amp; Orlando · Powered by Valet By Nuor</div>
   </footer>
 
 </main>
 
+<!-- STICKY CART BAR -->
+<div class="cart-bar" id="cartBar">
+  <div class="cart-summary">
+    <span class="cart-count" id="cartCount">0 bundles</span>
+    <span class="cart-divider">·</span>
+    <span class="cart-total" id="cartTotal">$0</span>
+  </div>
+  <button class="cart-continue" onclick="goToConfirm()">Continue to reserve →</button>
+</div>
+
+<!-- NOTIFY-ME MODAL -->
+<div class="notify-modal" id="notifyModal" onclick="if(event.target===this)closeNotifyModal()" role="dialog" aria-modal="true" aria-labelledby="notifyTitle">
+  <div class="notify-box">
+    <button class="notify-close" onclick="closeNotifyModal()" aria-label="Close">✕</button>
+
+    <div id="notifyForm">
+      <div class="notify-eyebrow">Notify me when available</div>
+      <h2 class="notify-title" id="notifyTitle">Out of stock <em>— for now.</em></h2>
+      <p class="notify-sub">We'll email you the moment this bundle is back. No spam, no commitment.</p>
+
+      <div class="notify-bundle-row">
+        <img class="notify-bundle-thumb" id="notifyThumb" src="" alt="">
+        <div class="notify-bundle-info">
+          <div class="notify-bundle-name" id="notifyName"></div>
+          <div class="notify-bundle-price" id="notifyPrice"></div>
+        </div>
+      </div>
+
+      <form onsubmit="submitNotify(event)">
+        <input type="email" class="notify-input" id="notifyEmail" placeholder="you@example.com" required>
+        <button type="submit" class="notify-cta" id="notifySubmitBtn">Notify me when it's back</button>
+      </form>
+    </div>
+
+    <div class="notify-success" id="notifySuccess">
+      <div class="notify-success-icon">✦</div>
+      <div class="notify-success-text">You're on the list.</div>
+      <div class="notify-success-sub" id="notifySuccessSub">We'll email you the moment this bundle is restocked.</div>
+      <button class="notify-success-btn" onclick="closeNotifyModal()">Keep browsing</button>
+    </div>
+  </div>
+</div>
+
 <script>
-// ───────────────────────────────────────────────────────────────────────────
-// STATE
-// ───────────────────────────────────────────────────────────────────────────
 const state = {
   step: 0,
   city: null,
   dateArrive: null,
   dateDepart: null,
-  style: null,
-  gender: 'mens',
+  selectedBundles: {}, // {bundleId: quantity}
+  filter: 'all',
   hotel: null,
   email: null,
-  kit: []
 };
 
-// ───────────────────────────────────────────────────────────────────────────
-// HOTELS by city
-// ───────────────────────────────────────────────────────────────────────────
+// ─── HOTELS ───
 const HOTELS = {
-  Tampa: [
-    'The Tampa EDITION',
-    'JW Marriott Tampa Water Street',
-    'Tampa Marriott Water Street',
-    'Westin Tampa Waterside',
-    'Hyatt Regency Tampa',
-    'Le Méridien Tampa',
-    'Epicurean Hotel · Autograph Collection',
-    'Hotel Haya',
-    'The Don CeSar (St. Pete Beach)',
-    'Vinoy Renaissance St. Petersburg'
-  ],
-  Orlando: [
-    'Four Seasons Resort Orlando',
-    'The Ritz-Carlton Orlando, Grande Lakes',
-    'JW Marriott Orlando Grande Lakes',
-    'Waldorf Astoria Orlando',
-    'The Alfond Inn at Rollins',
-    'Grand Cypress Resort',
-    'Hyatt Regency Grand Cypress',
-    'Loews Sapphire Falls Resort',
-    'Rosen Shingle Creek',
-    'Walt Disney World Swan & Dolphin'
-  ]
+  Tampa: ['The Tampa EDITION','JW Marriott Tampa Water Street','Tampa Marriott Water Street','Westin Tampa Waterside','Hyatt Regency Tampa','Le Méridien Tampa','Epicurean Hotel · Autograph Collection','Hotel Haya','The Don CeSar (St. Pete Beach)','Vinoy Renaissance St. Petersburg'],
+  Orlando: ['Four Seasons Resort Orlando','The Ritz-Carlton Orlando, Grande Lakes','JW Marriott Orlando Grande Lakes','Waldorf Astoria Orlando','The Alfond Inn at Rollins','Grand Cypress Resort','Hyatt Regency Grand Cypress','Loews Sapphire Falls Resort','Rosen Shingle Creek','Walt Disney World Swan & Dolphin']
 };
 
-// ───────────────────────────────────────────────────────────────────────────
-// PRODUCT CATALOG (subset from Valet By Nuor)
-// ───────────────────────────────────────────────────────────────────────────
-const PRODUCTS = {
-  mens: [
-    {id:1, icon:'👔', name:"Men's 7-Day Travel Essentials", price:149, tag:'Bestseller'},
-    {id:2, icon:'🧴', name:"Stay Fresh Kit — Men's", price:19, tag:''},
-    {id:3, icon:'💼', name:"Men's Business Emergency Travel Kit", price:69, tag:''},
-    {id:4, icon:'🧳', name:"Men's Basic Emergency Travel Kit", price:45, tag:''},
-    {id:5, icon:'👔', name:"Men's Long-Sleeve Dress Shirt", price:44, tag:''},
-    {id:6, icon:'👕', name:"Men's Polo Shirt", price:32, tag:''},
-    {id:7, icon:'👖', name:"Men's Casual Chinos", price:49, tag:''},
-    {id:9, icon:'🩳', name:"Men's Casual Shorts", price:25, tag:''}
-  ],
-  womens: [
-    {id:17, icon:'👗', name:"Women's 7-Day Essentials Bundle", price:149, tag:'Bestseller'},
-    {id:18, icon:'💼', name:"Women's Business Emergency Travel Kit", price:69, tag:''},
-    {id:19, icon:'🧳', name:"Women's Basic Travel Kit", price:49, tag:''},
-    {id:20, icon:'🪥', name:"Women's Toiletry Stay Fresh Kit", price:39, tag:''},
-    {id:21, icon:'🌊', name:"Women's Beach Lounge Set", price:75, tag:''},
-    {id:22, icon:'👙', name:"Women's Swimwear Emergency Set", price:24, tag:''},
-    {id:23, icon:'🌙', name:"Women's Sleepwear", price:79, tag:''},
-    {id:26, icon:'🩳', name:"Women's Athletic Shorts", price:35, tag:''}
-  ],
-  wellness: [
-    {id:33, icon:'🛡️', name:"Travel Shield Wellness Pack", price:49, tag:'In Stock'},
-    {id:34, icon:'😴', name:"Sleep & Recovery Travel Kit", price:49, tag:'In Stock'}
-  ]
-};
-
-// Kit composition per style (returns array of product IDs for each gender)
-function buildKit(style, gender) {
-  const ids = {mens: [], womens: [], both: []};
-
-  if (style === 'luxury') {
-    ids.mens = [1, 33, 34, 2];
-    ids.womens = [17, 33, 34, 20];
-    ids.both = [1, 17, 33, 34, 2, 20];
-  } else if (style === 'leisure') {
-    ids.mens = [4, 6, 9, 2];
-    ids.womens = [21, 22, 20, 26];
-    ids.both = [21, 22, 4, 6, 20, 2];
-  } else if (style === 'business') {
-    ids.mens = [3, 5, 7, 2];
-    ids.womens = [18, 19, 20, 33];
-    ids.both = [3, 5, 7, 18, 19, 33];
-  } else { // wellness
-    ids.mens = [33, 34, 2, 4];
-    ids.womens = [33, 34, 20, 19];
-    ids.both = [33, 34, 2, 20, 19, 4];
+// ─── BUNDLES (real data from valetbynuor.com) ───
+const BUNDLES = [
+  {
+    "id": "mens-7day",
+    "title": "Men's 7-Day Travel Essentials",
+    "category": "mens",
+    "tagline": "A clean, comfortable wardrobe waiting \u2014 curated for warm climates and active days. Essential apparel and hygiene items, delivered to your hotel.",
+    "price": 149.0,
+    "image": "https://valetbynuor.com/cdn/shop/files/ChatGPTImageJan11_2026_02_58_17PM.png?v=1768161528&width=800",
+    "available": true,
+    "url": "https://valetbynuor.com/products/mens-7-day-travel-essentials",
+    "badge": "Bestseller"
+  },
+  {
+    "id": "mens-basic",
+    "title": "Men's Basic Emergency Travel Kit",
+    "category": "mens",
+    "tagline": "T-shirt, underwear, socks. Soft, breathable cotton. The essentials for stress-free packing.",
+    "price": 45.0,
+    "image": "https://valetbynuor.com/cdn/shop/files/ChatGPT_Image_Aug_22_2025_07_23_24_PM.png?v=1755905084&width=800",
+    "available": false,
+    "url": "https://valetbynuor.com/products/mens-basic-travel-set"
+  },
+  {
+    "id": "mens-business",
+    "title": "Men's Business Emergency Travel Kit",
+    "category": "mens",
+    "tagline": "Crisp dress shirt, two undershirts, dress socks. For unexpected meetings or travel delays.",
+    "price": 69.99,
+    "image": "https://valetbynuor.com/cdn/shop/files/ChatGPTImageAug23_2025_02_11_28PM.png?v=1755972741&width=800",
+    "available": false,
+    "url": "https://valetbynuor.com/products/mens-business-emergency-travel-kit"
+  },
+  {
+    "id": "womens-7day",
+    "title": "Women's 7-Day Essentials Bundle",
+    "category": "womens",
+    "tagline": "A clean, comfortable wardrobe waiting \u2014 curated for warm climates and active days. Essential apparel and hygiene items, delivered to your hotel.",
+    "price": 149.0,
+    "image": "https://valetbynuor.com/cdn/shop/files/ChatGPTImageJan11_2026_02_55_15PM.png?v=1768161350&width=800",
+    "available": true,
+    "url": "https://valetbynuor.com/products/7-day-essentials-bundle",
+    "badge": "Bestseller"
+  },
+  {
+    "id": "womens-beach",
+    "title": "Women's Beach Lounge Set",
+    "category": "womens",
+    "tagline": "Resort-ready essentials. Curated for warm-weather days at the pool, beach, or hotel terrace.",
+    "price": 75.0,
+    "image": "https://valetbynuor.com/cdn/shop/files/ChatGPTImageAug20_2025_12_03_35AM.png?v=1755662764&width=800",
+    "available": false,
+    "url": "https://valetbynuor.com/products/womens-beach-lounge-set"
+  },
+  {
+    "id": "womens-business",
+    "title": "Women's Business Emergency Travel Kit",
+    "category": "womens",
+    "tagline": "Crisp dress shirt, two undershirts, socks. Stay polished and prepared during business trips.",
+    "price": 69.99,
+    "image": "https://valetbynuor.com/cdn/shop/files/ChatGPTImageAug23_2025_02_24_27PM.png?v=1755973510&width=800",
+    "available": false,
+    "url": "https://valetbynuor.com/products/womens-business-emergency-travel-kit"
+  },
+  {
+    "id": "womens-sleepwear",
+    "title": "Women's Sleepwear",
+    "category": "womens",
+    "tagline": "Calming, comfortable sleepwear for hotel nights, time-zone shifts, and quiet evenings.",
+    "price": 79.0,
+    "image": "https://valetbynuor.com/cdn/shop/files/ChatGPT_Image_Mar_14_2026_10_50_46_AM.png?v=1773503243&width=800",
+    "available": false,
+    "url": "https://valetbynuor.com/products/womens-leisure-set-1"
+  },
+  {
+    "id": "womens-toiletry",
+    "title": "Women's Toiletry Stay Fresh Kit",
+    "category": "womens",
+    "tagline": "Body wash, lotion, deodorant, toothpaste, travel wipes. Refresh moments wherever you go.",
+    "price": 39.0,
+    "image": "https://valetbynuor.com/cdn/shop/files/ChatGPT_Image_Mar_14_2026_10_53_50_AM.png?v=1773500050&width=800",
+    "available": false,
+    "url": "https://valetbynuor.com/products/women-s-toiletry-stay-fresh-kit"
+  },
+  {
+    "id": "energy-focus",
+    "title": "Energy & Focus Travel Kit",
+    "category": "wellness",
+    "tagline": "B Vitamins, Ginkgo Biloba & Rhodiola, Cistanche, electrolytes. Steady energy and clarity for long travel days.",
+    "price": 39.0,
+    "image": "https://valetbynuor.com/cdn/shop/files/ChatGPTImageMar16_2026_09_02_10PM.png?v=1773709352&width=800",
+    "available": true,
+    "url": "https://valetbynuor.com/products/energy-focus-travel-kit"
+  },
+  {
+    "id": "sleep-recovery",
+    "title": "Sleep & Recovery Travel Kit",
+    "category": "wellness",
+    "tagline": "Ashwagandha, chamomile tea, sleep mask, aromatherapy balm. A calming nighttime routine anywhere.",
+    "price": 49.0,
+    "image": "https://valetbynuor.com/cdn/shop/files/ChatGPTImageMar16_2026_08_56_10PM.png?v=1773708994&width=800",
+    "available": true,
+    "url": "https://valetbynuor.com/products/sleep-recovery-travel-kit"
   }
+];
 
-  const all = [...PRODUCTS.mens, ...PRODUCTS.womens, ...PRODUCTS.wellness];
-  return ids[gender].map(id => all.find(p => p.id === id)).filter(Boolean);
-}
-
-// ───────────────────────────────────────────────────────────────────────────
-// STEP NAVIGATION
-// ───────────────────────────────────────────────────────────────────────────
+// ─── NAVIGATION ───
 function goToStep(n) {
   document.querySelectorAll('.step').forEach(s => s.classList.remove('active'));
   const target = document.getElementById('step' + n);
   if (target) target.classList.add('active');
   state.step = n;
   updateProgress(n);
-  // Hide how-strip after step 0
   document.getElementById('howStrip').style.display = (n === 0 ? 'block' : 'none');
+  // Show/hide cart bar based on step
+  updateCartBar();
+  if (n !== 3) document.getElementById('cartBar').classList.remove('show');
+  if (n === 3) renderBundles();
   window.scrollTo({top: 0, behavior: 'smooth'});
 }
 
 function updateProgress(n) {
   const p = document.getElementById('progress');
   const label = document.getElementById('progressLabel');
-  if (n === 0 || n === 'W' || n === 'C') {
-    p.style.visibility = 'hidden';
-    return;
-  }
+  if (n === 0 || n === 'W' || n === 'C') { p.style.visibility = 'hidden'; return; }
   p.style.visibility = 'visible';
   const steps = p.querySelectorAll('.progress-step');
+  const stepNum = (n === 'C2') ? 4 : n;
   steps.forEach((s, i) => {
-    s.classList.remove('active', 'done');
-    if (i + 1 < n) s.classList.add('done');
-    else if (i + 1 === n) s.classList.add('active');
+    s.classList.remove('active','done');
+    if (i + 1 < stepNum) s.classList.add('done');
+    else if (i + 1 === stepNum) s.classList.add('active');
   });
-  label.textContent = 'Step ' + n + ' of 4';
+  label.textContent = 'Step ' + stepNum + ' of 4';
 }
 
-// ───────────────────────────────────────────────────────────────────────────
-// QUESTION ANSWERS
-// ───────────────────────────────────────────────────────────────────────────
+// ─── CITY / DATES ───
 function pickCity(city) {
-  if (city === 'OTHER') {
-    goToStep('W');
-    return;
-  }
+  if (city === 'OTHER') { goToStep('W'); return; }
   state.city = city;
-  // Set dates default — arrival = tomorrow, depart = arrival + 5 days
   const tomorrow = new Date(); tomorrow.setDate(tomorrow.getDate() + 1);
   const fiveDays = new Date(tomorrow); fiveDays.setDate(fiveDays.getDate() + 5);
   document.getElementById('dateArrive').value = tomorrow.toISOString().split('T')[0];
@@ -1041,48 +792,131 @@ function updateDates() {
   document.getElementById('nextDates').disabled = !(a && d && new Date(d) > new Date(a));
 }
 
-function pickStyle(style) {
-  state.style = style;
-  state.kit = buildKit(style, state.gender);
-  // Sync the kit gender toggle to reflect state.gender (matters for URL-param entries)
-  syncGenderToggle();
-  renderKit();
-  renderReserveSummary();
-  goToStep(4);
+// ─── BUNDLES ───
+function setBundleFilter(filter, btn) {
+  state.filter = filter;
+  document.querySelectorAll('.bundle-filter-btn').forEach(b => b.classList.remove('active'));
+  if (btn) btn.classList.add('active');
+  renderBundles();
 }
 
-function syncGenderToggle() {
-  var order = {mens: 0, womens: 1, both: 2};
-  var btns = document.querySelectorAll('.kit-gender-btn');
-  btns.forEach(function(b, i) {
-    b.classList.toggle('active', i === order[state.gender]);
-  });
+function renderBundles() {
+  const grid = document.getElementById('bundleGrid');
+  const filtered = BUNDLES.filter(b => state.filter === 'all' || b.category === state.filter);
+  grid.innerHTML = filtered.map(b => {
+    const qty = state.selectedBundles[b.id] || 0;
+    const isSelected = qty > 0;
+    const unavailable = !b.available;
+    const cardClass = ['bundle-card'];
+    if (isSelected) cardClass.push('selected');
+    if (unavailable) cardClass.push('unavailable');
+    return `
+      <div class="${cardClass.join(' ')}" data-bundle-id="${b.id}">
+        <div class="bundle-img-wrap">
+          <img class="bundle-img" src="${b.image}" alt="${b.title}" loading="lazy">
+          ${b.badge ? `<div class="bundle-badge">${b.badge}</div>` : ''}
+          ${unavailable ? `<div class="bundle-sold-out-overlay"><div class="bundle-sold-out-tag">Sold out</div></div>` : ''}
+          <div class="bundle-selected-check">✓</div>
+        </div>
+        <div class="bundle-body">
+          <div class="bundle-title">${b.title}</div>
+          <div class="bundle-tagline">${b.tagline}</div>
+          <div class="bundle-bottom">
+            <div class="bundle-price">$${b.price % 1 === 0 ? b.price : b.price.toFixed(2)}</div>
+            ${unavailable
+              ? `<button class="bundle-action notify-me" onclick="openNotifyModal('${b.id}')">Notify me</button>`
+              : isSelected
+                ? `<div class="bundle-qty">
+                    <button class="bundle-qty-btn" onclick="changeBundleQty('${b.id}', -1)" aria-label="Decrease">−</button>
+                    <span class="bundle-qty-val">${qty}</span>
+                    <button class="bundle-qty-btn" onclick="changeBundleQty('${b.id}', 1)" aria-label="Increase">+</button>
+                  </div>`
+                : `<button class="bundle-action" onclick="addBundle('${b.id}')">+ Add</button>`
+            }
+          </div>
+        </div>
+      </div>
+    `;
+  }).join('');
 }
 
-function setGender(g) {
-  state.gender = g;
-  syncGenderToggle();
-  state.kit = buildKit(state.style, g);
-  renderKit();
+function addBundle(id) {
+  state.selectedBundles[id] = 1;
+  renderBundles();
+  updateCartBar();
 }
 
-function removeKitItem(id) {
-  state.kit = state.kit.filter(p => p.id !== id);
-  renderKit();
+function changeBundleQty(id, delta) {
+  const newQty = (state.selectedBundles[id] || 0) + delta;
+  if (newQty <= 0) delete state.selectedBundles[id];
+  else state.selectedBundles[id] = newQty;
+  renderBundles();
+  updateCartBar();
 }
 
+function updateCartBar() {
+  const ids = Object.keys(state.selectedBundles);
+  const totalQty = ids.reduce((s, id) => s + state.selectedBundles[id], 0);
+  const totalPrice = ids.reduce((s, id) => {
+    const b = BUNDLES.find(x => x.id === id);
+    return s + (b ? b.price * state.selectedBundles[id] : 0);
+  }, 0);
+  const bar = document.getElementById('cartBar');
+  if (totalQty > 0 && state.step === 3) {
+    bar.classList.add('show');
+    document.getElementById('cartCount').textContent = totalQty + (totalQty === 1 ? ' bundle' : ' bundles');
+    document.getElementById('cartTotal').textContent = '$' + (totalPrice % 1 === 0 ? totalPrice : totalPrice.toFixed(2));
+  } else {
+    bar.classList.remove('show');
+  }
+}
+
+function goToConfirm() {
+  renderConfirmSummary();
+  goToStep('C2');
+}
+
+function renderConfirmSummary() {
+  const ids = Object.keys(state.selectedBundles);
+  const c = document.getElementById('confirmBundles');
+  c.innerHTML = ids.map(id => {
+    const b = BUNDLES.find(x => x.id === id);
+    const qty = state.selectedBundles[id];
+    return `
+      <div class="confirm-bundle">
+        <img class="confirm-bundle-thumb" src="${b.image}" alt="">
+        <div class="confirm-bundle-body">
+          <div class="confirm-bundle-name">${b.title}</div>
+          <div class="confirm-bundle-qty">Qty ${qty}</div>
+        </div>
+        <div class="confirm-bundle-price">$${b.price * qty % 1 === 0 ? b.price * qty : (b.price * qty).toFixed(2)}</div>
+      </div>
+    `;
+  }).join('');
+  const total = ids.reduce((s, id) => s + (BUNDLES.find(x => x.id === id).price * state.selectedBundles[id]), 0);
+  document.getElementById('confirmTotal').textContent = '$' + (total % 1 === 0 ? total : total.toFixed(2));
+
+  const fmt = (d) => {
+    if (!d) return '';
+    const dt = new Date(d + 'T12:00:00');
+    return dt.toLocaleDateString('en-US', {month:'short', day:'numeric', year:'numeric'});
+  };
+  document.getElementById('reserveSummary').innerHTML =
+    '<em>' + (state.city || '') + '</em><br>' +
+    fmt(state.dateArrive) + ' → ' + fmt(state.dateDepart);
+}
+
+// ─── HOTEL + EMAIL ───
 function populateHotels() {
   const sel = document.getElementById('hotelSelect');
   sel.innerHTML = '<option value="">Select your hotel...</option>';
   (HOTELS[state.city] || []).forEach(h => {
     const opt = document.createElement('option');
-    opt.value = h;
-    opt.textContent = h;
+    opt.value = h; opt.textContent = h;
     sel.appendChild(opt);
   });
   const otherOpt = document.createElement('option');
-  otherOpt.value = '__other__';
-  otherOpt.textContent = 'Other hotel (enter below)...';
+  otherOpt.value = '__other__'; otherOpt.textContent = 'Other hotel (enter below)...';
   sel.appendChild(otherOpt);
 }
 
@@ -1101,14 +935,8 @@ function updateHotelChoice() {
 }
 
 document.addEventListener('input', function(e) {
-  if (e.target.id === 'hotelOther') {
-    state.hotel = e.target.value;
-    checkReserveReady();
-  }
-  if (e.target.id === 'reserveEmail') {
-    state.email = e.target.value;
-    checkReserveReady();
-  }
+  if (e.target.id === 'hotelOther') { state.hotel = e.target.value; checkReserveReady(); }
+  if (e.target.id === 'reserveEmail') { state.email = e.target.value; checkReserveReady(); }
 });
 
 function checkReserveReady() {
@@ -1116,42 +944,7 @@ function checkReserveReady() {
   document.getElementById('reserveBtn').disabled = !ready;
 }
 
-function renderKit() {
-  const c = document.getElementById('kitItems');
-  c.innerHTML = '';
-  state.kit.forEach(p => {
-    const item = document.createElement('div');
-    item.className = 'kit-item';
-    item.innerHTML =
-      '<div class="kit-item-icon">' + p.icon + '</div>' +
-      '<div class="kit-item-body">' +
-        '<div class="kit-item-name">' + p.name + '</div>' +
-        '<div class="kit-item-tag">' + (p.tag || 'In stock') + '</div>' +
-      '</div>' +
-      '<div class="kit-item-price">$' + p.price + '</div>' +
-      '<button class="kit-item-remove" onclick="removeKitItem(' + p.id + ')" aria-label="Remove">✕</button>';
-    c.appendChild(item);
-  });
-  const total = state.kit.reduce((sum, p) => sum + p.price, 0);
-  document.getElementById('kitTotal').textContent = '$' + total;
-}
-
-function renderReserveSummary() {
-  const fmt = (d) => {
-    if (!d) return '';
-    const dt = new Date(d + 'T12:00:00');
-    return dt.toLocaleDateString('en-US', {month:'short', day:'numeric', year:'numeric'});
-  };
-  const styleLabel = state.style ? state.style.charAt(0).toUpperCase() + state.style.slice(1) : '';
-  document.getElementById('reserveSummary').innerHTML =
-    '<em>' + (state.city || '') + '</em><br>' +
-    fmt(state.dateArrive) + ' → ' + fmt(state.dateDepart) + '<br>' +
-    '<span style="color:rgba(var(--text-rgb),0.55)">' + styleLabel + ' style</span>';
-}
-
-// ───────────────────────────────────────────────────────────────────────────
-// SUBMIT
-// ───────────────────────────────────────────────────────────────────────────
+// ─── SUBMIT ───
 const FORMSPREE_ENDPOINT = 'https://formspree.io/f/mvzvwrkp';
 
 async function submitReserve() {
@@ -1159,18 +952,24 @@ async function submitReserve() {
   btn.disabled = true;
   btn.textContent = 'Reserving...';
 
+  const ids = Object.keys(state.selectedBundles);
+  const bundleList = ids.map(id => {
+    const b = BUNDLES.find(x => x.id === id);
+    const qty = state.selectedBundles[id];
+    return `${qty}× ${b.title} ($${b.price.toFixed(2)} ea = $${(b.price * qty).toFixed(2)})`;
+  });
+  const total = ids.reduce((s, id) => s + (BUNDLES.find(x => x.id === id).price * state.selectedBundles[id]), 0);
+
   const payload = {
     _subject: '🌟 New BagFree Arrival Reservation',
     type: 'reservation',
     city: state.city,
     arrival: state.dateArrive,
     departure: state.dateDepart,
-    style: state.style,
-    gender: state.gender,
     hotel: state.hotel,
     email: state.email,
-    kit_items: state.kit.map(p => p.name + ' ($' + p.price + ')').join(', '),
-    kit_total: '$' + state.kit.reduce((s, p) => s + p.price, 0),
+    bundles: bundleList.join('\n'),
+    bundle_total: '$' + total.toFixed(2),
     submitted_at: new Date().toISOString()
   };
 
@@ -1180,23 +979,18 @@ async function submitReserve() {
       headers: {'Content-Type':'application/json','Accept':'application/json'},
       body: JSON.stringify(payload)
     });
-    // Save reservation to localStorage so the dashboard can show a summary card
     try {
       localStorage.setItem('bf-reservation', JSON.stringify({
-        city: state.city,
-        arrival: state.dateArrive,
-        departure: state.dateDepart,
-        style: state.style,
-        hotel: state.hotel,
-        email: state.email,
-        kit: state.kit.map(p => ({id:p.id, name:p.name, price:p.price})),
+        city: state.city, arrival: state.dateArrive, departure: state.dateDepart,
+        hotel: state.hotel, email: state.email,
+        bundles: ids.map(id => ({id, name: BUNDLES.find(b=>b.id===id).title, price: BUNDLES.find(b=>b.id===id).price, qty: state.selectedBundles[id]})),
+        total: total,
         reserved_at: new Date().toISOString()
       }));
     } catch(e) {}
-    // Show confirmation
     document.getElementById('confirmMsg').innerHTML =
       'We\'ve reserved your arrival at <em style="color:var(--gold)">' + state.hotel + '</em>.<br>' +
-      'A confirmation will arrive at <em style="color:var(--gold)">' + state.email + '</em> within 24 hours with your final itemized invoice. No charge yet.';
+      'A confirmation will arrive at <em style="color:var(--gold)">' + state.email + '</em> within 24 hours with your final itemized invoice and payment link. No charge yet.';
     goToStep('C');
   } catch (err) {
     btn.disabled = false;
@@ -1212,11 +1006,62 @@ async function submitWaitlist(e) {
   const btn = e.target.querySelector('button');
   btn.disabled = true;
   btn.textContent = 'Adding you...';
+  const payload = { _subject: '📬 BagFree Waitlist: ' + city, type: 'waitlist', city: city, email: email, submitted_at: new Date().toISOString() };
+  try {
+    await fetch(FORMSPREE_ENDPOINT, { method:'POST', headers:{'Content-Type':'application/json','Accept':'application/json'}, body: JSON.stringify(payload) });
+    document.getElementById('confirmMsg').innerHTML = 'You\'re on the list for <em style="color:var(--gold)">' + city + '</em>.<br>We\'ll email <em style="color:var(--gold)">' + email + '</em> the moment BagFree comes to your city.';
+    goToStep('C');
+  } catch (err) {
+    btn.disabled = false;
+    btn.textContent = 'Notify me when you launch';
+    alert('Something went wrong. Please try again.');
+  }
+}
+
+// ─── NOTIFY-ME MODAL ───
+function openNotifyModal(bundleId) {
+  const bundle = BUNDLES.find(b => b.id === bundleId);
+  if (!bundle) return;
+  // Stash which bundle we're notifying about
+  state.notifyBundleId = bundleId;
+  // Populate modal preview
+  document.getElementById('notifyThumb').src = bundle.image;
+  document.getElementById('notifyThumb').alt = bundle.title;
+  document.getElementById('notifyName').textContent = bundle.title;
+  document.getElementById('notifyPrice').textContent = '$' + (bundle.price % 1 === 0 ? bundle.price : bundle.price.toFixed(2)) + ' · Currently sold out';
+  // Reset form/success states
+  document.getElementById('notifyForm').style.display = 'block';
+  document.getElementById('notifySuccess').classList.remove('show');
+  document.getElementById('notifyEmail').value = '';
+  document.getElementById('notifySubmitBtn').disabled = false;
+  document.getElementById('notifySubmitBtn').textContent = "Notify me when it's back";
+  // Show modal
+  document.getElementById('notifyModal').classList.add('show');
+  document.body.style.overflow = 'hidden';
+  setTimeout(function() { document.getElementById('notifyEmail').focus(); }, 100);
+}
+
+function closeNotifyModal() {
+  document.getElementById('notifyModal').classList.remove('show');
+  document.body.style.overflow = '';
+}
+
+async function submitNotify(e) {
+  e.preventDefault();
+  const email = document.getElementById('notifyEmail').value.trim();
+  const bundle = BUNDLES.find(b => b.id === state.notifyBundleId);
+  if (!email || !bundle) return;
+  const btn = document.getElementById('notifySubmitBtn');
+  btn.disabled = true;
+  btn.textContent = 'Adding you...';
 
   const payload = {
-    _subject: '📬 BagFree Waitlist: ' + city,
-    type: 'waitlist',
-    city: city,
+    _subject: '🔔 BagFree Restock Request: ' + bundle.title,
+    type: 'restock_notify',
+    bundle_id: bundle.id,
+    bundle_title: bundle.title,
+    bundle_price: '$' + bundle.price.toFixed(2),
+    bundle_url: bundle.url,
     email: email,
     submitted_at: new Date().toISOString()
   };
@@ -1227,20 +1072,26 @@ async function submitWaitlist(e) {
       headers: {'Content-Type':'application/json','Accept':'application/json'},
       body: JSON.stringify(payload)
     });
-    document.getElementById('confirmMsg').innerHTML =
-      'You\'re on the list for <em style="color:var(--gold)">' + city + '</em>.<br>' +
-      'We\'ll email <em style="color:var(--gold)">' + email + '</em> the moment BagFree comes to your city.';
-    goToStep('C');
+    // Show success state
+    document.getElementById('notifyForm').style.display = 'none';
+    document.getElementById('notifySuccessSub').innerHTML =
+      'We\'ll email <em style="color:var(--gold);font-style:normal">' + email + '</em> the moment <em style="color:var(--gold);font-style:normal">' + bundle.title + '</em> is restocked.';
+    document.getElementById('notifySuccess').classList.add('show');
   } catch (err) {
     btn.disabled = false;
-    btn.textContent = 'Notify me when you launch';
-    alert('Something went wrong. Please try again.');
+    btn.textContent = "Notify me when it's back";
+    alert('Something went wrong. Please try again or email hello@bagfree.app');
   }
 }
 
-// ───────────────────────────────────────────────────────────────────────────
-// THEME TOGGLE
-// ───────────────────────────────────────────────────────────────────────────
+// Close on Escape key
+document.addEventListener('keydown', function(e) {
+  if (e.key === 'Escape' && document.getElementById('notifyModal').classList.contains('show')) {
+    closeNotifyModal();
+  }
+});
+
+// ─── THEME ───
 function toggleTheme() {
   const cur = document.documentElement.getAttribute('data-theme') || 'dark';
   const next = cur === 'dark' ? 'light' : 'dark';
@@ -1258,26 +1109,23 @@ function syncThemeIcon() {
 }
 syncThemeIcon();
 
-// Initial progress hide on step 0
 updateProgress(0);
 
-// ───────────────────────────────────────────────────────────────────────────
-// URL PARAM: ?gender=mens|womens → pre-set kit gender and skip hero
-// (used when entry comes from the home page Shop Men's / Shop Women's CTAs)
-// ───────────────────────────────────────────────────────────────────────────
+// ─── URL PARAM: ?gender=mens|womens ───
 (function handleEntryParams(){
   try {
     var params = new URLSearchParams(window.location.search);
     var g = params.get('gender');
     if (g === 'mens' || g === 'womens') {
-      state.gender = g;
-      // Subtly tailor the step 1 copy so the user feels acknowledged
-      var sub = document.querySelector('#step1 .step-sub');
-      if (sub) {
-        sub.innerHTML = (g === 'mens' ? "We'll curate <em style=\"color:var(--gold);font-style:normal\">men's</em> essentials for your trip." : "We'll curate <em style=\"color:var(--gold);font-style:normal\">women's</em> essentials for your trip.")
-          + ' Same-day delivery in Tampa &amp; Orlando.';
-      }
-      // Skip the hero and drop them directly at step 1 (city pick)
+      // Pre-set the bundle filter when user reaches step 3
+      state.filter = g;
+      // Visually update the filter buttons (will sync when step 3 renders)
+      setTimeout(function() {
+        var btn = document.querySelector('.bundle-filter-btn[data-filter="' + g + '"]');
+        document.querySelectorAll('.bundle-filter-btn').forEach(b => b.classList.remove('active'));
+        if (btn) btn.classList.add('active');
+      }, 50);
+      // Drop user directly at step 1 (city pick), skip hero
       goToStep(1);
     }
   } catch(e) {}
