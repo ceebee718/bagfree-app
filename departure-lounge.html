@@ -539,6 +539,99 @@ button,input,select,textarea{font-family:var(--ff-body)}
 .pz-tile{border:1px solid var(--border);padding:0.7rem 0.6rem;cursor:pointer;text-align:center;font-size:0.72rem;color:var(--mist);transition:all 0.2s;background:transparent;line-height:1.4}
 .pz-tile:hover{border-color:rgba(var(--gold-rgb),0.35);color:var(--white)}
 .pz-tile.pz-on{border-color:var(--gold);color:var(--gold);background:rgba(var(--gold-rgb),0.08)}
+
+/* ── ORIENTATION BANNER (first-visit) ────────────────────────────── */
+.dl-orient{
+  position:relative;
+  background:linear-gradient(90deg, rgba(var(--gold-rgb),0.10), rgba(var(--gold-rgb),0.03) 70%, transparent);
+  border-bottom:1px solid rgba(var(--gold-rgb),0.18);
+  padding:0.8rem 2rem;
+  display:flex;align-items:center;gap:1.2rem;flex-wrap:wrap;
+  font-size:0.82rem;
+  animation:bfOrientSlide 0.6s cubic-bezier(.4,0,.2,1);
+}
+@keyframes bfOrientSlide{from{transform:translateY(-100%);opacity:0}to{transform:translateY(0);opacity:1}}
+.dl-orient-icon{font-size:1.05rem;color:var(--gold);flex-shrink:0}
+.dl-orient-text{color:var(--mist);line-height:1.55;flex:1;min-width:240px}
+.dl-orient-text strong{color:var(--white);font-weight:500}
+.dl-orient-cta{
+  background:linear-gradient(135deg,var(--gold),#b8893e);
+  color:var(--noir);
+  padding:0.55rem 1.1rem;
+  font-size:0.62rem;letter-spacing:2.5px;text-transform:uppercase;
+  font-weight:600;font-family:var(--ff-body);
+  border:none;cursor:pointer;text-decoration:none;
+  transition:transform 0.25s, box-shadow 0.25s;
+  flex-shrink:0;
+}
+.dl-orient-cta:hover{transform:translateY(-1px);box-shadow:0 6px 18px rgba(var(--gold-rgb),0.3)}
+.dl-orient-dismiss{
+  background:transparent;border:1px solid rgba(var(--gold-rgb),0.3);
+  color:rgba(var(--text-rgb),0.55);
+  width:28px;height:28px;cursor:pointer;
+  display:inline-flex;align-items:center;justify-content:center;
+  font-size:0.9rem;flex-shrink:0;
+  transition:all 0.25s;
+}
+.dl-orient-dismiss:hover{color:var(--gold);border-color:var(--gold)}
+
+/* ── SIDEBAR TABS ─────────────────────────────────────────────────── */
+.dl-tabs{
+  display:flex;align-items:stretch;
+  border-bottom:1px solid var(--border);
+  margin:0 -1.25rem 1.1rem;
+  padding:0 1.25rem;
+}
+.dl-tab{
+  flex:1;
+  padding:0.7rem 0.4rem;
+  font-size:0.62rem;letter-spacing:2.5px;text-transform:uppercase;
+  color:rgba(var(--text-rgb),0.48);
+  font-family:var(--ff-body);
+  background:none;border:none;cursor:pointer;
+  border-bottom:2px solid transparent;
+  margin-bottom:-1px;
+  transition:all 0.25s;
+  font-weight:500;
+}
+.dl-tab:hover{color:var(--gold)}
+.dl-tab.active{
+  color:var(--gold);
+  border-bottom-color:var(--gold);
+}
+.sidebar-section[data-tab]{display:none}
+.sidebar-section[data-tab].show{display:block}
+
+/* When a tab has no visible sections */
+.dl-tab-empty{
+  text-align:center;padding:2.5rem 1rem;
+  font-size:0.78rem;color:var(--mist);font-style:italic;line-height:1.7;
+}
+.dl-tab-empty-icon{font-size:1.4rem;color:var(--gold);display:block;margin-bottom:0.6rem}
+
+/* ── RESERVATION SUMMARY CARD (when present in localStorage) ─────── */
+.dl-reservation-card{
+  background:linear-gradient(135deg, rgba(var(--gold-rgb),0.12), rgba(var(--gold-rgb),0.04));
+  border:1px solid rgba(var(--gold-rgb),0.3);
+  padding:1.1rem 1rem;
+  margin-bottom:1.2rem;
+}
+.dl-reservation-eyebrow{
+  font-size:0.55rem;letter-spacing:3px;text-transform:uppercase;
+  color:var(--gold);margin-bottom:0.5rem;
+  display:flex;align-items:center;gap:0.5rem;
+}
+.dl-reservation-eyebrow::before{
+  content:'';width:5px;height:5px;background:var(--gold);
+  transform:rotate(45deg);box-shadow:0 0 6px rgba(var(--gold-rgb),0.6);
+}
+.dl-reservation-hotel{
+  font-family:var(--ff-display);font-size:1.05rem;font-weight:400;
+  color:var(--white);line-height:1.25;margin-bottom:0.3rem;
+}
+.dl-reservation-meta{
+  font-size:0.7rem;color:var(--mist);line-height:1.6;
+}
 </style>
 <script src="https://unpkg.com/leaflet@1.9.4/dist/leaflet.js"></script>
 <script type="module">
@@ -924,6 +1017,16 @@ window._supabaseLaunchPatch = async function() {
       </button>
     </div>
   </div>
+  <div class="dl-orient" id="dlOrient" style="display:none">
+    <span class="dl-orient-icon">✦</span>
+    <div class="dl-orient-text">
+      <strong>Welcome to your Departure Lounge.</strong>
+      Reserve a BagFree arrival, manage trip details, or explore destinations. Use the tabs below to navigate.
+    </div>
+    <a class="dl-orient-cta" href="/departure-lounge-landing.html">Reserve my arrival →</a>
+    <button class="dl-orient-dismiss" onclick="dismissOrient()" aria-label="Dismiss">✕</button>
+  </div>
+
 
   <div class="dl-body">
     <!-- LEFT SIDEBAR -->
@@ -955,7 +1058,18 @@ window._supabaseLaunchPatch = async function() {
         .hb-sidebar-wrap { animation: hoverFloat 3s ease-in-out infinite; display:inline-block; }
       </style>
 
-      <div class="sidebar-section">
+      
+      <!-- TABS (inserted by tactical polish) -->
+      <div class="dl-tabs" id="dlTabs">
+        <button class="dl-tab active" data-tabtarget="my-trip" onclick="bfSwitchSidebarTab('my-trip', this)">My Trip</button>
+        <button class="dl-tab" data-tabtarget="discover" onclick="bfSwitchSidebarTab('discover', this)">Discover</button>
+        <button class="dl-tab" data-tabtarget="tools" onclick="bfSwitchSidebarTab('tools', this)">Tools</button>
+      </div>
+
+      <!-- Reservation summary slot (populated from localStorage if reservation exists) -->
+      <div id="dlReservationSlot" style="display:none"></div>
+
+      <div class="sidebar-section" data-tab="discover">
         <div style="display:flex;align-items:center;justify-content:space-between;margin-bottom:0.85rem">
           <div style="font-size:0.85rem;letter-spacing:2px;text-transform:uppercase;color:var(--white);font-family:'Jost',sans-serif;font-weight:500">Customize Panels</div>
           <button id="leftCustomizeToggle" onclick="toggleLeftCustomize()" title="Customize left panel" class="customize-pulse" style="
@@ -981,7 +1095,7 @@ window._supabaseLaunchPatch = async function() {
         <div id="destCards"></div>
       </div>
 
-      <div class="sidebar-section" id="secLive">
+      <div class="sidebar-section" id="secLive" data-tab="tools">
         <div class="sidebar-label">Live movements</div>
         <div id="liveList"></div>
         <div style="display:flex;gap:4px;margin-top:8px;flex-wrap:wrap" id="liveFilterBtns">
@@ -999,7 +1113,7 @@ window._supabaseLaunchPatch = async function() {
         <div id="flightQuotaWarn" style="display:none;font-size:0.56rem;color:var(--amber);margin-top:5px;font-style:italic"></div>
       </div>
 
-      <div class="sidebar-section" id="secTip">
+      <div class="sidebar-section" id="secTip" data-tab="hidden" style="display:none">
         <div class="sidebar-label">Daily tip</div>
         <div class="tip-card">
           <div class="tip-day" id="tipDay">Today</div>
@@ -1007,18 +1121,18 @@ window._supabaseLaunchPatch = async function() {
         </div>
       </div>
 
-      <div class="sidebar-section" id="secBagfree" style="border-bottom:none">
+      <div class="sidebar-section" id="secBagfree" data-tab="my-trip" style="border-bottom:none">
         <div class="sidebar-label">BagFree essentials</div>
         <div id="bagfreeRec" style="font-size:0.72rem;color:var(--mist);line-height:1.7"></div>
         <a href="https://valetbynuor.com" target="_blank" style="display:block;margin-top:0.75rem">
           <button class="btn-gold" style="width:100%;padding:0.6rem">Shop now ↗</button>
         </a>
       </div>
-      <div class="sidebar-section" id="secSaved" style="border-top:1px solid var(--border);padding-top:1.25rem;margin-top:0">
+      <div class="sidebar-section" id="secSaved" data-tab="my-trip" style="border-top:1px solid var(--border);padding-top:1.25rem;margin-top:0">
         <div class="sidebar-label">Saved itineraries</div>
         <div id="savedTripsContainer"><div style="font-size:0.68rem;color:var(--mist)">No saved trips yet.</div></div>
       </div>
-      <div class="sidebar-section" id="secHotel" style="border-top:1px solid var(--border);padding-top:1.25rem;margin-top:0">
+      <div class="sidebar-section" id="secHotel" data-tab="my-trip" style="border-top:1px solid var(--border);padding-top:1.25rem;margin-top:0">
         <div class="sidebar-label">Book a hotel</div>
         <div style="font-size:0.68rem;color:var(--mist);line-height:1.6;margin-bottom:0.65rem">Exclusive rates via our concierge network.</div>
         <a href="https://bagfree.app/#hotel" target="_blank" style="display:block"><button class="btn-gold" style="width:100%;padding:0.55rem;font-size:0.58rem;letter-spacing:2px">Book Hotel ↗</button></a>
