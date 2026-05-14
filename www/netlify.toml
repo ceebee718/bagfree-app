@@ -1,0 +1,45 @@
+[build]
+  publish = "."
+  functions = "netlify/functions"
+
+[[redirects]]
+  from = "/departure-lounge-landing"
+  to = "/departure-lounge-landing.html"
+  status = 200
+
+[[redirects]]
+  from = "/departure-lounge"
+  to = "/departure-lounge.html"
+  status = 200
+
+[[redirects]]
+  from = "/tourism-dx"
+  to = "/tourism-dx.html"
+  status = 200
+
+[[redirects]]
+  from = "/api/ai-brain"
+  to = "/.netlify/functions/ai-brain"
+  status = 200
+
+[[redirects]]
+  from = "/api/mapbox-tile"
+  to = "/.netlify/functions/mapbox-tile"
+  status = 200
+
+[[redirects]]
+  from = "/my-account"
+  to = "/my-account.html"
+  status = 200
+
+[[redirects]]
+  from = "/shop/*"
+  to = "/shop.html"
+  status = 200
+
+[[redirects]]
+  from = "/api/track-vendor"
+  to = "/.netlify/functions/track-vendor"
+  status = 200
+
+
