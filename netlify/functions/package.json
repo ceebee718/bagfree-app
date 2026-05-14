@@ -1,0 +1,9 @@
+{
+  "name": "bagfree-netlify-functions",
+  "version": "1.0.0",
+  "private": true,
+  "description": "Serverless functions for BagFree (Stripe checkout + webhook)",
+  "dependencies": {
+    "stripe": "^17.0.0"
+  }
+}
