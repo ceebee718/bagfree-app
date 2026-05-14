@@ -4,17 +4,17 @@
 <meta charset="UTF-8">
 <meta name="viewport" content="width=device-width, initial-scale=1.0">
 <title>BagFree — Arrive to Everything</title>
-<meta name="description" content="Shop travel essentials delivered to your hotel before you arrive. Powered by Valet By Nuor. Same-day delivery in Tampa & Orlando.">
+<meta name="description" content="Shop travel essentials delivered to your hotel before you arrive. Powered by Valet By Nuor. Same-day in Tampa, Orlando, Savannah & Atlanta. Next-day in Miami.">
 <meta name="theme-color" content="#C9A96E">
 <meta property="og:title" content="BagFree — Arrive to Everything">
-<meta property="og:description" content="Shop travel essentials delivered to your hotel before you arrive. Powered by Valet By Nuor. Same-day delivery in Tampa & Orlando.">
+<meta property="og:description" content="Shop travel essentials delivered to your hotel before you arrive. Powered by Valet By Nuor. Same-day in Tampa, Orlando, Savannah & Atlanta. Next-day in Miami.">
 <meta property="og:image" content="https://bagfree.app/og-image.png">
 <meta property="og:url" content="https://bagfree.app">
 <meta property="og:type" content="website">
 <meta property="og:site_name" content="BagFree">
 <meta name="twitter:card" content="summary_large_image">
 <meta name="twitter:title" content="BagFree — Arrive to Everything">
-<meta name="twitter:description" content="Shop travel essentials delivered to your hotel before you arrive. Same-day delivery in Tampa & Orlando.">
+<meta name="twitter:description" content="Shop travel essentials delivered to your hotel before you arrive. Same-day across Florida & Georgia. Next-day in Miami.">
 <meta name="twitter:image" content="https://bagfree.app/og-image.png">
 <meta name="mobile-web-app-capable" content="yes">
 <meta name="apple-mobile-web-app-capable" content="yes">
@@ -261,7 +261,7 @@ const VENDORS = [
   {
     id:'valet-by-nuor', name:'Valet By Nuor', tag:'Official Partner', icon:'◈',
     category:'Clothing · Wellness · Essentials', dest:'FL & GA',
-    desc:'The founding supplier of BagFree. Emergency travel kits, men\'s and women\'s wear, wellness kits, and curated travel essentials. Same-day delivery in Tampa & Orlando.',
+    desc:'The founding supplier of BagFree. Emergency travel kits, men\'s and women\'s wear, wellness kits, and curated travel essentials. Same-day delivery across Florida & Georgia.',
     highlight:true, url:'https://bagfree.app/#shop', color:'gold',
     products:['Men\'s 7-Day Travel Essentials','Women\'s 7-Day Bundle','Travel Wellness Kits','Emergency Kits'],
     badge:'Same-Day Available'
@@ -520,7 +520,7 @@ function Home({setPage}) {
               The way travel should feel.<span style={{display:'block',marginTop:'0.6rem',fontSize:'1.00rem',color:'rgba(var(--text-rgb),0.5)',fontWeight:300}}>Arrive to everything. No bags. No lines. No friction.</span>
             </p>
             <div style={{display:'flex',flexDirection:'column',gap:'0.7rem',marginBottom:'2.05rem'}}>
-              {['No luggage to check or carry','No waiting at baggage claim','Everything waiting at arrival','Same-day delivery — Tampa & Orlando'].map((t, i) => (
+              {['No luggage to check or carry','No waiting at baggage claim','Everything waiting at arrival','Same-day delivery — FL & GA'].map((t, i) => (
                 <div key={i} style={{display:'flex',alignItems:'center',gap:'0.95rem',fontSize:'1.02rem',color:'rgba(var(--text-rgb),0.72)'}}>
                   <span style={{display:'inline-flex',alignItems:'center',justifyContent:'center',width:18,height:18,borderRadius:'50%',border:'1px solid rgba(var(--gold-rgb),0.45)',flexShrink:0}}>
                     <span style={{width:5,height:5,borderRadius:'50%',background:'var(--gold)'}}></span>
@@ -540,10 +540,10 @@ function Home({setPage}) {
             </div>
             <div className="bf-trusted-row">
               <div className="bf-trusted-dots"><span></span><span></span><span></span></div>
-              <span>Trusted by travelers in Tampa & Orlando</span>
+              <span>Trusted by travelers across Florida & Georgia</span>
             </div>
             <div className="bf-stats" style={{display:'flex',gap:'2.5rem',paddingTop:'2.25rem',borderTop:'1px solid rgba(var(--gold-rgb),0.18)',flexWrap:'wrap',position:'relative'}}>
-              {[['38+','Products'],['6','Destinations'],['Same-Day','Tampa & Orlando'],['Valet By Nuor','Partner']].map(([n, l], idx) => (
+              {[['38+','Products'],['6','Destinations'],['Same-Day','FL & GA'],['Valet By Nuor','Partner']].map(([n, l], idx) => (
                 <div key={l} style={{position:'relative',paddingRight:idx<3?'2.5rem':0,borderRight:idx<3?'1px solid rgba(var(--gold-rgb),0.14)':'none'}}>
                   <div style={{fontFamily:'var(--ff-display)',fontSize:'2.1rem',fontWeight:300,color:'var(--gold)',lineHeight:1,letterSpacing:'-0.5px'}}>{n}</div>
                   <div style={{fontSize:'0.62rem',letterSpacing:'2.5px',textTransform:'uppercase',color:'rgba(var(--text-rgb),0.42)',marginTop:7,fontWeight:400}}>{l}</div>
@@ -795,7 +795,7 @@ function Home({setPage}) {
             </h2>
           </div>
           <div style={{fontSize:'0.84rem',color:'rgba(var(--text-rgb),0.55)',fontWeight:300,maxWidth:320,lineHeight:1.8,textAlign:'right'}}>
-            Same-day delivery in Tampa & Orlando.<br/>Next-day across all other US destinations.<br/>International delivery to Caribbean islands.
+            Same-day delivery in Tampa, Orlando, Savannah & Atlanta.<br/>Next-day in Miami and select US destinations.<br/>International delivery to Caribbean islands.
           </div>
         </div>
 
@@ -809,8 +809,8 @@ function Home({setPage}) {
             {name:'Orlando',state:'FL',sameDay:true,desc:'Theme park to resort — essentials delivered before you check in.',code:'MCO'},
             {name:'Miami Beach',state:'FL',sameDay:false,desc:'South Beach, Brickell and beyond. Art Basel season specialists.',code:'MIA'},
             {name:'Florida Keys',state:'FL',sameDay:false,desc:'Island delivery from Key Largo to Key West. Resort kits our specialty.',code:'EYW'},
-            {name:'Atlanta',state:'GA',sameDay:false,desc:'Buckhead, Midtown, Airport corridor. Business and leisure.',code:'ATL'},
-            {name:'Savannah',state:'GA',sameDay:false,desc:'Historic district hotels and boutique properties. Weekend getaways.',code:'SAV'},
+            {name:'Atlanta',state:'GA',sameDay:true,desc:'Buckhead, Midtown, Airport corridor. Business and leisure.',code:'ATL'},
+            {name:'Savannah',state:'GA',sameDay:true,desc:'Historic district hotels and boutique properties. Weekend getaways.',code:'SAV'},
           ].map((d)=>(
             <div key={d.name} onClick={()=>{window._activeDestCity=d.name;setPage('vendors');}}
               style={{background:'var(--gold)',padding:'1.75rem 1.5rem',cursor:'pointer',transition:'background 0.25s',position:'relative'}}
@@ -997,7 +997,7 @@ function Home({setPage}) {
         <h2 style={{fontFamily:'var(--ff-display)',fontSize:'clamp(2.5rem,5vw,5rem)',fontWeight:300,lineHeight:1.1,marginBottom:'1.5rem',position:'relative'}}>
           Lost luggage?<br/><em style={{color:'var(--gold)',fontStyle:'italic'}}>We&apos;ve got you.</em>
         </h2>
-        <p style={{fontSize:'1.02rem',color:'var(--mist)',marginBottom:'3rem',fontWeight:300,position:'relative'}}>Same-day emergency delivery in Tampa & Orlando. Hours, not days.</p>
+        <p style={{fontSize:'1.02rem',color:'var(--mist)',marginBottom:'3rem',fontWeight:300,position:'relative'}}>Same-day emergency delivery across Florida & Georgia. Hours, not days.</p>
         <div style={{display:'flex',gap:'1rem',justifyContent:'center',flexWrap:'wrap',position:'relative'}}>
           <button onClick={()=>setPage('vendors')} style={{background:'var(--gold)',color:'var(--noir)',padding:'1rem 2.5rem',border:'none',fontSize:'0.84rem',fontWeight:500,letterSpacing:'3px',textTransform:'uppercase'}}>Shop Emergency Kits</button>
           <button onClick={()=>window.open('/departure-lounge-landing','_self')} style={{background:'transparent',color:'var(--mist)',padding:'1rem 2rem',border:'1px solid var(--mist-low)',fontSize:'0.84rem',letterSpacing:'2.5px',textTransform:'uppercase'}}>Enter the Lounge ↗</button>
@@ -1227,7 +1227,7 @@ function ProductDetail({product:p, onBack}) {
           <div style={{background:'var(--noir-3)',border:'1px solid var(--border)',display:'flex',alignItems:'center',justifyContent:'center',height:340,fontSize:'8rem',opacity:0.3}}>{p.icon}</div>
           <div style={{marginTop:'1rem',padding:'1.25rem',background:'var(--mist-xlow)',border:'1px solid var(--border)'}}>
             <div style={{fontSize:'0.70rem',letterSpacing:'2px',textTransform:'uppercase',color:'var(--gold)',marginBottom:'0.5rem'}}>Fulfilled by Valet By Nuor</div>
-            <div style={{fontSize:'0.90rem',color:'var(--mist)',lineHeight:1.8}}>Delivered to your hotel, airport, or accommodation. Same-day available in Tampa & Orlando.</div>
+            <div style={{fontSize:'0.90rem',color:'var(--mist)',lineHeight:1.8}}>Delivered to your hotel, airport, or accommodation. Same-day across Florida & Georgia.</div>
           </div>
         </div>
         <div>
@@ -1239,7 +1239,7 @@ function ProductDetail({product:p, onBack}) {
             {p.price ? `Shop on Valet By Nuor — $${p.price} ↗` : 'View Collection ↗'}
           </button>
           <div style={{marginTop:'1.5rem',display:'flex',flexDirection:'column',gap:'0.6rem'}}>
-            {['Delivered to your hotel','Same-day in Tampa & Orlando','Brand new from Valet By Nuor','Call (813) 816-2448 for help'].map(f=>(
+            {['Delivered to your hotel','Same-day across Florida & Georgia','Brand new from Valet By Nuor','Call (813) 816-2448 for help'].map(f=>(
               <div key={f} style={{display:'flex',gap:'0.75rem',alignItems:'center',fontSize:'0.90rem',color:'var(--mist)'}}><span style={{color:'var(--gold)',fontSize:'0.70rem'}}>◆</span>{f}</div>
             ))}
           </div>
