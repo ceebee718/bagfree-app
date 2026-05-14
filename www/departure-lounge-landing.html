@@ -152,6 +152,393 @@ footer{position:relative;z-index:10;background:rgba(201,169,110,0.03);border-top
 .promo-dismiss{position:absolute;right:1rem;background:transparent;border:none;color:rgba(10,10,8,0.45);font-size:1.12rem;cursor:pointer;line-height:1;padding:0;font-family:inherit}
 body{padding-top:36px}
 #nav{top:36px!important}
+
+/* Mobile fix: stack Departure Lounge landing sections */
+@media (max-width: 768px) {
+  .hero-top {
+    padding: 6rem 1.25rem 2rem !important;
+  }
+
+  .hero-features,
+  .ff-grid,
+  .coll,
+  .istrip {
+    grid-template-columns: 1fr !important;
+  }
+
+  .dgrid {
+    grid-template-columns: 1fr !important;
+    grid-template-rows: none !important;
+  }
+
+  .dc {
+    min-height: 220px !important;
+  }
+
+  .ds-head {
+    flex-direction: column !important;
+    align-items: flex-start !important;
+    gap: 1rem !important;
+  }
+
+  .ticker {
+    padding: 0.75rem 1rem !important;
+    gap: 1rem !important;
+  }
+
+  .tinner {
+    gap: 1.5rem !important;
+  }
+
+  .istrip {
+    gap: 1.25rem !important;
+    padding: 2.5rem 1.25rem !important;
+  }
+
+  .istrip > div {
+    min-width: 0 !important;
+  }
+
+  .cv,
+  .ci {
+    min-height: auto !important;
+    padding: 2.5rem 1.5rem !important;
+  }
+
+  nav {
+    padding-left: 1rem !important;
+    padding-right: 1rem !important;
+  }
+
+  .nav-links {
+    display: none !important;
+  }
+}
+
+
+/* Strong mobile containment fix: Departure Lounge */
+@media (max-width: 768px) {
+  html,
+  body {
+    width: 100% !important;
+    max-width: 100% !important;
+    overflow-x: hidden !important;
+  }
+
+  * {
+    box-sizing: border-box !important;
+  }
+
+  body,
+  nav,
+  section,
+  .hero,
+  .hero-top,
+  .hero-features,
+  .ticker,
+  .dgrid,
+  .istrip,
+  .ff-grid,
+  .coll,
+  .cv,
+  .ci {
+    max-width: 100vw !important;
+    overflow-x: hidden !important;
+  }
+
+  nav {
+    left: 0 !important;
+    right: 0 !important;
+    width: 100% !important;
+    padding-left: 1rem !important;
+    padding-right: 1rem !important;
+  }
+
+  .hero-top,
+  .istrip,
+  .cv,
+  .ci {
+    padding-left: 1.25rem !important;
+    padding-right: 1.25rem !important;
+  }
+
+  .hero-features,
+  .ff-grid,
+  .coll,
+  .istrip,
+  .dgrid {
+    display: grid !important;
+    grid-template-columns: minmax(0, 1fr) !important;
+    width: 100% !important;
+  }
+
+  .hero-features > *,
+  .ff-grid > *,
+  .coll > *,
+  .istrip > *,
+  .dgrid > * {
+    min-width: 0 !important;
+    width: 100% !important;
+    max-width: 100% !important;
+  }
+
+  .ticker {
+    width: 100% !important;
+    padding-left: 1rem !important;
+    padding-right: 1rem !important;
+  }
+
+  .tinner {
+    max-width: 100% !important;
+  }
+
+  .tlabel,
+  .ti,
+  .cvc {
+    white-space: normal !important;
+  }
+
+  img,
+  video,
+  canvas,
+  svg {
+    max-width: 100% !important;
+  }
+}
+
+
+/* Mobile fix: stack landing page cost comparison */
+@media (max-width: 768px) {
+  .cost-grid,
+  .cost-comparison,
+  .cost-cards,
+  .cost-wrap,
+  .lp-cost-grid,
+  .lp-cost-comparison {
+    display: grid !important;
+    grid-template-columns: 1fr !important;
+    width: 100% !important;
+    max-width: 100% !important;
+    gap: 1rem !important;
+    overflow-x: hidden !important;
+  }
+
+  .cost-grid > *,
+  .cost-comparison > *,
+  .cost-cards > *,
+  .cost-wrap > *,
+  .lp-cost-grid > *,
+  .lp-cost-comparison > * {
+    width: 100% !important;
+    max-width: 100% !important;
+    min-width: 0 !important;
+  }
+
+  .cost-vs,
+  .vs,
+  .lp-vs {
+    width: 100% !important;
+    padding: 1rem 0 !important;
+    text-align: center !important;
+  }
+
+  .cost-subtotal {
+    flex-wrap: wrap !important;
+    gap: 0.5rem !important;
+  }
+
+  .cost-subtotal-label {
+    width: 100% !important;
+  }
+
+  #lpHiddenPanel {
+    width: 100% !important;
+    max-width: 100% !important;
+    overflow-x: hidden !important;
+  }
+
+  button[title="See hidden costs"] {
+    white-space: normal !important;
+    text-align: center !important;
+  }
+}
+
+
+/* Mobile fix: BagFree benefits grid */
+@media (max-width: 768px) {
+  .benefits-grid,
+  .bf-benefits-grid,
+  .feature-grid,
+  .hero-features {
+    grid-template-columns: repeat(2, minmax(0, 1fr)) !important;
+    width: 100% !important;
+    max-width: 100% !important;
+  }
+
+  .benefits-grid > *,
+  .bf-benefits-grid > *,
+  .feature-grid > *,
+  .hero-features > * {
+    min-width: 0 !important;
+    padding: 1.5rem 0.85rem !important;
+  }
+}
+
+@media (max-width: 390px) {
+  .benefits-grid,
+  .bf-benefits-grid,
+  .feature-grid,
+  .hero-features {
+    grid-template-columns: 1fr !important;
+  }
+}
+
+
+/* Mobile fix: cost intro benefit cards */
+@media (max-width: 768px) {
+  .cost-intro,
+  .cost-int-grid,
+  .cost-intro-grid,
+  .cost-benefits,
+  .cost-benefits-grid {
+    display: grid !important;
+    grid-template-columns: repeat(2, minmax(0, 1fr)) !important;
+    width: 100% !important;
+    max-width: 100% !important;
+    overflow-x: hidden !important;
+  }
+
+  .cost-intro > *,
+  .cost-int-grid > *,
+  .cost-intro-grid > *,
+  .cost-benefits > *,
+  .cost-benefits-grid > * {
+    min-width: 0 !important;
+    max-width: 100% !important;
+    width: 100% !important;
+    padding-left: 0.75rem !important;
+    padding-right: 0.75rem !important;
+  }
+
+  .cost-int-title {
+    font-size: 1rem !important;
+    letter-spacing: 1.5px !important;
+    line-height: 1.35 !important;
+    overflow-wrap: anywhere !important;
+  }
+
+  .cost-int-sub,
+  .cost-int-copy,
+  .cost-int-text {
+    font-size: 0.78rem !important;
+    line-height: 1.5 !important;
+    overflow-wrap: anywhere !important;
+  }
+}
+
+@media (max-width: 390px) {
+  .cost-intro,
+  .cost-int-grid,
+  .cost-intro-grid,
+  .cost-benefits,
+  .cost-benefits-grid {
+    grid-template-columns: 1fr !important;
+  }
+}
+
+
+/* Mobile fix: make cost intro benefits readable */
+@media (max-width: 768px) {
+  div:has(> div > .cost-int-title) {
+    display: grid !important;
+    grid-template-columns: 1fr !important;
+    width: 100% !important;
+    max-width: 100% !important;
+    gap: 1px !important;
+  }
+
+  div:has(> div > .cost-int-title) > div {
+    width: 100% !important;
+    max-width: 100% !important;
+    min-width: 0 !important;
+    padding: 1.75rem 1.25rem !important;
+    text-align: center !important;
+  }
+
+  .cost-int-title {
+    font-size: 1.15rem !important;
+    letter-spacing: 2px !important;
+    line-height: 1.35 !important;
+    white-space: normal !important;
+    word-break: normal !important;
+    overflow-wrap: normal !important;
+  }
+
+  .cost-int-sub,
+  .cost-int-copy,
+  .cost-int-text {
+    font-size: 0.9rem !important;
+    line-height: 1.65 !important;
+    white-space: normal !important;
+    word-break: normal !important;
+    overflow-wrap: normal !important;
+    max-width: 280px !important;
+    margin-left: auto !important;
+    margin-right: auto !important;
+  }
+}
+
+
+/* Mobile polish: tighten Lounge header spacing */
+@media (max-width: 768px) {
+  #promoBanner {
+    padding-top: 6px !important;
+    padding-bottom: 6px !important;
+    min-height: 32px !important;
+    font-size: 0.62rem !important;
+  }
+
+  body {
+    padding-top: 32px !important;
+  }
+
+  #nav,
+  nav {
+    top: 32px !important;
+    padding-top: 0.75rem !important;
+    padding-bottom: 0.75rem !important;
+  }
+
+  .hero-top {
+    padding-top: 4.75rem !important;
+  }
+}
+
+
+/* Mobile polish: raise Lounge header slightly */
+@media (max-width: 768px) {
+  #promoBanner {
+    min-height: 28px !important;
+    padding-top: 4px !important;
+    padding-bottom: 4px !important;
+  }
+
+  body {
+    padding-top: 28px !important;
+  }
+
+  #nav,
+  nav {
+    top: 28px !important;
+    padding-top: 0.55rem !important;
+    padding-bottom: 0.55rem !important;
+  }
+
+  .hero-top {
+    padding-top: 4.25rem !important;
+  }
+}
+
 </style>
 </head>
 <body>
@@ -763,11 +1150,11 @@ function closeDestModal(){
       </button>
       <div id="qrPanel" style="display:none;background:#0D1525;border:1px solid rgba(201,169,110,0.25);padding:1.25rem;text-align:center;min-width:200px;">
         <div style="font-size:0.60rem;letter-spacing:2px;text-transform:uppercase;color:rgba(201,169,110,0.6);margin-bottom:0.75rem;">Scan to share</div>
-        <img src="https://api.qrserver.com/v1/create-qr-code/?size=160x160&data=https://bagfree.app/departure-lounge-landing#collective&bgcolor=0D1525&color=C9A96E&margin=8" width="160" height="160" style="display:block;margin:0 auto 0.85rem;">
+        <img src="https://api.qrserver.com/v1/create-qr-code/?size=160x160&data=https://bagfree.appdeparture-lounge-landing.html#collective&bgcolor=0D1525&color=C9A96E&margin=8" width="160" height="160" style="display:block;margin:0 auto 0.85rem;">
         <div style="font-size:0.66rem;color:rgba(253,252,248,0.35);margin-bottom:1rem;line-height:1.6;">Point camera to open this trip page</div>
         <div style="display:flex;flex-direction:column;gap:0.4rem;">
-          <a href="https://wa.me/?text=Join%20the%20BagFree%20Christmas%20Collective%21%20https://bagfree.app/departure-lounge-landing#collective" target="_blank" style="padding:0.45rem;background:rgba(37,211,102,0.1);border:1px solid rgba(37,211,102,0.2);color:rgba(37,211,102,0.9);font-size:0.70rem;letter-spacing:1px;text-transform:uppercase;text-decoration:none;display:block;">WhatsApp</a>
-          <a href="https://www.facebook.com/sharer/sharer.php?u=https://bagfree.app/departure-lounge-landing#collective" target="_blank" style="padding:0.45rem;background:rgba(24,119,242,0.1);border:1px solid rgba(24,119,242,0.2);color:rgba(100,160,255,0.9);font-size:0.70rem;letter-spacing:1px;text-transform:uppercase;text-decoration:none;display:block;">Facebook</a>
+          <a href="https://wa.me/?text=Join%20the%20BagFree%20Christmas%20Collective%21%20https://bagfree.appdeparture-lounge-landing.html#collective" target="_blank" style="padding:0.45rem;background:rgba(37,211,102,0.1);border:1px solid rgba(37,211,102,0.2);color:rgba(37,211,102,0.9);font-size:0.70rem;letter-spacing:1px;text-transform:uppercase;text-decoration:none;display:block;">WhatsApp</a>
+          <a href="https://www.facebook.com/sharer/sharer.php?u=https://bagfree.appdeparture-lounge-landing.html#collective" target="_blank" style="padding:0.45rem;background:rgba(24,119,242,0.1);border:1px solid rgba(24,119,242,0.2);color:rgba(100,160,255,0.9);font-size:0.70rem;letter-spacing:1px;text-transform:uppercase;text-decoration:none;display:block;">Facebook</a>
           <button onclick="copyTripLink()" id="copyLinkBtn" style="padding:0.45rem;background:rgba(201,169,110,0.08);border:1px solid rgba(201,169,110,0.2);color:rgba(201,169,110,0.8);font-size:0.70rem;letter-spacing:1px;text-transform:uppercase;cursor:pointer;font-family:'Jost',sans-serif;">Copy Link</button>
         </div>
       </div>
@@ -968,7 +1355,7 @@ document.querySelectorAll('.reveal').forEach(el=>obs.observe(el))
       </div>
       <div style="border-top:1px solid rgba(201,169,110,0.12);padding-top:1.5rem;text-align:center;">
         <div style="font-size:0.72rem;color:rgba(253,252,248,0.35);margin-bottom:1rem;">Plan this trip with BagFree.</div>
-        <a href="/departure-lounge-landing#signin" onclick="closeDestModal()" style="display:inline-block;background:linear-gradient(135deg,#C9A96E,#b8893e);color:#0A0A08;padding:0.85rem 2.5rem;font-size:0.75rem;font-weight:500;letter-spacing:2.5px;text-transform:uppercase;text-decoration:none;">Enter the Departure Lounge ✦</a>
+        <a href="departure-lounge-landing.html#signin" onclick="closeDestModal()" style="display:inline-block;background:linear-gradient(135deg,#C9A96E,#b8893e);color:#0A0A08;padding:0.85rem 2.5rem;font-size:0.75rem;font-weight:500;letter-spacing:2.5px;text-transform:uppercase;text-decoration:none;">Enter the Departure Lounge ✦</a>
       </div>
     </div>
   </div>
@@ -1011,7 +1398,7 @@ window.openSVGSurvey=function(){document.getElementById('svgSurveyModal').style.
 window.closeSVGSurvey=function(){document.getElementById('svgSurveyModal').style.display='none';document.body.style.overflow='';};
 window.submitSVGSurvey=async function(e){e.preventDefault();const btn=document.getElementById('svgSubmitBtn'),errEl=document.getElementById('svgSurveyError');btn.disabled=true;btn.textContent='Submitting...';errEl.style.display='none';const fd=new FormData(document.getElementById('svgSurveyForm'));const pl={};for(let[k,v]of fd.entries()){if(pl[k]){pl[k]=Array.isArray(pl[k])?[...pl[k],v]:[pl[k],v];}else{pl[k]=v;}}try{await fetch('https://formspree.io/f/mvzvwrkp',{method:'POST',headers:{'Content-Type':'application/json','Accept':'application/json'},body:JSON.stringify(pl)});document.getElementById('svgSurveyForm').innerHTML='<div style="text-align:center;padding:3rem 1rem;"><div style="font-size:2rem;color:rgba(201,169,110,0.7);margin-bottom:1rem;">✦</div><div style="font-family:Cormorant Garamond,serif;font-size:2rem;font-weight:300;color:#0A0A08;margin-bottom:0.75rem;">Thank you</div><p style="font-size:0.98rem;color:rgba(10,10,8,0.5);line-height:1.8;max-width:360px;margin:0 auto 2rem;">We have your interest. We\'ll be in touch with full trip details.</p><button onclick="closeSVGSurvey()" style="background:transparent;border:1px solid rgba(139,111,69,0.4);color:rgba(139,111,69,0.8);padding:0.65rem 2rem;font-size:0.72rem;letter-spacing:2px;text-transform:uppercase;cursor:pointer;font-family:Jost,sans-serif;">Close</button></div>';}catch(err){errEl.textContent='Something went wrong. Please try again.';errEl.style.display='block';btn.disabled=false;btn.textContent='Submit My Interest ✦';}};
 window.toggleQR=function(){const p=document.getElementById('qrPanel');p.style.display=p.style.display==='none'?'block':'none';};
-window.copyTripLink=function(){navigator.clipboard.writeText('https://bagfree.app/departure-lounge-landing#collective').then(()=>{const b=document.getElementById('copyLinkBtn');b.textContent='Copied! ✓';setTimeout(()=>b.textContent='Copy Link',2000);});};
+window.copyTripLink=function(){navigator.clipboard.writeText('https://bagfree.appdeparture-lounge-landing.html#collective').then(()=>{const b=document.getElementById('copyLinkBtn');b.textContent='Copied! ✓';setTimeout(()=>b.textContent='Copy Link',2000);});};
 document.addEventListener('click',function(e){const box=document.getElementById('qrShareBox');if(box&&!box.contains(e.target)){const p=document.getElementById('qrPanel');if(p)p.style.display='none';}});
 document.addEventListener('keydown',e=>{if(e.key==='Escape'){closeDestModal&&closeDestModal();closeSVGSurvey&&closeSVGSurvey();}});
 document.querySelectorAll('.dc.bg-rome,.dc.bg-paris,.dc.bg-svg,.dc.bg-tokyo,.dc.bg-london').forEach(el=>{const key=Array.from(el.classList).find(c=>c.startsWith('bg-'))?.replace('bg-','');if(key){el.style.cursor='pointer';el.onclick=()=>openDestModal(key);}});

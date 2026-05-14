@@ -502,7 +502,7 @@ function Nav({page, setPage}) {
             <span key={p} className="bf-nav-link" onClick={()=>{setPage('home');if(p==='home'){setTimeout(()=>{window.hpCalc&&window.hpCalc();const el=document.getElementById('destinations');if(el)el.scrollIntoView({behavior:'smooth'});},300);}else{setPage(p);}}} style={{fontSize:'0.78rem',color:page===p?'var(--gold)':'rgba(var(--text-rgb),0.85)',letterSpacing:'2px',textTransform:'uppercase',cursor:'pointer',fontWeight:400}}>{l}</span>
           ))}
           <ThemeToggle />
-          <span className="bf-nav-lounge" onClick={(e)=>{e.stopPropagation();window.open('/departure-lounge-landing','_self');}}
+          <span className="bf-nav-lounge" onClick={(e)=>{e.stopPropagation();window.open('departure-lounge-landing.html','_self');}}
             style={{fontSize:'0.74rem',color:'var(--gold)',letterSpacing:'2px',textTransform:'uppercase',border:'1px solid rgba(var(--gold-rgb),0.42)',padding:'0.42rem 1rem',display:'inline-flex',alignItems:'center',gap:'0.5rem',cursor:'pointer'}}>
             <span style={{width:5,height:5,borderRadius:'50%',background:'var(--gold)',display:'inline-block',boxShadow:'0 0 8px rgba(var(--gold-rgb),0.6)',animation:'pulse 2.5s ease-in-out infinite'}}/>Departure Lounge
           </span>
@@ -527,7 +527,7 @@ function Nav({page, setPage}) {
           <div style={{display:'flex',alignItems:'center',gap:'1rem',marginTop:'0.5rem'}}>
             <ThemeToggle />
           </div>
-          <span onClick={()=>{window.open('/departure-lounge-landing','_self');setMenuOpen(false);}}
+          <span onClick={()=>{window.open('departure-lounge-landing.html','_self');setMenuOpen(false);}}
             style={{fontSize:'0.92rem',color:'var(--gold)',letterSpacing:'2px',textTransform:'uppercase',border:'1px solid var(--border-hi)',padding:'0.65rem 1.5rem',cursor:'pointer',display:'flex',alignItems:'center',gap:'0.5rem',marginTop:'0.5rem'}}>
             <span style={{width:6,height:6,borderRadius:'50%',background:'var(--gold)',display:'inline-block'}}/>Departure Lounge
           </span>
@@ -590,7 +590,7 @@ function Home({setPage}) {
               <button className="bf-hero-primary" onClick={() => setPage('vendors')} style={{background:'linear-gradient(135deg,var(--gold) 0%,#d8b06a 50%,#b8893e 100%)',color:'var(--noir)',padding:'1.15rem 2.9rem',border:'none',fontSize:'0.84rem',fontWeight:600,letterSpacing:'3.5px',textTransform:'uppercase',cursor:'pointer',fontFamily:'var(--ff-body)',position:'relative',boxShadow:'0 8px 24px rgba(var(--gold-rgb),0.22), inset 0 1px 0 rgba(255,255,255,0.25)'}}>
                 Get Started
               </button>
-              <button className="bf-hero-secondary" onClick={() => window.open('/departure-lounge-landing','_self')} style={{background:'rgba(var(--text-rgb),0.01)',color:'rgba(var(--text-rgb),0.82)',padding:'1.15rem 2.3rem',border:'1px solid rgba(var(--gold-rgb),0.32)',fontSize:'0.84rem',letterSpacing:'2.8px',textTransform:'uppercase',cursor:'pointer',fontFamily:'var(--ff-body)',display:'inline-flex',alignItems:'center',gap:'0.5rem'}}>
+              <button className="bf-hero-secondary" onClick={() => window.open('departure-lounge-landing.html','_self')} style={{background:'rgba(var(--text-rgb),0.01)',color:'rgba(var(--text-rgb),0.82)',padding:'1.15rem 2.3rem',border:'1px solid rgba(var(--gold-rgb),0.32)',fontSize:'0.84rem',letterSpacing:'2.8px',textTransform:'uppercase',cursor:'pointer',fontFamily:'var(--ff-body)',display:'inline-flex',alignItems:'center',gap:'0.5rem'}}>
                 <span style={{width:6,height:6,borderRadius:'50%',background:'var(--gold)',display:'inline-block',animation:'pulse 2s ease-in-out infinite'}}></span>
                 Enter the Lounge ↗
               </button>
@@ -644,7 +644,7 @@ function Home({setPage}) {
           </div>
 
           {/* Cards */}
-          <div className="bf-cost-grid" style={{display:'grid',gridTemplateColumns:'1fr auto 1fr',gap:0,alignItems:'stretch'}}>
+          <div className="bf-cost-grid" style={{display:'grid',gridTemplateColumns: window.innerWidth <= 768 ? '1fr' : '1fr auto 1fr',gap: window.innerWidth <= 768 ? '1rem' : 0,alignItems:'stretch'}}>
             {/* Traditional */}
             <div style={{background:'rgba(226,75,74,0.04)',border:'1px solid rgba(226,75,74,0.18)',padding:'2.5rem',position:'relative'}}>
               <div style={{fontSize:'0.82rem',letterSpacing:'2.5px',textTransform:'uppercase',color:'rgba(var(--text-rgb),0.85)',marginBottom:'1.5rem',display:'flex',alignItems:'center',justifyContent:'space-between'}}>
@@ -697,7 +697,7 @@ function Home({setPage}) {
             </div>
 
             {/* VS */}
-            <div className="bf-cost-divider" style={{display:'flex',flexDirection:'column',alignItems:'center',justifyContent:'center',padding:'0 1.5rem',gap:'0.85rem'}}>
+            <div className="bf-cost-divider" style={{display:'flex',flexDirection:'column',alignItems:'center',justifyContent:'center',padding: window.innerWidth <= 768 ? '1rem 0' : '0 1.5rem',gap:'0.85rem'}}>
               <div style={{fontFamily:'var(--ff-display)',fontSize:'2rem',fontWeight:300,color:'rgba(var(--text-rgb),0.1)'}}>vs</div>
               <div style={{background:'rgba(93,202,165,0.1)',border:'1px solid rgba(93,202,165,0.3)',padding:'0.75rem 1rem',textAlign:'center'}}>
                 <div id="hp-saving" style={{fontFamily:'var(--ff-display)',fontSize:'2.2rem',fontWeight:300,color:'var(--green)',lineHeight:1}}></div>
@@ -720,7 +720,7 @@ function Home({setPage}) {
 
           {/* CTA */}
           <div style={{display:'flex',gap:'0.85rem',justifyContent:'center',marginTop:'2.5rem',flexWrap:'wrap'}}>
-            <button onClick={()=>window.open('/how-it-works','_self')}
+            <button onClick={()=>window.open('how-it-works.html','_self')}
               style={{background:'linear-gradient(135deg,var(--gold),#b8893e)',color:'var(--noir)',border:'none',padding:'0.85rem 2.2rem',fontSize:'0.78rem',fontWeight:500,letterSpacing:'2.5px',textTransform:'uppercase'}}>
               How It Works ✦
             </button>
@@ -1037,7 +1037,7 @@ function Home({setPage}) {
         {/* CTA row */}
         <div style={{padding:'3rem',textAlign:'center',display:'flex',flexDirection:'column',alignItems:'center',gap:'1.25rem'}}>
           <button
-            onClick={()=>window.open('/departure-lounge-landing','_self')}
+            onClick={()=>window.open('departure-lounge-landing.html','_self')}
             style={{background:'var(--gold)',color:'var(--noir)',padding:'1rem 3rem',border:'none',fontSize:'0.84rem',fontWeight:500,letterSpacing:'3px',textTransform:'uppercase',cursor:'pointer'}}>
             Enter the Departure Lounge ↗
           </button>
@@ -1057,7 +1057,7 @@ function Home({setPage}) {
         <p style={{fontSize:'1.02rem',color:'var(--mist)',marginBottom:'3rem',fontWeight:300,position:'relative'}}>Same-day emergency delivery in Tampa & Orlando. Hours, not days.</p>
         <div style={{display:'flex',gap:'1rem',justifyContent:'center',flexWrap:'wrap',position:'relative'}}>
           <button onClick={()=>setPage('vendors')} style={{background:'var(--gold)',color:'var(--noir)',padding:'1rem 2.5rem',border:'none',fontSize:'0.84rem',fontWeight:500,letterSpacing:'3px',textTransform:'uppercase'}}>Shop Emergency Kits</button>
-          <button onClick={()=>window.open('/departure-lounge-landing','_self')} style={{background:'transparent',color:'var(--mist)',padding:'1rem 2rem',border:'1px solid var(--mist-low)',fontSize:'0.84rem',letterSpacing:'2.5px',textTransform:'uppercase'}}>Enter the Lounge ↗</button>
+          <button onClick={()=>window.open('departure-lounge-landing.html','_self')} style={{background:'transparent',color:'var(--mist)',padding:'1rem 2rem',border:'1px solid var(--mist-low)',fontSize:'0.84rem',letterSpacing:'2.5px',textTransform:'uppercase'}}>Enter the Lounge ↗</button>
         </div>
       </div>
     </div>
@@ -1944,7 +1944,7 @@ function LoungeTileModal({feature, onClose}) {
             ))}
           </div>
           <button
-            onClick={()=>window.open('/departure-lounge-landing','_self')}
+            onClick={()=>window.open('departure-lounge-landing.html','_self')}
             style={{width:'100%',background:'var(--gold)',color:'var(--noir)',padding:'0.85rem',border:'none',fontSize:'0.78rem',fontWeight:500,letterSpacing:'3px',textTransform:'uppercase',cursor:'pointer',fontFamily:'var(--ff-body)'}}>
             Enter the Departure Lounge ↗
           </button>
