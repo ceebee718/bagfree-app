@@ -154,6 +154,21 @@ input,select,textarea{outline:none}
 .bundle-img{width:100%;height:100%;object-fit:cover;display:block;transition:transform 0.5s ease;}
 .bundle-card:hover .bundle-img:not(.unavailable){transform:scale(1.04)}
 .bundle-badge{position:absolute;top:10px;left:10px;font-size:0.55rem;letter-spacing:2px;text-transform:uppercase;padding:4px 9px;background:var(--gold);color:var(--noir);font-weight:600;}
+.bundle-stock-badge{
+  position:absolute;top:10px;right:10px;
+  font-size:0.54rem;letter-spacing:2px;text-transform:uppercase;
+  padding:4px 9px;background:rgba(var(--bg-rgb),0.85);
+  color:var(--gold);
+  border:1px solid var(--gold);
+  font-weight:500;backdrop-filter:blur(6px);
+  -webkit-backdrop-filter:blur(6px);
+  animation:stockPulse 2.5s ease-in-out infinite;
+}
+@keyframes stockPulse{0%,100%{box-shadow:0 0 0 0 rgba(var(--gold-rgb),0.5)}50%{box-shadow:0 0 0 6px rgba(var(--gold-rgb),0)}}
+/* When card is selected, the check icon takes the top-right — push stock badge down a bit so they don't overlap */
+.bundle-card.selected .bundle-stock-badge{display:none}
+.bundle-qty-btn:disabled{opacity:0.3;cursor:not-allowed}
+.bundle-qty-btn:disabled:hover{background:rgba(var(--gold-rgb),0.15);color:var(--gold)}
 .bundle-sold-out-overlay{position:absolute;inset:0;display:flex;align-items:center;justify-content:center;background:rgba(0,0,0,0.45);}
 .bundle-sold-out-tag{padding:0.55rem 1.4rem;background:rgba(var(--bg-rgb),0.9);border:1px solid rgba(var(--text-rgb),0.4);color:var(--white);font-size:0.62rem;letter-spacing:3px;text-transform:uppercase;font-weight:500;}
 .bundle-selected-check{position:absolute;top:10px;right:10px;width:30px;height:30px;border-radius:50%;background:var(--gold);color:var(--noir);display:none;align-items:center;justify-content:center;font-size:0.9rem;font-weight:700;box-shadow:0 4px 12px rgba(var(--gold-rgb),0.5);}
@@ -635,6 +650,7 @@ const HOTELS = {
 };
 
 // ─── BUNDLES (real data from valetbynuor.com) ───
+// To update inventory: change the `units` value on any bundle. 0 = sold out.
 const BUNDLES = [
   {
     "id": "mens-7day",
@@ -643,7 +659,7 @@ const BUNDLES = [
     "tagline": "A clean, comfortable wardrobe waiting \u2014 curated for warm climates and active days. Essential apparel and hygiene items, delivered to your hotel.",
     "price": 149.0,
     "image": "https://valetbynuor.com/cdn/shop/files/ChatGPTImageJan11_2026_02_58_17PM.png?v=1768161528&width=800",
-    "available": true,
+    "units": 12,
     "url": "https://valetbynuor.com/products/mens-7-day-travel-essentials",
     "badge": "Bestseller"
   },
@@ -654,7 +670,7 @@ const BUNDLES = [
     "tagline": "T-shirt, underwear, socks. Soft, breathable cotton. The essentials for stress-free packing.",
     "price": 45.0,
     "image": "https://valetbynuor.com/cdn/shop/files/ChatGPT_Image_Aug_22_2025_07_23_24_PM.png?v=1755905084&width=800",
-    "available": false,
+    "units": 0,
     "url": "https://valetbynuor.com/products/mens-basic-travel-set"
   },
   {
@@ -664,7 +680,7 @@ const BUNDLES = [
     "tagline": "Crisp dress shirt, two undershirts, dress socks. For unexpected meetings or travel delays.",
     "price": 69.99,
     "image": "https://valetbynuor.com/cdn/shop/files/ChatGPTImageAug23_2025_02_11_28PM.png?v=1755972741&width=800",
-    "available": false,
+    "units": 0,
     "url": "https://valetbynuor.com/products/mens-business-emergency-travel-kit"
   },
   {
@@ -674,7 +690,7 @@ const BUNDLES = [
     "tagline": "A clean, comfortable wardrobe waiting \u2014 curated for warm climates and active days. Essential apparel and hygiene items, delivered to your hotel.",
     "price": 149.0,
     "image": "https://valetbynuor.com/cdn/shop/files/ChatGPTImageJan11_2026_02_55_15PM.png?v=1768161350&width=800",
-    "available": true,
+    "units": 10,
     "url": "https://valetbynuor.com/products/7-day-essentials-bundle",
     "badge": "Bestseller"
   },
@@ -685,7 +701,7 @@ const BUNDLES = [
     "tagline": "Resort-ready essentials. Curated for warm-weather days at the pool, beach, or hotel terrace.",
     "price": 75.0,
     "image": "https://valetbynuor.com/cdn/shop/files/ChatGPTImageAug20_2025_12_03_35AM.png?v=1755662764&width=800",
-    "available": false,
+    "units": 0,
     "url": "https://valetbynuor.com/products/womens-beach-lounge-set"
   },
   {
@@ -695,7 +711,7 @@ const BUNDLES = [
     "tagline": "Crisp dress shirt, two undershirts, socks. Stay polished and prepared during business trips.",
     "price": 69.99,
     "image": "https://valetbynuor.com/cdn/shop/files/ChatGPTImageAug23_2025_02_24_27PM.png?v=1755973510&width=800",
-    "available": false,
+    "units": 0,
     "url": "https://valetbynuor.com/products/womens-business-emergency-travel-kit"
   },
   {
@@ -705,7 +721,7 @@ const BUNDLES = [
     "tagline": "Calming, comfortable sleepwear for hotel nights, time-zone shifts, and quiet evenings.",
     "price": 79.0,
     "image": "https://valetbynuor.com/cdn/shop/files/ChatGPT_Image_Mar_14_2026_10_50_46_AM.png?v=1773503243&width=800",
-    "available": false,
+    "units": 0,
     "url": "https://valetbynuor.com/products/womens-leisure-set-1"
   },
   {
@@ -715,7 +731,7 @@ const BUNDLES = [
     "tagline": "Body wash, lotion, deodorant, toothpaste, travel wipes. Refresh moments wherever you go.",
     "price": 39.0,
     "image": "https://valetbynuor.com/cdn/shop/files/ChatGPT_Image_Mar_14_2026_10_53_50_AM.png?v=1773500050&width=800",
-    "available": false,
+    "units": 0,
     "url": "https://valetbynuor.com/products/women-s-toiletry-stay-fresh-kit"
   },
   {
@@ -725,7 +741,7 @@ const BUNDLES = [
     "tagline": "B Vitamins, Ginkgo Biloba & Rhodiola, Cistanche, electrolytes. Steady energy and clarity for long travel days.",
     "price": 39.0,
     "image": "https://valetbynuor.com/cdn/shop/files/ChatGPTImageMar16_2026_09_02_10PM.png?v=1773709352&width=800",
-    "available": true,
+    "units": 3,
     "url": "https://valetbynuor.com/products/energy-focus-travel-kit"
   },
   {
@@ -735,7 +751,7 @@ const BUNDLES = [
     "tagline": "Ashwagandha, chamomile tea, sleep mask, aromatherapy balm. A calming nighttime routine anywhere.",
     "price": 49.0,
     "image": "https://valetbynuor.com/cdn/shop/files/ChatGPTImageMar16_2026_08_56_10PM.png?v=1773708994&width=800",
-    "available": true,
+    "units": 7,
     "url": "https://valetbynuor.com/products/sleep-recovery-travel-kit"
   }
 ];
@@ -806,7 +822,8 @@ function renderBundles() {
   grid.innerHTML = filtered.map(b => {
     const qty = state.selectedBundles[b.id] || 0;
     const isSelected = qty > 0;
-    const unavailable = !b.available;
+    const unavailable = (b.units || 0) <= 0;
+    const lowStock = !unavailable && b.units <= 5;
     const cardClass = ['bundle-card'];
     if (isSelected) cardClass.push('selected');
     if (unavailable) cardClass.push('unavailable');
@@ -815,6 +832,7 @@ function renderBundles() {
         <div class="bundle-img-wrap">
           <img class="bundle-img" src="${b.image}" alt="${b.title}" loading="lazy">
           ${b.badge ? `<div class="bundle-badge">${b.badge}</div>` : ''}
+          ${lowStock ? `<div class="bundle-stock-badge">Only ${b.units} left</div>` : ''}
           ${unavailable ? `<div class="bundle-sold-out-overlay"><div class="bundle-sold-out-tag">Sold out</div></div>` : ''}
           <div class="bundle-selected-check">✓</div>
         </div>
@@ -829,7 +847,7 @@ function renderBundles() {
                 ? `<div class="bundle-qty">
                     <button class="bundle-qty-btn" onclick="changeBundleQty('${b.id}', -1)" aria-label="Decrease">−</button>
                     <span class="bundle-qty-val">${qty}</span>
-                    <button class="bundle-qty-btn" onclick="changeBundleQty('${b.id}', 1)" aria-label="Increase">+</button>
+                    <button class="bundle-qty-btn" onclick="changeBundleQty('${b.id}', 1)" aria-label="Increase" ${qty >= b.units ? 'disabled' : ''}>+</button>
                   </div>`
                 : `<button class="bundle-action" onclick="addBundle('${b.id}')">+ Add</button>`
             }
@@ -847,8 +865,13 @@ function addBundle(id) {
 }
 
 function changeBundleQty(id, delta) {
+  const bundle = BUNDLES.find(b => b.id === id);
   const newQty = (state.selectedBundles[id] || 0) + delta;
   if (newQty <= 0) delete state.selectedBundles[id];
+  else if (bundle && newQty > bundle.units) {
+    // Cap at available stock
+    state.selectedBundles[id] = bundle.units;
+  }
   else state.selectedBundles[id] = newQty;
   renderBundles();
   updateCartBar();
