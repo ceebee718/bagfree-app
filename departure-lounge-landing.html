@@ -1171,6 +1171,19 @@ async function submitReserve() {
       headers: {'Content-Type':'application/json','Accept':'application/json'},
       body: JSON.stringify(payload)
     });
+    // Save reservation to localStorage so the dashboard can show a summary card
+    try {
+      localStorage.setItem('bf-reservation', JSON.stringify({
+        city: state.city,
+        arrival: state.dateArrive,
+        departure: state.dateDepart,
+        style: state.style,
+        hotel: state.hotel,
+        email: state.email,
+        kit: state.kit.map(p => ({id:p.id, name:p.name, price:p.price})),
+        reserved_at: new Date().toISOString()
+      }));
+    } catch(e) {}
     // Show confirmation
     document.getElementById('confirmMsg').innerHTML =
       'We\'ve reserved your arrival at <em style="color:var(--gold)">' + state.hotel + '</em>.<br>' +
