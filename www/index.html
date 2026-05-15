@@ -2249,57 +2249,305 @@ function useCart() {
   return {cart, addToCart, removeFromCart, updateQty, total, count};
 }
 
-async function stripeCheckout(cart) {
-  const res = await fetch('/.netlify/functions/create-checkout', {
-    method: 'POST',
-    headers: {'Content-Type': 'application/json'},
-    body: JSON.stringify({
-      items: cart.map(i => ({id: i.id, name: i.name, price: i.price, qty: i.qty, desc: i.desc}))
-    })
-  });
-  const data = await res.json();
-  if (data.url) window.location.href = data.url;
-  else alert('Checkout error. Please try again.');
+async function stripeCheckout(cart, orderDetails = {}) {
+  try {
+    const email = (orderDetails.email || "").trim();
+    const hotel = ((orderDetails.hotel === "Other / type manually" ? orderDetails.customHotel : orderDetails.hotel) || "").trim();
+    const city = (orderDetails.city || "").trim();
+    const arrival = (orderDetails.arrival || "").trim();
+    const departure = (orderDetails.departure || "").trim();
+
+    if (!email || !hotel || !city || !arrival || !departure) {
+      throw new Error("Please complete the delivery details before checkout.");
+    }
+
+    const isNative =
+      window.location.protocol === "capacitor:" ||
+      window.location.href.includes("capacitor://") ||
+      window.location.hostname === "localhost";
+
+    const endpoint = isNative
+      ? "https://bagfree.app/.netlify/functions/create-checkout"
+      : "/.netlify/functions/create-checkout";
+
+    const bundles = cart.map(i => {
+      const productName = i.name || i.title || "BagFree Travel Bundle";
+      const price = Number(i.price || i.amount || 0);
+      const quantity = Number(i.qty || i.quantity || 1);
+
+      return {
+        id: i.id,
+        name: productName,
+        title: productName,
+        label: productName,
+        bundleName: productName,
+        productName: productName,
+        price: price,
+        amount: price,
+        qty: quantity,
+        quantity: quantity,
+        desc: i.desc || ""
+      };
+    });
+
+    const res = await fetch(endpoint, {
+      method: "POST",
+      headers: {"Content-Type":"application/json"},
+      body: JSON.stringify({
+        email,
+        hotel,
+        city,
+        arrival,
+        departure,
+        bundles
+      })
+    });
+
+    const raw = await res.text();
+    let data = {};
+    try {
+      data = raw ? JSON.parse(raw) : {};
+    } catch {
+      data = { error: raw };
+    }
+
+    if (!res.ok) {
+      throw new Error(data.error || "Checkout request failed");
+    }
+
+    if (data.url) {
+      window.location.href = data.url;
+      return;
+    }
+
+    throw new Error("No checkout URL returned");
+  } catch (err) {
+    console.error("Stripe checkout error:", err);
+    alert("Checkout could not open: " + err.message);
+  }
 }
 
 // ── CART DRAWER ───────────────────────────────────────────────────────────────
 function CartDrawer({cart, removeFromCart, updateQty, total, onClose, onCheckout, checking}) {
+  const [step, setStep] = useState("cart");
+  const [details, setDetails] = useState({
+    email: "",
+    hotel: "",
+    customHotel: "",
+    city: "Tampa",
+    arrival: "",
+    departure: ""
+  });
+
+  function updateDetail(key, value) {
+    setDetails(prev => ({...prev, [key]: value}));
+  }
+
+  function submitDelivery() {
+    if (!details.email || !details.hotel || !details.city || !details.arrival || !details.departure) {
+      alert("Please complete all delivery details.");
+      return;
+    }
+    onCheckout(details);
+  }
+
+  const fieldStyle = {
+    width: "100%",
+    background: "rgba(253,252,248,0.04)",
+    border: "1px solid rgba(var(--gold-rgb),0.22)",
+    color: "var(--white)",
+    padding: "0.75rem 0.85rem",
+    fontFamily: "var(--ff-body)",
+    fontSize: "13px",
+    outline: "none"
+  };
+
+  const labelStyle = {
+    display: "block",
+    fontFamily: "var(--ff-body)",
+    fontSize: "10px",
+    letterSpacing: "2px",
+    textTransform: "uppercase",
+    color: "rgba(var(--gold-rgb),0.7)",
+    marginBottom: "0.35rem"
+  };
+
+  const cityButton = (city) => (
+    <button
+      key={city}
+      type="button"
+      onClick={() => { updateDetail("city", city); updateDetail("hotel", ""); updateDetail("customHotel", ""); }}
+      style={{
+        background: details.city === city ? "var(--gold)" : "transparent",
+        color: details.city === city ? "var(--noir)" : "var(--gold)",
+        border: "1px solid rgba(var(--gold-rgb),0.35)",
+        padding: "0.65rem 0.45rem",
+        width: "100%",
+        fontFamily: "var(--ff-body)",
+        fontSize: "10px",
+        letterSpacing: "1.3px",
+        textTransform: "uppercase",
+        cursor: "pointer"
+      }}>
+      {city}
+    </button>
+  );
+
+  const hotelOptionsByCity = {
+    Tampa: [
+      "Hilton Tampa Downtown",
+      "JW Marriott Tampa Water Street",
+      "Tampa Marriott Water Street",
+      "The Tampa EDITION",
+      "Hyatt Place Tampa Downtown",
+      "Seminole Hard Rock Hotel Tampa",
+      "Epicurean Hotel",
+      "Hotel Haya",
+      "Other / type manually"
+    ],
+    Orlando: [
+      "Hyatt Regency Orlando",
+      "Waldorf Astoria Orlando",
+      "JW Marriott Orlando Bonnet Creek",
+      "Rosen Shingle Creek",
+      "Loews Royal Pacific Resort",
+      "Universal Cabana Bay Beach Resort",
+      "Disney Contemporary Resort",
+      "Four Seasons Resort Orlando",
+      "Other / type manually"
+    ],
+    Miami: [
+      "The Setai Miami Beach",
+      "Fontainebleau Miami Beach",
+      "EAST Miami",
+      "1 Hotel South Beach",
+      "JW Marriott Marquis Miami",
+      "Other / type manually"
+    ],
+    Savannah: [
+      "JW Marriott Savannah Plant Riverside",
+      "The DeSoto Savannah",
+      "Perry Lane Hotel",
+      "Thompson Savannah",
+      "Other / type manually"
+    ],
+    Atlanta: [
+      "The St. Regis Atlanta",
+      "Waldorf Astoria Atlanta Buckhead",
+      "Loews Atlanta Hotel",
+      "Atlanta Marriott Marquis",
+      "Other / type manually"
+    ]
+  };
+
+  const hotelOptions = hotelOptionsByCity[details.city] || hotelOptionsByCity.Tampa;
+  const selectedOtherHotel = details.hotel === "Other / type manually";
+
   return (
-    <div style={{position:'fixed',top:0,right:0,bottom:0,width:'min(400px,100vw)',background:'var(--noir-2)',borderLeft:'1px solid rgba(var(--gold-rgb),0.2)',zIndex:1000,display:'flex',flexDirection:'column',boxShadow:'-4px 0 24px rgba(0,0,0,0.4)'}}>
+    <div style={{position:'fixed',top:0,left:0,right:0,bottom:0,width:'100%',maxWidth:'100%',background:'var(--noir-2)',borderLeft:'1px solid rgba(var(--gold-rgb),0.2)',zIndex:1000,display:'flex',flexDirection:'column',boxShadow:'-4px 0 24px rgba(0,0,0,0.4)',overflow:'hidden',boxSizing:'border-box'}}>
       <div style={{padding:'1.5rem',borderBottom:'1px solid rgba(var(--gold-rgb),0.15)',display:'flex',justifyContent:'space-between',alignItems:'center'}}>
-        <div style={{fontFamily:'var(--ff-display)',fontSize:'1.2rem',fontWeight:300,color:'var(--white)',letterSpacing:'2px'}}>Your Cart</div>
+        <div style={{fontFamily:'var(--ff-display)',fontSize:'1.2rem',fontWeight:300,color:'var(--white)',letterSpacing:'2px'}}>
+          {step === "cart" ? "Your Cart" : "Delivery Details"}
+        </div>
         <button onClick={onClose} style={{background:'none',border:'none',color:'var(--mist)',cursor:'pointer',fontSize:'1.2rem',padding:'4px 8px'}}>✕</button>
       </div>
-      <div style={{flex:1,overflowY:'auto',padding:'1rem'}}>
-        {cart.length === 0 ? (
-          <div style={{textAlign:'center',padding:'3rem 1rem',color:'var(--mist)',fontFamily:'var(--ff-body)',fontSize:'14px'}}>Your cart is empty</div>
-        ) : cart.map(item => (
-          <div key={item.id} style={{borderBottom:'1px solid rgba(var(--gold-rgb),0.08)',padding:'1rem 0',display:'flex',gap:'0.75rem',alignItems:'flex-start'}}>
-            <div style={{flex:1}}>
-              <div style={{fontFamily:'var(--ff-body)',fontSize:'13px',fontWeight:500,color:'var(--white)',marginBottom:'4px'}}>{item.name}</div>
-              <div style={{fontFamily:'var(--ff-body)',fontSize:'12px',color:'var(--gold)'}}>${(item.price * item.qty).toFixed(2)}</div>
+
+      <div style={{flex:1,overflowY:'auto',overflowX:'hidden',padding:'1rem',paddingBottom:'2rem',boxSizing:'border-box',width:'100%',maxWidth:'100%'}}>
+        {step === "cart" ? (
+          <>
+            {cart.length === 0 ? (
+              <div style={{textAlign:'center',padding:'3rem 1rem',color:'var(--mist)',fontFamily:'var(--ff-body)',fontSize:'14px'}}>Your cart is empty</div>
+            ) : cart.map(item => (
+              <div key={item.id} style={{borderBottom:'1px solid rgba(var(--gold-rgb),0.08)',padding:'1rem 0',display:'flex',gap:'0.75rem',alignItems:'flex-start'}}>
+                <div style={{flex:1}}>
+                  <div style={{fontFamily:'var(--ff-body)',fontSize:'13px',fontWeight:500,color:'var(--white)',marginBottom:'4px'}}>{item.name}</div>
+                  <div style={{fontFamily:'var(--ff-body)',fontSize:'12px',color:'var(--gold)'}}>${(item.price * item.qty).toFixed(2)}</div>
+                </div>
+                <div style={{display:'flex',alignItems:'center',gap:'8px'}}>
+                  <button onClick={()=>updateQty(item.id, item.qty-1)} style={{background:'rgba(var(--gold-rgb),0.1)',border:'none',color:'var(--gold)',width:24,height:24,cursor:'pointer',fontFamily:'var(--ff-body)',fontSize:'14px'}}>−</button>
+                  <span style={{fontFamily:'var(--ff-body)',fontSize:'13px',color:'var(--white)',minWidth:16,textAlign:'center'}}>{item.qty}</span>
+                  <button onClick={()=>updateQty(item.id, item.qty+1)} style={{background:'rgba(var(--gold-rgb),0.1)',border:'none',color:'var(--gold)',width:24,height:24,cursor:'pointer',fontFamily:'var(--ff-body)',fontSize:'14px'}}>+</button>
+                  <button onClick={()=>removeFromCart(item.id)} style={{background:'none',border:'none',color:'rgba(255,255,255,0.3)',cursor:'pointer',fontFamily:'var(--ff-body)',fontSize:'11px',marginLeft:4}}>✕</button>
+                </div>
+              </div>
+            ))}
+          </>
+        ) : (
+          <div style={{display:'grid',gap:'1rem',paddingTop:'0.5rem'}}>
+            <div style={{fontSize:'0.72rem',lineHeight:1.7,color:'var(--mist)',marginBottom:'0.25rem'}}>
+              Tell us where to deliver your BagFree kit before you arrive.
             </div>
-            <div style={{display:'flex',alignItems:'center',gap:'8px'}}>
-              <button onClick={()=>updateQty(item.id, item.qty-1)} style={{background:'rgba(var(--gold-rgb),0.1)',border:'none',color:'var(--gold)',width:24,height:24,cursor:'pointer',fontFamily:'var(--ff-body)',fontSize:'14px'}}>−</button>
-              <span style={{fontFamily:'var(--ff-body)',fontSize:'13px',color:'var(--white)',minWidth:16,textAlign:'center'}}>{item.qty}</span>
-              <button onClick={()=>updateQty(item.id, item.qty+1)} style={{background:'rgba(var(--gold-rgb),0.1)',border:'none',color:'var(--gold)',width:24,height:24,cursor:'pointer',fontFamily:'var(--ff-body)',fontSize:'14px'}}>+</button>
-              <button onClick={()=>removeFromCart(item.id)} style={{background:'none',border:'none',color:'rgba(255,255,255,0.3)',cursor:'pointer',fontFamily:'var(--ff-body)',fontSize:'11px',marginLeft:4}}>✕</button>
+
+            <div>
+              <label style={labelStyle}>Email</label>
+              <input style={fieldStyle} type="email" value={details.email} onChange={e=>updateDetail("email", e.target.value)} placeholder="you@example.com" />
+            </div>
+
+            <div>
+              <label style={labelStyle}>Hotel</label>
+              <select
+                style={fieldStyle}
+                value={details.hotel}
+                onChange={e=>updateDetail("hotel", e.target.value)}
+              >
+                <option value="">Select hotel</option>
+                {hotelOptions.map(hotel => (
+                  <option key={hotel} value={hotel}>{hotel}</option>
+                ))}
+              </select>
+
+              {selectedOtherHotel && (
+                <input
+                  style={{...fieldStyle, marginTop:"0.65rem"}}
+                  value={details.customHotel || ""}
+                  onChange={e=>updateDetail("customHotel", e.target.value)}
+                  placeholder="Type hotel or accommodation name"
+                />
+              )}
+            </div>
+
+            <div>
+              <label style={labelStyle}>Delivery City</label>
+              <div style={{display:'grid',gridTemplateColumns:'repeat(2,minmax(0,1fr))',gap:'0.55rem',width:'100%',maxWidth:'100%'}}>
+                {["Tampa","Orlando","Miami","Savannah","Atlanta"].map(cityButton)}
+              </div>
+            </div>
+
+            <div>
+              <label style={labelStyle}>Arrival</label>
+              <input style={fieldStyle} type="date" value={details.arrival} onChange={e=>updateDetail("arrival", e.target.value)} />
+            </div>
+
+            <div>
+              <label style={labelStyle}>Departure</label>
+              <input style={fieldStyle} type="date" value={details.departure} onChange={e=>updateDetail("departure", e.target.value)} />
             </div>
           </div>
-        ))}
+        )}
       </div>
+
       {cart.length > 0 && (
-        <div style={{padding:'1.5rem',borderTop:'1px solid rgba(var(--gold-rgb),0.15)'}}>
+        <div style={{padding:'1.5rem',paddingBottom:'calc(1.5rem + env(safe-area-inset-bottom))',borderTop:'1px solid rgba(var(--gold-rgb),0.15)',boxSizing:'border-box',width:'100%',maxWidth:'100%',overflowX:'hidden'}}>
           <div style={{display:'flex',justifyContent:'space-between',marginBottom:'1.25rem'}}>
             <span style={{fontFamily:'var(--ff-body)',fontSize:'13px',color:'var(--mist)'}}>Total</span>
             <span style={{fontFamily:'var(--ff-body)',fontSize:'16px',fontWeight:500,color:'var(--white)'}}>${total.toFixed(2)}</span>
           </div>
+
+          {step === "delivery" && (
+            <button
+              onClick={()=>setStep("cart")}
+              style={{width:'100%',background:'transparent',color:'var(--mist)',border:'1px solid rgba(var(--gold-rgb),0.22)',padding:'0.75rem',fontFamily:'var(--ff-body)',fontSize:'11px',letterSpacing:'2px',textTransform:'uppercase',cursor:'pointer',marginBottom:'0.75rem'}}>
+              ← Back to Cart
+            </button>
+          )}
+
           <button
-            onClick={onCheckout}
+            onClick={step === "cart" ? ()=>setStep("delivery") : submitDelivery}
             disabled={checking}
             style={{width:'100%',background:'var(--gold)',color:'var(--noir)',border:'none',padding:'0.9rem',fontFamily:'var(--ff-body)',fontSize:'12px',fontWeight:500,letterSpacing:'2px',textTransform:'uppercase',cursor:checking?'wait':'pointer',opacity:checking?0.7:1}}>
-            {checking ? 'Redirecting...' : 'Checkout →'}
+            {checking ? 'Redirecting...' : step === "cart" ? 'Continue →' : 'Checkout →'}
           </button>
+
           <div style={{fontFamily:'var(--ff-body)',fontSize:'10px',color:'rgba(245,237,216,0.3)',textAlign:'center',marginTop:'0.75rem',letterSpacing:'1px'}}>Secure checkout via Stripe</div>
         </div>
       )}
@@ -2343,9 +2591,9 @@ function ShopPage({title, subtitle, gender, products, setPage}) {
   const [cartOpen, setCartOpen] = useState(false);
   const [checking, setChecking] = useState(false);
 
-  async function handleCheckout() {
+  async function handleCheckout(orderDetails) {
     setChecking(true);
-    await stripeCheckout(cart);
+    await stripeCheckout(cart, orderDetails);
     setChecking(false);
   }
 
