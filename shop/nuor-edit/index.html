@@ -1,5 +1,5 @@
 <!DOCTYPE html>
-<html lang="en">
+<html lang="en" data-theme="dark">
 <head>
 <meta charset="UTF-8">
 <meta name="viewport" content="width=device-width, initial-scale=1.0">
@@ -34,6 +34,30 @@
   --ff-display: 'Cormorant Garamond', Georgia, serif;
   --ff-body: 'Jost', system-ui, sans-serif;
 }
+
+/* ── Light mode ── */
+[data-theme="light"] {
+  --noir: #F5F0E8;
+  --noir-2: #EDE8DC;
+  --noir-3: #E5DFD0;
+  --gold: #8A6A2E;
+  --gold-rgb: 138, 106, 46;
+  --gold-deep: #6B5020;
+  --white: #1A1428;
+  --white-rgb: 26, 20, 40;
+  --bg-rgb: 245, 240, 232;
+}
+
+/* Smooth transition between themes */
+*, *::before, *::after {
+  transition:
+    background-color 0.4s ease,
+    color 0.3s ease,
+    border-color 0.35s ease,
+    box-shadow 0.35s ease;
+}
+/* Don't animate transforms/opacity — causes sluggishness */
+.curator-card, .modal { transition: background-color 0.4s ease, border-color 0.35s ease; }
 
 * { box-sizing: border-box; margin: 0; padding: 0; }
 html { scroll-behavior: smooth; }
@@ -689,6 +713,12 @@ main { position: relative; z-index: 2; }
       <a href="/">Home</a>
       <a href="/departure-lounge-landing.html">Shop</a>
       <a href="#become-curator">Become a Curator</a>
+      <button id="themeToggle" onclick="toggleTheme()" aria-label="Toggle light/dark mode"
+        style="background:none;border:1px solid rgba(var(--gold-rgb),0.35);color:rgba(var(--gold-rgb),0.85);width:32px;height:32px;border-radius:50%;cursor:pointer;font-size:13px;display:inline-flex;align-items:center;justify-content:center;margin-left:0.5rem;transition:border-color 0.25s,color 0.25s;flex-shrink:0;"
+        onmouseenter="this.style.borderColor='rgba(var(--gold-rgb),0.8)'"
+        onmouseleave="this.style.borderColor='rgba(var(--gold-rgb),0.35)'">
+        <span id="themeIcon">☽</span>
+      </button>
     </div>
   </nav>
 
@@ -989,7 +1019,28 @@ main { position: relative; z-index: 2; }
 </div>
 
 <script>
-// ─── CURATOR DATA (placeholders — replace photos + bios when curators are signed) ───
+// ─── THEME TOGGLE ────────────────────────────────────────────────────────────
+(function initTheme() {
+  try {
+    const saved = localStorage.getItem('nuorEditTheme');
+    const prefersDark = window.matchMedia('(prefers-color-scheme: dark)').matches;
+    const theme = saved || (prefersDark ? 'dark' : 'light');
+    document.documentElement.setAttribute('data-theme', theme);
+    const icon = document.getElementById('themeIcon');
+    if (icon) icon.textContent = theme === 'dark' ? '☽' : '☀';
+  } catch(e) {}
+})();
+
+function toggleTheme() {
+  const html = document.documentElement;
+  const current = html.getAttribute('data-theme') || 'dark';
+  const next = current === 'dark' ? 'light' : 'dark';
+  html.setAttribute('data-theme', next);
+  document.getElementById('themeIcon').textContent = next === 'dark' ? '☽' : '☀';
+  try { localStorage.setItem('nuorEditTheme', next); } catch(e) {}
+}
+
+// ─── CURATOR DATA ─────────────────────────────────────────────────────────────
 // Available = real partner curator in an active BagFree city.
 // Upcoming = aspirational placeholder. When you sign a real curator, change `status` to 'available'
 //            and fill in their real name, city, style descriptor, and (eventually) photo.
