@@ -4,12 +4,12 @@
 <meta charset="UTF-8">
 <meta name="viewport" content="width=device-width, initial-scale=1.0">
 <meta name="theme-color" content="#0D1525">
-<title>Miami Arrival · BagFree</title>
-<meta name="description" content="The Miami arrival guide — curated kits, local picks, and your personal stylist. Delivered before you check in.">
+<title>Tampa Arrival · BagFree</title>
+<meta name="description" content="Everything you need for a Tampa arrival — curated kits, local picks, and your personal stylist. Delivered before you check in.">
 <link rel="icon" href="/favicon-32.png" type="image/png">
 <link rel="apple-touch-icon" href="/apple-touch-icon.png">
-<meta property="og:title" content="Arrive in Miami · BagFree">
-<meta property="og:description" content="The Miami arrival guide — curated kits, local picks, and your personal stylist. Delivered before you check in.">
+<meta property="og:title" content="Arrive in Tampa · BagFree">
+<meta property="og:description" content="Everything you need for a Tampa arrival — curated kits, local picks, and your personal stylist. Delivered before you check in.">
 <meta property="og:image" content="/og-image.png">
 <link rel="preconnect" href="https://fonts.googleapis.com">
 <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
@@ -51,8 +51,8 @@ nav{position:fixed;top:0;left:0;right:0;z-index:100;display:flex;align-items:cen
 .hero-bg::after{content:"";position:absolute;inset:0;background:linear-gradient(to top,rgba(0,0,0,0.55) 0%,rgba(0,0,0,0.15) 60%,transparent 100%);}
 .hero h1 em{color:var(--accent);font-style:italic;}
 .hero-tagline{font-family:var(--ff-display);font-style:italic;font-size:clamp(1.1rem,2.5vw,1.6rem);color:rgba(245,237,216,0.8);font-weight:300;margin:1.25rem 0 2.5rem;max-width:580px;line-height:1.5;position:relative;z-index:1;animation:fadeUp 1s 0.15s ease-out both;}
-.hero-scroll{display:flex;align-items:center;gap:0.75rem;font-family:var(--ff-body);font-size:9px;letter-spacing:3.5px;text-transform:uppercase;color:rgba(var(--white-rgb),0.35);position:relative;z-index:1;animation:fadeUp 1s 0.3s ease-out both;}
-.hero-scroll::before{content:'';width:1px;height:40px;background:linear-gradient(to bottom,rgba(var(--gold-rgb),0.5),transparent);}
+.hero-scroll{display:flex;align-items:center;gap:0.75rem;font-family:var(--ff-body);font-size:9px;letter-spacing:3.5px;text-transform:uppercase;color:rgba(245,237,216,0.55);position:relative;z-index:1;animation:fadeUp 1s 0.3s ease-out both;}
+.hero-scroll::before{content:'';width:1px;height:40px;background:linear-gradient(to bottom,rgba(201,169,110,0.7),transparent);}
 /* SECTIONS */
 .section{padding:6rem 2.5rem;position:relative;z-index:1;}
 .section-inner{max-width:1100px;margin:0 auto;}
@@ -134,13 +134,101 @@ footer a:hover{color:var(--gold);}
 }
 @media(max-width:480px){.bundle-grid{grid-template-columns:1fr;}}
 
-:root { --accent: 4ECDC4; --accent-rgb: EC,DC,4; }
+:root { --accent: E8835A; --accent-rgb: 88,35,A; }
 .hero-bg { 
       background:
-        radial-gradient(ellipse 60% 70% at 65% 50%, rgba(78,205,196,0.12) 0%, transparent 55%),
-        radial-gradient(ellipse 50% 40% at 15% 20%, rgba(201,169,110,0.08) 0%, transparent 45%),
-        linear-gradient(145deg, #0A1828 0%, #0d1c2e 50%, #081520 100%);
+        radial-gradient(ellipse 70% 60% at 15% 65%, rgba(232,131,90,0.18) 0%, transparent 55%),
+        radial-gradient(ellipse 50% 40% at 85% 20%, rgba(201,169,110,0.1) 0%, transparent 45%),
+        linear-gradient(160deg, #0D1525 0%, #0e1828 50%, #0c1320 100%);
      }
+
+/* ── SOCIAL SECTION ── */
+.social-section { padding:5rem 2.5rem; background:var(--noir); border-top:1px solid rgba(var(--gold-rgb),0.12); }
+.social-creator {
+  border:1px solid rgba(var(--gold-rgb),0.15);
+  margin-bottom:2.5rem;
+  overflow:hidden;
+}
+.social-creator:last-child { margin-bottom:0; }
+.social-creator-header {
+  padding:1.5rem 2rem;
+  display:flex; align-items:center; gap:1.5rem;
+  border-bottom:1px solid rgba(var(--gold-rgb),0.1);
+  flex-wrap:wrap;
+}
+.social-avatar {
+  width:52px; height:52px; border-radius:50%;
+  background:var(--noir-3);
+  border:1px solid rgba(var(--gold-rgb),0.25);
+  display:flex; align-items:center; justify-content:center;
+  flex-shrink:0;
+  font-family:var(--ff-display); font-style:italic;
+  font-size:1.4rem; color:rgba(var(--gold-rgb),0.5);
+}
+.social-creator-info { flex:1; min-width:160px; }
+.social-handle {
+  font-family:var(--ff-body); font-size:13px;
+  color:var(--white); font-weight:400; letter-spacing:0.3px;
+  margin-bottom:0.2rem;
+}
+.social-meta {
+  font-family:var(--ff-body); font-size:10px;
+  letter-spacing:2px; text-transform:uppercase;
+  color:rgba(var(--gold-rgb),0.6);
+}
+.social-approval {
+  font-family:var(--ff-body); font-size:9px;
+  letter-spacing:2px; text-transform:uppercase;
+  color:rgba(var(--white-rgb),0.3);
+  border:1px dashed rgba(var(--white-rgb),0.15);
+  padding:0.4rem 0.85rem;
+}
+.social-embed-placeholder {
+  background:var(--noir-2);
+  aspect-ratio:4/3;
+  max-height:420px;
+  display:flex; flex-direction:column;
+  align-items:center; justify-content:center;
+  gap:1rem; padding:2rem;
+  border-bottom:1px solid rgba(var(--gold-rgb),0.08);
+  position:relative;
+}
+.social-embed-icon {
+  font-size:2rem; opacity:0.2;
+}
+.social-embed-label {
+  font-family:var(--ff-body); font-size:10px;
+  letter-spacing:3px; text-transform:uppercase;
+  color:rgba(var(--white-rgb),0.3); text-align:center;
+  line-height:1.8;
+}
+.social-embed-note {
+  position:absolute; bottom:1rem; right:1rem;
+  font-family:var(--ff-body); font-size:9px;
+  letter-spacing:1.5px; text-transform:uppercase;
+  color:rgba(var(--white-rgb),0.2);
+}
+.social-creator-body { padding:1.5rem 2rem 1.75rem; }
+.social-quote {
+  font-family:var(--ff-display); font-style:italic;
+  font-size:1.05rem; font-weight:300;
+  color:rgba(var(--white-rgb),0.75);
+  line-height:1.65; margin-bottom:1.5rem;
+  border-left:2px solid rgba(var(--gold-rgb),0.35);
+  padding-left:1.25rem;
+}
+.social-links { display:flex; flex-direction:column; gap:0.75rem; }
+.social-link {
+  display:inline-flex; align-items:center; gap:0.75rem;
+  font-family:var(--ff-body); font-size:11px;
+  letter-spacing:2px; text-transform:uppercase;
+  color:var(--gold); text-decoration:none;
+  transition:color 0.25s;
+}
+.social-link:hover { color:var(--white); }
+.social-link-dot { font-size:7px; flex-shrink:0; }
+@media(max-width:640px){ .social-section{padding:3.5rem 1.5rem;} .social-creator-header{padding:1.25rem 1.5rem;} .social-creator-body{padding:1.25rem 1.5rem;} }
+
 </style>
 </head>
 <body>
@@ -162,18 +250,18 @@ footer a:hover{color:var(--gold);}
 
 <section class="hero">
   <div class="hero-bg"></div>
-  <h1>Miami.</h1>
-  <p class="hero-tagline">Bright at midnight. Alive at noon. Never one thing.</p>
+  <h1>Tampa.</h1>
+  <p class="hero-tagline">Arrives warm. Stays with you.</p>
   <div class="hero-scroll">Scroll to explore</div>
 </section>
 
 <section class="section intro-section">
   <div class="section-inner">
     <div class="intro-grid">
-      <div class="intro-lead">Miami gives you <em>three cities</em> depending on when you arrive. Each one demands a different wardrobe.</div>
+      <div class="intro-lead">Tampa has a way of catching you <em>off guard.</em> You come for the bay, and stay for the mornings.</div>
       <div class="intro-body">
-        <p>The dawn city is quiet and pink, the light on Biscayne Bay doing things that don't photograph correctly. The afternoon city is blinding — the kind of sun that makes every color look saturated beyond belief. The midnight city is its own geography entirely, operating by rules that were invented sometime around 2019 and haven't been written down.</p>
-        <p>You'll need something for each. We've thought about it so you don't have to. Your arrival kit is already at the hotel.</p>
+        <p>There's a particular quality to the light on the water here — low and gold before 9am, blinding and beautiful by noon. The city doesn't ask much of you. A coffee somewhere on the Riverwalk, a table at Armature Works before the crowd finds it, an afternoon that goes longer than you intended.</p>
+        <p>Pack light. The warmer-than-you-remembered air forgives most wardrobe missteps, and we handle everything else. Your kit arrives before you do.</p>
       </div>
     </div>
   </div>
@@ -185,35 +273,35 @@ footer a:hover{color:var(--gold);}
     <div class="section-title">Everything you need. <em>Already there.</em></div>
     <div class="bundle-grid">
         <a class="bundle-card" href="/departure-lounge-landing.html?vendor=valet">
-          <img class="bundle-img" src="https://valetbynuor.com/cdn/shop/files/ChatGPTImageAug20_2025_12_03_35AM.png?v=1755662764&width=800" alt="Women's Beach Lounge Set" loading="lazy" onerror="this.style.background='var(--noir-3)'">
-          <div class="bundle-info">
-            <div class="bundle-occasion">For the Setai pool. Obviously.</div>
-            <div class="bundle-name">Women's Beach Lounge Set</div>
-            <div class="bundle-price">$75</div>
-          </div>
-        </a>
-        <a class="bundle-card" href="/departure-lounge-landing.html?vendor=valet">
           <img class="bundle-img" src="https://valetbynuor.com/cdn/shop/files/ChatGPTImageJan11_2026_02_55_15PM.png?v=1768161350&width=800" alt="Women's 7-Day Essentials" loading="lazy" onerror="this.style.background='var(--noir-3)'">
           <div class="bundle-info">
-            <div class="bundle-occasion">A full week without thinking about packing</div>
+            <div class="bundle-occasion">For a week on the bay</div>
             <div class="bundle-name">Women's 7-Day Essentials</div>
             <div class="bundle-price">$149</div>
           </div>
         </a>
         <a class="bundle-card" href="/departure-lounge-landing.html?vendor=valet">
-          <img class="bundle-img" src="https://valetbynuor.com/cdn/shop/files/ChatGPTImageAug23_2025_02_11_28PM.png?v=1755972741&width=800" alt="Men's Business Emergency Kit" loading="lazy" onerror="this.style.background='var(--noir-3)'">
+          <img class="bundle-img" src="https://valetbynuor.com/cdn/shop/files/ChatGPTImageJan11_2026_02_58_17PM.png?v=1768161528&width=800" alt="Men's 7-Day Essentials" loading="lazy" onerror="this.style.background='var(--noir-3)'">
           <div class="bundle-info">
-            <div class="bundle-occasion">For the meeting you didn't plan</div>
-            <div class="bundle-name">Men's Business Emergency Kit</div>
-            <div class="bundle-price">$69</div>
+            <div class="bundle-occasion">Light enough to walk everywhere</div>
+            <div class="bundle-name">Men's 7-Day Essentials</div>
+            <div class="bundle-price">$149</div>
           </div>
         </a>
         <a class="bundle-card" href="/departure-lounge-landing.html?vendor=valet">
-          <img class="bundle-img" src="https://valetbynuor.com/cdn/shop/files/ChatGPT_Image_Mar_14_2026_10_53_50_AM.png?v=1773500050&width=800" alt="Women's Toiletry Stay Fresh Kit" loading="lazy" onerror="this.style.background='var(--noir-3)'">
+          <img class="bundle-img" src="https://valetbynuor.com/cdn/shop/files/ChatGPTImageAug20_2025_12_03_35AM.png?v=1755662764&width=800" alt="Women's Beach Lounge Set" loading="lazy" onerror="this.style.background='var(--noir-3)'">
           <div class="bundle-info">
-            <div class="bundle-occasion">Miami humidity demands this</div>
-            <div class="bundle-name">Women's Toiletry Stay Fresh Kit</div>
-            <div class="bundle-price">$39</div>
+            <div class="bundle-occasion">For Clearwater, before the crowds</div>
+            <div class="bundle-name">Women's Beach Lounge Set</div>
+            <div class="bundle-price">$75</div>
+          </div>
+        </a>
+        <a class="bundle-card" href="/departure-lounge-landing.html?vendor=valet">
+          <img class="bundle-img" src="https://valetbynuor.com/cdn/shop/files/ChatGPTImageMar16_2026_08_56_10PM.png?v=1773708994&width=800" alt="Sleep & Recovery Kit" loading="lazy" onerror="this.style.background='var(--noir-3)'">
+          <div class="bundle-info">
+            <div class="bundle-occasion">For the first night, always</div>
+            <div class="bundle-name">Sleep & Recovery Kit</div>
+            <div class="bundle-price">$49</div>
           </div>
         </a>
     </div>
@@ -227,8 +315,8 @@ footer a:hover{color:var(--gold);}
 </section>
 
 <div class="quote-section">
-  <div class="quote-text">"Miami is the only city where the weather, the nightlife, and the art scene are all genuinely world-class — and somehow none of them start before noon."</div>
-  <div class="quote-attr">The BagFree Edit · Miami</div>
+  <div class="quote-text">Three days in Tampa. You won't need half of what you packed — and you'll wish you had the other half.</div>
+  <div class="quote-attr">The BagFree Edit · Tampa</div>
 </div>
 
 <section class="section" style="background:var(--noir-2);border-top:1px solid rgba(var(--gold-rgb),0.12);">
@@ -237,24 +325,24 @@ footer a:hover{color:var(--gold);}
     <div class="section-title">Four places worth <em>knowing.</em></div>
     <div class="recs-grid">
         <div class="rec-card">
-          <div class="rec-type">Rooftop</div>
-          <div class="rec-name">Zuma Miami</div>
-          <div class="rec-desc">Japanese-Brazilian above Brickell. Book two weeks ahead or arrive at the bar and wait — it's worth it.</div>
+          <div class="rec-type">Brunch</div>
+          <div class="rec-name">Oxford Exchange</div>
+          <div class="rec-desc">Bookstore-café hybrid in an 1891 building. The kind of place you stay for two hours by accident.</div>
         </div>
         <div class="rec-card">
-          <div class="rec-type">Art & Culture</div>
-          <div class="rec-name">Wynwood Walls</div>
-          <div class="rec-desc">The outdoor gallery that turned a warehouse district into a neighborhood worth walking slowly.</div>
+          <div class="rec-type">Waterfront Dining</div>
+          <div class="rec-name">Armature Works</div>
+          <div class="rec-desc">Curated food hall on the Hillsborough River. Go before noon or accept a wait.</div>
         </div>
         <div class="rec-card">
-          <div class="rec-type">Dining</div>
-          <div class="rec-name">Mandolin Aegean Bistro</div>
-          <div class="rec-desc">Greek courtyard in the Design District. Unassuming entrance, exceptional food, locals-to-tourist ratio heavily favored.</div>
+          <div class="rec-type">Fine Dining</div>
+          <div class="rec-name">Ulele</div>
+          <div class="rec-desc">Native Florida ingredients, riverside setting, and a backstory worth Googling.</div>
         </div>
         <div class="rec-card">
-          <div class="rec-type">Sunset</div>
-          <div class="rec-name">The Surfcomber Bar</div>
-          <div class="rec-desc">South Beach, laid-back, genuinely no effort required. The sunset here is reliable every evening.</div>
+          <div class="rec-type">Walk</div>
+          <div class="rec-name">The Riverwalk</div>
+          <div class="rec-desc">Three miles of connected waterfront that makes every other hotel walk feel incomplete.</div>
         </div>
     </div>
   </div>
@@ -266,23 +354,70 @@ footer a:hover{color:var(--gold);}
         <div class="section-label">Your local guide</div>
         <div class="section-title" style="margin-bottom:2rem;">Styled by someone who <em>lives here.</em></div>
         <div class="curator-card">
-          <div class="curator-mono"><span class="curator-mono-letter">B</span></div>
+          <div class="curator-mono"><span class="curator-mono-letter">S</span></div>
           <div class="curator-info">
-            <div class="curator-name-label">Nuor Edit Curator · Miami</div>
-            <div class="curator-name">Beatriz</div>
-            <div class="curator-style">Tropical Editorial · Miami · Coming Q4</div>
+            <div class="curator-name-label">Nuor Edit Curator · Tampa</div>
+            <div class="curator-name">Selena</div>
+            <div class="curator-style">Coastal Modern · Tampa's founding curator</div>
           </div>
-          <a class="btn-outline" href="/shop/nuor-edit/">Notify me when Beatriz launches →</a>
+          <a class="btn-outline" href="/shop/nuor-edit/">View the edit →</a>
         </div>
       </div>
     </section>
 
+<section class="social-section">
+  <div class="section-inner">
+    <div class="section-label">As seen in Tampa</div>
+    <div class="section-title">Popular with <em>our community.</em></div>
+    <p style="font-family:var(--ff-body);font-size:13px;color:rgba(var(--white-rgb),0.45);margin:0.5rem 0 2.5rem;font-weight:300;max-width:540px;line-height:1.8;">Real travelers, real stories. Curated creators who know Tampa — and earn when you do, too.</p>
+    <div class="social-creator">
+      <div class="social-creator-header">
+        <div class="social-avatar">@</div>
+        <div class="social-creator-info">
+          <div class="social-handle">@creatorhandle</div>
+          <div class="social-meta">Platform &middot; Followers &middot; Tampa</div>
+        </div>
+        <div class="social-approval">Pending approval</div>
+      </div>
+      <div class="social-embed-placeholder">
+        <div class="social-embed-icon">&#9655;</div>
+        <div class="social-embed-label">Replace this block with Instagram / TikTok / YouTube embed code after creator approval</div>
+        <div class="social-embed-note">Placeholder</div>
+      </div>
+      <div class="social-creator-body">
+        <div class="social-quote">"Add the creator's caption or a pull quote from their Tampa post here."</div>
+        <div class="social-links">
+          <a class="social-link" href="#" onclick="return false;"><span class="social-link-dot">&#9670;</span> Shop the look they're wearing &#8594;</a>
+          <a class="social-link" href="#" onclick="return false;"><span class="social-link-dot">&#9670;</span> Book the experience they mention &#8594;</a>
+        </div>
+      </div>
+    </div>
+    <div class="social-creator" style="opacity:0.45;pointer-events:none;">
+      <div class="social-creator-header">
+        <div class="social-avatar" style="opacity:0.4;">@</div>
+        <div class="social-creator-info">
+          <div class="social-handle" style="color:rgba(var(--white-rgb),0.4);">Second creator slot</div>
+          <div class="social-meta">Coming soon</div>
+        </div>
+        <div class="social-approval">Not yet assigned</div>
+      </div>
+      <div class="social-embed-placeholder" style="aspect-ratio:unset;min-height:120px;">
+        <div class="social-embed-label">Reserve this spot for a second Tampa creator</div>
+      </div>
+    </div>
+    <div style="margin-top:2rem;padding:1.25rem 1.5rem;border:1px dashed rgba(var(--white-rgb),0.1);background:rgba(var(--gold-rgb),0.03);">
+      <div style="font-family:var(--ff-body);font-size:9px;letter-spacing:2.5px;text-transform:uppercase;color:rgba(var(--gold-rgb),0.5);margin-bottom:0.5rem;">&#9670; Internal note — remove before launch</div>
+      <div style="font-family:var(--ff-body);font-size:12px;color:rgba(var(--white-rgb),0.35);line-height:1.8;font-weight:300;">To activate: (1) Get creator approval via email &middot; (2) Replace placeholder div with embed code &middot; (3) Add real affiliate URLs to the two links &middot; (4) Update handle + pull quote &middot; (5) Remove this note. Track referrals via <code style="color:rgba(var(--gold-rgb),0.6);">?ref=tampa-creatorname</code> on BagFree links.</div>
+    </div>
+  </div>
+</section>
+
 <div class="guide-cta">
   <div class="guide-cta-left">
-    <h3>Get the full <em>Miami guide.</em></h3>
-    <p>Rooftop bars, beach day essentials, hidden local spots, luxury experiences, and this weekend's events — all curated for Miami.</p>
+    <h3>Get the full <em>Tampa guide.</em></h3>
+    <p>Rooftop bars, hidden brunch spots, luxury experiences, and weekend events — curated for Tampa by the BagFree guide.</p>
   </div>
-  <a href="/guide/" onclick="localStorage.setItem('bfGuideCity','Miami');return true;"
+  <a href="/guide/" onclick="localStorage.setItem('bfGuideCity','Tampa');return true;"
     class="btn-outline">Open city guide →</a>
 </div>
 
@@ -291,14 +426,14 @@ footer a:hover{color:var(--gold);}
     <div class="section-label">Also arriving in</div>
     <div class="section-title">More <em>destinations.</em></div>
     <div class="other-grid">
-        <a class="other-card" href="/destinations/tampa/">
-          <div class="other-city">Tampa.</div>
-          <div class="other-mood">Arrives warm.</div>
-          <div class="other-cta-text">Explore arrival →</div>
-        </a>
         <a class="other-card" href="/destinations/savannah/">
           <div class="other-city">Savannah.</div>
           <div class="other-mood">Slower. More intentional.</div>
+          <div class="other-cta-text">Explore arrival →</div>
+        </a>
+        <a class="other-card" href="/destinations/miami/">
+          <div class="other-city">Miami.</div>
+          <div class="other-mood">Bright at midnight.</div>
           <div class="other-cta-text">Explore arrival →</div>
         </a>
     </div>
