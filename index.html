@@ -787,176 +787,6 @@ function Home({setPage}) {
 
       {/* EDITORIAL DESTINATION GUIDES — moved to after hero */}
 
-      {/* DESTINATIONS — DELIVERY COVERAGE */}
-      <div id="destinations" className="bf-section-pad" style={{padding:'3rem 2rem',position:'relative',overflow:'hidden',backgroundImage:"url('https://images.unsplash.com/photo-1505118380757-91f5f5632de0?w=1800&q=80')",backgroundSize:'cover',backgroundPosition:'center 60%'}}>
-
-        {/* Dark overlay */}
-        <div style={{position:'absolute',inset:0,background:'linear-gradient(135deg, rgba(8,20,40,0.88) 0%, rgba(5,30,20,0.84) 50%, rgba(8,20,40,0.90) 100%)',pointerEvents:'none'}}/>
-        <div style={{display:'flex',justifyContent:'space-between',alignItems:'flex-end',marginBottom:'2rem',flexWrap:'wrap',gap:'1rem',position:'relative',zIndex:1}}>
-          <div>
-            <div style={{fontSize:'0.72rem',letterSpacing:'4px',textTransform:'uppercase',color:'var(--gold-dim)',marginBottom:'1rem',display:'flex',alignItems:'center',gap:'1rem'}}>
-              <span style={{width:24,height:1,background:'var(--gold-dim)',display:'inline-block'}}/>Now Serving
-            </div>
-            <h2 style={{fontFamily:'var(--ff-display)',fontSize:'clamp(2rem,4vw,3.5rem)',fontWeight:300,letterSpacing:'-0.3px',color:'var(--white)'}}>
-              Florida, Georgia & <em style={{fontStyle:'italic',color:'var(--gold)'}}>The Caribbean</em>
-            </h2>
-          </div>
-          <div style={{fontSize:'0.84rem',color:'rgba(var(--text-rgb),0.55)',fontWeight:300,maxWidth:320,lineHeight:1.8,textAlign:'right'}}>
-            Same-day delivery in Tampa, Orlando, Savannah & Atlanta.<br/>Next-day in Miami and select US destinations.<br/>International delivery to Caribbean islands.
-          </div>
-        </div>
-
-        <div style={{position:'relative',zIndex:1}}>
-        <div style={{fontSize:'0.65rem',letterSpacing:'3px',textTransform:'uppercase',color:'var(--gold-dim)',marginBottom:'1rem',display:'flex',alignItems:'center',gap:'0.75rem'}}>
-          <span style={{width:16,height:1,background:'var(--gold-dim)',display:'inline-block'}}/>United States
-        </div>
-        <div className="bf-grid-3" style={{display:'grid',gridTemplateColumns:'repeat(3,1fr)',gap:1,background:'rgba(0,0,0,0.08)',border:'1px solid rgba(0,0,0,0.1)'}}>
-          {[
-            {name:'Tampa Bay',state:'FL',sameDay:true,desc:'Our flagship city. Same-day delivery to all major hotels and resorts.',code:'TPA'},
-            {name:'Orlando',state:'FL',sameDay:true,desc:'Theme park to resort — essentials delivered before you check in.',code:'MCO'},
-            {name:'Miami Beach',state:'FL',sameDay:false,desc:'South Beach, Brickell and beyond. Art Basel season specialists.',code:'MIA'},
-            {name:'Florida Keys',state:'FL',sameDay:false,desc:'Island delivery from Key Largo to Key West. Resort kits our specialty.',code:'EYW'},
-            {name:'Atlanta',state:'GA',sameDay:true,desc:'Buckhead, Midtown, Airport corridor. Business and leisure.',code:'ATL'},
-            {name:'Savannah',state:'GA',sameDay:true,desc:'Historic district hotels and boutique properties. Weekend getaways.',code:'SAV'},
-          ].map((d)=>(
-            <div key={d.name} onClick={()=>{window._activeDestCity=d.name;setPage('vendors');}}
-              style={{background:'var(--gold)',padding:'1.75rem 1.5rem',cursor:'pointer',transition:'background 0.25s',position:'relative'}}
-              onMouseEnter={e=>e.currentTarget.style.background='#DDD3B8'}
-              onMouseLeave={e=>e.currentTarget.style.background='var(--gold)'}>
-              {d.sameDay && (
-                <div style={{position:'absolute',top:'1.25rem',right:'1.25rem',fontSize:'0.60rem',letterSpacing:'1.5px',textTransform:'uppercase',color:'rgba(100,75,30,0.9)',border:'1px solid rgba(100,75,30,0.35)',padding:'3px 8px',background:'rgba(100,75,30,0.1)'}}>
-                  Same-Day
-                </div>
-              )}
-              <div style={{fontFamily:'var(--ff-display)',fontSize:'0.82rem',fontWeight:300,letterSpacing:'4px',color:'var(--gold-dim)',marginBottom:'0.85rem',textTransform:'uppercase'}}>{d.code}</div>
-              <div style={{fontFamily:'var(--ff-display)',fontSize:'1.5rem',fontWeight:300,color:'var(--noir)',marginBottom:'4px',lineHeight:1.1}}>{d.name}</div>
-              <div style={{fontSize:'0.70rem',letterSpacing:'2px',textTransform:'uppercase',color:'var(--gold-dim)',marginBottom:'1rem'}}>{d.state}</div>
-              <div style={{width:20,height:1,background:'rgba(var(--bg-rgb),0.2)',marginBottom:'1rem'}}/>
-              <div style={{fontSize:'0.88rem',color:'rgba(10,10,8,0.65)',lineHeight:1.8,fontWeight:300,marginBottom:'1.25rem'}}>{d.desc}</div>
-              <div style={{fontSize:'0.72rem',letterSpacing:'2px',textTransform:'uppercase',color:'var(--gold-dim)',display:'flex',alignItems:'center',gap:'0.5rem'}}>
-                Shop vendors <span style={{fontSize:'0.82rem'}}>→</span>
-              </div>
-            </div>
-          ))}
-        </div>
-
-        </div>{/* end US zIndex wrapper */}
-
-      </div>
-
-      {/* CARIBBEAN */}
-      <div className="bf-section-pad" style={{padding:'2.5rem 3rem 3rem',position:'relative',overflow:'hidden',background:'#051520'}}>
-
-        {/* Animated ocean waves */}
-        <style>{`
-          @keyframes waveMove1{0%{transform:translateX(0)}100%{transform:translateX(-50%)}}
-          @keyframes waveMove2{0%{transform:translateX(-50%)}100%{transform:translateX(0)}}
-          @keyframes waveMove3{0%{transform:translateX(0)}100%{transform:translateX(-50%)}}
-          @keyframes shimmer{0%,100%{opacity:0.03}50%{opacity:0.07}}
-          .wave1{animation:waveMove1 18s linear infinite}
-          .wave2{animation:waveMove2 12s linear infinite}
-          .wave3{animation:waveMove3 22s linear infinite}
-          .waveShimmer{animation:shimmer 6s ease-in-out infinite}
-        `}</style>
-
-        {/* Deep ocean gradient base */}
-        <div style={{position:'absolute',inset:0,background:'linear-gradient(180deg,#051a2e 0%,#062535 40%,#041e2a 70%,#051015 100%)',pointerEvents:'none'}}/>
-
-        {/* Shimmer light on water surface */}
-        <div className="waveShimmer" style={{position:'absolute',top:'20%',left:'10%',right:'10%',height:'2px',background:'linear-gradient(90deg,transparent,rgba(180,220,255,0.4),rgba(255,255,255,0.6),rgba(180,220,255,0.4),transparent)',pointerEvents:'none',borderRadius:2}}/>
-        <div className="waveShimmer" style={{position:'absolute',top:'35%',left:'20%',right:'25%',height:'1px',background:'linear-gradient(90deg,transparent,rgba(180,220,255,0.25),rgba(255,255,255,0.4),transparent)',pointerEvents:'none',animationDelay:'2s'}}/>
-
-        {/* Wave layer 1 — deep background */}
-        <svg style={{position:'absolute',bottom:0,left:0,width:'200%',pointerEvents:'none',opacity:0.35}} viewBox="0 0 1440 180" preserveAspectRatio="none" xmlns="http://www.w3.org/2000/svg">
-          <g className="wave1">
-            <path d="M0,100 C200,60 400,140 600,100 C800,60 1000,140 1200,100 C1400,60 1440,100 1440,100 L1440,180 L0,180Z" fill="#0a4a6e"/>
-            <path d="M1440,100 C1640,60 1840,140 2040,100 C2240,60 2440,140 2640,100 C2840,60 2880,100 2880,100 L2880,180 L1440,180Z" fill="#0a4a6e"/>
-          </g>
-        </svg>
-
-        {/* Wave layer 2 — mid */}
-        <svg style={{position:'absolute',bottom:0,left:0,width:'200%',pointerEvents:'none',opacity:0.5}} viewBox="0 0 1440 140" preserveAspectRatio="none" xmlns="http://www.w3.org/2000/svg">
-          <g className="wave2">
-            <path d="M0,80 C180,40 360,110 540,80 C720,50 900,110 1080,80 C1260,50 1440,90 1440,80 L1440,140 L0,140Z" fill="#073d5c"/>
-            <path d="M1440,80 C1620,40 1800,110 1980,80 C2160,50 2340,110 2520,80 C2700,50 2880,90 2880,80 L2880,140 L1440,140Z" fill="#073d5c"/>
-          </g>
-        </svg>
-
-        {/* Wave layer 3 — foreground foam */}
-        <svg style={{position:'absolute',bottom:0,left:0,width:'200%',pointerEvents:'none',opacity:0.7}} viewBox="0 0 1440 90" preserveAspectRatio="none" xmlns="http://www.w3.org/2000/svg">
-          <g className="wave3">
-            <path d="M0,50 C120,25 240,70 360,50 C480,30 600,70 720,50 C840,30 960,70 1080,50 C1200,30 1320,65 1440,50 L1440,90 L0,90Z" fill="#041828"/>
-            <path d="M1440,50 C1560,25 1680,70 1800,50 C1920,30 2040,70 2160,50 C2280,30 2400,70 2520,50 C2640,30 2760,65 2880,50 L2880,90 L1440,90Z" fill="#041828"/>
-          </g>
-        </svg>
-
-        {/* Foam highlights */}
-        <svg style={{position:'absolute',bottom:0,left:0,width:'200%',pointerEvents:'none',opacity:0.15}} viewBox="0 0 1440 40" preserveAspectRatio="none" xmlns="http://www.w3.org/2000/svg">
-          <g className="wave2">
-            <path d="M0,20 C90,8 180,32 270,20 C360,8 450,32 540,20 C630,8 720,32 810,20 C900,8 990,32 1080,20 C1170,8 1260,32 1350,20 C1400,12 1440,22 1440,20 L1440,40 L0,40Z" fill="white"/>
-            <path d="M1440,20 C1530,8 1620,32 1710,20 C1800,8 1890,32 1980,20 C2070,8 2160,32 2250,20 C2340,8 2430,32 2520,20 C2610,8 2700,32 2790,20 C2840,12 2880,22 2880,20 L2880,40 L1440,40Z" fill="white"/>
-          </g>
-        </svg>
-
-        <div style={{position:'relative',zIndex:1}}>
-        <div style={{fontSize:'0.65rem',letterSpacing:'3px',textTransform:'uppercase',color:'var(--gold)',marginBottom:'1rem',display:'flex',alignItems:'center',gap:'0.75rem'}}>
-          <span style={{width:16,height:1,background:'var(--gold)',display:'inline-block'}}/>The Caribbean
-        </div>
-        <div className="bf-grid-3" style={{display:'grid',gridTemplateColumns:'repeat(3,1fr)',gap:1,background:'rgba(255,255,255,0.08)',border:'1px solid rgba(255,255,255,0.12)'}}>
-          {[
-            {
-              name:'Trinidad & Tobago',state:'TT',code:'POS',comingSoon:false,
-              desc:'Port of Spain and Crown Point. Carnival season specialists. Pre-arrival delivery to all major resorts.',
-              bg:'rgba(140,30,30,0.25)',
-              bgHover:'rgba(140,30,30,0.40)',
-              accentColor:'rgba(255,160,130,0.95)',
-              dividerColor:'rgba(200,80,60,0.4)',
-              textColor:'rgba(var(--text-rgb),0.7)',
-              nameColor:'var(--white)',
-            },
-            {
-              name:'St. Vincent & Grenadines',state:'VC',code:'SVD',comingSoon:false,
-              desc:'Kingstown to Bequia and the Grenadines. Private island and boutique resort delivery.',
-              bg:'rgba(0,80,40,0.25)',
-              bgHover:'rgba(0,80,40,0.40)',
-              accentColor:'rgba(100,220,150,0.95)',
-              dividerColor:'rgba(20,160,80,0.4)',
-              textColor:'rgba(var(--text-rgb),0.7)',
-              nameColor:'var(--white)',
-            },
-            {
-              name:'More Coming Soon',state:'Caribbean',code:'···',comingSoon:true,
-              desc:'Additional Caribbean destinations launching soon. Contact us for availability at your island destination.',
-              bg:'rgba(var(--bg-rgb),0.35)',bgHover:'rgba(var(--bg-rgb),0.35)',
-              accentColor:'var(--gold-dim)',dividerColor:'rgba(var(--gold-rgb),0.2)',
-              textColor:'rgba(var(--text-rgb),0.35)',nameColor:'rgba(var(--text-rgb),0.5)',
-            },
-          ].map((d)=>(
-            <div key={d.name} onClick={()=>{if(!d.comingSoon){window._activeDestCity=d.name;setPage('vendors');}}}
-              style={{background:d.bg,padding:'2.5rem 2rem',cursor:d.comingSoon?'default':'pointer',transition:'background 0.3s',position:'relative',opacity:d.comingSoon?0.7:1}}
-              onMouseEnter={e=>!d.comingSoon&&(e.currentTarget.style.background=d.bgHover)}
-              onMouseLeave={e=>(e.currentTarget.style.background=d.bg)}>
-              {!d.comingSoon && (
-                <div style={{position:'absolute',top:'1.25rem',right:'1.25rem',fontSize:'0.60rem',letterSpacing:'1.5px',textTransform:'uppercase',color:'rgba(100,75,30,0.9)',border:'1px solid rgba(100,75,30,0.35)',padding:'3px 8px',background:'rgba(100,75,30,0.1)'}}>
-                  International
-                </div>
-              )}
-              <div style={{fontFamily:'var(--ff-display)',fontSize:'0.82rem',fontWeight:300,letterSpacing:'4px',color:d.accentColor,marginBottom:'0.85rem',textTransform:'uppercase'}}>{d.code}</div>
-              <div style={{fontFamily:'var(--ff-display)',fontSize:'1.5rem',fontWeight:300,color:d.nameColor,marginBottom:'4px',lineHeight:1.1}}>{d.name}</div>
-              <div style={{fontSize:'0.70rem',letterSpacing:'2px',textTransform:'uppercase',color:d.accentColor,marginBottom:'1rem'}}>{d.state}</div>
-              <div style={{width:20,height:1,background:d.dividerColor,marginBottom:'1rem'}}/>
-              <div style={{fontSize:'0.88rem',color:d.textColor,lineHeight:1.8,fontWeight:300,marginBottom:'1.25rem'}}>{d.desc}</div>
-              {!d.comingSoon && (
-                <div style={{fontSize:'0.72rem',letterSpacing:'2px',textTransform:'uppercase',color:d.accentColor,display:'flex',alignItems:'center',gap:'0.5rem'}}>
-                  Shop vendors <span style={{fontSize:'0.82rem'}}>→</span>
-                </div>
-              )}
-            </div>
-          ))}
-        </div>
-        </div>
-      </div>
-
 
 
       {/* CTA */}
@@ -2222,6 +2052,30 @@ function DestinationsSection() {
       accent: '#4ECDC4',
       bg: 'radial-gradient(ellipse 60% 70% at 65% 50%, rgba(78,205,196,0.15) 0%, transparent 55%), linear-gradient(145deg,#0A1828,#081520)',
     },
+    {
+      slug: 'atlanta',
+      city: 'Atlanta',
+      state: 'Georgia',
+      mood: 'Business by day. Buckhead by night.',
+      accent: '#D4A853',
+      bg: 'radial-gradient(ellipse 65% 55% at 75% 35%, rgba(212,168,83,0.15) 0%, transparent 55%), linear-gradient(155deg,#0E1620,#0c1418)',
+    },
+    {
+      slug: 'new-york',
+      city: 'New York',
+      state: 'New York',
+      mood: 'Everything. All at once.',
+      accent: '#A8C4E0',
+      bg: 'radial-gradient(ellipse 55% 65% at 30% 40%, rgba(168,196,224,0.14) 0%, transparent 55%), linear-gradient(145deg,#0C1825,#0a1520)',
+    },
+    {
+      slug: 'orlando',
+      city: 'Orlando',
+      state: 'Florida',
+      mood: 'Before the parks. After the show.',
+      accent: '#C97BB8',
+      bg: 'radial-gradient(ellipse 70% 55% at 60% 65%, rgba(201,123,184,0.15) 0%, transparent 55%), linear-gradient(160deg,#0D1422,#0b121e)',
+    },
   ];
   return (
     <div style={{padding:'6rem 3rem',background:'var(--noir)',borderTop:'1px solid rgba(var(--gold-rgb),0.12)'}}>
@@ -2235,7 +2089,7 @@ function DestinationsSection() {
         <div style={{fontFamily:'var(--ff-body)',fontSize:'13px',color:'rgba(var(--white-rgb),0.45)',marginBottom:'3rem',fontWeight:300,letterSpacing:'0.5px'}}>
           Curated arrival guides for the cities we serve.
         </div>
-        <div style={{display:'grid',gridTemplateColumns:'repeat(auto-fit,minmax(300px,1fr))',gap:'1px',background:'rgba(var(--gold-rgb),0.1)',border:'1px solid rgba(var(--gold-rgb),0.1)'}}>
+        <div style={{display:'grid',gridTemplateColumns:'repeat(auto-fit,minmax(280px,1fr))',gap:'1px',background:'rgba(var(--gold-rgb),0.1)',border:'1px solid rgba(var(--gold-rgb),0.1)'}}>
           {DESTS.map(d => (
             <a key={d.slug} href={`/destinations/${d.slug}/`}
               style={{textDecoration:'none',display:'block',background:d.bg,position:'relative',overflow:'hidden',minHeight:280,padding:'2.5rem 2rem',display:'flex',flexDirection:'column',justifyContent:'flex-end',cursor:'pointer'}}>
