@@ -445,6 +445,8 @@ function Nav({page, setPage}) {
             <span key={p} className="bf-nav-link" onClick={()=>{setPage('home');if(p==='home'){setTimeout(()=>{window.hpCalc&&window.hpCalc();const el=document.getElementById('destinations');if(el)el.scrollIntoView({behavior:'smooth'});},300);}else{setPage(p);}}} style={{fontSize:'0.78rem',color:page===p?'var(--gold)':'rgba(var(--text-rgb),0.85)',letterSpacing:'2px',textTransform:'uppercase',cursor:'pointer',fontWeight:400}}>{l}</span>
           ))}
           <ThemeToggle />
+          <span onClick={(e)=>{e.stopPropagation();window.open('/guide/','_self');}}
+            style={{fontSize:'0.74rem',color:'rgba(var(--gold-rgb),0.75)',letterSpacing:'2px',textTransform:'uppercase',cursor:'pointer',fontWeight:400}}>City Guide</span>
           <span className="bf-nav-lounge" onClick={(e)=>{e.stopPropagation();window.open('/shop/nuor-edit/','_self');}}
             style={{fontSize:'0.74rem',color:'var(--gold)',letterSpacing:'2px',textTransform:'uppercase',border:'1px solid rgba(var(--gold-rgb),0.42)',padding:'0.42rem 1rem',display:'inline-flex',alignItems:'center',gap:'0.5rem',cursor:'pointer'}}>
             <span style={{width:5,height:5,background:'var(--gold)',display:'inline-block',transform:'rotate(45deg)'}}/>The Nuor Edit
