@@ -1,0 +1,328 @@
+<!DOCTYPE html>
+<html lang="en" data-theme="dark">
+<head>
+<meta charset="UTF-8">
+<meta name="viewport" content="width=device-width, initial-scale=1.0">
+<meta name="theme-color" content="#0D1525">
+<title>Atlanta Arrival &middot; BagFree</title>
+<meta name="description" content="The Atlanta arrival guide — curated kits, local picks, and your personal stylist. Delivered before you check in.">
+<link rel="icon" href="/favicon-32.png" type="image/png">
+<link rel="apple-touch-icon" href="/apple-touch-icon.png">
+<meta property="og:title" content="Arrive in Atlanta. &middot; BagFree">
+<meta property="og:description" content="The Atlanta arrival guide — curated kits, local picks, and your personal stylist. Delivered before you check in.">
+<link rel="preconnect" href="https://fonts.googleapis.com">
+<link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+<link href="https://fonts.googleapis.com/css2?family=Cormorant+Garamond:ital,wght@0,300;0,400;0,500;1,300;1,400;1,500&family=Jost:wght@300;400;500;600&display=swap" rel="stylesheet">
+<style>
+:root{--noir:#0D1525;--noir-2:#141d30;--noir-3:#1b2540;--gold:#C9A96E;--gold-rgb:201,169,110;--white:#F5EDD8;--white-rgb:245,237,216;--bg-rgb:13,21,37;--accent:#D4A853;--accent-rgb:74,133,3;--ff-display:'Cormorant Garamond',Georgia,serif;--ff-body:'Jost',system-ui,sans-serif;}
+[data-theme="light"]{--noir:#F5F0E8;--noir-2:#EDE8DC;--noir-3:#E4DDD0;--gold:#8A6A2E;--gold-rgb:138,106,46;--white:#1A1428;--white-rgb:26,20,40;--bg-rgb:245,240,232;}
+*,*::before,*::after{box-sizing:border-box;margin:0;padding:0;}
+html{scroll-behavior:smooth;}
+body{background:var(--noir);color:var(--white);font-family:var(--ff-body);font-weight:300;line-height:1.6;-webkit-font-smoothing:antialiased;overflow-x:hidden;transition:background-color 0.4s,color 0.3s;}
+body::before{content:'';position:fixed;inset:0;pointer-events:none;z-index:0;opacity:0.022;background-image:url("data:image/svg+xml,%3Csvg viewBox='0 0 200 200' xmlns='http://www.w3.org/2000/svg'%3E%3Cfilter id='n'%3E%3CfeTurbulence type='fractalNoise' baseFrequency='0.9' numOctaves='3'/%3E%3C/filter%3E%3Crect width='100%25' height='100%25' filter='url(%23n)'/%3E%3C/svg%3E");}
+nav{position:fixed;top:0;left:0;right:0;z-index:100;display:flex;align-items:center;justify-content:space-between;padding:1.25rem 2.5rem;background:rgba(var(--bg-rgb),0.88);backdrop-filter:blur(20px) saturate(140%);-webkit-backdrop-filter:blur(20px) saturate(140%);border-bottom:1px solid rgba(var(--gold-rgb),0.14);}
+.nav-brand{font-family:var(--ff-display);font-style:italic;font-size:1.25rem;color:var(--white);text-decoration:none;}
+.nav-brand em{color:var(--gold);font-style:normal;}
+.nav-links{display:flex;align-items:center;gap:1.5rem;}
+.nav-links a{font-family:var(--ff-body);font-size:10px;letter-spacing:3px;text-transform:uppercase;color:rgba(var(--white-rgb),0.6);text-decoration:none;transition:color 0.25s;}
+.nav-links a:hover{color:var(--gold);}
+.nav-reserve{font-size:10px;letter-spacing:2px;text-transform:uppercase;color:var(--gold);border:1px solid rgba(var(--gold-rgb),0.4);padding:0.45rem 1rem;text-decoration:none;transition:all 0.25s;display:inline-flex;align-items:center;gap:6px;}
+.nav-reserve:hover{background:var(--gold);color:var(--noir);}
+.theme-btn{width:30px;height:30px;border-radius:50%;border:1px solid rgba(var(--gold-rgb),0.35);background:none;color:rgba(var(--gold-rgb),0.85);cursor:pointer;font-size:12px;display:inline-flex;align-items:center;justify-content:center;transition:border-color 0.25s;}
+.hero{min-height:55vh;display:flex;flex-direction:column;justify-content:flex-end;padding:0 2.5rem 3.5rem;position:relative;overflow:hidden;}
+.hero-bg{background:radial-gradient(ellipse 65% 55% at 75% 35%, rgba(212,168,83,0.18) 0%, transparent 55%), linear-gradient(155deg,#0E1620,#0c1418);position:absolute;inset:0;z-index:0;}
+.hero-bg::after{content:"";position:absolute;inset:0;background:linear-gradient(to top,rgba(0,0,0,0.6) 0%,rgba(0,0,0,0.15) 60%,transparent 100%);}
+.hero h1{font-family:var(--ff-display);font-weight:300;font-size:clamp(2.8rem,6vw,5.5rem);line-height:0.95;letter-spacing:-2px;color:#F5EDD8;text-shadow:0 2px 40px rgba(0,0,0,0.6);position:relative;z-index:1;animation:fadeUp 1s ease-out both;}
+.hero h1 em{color:var(--accent);font-style:italic;}
+.hero-tagline{font-family:var(--ff-display);font-style:italic;font-size:clamp(1rem,2.5vw,1.5rem);color:rgba(245,237,216,0.8);font-weight:300;margin:1.25rem 0 2.5rem;max-width:560px;line-height:1.5;position:relative;z-index:1;animation:fadeUp 1s 0.15s ease-out both;}
+.hero-scroll{display:flex;align-items:center;gap:0.75rem;font-family:var(--ff-body);font-size:9px;letter-spacing:3.5px;text-transform:uppercase;color:rgba(245,237,216,0.55);position:relative;z-index:1;animation:fadeUp 1s 0.3s ease-out both;}
+.hero-scroll::before{content:'';width:1px;height:40px;background:linear-gradient(to bottom,rgba(201,169,110,0.7),transparent);}
+.section{padding:6rem 2.5rem;position:relative;z-index:1;}
+.section-inner{max-width:1100px;margin:0 auto;}
+.section-label{font-family:var(--ff-body);font-size:10px;letter-spacing:4.5px;text-transform:uppercase;color:rgba(var(--gold-rgb),0.7);margin-bottom:1.25rem;display:flex;align-items:center;gap:0.75rem;}
+.section-label::before{content:'';width:24px;height:1px;background:rgba(var(--gold-rgb),0.4);}
+.section-title{font-family:var(--ff-display);font-weight:300;font-size:clamp(2rem,4vw,3.2rem);letter-spacing:-0.5px;color:var(--white);line-height:1.05;margin-bottom:0.75rem;}
+.section-title em{font-style:italic;color:var(--gold);}
+.intro-section{background:var(--noir-2);border-top:1px solid rgba(var(--gold-rgb),0.12);}
+.intro-grid{display:grid;grid-template-columns:1fr 1fr;gap:4rem;align-items:start;}
+.intro-lead{font-family:var(--ff-display);font-size:clamp(1.5rem,3vw,2.2rem);font-weight:300;color:var(--white);line-height:1.3;letter-spacing:-0.3px;}
+.intro-lead em{font-style:italic;color:var(--accent);}
+.intro-body p{font-family:var(--ff-body);font-size:14px;color:rgba(var(--white-rgb),0.65);line-height:1.9;font-weight:300;margin-bottom:1.25rem;}
+.shop-section{background:var(--noir);}
+.bundle-grid{display:grid;grid-template-columns:repeat(auto-fill,minmax(240px,1fr));gap:1.5rem;margin-top:3rem;}
+.bundle-card{background:var(--noir-2);border:1px solid rgba(var(--gold-rgb),0.12);overflow:hidden;transition:border-color 0.3s,transform 0.3s;cursor:pointer;text-decoration:none;display:block;}
+.bundle-card:hover{border-color:rgba(var(--gold-rgb),0.4);transform:translateY(-3px);}
+.bundle-img{width:100%;aspect-ratio:4/3;object-fit:cover;display:block;background:var(--noir-3);}
+.bundle-info{padding:1.25rem 1.25rem 1.4rem;}
+.bundle-occasion{font-family:var(--ff-body);font-size:9px;letter-spacing:3px;text-transform:uppercase;color:rgba(var(--accent-rgb),0.85);margin-bottom:0.5rem;}
+.bundle-name{font-family:var(--ff-display);font-size:1.15rem;font-weight:400;color:var(--white);margin-bottom:0.3rem;}
+.bundle-price{font-family:var(--ff-body);font-size:11px;letter-spacing:1.5px;color:rgba(var(--gold-rgb),0.8);}
+.quote-section{padding:5rem 2.5rem;text-align:center;background:var(--noir-3);border-top:1px solid rgba(var(--gold-rgb),0.1);border-bottom:1px solid rgba(var(--gold-rgb),0.1);}
+.quote-text{font-family:var(--ff-display);font-style:italic;font-size:clamp(1.6rem,3.5vw,2.8rem);font-weight:300;color:var(--white);max-width:750px;margin:0 auto 1.5rem;line-height:1.35;letter-spacing:-0.3px;}
+.quote-attr{font-family:var(--ff-body);font-size:10px;letter-spacing:3px;text-transform:uppercase;color:rgba(var(--gold-rgb),0.55);}
+.recs-grid{display:grid;grid-template-columns:repeat(auto-fill,minmax(240px,1fr));gap:1px;background:rgba(var(--gold-rgb),0.1);border:1px solid rgba(var(--gold-rgb),0.1);margin-top:3rem;}
+.rec-card{background:var(--noir-2);padding:1.75rem 1.5rem;position:relative;}
+.rec-card::after{content:'';position:absolute;bottom:0;left:0;right:0;height:2px;background:var(--accent);transform:scaleX(0);transform-origin:left;transition:transform 0.35s ease;}
+.rec-card:hover::after{transform:scaleX(1);}
+.rec-type{font-family:var(--ff-body);font-size:9px;letter-spacing:3px;text-transform:uppercase;color:rgba(var(--accent-rgb),0.8);margin-bottom:0.6rem;}
+.rec-name{font-family:var(--ff-display);font-size:1.15rem;font-weight:400;color:var(--white);margin-bottom:0.5rem;}
+.rec-desc{font-family:var(--ff-body);font-size:12px;color:rgba(var(--white-rgb),0.55);line-height:1.7;font-weight:300;}
+.curator-section{background:var(--noir-2);border-top:1px solid rgba(var(--gold-rgb),0.12);}
+.curator-card{border:1px solid rgba(var(--gold-rgb),0.18);padding:2.5rem;display:flex;gap:2.5rem;align-items:center;flex-wrap:wrap;}
+.curator-mono{width:80px;height:80px;border:1px solid rgba(var(--gold-rgb),0.45);display:flex;align-items:center;justify-content:center;flex-shrink:0;}
+.curator-mono-letter{font-family:var(--ff-display);font-style:italic;font-size:2.8rem;font-weight:300;color:var(--gold);line-height:1;}
+.curator-info{flex:1;min-width:200px;}
+.curator-name-label{font-family:var(--ff-body);font-size:9px;letter-spacing:3px;text-transform:uppercase;color:rgba(var(--gold-rgb),0.7);margin-bottom:0.4rem;}
+.curator-name{font-family:var(--ff-display);font-size:1.4rem;font-weight:400;color:var(--white);margin-bottom:0.25rem;}
+.curator-style{font-family:var(--ff-display);font-style:italic;font-size:1rem;color:rgba(var(--white-rgb),0.55);font-weight:300;}
+.btn-outline{font-family:var(--ff-body);font-size:10px;letter-spacing:2.5px;text-transform:uppercase;color:var(--gold);border:1px solid rgba(var(--gold-rgb),0.4);padding:0.75rem 1.5rem;text-decoration:none;transition:all 0.25s;display:inline-block;flex-shrink:0;}
+.btn-outline:hover{background:var(--gold);color:var(--noir);}
+.social-section{padding:5rem 2.5rem;background:var(--noir);border-top:1px solid rgba(var(--gold-rgb),0.12);}
+.social-creator{border:1px solid rgba(var(--gold-rgb),0.15);margin-bottom:2.5rem;overflow:hidden;}
+.social-creator:last-of-type{margin-bottom:0;}
+.social-creator-header{padding:1.5rem 2rem;display:flex;align-items:center;gap:1.5rem;border-bottom:1px solid rgba(var(--gold-rgb),0.1);flex-wrap:wrap;}
+.social-avatar{width:52px;height:52px;border-radius:50%;background:var(--noir-3);border:1px solid rgba(var(--gold-rgb),0.25);display:flex;align-items:center;justify-content:center;flex-shrink:0;font-family:var(--ff-display);font-style:italic;font-size:1.4rem;color:rgba(var(--gold-rgb),0.5);}
+.social-creator-info{flex:1;min-width:160px;}
+.social-handle{font-family:var(--ff-body);font-size:13px;color:var(--white);font-weight:400;letter-spacing:0.3px;margin-bottom:0.2rem;}
+.social-meta{font-family:var(--ff-body);font-size:10px;letter-spacing:2px;text-transform:uppercase;color:rgba(var(--gold-rgb),0.6);}
+.social-approval{font-family:var(--ff-body);font-size:9px;letter-spacing:2px;text-transform:uppercase;color:rgba(var(--white-rgb),0.3);border:1px dashed rgba(var(--white-rgb),0.15);padding:0.4rem 0.85rem;}
+.social-embed-placeholder{background:var(--noir-2);aspect-ratio:4/3;max-height:420px;display:flex;flex-direction:column;align-items:center;justify-content:center;gap:1rem;padding:2rem;border-bottom:1px solid rgba(var(--gold-rgb),0.08);position:relative;}
+.social-embed-icon{font-size:2rem;opacity:0.2;}
+.social-embed-label{font-family:var(--ff-body);font-size:10px;letter-spacing:3px;text-transform:uppercase;color:rgba(var(--white-rgb),0.3);text-align:center;line-height:1.8;}
+.social-embed-note{position:absolute;bottom:1rem;right:1rem;font-family:var(--ff-body);font-size:9px;letter-spacing:1.5px;text-transform:uppercase;color:rgba(var(--white-rgb),0.2);}
+.social-creator-body{padding:1.5rem 2rem 1.75rem;}
+.social-quote{font-family:var(--ff-display);font-style:italic;font-size:1.05rem;font-weight:300;color:rgba(var(--white-rgb),0.75);line-height:1.65;margin-bottom:1.5rem;border-left:2px solid rgba(var(--gold-rgb),0.35);padding-left:1.25rem;}
+.social-links{display:flex;flex-direction:column;gap:0.75rem;}
+.social-link{display:inline-flex;align-items:center;gap:0.75rem;font-family:var(--ff-body);font-size:11px;letter-spacing:2px;text-transform:uppercase;color:var(--gold);text-decoration:none;transition:color 0.25s;}
+.social-link:hover{color:var(--white);}
+.social-link-dot{font-size:7px;flex-shrink:0;}
+.guide-cta{padding:4rem 2.5rem;background:var(--noir);border-top:1px solid rgba(var(--gold-rgb),0.1);display:flex;align-items:center;justify-content:space-between;gap:2rem;flex-wrap:wrap;}
+.guide-cta-left h3{font-family:var(--ff-display);font-size:1.6rem;font-weight:300;color:var(--white);letter-spacing:-0.3px;}
+.guide-cta-left h3 em{font-style:italic;color:var(--gold);}
+.guide-cta-left p{font-family:var(--ff-body);font-size:13px;color:rgba(var(--white-rgb),0.5);margin-top:0.4rem;font-weight:300;}
+.other-section{background:var(--noir-2);border-top:1px solid rgba(var(--gold-rgb),0.12);}
+.other-grid{display:grid;grid-template-columns:repeat(auto-fit,minmax(260px,1fr));gap:1px;background:rgba(var(--gold-rgb),0.1);border:1px solid rgba(var(--gold-rgb),0.1);margin-top:2.5rem;}
+.other-card{background:var(--noir-2);padding:2.5rem 2rem;text-decoration:none;display:block;transition:background 0.25s;position:relative;overflow:hidden;}
+.other-card::after{content:'';position:absolute;bottom:0;left:0;right:0;height:2px;background:var(--gold);transform:scaleX(0);transform-origin:left;transition:transform 0.35s;}
+.other-card:hover{background:var(--noir-3);}
+.other-card:hover::after{transform:scaleX(1);}
+.other-city{font-family:var(--ff-display);font-style:italic;font-size:2.2rem;font-weight:300;color:var(--white);letter-spacing:-1px;margin-bottom:0.35rem;}
+.other-mood{font-family:var(--ff-body);font-size:10px;letter-spacing:2.5px;text-transform:uppercase;color:rgba(var(--gold-rgb),0.6);margin-bottom:0.75rem;}
+.other-cta-text{font-family:var(--ff-body);font-size:10px;letter-spacing:2px;text-transform:uppercase;color:rgba(var(--white-rgb),0.35);}
+footer{padding:2.5rem;border-top:1px solid rgba(var(--gold-rgb),0.1);display:flex;align-items:center;justify-content:space-between;flex-wrap:wrap;gap:1rem;font-family:var(--ff-body);font-size:10px;letter-spacing:1.5px;text-transform:uppercase;color:rgba(var(--white-rgb),0.3);}
+footer a{color:rgba(var(--gold-rgb),0.6);text-decoration:none;margin:0 0.5rem;transition:color 0.25s;}
+footer a:hover{color:var(--gold);}
+@keyframes fadeUp{from{opacity:0;transform:translateY(20px);}to{opacity:1;transform:translateY(0);}}
+@media(max-width:768px){nav{padding:1rem 1.5rem;}.nav-links a{display:none;}.hero{padding:0 1.5rem 2.5rem;}.section{padding:4rem 1.5rem;}.intro-grid{grid-template-columns:1fr;gap:2rem;}.bundle-grid{grid-template-columns:1fr 1fr;}.guide-cta{flex-direction:column;}footer{flex-direction:column;text-align:center;}}
+@media(max-width:480px){.bundle-grid{grid-template-columns:1fr;}}
+</style>
+</head>
+<body>
+<nav>
+  <a href="/" class="nav-brand">Bag<em>Free</em></a>
+  <div class="nav-links">
+    <a href="/">Home</a>
+    <a href="/guide/">City Guide</a>
+    <a href="/shop/nuor-edit/">The Nuor Edit</a>
+    <a href="/departure-lounge-landing.html" class="nav-reserve">
+      <span style="width:5px;height:5px;background:var(--gold);display:inline-block;transform:rotate(45deg);"></span>Reserve a kit
+    </a>
+    <button class="theme-btn" id="themeToggle" onclick="toggleTheme()" aria-label="Toggle theme">
+      <span id="themeIcon">&#9789;</span>
+    </button>
+  </div>
+</nav>
+
+<section class="hero">
+  <div class="hero-bg"></div>
+  <h1>Atlanta.</h1>
+  <p class="hero-tagline">Business by day. Buckhead by night.</p>
+  <div class="hero-scroll">Scroll to explore</div>
+</section>
+
+<section class="section intro-section">
+  <div class="section-inner">
+    <div class="intro-grid">
+      <div class="intro-lead">Atlanta is two cities sharing <em>one skyline.</em> Pack for both.</div>
+      <div class="intro-body"><p>The weekday version runs on ambition and espresso. Morning flights into Hartsfield, the kind of hotel room you barely see, meetings that run until dinner. The Buckhead version starts when the tie comes off and doesn't have an end time.</p><p>Pack for the meeting. Stay for the weekend. Atlanta will renegotiate your plans.</p></div>
+    </div>
+  </div>
+</section>
+
+<section class="section shop-section">
+  <div class="section-inner">
+    <div class="section-label">Shop the arrival</div>
+    <div class="section-title">Everything you need. <em>Already there.</em></div>
+    <div class="bundle-grid">
+        <a class="bundle-card" href="/departure-lounge-landing.html?vendor=valet">
+          <img class="bundle-img" src="https://valetbynuor.com/cdn/shop/files/ChatGPTImageAug23_2025_02_11_28PM.png?v=1755972741&width=800" alt="Men's Business Emergency Kit" loading="lazy" onerror="this.style.background='var(--noir-3)'">
+          <div class="bundle-info">
+            <div class="bundle-occasion">For the meeting you didn't plan</div>
+            <div class="bundle-name">Men's Business Emergency Kit</div>
+            <div class="bundle-price">$69</div>
+          </div>
+        </a>
+        <a class="bundle-card" href="/departure-lounge-landing.html?vendor=valet">
+          <img class="bundle-img" src="https://valetbynuor.com/cdn/shop/files/ChatGPTImageJan11_2026_02_58_17PM.png?v=1768161528&width=800" alt="Men's 7-Day Essentials" loading="lazy" onerror="this.style.background='var(--noir-3)'">
+          <div class="bundle-info">
+            <div class="bundle-occasion">A full week, handled</div>
+            <div class="bundle-name">Men's 7-Day Essentials</div>
+            <div class="bundle-price">$149</div>
+          </div>
+        </a>
+        <a class="bundle-card" href="/departure-lounge-landing.html?vendor=valet">
+          <img class="bundle-img" src="https://valetbynuor.com/cdn/shop/files/ChatGPTImageJan11_2026_02_55_15PM.png?v=1768161350&width=800" alt="Women's 7-Day Essentials" loading="lazy" onerror="this.style.background='var(--noir-3)'">
+          <div class="bundle-info">
+            <div class="bundle-occasion">From Midtown to Buckhead</div>
+            <div class="bundle-name">Women's 7-Day Essentials</div>
+            <div class="bundle-price">$149</div>
+          </div>
+        </a>
+        <a class="bundle-card" href="/departure-lounge-landing.html?vendor=valet">
+          <img class="bundle-img" src="https://valetbynuor.com/cdn/shop/files/ChatGPTImageMar16_2026_09_02_10PM.png?v=1773709352&width=800" alt="Energy & Focus Kit" loading="lazy" onerror="this.style.background='var(--noir-3)'">
+          <div class="bundle-info">
+            <div class="bundle-occasion">For day two of a long week</div>
+            <div class="bundle-name">Energy & Focus Kit</div>
+            <div class="bundle-price">$39</div>
+          </div>
+        </a></div>
+    <div style="margin-top:2rem;text-align:center;">
+      <a href="/departure-lounge-landing.html?vendor=valet" style="font-family:var(--ff-body);font-size:10px;letter-spacing:3px;text-transform:uppercase;color:rgba(var(--gold-rgb),0.8);border-bottom:1px solid rgba(var(--gold-rgb),0.35);padding-bottom:2px;text-decoration:none;">View all bundles &rarr;</a>
+    </div>
+  </div>
+</section>
+
+<div class="quote-section">
+  <div class="quote-text">"Pack for a meeting. Stay for a weekend. Atlanta will make you renegotiate both."</div>
+  <div class="quote-attr">The BagFree Edit &middot; Atlanta.</div>
+</div>
+
+<section class="section" style="background:var(--noir-2);border-top:1px solid rgba(var(--gold-rgb),0.12);">
+  <div class="section-inner">
+    <div class="section-label">Where to go</div>
+    <div class="section-title">Four places worth <em>knowing.</em></div>
+    <div class="recs-grid">
+        <div class="rec-card">
+          <div class="rec-type">Fine Dining</div>
+          <div class="rec-name">Chops Lobster Bar</div>
+          <div class="rec-desc">Buckhead institution. The steaks are serious. The wine list is longer than your flight.</div>
+        </div>
+        <div class="rec-card">
+          <div class="rec-type">Market</div>
+          <div class="rec-name">Ponce City Market</div>
+          <div class="rec-desc">Former Sears building, now the best food hall in the South. The rooftop carnival is worth it.</div>
+        </div>
+        <div class="rec-card">
+          <div class="rec-type">Brunch</div>
+          <div class="rec-name">Busy Bee Cafe</div>
+          <div class="rec-desc">Since 1947. The fried chicken will ruin every other fried chicken for you.</div>
+        </div>
+        <div class="rec-card">
+          <div class="rec-type">Cocktails</div>
+          <div class="rec-name">Watchman's</div>
+          <div class="rec-desc">Intimate, dark, excellent. The kind of bar you find by accident and return to on purpose.</div>
+        </div></div>
+  </div>
+</section>
+
+<section class="section curator-section">
+  <div class="section-inner">
+    <div class="section-label">Your local guide</div>
+    <div class="section-title" style="margin-bottom:2rem;">Styled by someone who <em>lives here.</em></div>
+    <div class="curator-card">
+      <div class="curator-mono"><span class="curator-mono-letter">M</span></div>
+      <div class="curator-info">
+        <div class="curator-name-label">Nuor Edit Curator &middot; Atlanta.</div>
+        <div class="curator-name">Marcus</div>
+        <div class="curator-style">Urban Editorial · Atlanta curator</div>
+      </div>
+      <a class="btn-outline" href="/shop/nuor-edit/">View the edit &rarr;</a>
+    </div>
+  </div>
+</section>
+
+
+<section class="social-section">
+  <div class="section-inner">
+    <div class="section-label">As seen in Atlanta.</div>
+    <div class="section-title">Popular with <em>our community.</em></div>
+    <p style="font-family:var(--ff-body);font-size:13px;color:rgba(var(--white-rgb),0.45);margin:0.5rem 0 2.5rem;font-weight:300;max-width:540px;line-height:1.8;">Real travelers, real stories. Curated creators who know Atlanta. &mdash; and earn when you do, too.</p>
+    <div class="social-creator">
+      <div class="social-creator-header">
+        <div class="social-avatar">@</div>
+        <div class="social-creator-info">
+          <div class="social-handle">@creatorhandle</div>
+          <div class="social-meta">Platform &middot; Followers &middot; Atlanta.</div>
+        </div>
+        <div class="social-approval">Pending approval</div>
+      </div>
+      <div class="social-embed-placeholder">
+        <div class="social-embed-icon">&#9655;</div>
+        <div class="social-embed-label">Replace with Instagram / TikTok / YouTube embed code after creator approval</div>
+        <div class="social-embed-note">Placeholder</div>
+      </div>
+      <div class="social-creator-body">
+        <div class="social-quote">"Add the creator's caption or a pull quote from their Atlanta. post here."</div>
+        <div class="social-links">
+          <a class="social-link" href="#" onclick="return false;"><span class="social-link-dot">&#9670;</span> Shop the look they're wearing &rarr;</a>
+          <a class="social-link" href="#" onclick="return false;"><span class="social-link-dot">&#9670;</span> Book the experience they mention &rarr;</a>
+        </div>
+      </div>
+    </div>
+    <div class="social-creator" style="opacity:0.45;pointer-events:none;">
+      <div class="social-creator-header">
+        <div class="social-avatar" style="opacity:0.4;">@</div>
+        <div class="social-creator-info">
+          <div class="social-handle" style="color:rgba(var(--white-rgb),0.4);">Second creator slot</div>
+          <div class="social-meta">Coming soon</div>
+        </div>
+        <div class="social-approval">Not yet assigned</div>
+      </div>
+      <div class="social-embed-placeholder" style="aspect-ratio:unset;min-height:120px;">
+        <div class="social-embed-label">Reserve this spot for a second Atlanta. creator</div>
+      </div>
+    </div>
+    <div style="margin-top:2rem;padding:1.25rem 1.5rem;border:1px dashed rgba(var(--white-rgb),0.1);background:rgba(var(--gold-rgb),0.03);">
+      <div style="font-family:var(--ff-body);font-size:9px;letter-spacing:2.5px;text-transform:uppercase;color:rgba(var(--gold-rgb),0.5);margin-bottom:0.5rem;">&#9670; Internal note &mdash; remove before launch</div>
+      <div style="font-family:var(--ff-body);font-size:12px;color:rgba(var(--white-rgb),0.35);line-height:1.8;font-weight:300;">To activate: (1) Get creator approval &middot; (2) Replace placeholder div with embed code &middot; (3) Add affiliate URLs &middot; (4) Update handle + pull quote &middot; (5) Remove this note. Track via <code style="color:rgba(var(--gold-rgb),0.6);">?ref=atlanta-creatorname</code></div>
+    </div>
+  </div>
+</section>
+
+<div class="guide-cta">
+  <div class="guide-cta-left">
+    <h3>Get the full <em>Atlanta. guide.</em></h3>
+    <p>Rooftop bars, hidden dining rooms, luxury experiences, and this weekend's events — curated for Atlanta.</p>
+  </div>
+  <a href="/guide/" onclick="localStorage.setItem('bfGuideCity','Atlanta.');return true;" class="btn-outline">Open city guide &rarr;</a>
+</div>
+
+<section class="section other-section">
+  <div class="section-inner">
+    <div class="section-label">Also arriving in</div>
+    <div class="section-title">More <em>destinations.</em></div>
+    <div class="other-grid">
+        <a class="other-card" href="/destinations/nashville/">
+          <div class="other-city">Nashville.</div>
+          <div class="other-mood">Louder than you planned.</div>
+          <div class="other-cta-text">Explore arrival &rarr;</div>
+        </a>
+        <a class="other-card" href="/destinations/tampa/">
+          <div class="other-city">Tampa.</div>
+          <div class="other-mood">Arrives warm.</div>
+          <div class="other-cta-text">Explore arrival &rarr;</div>
+        </a></div>
+  </div>
+</section>
+
+<footer>
+  <div>&copy; 2026 BagFree</div>
+  <div><a href="/">Home</a><a href="/departure-lounge-landing.html">Shop</a><a href="/guide/">City Guide</a><a href="/shop/nuor-edit/">The Nuor Edit</a></div>
+</footer>
+
+<script>
+(function(){try{var s=localStorage.getItem('bfTheme');var d=window.matchMedia('(prefers-color-scheme: dark)').matches;var t=s||(d?'dark':'light');document.documentElement.setAttribute('data-theme',t);var i=document.getElementById('themeIcon');if(i)i.textContent=t==='dark'?'☽':'☀';}catch(e){}}());
+function toggleTheme(){var h=document.documentElement;var n=h.getAttribute('data-theme')==='dark'?'light':'dark';h.setAttribute('data-theme',n);document.getElementById('themeIcon').textContent=n==='dark'?'☽':'☀';try{localStorage.setItem('bfTheme',n);}catch(e){}}
+</script>
+</body>
+</html>
