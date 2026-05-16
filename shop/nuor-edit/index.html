@@ -807,6 +807,71 @@ main { position: relative; z-index: 2; }
     </div>
   </section>
 
+  <!-- ── CITY GUIDE ── -->
+  <section id="city-guide" style="padding:6rem 2rem;background:var(--noir-2);border-top:1px solid rgba(var(--gold-rgb),0.12);">
+    <div style="max-width:1100px;margin:0 auto;">
+
+      <div class="section-heading">
+        <div class="rule">
+          <span class="rule-line"></span>
+          <span class="rule-diamond"></span>
+          <span class="rule-label">The Edit · City Guide</span>
+          <span class="rule-diamond"></span>
+          <span class="rule-line"></span>
+        </div>
+        <h2>Know your city <em>before you arrive.</em></h2>
+        <p class="section-sub">Curated intelligence for where you're staying — from the people who live it.</p>
+      </div>
+
+      <!-- City input -->
+      <div style="max-width:440px;margin:0 auto 3.5rem;display:flex;gap:0;">
+        <input id="guideCity" type="text" placeholder="Where are you staying? (e.g. Tampa, FL)"
+          style="flex:1;padding:0.9rem 1.25rem;background:var(--noir);border:1px solid rgba(var(--gold-rgb),0.3);border-right:none;color:var(--white);font-family:var(--ff-body);font-size:13px;font-weight:300;letter-spacing:0.3px;outline:none;"
+          onkeydown="if(event.key==='Enter')runGuide()"
+          onfocus="this.style.borderColor='rgba(var(--gold-rgb),0.7)'"
+          onblur="this.style.borderColor='rgba(var(--gold-rgb),0.3)'">
+        <button onclick="runGuide()"
+          style="padding:0.9rem 1.25rem;background:var(--gold);color:var(--noir);border:none;font-family:var(--ff-body);font-size:10px;letter-spacing:2.5px;text-transform:uppercase;font-weight:600;cursor:pointer;white-space:nowrap;flex-shrink:0;">
+          Explore →
+        </button>
+      </div>
+
+      <!-- Category grid -->
+      <div id="guideCategoryGrid" style="display:grid;grid-template-columns:repeat(auto-fill,minmax(220px,1fr));gap:1rem;margin-bottom:3rem;"></div>
+
+      <!-- Results panel -->
+      <div id="guideResults" style="display:none;">
+        <div style="border:1px solid rgba(var(--gold-rgb),0.25);background:var(--noir);padding:2.5rem;">
+          <div style="display:flex;align-items:baseline;justify-content:space-between;margin-bottom:2rem;flex-wrap:wrap;gap:1rem;">
+            <div>
+              <div style="font-family:var(--ff-body);font-size:9px;letter-spacing:3.5px;text-transform:uppercase;color:rgba(var(--gold-rgb),0.7);margin-bottom:0.5rem;" id="guideResultsEyebrow">Results</div>
+              <div style="font-family:var(--ff-display);font-size:1.6rem;font-weight:300;color:var(--white);letter-spacing:-0.3px;" id="guideResultsTitle">—</div>
+            </div>
+            <button onclick="document.getElementById('guideResults').style.display='none';document.querySelectorAll('.guide-cat-btn').forEach(b=>b.classList.remove('active'))"
+              style="font-family:var(--ff-body);font-size:9px;letter-spacing:2px;text-transform:uppercase;color:rgba(var(--white-rgb),0.45);background:none;border:none;cursor:pointer;padding:0;">
+              ✕ Clear
+            </button>
+          </div>
+          <div id="guideResultsLoading" style="display:none;text-align:center;padding:2rem 0;">
+            <div style="font-family:var(--ff-display);font-style:italic;font-size:1.1rem;color:rgba(var(--gold-rgb),0.7);">Curating your guide…</div>
+          </div>
+          <div id="guideResultsList" style="display:flex;flex-direction:column;gap:1.75rem;"></div>
+        </div>
+      </div>
+
+      <!-- Camera teaser -->
+      <div style="margin-top:2.5rem;border:1px dashed rgba(var(--gold-rgb),0.25);padding:1.75rem 2rem;display:flex;align-items:center;gap:1.5rem;background:rgba(var(--gold-rgb),0.03);flex-wrap:wrap;">
+        <div style="font-size:1.6rem;opacity:0.5;flex-shrink:0;">◎</div>
+        <div style="flex:1;min-width:200px;">
+          <div style="font-family:var(--ff-display);font-size:1.1rem;font-weight:400;color:var(--white);margin-bottom:0.3rem;">Point &amp; Discover</div>
+          <div style="font-family:var(--ff-body);font-size:12px;color:rgba(var(--white-rgb),0.5);font-weight:300;line-height:1.6;">Aim your camera at any landmark, restaurant, or street and get instant editorial coverage — curated by The Nuor Edit. Coming in the BagFree app.</div>
+        </div>
+        <div style="font-family:var(--ff-body);font-size:9px;letter-spacing:2.5px;text-transform:uppercase;color:rgba(var(--gold-rgb),0.6);border:1px solid rgba(var(--gold-rgb),0.25);padding:0.5rem 1rem;flex-shrink:0;">Next version</div>
+      </div>
+
+    </div>
+  </section>
+
   <!-- ── BECOME A CURATOR ── -->
   <!-- ── CURATOR PITCH ── -->
   <section id="become-curator" style="background:var(--noir);padding:0;">
@@ -1317,6 +1382,120 @@ async function submitModal(e) {
   }
 }
 
+// ─── CITY GUIDE ───────────────────────────────────────────────────────────────
+const GUIDE_CATEGORIES = [
+  { id: 'brunch',   num: 'i.',    title: 'Best Brunch',          desc: 'Morning tables worth dressing for'          },
+  { id: 'rooftop',  num: 'ii.',   title: 'Rooftop Bars',         desc: 'Views worth the elevator ride'              },
+  { id: 'beach',    num: 'iii.',  title: 'Beach Day',            desc: 'The right spots and what to bring'          },
+  { id: 'hidden',   num: 'iv.',   title: 'Hidden Spots',         desc: 'What locals go to, not what Yelp shows'     },
+  { id: 'luxury',   num: 'v.',    title: 'Luxury Experiences',   desc: 'Splurge-worthy moments in your city'        },
+  { id: 'events',   num: 'vi.',   title: 'This Weekend',         desc: 'Events worth adjusting plans for'           },
+  { id: 'wedding',  num: 'vii.',  title: 'Wedding & Cruise',     desc: 'What to wear, where to go, what to expect'  },
+  { id: 'curator',  num: 'viii.', title: 'Curator Picks',        desc: 'Spots your local stylist swears by'         },
+];
+
+let activeCategory = null;
+
+function renderGuideCategories() {
+  const grid = document.getElementById('guideCategoryGrid');
+  if (!grid) return;
+  grid.innerHTML = GUIDE_CATEGORIES.map(c => `
+    <button class="guide-cat-btn" data-id="${c.id}" onclick="selectCategory('${c.id}')"
+      style="text-align:left;padding:1.5rem 1.25rem;background:var(--noir);border:1px solid rgba(var(--gold-rgb),0.15);cursor:pointer;transition:border-color 0.25s,background 0.25s;display:flex;flex-direction:column;gap:0.5rem;font:inherit;">
+      <div style="font-family:var(--ff-display);font-style:italic;font-size:1.4rem;font-weight:300;color:var(--gold);line-height:1;">${c.num}</div>
+      <div style="font-family:var(--ff-display);font-size:1.05rem;font-weight:400;color:var(--white);line-height:1.2;">${c.title}</div>
+      <div style="font-family:var(--ff-body);font-size:11px;color:rgba(var(--white-rgb),0.45);font-weight:300;line-height:1.5;">${c.desc}</div>
+    </button>
+  `).join('');
+
+  grid.querySelectorAll('.guide-cat-btn').forEach(btn => {
+    btn.addEventListener('mouseenter', () => {
+      if (!btn.classList.contains('active')) {
+        btn.style.borderColor = 'rgba(var(--gold-rgb),0.5)';
+        btn.style.background = 'var(--noir-3)';
+      }
+    });
+    btn.addEventListener('mouseleave', () => {
+      if (!btn.classList.contains('active')) {
+        btn.style.borderColor = 'rgba(var(--gold-rgb),0.15)';
+        btn.style.background = 'var(--noir)';
+      }
+    });
+  });
+}
+
+function selectCategory(id) {
+  activeCategory = id;
+  document.querySelectorAll('.guide-cat-btn').forEach(btn => {
+    const on = btn.dataset.id === id;
+    btn.classList.toggle('active', on);
+    btn.style.borderColor = on ? 'rgba(var(--gold-rgb),0.7)' : 'rgba(var(--gold-rgb),0.15)';
+    btn.style.background  = on ? 'rgba(var(--gold-rgb),0.08)' : 'var(--noir)';
+  });
+  runGuide();
+}
+
+async function runGuide() {
+  const city = document.getElementById('guideCity').value.trim();
+  if (!city) {
+    const inp = document.getElementById('guideCity');
+    inp.focus();
+    inp.style.borderColor = 'rgba(var(--gold-rgb),0.9)';
+    return;
+  }
+  if (!activeCategory) {
+    document.querySelectorAll('.guide-cat-btn').forEach(btn => {
+      btn.style.borderColor = 'rgba(var(--gold-rgb),0.5)';
+      setTimeout(() => { if (!btn.classList.contains('active')) btn.style.borderColor = 'rgba(var(--gold-rgb),0.15)'; }, 900);
+    });
+    return;
+  }
+
+  const cat = GUIDE_CATEGORIES.find(c => c.id === activeCategory);
+  const results = document.getElementById('guideResults');
+  const loading = document.getElementById('guideResultsLoading');
+  const list    = document.getElementById('guideResultsList');
+
+  results.style.display = 'block';
+  loading.style.display = 'block';
+  list.innerHTML = '';
+  document.getElementById('guideResultsEyebrow').textContent = cat.title.toUpperCase() + ' · ' + city.toUpperCase();
+  document.getElementById('guideResultsTitle').textContent   = 'Curating your guide…';
+  results.scrollIntoView({ behavior: 'smooth', block: 'nearest' });
+
+  try {
+    const res = await fetch('/.netlify/functions/guide', {
+      method: 'POST',
+      headers: { 'Content-Type': 'application/json' },
+      body: JSON.stringify({ city, category: cat.title, desc: cat.desc }),
+    });
+    if (!res.ok) throw new Error('api');
+    const data = await res.json();
+    const items = data.items || [];
+
+    loading.style.display = 'none';
+    document.getElementById('guideResultsTitle').textContent = cat.title + ' in ' + city;
+
+    list.innerHTML = items.length ? items.map((item, i) => `
+      <div style="display:flex;gap:1.5rem;padding-bottom:1.75rem;border-bottom:1px solid rgba(var(--gold-rgb),0.1);">
+        <div style="font-family:var(--ff-display);font-style:italic;font-size:1.6rem;color:rgba(var(--gold-rgb),0.5);line-height:1;flex-shrink:0;min-width:28px;">${i + 1}</div>
+        <div style="flex:1;">
+          <div style="font-family:var(--ff-display);font-size:1.15rem;font-weight:400;color:var(--white);margin-bottom:0.35rem;">${item.name}</div>
+          <div style="font-family:var(--ff-body);font-size:13px;color:rgba(var(--white-rgb),0.65);line-height:1.7;margin-bottom:0.6rem;font-weight:300;">${item.description}</div>
+          <div style="font-family:var(--ff-body);font-size:11px;color:rgba(var(--gold-rgb),0.85);line-height:1.6;display:flex;gap:0.5rem;">
+            <span style="flex-shrink:0;font-size:8px;margin-top:3px;">◆</span><span>${item.insider}</span>
+          </div>
+        </div>
+      </div>
+    `).join('') : '<div style="font-family:var(--ff-body);font-size:13px;color:rgba(var(--white-rgb),0.45);">No results returned — try a different city or category.</div>';
+
+  } catch(err) {
+    loading.style.display = 'none';
+    document.getElementById('guideResultsTitle').textContent = 'Guide unavailable';
+    list.innerHTML = '<div style="font-family:var(--ff-body);font-size:13px;color:rgba(var(--white-rgb),0.45);">The guide is temporarily unavailable. Please try again shortly.</div>';
+  }
+}
+
 // ─── INIT ───
 document.addEventListener('keydown', (e) => {
   if (e.key === 'Escape' && document.getElementById('modalBackdrop').classList.contains('show')) {
@@ -1325,6 +1504,7 @@ document.addEventListener('keydown', (e) => {
 });
 
 renderCurators();
+renderGuideCategories();
 </script>
 
 </body>
