@@ -51,8 +51,8 @@ nav{position:fixed;top:0;left:0;right:0;z-index:100;display:flex;align-items:cen
 .hero-bg::after{content:"";position:absolute;inset:0;background:linear-gradient(to top,rgba(0,0,0,0.55) 0%,rgba(0,0,0,0.15) 60%,transparent 100%);}
 .hero h1 em{color:var(--accent);font-style:italic;}
 .hero-tagline{font-family:var(--ff-display);font-style:italic;font-size:clamp(1.1rem,2.5vw,1.6rem);color:rgba(245,237,216,0.8);font-weight:300;margin:1.25rem 0 2.5rem;max-width:580px;line-height:1.5;position:relative;z-index:1;animation:fadeUp 1s 0.15s ease-out both;}
-.hero-scroll{display:flex;align-items:center;gap:0.75rem;font-family:var(--ff-body);font-size:9px;letter-spacing:3.5px;text-transform:uppercase;color:rgba(var(--white-rgb),0.35);position:relative;z-index:1;animation:fadeUp 1s 0.3s ease-out both;}
-.hero-scroll::before{content:'';width:1px;height:40px;background:linear-gradient(to bottom,rgba(var(--gold-rgb),0.5),transparent);}
+.hero-scroll{display:flex;align-items:center;gap:0.75rem;font-family:var(--ff-body);font-size:9px;letter-spacing:3.5px;text-transform:uppercase;color:rgba(245,237,216,0.55);position:relative;z-index:1;animation:fadeUp 1s 0.3s ease-out both;}
+.hero-scroll::before{content:'';width:1px;height:40px;background:linear-gradient(to bottom,rgba(201,169,110,0.7),transparent);}
 /* SECTIONS */
 .section{padding:6rem 2.5rem;position:relative;z-index:1;}
 .section-inner{max-width:1100px;margin:0 auto;}
@@ -141,6 +141,94 @@ footer a:hover{color:var(--gold);}
         radial-gradient(ellipse 40% 50% at 80% 25%, rgba(201,169,110,0.08) 0%, transparent 45%),
         linear-gradient(150deg, #0C1420 0%, #0d1625 50%, #0b1318 100%);
      }
+
+/* ── SOCIAL SECTION ── */
+.social-section { padding:5rem 2.5rem; background:var(--noir); border-top:1px solid rgba(var(--gold-rgb),0.12); }
+.social-creator {
+  border:1px solid rgba(var(--gold-rgb),0.15);
+  margin-bottom:2.5rem;
+  overflow:hidden;
+}
+.social-creator:last-child { margin-bottom:0; }
+.social-creator-header {
+  padding:1.5rem 2rem;
+  display:flex; align-items:center; gap:1.5rem;
+  border-bottom:1px solid rgba(var(--gold-rgb),0.1);
+  flex-wrap:wrap;
+}
+.social-avatar {
+  width:52px; height:52px; border-radius:50%;
+  background:var(--noir-3);
+  border:1px solid rgba(var(--gold-rgb),0.25);
+  display:flex; align-items:center; justify-content:center;
+  flex-shrink:0;
+  font-family:var(--ff-display); font-style:italic;
+  font-size:1.4rem; color:rgba(var(--gold-rgb),0.5);
+}
+.social-creator-info { flex:1; min-width:160px; }
+.social-handle {
+  font-family:var(--ff-body); font-size:13px;
+  color:var(--white); font-weight:400; letter-spacing:0.3px;
+  margin-bottom:0.2rem;
+}
+.social-meta {
+  font-family:var(--ff-body); font-size:10px;
+  letter-spacing:2px; text-transform:uppercase;
+  color:rgba(var(--gold-rgb),0.6);
+}
+.social-approval {
+  font-family:var(--ff-body); font-size:9px;
+  letter-spacing:2px; text-transform:uppercase;
+  color:rgba(var(--white-rgb),0.3);
+  border:1px dashed rgba(var(--white-rgb),0.15);
+  padding:0.4rem 0.85rem;
+}
+.social-embed-placeholder {
+  background:var(--noir-2);
+  aspect-ratio:4/3;
+  max-height:420px;
+  display:flex; flex-direction:column;
+  align-items:center; justify-content:center;
+  gap:1rem; padding:2rem;
+  border-bottom:1px solid rgba(var(--gold-rgb),0.08);
+  position:relative;
+}
+.social-embed-icon {
+  font-size:2rem; opacity:0.2;
+}
+.social-embed-label {
+  font-family:var(--ff-body); font-size:10px;
+  letter-spacing:3px; text-transform:uppercase;
+  color:rgba(var(--white-rgb),0.3); text-align:center;
+  line-height:1.8;
+}
+.social-embed-note {
+  position:absolute; bottom:1rem; right:1rem;
+  font-family:var(--ff-body); font-size:9px;
+  letter-spacing:1.5px; text-transform:uppercase;
+  color:rgba(var(--white-rgb),0.2);
+}
+.social-creator-body { padding:1.5rem 2rem 1.75rem; }
+.social-quote {
+  font-family:var(--ff-display); font-style:italic;
+  font-size:1.05rem; font-weight:300;
+  color:rgba(var(--white-rgb),0.75);
+  line-height:1.65; margin-bottom:1.5rem;
+  border-left:2px solid rgba(var(--gold-rgb),0.35);
+  padding-left:1.25rem;
+}
+.social-links { display:flex; flex-direction:column; gap:0.75rem; }
+.social-link {
+  display:inline-flex; align-items:center; gap:0.75rem;
+  font-family:var(--ff-body); font-size:11px;
+  letter-spacing:2px; text-transform:uppercase;
+  color:var(--gold); text-decoration:none;
+  transition:color 0.25s;
+}
+.social-link:hover { color:var(--white); }
+.social-link-dot { font-size:7px; flex-shrink:0; }
+@media(max-width:640px){ .social-section{padding:3.5rem 1.5rem;} .social-creator-header{padding:1.25rem 1.5rem;} .social-creator-body{padding:1.25rem 1.5rem;} }
+
 </style>
 </head>
 <body>
@@ -276,6 +364,53 @@ footer a:hover{color:var(--gold);}
         </div>
       </div>
     </section>
+
+<section class="social-section">
+  <div class="section-inner">
+    <div class="section-label">As seen in Savannah</div>
+    <div class="section-title">Popular with <em>our community.</em></div>
+    <p style="font-family:var(--ff-body);font-size:13px;color:rgba(var(--white-rgb),0.45);margin:0.5rem 0 2.5rem;font-weight:300;max-width:540px;line-height:1.8;">Real travelers, real stories. Curated creators who know Savannah — and earn when you do, too.</p>
+    <div class="social-creator">
+      <div class="social-creator-header">
+        <div class="social-avatar">@</div>
+        <div class="social-creator-info">
+          <div class="social-handle">@creatorhandle</div>
+          <div class="social-meta">Platform &middot; Followers &middot; Savannah</div>
+        </div>
+        <div class="social-approval">Pending approval</div>
+      </div>
+      <div class="social-embed-placeholder">
+        <div class="social-embed-icon">&#9655;</div>
+        <div class="social-embed-label">Replace this block with Instagram / TikTok / YouTube embed code after creator approval</div>
+        <div class="social-embed-note">Placeholder</div>
+      </div>
+      <div class="social-creator-body">
+        <div class="social-quote">"Add the creator's caption or a pull quote from their Savannah post here."</div>
+        <div class="social-links">
+          <a class="social-link" href="#" onclick="return false;"><span class="social-link-dot">&#9670;</span> Shop the look they're wearing &#8594;</a>
+          <a class="social-link" href="#" onclick="return false;"><span class="social-link-dot">&#9670;</span> Book the experience they mention &#8594;</a>
+        </div>
+      </div>
+    </div>
+    <div class="social-creator" style="opacity:0.45;pointer-events:none;">
+      <div class="social-creator-header">
+        <div class="social-avatar" style="opacity:0.4;">@</div>
+        <div class="social-creator-info">
+          <div class="social-handle" style="color:rgba(var(--white-rgb),0.4);">Second creator slot</div>
+          <div class="social-meta">Coming soon</div>
+        </div>
+        <div class="social-approval">Not yet assigned</div>
+      </div>
+      <div class="social-embed-placeholder" style="aspect-ratio:unset;min-height:120px;">
+        <div class="social-embed-label">Reserve this spot for a second Savannah creator</div>
+      </div>
+    </div>
+    <div style="margin-top:2rem;padding:1.25rem 1.5rem;border:1px dashed rgba(var(--white-rgb),0.1);background:rgba(var(--gold-rgb),0.03);">
+      <div style="font-family:var(--ff-body);font-size:9px;letter-spacing:2.5px;text-transform:uppercase;color:rgba(var(--gold-rgb),0.5);margin-bottom:0.5rem;">&#9670; Internal note — remove before launch</div>
+      <div style="font-family:var(--ff-body);font-size:12px;color:rgba(var(--white-rgb),0.35);line-height:1.8;font-weight:300;">To activate: (1) Get creator approval via email &middot; (2) Replace placeholder div with embed code &middot; (3) Add real affiliate URLs to the two links &middot; (4) Update handle + pull quote &middot; (5) Remove this note. Track referrals via <code style="color:rgba(var(--gold-rgb),0.6);">?ref=savannah-creatorname</code> on BagFree links.</div>
+    </div>
+  </div>
+</section>
 
 <div class="guide-cta">
   <div class="guide-cta-left">
