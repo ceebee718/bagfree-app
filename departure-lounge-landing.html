@@ -121,6 +121,22 @@ input,select,textarea{outline:none}
 .start-cta{background:linear-gradient(135deg,var(--gold) 0%,#d8b06a 50%,#b8893e 100%);color:var(--noir);padding:1.25rem 3.2rem;font-size:0.82rem;font-weight:600;letter-spacing:3.5px;text-transform:uppercase;box-shadow:0 8px 28px rgba(var(--gold-rgb),0.28), inset 0 1px 0 rgba(255,255,255,0.3);transition:all 0.3s cubic-bezier(.4,0,.2,1);}
 .start-cta:hover{transform:translateY(-3px);box-shadow:0 18px 46px rgba(var(--gold-rgb),0.4), inset 0 1px 0 rgba(255,255,255,0.4);letter-spacing:4.5px;}
 
+/* Dual-CTA cluster: Reserve (primary) + Explore the Lounge (secondary) */
+.cta-cluster{display:flex;flex-direction:column;align-items:center;gap:1.1rem;}
+.cta-row{display:flex;align-items:center;gap:1.1rem;flex-wrap:wrap;justify-content:center;}
+.cta-or{font-size:0.58rem;letter-spacing:3px;text-transform:uppercase;color:rgba(var(--text-rgb),0.35);font-family:var(--ff-body);position:relative;padding:0 0.35rem;}
+.start-cta-secondary{background:transparent;color:var(--gold);padding:1.2rem 2.4rem;font-size:0.78rem;font-weight:500;letter-spacing:3px;text-transform:uppercase;border:1px solid rgba(var(--gold-rgb),0.42);transition:all 0.3s cubic-bezier(.4,0,.2,1);text-decoration:none;display:inline-flex;align-items:center;gap:0.55rem;cursor:pointer;font-family:var(--ff-body);}
+.start-cta-secondary:hover{border-color:var(--gold);background:rgba(var(--gold-rgb),0.08);transform:translateY(-3px);box-shadow:0 12px 28px rgba(var(--gold-rgb),0.16);letter-spacing:3.6px;}
+.start-cta-secondary .arrow{display:inline-block;transition:transform 0.3s cubic-bezier(.4,0,.2,1);}
+.start-cta-secondary:hover .arrow{transform:translate(2px,-2px);}
+.cta-hint{font-size:0.66rem;letter-spacing:2px;text-transform:uppercase;color:rgba(var(--text-rgb),0.42);font-family:var(--ff-body);max-width:520px;text-align:center;line-height:1.7;}
+.cta-hint em{color:var(--gold);font-style:normal;font-weight:500;letter-spacing:2.2px;}
+@media (max-width:560px){
+  .cta-row{flex-direction:column;gap:0.85rem;width:100%;max-width:320px;}
+  .start-cta,.start-cta-secondary{width:100%;padding-left:1rem;padding-right:1rem;}
+  .cta-or{padding:0.15rem 0;}
+}
+
 /* CITY tiles */
 .city-grid{display:grid;grid-template-columns:repeat(auto-fit,minmax(220px,1fr));gap:1rem;width:100%;max-width:760px;margin-bottom:2rem;}
 .city-tile{background:rgba(var(--gold-rgb),0.03);border:1px solid rgba(var(--gold-rgb),0.18);padding:2.2rem 1.6rem;text-align:center;transition:all 0.3s cubic-bezier(.4,0,.2,1);position:relative;overflow:hidden;}
@@ -522,7 +538,18 @@ input,select,textarea{outline:none}
       <span class="trust-item"><span class="trust-dot"></span>Florida &amp; Georgia</span>
       <span class="trust-item"><span class="trust-dot"></span>Powered by Valet By Nuor</span>
     </div>
-    <button class="start-cta" onclick="goToStep(1)">Reserve my arrival</button>
+    <div class="cta-cluster">
+      <div class="cta-row">
+        <button class="start-cta" onclick="goToStep(1)">Reserve my arrival</button>
+        <span class="cta-or">or</span>
+        <a href="/departure-lounge.html" class="start-cta-secondary">
+          Enter the Lounge <span class="arrow">↗</span>
+        </a>
+      </div>
+      <div class="cta-hint">
+        Book a delivery, <em>or step inside</em> to explore destinations, plan trips, and unlock member rates.
+      </div>
+    </div>
   </div>
 
   <!-- STEP 1: City -->
