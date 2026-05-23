@@ -635,12 +635,41 @@ button,input,select,textarea{font-family:var(--ff-body)}
 </style>
 <script src="https://unpkg.com/leaflet@1.9.4/dist/leaflet.js"></script>
 <script type="module">
-import { createClient } from 'https://cdn.jsdelivr.net/npm/@supabase/supabase-js/+esm'
-
-const SUPABASE_URL = 'https://hoipvmhwjxdipbnnxdwd.supabase.co'
-const SUPABASE_KEY = 'sb_publishable_YpauWHKsHKClPTxMfLIL3g_s4hCkP5H'
-const supabase = createClient(SUPABASE_URL, SUPABASE_KEY)
-window.supabase = supabase
+let supabase;
+try {
+  const { createClient } = await import('https://cdn.jsdelivr.net/npm/@supabase/supabase-js/+esm');
+  const SUPABASE_URL = 'https://hoipvmhwjxdipbnnxdwd.supabase.co';
+  const SUPABASE_KEY = 'sb_publishable_YpauWHKsHKClPTxMfLIL3g_s4hCkP5H';
+  supabase = createClient(SUPABASE_URL, SUPABASE_KEY);
+  window.supabase = supabase;
+} catch (e) {
+  console.error('Supabase init failed:', e);
+  // Surface the issue to the user instead of leaving a blank page
+  document.addEventListener('DOMContentLoaded', function() {
+    const fb = document.getElementById('loadingFallback');
+    const msg = document.getElementById('loadingFallbackMsg');
+    const hint = document.getElementById('loadingFallbackHint');
+    if (msg) msg.textContent = 'Couldn\u2019t connect to our auth service.';
+    if (hint) hint.style.display = 'block';
+    if (fb) fb.style.display = 'flex';
+  });
+  // Provide a stub so the rest of the script doesn't throw on every supabase.* call
+  supabase = {
+    auth: {
+      getSession: async () => ({ data: { session: null }, error: new Error('Supabase unavailable') }),
+      getUser:    async () => ({ data: { user: null } }),
+      signInWithPassword: async () => ({ data: null, error: new Error('Supabase unavailable — please refresh.') }),
+      signUp:             async () => ({ data: null, error: new Error('Supabase unavailable — please refresh.') }),
+      resetPasswordForEmail: async () => ({ error: new Error('Supabase unavailable — please refresh.') }),
+      signOut: async () => ({}),
+    },
+    from: () => ({
+      select: () => ({ eq: () => ({ single: async () => ({ data: null }) }) }),
+      upsert: async () => ({ data: null, error: new Error('Supabase unavailable') }),
+    }),
+  };
+  window.supabase = supabase;
+}
 
 const SURVEY_VERSION = 1
 
@@ -673,6 +702,10 @@ function applyProfile(saved) {
 
 // ── AUTH FLOW ON LOAD ──
 document.addEventListener('DOMContentLoaded', async function() {
+  function hideLoadingFallback() {
+    const fb = document.getElementById('loadingFallback');
+    if (fb) fb.style.display = 'none';
+  }
   try {
     const { data: { session }, error: sessErr } = await supabase.auth.getSession()
     if (sessErr) { console.error('Session error:', sessErr) }
@@ -681,6 +714,7 @@ document.addEventListener('DOMContentLoaded', async function() {
       if (saved) applyProfile(saved)
       // Always go straight to dashboard — no survey gate
       document.getElementById('authOverlay').style.display = 'none'
+      hideLoadingFallback()
       _launchDashboardCore()
       // If no profile yet, nudge user to personalize after a delay
       if (!saved || !saved.travel_style) {
@@ -688,11 +722,14 @@ document.addEventListener('DOMContentLoaded', async function() {
       }
       return
     }
-    // Not logged in — show auth screen
+    // Not logged in — show auth screen (already visible by default, just ensure it stays)
     document.getElementById('authOverlay').style.display = 'flex'
+    hideLoadingFallback()
   } catch(e) {
     console.error('Auth flow error:', e)
+    // Even on auth failure, show the sign-in screen so the user can try again
     document.getElementById('authOverlay').style.display = 'flex'
+    hideLoadingFallback()
   }
 })
 
@@ -916,8 +953,34 @@ window._supabaseLaunchPatch = async function() {
 </head>
 <body>
 
-<!-- AUTH SCREEN -->
-<div id="authOverlay" style="display:none">
+<!-- LOADING FALLBACK — visible until JS hides it, surfaces network/blocker failures -->
+<div id="loadingFallback" style="position:fixed;inset:0;z-index:3000;display:flex;align-items:center;justify-content:center;background:var(--noir);color:var(--gold);font-family:var(--ff-display);font-size:1.2rem;text-align:center;padding:2rem;line-height:1.6">
+  <div>
+    <div id="loadingFallbackMsg" style="font-style:italic">Loading the Lounge…</div>
+    <div id="loadingFallbackHint" style="display:none;margin-top:1rem;font-family:var(--ff-body);font-size:0.78rem;color:var(--mist);font-style:normal;letter-spacing:0.5px;max-width:380px;line-height:1.7">
+      This page needs network access to <strong style="color:var(--gold)">cdn.jsdelivr.net</strong> and <strong style="color:var(--gold)">supabase.co</strong>. If you have an ad blocker or strict privacy extension, try disabling it for this page, or <a href="mailto:support@bagfree.app" style="color:var(--gold)">contact us</a>.
+    </div>
+  </div>
+</div>
+<script>
+  // If the module script hasn't initialized Supabase within 5s, surface a useful hint
+  setTimeout(function(){
+    if (!window.supabase) {
+      var hint = document.getElementById('loadingFallbackHint');
+      var msg  = document.getElementById('loadingFallbackMsg');
+      if (msg)  msg.textContent = 'Having trouble loading.';
+      if (hint) hint.style.display = 'block';
+    }
+  }, 5000);
+  // Hard fallback: if 12s pass and still nothing, hide the loader anyway so the user sees the auth screen below
+  setTimeout(function(){
+    var fb = document.getElementById('loadingFallback');
+    if (fb) fb.style.display = 'none';
+  }, 12000);
+</script>
+
+<!-- AUTH SCREEN — shown by default so the page is never blank if JS fails -->
+<div id="authOverlay" style="display:flex">
   <div class="auth-wrap">
     <button class="bf-theme-toggle auth" id="bfThemeToggleAuth" aria-label="Toggle theme" title="Toggle theme" onclick="bfToggleTheme()">
       <svg id="bfIconAuthDark" viewBox="0 0 24 24" style="display:none"><circle cx="12" cy="12" r="4"/><path d="M12 2v2M12 20v2M4.93 4.93l1.41 1.41M17.66 17.66l1.41 1.41M2 12h2M20 12h2M4.93 19.07l1.41-1.41M17.66 6.34l1.41-1.41"/></svg>
