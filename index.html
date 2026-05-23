@@ -295,6 +295,20 @@ select option{background:#172138!important;color:rgb(var(--text-rgb))!important}
 .bf-sp-side-cta:disabled{opacity:0.4;cursor:not-allowed}
 .bf-sp-side-secure{font-size:0.72rem;color:var(--mist);text-align:center;display:flex;align-items:center;justify-content:center;gap:0.45rem;font-weight:300}
 .bf-sp-side-secure svg{color:var(--gold);opacity:0.7}
+.bf-sp-save{margin-top:1.25rem;padding:1rem 1.1rem;border:1px solid var(--border);border-radius:4px;background:rgba(var(--gold-rgb),0.04);position:relative;overflow:hidden}
+.bf-sp-save::before{content:'';position:absolute;top:0;left:0;width:2px;height:100%;background:linear-gradient(180deg,var(--gold) 0%,transparent 100%);opacity:0.6}
+.bf-sp-save-row{display:flex;align-items:flex-start;gap:0.7rem}
+.bf-sp-save-icon{color:var(--gold);flex-shrink:0;margin-top:2px;opacity:0.85}
+.bf-sp-save-content{flex:1;min-width:0}
+.bf-sp-save-title{font-family:var(--ff-display);font-size:1.02rem;font-weight:400;font-style:italic;color:var(--white);line-height:1.3;margin-bottom:0.3rem}
+.bf-sp-save-desc{font-size:0.76rem;color:var(--mist);font-weight:300;line-height:1.5;margin-bottom:0.75rem}
+.bf-sp-save-actions{display:flex;align-items:center;gap:0.75rem;flex-wrap:wrap}
+.bf-sp-save-signin{background:transparent;border:1px solid var(--border-hi);color:var(--gold);padding:0.55rem 1rem;font-size:0.66rem;letter-spacing:2.5px;text-transform:uppercase;font-family:var(--ff-body);font-weight:500;cursor:pointer;border-radius:3px;transition:all .25s}
+.bf-sp-save-signin:hover{background:rgba(var(--gold-rgb),0.1);border-color:var(--gold)}
+.bf-sp-save-dismiss{background:transparent;border:none;color:var(--mist);font-size:0.74rem;cursor:pointer;font-family:var(--ff-body);font-weight:300;padding:0.4rem 0.2rem;text-decoration:underline;text-underline-offset:3px;text-decoration-color:rgba(var(--gold-rgb),0.25);transition:color .2s}
+.bf-sp-save-dismiss:hover{color:var(--white)}
+.bf-sp-save-saved{display:flex;align-items:center;gap:0.5rem;font-size:0.82rem;color:var(--white);font-family:var(--ff-display);font-style:italic}
+.bf-sp-save-saved svg{color:var(--green);flex-shrink:0}
 .bf-sp-trust{border-top:1px solid var(--border);padding:2.5rem 3rem;background:rgba(var(--bg-rgb),0.5)}
 .bf-sp-trust-grid{display:grid;grid-template-columns:repeat(4,1fr);gap:2rem;max-width:1480px;margin:0 auto}
 .bf-sp-trust-item{display:flex;gap:1rem;align-items:flex-start}
@@ -1238,6 +1252,8 @@ const SPI = {
   truck:(p)=><svg width="26" height="26" viewBox="0 0 24 24" fill="none" stroke="currentColor" strokeWidth="1.3" strokeLinecap="round" strokeLinejoin="round" {...p}><rect x="1" y="6" width="13" height="11" rx="1"/><path d="M14 9h4l3 4v4h-7"/><circle cx="6" cy="19" r="2"/><circle cx="17" cy="19" r="2"/></svg>,
   shield:(p)=><svg width="26" height="26" viewBox="0 0 24 24" fill="none" stroke="currentColor" strokeWidth="1.3" strokeLinecap="round" strokeLinejoin="round" {...p}><path d="M12 2l9 4v6c0 5-3.5 9-9 10-5.5-1-9-5-9-10V6z"/><polyline points="9 12 11 14 15 10"/></svg>,
   headset:(p)=><svg width="26" height="26" viewBox="0 0 24 24" fill="none" stroke="currentColor" strokeWidth="1.3" strokeLinecap="round" strokeLinejoin="round" {...p}><path d="M3 14v-2a9 9 0 0 1 18 0v2"/><path d="M21 14v3a2 2 0 0 1-2 2h-1v-7h1a2 2 0 0 1 2 2zM3 14v3a2 2 0 0 0 2 2h1v-7H5a2 2 0 0 0-2 2z"/></svg>,
+  bookmark:(p)=><svg width="18" height="18" viewBox="0 0 24 24" fill="none" stroke="currentColor" strokeWidth="1.4" strokeLinecap="round" strokeLinejoin="round" {...p}><path d="M19 21l-7-5-7 5V5a2 2 0 0 1 2-2h10a2 2 0 0 1 2 2z"/></svg>,
+  check:(p)=><svg width="14" height="14" viewBox="0 0 24 24" fill="none" stroke="currentColor" strokeWidth="2" strokeLinecap="round" strokeLinejoin="round" {...p}><polyline points="20 6 9 17 4 12"/></svg>,
 };
 
 function StylePreference({setPage}) {
@@ -1260,6 +1276,7 @@ function StylePreference({setPage}) {
   const [files, setFiles] = React.useState([]);
   const [description, setDescription] = React.useState('');
   const [drag, setDrag] = React.useState(false);
+  const [savePromptState, setSavePromptState] = React.useState('idle'); // 'idle' | 'saved' | 'dismissed'
   const fileInputRef = React.useRef(null);
 
   const selectedStyle = SP_STYLES.find(s => s.id === selectedId) || null;
@@ -1489,6 +1506,43 @@ function StylePreference({setPage}) {
             <div className="bf-sp-side-secure">
               <SPI.lock /> Secure Checkout
             </div>
+
+            {/* Soft sign-in prompt — only appears after a style is selected, dismissable */}
+            {selectedStyle && savePromptState !== 'dismissed' && (
+              <div className="bf-sp-save">
+                {savePromptState === 'saved' ? (
+                  <div className="bf-sp-save-saved">
+                    <SPI.check /> Saved to your profile.
+                  </div>
+                ) : (
+                  <div className="bf-sp-save-row">
+                    <div className="bf-sp-save-icon"><SPI.bookmark /></div>
+                    <div className="bf-sp-save-content">
+                      <div className="bf-sp-save-title">Save this look?</div>
+                      <div className="bf-sp-save-desc">Sign in to remember your sizing, brands, and vibe for future trips.</div>
+                      <div className="bf-sp-save-actions">
+                        <button
+                          className="bf-sp-save-signin"
+                          onClick={() => {
+                            // Stub: in production this opens auth modal / OAuth flow.
+                            // On success the style profile is persisted server-side keyed to the user.
+                            setSavePromptState('saved');
+                          }}
+                        >
+                          Sign In
+                        </button>
+                        <button
+                          className="bf-sp-save-dismiss"
+                          onClick={() => setSavePromptState('dismissed')}
+                        >
+                          Maybe later
+                        </button>
+                      </div>
+                    </div>
+                  </div>
+                )}
+              </div>
+            )}
           </div>
         </aside>
       </div>
