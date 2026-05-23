@@ -80,7 +80,23 @@ input,select,textarea{outline:none}
 .nav{position:fixed;top:0;left:0;right:0;z-index:100;display:flex;align-items:center;justify-content:space-between;padding:1rem 2.5rem;background:rgba(var(--bg-rgb),0.7);backdrop-filter:blur(18px) saturate(140%);-webkit-backdrop-filter:blur(18px) saturate(140%);border-bottom:1px solid rgba(var(--gold-rgb),0.12);transition:background-color 0.5s ease, border-color 0.5s ease;}
 .nav-logo{display:flex;align-items:center;text-decoration:none;transition:transform 0.3s ease, filter 0.3s ease;filter:drop-shadow(0 2px 8px rgba(var(--gold-rgb),0.18));}
 .nav-logo:hover{transform:scale(1.04)}
-.nav-logo img{height:38px;width:auto;display:block}
+.nav-logo img{height:38px;width:auto;display:block;transition:filter 0.4s ease;}
+
+/* ─── LIGHT MODE: darken the gold logo so it reads against cream ─── */
+/* The base PNG is gold-on-transparent. In light mode we shift it to a
+   deep navy that matches the body text color (--white in light theme =
+   #0D1525), preserving the wordmark's silhouette while restoring contrast. */
+:root[data-theme="light"] .nav-logo{filter:drop-shadow(0 1px 1px rgba(13,21,37,0.25));}
+:root[data-theme="light"] .nav-logo img{
+  /* brightness(0) makes the alpha shape pure black, then invert + sepia +
+     saturate + hue-rotate tints it back toward the brand deep-gold/navy mix.
+     Net result: same crisp logo silhouette, but at a luminance that contrasts
+     with the cream background. */
+  filter:brightness(0) saturate(100%) invert(11%) sepia(45%) saturate(1200%) hue-rotate(190deg) brightness(95%) contrast(105%);
+}
+:root[data-theme="light"] .nav-logo:hover img{
+  filter:brightness(0) saturate(100%) invert(11%) sepia(45%) saturate(1200%) hue-rotate(190deg) brightness(85%) contrast(110%);
+}
 .nav-right{display:flex;align-items:center;gap:1.5rem}
 .nav-link{font-size:0.74rem;letter-spacing:2.5px;text-transform:uppercase;color:rgba(var(--text-rgb),0.7);text-decoration:none;transition:color 0.25s;}
 .nav-link:hover{color:var(--gold)}
