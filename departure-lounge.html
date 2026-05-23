@@ -637,10 +637,17 @@ button,input,select,textarea{font-family:var(--ff-body)}
 <script type="module">
 let supabase;
 try {
+  // Fetch config from Netlify Function (env-var driven, no hardcoded keys)
+  const cfgRes = await fetch('/.netlify/functions/config', { cache: 'no-store' });
+  if (!cfgRes.ok) {
+    throw new Error('Config endpoint returned ' + cfgRes.status);
+  }
+  const cfg = await cfgRes.json();
+  if (cfg.error) throw new Error(cfg.error);
+  if (!cfg.url || !cfg.key) throw new Error('Config missing url or key');
+
   const { createClient } = await import('https://cdn.jsdelivr.net/npm/@supabase/supabase-js/+esm');
-  const SUPABASE_URL = 'https://hoipvmhwjxdipbnnxdwd.supabase.co';
-  const SUPABASE_KEY = 'sb_publishable_YpauWHKsHKClPTxMfLIL3g_s4hCkP5H';
-  supabase = createClient(SUPABASE_URL, SUPABASE_KEY);
+  supabase = createClient(cfg.url, cfg.key);
   window.supabase = supabase;
 } catch (e) {
   console.error('Supabase init failed:', e);
