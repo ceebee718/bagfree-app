@@ -86,6 +86,18 @@ body, nav, section, button, span, p, h1, h2, h3, h4, a, div[style*="background"]
 :root[data-theme="light"] select option { background:#FAF7F0!important; color:#0D1525!important; }
 :root[data-theme="light"] ::-webkit-scrollbar-thumb { background: rgba(var(--gold-rgb), 0.5); }
 
+/* Logo visibility boost in light mode — darken the gold so it reads against the cream background */
+:root[data-theme="light"] .bf-nav img[alt="BagFree"] {
+  filter: brightness(0.55) contrast(1.35) saturate(1.2) drop-shadow(0 2px 8px rgba(138, 107, 51, 0.35)) !important;
+}
+:root[data-theme="light"] .bf-nav img[alt="BagFree"]:hover {
+  filter: brightness(0.5) contrast(1.4) saturate(1.25) drop-shadow(0 4px 14px rgba(138, 107, 51, 0.5)) !important;
+}
+/* Mobile menu logo (full-screen overlay) */
+:root[data-theme="light"] img[alt="BagFree"] {
+  filter: brightness(0.55) contrast(1.35) saturate(1.2) drop-shadow(0 4px 16px rgba(138, 107, 51, 0.4)) !important;
+}
+
 /* Theme toggle button */
 .bf-theme-toggle {
   display: inline-flex;
