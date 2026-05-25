@@ -716,6 +716,31 @@ function Home({setPage}) {
 
       </div>
 
+      {/* HERO VIDEO SECTION */}
+      <div style={{padding:'5rem 3rem',background:'var(--noir)',borderTop:'1px solid rgba(var(--gold-rgb),0.12)'}}>
+        <div style={{maxWidth:1200,margin:'0 auto'}}>
+          <div style={{textAlign:'center',marginBottom:'2.5rem'}}>
+            <div style={{fontSize:'0.60rem',letterSpacing:'4px',textTransform:'uppercase',color:'var(--gold)',marginBottom:'0.75rem'}}>See it in motion</div>
+            <h2 style={{fontFamily:'var(--ff-display)',fontSize:'clamp(2rem,3.5vw,3rem)',fontWeight:300,lineHeight:1.15,marginBottom:'0.5rem'}}>
+              The BagFree <em style={{color:'var(--gold)',fontStyle:'italic'}}>experience</em>
+            </h2>
+          </div>
+          <div style={{position:'relative',width:'100%',maxWidth:1100,margin:'0 auto',aspectRatio:'16 / 9',background:'#000',borderRadius:'4px',overflow:'hidden',boxShadow:'0 30px 80px rgba(0,0,0,0.5), 0 0 0 1px rgba(var(--gold-rgb),0.15)'}}>
+            <video
+              src="https://raw.githubusercontent.com/ceebee718/bagfree-app/main/videos/hero.mp4"
+              poster="https://raw.githubusercontent.com/ceebee718/bagfree-app/main/images/hero-poster.jpg"
+              autoPlay
+              muted
+              loop
+              playsInline
+              controls
+              preload="metadata"
+              style={{width:'100%',height:'100%',objectFit:'cover',display:'block'}}
+            />
+          </div>
+        </div>
+      </div>
+
       <div style={{padding:'5rem 3rem',background:'var(--noir)'}}>
         <div style={{maxWidth:860,margin:'0 auto'}}>
           <div style={{textAlign:'center',marginBottom:'2.5rem'}}>
