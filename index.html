@@ -751,6 +751,34 @@ function Home({setPage}) {
         </div>
       </div>
 
+      {/* BAG TOKEN — small ad below video, routes to /token page */}
+      <div style={{padding:'0 3rem 4rem',background:'var(--noir)'}}>
+        <div onClick={()=>setPage('token')}
+          style={{
+            maxWidth:1100,margin:'0 auto',padding:'1.75rem 2rem',
+            background:'linear-gradient(135deg,rgba(var(--gold-rgb),0.06) 0%,rgba(var(--gold-rgb),0.02) 100%)',
+            border:'1px solid rgba(var(--gold-rgb),0.22)',
+            display:'flex',alignItems:'center',gap:'1.5rem',flexWrap:'wrap',
+            cursor:'pointer',transition:'all 0.25s'
+          }}
+          onMouseEnter={e=>{e.currentTarget.style.borderColor='rgba(var(--gold-rgb),0.5)';e.currentTarget.style.transform='translateY(-2px)';}}
+          onMouseLeave={e=>{e.currentTarget.style.borderColor='rgba(var(--gold-rgb),0.22)';e.currentTarget.style.transform='translateY(0)';}}>
+          <div style={{
+            width:48,height:48,borderRadius:'50%',
+            background:'linear-gradient(135deg,var(--gold) 0%,#b8893e 100%)',
+            display:'flex',alignItems:'center',justifyContent:'center',
+            color:'var(--noir)',fontFamily:'var(--ff-display)',fontWeight:600,fontSize:'1.05rem',
+            letterSpacing:'1px',flexShrink:0
+          }}>BAG</div>
+          <div style={{flex:'1 1 280px'}}>
+            <div style={{fontSize:'0.68rem',letterSpacing:'2.5px',textTransform:'uppercase',color:'var(--gold)',marginBottom:'0.35rem'}}>New · Ecosystem Utility Token</div>
+            <div style={{fontFamily:'var(--ff-display)',fontSize:'1.25rem',fontWeight:300,letterSpacing:'-0.2px',marginBottom:'0.25rem'}}>The <em style={{color:'var(--gold)',fontStyle:'italic'}}>BAG</em> token is live on Solana</div>
+            <div style={{fontSize:'0.82rem',color:'var(--mist)',fontWeight:300}}>Powering subscriptions, rewards, and in-platform purchases across BagFree.</div>
+          </div>
+          <div style={{fontSize:'0.72rem',letterSpacing:'2px',textTransform:'uppercase',color:'var(--gold)',border:'1px solid rgba(var(--gold-rgb),0.42)',padding:'0.65rem 1.4rem',whiteSpace:'nowrap'}}>Learn More →</div>
+        </div>
+      </div>
+
       <div style={{padding:'5rem 3rem',background:'var(--noir)'}}>
         <div style={{maxWidth:860,margin:'0 auto'}}>
           <div style={{textAlign:'center',marginBottom:'2.5rem'}}>
@@ -975,8 +1003,6 @@ function Home({setPage}) {
     </div>
 
       {/* EDITORIAL DESTINATION GUIDES — moved to after hero */}
-
-
 
       {/* CTA */}
       <div style={{padding:'7rem 3rem',background:'var(--noir)',textAlign:'center',position:'relative',overflow:'hidden'}}>
@@ -2986,6 +3012,270 @@ function VendorSelectPage({gender, categoryId, setPage}) {
   );
 }
 
+// ── BAG TOKEN PAGE ────────────────────────────────────────────────────────────
+const BAG_INFO = {
+  name: 'BagFree',
+  symbol: 'BAG',
+  chain: 'Solana',
+  totalSupply: '1,000,000,000',
+  type: 'Utility Token',
+  contract: '8ZHuevydQsQuLkGRKJMz44FvvVQ57NR1w5KsRokmoq2p',
+  solscanUrl: 'https://solscan.io/token/8ZHuevydQsQuLkGRKJMz44FvvVQ57NR1w5KsRokmoq2p',
+  jupiterUrl: 'https://jup.ag/tokens/8ZHuevydQsQuLkGRKJMz44FvvVQ57NR1w5KsRokmoq2p',
+  birdeyeUrl: 'https://birdeye.so/token/8ZHuevydQsQuLkGRKJMz44FvvVQ57NR1w5KsRokmoq2p?chain=solana'
+};
+
+function TokenPage({setPage}) {
+  const [copied, setCopied] = React.useState(false);
+
+  const copyContract = () => {
+    if (navigator.clipboard) {
+      navigator.clipboard.writeText(BAG_INFO.contract).then(()=>{
+        setCopied(true);
+        setTimeout(()=>setCopied(false), 2000);
+      }).catch(()=>{
+        // fallback
+        const ta = document.createElement('textarea');
+        ta.value = BAG_INFO.contract;
+        document.body.appendChild(ta);
+        ta.select();
+        try{document.execCommand('copy');setCopied(true);setTimeout(()=>setCopied(false),2000);}catch(e){}
+        document.body.removeChild(ta);
+      });
+    }
+  };
+
+  const utility = [
+    {label:'Premium Subscriptions',desc:'Unlock BagFree Pro tiers, priority delivery windows, and concierge-only features.'},
+    {label:'In-Platform Purchases',desc:'Pay for emergency kits, curated essentials, and travel bundles using BAG.'},
+    {label:'Travel Rewards & Loyalty',desc:'Earn BAG on every delivery. Redeem against future trips and curated experiences.'},
+    {label:'Creator Incentives',desc:'Creators and curators are rewarded in BAG for content, referrals, and city contributions.'},
+    {label:'Staking & Participation',desc:'Stake BAG to access ecosystem benefits and partner perks.'},
+    {label:'Marketplace Participation',desc:'Use BAG across the BagFree marketplace as it expands to new cities.'}
+  ];
+
+  const tokenomics = [
+    {label:'Ecosystem Rewards',pct:30,color:'#C9A96E'},
+    {label:'Community & Staking',pct:20,color:'#B8893E'},
+    {label:'Treasury & Operations',pct:20,color:'#8A6F45'},
+    {label:'Development & Technology',pct:15,color:'#E8D5B0'},
+    {label:'Partnerships & Growth',pct:10,color:'#A6864A'},
+    {label:'Team Allocation',pct:5,color:'#6B5535'}
+  ];
+
+  const roadmap = [
+    {phase:'Phase 1',title:'Foundation',items:['Token launch on Solana','City guides go live','Creator onboarding']},
+    {phase:'Phase 2',title:'Hospitality',items:['Hotel partnerships','Rewards ecosystem activation','Loyalty integrations']},
+    {phase:'Phase 3',title:'Commerce',items:['Marketplace systems','Creator monetization','Affiliate experiences']},
+    {phase:'Phase 4',title:'Fulfillment',items:['Localized fulfillment','On-demand apparel systems','Multi-city expansion']}
+  ];
+
+  return (
+    <div style={{paddingTop:'5rem',background:'var(--noir)',minHeight:'100vh'}}>
+
+      {/* HERO */}
+      <div style={{padding:'5rem 3rem 4rem',maxWidth:1200,margin:'0 auto',position:'relative'}}>
+        <div style={{fontSize:'0.78rem',letterSpacing:'3px',textTransform:'uppercase',color:'var(--gold)',marginBottom:'1.5rem',display:'flex',alignItems:'center',gap:'0.75rem'}}>
+          <span style={{width:24,height:1,background:'var(--gold-dim)',display:'inline-block'}}/>
+          Ecosystem Utility Token · Whitepaper v1.0
+        </div>
+        <div style={{display:'grid',gridTemplateColumns:'1fr auto',gap:'3rem',alignItems:'center',flexWrap:'wrap'}}>
+          <div>
+            <h1 style={{fontFamily:'var(--ff-display)',fontSize:'clamp(2.5rem,6vw,5rem)',fontWeight:300,lineHeight:1.05,letterSpacing:'-1px',marginBottom:'1.5rem'}}>
+              The <em style={{color:'var(--gold)',fontStyle:'italic'}}>BAG</em> token
+            </h1>
+            <p style={{fontSize:'1.1rem',color:'var(--mist)',fontWeight:300,lineHeight:1.65,maxWidth:640}}>
+              BAG powers the economic layer of BagFree — enabling subscriptions, rewards, staking, creator incentives, in-app purchases, and loyalty across the travel ecosystem.
+            </p>
+          </div>
+          <div style={{
+            width:140,height:140,borderRadius:'50%',
+            background:'linear-gradient(135deg,var(--gold) 0%,#d8b06a 50%,#b8893e 100%)',
+            display:'flex',alignItems:'center',justifyContent:'center',
+            color:'var(--noir)',fontFamily:'var(--ff-display)',fontWeight:600,fontSize:'2rem',letterSpacing:'2px',
+            boxShadow:'0 18px 44px rgba(var(--gold-rgb),0.35), inset 0 1px 0 rgba(255,255,255,0.3)',
+            flexShrink:0
+          }}>BAG</div>
+        </div>
+      </div>
+
+      {/* CONTRACT CARD — the headline action */}
+      <div style={{padding:'0 3rem 4rem',maxWidth:1200,margin:'0 auto'}}>
+        <div style={{
+          background:'linear-gradient(135deg,rgba(var(--gold-rgb),0.08) 0%,rgba(var(--gold-rgb),0.02) 100%)',
+          border:'1px solid rgba(var(--gold-rgb),0.32)',
+          padding:'2.5rem 2rem'
+        }}>
+          <div style={{fontSize:'0.72rem',letterSpacing:'2.5px',textTransform:'uppercase',color:'var(--mist)',marginBottom:'0.75rem'}}>Contract Address · Solana</div>
+          <div style={{
+            display:'flex',alignItems:'center',gap:'1rem',flexWrap:'wrap',
+            background:'rgba(0,0,0,0.25)',padding:'1.1rem 1.25rem',
+            border:'1px solid rgba(var(--gold-rgb),0.18)',marginBottom:'1.5rem'
+          }}>
+            <code style={{
+              flex:'1 1 280px',fontFamily:'ui-monospace, SFMono-Regular, Menlo, monospace',
+              fontSize:'0.92rem',color:'var(--gold-light)',wordBreak:'break-all',letterSpacing:'0.3px'
+            }}>{BAG_INFO.contract}</code>
+            <button onClick={copyContract} style={{
+              background: copied ? 'var(--gold)' : 'transparent',
+              color: copied ? 'var(--noir)' : 'var(--gold)',
+              border:'1px solid var(--gold)',
+              padding:'0.75rem 1.5rem',fontSize:'0.76rem',letterSpacing:'2.5px',textTransform:'uppercase',
+              cursor:'pointer',fontFamily:'var(--ff-body)',fontWeight:500,
+              transition:'all 0.2s',whiteSpace:'nowrap',minWidth:140
+            }}>{copied ? '✓ Copied' : 'Copy Address'}</button>
+          </div>
+          <div style={{display:'flex',gap:'0.75rem',flexWrap:'wrap'}}>
+            <a href={BAG_INFO.solscanUrl} target="_blank" rel="noopener noreferrer" style={{
+              fontSize:'0.74rem',letterSpacing:'2px',textTransform:'uppercase',color:'var(--mist)',
+              textDecoration:'none',border:'1px solid var(--border)',padding:'0.6rem 1.2rem',transition:'all 0.2s'
+            }} onMouseEnter={e=>{e.currentTarget.style.color='var(--gold)';e.currentTarget.style.borderColor='var(--gold)';}}
+               onMouseLeave={e=>{e.currentTarget.style.color='var(--mist)';e.currentTarget.style.borderColor='var(--border)';}}>View on Solscan ↗</a>
+            <a href={BAG_INFO.jupiterUrl} target="_blank" rel="noopener noreferrer" style={{
+              fontSize:'0.74rem',letterSpacing:'2px',textTransform:'uppercase',color:'var(--mist)',
+              textDecoration:'none',border:'1px solid var(--border)',padding:'0.6rem 1.2rem',transition:'all 0.2s'
+            }} onMouseEnter={e=>{e.currentTarget.style.color='var(--gold)';e.currentTarget.style.borderColor='var(--gold)';}}
+               onMouseLeave={e=>{e.currentTarget.style.color='var(--mist)';e.currentTarget.style.borderColor='var(--border)';}}>Swap on Jupiter ↗</a>
+            <a href={BAG_INFO.birdeyeUrl} target="_blank" rel="noopener noreferrer" style={{
+              fontSize:'0.74rem',letterSpacing:'2px',textTransform:'uppercase',color:'var(--mist)',
+              textDecoration:'none',border:'1px solid var(--border)',padding:'0.6rem 1.2rem',transition:'all 0.2s'
+            }} onMouseEnter={e=>{e.currentTarget.style.color='var(--gold)';e.currentTarget.style.borderColor='var(--gold)';}}
+               onMouseLeave={e=>{e.currentTarget.style.color='var(--mist)';e.currentTarget.style.borderColor='var(--border)';}}>Chart on Birdeye ↗</a>
+          </div>
+          <div style={{fontSize:'0.74rem',color:'var(--mist-low)',marginTop:'1.25rem',lineHeight:1.6}}>
+            Always verify the contract address before swapping. Solana wallets like Phantom, Solflare, and Backpack support BAG.
+          </div>
+        </div>
+      </div>
+
+      {/* SPECS GRID */}
+      <div style={{padding:'0 3rem 5rem',maxWidth:1200,margin:'0 auto'}}>
+        <div style={{display:'grid',gridTemplateColumns:'repeat(auto-fit,minmax(180px,1fr))',gap:1,background:'var(--border)',border:'1px solid var(--border)'}}>
+          {[
+            ['Name',BAG_INFO.name],
+            ['Symbol',BAG_INFO.symbol],
+            ['Blockchain',BAG_INFO.chain],
+            ['Total Supply',BAG_INFO.totalSupply],
+            ['Token Type',BAG_INFO.type]
+          ].map(([k,v])=>(
+            <div key={k} style={{background:'var(--noir)',padding:'1.5rem 1.25rem'}}>
+              <div style={{fontSize:'0.66rem',letterSpacing:'2.5px',textTransform:'uppercase',color:'var(--mist-low)',marginBottom:'0.5rem'}}>{k}</div>
+              <div style={{fontSize:'1.05rem',color:'var(--gold)',fontWeight:300,letterSpacing:'0.5px'}}>{v}</div>
+            </div>
+          ))}
+        </div>
+      </div>
+
+      {/* UTILITY */}
+      <div style={{padding:'5rem 3rem',maxWidth:1200,margin:'0 auto',background:'var(--noir-2)'}}>
+        <div style={{fontSize:'0.78rem',letterSpacing:'3px',textTransform:'uppercase',color:'var(--gold)',marginBottom:'1.25rem'}}>
+          <span style={{width:24,height:1,background:'var(--gold-dim)',display:'inline-block',marginRight:'0.75rem',verticalAlign:'middle'}}/>
+          Utility
+        </div>
+        <h2 style={{fontFamily:'var(--ff-display)',fontSize:'clamp(1.75rem,3.5vw,2.75rem)',fontWeight:300,letterSpacing:'-0.3px',marginBottom:'3rem'}}>
+          What <em style={{color:'var(--gold)',fontStyle:'italic'}}>BAG</em> does
+        </h2>
+        <div style={{display:'grid',gridTemplateColumns:'repeat(auto-fit,minmax(280px,1fr))',gap:'1.5rem'}}>
+          {utility.map((u,i)=>(
+            <div key={i} style={{padding:'1.75rem 1.5rem',border:'1px solid var(--border)',background:'var(--noir)'}}>
+              <div style={{width:32,height:32,border:'1px solid var(--border-hi)',display:'flex',alignItems:'center',justifyContent:'center',color:'var(--gold)',fontSize:'0.78rem',fontWeight:500,marginBottom:'1rem'}}>{String(i+1).padStart(2,'0')}</div>
+              <div style={{fontSize:'1rem',color:'var(--gold)',marginBottom:'0.5rem',letterSpacing:'0.3px'}}>{u.label}</div>
+              <div style={{fontSize:'0.86rem',color:'var(--mist)',lineHeight:1.65,fontWeight:300}}>{u.desc}</div>
+            </div>
+          ))}
+        </div>
+      </div>
+
+      {/* TOKENOMICS */}
+      <div style={{padding:'5rem 3rem',maxWidth:1200,margin:'0 auto'}}>
+        <div style={{fontSize:'0.78rem',letterSpacing:'3px',textTransform:'uppercase',color:'var(--gold)',marginBottom:'1.25rem'}}>
+          <span style={{width:24,height:1,background:'var(--gold-dim)',display:'inline-block',marginRight:'0.75rem',verticalAlign:'middle'}}/>
+          Tokenomics
+        </div>
+        <h2 style={{fontFamily:'var(--ff-display)',fontSize:'clamp(1.75rem,3.5vw,2.75rem)',fontWeight:300,letterSpacing:'-0.3px',marginBottom:'3rem'}}>
+          Total supply <em style={{color:'var(--gold)',fontStyle:'italic'}}>1,000,000,000</em> BAG
+        </h2>
+
+        {/* Horizontal stacked bar */}
+        <div style={{display:'flex',height:18,marginBottom:'2rem',border:'1px solid var(--border)',overflow:'hidden'}}>
+          {tokenomics.map((t,i)=>(
+            <div key={i} title={`${t.label}: ${t.pct}%`} style={{width:`${t.pct}%`,background:t.color,transition:'opacity 0.2s'}}/>
+          ))}
+        </div>
+
+        <div style={{display:'grid',gridTemplateColumns:'repeat(auto-fit,minmax(240px,1fr))',gap:'1rem'}}>
+          {tokenomics.map((t,i)=>(
+            <div key={i} style={{display:'flex',alignItems:'center',gap:'0.85rem',padding:'1rem 1.25rem',border:'1px solid var(--border)',background:'var(--noir)'}}>
+              <div style={{width:12,height:12,background:t.color,flexShrink:0}}/>
+              <div style={{flex:1}}>
+                <div style={{fontSize:'0.9rem',color:'var(--white)',fontWeight:300}}>{t.label}</div>
+              </div>
+              <div style={{fontSize:'1.05rem',color:'var(--gold)',fontFamily:'var(--ff-display)',fontWeight:300}}>{t.pct}%</div>
+            </div>
+          ))}
+        </div>
+      </div>
+
+      {/* ROADMAP */}
+      <div style={{padding:'5rem 3rem',maxWidth:1200,margin:'0 auto',background:'var(--noir-2)'}}>
+        <div style={{fontSize:'0.78rem',letterSpacing:'3px',textTransform:'uppercase',color:'var(--gold)',marginBottom:'1.25rem'}}>
+          <span style={{width:24,height:1,background:'var(--gold-dim)',display:'inline-block',marginRight:'0.75rem',verticalAlign:'middle'}}/>
+          Roadmap
+        </div>
+        <h2 style={{fontFamily:'var(--ff-display)',fontSize:'clamp(1.75rem,3.5vw,2.75rem)',fontWeight:300,letterSpacing:'-0.3px',marginBottom:'3rem'}}>
+          The path <em style={{color:'var(--gold)',fontStyle:'italic'}}>forward</em>
+        </h2>
+        <div style={{display:'grid',gridTemplateColumns:'repeat(auto-fit,minmax(260px,1fr))',gap:'1.5rem'}}>
+          {roadmap.map((r,i)=>(
+            <div key={i} style={{padding:'1.75rem 1.5rem',border:'1px solid var(--border)',background:'var(--noir)',position:'relative'}}>
+              <div style={{fontSize:'0.7rem',letterSpacing:'2.5px',textTransform:'uppercase',color:'var(--gold)',marginBottom:'0.5rem'}}>{r.phase}</div>
+              <div style={{fontFamily:'var(--ff-display)',fontSize:'1.4rem',fontWeight:300,marginBottom:'1.25rem',color:'var(--white)'}}>{r.title}</div>
+              <ul style={{listStyle:'none',padding:0,margin:0}}>
+                {r.items.map((it,j)=>(
+                  <li key={j} style={{fontSize:'0.85rem',color:'var(--mist)',lineHeight:1.7,fontWeight:300,paddingLeft:'1rem',position:'relative',marginBottom:'0.35rem'}}>
+                    <span style={{position:'absolute',left:0,top:'0.6em',width:4,height:1,background:'var(--gold-dim)'}}/>
+                    {it}
+                  </li>
+                ))}
+              </ul>
+            </div>
+          ))}
+        </div>
+      </div>
+
+      {/* DISCLAIMER — prominent */}
+      <div style={{padding:'4rem 3rem',maxWidth:900,margin:'0 auto'}}>
+        <div style={{
+          padding:'2rem 1.75rem',
+          border:'1px solid rgba(var(--gold-rgb),0.22)',
+          background:'rgba(0,0,0,0.2)'
+        }}>
+          <div style={{fontSize:'0.72rem',letterSpacing:'2.5px',textTransform:'uppercase',color:'var(--gold)',marginBottom:'1rem'}}>Important Disclaimer</div>
+          <p style={{fontSize:'0.88rem',color:'var(--mist)',lineHeight:1.7,fontWeight:300,marginBottom:'1rem'}}>
+            BAG is intended as a utility token within the BagFree ecosystem. It is not a security, an investment contract, or a promise of financial return. This page and the BagFree whitepaper do not constitute financial, legal, tax, or investment advice.
+          </p>
+          <p style={{fontSize:'0.88rem',color:'var(--mist)',lineHeight:1.7,fontWeight:300,marginBottom:'1rem'}}>
+            Cryptocurrency participation involves substantial risk, including potential loss of principal. Token values are volatile. Regulatory treatment of digital assets varies by jurisdiction and may change. You are solely responsible for determining whether participation is appropriate for you.
+          </p>
+          <p style={{fontSize:'0.88rem',color:'var(--mist)',lineHeight:1.7,fontWeight:300}}>
+            Always verify the official contract address before any transaction. BagFree will never DM you asking to send tokens, share seed phrases, or click external links to claim rewards.
+          </p>
+        </div>
+      </div>
+
+      {/* CTA back */}
+      <div style={{padding:'3rem 3rem 6rem',textAlign:'center'}}>
+        <button onClick={()=>setPage('home')} style={{
+          background:'transparent',color:'var(--gold)',padding:'0.85rem 2rem',
+          border:'1px solid var(--border-hi)',fontSize:'0.78rem',letterSpacing:'2.5px',textTransform:'uppercase',
+          cursor:'pointer',fontFamily:'var(--ff-body)'
+        }}>← Back to BagFree</button>
+      </div>
+
+    </div>
+  );
+}
+
 // ── APP ───────────────────────────────────────────────────────────────────────
 function App() {
   const [page, setPage] = useState(() => {
@@ -3036,6 +3326,7 @@ function App() {
       {page==='style' && <StylePreference setPage={navigate}/>}
       {page==='supplier' && <SupplierPortal/>}
       {page==='cruise' && <CruisePage setPage={navigate}/>}
+      {page==='token' && <TokenPage setPage={navigate}/>}
       <footer style={{background:'var(--noir-2)',padding:'2rem 3rem',display:'flex',justifyContent:'space-between',alignItems:'center',borderTop:'1px solid var(--border)',flexWrap:'wrap',gap:'1rem'}}>
         <div style={{fontFamily:'var(--ff-display)',fontSize:'1.2rem',fontWeight:300,letterSpacing:'3px',textTransform:'uppercase'}}>Bag<span style={{color:'var(--gold)'}}>Free</span></div>
         <div style={{fontSize:'0.78rem',color:'var(--mist)',letterSpacing:'1px'}}>
