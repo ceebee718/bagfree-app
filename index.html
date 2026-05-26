@@ -402,7 +402,7 @@ async function submitToFormspree(data) {
   try { await fetch(FORMSPREE,{method:'POST',headers:{'Content-Type':'application/json','Accept':'application/json'},body:JSON.stringify(data)}); } catch(e){}
 }
 
-// ── AIRTABLE PROXY (via Netlify Functions — token is server-side only) ───────
+// ── AIRTABLE PROXY (via Netlify Functions — API key is server-side only) ─────
 async function submitToAirtable(form) {
   try {
     await fetch('/.netlify/functions/submit-supplier', {
@@ -751,9 +751,9 @@ function Home({setPage}) {
         </div>
       </div>
 
-      {/* BAG TOKEN — small ad below video, routes to /token page */}
+      {/* BAG REWARDS — small ad below video, routes to /rewards page */}
       <div style={{padding:'0 3rem 4rem',background:'var(--noir)'}}>
-        <div onClick={()=>setPage('token')}
+        <div onClick={()=>setPage('rewards')}
           style={{
             maxWidth:1100,margin:'0 auto',padding:'1.75rem 2rem',
             background:'linear-gradient(135deg,rgba(var(--gold-rgb),0.06) 0%,rgba(var(--gold-rgb),0.02) 100%)',
@@ -771,9 +771,9 @@ function Home({setPage}) {
             letterSpacing:'1px',flexShrink:0
           }}>BAG</div>
           <div style={{flex:'1 1 280px'}}>
-            <div style={{fontSize:'0.68rem',letterSpacing:'2.5px',textTransform:'uppercase',color:'var(--gold)',marginBottom:'0.35rem'}}>New · Ecosystem Utility Token</div>
-            <div style={{fontFamily:'var(--ff-display)',fontSize:'1.25rem',fontWeight:300,letterSpacing:'-0.2px',marginBottom:'0.25rem'}}>The <em style={{color:'var(--gold)',fontStyle:'italic'}}>BAG</em> token is live on Solana</div>
-            <div style={{fontSize:'0.82rem',color:'var(--mist)',fontWeight:300}}>Powering subscriptions, rewards, and in-platform purchases across BagFree.</div>
+            <div style={{fontSize:'0.68rem',letterSpacing:'2.5px',textTransform:'uppercase',color:'var(--gold)',marginBottom:'0.35rem'}}>New · Travel Rewards Program</div>
+            <div style={{fontFamily:'var(--ff-display)',fontSize:'1.25rem',fontWeight:300,letterSpacing:'-0.2px',marginBottom:'0.25rem'}}>Introducing <em style={{color:'var(--gold)',fontStyle:'italic'}}>BAG Rewards</em></div>
+            <div style={{fontSize:'0.82rem',color:'var(--mist)',fontWeight:300}}>Earn points on every delivery. Redeem for upgrades, free drop-offs, and VIP travel experiences.</div>
           </div>
           <div style={{fontSize:'0.72rem',letterSpacing:'2px',textTransform:'uppercase',color:'var(--gold)',border:'1px solid rgba(var(--gold-rgb),0.42)',padding:'0.65rem 1.4rem',whiteSpace:'nowrap'}}>Learn More →</div>
         </div>
@@ -3012,80 +3012,61 @@ function VendorSelectPage({gender, categoryId, setPage}) {
   );
 }
 
-// ── BAG TOKEN PAGE ────────────────────────────────────────────────────────────
-const BAG_INFO = {
-  name: 'BagFree',
-  symbol: 'BAG',
-  chain: 'Solana',
-  totalSupply: '1,000,000,000',
-  type: 'Utility Token',
-  contract: '8ZHuevydQsQuLkGRKJMz44FvvVQ57NR1w5KsRokmoq2p',
-  solscanUrl: 'https://solscan.io/token/8ZHuevydQsQuLkGRKJMz44FvvVQ57NR1w5KsRokmoq2p',
-  jupiterUrl: 'https://jup.ag/tokens/8ZHuevydQsQuLkGRKJMz44FvvVQ57NR1w5KsRokmoq2p',
-  birdeyeUrl: 'https://birdeye.so/token/8ZHuevydQsQuLkGRKJMz44FvvVQ57NR1w5KsRokmoq2p?chain=solana'
-};
+// ── CREATOR APPLICATION PROXY ─────────────────────────────────────────────────
+async function submitCreatorApplication(form) {
+  try {
+    const res = await fetch('/.netlify/functions/submit-creator-application', {
+      method: 'POST',
+      headers: { 'Content-Type': 'application/json' },
+      body: JSON.stringify(form),
+    });
+    return res.ok;
+  } catch(e){ console.error('Application submit error:', e); return false; }
+}
 
-function TokenPage({setPage}) {
-  const [copied, setCopied] = React.useState(false);
 
-  const copyContract = () => {
-    if (navigator.clipboard) {
-      navigator.clipboard.writeText(BAG_INFO.contract).then(()=>{
-        setCopied(true);
-        setTimeout(()=>setCopied(false), 2000);
-      }).catch(()=>{
-        // fallback
-        const ta = document.createElement('textarea');
-        ta.value = BAG_INFO.contract;
-        document.body.appendChild(ta);
-        ta.select();
-        try{document.execCommand('copy');setCopied(true);setTimeout(()=>setCopied(false),2000);}catch(e){}
-        document.body.removeChild(ta);
-      });
-    }
-  };
-
-  const utility = [
-    {label:'Premium Subscriptions',desc:'Unlock BagFree Pro tiers, priority delivery windows, and concierge-only features.'},
-    {label:'In-Platform Purchases',desc:'Pay for emergency kits, curated essentials, and travel bundles using BAG.'},
-    {label:'Travel Rewards & Loyalty',desc:'Earn BAG on every delivery. Redeem against future trips and curated experiences.'},
-    {label:'Creator Incentives',desc:'Creators and curators are rewarded in BAG for content, referrals, and city contributions.'},
-    {label:'Staking & Participation',desc:'Stake BAG to access ecosystem benefits and partner perks.'},
-    {label:'Marketplace Participation',desc:'Use BAG across the BagFree marketplace as it expands to new cities.'}
+// ── BAG REWARDS — PUBLIC LANDING ─────────────────────────────────────────────
+function RewardsPage({setPage}) {
+  const earnWays = [
+    {n:'01',t:'Place a Delivery',d:'Earn 10 points per dollar spent on BagFree deliveries to your hotel or destination.'},
+    {n:'02',t:'Refer a Friend',d:'Earn 500 points when a friend completes their first BagFree order using your code.'},
+    {n:'03',t:'Hotel Stays',d:'Earn bonus points on stays at participating BagFree partner hotels.'},
+    {n:'04',t:'Travel Content',d:'Approved members of the Creator Program earn points for sharing BagFree experiences.'},
+    {n:'05',t:'Travel Challenges',d:'Complete seasonal challenges like Weekend With No Luggage to earn bonus points and badges.'},
+    {n:'06',t:'Milestones',d:'Hit engagement milestones — first trip, fifth trip, tenth city — and unlock point bonuses.'}
   ];
 
-  const tokenomics = [
-    {label:'Ecosystem Rewards',pct:30,color:'#C9A96E'},
-    {label:'Community & Staking',pct:20,color:'#B8893E'},
-    {label:'Treasury & Operations',pct:20,color:'#8A6F45'},
-    {label:'Development & Technology',pct:15,color:'#E8D5B0'},
-    {label:'Partnerships & Growth',pct:10,color:'#A6864A'},
-    {label:'Team Allocation',pct:5,color:'#6B5535'}
+  const redeemWays = [
+    {t:'Free Hotel Drop-Off',pts:'2,500 pts',d:'Complimentary delivery on your next BagFree order.'},
+    {t:'Expedited Delivery',pts:'1,500 pts',d:'Priority same-day handling, anywhere we operate.'},
+    {t:'Wardrobe Upgrade',pts:'5,000 pts',d:'Upgrade any standard kit to premium for your next trip.'},
+    {t:'Creator Collection Access',pts:'7,500 pts',d:'Unlock exclusive curated collections from BagFree creators.'},
+    {t:'VIP Travel Experience',pts:'25,000 pts',d:'Once-per-year curated experience at a partner destination.'},
+    {t:'Concierge Discount',pts:'1,000 pts',d:'15% off your next order, stackable with seasonal offers.'}
   ];
 
-  const roadmap = [
-    {phase:'Phase 1',title:'Foundation',items:['Token launch on Solana','City guides go live','Creator onboarding']},
-    {phase:'Phase 2',title:'Hospitality',items:['Hotel partnerships','Rewards ecosystem activation','Loyalty integrations']},
-    {phase:'Phase 3',title:'Commerce',items:['Marketplace systems','Creator monetization','Affiliate experiences']},
-    {phase:'Phase 4',title:'Fulfillment',items:['Localized fulfillment','On-demand apparel systems','Multi-city expansion']}
+  const tiers = [
+    {name:'Traveler',req:'0 – 5,000 lifetime points',perks:['1x points on all orders','Standard delivery windows','Access to seasonal challenges']},
+    {name:'Voyager',req:'5,000 – 25,000 lifetime points',perks:['1.5x points multiplier','Priority customer support','Free expedited delivery, twice yearly']},
+    {name:'Concierge',req:'25,000+ lifetime points',perks:['2x points multiplier','Dedicated travel concierge','VIP partner hotel perks','Early access to new cities']}
   ];
 
   return (
     <div style={{paddingTop:'5rem',background:'var(--noir)',minHeight:'100vh'}}>
 
       {/* HERO */}
-      <div style={{padding:'5rem 3rem 4rem',maxWidth:1200,margin:'0 auto',position:'relative'}}>
+      <div style={{padding:'5rem 3rem 3rem',maxWidth:1200,margin:'0 auto'}}>
         <div style={{fontSize:'0.78rem',letterSpacing:'3px',textTransform:'uppercase',color:'var(--gold)',marginBottom:'1.5rem',display:'flex',alignItems:'center',gap:'0.75rem'}}>
           <span style={{width:24,height:1,background:'var(--gold-dim)',display:'inline-block'}}/>
-          Ecosystem Utility Token · Whitepaper v1.0
+          BAG Rewards · Travel Loyalty Program
         </div>
         <div style={{display:'grid',gridTemplateColumns:'1fr auto',gap:'3rem',alignItems:'center',flexWrap:'wrap'}}>
           <div>
             <h1 style={{fontFamily:'var(--ff-display)',fontSize:'clamp(2.5rem,6vw,5rem)',fontWeight:300,lineHeight:1.05,letterSpacing:'-1px',marginBottom:'1.5rem'}}>
-              The <em style={{color:'var(--gold)',fontStyle:'italic'}}>BAG</em> token
+              <em style={{color:'var(--gold)',fontStyle:'italic'}}>BAG</em> Rewards
             </h1>
             <p style={{fontSize:'1.1rem',color:'var(--mist)',fontWeight:300,lineHeight:1.65,maxWidth:640}}>
-              BAG powers the economic layer of BagFree — enabling subscriptions, rewards, staking, creator incentives, in-app purchases, and loyalty across the travel ecosystem.
+              Earn points on every delivery, hotel stay, and travel experience. Redeem for upgrades, free drop-offs, exclusive collections, and VIP travel. Free to join, simple to use, built for travelers who refuse to carry the unnecessary.
             </p>
           </div>
           <div style={{
@@ -3099,142 +3080,71 @@ function TokenPage({setPage}) {
         </div>
       </div>
 
-      {/* CONTRACT CARD — the headline action */}
-      <div style={{padding:'0 3rem 4rem',maxWidth:1200,margin:'0 auto'}}>
-        <div style={{
-          background:'linear-gradient(135deg,rgba(var(--gold-rgb),0.08) 0%,rgba(var(--gold-rgb),0.02) 100%)',
-          border:'1px solid rgba(var(--gold-rgb),0.32)',
-          padding:'2.5rem 2rem'
-        }}>
-          <div style={{fontSize:'0.72rem',letterSpacing:'2.5px',textTransform:'uppercase',color:'var(--mist)',marginBottom:'0.75rem'}}>Contract Address · Solana</div>
-          <div style={{
-            display:'flex',alignItems:'center',gap:'1rem',flexWrap:'wrap',
-            background:'rgba(0,0,0,0.25)',padding:'1.1rem 1.25rem',
-            border:'1px solid rgba(var(--gold-rgb),0.18)',marginBottom:'1.5rem'
-          }}>
-            <code style={{
-              flex:'1 1 280px',fontFamily:'ui-monospace, SFMono-Regular, Menlo, monospace',
-              fontSize:'0.92rem',color:'var(--gold-light)',wordBreak:'break-all',letterSpacing:'0.3px'
-            }}>{BAG_INFO.contract}</code>
-            <button onClick={copyContract} style={{
-              background: copied ? 'var(--gold)' : 'transparent',
-              color: copied ? 'var(--noir)' : 'var(--gold)',
-              border:'1px solid var(--gold)',
-              padding:'0.75rem 1.5rem',fontSize:'0.76rem',letterSpacing:'2.5px',textTransform:'uppercase',
-              cursor:'pointer',fontFamily:'var(--ff-body)',fontWeight:500,
-              transition:'all 0.2s',whiteSpace:'nowrap',minWidth:140
-            }}>{copied ? '✓ Copied' : 'Copy Address'}</button>
-          </div>
-          <div style={{display:'flex',gap:'0.75rem',flexWrap:'wrap'}}>
-            <a href={BAG_INFO.solscanUrl} target="_blank" rel="noopener noreferrer" style={{
-              fontSize:'0.74rem',letterSpacing:'2px',textTransform:'uppercase',color:'var(--mist)',
-              textDecoration:'none',border:'1px solid var(--border)',padding:'0.6rem 1.2rem',transition:'all 0.2s'
-            }} onMouseEnter={e=>{e.currentTarget.style.color='var(--gold)';e.currentTarget.style.borderColor='var(--gold)';}}
-               onMouseLeave={e=>{e.currentTarget.style.color='var(--mist)';e.currentTarget.style.borderColor='var(--border)';}}>View on Solscan ↗</a>
-            <a href={BAG_INFO.jupiterUrl} target="_blank" rel="noopener noreferrer" style={{
-              fontSize:'0.74rem',letterSpacing:'2px',textTransform:'uppercase',color:'var(--mist)',
-              textDecoration:'none',border:'1px solid var(--border)',padding:'0.6rem 1.2rem',transition:'all 0.2s'
-            }} onMouseEnter={e=>{e.currentTarget.style.color='var(--gold)';e.currentTarget.style.borderColor='var(--gold)';}}
-               onMouseLeave={e=>{e.currentTarget.style.color='var(--mist)';e.currentTarget.style.borderColor='var(--border)';}}>Swap on Jupiter ↗</a>
-            <a href={BAG_INFO.birdeyeUrl} target="_blank" rel="noopener noreferrer" style={{
-              fontSize:'0.74rem',letterSpacing:'2px',textTransform:'uppercase',color:'var(--mist)',
-              textDecoration:'none',border:'1px solid var(--border)',padding:'0.6rem 1.2rem',transition:'all 0.2s'
-            }} onMouseEnter={e=>{e.currentTarget.style.color='var(--gold)';e.currentTarget.style.borderColor='var(--gold)';}}
-               onMouseLeave={e=>{e.currentTarget.style.color='var(--mist)';e.currentTarget.style.borderColor='var(--border)';}}>Chart on Birdeye ↗</a>
-          </div>
-          <div style={{fontSize:'0.74rem',color:'var(--mist-low)',marginTop:'1.25rem',lineHeight:1.6}}>
-            Always verify the contract address before swapping. Solana wallets like Phantom, Solflare, and Backpack support BAG.
-          </div>
-        </div>
-      </div>
-
-      {/* SPECS GRID */}
-      <div style={{padding:'0 3rem 5rem',maxWidth:1200,margin:'0 auto'}}>
-        <div style={{display:'grid',gridTemplateColumns:'repeat(auto-fit,minmax(180px,1fr))',gap:1,background:'var(--border)',border:'1px solid var(--border)'}}>
-          {[
-            ['Name',BAG_INFO.name],
-            ['Symbol',BAG_INFO.symbol],
-            ['Blockchain',BAG_INFO.chain],
-            ['Total Supply',BAG_INFO.totalSupply],
-            ['Token Type',BAG_INFO.type]
-          ].map(([k,v])=>(
-            <div key={k} style={{background:'var(--noir)',padding:'1.5rem 1.25rem'}}>
-              <div style={{fontSize:'0.66rem',letterSpacing:'2.5px',textTransform:'uppercase',color:'var(--mist-low)',marginBottom:'0.5rem'}}>{k}</div>
-              <div style={{fontSize:'1.05rem',color:'var(--gold)',fontWeight:300,letterSpacing:'0.5px'}}>{v}</div>
-            </div>
-          ))}
-        </div>
-      </div>
-
-      {/* UTILITY */}
-      <div style={{padding:'5rem 3rem',maxWidth:1200,margin:'0 auto',background:'var(--noir-2)'}}>
+      {/* EARN */}
+      <div style={{padding:'4rem 3rem',maxWidth:1200,margin:'0 auto'}}>
         <div style={{fontSize:'0.78rem',letterSpacing:'3px',textTransform:'uppercase',color:'var(--gold)',marginBottom:'1.25rem'}}>
           <span style={{width:24,height:1,background:'var(--gold-dim)',display:'inline-block',marginRight:'0.75rem',verticalAlign:'middle'}}/>
-          Utility
+          How to Earn
         </div>
-        <h2 style={{fontFamily:'var(--ff-display)',fontSize:'clamp(1.75rem,3.5vw,2.75rem)',fontWeight:300,letterSpacing:'-0.3px',marginBottom:'3rem'}}>
-          What <em style={{color:'var(--gold)',fontStyle:'italic'}}>BAG</em> does
+        <h2 style={{fontFamily:'var(--ff-display)',fontSize:'clamp(1.75rem,3.5vw,2.75rem)',fontWeight:300,marginBottom:'3rem'}}>
+          Six ways to <em style={{color:'var(--gold)',fontStyle:'italic'}}>earn</em>
         </h2>
-        <div style={{display:'grid',gridTemplateColumns:'repeat(auto-fit,minmax(280px,1fr))',gap:'1.5rem'}}>
-          {utility.map((u,i)=>(
-            <div key={i} style={{padding:'1.75rem 1.5rem',border:'1px solid var(--border)',background:'var(--noir)'}}>
-              <div style={{width:32,height:32,border:'1px solid var(--border-hi)',display:'flex',alignItems:'center',justifyContent:'center',color:'var(--gold)',fontSize:'0.78rem',fontWeight:500,marginBottom:'1rem'}}>{String(i+1).padStart(2,'0')}</div>
-              <div style={{fontSize:'1rem',color:'var(--gold)',marginBottom:'0.5rem',letterSpacing:'0.3px'}}>{u.label}</div>
-              <div style={{fontSize:'0.86rem',color:'var(--mist)',lineHeight:1.65,fontWeight:300}}>{u.desc}</div>
+        <div style={{display:'grid',gridTemplateColumns:'repeat(auto-fit,minmax(280px,1fr))',gap:'1.25rem'}}>
+          {earnWays.map(w=>(
+            <div key={w.n} style={{padding:'1.75rem 1.5rem',border:'1px solid var(--border)',background:'var(--noir)'}}>
+              <div style={{fontSize:'0.7rem',letterSpacing:'2.5px',color:'var(--gold)',marginBottom:'0.75rem'}}>{w.n}</div>
+              <div style={{fontSize:'1.05rem',color:'var(--white)',marginBottom:'0.5rem',letterSpacing:'0.3px'}}>{w.t}</div>
+              <div style={{fontSize:'0.85rem',color:'var(--mist)',lineHeight:1.65,fontWeight:300}}>{w.d}</div>
             </div>
           ))}
         </div>
       </div>
 
-      {/* TOKENOMICS */}
+      {/* REDEEM */}
+      <div style={{padding:'5rem 3rem',background:'var(--noir-2)'}}>
+        <div style={{maxWidth:1200,margin:'0 auto'}}>
+          <div style={{fontSize:'0.78rem',letterSpacing:'3px',textTransform:'uppercase',color:'var(--gold)',marginBottom:'1.25rem'}}>
+            <span style={{width:24,height:1,background:'var(--gold-dim)',display:'inline-block',marginRight:'0.75rem',verticalAlign:'middle'}}/>
+            Redemption
+          </div>
+          <h2 style={{fontFamily:'var(--ff-display)',fontSize:'clamp(1.75rem,3.5vw,2.75rem)',fontWeight:300,marginBottom:'3rem'}}>
+            What you can <em style={{color:'var(--gold)',fontStyle:'italic'}}>redeem</em>
+          </h2>
+          <div style={{display:'grid',gridTemplateColumns:'repeat(auto-fit,minmax(280px,1fr))',gap:1,background:'var(--border)',border:'1px solid var(--border)'}}>
+            {redeemWays.map((r,i)=>(
+              <div key={i} style={{background:'var(--noir)',padding:'1.75rem 1.5rem'}}>
+                <div style={{fontSize:'0.7rem',letterSpacing:'2.5px',color:'var(--gold)',marginBottom:'0.75rem'}}>{r.pts}</div>
+                <div style={{fontFamily:'var(--ff-display)',fontSize:'1.2rem',fontWeight:300,color:'var(--white)',marginBottom:'0.5rem'}}>{r.t}</div>
+                <div style={{fontSize:'0.85rem',color:'var(--mist)',lineHeight:1.65,fontWeight:300}}>{r.d}</div>
+              </div>
+            ))}
+          </div>
+          <div style={{fontSize:'0.78rem',color:'var(--mist-low)',marginTop:'2rem',lineHeight:1.6,fontStyle:'italic'}}>
+            Point values shown reflect current redemption rates. Rates may change with notice. Points have no cash value and cannot be transferred between accounts.
+          </div>
+        </div>
+      </div>
+
+      {/* TIERS */}
       <div style={{padding:'5rem 3rem',maxWidth:1200,margin:'0 auto'}}>
         <div style={{fontSize:'0.78rem',letterSpacing:'3px',textTransform:'uppercase',color:'var(--gold)',marginBottom:'1.25rem'}}>
           <span style={{width:24,height:1,background:'var(--gold-dim)',display:'inline-block',marginRight:'0.75rem',verticalAlign:'middle'}}/>
-          Tokenomics
+          Membership Tiers
         </div>
-        <h2 style={{fontFamily:'var(--ff-display)',fontSize:'clamp(1.75rem,3.5vw,2.75rem)',fontWeight:300,letterSpacing:'-0.3px',marginBottom:'3rem'}}>
-          Total supply <em style={{color:'var(--gold)',fontStyle:'italic'}}>1,000,000,000</em> BAG
+        <h2 style={{fontFamily:'var(--ff-display)',fontSize:'clamp(1.75rem,3.5vw,2.75rem)',fontWeight:300,marginBottom:'3rem'}}>
+          Three <em style={{color:'var(--gold)',fontStyle:'italic'}}>tiers</em>, earned through travel
         </h2>
-
-        {/* Horizontal stacked bar */}
-        <div style={{display:'flex',height:18,marginBottom:'2rem',border:'1px solid var(--border)',overflow:'hidden'}}>
-          {tokenomics.map((t,i)=>(
-            <div key={i} title={`${t.label}: ${t.pct}%`} style={{width:`${t.pct}%`,background:t.color,transition:'opacity 0.2s'}}/>
-          ))}
-        </div>
-
-        <div style={{display:'grid',gridTemplateColumns:'repeat(auto-fit,minmax(240px,1fr))',gap:'1rem'}}>
-          {tokenomics.map((t,i)=>(
-            <div key={i} style={{display:'flex',alignItems:'center',gap:'0.85rem',padding:'1rem 1.25rem',border:'1px solid var(--border)',background:'var(--noir)'}}>
-              <div style={{width:12,height:12,background:t.color,flexShrink:0}}/>
-              <div style={{flex:1}}>
-                <div style={{fontSize:'0.9rem',color:'var(--white)',fontWeight:300}}>{t.label}</div>
-              </div>
-              <div style={{fontSize:'1.05rem',color:'var(--gold)',fontFamily:'var(--ff-display)',fontWeight:300}}>{t.pct}%</div>
-            </div>
-          ))}
-        </div>
-      </div>
-
-      {/* ROADMAP */}
-      <div style={{padding:'5rem 3rem',maxWidth:1200,margin:'0 auto',background:'var(--noir-2)'}}>
-        <div style={{fontSize:'0.78rem',letterSpacing:'3px',textTransform:'uppercase',color:'var(--gold)',marginBottom:'1.25rem'}}>
-          <span style={{width:24,height:1,background:'var(--gold-dim)',display:'inline-block',marginRight:'0.75rem',verticalAlign:'middle'}}/>
-          Roadmap
-        </div>
-        <h2 style={{fontFamily:'var(--ff-display)',fontSize:'clamp(1.75rem,3.5vw,2.75rem)',fontWeight:300,letterSpacing:'-0.3px',marginBottom:'3rem'}}>
-          The path <em style={{color:'var(--gold)',fontStyle:'italic'}}>forward</em>
-        </h2>
-        <div style={{display:'grid',gridTemplateColumns:'repeat(auto-fit,minmax(260px,1fr))',gap:'1.5rem'}}>
-          {roadmap.map((r,i)=>(
-            <div key={i} style={{padding:'1.75rem 1.5rem',border:'1px solid var(--border)',background:'var(--noir)',position:'relative'}}>
-              <div style={{fontSize:'0.7rem',letterSpacing:'2.5px',textTransform:'uppercase',color:'var(--gold)',marginBottom:'0.5rem'}}>{r.phase}</div>
-              <div style={{fontFamily:'var(--ff-display)',fontSize:'1.4rem',fontWeight:300,marginBottom:'1.25rem',color:'var(--white)'}}>{r.title}</div>
+        <div style={{display:'grid',gridTemplateColumns:'repeat(auto-fit,minmax(280px,1fr))',gap:'1.25rem'}}>
+          {tiers.map((t,i)=>(
+            <div key={i} style={{padding:'2rem 1.75rem',border:'1px solid var(--border)',background:'var(--noir)',position:'relative'}}>
+              <div style={{fontSize:'0.7rem',letterSpacing:'2.5px',textTransform:'uppercase',color:'var(--gold)',marginBottom:'0.75rem'}}>Tier {i+1}</div>
+              <div style={{fontFamily:'var(--ff-display)',fontSize:'1.75rem',fontWeight:300,color:'var(--white)',marginBottom:'0.5rem',letterSpacing:'-0.3px'}}>{t.name}</div>
+              <div style={{fontSize:'0.82rem',color:'var(--mist)',lineHeight:1.6,marginBottom:'1.5rem',fontWeight:300}}>{t.req}</div>
               <ul style={{listStyle:'none',padding:0,margin:0}}>
-                {r.items.map((it,j)=>(
-                  <li key={j} style={{fontSize:'0.85rem',color:'var(--mist)',lineHeight:1.7,fontWeight:300,paddingLeft:'1rem',position:'relative',marginBottom:'0.35rem'}}>
+                {t.perks.map((p,j)=>(
+                  <li key={j} style={{fontSize:'0.88rem',color:'var(--mist)',lineHeight:1.7,fontWeight:300,paddingLeft:'1rem',position:'relative',marginBottom:'0.4rem'}}>
                     <span style={{position:'absolute',left:0,top:'0.6em',width:4,height:1,background:'var(--gold-dim)'}}/>
-                    {it}
+                    {p}
                   </li>
                 ))}
               </ul>
@@ -3243,28 +3153,63 @@ function TokenPage({setPage}) {
         </div>
       </div>
 
-      {/* DISCLAIMER — prominent */}
-      <div style={{padding:'4rem 3rem',maxWidth:900,margin:'0 auto'}}>
-        <div style={{
-          padding:'2rem 1.75rem',
-          border:'1px solid rgba(var(--gold-rgb),0.22)',
-          background:'rgba(0,0,0,0.2)'
-        }}>
-          <div style={{fontSize:'0.72rem',letterSpacing:'2.5px',textTransform:'uppercase',color:'var(--gold)',marginBottom:'1rem'}}>Important Disclaimer</div>
-          <p style={{fontSize:'0.88rem',color:'var(--mist)',lineHeight:1.7,fontWeight:300,marginBottom:'1rem'}}>
-            BAG is intended as a utility token within the BagFree ecosystem. It is not a security, an investment contract, or a promise of financial return. This page and the BagFree whitepaper do not constitute financial, legal, tax, or investment advice.
-          </p>
-          <p style={{fontSize:'0.88rem',color:'var(--mist)',lineHeight:1.7,fontWeight:300,marginBottom:'1rem'}}>
-            Cryptocurrency participation involves substantial risk, including potential loss of principal. Token values are volatile. Regulatory treatment of digital assets varies by jurisdiction and may change. You are solely responsible for determining whether participation is appropriate for you.
-          </p>
-          <p style={{fontSize:'0.88rem',color:'var(--mist)',lineHeight:1.7,fontWeight:300}}>
-            Always verify the official contract address before any transaction. BagFree will never DM you asking to send tokens, share seed phrases, or click external links to claim rewards.
+      {/* CREATOR / CHALLENGES CTA */}
+      <div style={{padding:'5rem 3rem',background:'var(--noir-2)'}}>
+        <div style={{maxWidth:1100,margin:'0 auto',display:'grid',gridTemplateColumns:'1fr 1fr',gap:'1.25rem'}}>
+          <div onClick={()=>setPage('challenges')} style={{padding:'2.5rem 2rem',border:'1px solid var(--border)',background:'var(--noir)',cursor:'pointer',transition:'all 0.25s'}}
+            onMouseEnter={e=>{e.currentTarget.style.borderColor='var(--gold)';e.currentTarget.style.transform='translateY(-2px)';}}
+            onMouseLeave={e=>{e.currentTarget.style.borderColor='var(--border)';e.currentTarget.style.transform='translateY(0)';}}>
+            <div style={{fontSize:'0.7rem',letterSpacing:'2.5px',textTransform:'uppercase',color:'var(--gold)',marginBottom:'0.75rem'}}>Travel Challenges</div>
+            <div style={{fontFamily:'var(--ff-display)',fontSize:'1.5rem',fontWeight:300,marginBottom:'0.75rem'}}>Earn through <em style={{color:'var(--gold)',fontStyle:'italic'}}>challenges</em></div>
+            <div style={{fontSize:'0.88rem',color:'var(--mist)',lineHeight:1.6,fontWeight:300,marginBottom:'1.25rem'}}>Weekend With No Luggage. 48 Hours BagFree. Carry-On Only. Complete travel challenges to earn bonus points and unlock badges.</div>
+            <div style={{fontSize:'0.74rem',letterSpacing:'2px',textTransform:'uppercase',color:'var(--gold)'}}>Browse Challenges →</div>
+          </div>
+          <div onClick={()=>setPage('earn')} style={{padding:'2.5rem 2rem',border:'1px solid var(--border)',background:'var(--noir)',cursor:'pointer',transition:'all 0.25s'}}
+            onMouseEnter={e=>{e.currentTarget.style.borderColor='var(--gold)';e.currentTarget.style.transform='translateY(-2px)';}}
+            onMouseLeave={e=>{e.currentTarget.style.borderColor='var(--border)';e.currentTarget.style.transform='translateY(0)';}}>
+            <div style={{fontSize:'0.7rem',letterSpacing:'2.5px',textTransform:'uppercase',color:'var(--gold)',marginBottom:'0.75rem'}}>Creator Program</div>
+            <div style={{fontFamily:'var(--ff-display)',fontSize:'1.5rem',fontWeight:300,marginBottom:'0.75rem'}}>Apply to <em style={{color:'var(--gold)',fontStyle:'italic'}}>create</em></div>
+            <div style={{fontSize:'0.88rem',color:'var(--mist)',lineHeight:1.6,fontWeight:300,marginBottom:'1.25rem'}}>Travel creators can earn referral commissions, travel credits, and featured placement bonuses through our closed Creator Program.</div>
+            <div style={{fontSize:'0.74rem',letterSpacing:'2px',textTransform:'uppercase',color:'var(--gold)'}}>Learn More →</div>
+          </div>
+        </div>
+      </div>
+
+      {/* FAQ */}
+      <div style={{padding:'5rem 3rem',maxWidth:900,margin:'0 auto'}}>
+        <div style={{fontSize:'0.78rem',letterSpacing:'3px',textTransform:'uppercase',color:'var(--gold)',marginBottom:'1.25rem'}}>
+          <span style={{width:24,height:1,background:'var(--gold-dim)',display:'inline-block',marginRight:'0.75rem',verticalAlign:'middle'}}/>
+          Common Questions
+        </div>
+        <h2 style={{fontFamily:'var(--ff-display)',fontSize:'clamp(1.75rem,3.5vw,2.5rem)',fontWeight:300,marginBottom:'2.5rem'}}>
+          The <em style={{color:'var(--gold)',fontStyle:'italic'}}>details</em>
+        </h2>
+        {[
+          ['Are points free to earn?','Yes. Membership in BAG Rewards is free. You earn points automatically on qualifying activities once you create an account.'],
+          ['Do points expire?','Points remain active as long as your account has any qualifying activity within an 18-month window. We will notify you well before any expiration.'],
+          ['Can I transfer points to someone else?','Points are non-transferable between accounts and have no cash value. You can use points to redeem benefits on your own account only.'],
+          ['What happens if I cancel an order?','Points earned on cancelled or refunded orders are reversed from your balance. This applies to the original earning activity only.'],
+          ['How are tier statuses calculated?','Tier is based on lifetime points earned, not points redeemed. Redeeming benefits does not lower your tier.'],
+          ['Can BagFree change the program?','We may update earning rates, redemption values, or program rules with reasonable notice. Existing accrued points retain their value at the time of earning. We will communicate any changes via email.']
+        ].map(([q,a],i,arr)=>(
+          <div key={i} style={{marginBottom:'1.5rem',paddingBottom:'1.5rem',borderBottom:i<arr.length-1?'1px solid var(--border)':'none'}}>
+            <div style={{fontSize:'1rem',color:'var(--gold)',marginBottom:'0.5rem',letterSpacing:'0.3px'}}>{q}</div>
+            <div style={{fontSize:'0.9rem',color:'var(--mist)',lineHeight:1.7,fontWeight:300}}>{a}</div>
+          </div>
+        ))}
+      </div>
+
+      {/* TERMS NOTE */}
+      <div style={{padding:'2rem 3rem 5rem',maxWidth:900,margin:'0 auto'}}>
+        <div style={{padding:'1.5rem 1.75rem',border:'1px solid var(--border)',background:'var(--noir-2)'}}>
+          <div style={{fontSize:'0.72rem',letterSpacing:'2.5px',textTransform:'uppercase',color:'var(--mist)',marginBottom:'0.85rem'}}>Program Terms</div>
+          <p style={{fontSize:'0.85rem',color:'var(--mist)',lineHeight:1.7,fontWeight:300}}>
+            BAG Rewards is a customer loyalty program operated by BagFree. Points are not currency, have no cash value, and cannot be sold, transferred, or exchanged for cash. Points are not deposits and are not insured. BagFree may modify or terminate the program with reasonable notice. Continued use of BAG Rewards constitutes acceptance of program terms.
           </p>
         </div>
       </div>
 
-      {/* CTA back */}
-      <div style={{padding:'3rem 3rem 6rem',textAlign:'center'}}>
+      <div style={{padding:'0 3rem 6rem',textAlign:'center'}}>
         <button onClick={()=>setPage('home')} style={{
           background:'transparent',color:'var(--gold)',padding:'0.85rem 2rem',
           border:'1px solid var(--border-hi)',fontSize:'0.78rem',letterSpacing:'2.5px',textTransform:'uppercase',
@@ -3275,6 +3220,458 @@ function TokenPage({setPage}) {
     </div>
   );
 }
+
+
+// ── TRAVEL CHALLENGES ────────────────────────────────────────────────────────
+function ChallengesPage({setPage}) {
+  const challenges = [
+    {
+      title:'Weekend With No Luggage',
+      tag:'Active · Year-Round',
+      reward:'1,000 pts + Wanderer Badge',
+      desc:'Complete a full weekend trip without checked or carry-on luggage. Order everything to your hotel through BagFree.',
+      steps:['Book a BagFree delivery to your destination hotel','Travel with only a personal item','Share your weekend with a tagged post','Submit your trip details for verification']
+    },
+    {
+      title:'48 Hours BagFree',
+      tag:'Active · Seasonal',
+      reward:'2,000 pts + Voyager Badge',
+      desc:'Two full days of travel, fully outfitted by BagFree. Business trip, romantic getaway, or city escape — your call.',
+      steps:['Place a BagFree order covering full 48-hour wardrobe','Use only BagFree-provided essentials','Document the trip with photos or video','Submit within 14 days of trip completion']
+    },
+    {
+      title:'Carry-On Only',
+      tag:'Active · Year-Round',
+      reward:'500 pts + Light Traveler Badge',
+      desc:'Travel with a single carry-on by ordering everything else through BagFree. For travelers easing into the lifestyle.',
+      steps:['Book any BagFree delivery to your destination','Travel with one carry-on, no checked bag','Tag your trip on social with disclosure','Confirm via your account']
+    },
+    {
+      title:'Luxury Travel Under $500',
+      tag:'Coming Soon',
+      reward:'3,000 pts + Concierge Badge',
+      desc:'Curate a premium travel experience — flight, hotel, BagFree wardrobe — for under $500. Show the math, share the trip.',
+      steps:['Plan a trip under $500 total','Use BagFree for wardrobe and essentials','Share your itinerary publicly','Submit receipts and trip recap']
+    }
+  ];
+
+  return (
+    <div style={{paddingTop:'5rem',background:'var(--noir)',minHeight:'100vh'}}>
+
+      {/* HERO */}
+      <div style={{padding:'5rem 3rem 3rem',maxWidth:1100,margin:'0 auto'}}>
+        <div style={{fontSize:'0.78rem',letterSpacing:'3px',textTransform:'uppercase',color:'var(--gold)',marginBottom:'1.5rem',display:'flex',alignItems:'center',gap:'0.75rem',flexWrap:'wrap'}}>
+          <span style={{width:24,height:1,background:'var(--gold-dim)',display:'inline-block'}}/>
+          BAG Rewards · Travel Challenges
+        </div>
+        <h1 style={{fontFamily:'var(--ff-display)',fontSize:'clamp(2.5rem,6vw,5rem)',fontWeight:300,lineHeight:1.05,letterSpacing:'-1px',marginBottom:'1.5rem'}}>
+          Travel <em style={{color:'var(--gold)',fontStyle:'italic'}}>challenges</em>.
+        </h1>
+        <p style={{fontSize:'1.1rem',color:'var(--mist)',fontWeight:300,lineHeight:1.65,maxWidth:720}}>
+          Complete travel challenges to earn bonus points, unlock badges, and climb the leaderboard. Open to all BAG Rewards members.
+        </p>
+      </div>
+
+      {/* CHALLENGES */}
+      <div style={{padding:'2rem 3rem 4rem',maxWidth:1100,margin:'0 auto'}}>
+        <div style={{display:'grid',gridTemplateColumns:'repeat(auto-fit,minmax(320px,1fr))',gap:'1.25rem'}}>
+          {challenges.map((c,i)=>(
+            <div key={i} style={{padding:'2rem 1.75rem',border:'1px solid var(--border)',background:'var(--noir-2)',position:'relative'}}>
+              <div style={{fontSize:'0.68rem',letterSpacing:'2.5px',textTransform:'uppercase',color:c.tag.includes('Coming')?'var(--mist-low)':'var(--gold)',marginBottom:'0.85rem'}}>{c.tag}</div>
+              <h3 style={{fontFamily:'var(--ff-display)',fontSize:'1.75rem',fontWeight:300,lineHeight:1.15,marginBottom:'0.85rem',color:'var(--white)',letterSpacing:'-0.3px'}}>{c.title}</h3>
+              <div style={{fontSize:'0.85rem',color:'var(--mist)',lineHeight:1.65,marginBottom:'1.5rem',fontWeight:300}}>{c.desc}</div>
+              <div style={{padding:'0.85rem 1rem',background:'rgba(var(--gold-rgb),0.06)',border:'1px solid rgba(var(--gold-rgb),0.22)',marginBottom:'1.5rem'}}>
+                <div style={{fontSize:'0.65rem',letterSpacing:'2px',textTransform:'uppercase',color:'var(--gold)',marginBottom:'0.25rem'}}>Reward</div>
+                <div style={{fontSize:'0.95rem',color:'var(--white)',fontWeight:300}}>{c.reward}</div>
+              </div>
+              <div style={{fontSize:'0.7rem',letterSpacing:'2px',textTransform:'uppercase',color:'var(--mist)',marginBottom:'0.75rem'}}>How to Complete</div>
+              <ol style={{listStyle:'none',padding:0,margin:0,counterReset:'step'}}>
+                {c.steps.map((s,j)=>(
+                  <li key={j} style={{fontSize:'0.85rem',color:'var(--mist)',lineHeight:1.6,fontWeight:300,paddingLeft:'1.5rem',position:'relative',marginBottom:'0.5rem'}}>
+                    <span style={{position:'absolute',left:0,top:0,fontSize:'0.72rem',color:'var(--gold)',fontFamily:'var(--ff-display)'}}>{String(j+1).padStart(2,'0')}</span>
+                    {s}
+                  </li>
+                ))}
+              </ol>
+            </div>
+          ))}
+        </div>
+      </div>
+
+      {/* DISCLOSURE NOTE */}
+      <div style={{padding:'2rem 3rem 5rem',maxWidth:900,margin:'0 auto'}}>
+        <div style={{padding:'1.5rem 1.75rem',border:'1px solid var(--border)',background:'var(--noir-2)'}}>
+          <div style={{fontSize:'0.72rem',letterSpacing:'2.5px',textTransform:'uppercase',color:'var(--mist)',marginBottom:'0.85rem'}}>Required Disclosure</div>
+          <p style={{fontSize:'0.85rem',color:'var(--mist)',lineHeight:1.7,fontWeight:300}}>
+            All challenge submissions that include public social media content must include clear disclosure that you are participating in a BagFree-sponsored challenge. Use #BagFreeChallenge or equivalent FTC-compliant disclosure. Submissions without proper disclosure cannot be approved.
+          </p>
+        </div>
+      </div>
+
+      <div style={{padding:'0 3rem 6rem',textAlign:'center'}}>
+        <button onClick={()=>setPage('rewards')} style={{
+          background:'transparent',color:'var(--gold)',padding:'0.85rem 2rem',
+          border:'1px solid var(--border-hi)',fontSize:'0.78rem',letterSpacing:'2.5px',textTransform:'uppercase',
+          cursor:'pointer',fontFamily:'var(--ff-body)'
+        }}>← Back to BAG Rewards</button>
+      </div>
+
+    </div>
+  );
+}
+
+
+// ── CREATOR PROGRAM APPLICATION ──────────────────────────────────────────────
+function EarnPage({setPage}) {
+  const [form, setForm] = React.useState({
+    fullName:'', email:'', city:'', country:'United States',
+    instagram:'', tiktok:'', youtube:'', otherSocial:'',
+    followerCount:'', primaryNiche:'travel',
+    whyJoin:'', exampleContent:'',
+    agreedDisclosure:false, agreedTerms:false
+  });
+  const [submitting, setSubmitting] = React.useState(false);
+  const [done, setDone] = React.useState(false);
+  const [error, setError] = React.useState('');
+
+  const update = (k,v) => setForm(f=>({...f,[k]:v}));
+
+  const canSubmit = form.fullName && form.email && form.city &&
+    (form.instagram||form.tiktok||form.youtube) &&
+    form.whyJoin &&
+    form.agreedDisclosure && form.agreedTerms;
+
+  const onSubmit = async () => {
+    if (!canSubmit || submitting) return;
+    setError(''); setSubmitting(true);
+    const ok = await submitCreatorApplication({...form, submittedAt: new Date().toISOString()});
+    setSubmitting(false);
+    if (ok) setDone(true);
+    else setError('Something went wrong. Please try again or email us directly.');
+  };
+
+  if (done) return (
+    <div style={{paddingTop:'5rem',background:'var(--noir)',minHeight:'100vh'}}>
+      <div style={{maxWidth:720,margin:'0 auto',padding:'6rem 3rem',textAlign:'center'}}>
+        <div style={{fontSize:'0.78rem',letterSpacing:'3px',textTransform:'uppercase',color:'var(--gold)',marginBottom:'1.5rem'}}>Application Received</div>
+        <h1 style={{fontFamily:'var(--ff-display)',fontSize:'clamp(2rem,4vw,3.25rem)',fontWeight:300,lineHeight:1.1,marginBottom:'1.5rem'}}>
+          Thanks for applying.
+        </h1>
+        <p style={{fontSize:'1rem',color:'var(--mist)',lineHeight:1.7,fontWeight:300,marginBottom:'2.5rem'}}>
+          We review applications in cohorts. If your profile fits the current cohort, we'll reach out at the email you provided with next steps, program terms, and your tier assignment.
+        </p>
+        <button onClick={()=>setPage('home')} style={{
+          background:'transparent',color:'var(--gold)',padding:'0.85rem 2rem',
+          border:'1px solid var(--border-hi)',fontSize:'0.78rem',letterSpacing:'2.5px',textTransform:'uppercase',
+          cursor:'pointer',fontFamily:'var(--ff-body)'
+        }}>← Back to BagFree</button>
+      </div>
+    </div>
+  );
+
+  const inputStyle = {
+    width:'100%',background:'rgba(0,0,0,0.25)',border:'1px solid var(--border)',
+    color:'var(--white)',padding:'0.85rem 1rem',fontSize:'0.92rem',
+    fontFamily:'var(--ff-body)',transition:'border-color 0.2s'
+  };
+  const labelStyle = {
+    display:'block',fontSize:'0.7rem',letterSpacing:'2px',textTransform:'uppercase',
+    color:'var(--mist)',marginBottom:'0.5rem',fontWeight:500
+  };
+
+  const tiers = [
+    {name:'Creator',req:'1K+ followers · 1 city focus',perks:['Per-post point bonuses','BagFree travel credit','Verified Creator badge']},
+    {name:'Ambassador',req:'10K+ followers · multi-city',perks:['Higher point multiplier','Campaign sponsorship payouts','Hotel partner perks']},
+    {name:'City Lead',req:'Invitation only · regional authority',perks:['Highest tier benefits','Featured placement bonuses','Co-marketing opportunities']}
+  ];
+
+  const incentives = [
+    {label:'Referral Commissions',desc:'Earn a percentage of every order placed by users who join through your referral link.'},
+    {label:'Travel Credits',desc:'Approved creators receive BagFree travel credits for personal use.'},
+    {label:'Hotel Perks',desc:'Access to partner hotel benefits — upgrades, late checkout, complimentary amenities.'},
+    {label:'Featured Placement',desc:'Earn featured placement bonuses when your content is selected for BagFree campaigns or city hubs.'},
+    {label:'Campaign Payouts',desc:'Sponsored campaign payouts for selected creators on hotel partnerships and city activations.'},
+    {label:'Point Bonuses',desc:'Bonus BAG Rewards points on top of standard earning rates for verified creator activity.'}
+  ];
+
+  const activities = [
+    {action:'Original short-form video featuring BagFree (Instagram Reels, TikTok, YouTube Shorts)',req:'Required disclosure: #BagFreePartner. Min. 30 seconds.'},
+    {action:'Long-form travel content featuring a BagFree delivery',req:'Required disclosure in caption and pinned comment.'},
+    {action:'City guide or destination article tagging BagFree',req:'Must be original written content, min. 500 words.'},
+    {action:'Hotel arrival content using BagFree concierge',req:'Verifiable order ID required.'},
+    {action:'Travel challenge participation (e.g., 48 Hours BagFree)',req:'Must complete the full challenge and tag the campaign.'}
+  ];
+
+  return (
+    <div style={{paddingTop:'5rem',background:'var(--noir)',minHeight:'100vh'}}>
+
+      {/* HERO */}
+      <div style={{padding:'5rem 3rem 3rem',maxWidth:1100,margin:'0 auto'}}>
+        <div style={{fontSize:'0.78rem',letterSpacing:'3px',textTransform:'uppercase',color:'var(--gold)',marginBottom:'1.5rem',display:'flex',alignItems:'center',gap:'0.75rem',flexWrap:'wrap'}}>
+          <span style={{width:24,height:1,background:'var(--gold-dim)',display:'inline-block'}}/>
+          BagFree Creator Program · By Application
+        </div>
+        <h1 style={{fontFamily:'var(--ff-display)',fontSize:'clamp(2.5rem,6vw,5rem)',fontWeight:300,lineHeight:1.05,letterSpacing:'-1px',marginBottom:'1.5rem'}}>
+          Create. <em style={{color:'var(--gold)',fontStyle:'italic'}}>Earn.</em> Travel.
+        </h1>
+        <p style={{fontSize:'1.1rem',color:'var(--mist)',fontWeight:300,lineHeight:1.65,maxWidth:720}}>
+          A closed incentive program for travel creators, storytellers, and city authorities. Approved members earn referral commissions, travel credits, hotel perks, and featured placement bonuses for producing original BagFree content.
+        </p>
+      </div>
+
+      {/* HOW IT WORKS */}
+      <div style={{padding:'3rem 3rem 4rem',maxWidth:1100,margin:'0 auto'}}>
+        <div style={{display:'grid',gridTemplateColumns:'repeat(auto-fit,minmax(260px,1fr))',gap:1,background:'var(--border)',border:'1px solid var(--border)'}}>
+          {[
+            ['01','Apply','Submit the form below with your social profiles and content history.'],
+            ['02','Get Approved','We review applications in cohorts. Approved creators receive program terms and a tier.'],
+            ['03','Create & Disclose','Post original BagFree content using required FTC disclosures.'],
+            ['04','Earn & Redeem','Earn referral commissions, travel credits, and BAG Rewards bonuses for qualifying activity.']
+          ].map(([n,t,d])=>(
+            <div key={n} style={{background:'var(--noir)',padding:'1.75rem 1.5rem'}}>
+              <div style={{fontSize:'0.7rem',letterSpacing:'2.5px',color:'var(--gold)',marginBottom:'0.5rem'}}>{n}</div>
+              <div style={{fontFamily:'var(--ff-display)',fontSize:'1.3rem',fontWeight:300,color:'var(--white)',marginBottom:'0.5rem'}}>{t}</div>
+              <div style={{fontSize:'0.85rem',color:'var(--mist)',lineHeight:1.6,fontWeight:300}}>{d}</div>
+            </div>
+          ))}
+        </div>
+      </div>
+
+      {/* INCENTIVES */}
+      <div style={{padding:'4rem 3rem',background:'var(--noir-2)'}}>
+        <div style={{maxWidth:1100,margin:'0 auto'}}>
+          <div style={{fontSize:'0.78rem',letterSpacing:'3px',textTransform:'uppercase',color:'var(--gold)',marginBottom:'1.25rem'}}>
+            <span style={{width:24,height:1,background:'var(--gold-dim)',display:'inline-block',marginRight:'0.75rem',verticalAlign:'middle'}}/>
+            Incentives
+          </div>
+          <h2 style={{fontFamily:'var(--ff-display)',fontSize:'clamp(1.75rem,3.5vw,2.75rem)',fontWeight:300,marginBottom:'2.5rem'}}>
+            What approved creators <em style={{color:'var(--gold)',fontStyle:'italic'}}>earn</em>
+          </h2>
+          <div style={{display:'grid',gridTemplateColumns:'repeat(auto-fit,minmax(280px,1fr))',gap:'1.25rem'}}>
+            {incentives.map((u,i)=>(
+              <div key={i} style={{padding:'1.75rem 1.5rem',border:'1px solid var(--border)',background:'var(--noir)'}}>
+                <div style={{width:32,height:32,border:'1px solid var(--border-hi)',display:'flex',alignItems:'center',justifyContent:'center',color:'var(--gold)',fontSize:'0.78rem',fontWeight:500,marginBottom:'1rem'}}>{String(i+1).padStart(2,'0')}</div>
+                <div style={{fontSize:'1rem',color:'var(--gold)',marginBottom:'0.5rem',letterSpacing:'0.3px'}}>{u.label}</div>
+                <div style={{fontSize:'0.86rem',color:'var(--mist)',lineHeight:1.65,fontWeight:300}}>{u.desc}</div>
+              </div>
+            ))}
+          </div>
+        </div>
+      </div>
+
+      {/* TIERS */}
+      <div style={{padding:'5rem 3rem',maxWidth:1100,margin:'0 auto'}}>
+        <div style={{fontSize:'0.78rem',letterSpacing:'3px',textTransform:'uppercase',color:'var(--gold)',marginBottom:'1.25rem'}}>
+          <span style={{width:24,height:1,background:'var(--gold-dim)',display:'inline-block',marginRight:'0.75rem',verticalAlign:'middle'}}/>
+          Program Tiers
+        </div>
+        <h2 style={{fontFamily:'var(--ff-display)',fontSize:'clamp(1.75rem,3.5vw,2.75rem)',fontWeight:300,marginBottom:'2.5rem'}}>
+          Three <em style={{color:'var(--gold)',fontStyle:'italic'}}>tiers</em>, by invitation
+        </h2>
+        <div style={{display:'grid',gridTemplateColumns:'repeat(auto-fit,minmax(280px,1fr))',gap:'1.25rem'}}>
+          {tiers.map((t,i)=>(
+            <div key={i} style={{padding:'1.75rem 1.5rem',border:'1px solid var(--border)',background:'var(--noir-2)'}}>
+              <div style={{fontSize:'0.7rem',letterSpacing:'2.5px',textTransform:'uppercase',color:'var(--gold)',marginBottom:'0.75rem'}}>Tier {i+1}</div>
+              <div style={{fontFamily:'var(--ff-display)',fontSize:'1.5rem',fontWeight:300,color:'var(--white)',marginBottom:'0.5rem'}}>{t.name}</div>
+              <div style={{fontSize:'0.82rem',color:'var(--mist)',lineHeight:1.6,marginBottom:'1.25rem',fontWeight:300}}>{t.req}</div>
+              <ul style={{listStyle:'none',padding:0,margin:0}}>
+                {t.perks.map((p,j)=>(
+                  <li key={j} style={{fontSize:'0.85rem',color:'var(--mist)',lineHeight:1.7,fontWeight:300,paddingLeft:'1rem',position:'relative',marginBottom:'0.25rem'}}>
+                    <span style={{position:'absolute',left:0,top:'0.6em',width:4,height:1,background:'var(--gold-dim)'}}/>
+                    {p}
+                  </li>
+                ))}
+              </ul>
+            </div>
+          ))}
+        </div>
+        <div style={{fontSize:'0.78rem',color:'var(--mist-low)',marginTop:'2rem',lineHeight:1.6,fontStyle:'italic'}}>
+          Specific commission rates and payouts are communicated to approved creators in the program terms.
+        </div>
+      </div>
+
+      {/* QUALIFYING ACTIVITIES */}
+      <div style={{padding:'5rem 3rem',background:'var(--noir-2)'}}>
+        <div style={{maxWidth:1100,margin:'0 auto'}}>
+          <div style={{fontSize:'0.78rem',letterSpacing:'3px',textTransform:'uppercase',color:'var(--gold)',marginBottom:'1.25rem'}}>
+            <span style={{width:24,height:1,background:'var(--gold-dim)',display:'inline-block',marginRight:'0.75rem',verticalAlign:'middle'}}/>
+            Qualifying Activities
+          </div>
+          <h2 style={{fontFamily:'var(--ff-display)',fontSize:'clamp(1.75rem,3.5vw,2.75rem)',fontWeight:300,marginBottom:'2.5rem'}}>
+            What earns <em style={{color:'var(--gold)',fontStyle:'italic'}}>incentives</em>
+          </h2>
+          <div style={{border:'1px solid var(--border)'}}>
+            {activities.map((a,i)=>(
+              <div key={i} style={{display:'grid',gridTemplateColumns:'auto 1fr',gap:'1.5rem',padding:'1.5rem 1.25rem',borderBottom:i<activities.length-1?'1px solid var(--border)':'none',alignItems:'start',background:'var(--noir)'}}>
+                <div style={{fontSize:'0.85rem',color:'var(--gold)',fontFamily:'var(--ff-display)',fontWeight:300,minWidth:24}}>{String(i+1).padStart(2,'0')}</div>
+                <div>
+                  <div style={{fontSize:'0.95rem',color:'var(--white)',lineHeight:1.5,marginBottom:'0.35rem',fontWeight:300}}>{a.action}</div>
+                  <div style={{fontSize:'0.8rem',color:'var(--mist-low)',lineHeight:1.55,fontWeight:300}}>{a.req}</div>
+                </div>
+              </div>
+            ))}
+          </div>
+        </div>
+      </div>
+
+      {/* RULES */}
+      <div style={{padding:'5rem 3rem',maxWidth:900,margin:'0 auto'}}>
+        <div style={{fontSize:'0.78rem',letterSpacing:'3px',textTransform:'uppercase',color:'var(--gold)',marginBottom:'1.25rem'}}>
+          <span style={{width:24,height:1,background:'var(--gold-dim)',display:'inline-block',marginRight:'0.75rem',verticalAlign:'middle'}}/>
+          Rules of Participation
+        </div>
+        <h2 style={{fontFamily:'var(--ff-display)',fontSize:'clamp(1.75rem,3.5vw,2.5rem)',fontWeight:300,marginBottom:'2rem'}}>
+          How this <em style={{color:'var(--gold)',fontStyle:'italic'}}>works</em>
+        </h2>
+        {[
+          ['FTC Disclosure is Required','All content must include clear disclosure that you are a paid BagFree partner. This means visible #BagFreePartner or #ad in the caption, plus verbal disclosure in video content where appropriate. Hidden or buried disclosures are not acceptable and will result in removal from the program.'],
+          ['Original Content Only','Submissions must be your original work. No reposts, no AI-generated content presented as personal experience, no duplicate submissions across platforms counted as separate posts.'],
+          ['No Performance Guarantees','Incentives are paid for completing qualifying activities under the program terms. We do not guarantee a specific total, frequency, or earnings range.'],
+          ['Tax Responsibility','Cash and credit incentives may be reportable income depending on your jurisdiction. US participants receiving over $600 in annual cash payouts will be issued a 1099-MISC.'],
+          ['Eligibility','Open to applicants 18+ in jurisdictions where this program is permitted. BagFree reserves the right to deny any application without explanation.'],
+          ['Program Changes','BagFree may modify, suspend, or terminate the program at any time. Pending incentives earned under prior terms will be honored.']
+        ].map(([t,d],i,arr)=>(
+          <div key={i} style={{marginBottom:'1.5rem',paddingBottom:'1.5rem',borderBottom:i<arr.length-1?'1px solid var(--border)':'none'}}>
+            <div style={{fontSize:'0.95rem',color:'var(--gold)',marginBottom:'0.5rem',letterSpacing:'0.3px'}}>{t}</div>
+            <div style={{fontSize:'0.88rem',color:'var(--mist)',lineHeight:1.7,fontWeight:300}}>{d}</div>
+          </div>
+        ))}
+      </div>
+
+      {/* APPLICATION FORM */}
+      <div style={{padding:'2rem 3rem 5rem',maxWidth:780,margin:'0 auto'}}>
+        <div style={{fontSize:'0.78rem',letterSpacing:'3px',textTransform:'uppercase',color:'var(--gold)',marginBottom:'1.25rem'}}>
+          <span style={{width:24,height:1,background:'var(--gold-dim)',display:'inline-block',marginRight:'0.75rem',verticalAlign:'middle'}}/>
+          Apply
+        </div>
+        <h2 style={{fontFamily:'var(--ff-display)',fontSize:'clamp(1.75rem,3.5vw,2.5rem)',fontWeight:300,marginBottom:'2.5rem'}}>
+          Creator <em style={{color:'var(--gold)',fontStyle:'italic'}}>application</em>
+        </h2>
+
+        <div style={{display:'grid',gridTemplateColumns:'1fr 1fr',gap:'1.25rem',marginBottom:'1.25rem'}}>
+          <div>
+            <label style={labelStyle}>Full Name *</label>
+            <input style={inputStyle} value={form.fullName} onChange={e=>update('fullName',e.target.value)} />
+          </div>
+          <div>
+            <label style={labelStyle}>Email *</label>
+            <input style={inputStyle} type="email" value={form.email} onChange={e=>update('email',e.target.value)} />
+          </div>
+        </div>
+
+        <div style={{display:'grid',gridTemplateColumns:'1fr 1fr',gap:'1.25rem',marginBottom:'1.25rem'}}>
+          <div>
+            <label style={labelStyle}>City *</label>
+            <input style={inputStyle} value={form.city} onChange={e=>update('city',e.target.value)} placeholder="Tampa, Miami, Atlanta..." />
+          </div>
+          <div>
+            <label style={labelStyle}>Country</label>
+            <input style={inputStyle} value={form.country} onChange={e=>update('country',e.target.value)} />
+          </div>
+        </div>
+
+        <div style={{fontSize:'0.72rem',letterSpacing:'2px',textTransform:'uppercase',color:'var(--mist)',margin:'2rem 0 1rem'}}>Social Profiles · at least one required</div>
+        <div style={{display:'grid',gridTemplateColumns:'1fr 1fr',gap:'1.25rem',marginBottom:'1.25rem'}}>
+          <div>
+            <label style={labelStyle}>Instagram</label>
+            <input style={inputStyle} value={form.instagram} onChange={e=>update('instagram',e.target.value)} placeholder="@username" />
+          </div>
+          <div>
+            <label style={labelStyle}>TikTok</label>
+            <input style={inputStyle} value={form.tiktok} onChange={e=>update('tiktok',e.target.value)} placeholder="@username" />
+          </div>
+        </div>
+        <div style={{display:'grid',gridTemplateColumns:'1fr 1fr',gap:'1.25rem',marginBottom:'1.25rem'}}>
+          <div>
+            <label style={labelStyle}>YouTube</label>
+            <input style={inputStyle} value={form.youtube} onChange={e=>update('youtube',e.target.value)} placeholder="channel URL" />
+          </div>
+          <div>
+            <label style={labelStyle}>Other (X, Substack, etc.)</label>
+            <input style={inputStyle} value={form.otherSocial} onChange={e=>update('otherSocial',e.target.value)} />
+          </div>
+        </div>
+
+        <div style={{display:'grid',gridTemplateColumns:'1fr 1fr',gap:'1.25rem',marginBottom:'1.25rem'}}>
+          <div>
+            <label style={labelStyle}>Combined Follower Count</label>
+            <select style={inputStyle} value={form.followerCount} onChange={e=>update('followerCount',e.target.value)}>
+              <option value="">Select range</option>
+              <option value="under-1k">Under 1,000</option>
+              <option value="1k-10k">1,000 – 10,000</option>
+              <option value="10k-50k">10,000 – 50,000</option>
+              <option value="50k-250k">50,000 – 250,000</option>
+              <option value="250k+">250,000+</option>
+            </select>
+          </div>
+          <div>
+            <label style={labelStyle}>Primary Niche</label>
+            <select style={inputStyle} value={form.primaryNiche} onChange={e=>update('primaryNiche',e.target.value)}>
+              <option value="travel">Travel</option>
+              <option value="luxury-lifestyle">Luxury Lifestyle</option>
+              <option value="hospitality">Hospitality</option>
+              <option value="business-travel">Business Travel</option>
+              <option value="cruise">Cruise</option>
+              <option value="fashion">Fashion</option>
+              <option value="other">Other</option>
+            </select>
+          </div>
+        </div>
+
+        <div style={{margin:'2rem 0 1.25rem'}}>
+          <label style={labelStyle}>Why do you want to join the BagFree Creator Program? *</label>
+          <textarea style={{...inputStyle,minHeight:120,resize:'vertical',fontFamily:'var(--ff-body)'}} value={form.whyJoin} onChange={e=>update('whyJoin',e.target.value)} />
+        </div>
+
+        <div style={{marginBottom:'2rem'}}>
+          <label style={labelStyle}>Example of your travel content (link)</label>
+          <input style={inputStyle} value={form.exampleContent} onChange={e=>update('exampleContent',e.target.value)} placeholder="Link to a post or video that represents your work" />
+        </div>
+
+        {/* Required acknowledgments */}
+        <div style={{padding:'1.5rem',border:'1px solid var(--border)',background:'var(--noir-2)',marginBottom:'2rem'}}>
+          <div style={{fontSize:'0.72rem',letterSpacing:'2px',textTransform:'uppercase',color:'var(--gold)',marginBottom:'1.25rem'}}>Required Acknowledgments</div>
+          {[
+            ['agreedDisclosure','I understand that all content must include clear FTC-compliant disclosure (#BagFreePartner or equivalent) and I agree to comply with these requirements.'],
+            ['agreedTerms','I have read the Rules of Participation above and agree to the program terms. I understand BAG Rewards points and creator incentives are not investments, have no cash value (except where explicitly stated for cash payouts), and that this program may be modified or terminated.']
+          ].map(([k,t])=>(
+            <label key={k} style={{display:'flex',gap:'0.85rem',marginBottom:'1rem',cursor:'pointer',alignItems:'flex-start'}}>
+              <input type="checkbox" checked={form[k]} onChange={e=>update(k,e.target.checked)} style={{marginTop:'0.25rem',accentColor:'var(--gold)',flexShrink:0}}/>
+              <span style={{fontSize:'0.85rem',color:'var(--mist)',lineHeight:1.6,fontWeight:300}}>{t}</span>
+            </label>
+          ))}
+        </div>
+
+        {error && (
+          <div style={{padding:'1rem',background:'rgba(200,80,80,0.1)',border:'1px solid rgba(200,80,80,0.3)',color:'#e89090',fontSize:'0.88rem',marginBottom:'1.5rem'}}>{error}</div>
+        )}
+
+        <button onClick={onSubmit} disabled={!canSubmit || submitting} style={{
+          background: (canSubmit && !submitting) ? 'var(--gold)' : 'var(--border-hi)',
+          color: (canSubmit && !submitting) ? 'var(--noir)' : 'var(--mist-low)',
+          padding:'1.1rem 3rem',border:'none',
+          fontSize:'0.82rem',fontWeight:500,letterSpacing:'3px',textTransform:'uppercase',
+          cursor: (canSubmit && !submitting) ? 'pointer' : 'not-allowed',
+          fontFamily:'var(--ff-body)',width:'100%'
+        }}>{submitting ? 'Submitting...' : 'Submit Application'}</button>
+
+        <div style={{fontSize:'0.74rem',color:'var(--mist-low)',marginTop:'1.25rem',lineHeight:1.55,textAlign:'center'}}>
+          By submitting you confirm the information provided is accurate. We review applications in cohorts and only approved creators receive program terms.
+        </div>
+      </div>
+
+      <div style={{padding:'0 3rem 6rem',textAlign:'center'}}>
+        <button onClick={()=>setPage('home')} style={{
+          background:'transparent',color:'var(--gold)',padding:'0.85rem 2rem',
+          border:'1px solid var(--border-hi)',fontSize:'0.78rem',letterSpacing:'2.5px',textTransform:'uppercase',
+          cursor:'pointer',fontFamily:'var(--ff-body)'
+        }}>← Back to BagFree</button>
+      </div>
+
+    </div>
+  );
+}
+
 
 // ── APP ───────────────────────────────────────────────────────────────────────
 function App() {
@@ -3326,7 +3723,9 @@ function App() {
       {page==='style' && <StylePreference setPage={navigate}/>}
       {page==='supplier' && <SupplierPortal/>}
       {page==='cruise' && <CruisePage setPage={navigate}/>}
-      {page==='token' && <TokenPage setPage={navigate}/>}
+      {page==='earn' && <EarnPage setPage={navigate}/>}
+      {page==='rewards' && <RewardsPage setPage={navigate}/>}
+      {page==='challenges' && <ChallengesPage setPage={navigate}/>}
       <footer style={{background:'var(--noir-2)',padding:'2rem 3rem',display:'flex',justifyContent:'space-between',alignItems:'center',borderTop:'1px solid var(--border)',flexWrap:'wrap',gap:'1rem'}}>
         <div style={{fontFamily:'var(--ff-display)',fontSize:'1.2rem',fontWeight:300,letterSpacing:'3px',textTransform:'uppercase'}}>Bag<span style={{color:'var(--gold)'}}>Free</span></div>
         <div style={{fontSize:'0.78rem',color:'var(--mist)',letterSpacing:'1px'}}>
