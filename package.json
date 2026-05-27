@@ -4,6 +4,7 @@
   "description": "BagFree travel platform",
   "private": true,
   "dependencies": {
-    "stripe": "^17.0.0"
+    "stripe": "^17.0.0",
+    "@supabase/supabase-js": "^2.45.0"
   }
 }
