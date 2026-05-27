@@ -708,6 +708,10 @@ function applyProfile(saved) {
 }
 
 // ── AUTH FLOW ON LOAD ──
+// Browsing is open to everyone. A session means we hydrate their saved
+// profile; no session means they enter as a guest. Either way the
+// dashboard launches. The auth overlay is opened explicitly via the
+// header "Sign in" button when the user chooses to.
 document.addEventListener('DOMContentLoaded', async function() {
   function hideLoadingFallback() {
     const fb = document.getElementById('loadingFallback');
@@ -719,26 +723,76 @@ document.addEventListener('DOMContentLoaded', async function() {
     if (session) {
       const { data: saved } = await supabase.from('profiles').select('*').eq('id', session.user.id).single()
       if (saved) applyProfile(saved)
-      // Always go straight to dashboard — no survey gate
-      document.getElementById('authOverlay').style.display = 'none'
       hideLoadingFallback()
       _launchDashboardCore()
-      // If no profile yet, nudge user to personalize after a delay
+      updateAuthHeaderUI(true)
+      // If logged in but no profile yet, nudge user to personalize after a delay
       if (!saved || !saved.travel_style) {
         setTimeout(() => showPersonalizeNudge(), 3000)
       }
       return
     }
-    // Not logged in — show auth screen (already visible by default, just ensure it stays)
-    document.getElementById('authOverlay').style.display = 'flex'
+    // Guest visitor — launch the dashboard in browse mode.
     hideLoadingFallback()
+    _launchDashboardCore()
+    updateAuthHeaderUI(false)
   } catch(e) {
     console.error('Auth flow error:', e)
-    // Even on auth failure, show the sign-in screen so the user can try again
-    document.getElementById('authOverlay').style.display = 'flex'
+    // Even on auth failure, let them browse as a guest.
     hideLoadingFallback()
+    _launchDashboardCore()
+    updateAuthHeaderUI(false)
   }
 })
+
+// Open / close the auth overlay on demand
+window.openAuthOverlay = function(tab) {
+  resetAuthOverlay()
+  document.getElementById('authOverlay').style.display = 'flex'
+  if (tab) switchAuthTab(tab)
+}
+window.closeAuthOverlay = function() {
+  document.getElementById('authOverlay').style.display = 'none'
+  resetAuthOverlay()
+}
+
+// Toggle which header controls are visible based on auth state
+window.updateAuthHeaderUI = function(isSignedIn) {
+  const signInBtn = document.getElementById('headerSignInBtn')
+  const userBlock = document.getElementById('headerUserBlock')
+  if (!signInBtn || !userBlock) return
+  if (isSignedIn) {
+    signInBtn.style.display = 'none'
+    userBlock.style.display = ''
+  } else {
+    signInBtn.style.display = ''
+    userBlock.style.display = 'none'
+  }
+}
+
+// Reset the auth overlay back to its initial state (sign-in tab, no errors,
+// no "check your email" panel) so reopening it always feels fresh.
+function resetAuthOverlay() {
+  const cye = document.getElementById('authCheckEmail')
+  const tabs = document.getElementById('authTabsRow')
+  if (cye) cye.style.display = 'none'
+  if (tabs) tabs.style.display = ''
+  ;['authSignin','authRegister','authReset'].forEach(id => {
+    const el = document.getElementById(id)
+    if (el) el.style.display = (id === 'authSignin') ? 'block' : 'none'
+  })
+  ;['signinBtn','registerBtn'].forEach(id => {
+    const b = document.getElementById(id)
+    if (b) { b.disabled = false }
+  })
+  const sb = document.getElementById('signinBtn'); if (sb) sb.textContent = 'Sign In →'
+  const rb = document.getElementById('registerBtn'); if (rb) rb.textContent = 'Create Account & Personalise →'
+  ;['authTabSignin','authTabRegister','authTabReset'].forEach(id => {
+    const t = document.getElementById(id); if (t) t.classList.remove('active')
+  })
+  const def = document.getElementById('authTabSignin'); if (def) def.classList.add('active')
+  clearAuthMessages()
+}
 
 // ── AUTH TAB SWITCHER ──
 window.switchAuthTab = function(tab) {
@@ -784,9 +838,15 @@ window.doSignIn = async function() {
       btn.disabled = false; btn.textContent = 'Sign In →'; return
     }
     const { data: saved } = await supabase.from('profiles').select('*').eq('id', data.user.id).single()
-    document.getElementById('authOverlay').style.display = 'none'
+    closeAuthOverlay()
     if (saved) applyProfile(saved)
-    _launchDashboardCore()
+    // Dashboard is already up — just refresh header bits and update controls
+    if (typeof document.getElementById('headerName') !== 'undefined' && document.getElementById('headerName')) {
+      document.getElementById('headerName').textContent = (window.profile && window.profile.name) || 'Traveler'
+      document.getElementById('headerStyle').textContent = (window.profile && window.profile.travelStyle) || 'Luxury'
+      document.getElementById('headerAvatar').textContent = (typeof getAvatar === 'function') ? getAvatar() : '✈️'
+    }
+    updateAuthHeaderUI(true)
     if (!saved || !saved.travel_style) setTimeout(() => showPersonalizeNudge(), 3000)
   } catch(e) {
     console.error('Sign in error:', e)
@@ -806,29 +866,92 @@ window.doRegister = async function() {
   const btn = document.getElementById('registerBtn')
   btn.disabled = true; btn.textContent = 'Creating account...'
   try {
-    const { data, error } = await supabase.auth.signUp({ email, password: pass1 })
+    // emailRedirectTo: where Supabase sends the user after they click
+    // the confirmation link in their email. Must match a URL listed in
+    // Supabase Dashboard → Authentication → URL Configuration → Redirect URLs.
+    const { data, error } = await supabase.auth.signUp({
+      email,
+      password: pass1,
+      options: {
+        emailRedirectTo: window.location.origin + '/departure-lounge.html',
+        data: { name: name }
+      }
+    })
     if (error) { showAuthError(error.message); btn.disabled = false; btn.textContent = 'Create Account & Personalise →'; return }
-    // If email confirmation is required, user won't have a session yet
+    // Already-registered emails come back with an empty identities array
     if (data.user && data.user.identities && data.user.identities.length === 0) {
       showAuthError('This email is already registered. Try signing in instead.')
       btn.disabled = false; btn.textContent = 'Create Account & Personalise →'; return
     }
     if (!data.session) {
-      // Email confirmation is enabled — tell user to check inbox
-      showAuthSuccess('Account created! Check your email for a confirmation link, then sign in.')
+      // Email confirmation required — show the "check your inbox" panel
+      // (this is the path most users will hit since email confirmation is enabled)
+      window._pendingConfirmEmail = email
+      showCheckEmailPanel(email)
       btn.disabled = false; btn.textContent = 'Create Account & Personalise →'
-      switchAuthTab('signin'); return
+      return
     }
+    // Auto-confirmed (rare — only if email confirmation is disabled in Supabase)
     window.profile.name = name; window.profile.email = email
     window._profile = { ...window.profile }
     document.getElementById('authOverlay').style.display = 'none'
     _launchDashboardCore()
+    updateAuthHeaderUI(true)
     setTimeout(() => showPersonalizeNudge(), 3000)
   } catch(e) {
     console.error('Registration error:', e)
     showAuthError('Connection error — please check your internet and try again.')
     btn.disabled = false; btn.textContent = 'Create Account & Personalise →'
   }
+}
+
+// Swap the tabbed form for a full "Check your inbox" confirmation panel
+function showCheckEmailPanel(email) {
+  clearAuthMessages()
+  const tabs = document.getElementById('authTabsRow')
+  if (tabs) tabs.style.display = 'none'
+  ;['authSignin','authRegister','authReset'].forEach(id => {
+    const el = document.getElementById(id); if (el) el.style.display = 'none'
+  })
+  const cye = document.getElementById('authCheckEmail')
+  if (cye) {
+    document.getElementById('cyeEmail').textContent = email
+    cye.style.display = 'block'
+  }
+}
+
+// Resend the confirmation email
+window.doResendConfirm = async function() {
+  const email = window._pendingConfirmEmail
+  if (!email) { return }
+  const btn = document.getElementById('cyeResendBtn')
+  if (btn) { btn.disabled = true; btn.textContent = 'Sending…' }
+  try {
+    const { error } = await supabase.auth.resend({
+      type: 'signup',
+      email: email,
+      options: { emailRedirectTo: window.location.origin + '/departure-lounge.html' }
+    })
+    const status = document.getElementById('cyeStatus')
+    if (error) {
+      if (status) { status.textContent = error.message; status.style.color = 'var(--red)' }
+    } else {
+      if (status) { status.textContent = 'Sent. Check your inbox in a moment.'; status.style.color = 'var(--green)' }
+    }
+  } catch(e) {
+    const status = document.getElementById('cyeStatus')
+    if (status) { status.textContent = 'Couldn\u2019t resend right now. Try again in a moment.'; status.style.color = 'var(--red)' }
+  } finally {
+    if (btn) {
+      setTimeout(() => { btn.disabled = false; btn.textContent = 'Resend confirmation email' }, 4000)
+    }
+  }
+}
+
+// Return to the sign-in tab from the "check email" panel
+window.cyeBackToSignIn = function() {
+  resetAuthOverlay()
+  switchAuthTab('signin')
 }
 
 window.doReset = async function() {
@@ -842,9 +965,16 @@ window.doReset = async function() {
 window.doSignOut = async function() {
   await supabase.auth.signOut()
   document.getElementById('profileModal').style.display = 'none'
-  document.getElementById('dashboard').style.display = 'none'
-  document.getElementById('authOverlay').style.display = 'flex'
+  // Stay in the dashboard as a guest — don't wall them off
   document.getElementById('surveyOverlay').style.display = 'none'
+  // Reset in-memory profile to defaults so personalized panels clear
+  if (window.profile) {
+    window.profile.name = ''
+    window.profile.email = ''
+    window.profile.travelStyle = ''
+    window.profile.destinations = []
+  }
+  updateAuthHeaderUI(false)
   clearAuthMessages()
   document.getElementById('signinEmail').value = ''
   document.getElementById('signinPassword').value = ''
@@ -987,16 +1117,17 @@ window._supabaseLaunchPatch = async function() {
 </script>
 
 <!-- AUTH SCREEN — shown by default so the page is never blank if JS fails -->
-<div id="authOverlay" style="display:flex">
+<div id="authOverlay" style="display:none">
   <div class="auth-wrap">
     <button class="bf-theme-toggle auth" id="bfThemeToggleAuth" aria-label="Toggle theme" title="Toggle theme" onclick="bfToggleTheme()">
       <svg id="bfIconAuthDark" viewBox="0 0 24 24" style="display:none"><circle cx="12" cy="12" r="4"/><path d="M12 2v2M12 20v2M4.93 4.93l1.41 1.41M17.66 17.66l1.41 1.41M2 12h2M20 12h2M4.93 19.07l1.41-1.41M17.66 6.34l1.41-1.41"/></svg>
       <svg id="bfIconAuthLight" viewBox="0 0 24 24" style="display:none"><path d="M21 12.79A9 9 0 1 1 11.21 3 7 7 0 0 0 21 12.79z"/></svg>
     </button>
+    <button onclick="closeAuthOverlay()" aria-label="Close" title="Close" style="position:absolute;top:1.2rem;left:1.2rem;background:transparent;border:none;color:var(--mist);cursor:pointer;font-size:1.1rem;padding:0;line-height:1;width:34px;height:34px;display:flex;align-items:center;justify-content:center;border-radius:50%;transition:all 0.2s" onmouseover="this.style.color='var(--white)';this.style.background='rgba(var(--text-rgb),0.05)'" onmouseout="this.style.color='var(--mist)';this.style.background='transparent'">✕</button>
     <a href="https://bagfree.app" style="text-decoration:none"><div class="auth-logo">Bag<span>Free</span></div></a>
     <div class="auth-tagline">The Departure Lounge · Member Access <span style="background:var(--gold);color:var(--noir);padding:1px 6px;font-size:0.5rem;letter-spacing:2px;font-weight:600;margin-left:6px;vertical-align:middle">BETA</span></div>
 
-    <div class="auth-tabs">
+    <div class="auth-tabs" id="authTabsRow">
       <button class="auth-tab active" onclick="switchAuthTab('signin')" id="authTabSignin">Sign In</button>
       <button class="auth-tab" onclick="switchAuthTab('register')" id="authTabRegister">Create Account</button>
     </div>
@@ -1030,6 +1161,27 @@ window._supabaseLaunchPatch = async function() {
       <button class="auth-btn" onclick="doReset()">Send Reset Link →</button>
       <div style="text-align:center;margin-top:0.85rem">
         <button class="auth-link" onclick="switchAuthTab('signin')">← Back to sign in</button>
+      </div>
+    </div>
+
+    <!-- CHECK YOUR EMAIL (after successful sign-up) -->
+    <div id="authCheckEmail" style="display:none">
+      <div style="text-align:center;padding:0.5rem 0 0.5rem">
+        <div style="display:inline-flex;align-items:center;justify-content:center;width:64px;height:64px;border-radius:50%;background:radial-gradient(circle,rgba(var(--gold-rgb),0.18),rgba(var(--gold-rgb),0.04) 70%);border:1px solid rgba(var(--gold-rgb),0.32);margin-bottom:1.25rem">
+          <svg viewBox="0 0 24 24" style="width:26px;height:26px;stroke:var(--gold);fill:none;stroke-width:1.5;stroke-linecap:round;stroke-linejoin:round">
+            <rect x="3" y="5" width="18" height="14" rx="1.5"/>
+            <polyline points="3,7 12,13 21,7"/>
+          </svg>
+        </div>
+        <div style="font-family:var(--ff-display);font-size:1.5rem;font-weight:300;letter-spacing:-0.5px;color:var(--white);margin-bottom:0.5rem;line-height:1.2">Check your inbox</div>
+        <div style="font-size:0.78rem;color:var(--mist);line-height:1.8;margin-bottom:0.5rem">We sent a confirmation link to</div>
+        <div style="font-size:0.85rem;color:var(--gold);font-weight:500;letter-spacing:0.3px;margin-bottom:1.5rem;word-break:break-all" id="cyeEmail">your inbox</div>
+        <div style="font-size:0.7rem;color:var(--mist);line-height:1.85;text-align:left;padding:1rem 1.1rem;background:rgba(var(--gold-rgb),0.04);border:1px solid var(--border);margin-bottom:1.25rem">
+          Click the link in that email to confirm your account, then come back here to sign in. The email may take a minute or two and can occasionally land in spam.
+        </div>
+        <div id="cyeStatus" style="font-size:0.7rem;margin-bottom:0.85rem;min-height:1em;color:var(--mist)"></div>
+        <button class="auth-btn" id="cyeResendBtn" onclick="doResendConfirm()" style="margin-bottom:0.6rem">Resend confirmation email</button>
+        <button class="auth-link" onclick="cyeBackToSignIn()" style="display:block;margin:0.6rem auto 0">← Back to sign in</button>
       </div>
     </div>
 
@@ -1074,12 +1226,17 @@ window._supabaseLaunchPatch = async function() {
   <div class="dl-header">
     <a href="https://bagfree.app" style="text-decoration:none"><div class="dl-logo">Bag<span>Free</span> <span style="color:rgba(var(--gold-rgb),0.3);margin:0 8px">·</span> <span style="color:var(--gold)">The Departure Lounge</span> <span style="background:var(--gold);color:var(--noir);padding:1px 5px;font-size:0.45rem;letter-spacing:1.5px;font-weight:600;margin-left:6px;vertical-align:middle">BETA</span></div></a>
     <div class="dl-user">
-      <div class="dl-avatar-badge" id="headerAvatar" style="cursor:pointer" onclick="openProfileModal()" title="Edit profile">👩‍✈️</div>
-      <span id="headerName" style="cursor:pointer" onclick="openProfileModal()">Traveler</span>
-      <span style="color:var(--border-hi)">·</span>
-      <span id="headerStyle" style="color:var(--gold)">Luxury</span>
-      <button onclick="openProfileModal()" style="background:transparent;border:1px solid var(--border);color:var(--mist);padding:2px 8px;font-size:0.55rem;letter-spacing:1.5px;text-transform:uppercase;cursor:pointer;transition:all 0.2s;margin-left:4px" onmouseover="this.style.borderColor='var(--gold)';this.style.color='var(--gold)'" onmouseout="this.style.borderColor='var(--border)';this.style.color='var(--mist)'">Profile</button>
-      <button onclick="openPersonalizeModal()" id="personalizeBtn" style="background:rgba(var(--gold-rgb),0.12);border:1px solid rgba(var(--gold-rgb),0.5);color:var(--gold);padding:2px 8px;font-size:0.55rem;letter-spacing:1.5px;text-transform:uppercase;cursor:pointer;transition:all 0.2s;margin-left:4px" onmouseover="this.style.background='rgba(var(--gold-rgb),0.22)'" onmouseout="this.style.background='rgba(var(--gold-rgb),0.12)'">✦ Personalize</button>
+      <!-- Shown to guests only -->
+      <button id="headerSignInBtn" onclick="openAuthOverlay('signin')" style="display:none;background:var(--gold);color:var(--noir);border:none;padding:5px 14px;font-size:0.58rem;font-weight:600;letter-spacing:2px;text-transform:uppercase;cursor:pointer;transition:all 0.2s;font-family:var(--ff-body)" onmouseover="this.style.background='var(--gold-light)'" onmouseout="this.style.background='var(--gold)'">Sign In / Join</button>
+      <!-- Shown to signed-in users only -->
+      <div id="headerUserBlock" style="display:none;align-items:center;gap:0.75rem">
+        <div class="dl-avatar-badge" id="headerAvatar" style="cursor:pointer" onclick="openProfileModal()" title="Edit profile">👩‍✈️</div>
+        <span id="headerName" style="cursor:pointer" onclick="openProfileModal()">Traveler</span>
+        <span style="color:var(--border-hi)">·</span>
+        <span id="headerStyle" style="color:var(--gold)">Luxury</span>
+        <button onclick="openProfileModal()" style="background:transparent;border:1px solid var(--border);color:var(--mist);padding:2px 8px;font-size:0.55rem;letter-spacing:1.5px;text-transform:uppercase;cursor:pointer;transition:all 0.2s;margin-left:4px" onmouseover="this.style.borderColor='var(--gold)';this.style.color='var(--gold)'" onmouseout="this.style.borderColor='var(--border)';this.style.color='var(--mist)'">Profile</button>
+        <button onclick="openPersonalizeModal()" id="personalizeBtn" style="background:rgba(var(--gold-rgb),0.12);border:1px solid rgba(var(--gold-rgb),0.5);color:var(--gold);padding:2px 8px;font-size:0.55rem;letter-spacing:1.5px;text-transform:uppercase;cursor:pointer;transition:all 0.2s;margin-left:4px" onmouseover="this.style.background='rgba(var(--gold-rgb),0.22)'" onmouseout="this.style.background='rgba(var(--gold-rgb),0.12)'">✦ Personalize</button>
+      </div>
       <button onclick="startTour()" title="Take a guided tour" style="background:rgba(var(--gold-rgb),0.1);border:1px solid rgba(var(--gold-rgb),0.35);color:var(--gold);padding:2px 8px;font-size:0.55rem;letter-spacing:1.5px;text-transform:uppercase;cursor:pointer;transition:all 0.2s;margin-left:4px" onmouseover="this.style.background='rgba(var(--gold-rgb),0.2)'" onmouseout="this.style.background='rgba(var(--gold-rgb),0.1)'">✦ Tour</button>
       <button class="bf-theme-toggle" id="bfThemeToggleDash" aria-label="Toggle theme" title="Toggle theme" onclick="bfToggleTheme()">
         <svg id="bfIconDashDark" viewBox="0 0 24 24" style="display:none"><circle cx="12" cy="12" r="4"/><path d="M12 2v2M12 20v2M4.93 4.93l1.41 1.41M17.66 17.66l1.41 1.41M2 12h2M20 12h2M4.93 19.07l1.41-1.41M17.66 6.34l1.41-1.41"/></svg>
