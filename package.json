@@ -4,6 +4,6 @@
   "description": "BagFree travel platform",
   "private": true,
   "dependencies": {
-    "stripe": "^14.0.0"
+    "stripe": "^17.0.0"
   }
 }
