@@ -158,6 +158,78 @@ h1 em{font-style:italic;color:var(--gold);font-weight:300}
   flex-shrink:0;line-height:1.4;min-width:18px;
 }
 
+/* ── Detail card (trip + order summary) — mirrors .next-steps aesthetic ── */
+.detail-card{
+  margin-top:1.4rem;padding:1.8rem 2.2rem;
+  background:rgba(var(--gold-rgb),0.04);
+  border:1px solid rgba(var(--gold-rgb),0.18);
+  max-width:560px;width:100%;
+  text-align:left;
+}
+.detail-eyebrow{
+  font-size:0.62rem;letter-spacing:3px;text-transform:uppercase;
+  color:var(--gold);margin-bottom:1.1rem;
+  display:flex;align-items:center;gap:0.5rem;
+}
+.detail-eyebrow::before{
+  content:'';width:5px;height:5px;background:var(--gold);
+  transform:rotate(45deg);box-shadow:0 0 8px rgba(var(--gold-rgb),0.6);
+}
+.detail-row{
+  display:flex;justify-content:space-between;align-items:flex-start;
+  padding:0.65rem 0;border-bottom:1px solid rgba(var(--gold-rgb),0.08);
+  gap:1rem;
+}
+.detail-row:last-child{border-bottom:none}
+.detail-label{
+  font-size:0.62rem;letter-spacing:2.5px;text-transform:uppercase;
+  color:rgba(var(--text-rgb),0.5);font-weight:400;flex-shrink:0;
+  padding-top:0.2rem;
+}
+.detail-value{
+  font-size:0.95rem;color:var(--white);text-align:right;
+  font-weight:300;line-height:1.5;
+}
+
+/* Order line items */
+.line-item{
+  display:flex;align-items:center;gap:0.9rem;
+  padding:0.75rem 0;border-bottom:1px solid rgba(var(--gold-rgb),0.08);
+}
+.line-item:last-of-type{border-bottom:none}
+.line-thumb{
+  width:48px;height:48px;border-radius:3px;object-fit:cover;
+  background:rgba(var(--gold-rgb),0.06);
+  border:1px solid rgba(var(--gold-rgb),0.18);
+  flex-shrink:0;
+}
+.line-info{flex:1;min-width:0}
+.line-title{
+  font-size:0.88rem;color:var(--white);font-weight:400;
+  margin-bottom:0.15rem;line-height:1.35;
+}
+.line-meta{
+  font-size:0.62rem;letter-spacing:1.5px;text-transform:uppercase;
+  color:rgba(var(--text-rgb),0.45);
+}
+.line-price{
+  font-family:var(--ff-display);font-size:1rem;font-weight:400;
+  color:var(--gold);flex-shrink:0;
+}
+.total-row{
+  display:flex;justify-content:space-between;align-items:baseline;
+  padding-top:1rem;margin-top:0.5rem;
+  border-top:1px solid rgba(var(--gold-rgb),0.22);
+}
+.total-label{
+  font-size:0.68rem;letter-spacing:3px;text-transform:uppercase;
+  color:rgba(var(--text-rgb),0.6);
+}
+.total-value{
+  font-family:var(--ff-display);font-size:1.65rem;font-weight:400;
+  color:var(--gold);letter-spacing:-0.4px;
+}
+
 .actions{
   margin-top:2.6rem;display:flex;gap:1rem;flex-wrap:wrap;justify-content:center;
 }
@@ -204,6 +276,12 @@ h1 em{font-style:italic;color:var(--gold);font-weight:300}
   .stage{padding:2rem 1.2rem}
   h1{font-size:clamp(2.1rem,8vw,3.2rem) !important}
   .next-steps{padding:1.5rem 1.2rem}
+  .detail-card{padding:1.5rem 1.2rem}
+  .detail-row{flex-direction:column;gap:0.2rem;align-items:flex-start}
+  .detail-value{text-align:left}
+  .line-thumb{width:42px;height:42px}
+  .line-title{font-size:0.84rem}
+  .total-value{font-size:1.4rem}
   .actions{flex-direction:column;width:100%;max-width:300px}
   .btn{width:100%;justify-content:center}
 }
@@ -238,6 +316,37 @@ h1 em{font-style:italic;color:var(--gold);font-weight:300}
   <p class="lede">
     Thank you. We've received your payment and the BagFree concierge team has been notified. A detailed confirmation is on its way to <em id="customerEmail">your inbox</em>.
   </p>
+
+  <!-- TRIP DETAILS — only shown if we have a reservation in localStorage -->
+  <div class="detail-card" id="tripCard" style="display:none">
+    <div class="detail-eyebrow">Trip details</div>
+    <div class="detail-row">
+      <span class="detail-label">City</span>
+      <span class="detail-value" id="dCity">—</span>
+    </div>
+    <div class="detail-row">
+      <span class="detail-label">Hotel</span>
+      <span class="detail-value" id="dHotel">—</span>
+    </div>
+    <div class="detail-row">
+      <span class="detail-label">Arrival</span>
+      <span class="detail-value" id="dArrival">—</span>
+    </div>
+    <div class="detail-row">
+      <span class="detail-label">Departure</span>
+      <span class="detail-value" id="dDeparture">—</span>
+    </div>
+  </div>
+
+  <!-- ORDER SUMMARY — only shown if we have bundle data -->
+  <div class="detail-card" id="orderCard" style="display:none">
+    <div class="detail-eyebrow">What's waiting</div>
+    <div id="lineItems"></div>
+    <div class="total-row">
+      <span class="total-label">Total charged</span>
+      <span class="total-value" id="dTotal">—</span>
+    </div>
+  </div>
 
   <div class="next-steps">
     <div class="next-eyebrow">What happens next</div>
@@ -277,30 +386,137 @@ h1 em{font-style:italic;color:var(--gold);font-weight:300}
 </footer>
 
 <script>
-// Pull customer email from saved reservation if present
-try {
-  var raw = localStorage.getItem('bf-reservation');
-  if (raw) {
-    var r = JSON.parse(raw);
-    if (r.email) document.getElementById('customerEmail').textContent = r.email;
-  }
-} catch(e) {}
+// ─── Hydrate from saved reservation OR Stripe ───────────────────
+// Strategy (in order):
+//   1. localStorage — fast, no network. The landing page saves a snapshot
+//      to 'bf-reservation' before redirecting to Stripe.
+//   2. Stripe session lookup — falls back to /.netlify/functions/get-session
+//      if there's a session_id in the URL but no localStorage data
+//      (different device, cleared storage, shared link, late refresh).
+//   3. Degrade gracefully — if both fail, the trip/order cards stay hidden
+//      and the page reads as a generic "payment received" confirmation.
 
-// Show the Stripe session reference if present in URL
-try {
-  var params = new URLSearchParams(window.location.search);
-  var sid = params.get('session_id');
-  if (sid) {
-    document.getElementById('sessionId').textContent = sid.slice(0, 14) + '…';
-    document.getElementById('sessionRef').style.display = 'block';
-  }
-} catch(e) {}
+(function init() {
+  const params = new URLSearchParams(window.location.search);
+  const sid = params.get('session_id');
 
-// Clear the reservation from localStorage now that it's confirmed
-// (so it doesn't keep appearing in the funnel/dashboard as a pending state)
-try {
-  setTimeout(function() { /* Keep for now so dashboard can pick it up */ }, 0);
-} catch(e) {}
+  // Try localStorage first
+  let res = null;
+  try {
+    const raw = localStorage.getItem('bf-reservation');
+    if (raw) res = JSON.parse(raw);
+  } catch (e) { res = null; }
+
+  if (res) {
+    render(res);
+    showSessionRef(sid);
+    return;
+  }
+
+  // No localStorage data — try Stripe lookup if we have a session ID
+  if (sid && /^cs_[a-zA-Z0-9_]+$/.test(sid)) {
+    showSessionRef(sid);
+    fetchSession(sid).then(function (data) {
+      if (data && data.paid) render(data);
+    }).catch(function (err) {
+      // Silent fallback — the generic view is already showing.
+      console.warn('Session lookup failed:', err);
+    });
+    return;
+  }
+
+  // No data and no session ID — show session ref only if present, otherwise
+  // the page stays in its default generic state.
+  showSessionRef(sid);
+})();
+
+async function fetchSession(sid) {
+  const res = await fetch(
+    '/.netlify/functions/get-session?session_id=' + encodeURIComponent(sid),
+    { headers: { 'Accept': 'application/json' } }
+  );
+  if (!res.ok) {
+    throw new Error('HTTP ' + res.status);
+  }
+  return await res.json();
+}
+
+function render(data) {
+  // 1) Email
+  if (data.email) {
+    document.getElementById('customerEmail').textContent = data.email;
+  }
+
+  // 2) Trip details
+  const hasTrip = data.city || data.hotel || data.arrival || data.departure;
+  if (hasTrip) {
+    document.getElementById('dCity').textContent = data.city || '—';
+    document.getElementById('dHotel').textContent = data.hotel || '—';
+    document.getElementById('dArrival').textContent = formatDate(data.arrival);
+    document.getElementById('dDeparture').textContent = formatDate(data.departure);
+    document.getElementById('tripCard').style.display = '';
+  }
+
+  // 3) Order summary
+  if (Array.isArray(data.bundles) && data.bundles.length) {
+    const wrap = document.getElementById('lineItems');
+    wrap.innerHTML = ''; // Clear in case render() is called twice
+    let computed = 0;
+    data.bundles.forEach(function (b) {
+      const qty = parseInt(b.qty, 10) || 1;
+      const price = Number(b.price) || 0;
+      const lineTotal = price * qty;
+      computed += lineTotal;
+
+      const row = document.createElement('div');
+      row.className = 'line-item';
+      row.innerHTML =
+        (b.image
+          ? '<img class="line-thumb" src="' + escapeAttr(b.image) + '" alt="" loading="lazy" onerror="this.style.visibility=\'hidden\'">'
+          : '<div class="line-thumb"></div>') +
+        '<div class="line-info">' +
+          '<div class="line-title">' + escapeHtml(b.name || b.title || 'Bundle') + '</div>' +
+          '<div class="line-meta">Qty ' + qty + ' · $' + formatMoney(price) + ' each</div>' +
+        '</div>' +
+        '<div class="line-price">$' + formatMoney(lineTotal) + '</div>';
+      wrap.appendChild(row);
+    });
+
+    const finalTotal = (typeof data.total === 'number' && data.total > 0) ? data.total : computed;
+    document.getElementById('dTotal').textContent = '$' + formatMoney(finalTotal);
+    document.getElementById('orderCard').style.display = '';
+  }
+}
+
+function showSessionRef(sid) {
+  if (!sid) return;
+  const el = document.getElementById('sessionId');
+  const wrap = document.getElementById('sessionRef');
+  el.textContent = sid.slice(0, 14) + '…';
+  el.title = sid; // full ID on hover
+  wrap.style.display = 'block';
+}
+
+// ─── Helpers ─────────────────────────────────────────────────────
+function formatDate(iso) {
+  if (!iso) return '—';
+  try {
+    const d = new Date(iso.length === 10 ? iso + 'T00:00:00' : iso);
+    if (isNaN(d.getTime())) return iso;
+    return d.toLocaleDateString('en-US', {
+      weekday: 'short', month: 'short', day: 'numeric', year: 'numeric'
+    });
+  } catch (e) { return iso; }
+}
+function formatMoney(n) {
+  return (Number(n) || 0).toFixed(2);
+}
+function escapeHtml(s) {
+  return String(s == null ? '' : s).replace(/[&<>"']/g, function (c) {
+    return ({ '&':'&amp;', '<':'&lt;', '>':'&gt;', '"':'&quot;', "'":'&#39;' })[c];
+  });
+}
+function escapeAttr(s) { return escapeHtml(s); }
 </script>
 
 </body>
