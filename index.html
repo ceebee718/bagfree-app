@@ -435,7 +435,7 @@ const VENDORS = [
     id:'nuor-edit', name:'The Nuor Edit', tag:'Curated Partner', icon:'◈',
     category:'Clothing · Women\'s · Tampa, FL', dest:'Tampa Bay, FL',
     desc:'The rental wardrobe of Valet By Nuor. Curated by Selena — a Tampa-based artist. Rent for your stay, keep what you love. Delivered to your hotel before you arrive. Tampa Bay only.',
-    highlight:false, url:'https://bagfree.app/shop/nuor-edit/', color:'selena',
+    highlight:false, url:'https://bagfree.app/#shop', color:'selena',
     products:['Dresses','Tops & Blouses','Accessories','Resort Wear','Travel Outfits'],
     badge:'Shop Now'
   },
@@ -612,7 +612,7 @@ function Nav({page, setPage}) {
           <span onClick={(e)=>{e.stopPropagation();window.open('/guide/','_self');}}
             style={{fontSize:'0.76rem',color:'rgba(var(--gold-rgb),0.75)',letterSpacing:'2px',textTransform:'uppercase',cursor:'pointer',fontWeight:400}}>Guide</span>
           <ThemeToggle />
-          <span className="bf-nav-lounge" onClick={(e)=>{e.stopPropagation();window.open('/shop/nuor-edit/','_self');}}
+          <span className="bf-nav-lounge" onClick={(e)=>{e.stopPropagation();setPage('vendors');}}
             style={{fontSize:'0.72rem',color:'var(--gold)',letterSpacing:'2px',textTransform:'uppercase',border:'1px solid rgba(var(--gold-rgb),0.42)',padding:'0.38rem 0.9rem',display:'inline-flex',alignItems:'center',gap:'0.4rem',cursor:'pointer'}}>
             <span style={{width:4,height:4,background:'var(--gold)',display:'inline-block',transform:'rotate(45deg)'}}/>Edit
           </span>
@@ -642,7 +642,7 @@ function Nav({page, setPage}) {
           <div style={{display:'flex',alignItems:'center',gap:'1rem',marginTop:'0.5rem'}}>
             <ThemeToggle />
           </div>
-          <span onClick={()=>{window.open('/shop/nuor-edit/','_self');setMenuOpen(false);}}
+          <span onClick={()=>{setPage('vendors');setMenuOpen(false);}}
             style={{fontSize:'0.92rem',color:'var(--gold)',letterSpacing:'2px',textTransform:'uppercase',border:'1px solid var(--border-hi)',padding:'0.65rem 1.5rem',cursor:'pointer',display:'flex',alignItems:'center',gap:'0.5rem',marginTop:'0.5rem'}}>
             <span style={{width:6,height:6,background:'var(--gold)',display:'inline-block',transform:'rotate(45deg)'}}/>The Nuor Edit
           </span>
@@ -1068,7 +1068,7 @@ function Home({setPage}) {
 
           {/* The Nuor Edit card */}
           <div
-            onClick={()=>window.open('https://bagfree.app/shop/nuor-edit/','_self')}
+            onClick={()=>window.open('/departure-lounge-landing.html','_self')}
             style={{background:'var(--noir-2)',padding:'2rem',cursor:'pointer',transition:'all 0.25s',position:'relative',border:'1px solid rgba(var(--gold-rgb),0.1)'}}
             onMouseEnter={e=>e.currentTarget.style.background='var(--noir-3)'}
             onMouseLeave={e=>e.currentTarget.style.background='var(--noir-2)'}>
@@ -2728,7 +2728,7 @@ const VENDOR_OFFERINGS = {
     desc:'Curated rental wardrobe by Selena — a Tampa-based artist. Rent for your stay, keep what you love.',
     badge:'Tampa Bay Only',badgeColor:'rgba(155,143,212,0.8)',
     dest:'Tampa Bay, FL',
-    url:'https://bagfree.app/shop/nuor-edit/',
+    url:'/departure-lounge-landing.html',
     categories:['tops','rental','kits'],
     isRental:true,
   },
@@ -2893,7 +2893,7 @@ function ShopLanding({setPage}) {
               <div style={{fontFamily:'var(--ff-display)',fontSize:'2.2rem',color:'rgba(13,21,37,0.85)',letterSpacing:'-0.5px',fontStyle:'italic',position:'relative',zIndex:1,textAlign:'center',lineHeight:1.1}}>The Nuor<br/>Edit</div>
               <div style={{position:'absolute',top:'14px',right:'14px',background:'var(--noir)',color:'var(--gold)',fontSize:'9px',letterSpacing:'2.5px',textTransform:'uppercase',padding:'4px 9px',fontWeight:600,border:'1px solid rgba(var(--gold-rgb),0.6)'}}>Coming Soon</div>
             </div>
-            <a href="/shop/nuor-edit/" onClick={e=>{e.preventDefault();window.location.href='/shop/nuor-edit/';}}
+            <a href="/departure-lounge-landing.html" onClick={e=>{e.preventDefault();window.location.href='/departure-lounge-landing.html';}}
               style={{background:'var(--noir-2)',padding:'2rem 1.75rem',textDecoration:'none',display:'flex',flexDirection:'column',alignItems:'flex-start',border:'1px solid rgba(var(--gold-rgb),0.15)',borderTop:'none',cursor:'pointer',transition:'background 0.25s',flex:1,opacity:0.92}}
               onMouseEnter={e=>{e.currentTarget.style.background='var(--noir-3)';e.currentTarget.style.opacity='1';}}
               onMouseLeave={e=>{e.currentTarget.style.background='var(--noir-2)';e.currentTarget.style.opacity='0.92';}}>
