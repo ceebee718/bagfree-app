@@ -656,6 +656,16 @@ function Nav({page, setPage}) {
 function Home({setPage}) {
   const heroImageRef = React.useRef(null);
   const heroContentRef = React.useRef(null);
+  const [selectedCity, setSelectedCity] = React.useState(null);
+
+  // Read ?city= URL param on mount — lets ad campaigns deep-link to a chip
+  React.useEffect(() => {
+    try {
+      const params = new URLSearchParams(window.location.search);
+      const c = params.get('city');
+      if (c) setSelectedCity(c.toLowerCase());
+    } catch (e) {}
+  }, []);
 
   React.useEffect(() => {
     const onScroll = () => {
@@ -710,12 +720,105 @@ function Home({setPage}) {
                 Enter the Lounge ↗
               </button>
             </div>
+
+            {/* DESTINATION QUICK-PICK
+                Lets visitors who know where they're going skip ahead.
+                Active = currently servicing. Soon = on the roadmap.
+                Tapping any chip scrolls to the matching editorial guide. */}
+            {(() => {
+              const ACTIVE = [
+                { slug:'tampa',     label:'Tampa' },
+                { slug:'miami',     label:'Miami' },
+                { slug:'orlando',   label:'Orlando' },
+                { slug:'savannah',  label:'Savannah' },
+                { slug:'atlanta',   label:'Atlanta' },
+              ];
+              const SOON = [
+                { slug:'new-york',   label:'New York' },
+                { slug:'nashville',  label:'Nashville' },
+                { slug:'charleston', label:'Charleston' },
+              ];
+              const onPick = (slug, isActive) => {
+                setSelectedCity(slug);
+                // Scroll to the destinations section — the editorial guides
+                // (both active and soon-listed cities have cards there)
+                setTimeout(() => {
+                  const el = document.getElementById('destinations');
+                  if (el) el.scrollIntoView({ behavior:'smooth', block:'start' });
+                }, 60);
+              };
+              const chipBase = {
+                padding:'0.6rem 1.05rem',
+                fontFamily:'var(--ff-body)',
+                fontSize:'0.66rem',
+                letterSpacing:'2px',
+                textTransform:'uppercase',
+                fontWeight:500,
+                cursor:'pointer',
+                border:'1px solid rgba(var(--gold-rgb),0.32)',
+                background:'transparent',
+                color:'rgba(var(--text-rgb),0.82)',
+                transition:'all 0.22s cubic-bezier(.4,0,.2,1)',
+                whiteSpace:'nowrap',
+                display:'inline-flex',
+                alignItems:'center',
+                gap:'0.5rem',
+              };
+              return (
+                <div style={{marginTop:'1.6rem',marginBottom:'1.5rem'}}>
+                  <div style={{display:'flex',alignItems:'center',gap:'0.7rem',marginBottom:'0.85rem'}}>
+                    <span style={{fontFamily:'var(--ff-body)',fontSize:'0.62rem',letterSpacing:'3px',textTransform:'uppercase',color:'rgba(var(--text-rgb),0.55)'}}>Where are you headed?</span>
+                    <span style={{flex:1,height:1,background:'linear-gradient(to right, rgba(var(--gold-rgb),0.25), transparent)'}}></span>
+                  </div>
+                  <div style={{display:'flex',flexWrap:'wrap',gap:'0.5rem'}}>
+                    {ACTIVE.map(c => {
+                      const active = selectedCity === c.slug;
+                      return (
+                        <button key={c.slug}
+                          onClick={() => onPick(c.slug, true)}
+                          style={{
+                            ...chipBase,
+                            background: active ? 'rgba(var(--gold-rgb),0.12)' : chipBase.background,
+                            color: active ? 'var(--gold)' : chipBase.color,
+                            borderColor: active ? 'var(--gold)' : chipBase.border.replace('1px solid ',''),
+                          }}
+                          onMouseOver={(e) => { if (!active) { e.currentTarget.style.borderColor = 'rgba(var(--gold-rgb),0.6)'; e.currentTarget.style.color = 'var(--gold)'; } }}
+                          onMouseOut={(e) => { if (!active) { e.currentTarget.style.borderColor = 'rgba(var(--gold-rgb),0.32)'; e.currentTarget.style.color = 'rgba(var(--text-rgb),0.82)'; } }}>
+                          {active && <span style={{width:5,height:5,background:'var(--gold)',transform:'rotate(45deg)',display:'inline-block'}}></span>}
+                          {c.label}
+                        </button>
+                      );
+                    })}
+                    {SOON.map(c => {
+                      const active = selectedCity === c.slug;
+                      return (
+                        <button key={c.slug}
+                          onClick={() => onPick(c.slug, false)}
+                          title={c.label + ' — coming soon'}
+                          style={{
+                            ...chipBase,
+                            borderStyle:'dashed',
+                            opacity: active ? 1 : 0.6,
+                            color: active ? 'var(--gold)' : 'rgba(var(--text-rgb),0.5)',
+                            borderColor: active ? 'var(--gold)' : 'rgba(var(--gold-rgb),0.22)',
+                          }}
+                          onMouseOver={(e) => { if (!active) { e.currentTarget.style.opacity = 0.9; e.currentTarget.style.color = 'rgba(var(--text-rgb),0.75)'; } }}
+                          onMouseOut={(e) => { if (!active) { e.currentTarget.style.opacity = 0.6; e.currentTarget.style.color = 'rgba(var(--text-rgb),0.5)'; } }}>
+                          {c.label}
+                          <span style={{fontSize:'0.52rem',letterSpacing:'1.5px',color:'rgba(var(--gold-rgb),0.7)',fontStyle:'italic',textTransform:'none',fontWeight:300,marginLeft:'0.15rem'}}>soon</span>
+                        </button>
+                      );
+                    })}
+                  </div>
+                </div>
+              );
+            })()}
             <div className="bf-trusted-row">
               <div className="bf-trusted-dots"><span></span><span></span><span></span></div>
               <span>Trusted by travelers across Florida & Georgia</span>
             </div>
             <div className="bf-stats" style={{display:'flex',gap:'2.5rem',paddingTop:'2.25rem',borderTop:'1px solid rgba(var(--gold-rgb),0.18)',flexWrap:'wrap',position:'relative'}}>
-              {[['38+','Products'],['6','Cities'],['Same-Day','FL & GA'],['Valet By Nuor','Partner']].map(([n, l], idx) => (
+              {[['38+','Products'],['8','Cities'],['Same-Day','FL & GA'],['Valet By Nuor','Partner']].map(([n, l], idx) => (
                 <div key={l} style={{position:'relative',paddingRight:idx<3?'2.5rem':0,borderRight:idx<3?'1px solid rgba(var(--gold-rgb),0.14)':'none'}}>
                   <div style={{fontFamily:'var(--ff-display)',fontSize:'2.1rem',fontWeight:300,color:'var(--gold)',lineHeight:1,letterSpacing:'-0.5px'}}>{n}</div>
                   <div style={{fontSize:'0.62rem',letterSpacing:'2.5px',textTransform:'uppercase',color:'rgba(var(--text-rgb),0.42)',marginTop:7,fontWeight:400}}>{l}</div>
