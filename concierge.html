@@ -191,8 +191,8 @@ input[type=range]::-moz-range-thumb{width:18px;height:18px;border-radius:50%;bac
   <div style="display:flex;align-items:center;gap:1.25rem">
     <a href="/" class="nav-back">← Home</a>
     <button class="theme-toggle" id="themeBtn" onclick="toggleTheme()" aria-label="Toggle theme" title="Toggle theme">
-      <svg id="iconDark" viewBox="0 0 24 24" style="display:none"><circle cx="12" cy="12" r="4"/><path d="M12 2v2M12 20v2M4.93 4.93l1.41 1.41M17.66 17.66l1.41 1.41M2 12h2M20 12h2M4.93 19.07l1.41-1.41M17.66 6.34l1.41-1.41"/></svg>
-      <svg id="iconLight" viewBox="0 0 24 24" style="display:none"><path d="M21 12.79A9 9 0 1 1 11.21 3 7 7 0 0 0 21 12.79z"/></svg>
+      <svg id="iconDark" viewBox="0 0 24 24" width="15" height="15" fill="none" stroke="currentColor" stroke-width="1.8" stroke-linecap="round" stroke-linejoin="round" style="display:none"><circle cx="12" cy="12" r="4"/><path d="M12 2v2M12 20v2M4.93 4.93l1.41 1.41M17.66 17.66l1.41 1.41M2 12h2M20 12h2M4.93 19.07l1.41-1.41M17.66 6.34l1.41-1.41"/></svg>
+      <svg id="iconLight" viewBox="0 0 24 24" width="15" height="15" fill="none" stroke="currentColor" stroke-width="1.8" stroke-linecap="round" stroke-linejoin="round" style="display:none"><path d="M21 12.79A9 9 0 1 1 11.21 3 7 7 0 0 0 21 12.79z"/></svg>
     </button>
   </div>
 </nav>
@@ -348,8 +348,8 @@ input[type=range]::-moz-range-thumb{width:18px;height:18px;border-radius:50%;bac
 
 <script>
 // ─── CONFIG ───
-const SUPABASE_URL  = 'https://vkctidpaghpdlmleezvq.supabase.co';      // ← REPLACE
-const SUPABASE_ANON = 'eyJhbGciOiJIUzI1NiIsInR5cCI6IkpXVCJ9.eyJpc3MiOiJzdXBhYmFzZSIsInJlZiI6InZrY3RpZHBhZ2hwZGxtbGVlenZxIiwicm9sZSI6ImFub24iLCJpYXQiOjE3NzUzMjI5MjgsImV4cCI6MjA5MDg5ODkyOH0.wKtG6XD6CwLy3rJDZc4S10-NqNr3fcCXHYOWJt_C628';                          // ← REPLACE
+const SUPABASE_URL  = ''https://vkctidpaghpdlmleezvq.supabase.co';      // ← REPLACE
+const SUPABASE_ANON = ''eyJhbGciOiJIUzI1NiIsInR5cCI6IkpXVCJ9.eyJpc3MiOiJzdXBhYmFzZSIsInJlZiI6InZrY3RpZHBhZ2hwZGxtbGVlenZxIiwicm9sZSI6ImFub24iLCJpYXQiOjE3NzUzMjI5MjgsImV4cCI6MjA5MDg5ODkyOH0.wKtG6XD6CwLy3rJDZc4S10-NqNr3fcCXHYOWJt_C628';                          // ← REPLACE
 
 // ─── STATE ───
 const state = {
@@ -404,6 +404,11 @@ function syncThemeIcon() {
   if (btn) btn.setAttribute('aria-label', t === 'dark' ? 'Switch to light mode' : 'Switch to dark mode');
 }
 syncThemeIcon();
+// Re-sync once on DOMContentLoaded and again after a tick, mirroring the
+// pattern used in the lounge. Belt and suspenders against streaming
+// edge cases where the SVGs aren't fully styled when the first call fires.
+document.addEventListener('DOMContentLoaded', syncThemeIcon);
+setTimeout(syncThemeIcon, 100);
 
 // ─── ON LOAD ───
 document.addEventListener('DOMContentLoaded', async function() {
