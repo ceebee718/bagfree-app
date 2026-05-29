@@ -69,6 +69,14 @@ input,select,textarea{font-family:inherit;font-weight:inherit}
 .theme-toggle{display:inline-flex;align-items:center;justify-content:center;width:36px;height:36px;border-radius:50%;border:1px solid rgba(var(--gold-rgb),0.32);background:rgba(var(--gold-rgb),0.06);color:var(--gold);transition:all .35s cubic-bezier(.4,0,.2,1)}
 .theme-toggle:hover{background:rgba(var(--gold-rgb),0.16);border-color:var(--gold);transform:scale(1.06) rotate(15deg);box-shadow:0 4px 14px rgba(var(--gold-rgb),0.25)}
 .theme-toggle svg{width:15px;height:15px;stroke:currentColor;fill:none;stroke-width:1.8;stroke-linecap:round;stroke-linejoin:round}
+/* CSS-only icon visibility — no JS toggling required. Whichever theme the
+   <html data-theme=""> attribute is set to, the matching icon shows. */
+.theme-icon{display:none}
+:root[data-theme="dark"]  .theme-icon-dark{display:block}
+:root[data-theme="light"] .theme-icon-light{display:block}
+/* Fallback: if data-theme isn't set yet (pre-paint), show the dark icon
+   so the button is never empty. */
+:root:not([data-theme]) .theme-icon-dark{display:block}
 
 .stage{padding:7rem 1.5rem 5rem;max-width:680px;margin:0 auto;animation:fadeUp .7s cubic-bezier(.4,0,.2,1)}
 @keyframes fadeUp{from{opacity:0;transform:translateY(22px)}to{opacity:1;transform:translateY(0)}}
@@ -191,8 +199,10 @@ input[type=range]::-moz-range-thumb{width:18px;height:18px;border-radius:50%;bac
   <div style="display:flex;align-items:center;gap:1.25rem">
     <a href="/" class="nav-back">← Home</a>
     <button class="theme-toggle" id="themeBtn" onclick="toggleTheme()" aria-label="Toggle theme" title="Toggle theme">
-      <svg id="iconDark" viewBox="0 0 24 24" width="15" height="15" fill="none" stroke="currentColor" stroke-width="1.8" stroke-linecap="round" stroke-linejoin="round" style="display:none"><circle cx="12" cy="12" r="4"/><path d="M12 2v2M12 20v2M4.93 4.93l1.41 1.41M17.66 17.66l1.41 1.41M2 12h2M20 12h2M4.93 19.07l1.41-1.41M17.66 6.34l1.41-1.41"/></svg>
-      <svg id="iconLight" viewBox="0 0 24 24" width="15" height="15" fill="none" stroke="currentColor" stroke-width="1.8" stroke-linecap="round" stroke-linejoin="round" style="display:none"><path d="M21 12.79A9 9 0 1 1 11.21 3 7 7 0 0 0 21 12.79z"/></svg>
+      <!-- Dark mode icon (sun). Shown when data-theme=dark, hidden otherwise. CSS-controlled, no JS needed. -->
+      <svg class="theme-icon theme-icon-dark" viewBox="0 0 24 24" width="15" height="15" fill="none" stroke="currentColor" stroke-width="1.8" stroke-linecap="round" stroke-linejoin="round"><circle cx="12" cy="12" r="4"/><path d="M12 2v2M12 20v2M4.93 4.93l1.41 1.41M17.66 17.66l1.41 1.41M2 12h2M20 12h2M4.93 19.07l1.41-1.41M17.66 6.34l1.41-1.41"/></svg>
+      <!-- Light mode icon (moon). Shown when data-theme=light. -->
+      <svg class="theme-icon theme-icon-light" viewBox="0 0 24 24" width="15" height="15" fill="none" stroke="currentColor" stroke-width="1.8" stroke-linecap="round" stroke-linejoin="round"><path d="M21 12.79A9 9 0 1 1 11.21 3 7 7 0 0 0 21 12.79z"/></svg>
     </button>
   </div>
 </nav>
@@ -381,34 +391,22 @@ const MAX_REDEMPTION_PCT = 30;
 const MIN_TRIP_USD = 200;
 
 // ─── SUPABASE INIT ───
-let supabase = null;
+let sb = null;
 try {
-  supabase = window.supabase.createClient(SUPABASE_URL, SUPABASE_ANON);
+  sb = window.supabase.createClient(SUPABASE_URL, SUPABASE_ANON);
 } catch(e) { console.warn('Supabase client not initialized — running without auth'); }
 
 // ─── THEME (mirrors landing page / lounge / thank-you so the choice persists across pages) ───
+// Icon visibility is fully CSS-driven via :root[data-theme] selectors,
+// so all this function does is flip the attribute and persist the choice.
 function toggleTheme() {
   const cur = document.documentElement.getAttribute('data-theme') || 'dark';
   const next = cur === 'dark' ? 'light' : 'dark';
   document.documentElement.setAttribute('data-theme', next);
   try { localStorage.setItem('bf-theme', next); } catch(e) {}
-  syncThemeIcon();
-}
-function syncThemeIcon() {
-  const t = document.documentElement.getAttribute('data-theme') || 'dark';
-  const dk = document.getElementById('iconDark');
-  const lt = document.getElementById('iconLight');
-  if (dk) dk.style.display = t === 'dark' ? 'block' : 'none';
-  if (lt) lt.style.display = t === 'light' ? 'block' : 'none';
   const btn = document.getElementById('themeBtn');
-  if (btn) btn.setAttribute('aria-label', t === 'dark' ? 'Switch to light mode' : 'Switch to dark mode');
+  if (btn) btn.setAttribute('aria-label', next === 'dark' ? 'Switch to light mode' : 'Switch to dark mode');
 }
-syncThemeIcon();
-// Re-sync once on DOMContentLoaded and again after a tick, mirroring the
-// pattern used in the lounge. Belt and suspenders against streaming
-// edge cases where the SVGs aren't fully styled when the first call fires.
-document.addEventListener('DOMContentLoaded', syncThemeIcon);
-setTimeout(syncThemeIcon, 100);
 
 // ─── ON LOAD ───
 document.addEventListener('DOMContentLoaded', async function() {
@@ -437,14 +435,14 @@ document.addEventListener('DOMContentLoaded', async function() {
 });
 
 async function loadUser() {
-  if (!supabase) return;
+  if (!sb) return;
   try {
-    const { data: { session } } = await supabase.auth.getSession();
+    const { data: { session } } = await sb.auth.getSession();
     if (!session) return;
     state.user = session.user;
 
     // Pre-fill contact fields from profile
-    const { data: profile } = await supabase
+    const { data: profile } = await sb
       .from('profiles').select('email,name').eq('id', session.user.id).maybeSingle();
     if (profile) {
       state.contact_email = profile.email || session.user.email || '';
@@ -452,7 +450,7 @@ async function loadUser() {
     }
 
     // Load available balance
-    const { data: bal } = await supabase
+    const { data: bal } = await sb
       .from('bag_available_balance').select('available').eq('user_id', session.user.id).maybeSingle();
     if (bal) state.available_points = Number(bal.available) || 0;
   } catch (e) {
@@ -630,9 +628,9 @@ async function submitRequest() {
 
   // Get auth token if signed in
   let token = null;
-  if (supabase) {
+  if (sb) {
     try {
-      const { data: { session } } = await supabase.auth.getSession();
+      const { data: { session } } = await sb.auth.getSession();
       token = session?.access_token || null;
     } catch (e) {}
   }
