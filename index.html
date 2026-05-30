@@ -4002,7 +4002,7 @@ function EssentialsPage({setPage}) {
           </p>
 
           <div style={{display:'flex', justifyContent:'center', gap:'1rem', flexWrap:'wrap'}}>
-            <a href="#interest" style={{
+            <a href="#interest" onClick={e=>{e.preventDefault();document.getElementById('interest')?.scrollIntoView({behavior:'smooth',block:'start'});}} style={{
               background:'linear-gradient(135deg,#c9a84c 0%,#d8b06a 50%,#b8893e 100%)',
               color:'#0b1220', padding:'1.05rem 2.4rem', textDecoration:'none',
               fontSize:'0.78rem', fontWeight:600, letterSpacing:'3px', textTransform:'uppercase',
@@ -4209,7 +4209,7 @@ function EssentialsPage({setPage}) {
           <p style={{fontSize:'0.85rem', color:'rgba(253,252,248,0.45)', letterSpacing:'1px', marginBottom:'2.4rem', fontWeight:300}}>
             Coming first to Savannah, then Atlanta, Tampa, Orlando, and the Caribbean.
           </p>
-          <a href="#interest" style={{
+          <a href="#interest" onClick={e=>{e.preventDefault();document.getElementById('interest')?.scrollIntoView({behavior:'smooth',block:'start'});}} style={{
             background:'linear-gradient(135deg,#c9a84c 0%,#d8b06a 50%,#b8893e 100%)',
             color:'#0b1220', padding:'1.1rem 2.8rem', textDecoration:'none',
             fontSize:'0.78rem', fontWeight:600, letterSpacing:'3.2px', textTransform:'uppercase',
