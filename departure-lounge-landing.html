@@ -175,6 +175,31 @@ input,select,textarea{outline:none}
 .bundle-filter-btn{padding:0.5rem 1.1rem;font-size:0.62rem;letter-spacing:2.5px;text-transform:uppercase;color:rgba(var(--text-rgb),0.6);transition:all 0.25s;border:none;background:none;font-family:var(--ff-body);cursor:pointer;}
 .bundle-filter-btn.active{background:var(--gold);color:var(--noir);font-weight:500;}
 .bundle-filter-btn:hover:not(.active){color:var(--gold)}
+/* Filter row wrapper — keeps chips centered, request-custom button discrete to the side */
+.bundle-filter-row{
+  display:flex;align-items:center;justify-content:center;gap:1.5rem;
+  margin-bottom:2rem;flex-wrap:wrap;
+}
+.bundle-filter-row .bundle-filter{margin-bottom:0;}
+.bundle-request-shortcut{
+  background:transparent;border:none;cursor:pointer;
+  font-family:var(--ff-body);font-size:0.66rem;letter-spacing:2px;text-transform:uppercase;
+  color:rgba(var(--gold-rgb),0.8);font-weight:400;
+  display:inline-flex;align-items:center;gap:0.45rem;
+  padding:0.35rem 0;border-bottom:1px solid rgba(var(--gold-rgb),0.3);
+  transition:all .25s;
+}
+.bundle-request-shortcut em{font-style:italic;text-transform:none;letter-spacing:0.2px;font-size:0.78rem;font-family:var(--ff-display);font-weight:300;color:var(--gold);}
+.bundle-request-shortcut:hover{color:var(--gold);border-bottom-color:var(--gold);}
+.bundle-request-shortcut-plus{
+  display:inline-flex;align-items:center;justify-content:center;
+  width:18px;height:18px;border:1px solid currentColor;border-radius:50%;
+  font-size:0.7rem;line-height:1;font-weight:400;
+}
+@media(max-width:600px){
+  .bundle-filter-row{gap:0.85rem;}
+  .bundle-request-shortcut{font-size:0.6rem;}
+}
 
 .bundle-grid{display:grid;grid-template-columns:1fr;gap:2rem;width:100%;margin-bottom:7rem;}
 .bundle-grid-inner{display:grid;grid-template-columns:repeat(auto-fill,minmax(260px,1fr));gap:1.25rem;}
@@ -722,11 +747,20 @@ input,select,textarea{outline:none}
     <h1 class="step-title">Pick your <em>bundle(s).</em></h1>
     <p class="step-sub">Each bundle is curated by Valet By Nuor. Add one for yourself, or multiple for everyone traveling. You can adjust quantities below.</p>
 
-    <div class="bundle-filter" id="bundleFilter">
-      <button class="bundle-filter-btn active" data-filter="all" onclick="setBundleFilter('all', this)">All Vendors</button>
-      <button class="bundle-filter-btn" data-filter="valet" onclick="setBundleFilter('valet', this)">Valet By Nuor</button>
-      <button class="bundle-filter-btn" data-filter="snugl" onclick="setBundleFilter('snugl', this)">SNUGL</button>
-      <button class="bundle-filter-btn" data-filter="nuor-edit" onclick="setBundleFilter('nuor-edit', this)">The Nuor Edit</button>
+    <div class="bundle-filter-row">
+      <div class="bundle-filter" id="bundleFilter">
+        <button class="bundle-filter-btn active" data-filter="all" onclick="setBundleFilter('all', this)">All Vendors</button>
+        <button class="bundle-filter-btn" data-filter="valet" onclick="setBundleFilter('valet', this)">Valet By Nuor</button>
+        <button class="bundle-filter-btn" data-filter="snugl" onclick="setBundleFilter('snugl', this)">SNUGL</button>
+        <button class="bundle-filter-btn" data-filter="nuor-edit" onclick="setBundleFilter('nuor-edit', this)">The Nuor Edit</button>
+      </div>
+      <!-- Discrete action button — not a filter. Scrolls to the custom-request
+           card and auto-expands it. Visually distinct (italic, gold underline)
+           so it doesn't read as another vendor chip. -->
+      <button class="bundle-request-shortcut" onclick="jumpToRequestCard()" type="button">
+        <span class="bundle-request-shortcut-plus">+</span>
+        <span>Request something <em>custom</em></span>
+      </button>
     </div>
 
     <div class="bundle-grid" id="bundleGrid"></div>
@@ -1252,6 +1286,31 @@ function renderComingSoonVendor(vendor) {
       </div>
     </div>
   `;
+}
+
+// Jump to the request card from anywhere in step 3. If the user is on a
+// vendor-specific filter, switch them back to "All Vendors" first so the
+// card exists in the DOM, then scroll + expand.
+function jumpToRequestCard() {
+  const goToCard = () => {
+    const card = document.getElementById('requestCard');
+    if (!card) return;
+    card.scrollIntoView({ behavior: 'smooth', block: 'center' });
+    // Wait for the scroll to settle before expanding, so the form input
+    // gets keyboard focus only after the card is in view.
+    setTimeout(() => expandRequestCard(), 450);
+  };
+
+  if (state.filter !== 'all') {
+    // Programmatically click the "All Vendors" chip to keep filter state,
+    // active styling, and any side effects in lockstep with manual clicks.
+    const allBtn = document.querySelector('#bundleFilter .bundle-filter-btn[data-filter="all"]');
+    if (allBtn) allBtn.click();
+    // Wait a tick for renderBundles to finish before scrolling
+    setTimeout(goToCard, 50);
+  } else {
+    goToCard();
+  }
 }
 
 // ─── CUSTOM REQUEST CARD ───
