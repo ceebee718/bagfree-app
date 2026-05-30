@@ -257,6 +257,113 @@ input,select,textarea{outline:none}
   background:rgba(13,21,37,0.78);border:1px solid rgba(var(--gold-rgb),0.5);
   padding:0.35rem 0.7rem;backdrop-filter:blur(8px);
 }
+/* Custom-request card — appears at the end of "All Vendors" view.
+   Visually distinct from product cards (dashed border, no image, centered)
+   to signal it's an action, not a product. Routes to /concierge.html. */
+.bundle-request-card{
+  background:transparent;border:1px dashed rgba(var(--gold-rgb),0.4);
+  display:flex;flex-direction:column;align-items:center;justify-content:center;
+  text-align:center;padding:2.5rem 1.75rem;cursor:pointer;
+  transition:all .35s cubic-bezier(.4,0,.2,1);
+  min-height:280px;text-decoration:none;color:inherit;
+}
+.bundle-request-card:hover{
+  border-color:var(--gold);background:rgba(var(--gold-rgb),0.04);
+  transform:translateY(-2px);
+}
+.bundle-request-diamond{
+  width:10px;height:10px;background:var(--gold);transform:rotate(45deg);
+  margin-bottom:1.4rem;box-shadow:0 0 16px rgba(var(--gold-rgb),0.55);
+  transition:transform .35s;
+}
+.bundle-request-card:hover .bundle-request-diamond{transform:rotate(135deg) scale(1.15);}
+.bundle-request-title{
+  font-family:var(--ff-display);font-size:1.4rem;font-weight:300;
+  color:var(--white);letter-spacing:-0.3px;line-height:1.25;margin-bottom:0.6rem;
+}
+.bundle-request-title em{font-style:italic;color:var(--gold);}
+.bundle-request-sub{
+  font-size:0.78rem;color:rgba(var(--text-rgb),0.6);line-height:1.7;
+  max-width:280px;margin-bottom:1.4rem;font-weight:300;
+}
+.bundle-request-cta{
+  font-family:var(--ff-body);font-size:0.62rem;letter-spacing:3px;text-transform:uppercase;
+  color:var(--gold);font-weight:500;display:inline-flex;align-items:center;gap:0.5rem;
+  padding-bottom:0.3rem;border-bottom:1px solid rgba(var(--gold-rgb),0.4);
+  transition:all .25s;
+}
+.bundle-request-card:hover .bundle-request-cta{
+  border-bottom-color:var(--gold);letter-spacing:3.5px;
+}
+/* Expanded form state — when user clicks the card, it grows and reveals
+   an inline request form. Hover transform is suppressed in this state so
+   the card stays anchored while the user fills it out. */
+.bundle-request-card.expanded{
+  cursor:default;transform:none;border-style:solid;border-color:var(--gold);
+  background:rgba(var(--gold-rgb),0.04);
+  padding:2.5rem 2rem;align-items:stretch;text-align:left;
+  grid-column: 1 / -1; /* spans the full bundle grid when expanded */
+}
+.bundle-request-card.expanded:hover{transform:none}
+.bundle-request-card.expanded .bundle-request-diamond{margin:0 auto 1.2rem;}
+.bundle-request-card.expanded .bundle-request-title{text-align:center;}
+.bundle-request-card.expanded .bundle-request-sub{margin:0 auto 1.6rem;}
+.bundle-request-card.expanded .bundle-request-cta{display:none;}
+.bundle-request-form{display:none;flex-direction:column;gap:1rem;width:100%;max-width:520px;margin:0 auto;}
+.bundle-request-card.expanded .bundle-request-form{display:flex;}
+.bundle-request-label{
+  font-size:0.6rem;letter-spacing:3px;text-transform:uppercase;color:var(--gold);
+  font-weight:500;margin-bottom:-0.5rem;
+}
+.bundle-request-textarea,.bundle-request-input{
+  background:rgba(var(--bg-rgb),0.4);border:1px solid rgba(var(--gold-rgb),0.32);
+  color:var(--white);padding:0.85rem 1rem;font-size:0.92rem;font-weight:300;
+  transition:all .25s;font-family:var(--ff-body);width:100%;
+}
+.bundle-request-textarea:focus,.bundle-request-input:focus{
+  outline:none;border-color:var(--gold);background:rgba(var(--bg-rgb),0.6);
+}
+.bundle-request-textarea{resize:vertical;min-height:90px;font-family:var(--ff-display);font-size:1rem;line-height:1.55;}
+.bundle-request-actions{display:flex;gap:0.8rem;justify-content:center;align-items:center;margin-top:0.4rem;flex-wrap:wrap;}
+.bundle-request-cancel{
+  background:transparent;border:none;color:rgba(var(--text-rgb),0.55);
+  font-size:0.66rem;letter-spacing:2.5px;text-transform:uppercase;cursor:pointer;
+  padding:0.7rem 1rem;transition:color .2s;font-family:var(--ff-body);
+}
+.bundle-request-cancel:hover{color:var(--gold);}
+.bundle-request-submit{
+  background:var(--gold);color:var(--noir);border:none;
+  padding:0.85rem 1.8rem;font-size:0.7rem;font-weight:600;letter-spacing:2.5px;
+  text-transform:uppercase;cursor:pointer;font-family:var(--ff-body);
+  transition:all .25s;
+}
+.bundle-request-submit:hover:not(:disabled){background:var(--gold-light, #d8b06a);transform:translateY(-1px);}
+.bundle-request-submit:disabled{opacity:0.5;cursor:not-allowed;}
+.bundle-request-err{
+  font-size:0.75rem;color:#E07260;padding:0.55rem 0.85rem;
+  background:rgba(224,114,96,0.08);border:1px solid rgba(224,114,96,0.32);
+  display:none;line-height:1.5;text-align:left;
+}
+.bundle-request-err.show{display:block;}
+/* Success state — fades in after a successful submission, replacing the form */
+.bundle-request-success{display:none;text-align:center;padding:0.5rem 0;}
+.bundle-request-card.success .bundle-request-form,
+.bundle-request-card.success .bundle-request-title,
+.bundle-request-card.success .bundle-request-sub{display:none;}
+.bundle-request-card.success .bundle-request-success{display:block;}
+.bundle-request-card.success .bundle-request-diamond{
+  margin-bottom:1.2rem;transform:rotate(135deg) scale(1.2);
+  box-shadow:0 0 24px rgba(var(--gold-rgb),0.7);
+}
+.bundle-request-success-title{
+  font-family:var(--ff-display);font-size:1.5rem;font-weight:300;
+  color:var(--white);letter-spacing:-0.3px;margin-bottom:0.6rem;
+}
+.bundle-request-success-title em{font-style:italic;color:var(--gold);}
+.bundle-request-success-sub{
+  font-size:0.82rem;color:rgba(var(--text-rgb),0.65);line-height:1.7;
+  max-width:380px;margin:0 auto;font-weight:300;
+}
 .bundle-badge{position:absolute;top:10px;left:10px;font-size:0.55rem;letter-spacing:2px;text-transform:uppercase;padding:4px 9px;background:var(--gold);color:var(--noir);font-weight:600;}
 .bundle-stock-badge{
   position:absolute;top:10px;right:10px;
@@ -1047,7 +1154,48 @@ function renderBundles() {
     return header + `<div class="bundle-grid-inner">${cards}</div>`;
   }).join('');
 
-  grid.innerHTML = sections || '<div style="text-align:center;padding:3rem;color:rgba(var(--text-rgb),0.5)">No bundles in this view.</div>';
+  // Custom-request card — only show on "All Vendors" view, at the end.
+  // Clicking expands the card into an inline form. Submits to the existing
+  // /.netlify/functions/submit-concierge-request endpoint, reusing all the
+  // backend infrastructure built for trip-booking requests. We tag it as
+  // a sourcing request via the special_requests field so the agent email
+  // is easy to triage.
+  const requestCard = (state.filter === 'all') ? `
+    <div class="vendor-section-header" style="margin-top:3.5rem">
+      <div class="vendor-section-name">Custom</div>
+      <div class="vendor-section-tagline">Need something specific? Our concierge will source it.</div>
+    </div>
+    <div class="bundle-grid-inner">
+      <div class="bundle-request-card" id="requestCard" onclick="expandRequestCard(event)">
+        <div class="bundle-request-diamond"></div>
+        <div class="bundle-request-title">Don't see what you need? <em>Just ask.</em></div>
+        <div class="bundle-request-sub">Tell our concierge what you're looking for. We'll source it and have it waiting at your hotel.</div>
+        <div class="bundle-request-cta">Make a request <span>→</span></div>
+
+        <form class="bundle-request-form" id="requestForm" onsubmit="return submitRequestForm(event)">
+          <label class="bundle-request-label" for="requestWhat">What are you looking for?</label>
+          <textarea class="bundle-request-textarea" id="requestWhat" placeholder="e.g., Tampa Bay Buccaneers jerseys for 2 adults, premium hiking gear for a 3-day trip, pet-friendly travel kit..." required></textarea>
+
+          <label class="bundle-request-label" for="requestEmail">Your email</label>
+          <input class="bundle-request-input" id="requestEmail" type="email" placeholder="you@example.com" required>
+
+          <div class="bundle-request-err" id="requestErr"></div>
+
+          <div class="bundle-request-actions">
+            <button type="button" class="bundle-request-cancel" onclick="collapseRequestCard(event)">Cancel</button>
+            <button type="submit" class="bundle-request-submit" id="requestSubmit">Send to concierge →</button>
+          </div>
+        </form>
+
+        <div class="bundle-request-success">
+          <div class="bundle-request-success-title">Request <em>received.</em></div>
+          <div class="bundle-request-success-sub">Our concierge will reach out within 24 hours with options. Watch your inbox.</div>
+        </div>
+      </div>
+    </div>
+  ` : '';
+
+  grid.innerHTML = (sections + requestCard) || '<div style="text-align:center;padding:3rem;color:rgba(var(--text-rgb),0.5)">No bundles in this view.</div>';
 }
 
 function renderBundleCard(b) {
@@ -1104,6 +1252,106 @@ function renderComingSoonVendor(vendor) {
       </div>
     </div>
   `;
+}
+
+// ─── CUSTOM REQUEST CARD ───
+// Inline form expansion + submission to /submit-concierge-request
+function expandRequestCard(ev) {
+  const card = document.getElementById('requestCard');
+  if (!card || card.classList.contains('expanded') || card.classList.contains('success')) return;
+  card.classList.add('expanded');
+  // Pre-fill email if the user already provided one earlier in the flow
+  const emailInput = document.getElementById('requestEmail');
+  if (emailInput && !emailInput.value && state.email) emailInput.value = state.email;
+  // Focus the textarea — small delay so the layout transition doesn't fight the focus
+  setTimeout(() => {
+    const ta = document.getElementById('requestWhat');
+    if (ta) ta.focus();
+  }, 50);
+}
+
+function collapseRequestCard(ev) {
+  if (ev) { ev.stopPropagation(); ev.preventDefault(); }
+  const card = document.getElementById('requestCard');
+  if (card) card.classList.remove('expanded');
+}
+
+async function submitRequestForm(ev) {
+  ev.preventDefault();
+  ev.stopPropagation();
+  const what  = (document.getElementById('requestWhat').value || '').trim();
+  const email = (document.getElementById('requestEmail').value || '').trim();
+  const errEl = document.getElementById('requestErr');
+  const btn   = document.getElementById('requestSubmit');
+
+  errEl.classList.remove('show');
+  errEl.textContent = '';
+
+  if (what.length < 3) {
+    errEl.textContent = 'Tell us a bit more about what you need.';
+    errEl.classList.add('show');
+    return false;
+  }
+  if (!/^[^@\s]+@[^@\s]+\.[^@\s]+$/.test(email)) {
+    errEl.textContent = 'A valid email is required so we can reach you.';
+    errEl.classList.add('show');
+    return false;
+  }
+
+  btn.disabled = true;
+  btn.textContent = 'Sending...';
+
+  // Build trip context — agent uses this to know where/when to deliver.
+  // We send the user's destination as the request's "destination" so the
+  // agent email reads naturally ("X wants to book Tampa" → "X wants Y for
+  // their Tampa trip"). The actual sourcing ask lives in special_requests.
+  const tripContext = state.city
+    ? `${state.city}${state.dateArrive && state.dateDepart
+        ? ` (${fmtDateShort(state.dateArrive)} → ${fmtDateShort(state.dateDepart)})`
+        : ''}`
+    : 'Custom sourcing — destination TBD';
+
+  const specialRequests = `[CUSTOM SOURCING REQUEST — not a trip booking]\n\nLooking for: ${what}` +
+    (state.city ? `\n\nTraveler's trip context: ${tripContext}` : '');
+
+  try {
+    const res = await fetch('/.netlify/functions/submit-concierge-request', {
+      method: 'POST',
+      headers: { 'Content-Type': 'application/json' },
+      body: JSON.stringify({
+        destination:      tripContext,
+        contact_email:    email,
+        special_requests: specialRequests,
+        // These fields aren't relevant for sourcing requests; the backend
+        // tolerates them missing/null.
+        travelers: 1,
+      }),
+    });
+    const data = await res.json().catch(() => ({}));
+    if (!res.ok) {
+      errEl.textContent = data.error || 'Could not submit — please try again.';
+      errEl.classList.add('show');
+      btn.disabled = false; btn.textContent = 'Send to concierge →';
+      return false;
+    }
+    // Success — swap card to confirmation state
+    const card = document.getElementById('requestCard');
+    if (card) card.classList.add('success');
+  } catch (e) {
+    console.error(e);
+    errEl.textContent = 'Connection error — please check your internet and try again.';
+    errEl.classList.add('show');
+    btn.disabled = false; btn.textContent = 'Send to concierge →';
+  }
+  return false;
+}
+
+function fmtDateShort(d) {
+  if (!d) return '';
+  try {
+    const dt = new Date(d.length === 10 ? d + 'T00:00:00' : d);
+    return dt.toLocaleDateString('en-US', { month: 'short', day: 'numeric' });
+  } catch (e) { return d; }
 }
 
 function addBundle(id) {
