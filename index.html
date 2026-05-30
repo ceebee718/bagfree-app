@@ -3871,16 +3871,136 @@ function EssentialsPage({setPage}) {
   return (
     <div style={{background:'#0b1220', color:'var(--white)', minHeight:'100vh'}}>
 
+      {/* ─── AVAILABLE NOW (live vendors) ───
+          Sits ABOVE the hero so visitors immediately see what's actually
+          for sale before the "Coming Soon" vision pitch begins. Both cards
+          link into the lounge-landing flow with ?vendor= so the user lands
+          pre-filtered to that vendor's bundles. */}
+      <section style={{
+        padding:'6.5rem 3rem 3rem',
+        background:'radial-gradient(ellipse 70% 50% at 50% 0%, rgba(201,168,76,0.06), transparent 70%)',
+        position:'relative',
+      }}>
+        <div style={{maxWidth:1100, margin:'0 auto'}}>
+          <div style={{textAlign:'center', marginBottom:'2.5rem'}}>
+            <div style={{display:'inline-flex', alignItems:'center', gap:'0.7rem', marginBottom:'0.9rem'}}>
+              <span style={{
+                width:8, height:8, borderRadius:'50%', background:'#c9a84c',
+                boxShadow:'0 0 12px rgba(201,168,76,0.7)',
+                animation:'pulse 2s ease-in-out infinite',
+                display:'inline-block',
+              }}/>
+              <span style={{fontSize:'0.66rem', letterSpacing:'4px', textTransform:'uppercase', color:'#c9a84c', fontWeight:500}}>Available Now</span>
+            </div>
+            <h2 style={{
+              fontFamily:'var(--ff-display)', fontSize:'clamp(1.8rem, 3.6vw, 2.4rem)',
+              fontWeight:300, letterSpacing:'-0.5px', marginBottom:'0.6rem',
+            }}>
+              What you can <em style={{fontStyle:'italic', color:'#c9a84c'}}>book today</em>.
+            </h2>
+            <p style={{fontSize:'0.95rem', color:'rgba(253,252,248,0.55)', maxWidth:520, margin:'0 auto', lineHeight:1.7, fontWeight:300}}>
+              Live partners with bundles ready to deliver to your hotel.
+            </p>
+          </div>
+
+          <div style={{display:'grid', gridTemplateColumns:'repeat(auto-fit, minmax(300px, 1fr))', gap:'1.5rem'}}>
+            {[
+              { id:'valet', name:'Valet By Nuor',
+                tagline:'Founding supplier · luxury travel kits, emergency wardrobe bundles, wellness pouches.',
+                accent:'Same-day delivery · FL & GA',
+              },
+              { id:'nuor-edit', name:'The Nuor Edit',
+                tagline:'Curated rental wardrobes by Selena. Wear it for your stay, we collect. Tampa Bay only.',
+                accent:'Rental · The Weekend Edit · The Voyager Collection',
+              },
+            ].map(v => (
+              <a key={v.id}
+                href={`/departure-lounge-landing.html?vendor=${v.id}`}
+                style={{
+                  textDecoration:'none', color:'inherit', display:'block',
+                  background:'rgba(var(--gold-rgb),0.05)',
+                  border:'1px solid rgba(var(--gold-rgb),0.22)',
+                  padding:'2rem 1.85rem', position:'relative', overflow:'hidden',
+                  transition:'all 0.35s cubic-bezier(.4,0,.2,1)',
+                }}
+                onMouseOver={e=>{
+                  e.currentTarget.style.background='rgba(var(--gold-rgb),0.10)';
+                  e.currentTarget.style.borderColor='#c9a84c';
+                  e.currentTarget.style.transform='translateY(-3px)';
+                  e.currentTarget.style.boxShadow='0 12px 28px rgba(201,168,76,0.18)';
+                }}
+                onMouseOut={e=>{
+                  e.currentTarget.style.background='rgba(var(--gold-rgb),0.05)';
+                  e.currentTarget.style.borderColor='rgba(var(--gold-rgb),0.22)';
+                  e.currentTarget.style.transform='';
+                  e.currentTarget.style.boxShadow='';
+                }}>
+                {/* Live badge — visually mirrors the "Coming Soon" badge below
+                    but in green to signal it's the opposite state */}
+                <div style={{
+                  position:'absolute', top:14, right:14,
+                  display:'inline-flex', alignItems:'center', gap:'0.4rem',
+                  fontFamily:'var(--ff-body)', fontSize:'0.55rem', letterSpacing:'2.5px',
+                  textTransform:'uppercase', fontWeight:500, color:'#5DCAA5',
+                  border:'1px solid rgba(93,202,165,0.42)', padding:'0.3rem 0.65rem',
+                  background:'rgba(93,202,165,0.08)',
+                }}>
+                  <span style={{width:5,height:5,borderRadius:'50%',background:'#5DCAA5',display:'inline-block'}}/>
+                  Live
+                </div>
+
+                <div style={{display:'flex', alignItems:'center', gap:'1.2rem', marginBottom:'1.2rem'}}>
+                  {/* Vendor initials medallion (graceful fallback for no logo) */}
+                  <div style={{
+                    width:56, height:56, borderRadius:'50%',
+                    background:'linear-gradient(135deg, rgba(201,168,76,0.22), rgba(201,168,76,0.06))',
+                    border:'1px solid rgba(201,168,76,0.4)',
+                    display:'flex', alignItems:'center', justifyContent:'center',
+                    fontFamily:'var(--ff-display)', fontSize:'1.35rem', color:'#c9a84c',
+                    fontWeight:400, letterSpacing:'-0.5px', flexShrink:0,
+                  }}>
+                    {v.name.split(' ').filter(w=>w.match(/[A-Z]/)).map(w=>w[0]).join('').slice(0,2)}
+                  </div>
+                  <div>
+                    <h3 style={{fontFamily:'var(--ff-display)', fontSize:'1.5rem', fontWeight:400, letterSpacing:'-0.3px', lineHeight:1.2}}>{v.name}</h3>
+                    <div style={{fontSize:'0.62rem', letterSpacing:'2px', textTransform:'uppercase', color:'#c9a84c', marginTop:'0.3rem'}}>{v.accent}</div>
+                  </div>
+                </div>
+
+                <p style={{fontSize:'0.88rem', color:'rgba(253,252,248,0.62)', lineHeight:1.7, fontWeight:300, marginBottom:'1.4rem'}}>{v.tagline}</p>
+
+                <div style={{
+                  fontSize:'0.66rem', letterSpacing:'3px', textTransform:'uppercase',
+                  color:'#c9a84c', borderBottom:'1px solid rgba(201,168,76,0.3)',
+                  paddingBottom:'0.45rem', display:'inline-block', fontWeight:500,
+                  transition:'all 0.25s',
+                }}>
+                  Shop {v.name} →
+                </div>
+              </a>
+            ))}
+          </div>
+        </div>
+
+        {/* Visual separator between "Live" and "Coming Soon" sections —
+            a hairline gradient that fades, telling the eye the next section
+            is a tonal shift from "what's here" to "what's coming" */}
+        <div style={{
+          maxWidth:120, margin:'4rem auto 0',
+          height:1, background:'linear-gradient(to right, transparent, rgba(201,168,76,0.4), transparent)',
+        }}/>
+      </section>
+
       {/* ─── HERO ─── */}
       <section style={{
-        position:'relative', padding:'9rem 3rem 6rem', textAlign:'center',
+        position:'relative', padding:'4rem 3rem 6rem', textAlign:'center',
         background:'radial-gradient(ellipse 60% 50% at 50% 30%, rgba(201,168,76,0.08), transparent 70%)',
       }}>
         <div style={{maxWidth:780, margin:'0 auto'}}>
           {/* Eyebrow + coming soon badge */}
           <div style={{display:'inline-flex', alignItems:'center', gap:'0.85rem', marginBottom:'1.6rem'}}>
             <span style={{width:6, height:6, background:'#c9a84c', transform:'rotate(45deg)', display:'inline-block', boxShadow:'0 0 12px rgba(201,168,76,0.55)'}}/>
-            <span style={{fontSize:'0.68rem', letterSpacing:'4px', textTransform:'uppercase', color:'#c9a84c'}}>BagFree Essentials</span>
+            <span style={{fontSize:'0.68rem', letterSpacing:'4px', textTransform:'uppercase', color:'#c9a84c'}}>What's Next</span>
             <span style={comingSoonBadge}>Coming Soon</span>
           </div>
 
