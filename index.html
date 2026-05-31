@@ -150,6 +150,19 @@ a{text-decoration:none}
 .search-section+.search-section{border-top:1px solid var(--border-soft);margin-top:0.2rem;padding-top:0.7rem}
 .search-section-label{display:flex;align-items:center;gap:0.5rem;font-size:0.55rem;letter-spacing:3px;color:var(--gold);font-weight:600;text-transform:uppercase;padding:0 0.7rem 0.55rem}
 .search-section-label svg{width:11px;height:11px}
+.search-section-header{display:flex;justify-content:space-between;align-items:baseline;padding:0 0.7rem 0.55rem;gap:0.6rem}
+.search-section-header .search-section-label{padding:0}
+.search-section-action{font-size:0.58rem;letter-spacing:1.5px;color:var(--faint);text-transform:uppercase;font-weight:500;cursor:pointer;transition:color 0.15s;background:none;border:0}
+.search-section-action:hover{color:var(--gold)}
+.search-suggest-remove{
+  width:22px;height:22px;border-radius:50%;
+  display:flex;align-items:center;justify-content:center;
+  color:var(--faint);opacity:0;transition:all 0.15s;flex-shrink:0;
+  background:transparent;border:0;cursor:pointer;
+}
+.search-suggest:hover .search-suggest-remove{opacity:1}
+.search-suggest-remove:hover{background:rgba(255,255,255,0.08);color:var(--white)}
+.search-suggest-remove svg{width:11px;height:11px}
 .search-suggest{
   display:flex;align-items:center;gap:0.85rem;
   padding:0.65rem 0.8rem;border-radius:8px;
@@ -971,6 +984,59 @@ function track(event, data){
   // TODO Phase 2: fetch('/api/events', {method:'POST', body: JSON.stringify(payload)});
 }
 
+// ── Recent searches (localStorage-backed; Phase 2 will read from user's
+// search_queries table once auth lands) ────────────────────────────────────
+const RECENT_KEY = 'bf_recent_searches';
+const RECENT_MAX = 5;
+
+function getRecent(){
+  try {
+    const raw = localStorage.getItem(RECENT_KEY);
+    return raw ? JSON.parse(raw) : [];
+  } catch(e) { return []; }
+}
+function pushRecent(q){
+  const trimmed = (q || '').trim();
+  if (!trimmed) return;
+  const list = getRecent().filter(function(x){ return x.toLowerCase() !== trimmed.toLowerCase(); });
+  list.unshift(trimmed);
+  const capped = list.slice(0, RECENT_MAX);
+  try { localStorage.setItem(RECENT_KEY, JSON.stringify(capped)); } catch(e) {}
+  return capped;
+}
+function removeRecent(q){
+  const list = getRecent().filter(function(x){ return x !== q; });
+  try { localStorage.setItem(RECENT_KEY, JSON.stringify(list)); } catch(e) {}
+  return list;
+}
+function clearRecent(){
+  try { localStorage.removeItem(RECENT_KEY); } catch(e) {}
+  return [];
+}
+
+// ── URL routing (lightweight, no router lib) ────────────────────────────────
+// Encodes: q (search query), city (selected city id), view (item id being shown)
+function readUrlState(){
+  const params = new URLSearchParams(window.location.search);
+  return {
+    q:    params.get('q')    || '',
+    city: params.get('city') || null,
+    view: params.get('view') || null
+  };
+}
+function writeUrlState(state, replace){
+  const params = new URLSearchParams();
+  if (state.q)    params.set('q', state.q);
+  if (state.city) params.set('city', state.city);
+  if (state.view) params.set('view', state.view);
+  const qs = params.toString();
+  const url = qs ? (window.location.pathname + '?' + qs) : window.location.pathname;
+  try {
+    if (replace) window.history.replaceState({}, '', url);
+    else         window.history.pushState({}, '', url);
+  } catch(e) {}
+}
+
 function highlight(text, q){
   if (!q) return text;
   const i = text.toLowerCase().indexOf(q.toLowerCase());
@@ -1090,6 +1156,8 @@ function SearchBar(props) {
   const focused = focusState[0]; const setFocused = focusState[1];
   const hiState = useState(0);
   const hi = hiState[0]; const setHi = hiState[1];
+  const recentState = useState(getRecent());
+  const recents = recentState[0]; const setRecents = recentState[1];
   const wrapRef = React.useRef(null);
 
   React.useEffect(function(){
@@ -1111,6 +1179,7 @@ function SearchBar(props) {
     const results = rankResults(final, props.city.id, SEARCHABLE);
     if (results.length === 0) track('search_no_results', { q: final, city: props.city.id });
     if (results.expansion) track('search_concept_expansion', { q: final, expansion: results.expansion.expansion, matched: results.expansion.matched });
+    setRecents(pushRecent(final));
     props.onSearch(final, results, results.expansion);
     setFocused(false);
   }
@@ -1119,19 +1188,38 @@ function SearchBar(props) {
     track('suggestion_click', { q: text, city: props.city.id });
     submit(text);
   }
+  function onRecentClick(text){
+    setQ(text);
+    track('recent_click', { q: text, city: props.city.id });
+    submit(text);
+  }
+  function onRecentRemove(e, text){
+    e.stopPropagation();
+    track('recent_remove', { q: text });
+    setRecents(removeRecent(text));
+  }
+  function onRecentClear(e){
+    e.stopPropagation();
+    track('recent_clear', {});
+    setRecents(clearRecent());
+  }
   function onResultClick(item){
     track('result_click_inline', { id: item.id, q: q, city: props.city.id });
     props.onItemClick(item);
     setFocused(false);
   }
   function onKey(e){
-    const items = live.length ? live : suggestions;
+    const items = live.length ? live : (recents.length ? recents.concat(suggestions) : suggestions);
     if (e.key === 'ArrowDown'){ e.preventDefault(); setHi(Math.min(hi + 1, items.length - 1)); }
     else if (e.key === 'ArrowUp'){ e.preventDefault(); setHi(Math.max(hi - 1, 0)); }
     else if (e.key === 'Enter'){
       if (live.length){ onResultClick(live[hi] || live[0]); }
       else if (q.trim()){ submit(); }
-      else if (suggestions[hi]){ onSuggestClick(suggestions[hi].q); }
+      else if (items[hi]){
+        const item = items[hi];
+        if (typeof item === 'string') onRecentClick(item);
+        else onSuggestClick(item.q);
+      }
     }
     else if (e.key === 'Escape'){ setFocused(false); }
   }
@@ -1156,23 +1244,51 @@ function SearchBar(props) {
       {showDrop ? (
         <div className="search-dropdown">
           {q.trim() === '' ? (
-            <div className="search-section">
-              <div className="search-section-label"><Icon.Sparkles/> Suggested searches</div>
-              {suggestions.map(function(s, idx){
-                const I = Icon[s.icon] || Icon.Search;
-                const cls = 'search-suggest' + (idx === hi ? ' hi' : '');
-                return (
-                  <button key={s.q} className={cls} onMouseEnter={function(){ setHi(idx); }}
-                    onClick={function(){ onSuggestClick(s.q); }}>
-                    <span className="search-suggest-icon"><I/></span>
-                    <span className="search-suggest-text">
-                      <div className="search-suggest-title">{s.q}</div>
-                    </span>
-                    <span className="search-suggest-arrow"><Icon.ArrowRight/></span>
-                  </button>
-                );
-              })}
-            </div>
+            <React.Fragment>
+              {recents.length > 0 ? (
+                <div className="search-section">
+                  <div className="search-section-header">
+                    <div className="search-section-label"><Icon.Clock/> Recent</div>
+                    <button className="search-section-action" onClick={onRecentClear}>Clear all</button>
+                  </div>
+                  {recents.map(function(r, idx){
+                    const cls = 'search-suggest' + (idx === hi ? ' hi' : '');
+                    return (
+                      <button key={r} className={cls} onMouseEnter={function(){ setHi(idx); }}
+                        onClick={function(){ onRecentClick(r); }}>
+                        <span className="search-suggest-icon"><Icon.Clock/></span>
+                        <span className="search-suggest-text">
+                          <div className="search-suggest-title">{r}</div>
+                        </span>
+                        <button className="search-suggest-remove"
+                          onClick={function(e){ onRecentRemove(e, r); }}
+                          title="Remove from recent">
+                          <Icon.X/>
+                        </button>
+                      </button>
+                    );
+                  })}
+                </div>
+              ) : null}
+              <div className="search-section">
+                <div className="search-section-label"><Icon.Sparkles/> Suggested searches</div>
+                {suggestions.map(function(s, idx){
+                  const I = Icon[s.icon] || Icon.Search;
+                  const offset = recents.length;
+                  const cls = 'search-suggest' + ((idx + offset) === hi ? ' hi' : '');
+                  return (
+                    <button key={s.q} className={cls} onMouseEnter={function(){ setHi(idx + offset); }}
+                      onClick={function(){ onSuggestClick(s.q); }}>
+                      <span className="search-suggest-icon"><I/></span>
+                      <span className="search-suggest-text">
+                        <div className="search-suggest-title">{s.q}</div>
+                      </span>
+                      <span className="search-suggest-arrow"><Icon.ArrowRight/></span>
+                    </button>
+                  );
+                })}
+              </div>
+            </React.Fragment>
           ) : (
             <div>
               {live.length === 0 ? (
@@ -1716,7 +1832,13 @@ function App() {
   const setActive = stateActive[1];
 
   const initCity = (function(){
+    // URL > localStorage > default
     try {
+      const urlCity = new URLSearchParams(window.location.search).get('city');
+      if (urlCity) {
+        const c = CITIES.find(function(x){ return x.id === urlCity; });
+        if (c && !c.soon) return c;
+      }
       const saved = localStorage.getItem('bf_city');
       if (saved) {
         const c = CITIES.find(function(x){ return x.id === saved; });
@@ -1730,19 +1852,6 @@ function App() {
   const city = stateCity[0];
   const setCityState = stateCity[1];
 
-  function setCity(c) {
-    if (c.soon) return;
-    try { localStorage.setItem('bf_city', c.id); } catch(e) {}
-    setCityState(c);
-    // If a search is active, re-rank its results with the new city so the
-    // listing immediately reflects the city change.
-    if (search.results !== null && search.query) {
-      track('search_recompute_city', { q: search.query, from: city.id, to: c.id });
-      const reranked = rankResults(search.query, c.id, SEARCHABLE);
-      setSearch({ query: search.query, results: reranked, expansion: reranked.expansion || null });
-    }
-  }
-
   const searchState = useState({ query:'', results:null, expansion:null });
   const search = searchState[0];
   const setSearch = searchState[1];
@@ -1751,26 +1860,109 @@ function App() {
   const viewing = viewingState[0];
   const setViewing = viewingState[1];
 
+  // Ref so popstate (with stale closure) can read current city
+  const cityRef = React.useRef(city);
+  React.useEffect(function(){ cityRef.current = city; }, [city]);
+  const searchQueryRef = React.useRef('');
+  React.useEffect(function(){ searchQueryRef.current = search.query; }, [search.query]);
+
+  // ── On mount: restore state from URL ───────────────────────────────────
+  React.useEffect(function(){
+    const url = readUrlState();
+    if (url.q) {
+      const ranked = rankResults(url.q, cityRef.current.id, SEARCHABLE);
+      setSearch({ query: url.q, results: ranked, expansion: ranked.expansion || null });
+      track('search_restored_from_url', { q: url.q, city: cityRef.current.id });
+    }
+    if (url.view) {
+      const item = SEARCHABLE.find(function(x){ return x.id === url.view; });
+      if (item) setViewing(item);
+    }
+    // Normalize URL (e.g. strip stale params, ensure city present if search active)
+    writeUrlState({
+      q:    url.q || '',
+      city: (url.q || url.view) ? cityRef.current.id : '',
+      view: url.view || ''
+    }, true);
+  }, []);
+
+  // ── Back / forward navigation ──────────────────────────────────────────
+  React.useEffect(function(){
+    function onPop(){
+      const url = readUrlState();
+      // City
+      if (url.city) {
+        const c = CITIES.find(function(x){ return x.id === url.city; });
+        if (c && !c.soon && c.id !== cityRef.current.id) {
+          try { localStorage.setItem('bf_city', c.id); } catch(e) {}
+          setCityState(c);
+        }
+      }
+      // Search
+      if (url.q) {
+        const ranked = rankResults(url.q, (url.city || cityRef.current.id), SEARCHABLE);
+        setSearch({ query: url.q, results: ranked, expansion: ranked.expansion || null });
+      } else {
+        setSearch({ query:'', results:null, expansion:null });
+      }
+      // View
+      if (url.view) {
+        const item = SEARCHABLE.find(function(x){ return x.id === url.view; });
+        setViewing(item || null);
+      } else {
+        setViewing(null);
+      }
+    }
+    window.addEventListener('popstate', onPop);
+    return function(){ window.removeEventListener('popstate', onPop); };
+  }, []);
+
+  function setCity(c) {
+    if (c.soon) return;
+    try { localStorage.setItem('bf_city', c.id); } catch(e) {}
+    setCityState(c);
+    if (search.results !== null && search.query) {
+      track('search_recompute_city', { q: search.query, from: city.id, to: c.id });
+      const reranked = rankResults(search.query, c.id, SEARCHABLE);
+      setSearch({ query: search.query, results: reranked, expansion: reranked.expansion || null });
+      writeUrlState({ q: search.query, city: c.id, view: viewing ? viewing.id : '' }, true);
+    } else if (readUrlState().city) {
+      // Only persist city to URL if it was already there (avoid polluting the homepage URL)
+      const url = readUrlState();
+      writeUrlState({ q: url.q, city: c.id, view: url.view }, true);
+    }
+  }
+
   function onSearch(query, results, expansion){
     setSearch({ query: query, results: results, expansion: expansion || null });
     setViewing(null);
+    writeUrlState({ q: query, city: city.id }, false);  // push
     window.scrollTo({ top: 0, behavior: 'smooth' });
   }
   function clearSearch(){
     setSearch({ query:'', results:null, expansion:null });
     setViewing(null);
+    writeUrlState({}, false);  // push (so back returns to results)
     track('search_clear', {});
   }
 
-  // Single click handler used by autocomplete, search results, and related cards.
-  // All items open an in-domain detail view; the user takes the explicit
-  // next step from there (Watch on Platform, Order Now, Book, etc.).
   function openItem(item){
     track('result_view_detail', { id: item.id, category: item.category, platform: item.platform || null });
     setViewing(item);
+    writeUrlState({
+      q: searchQueryRef.current,
+      city: city.id,
+      view: item.id
+    }, false);  // push (back returns to results)
     window.scrollTo({ top: 0, behavior: 'smooth' });
   }
-  function closeDetail(){ setViewing(null); }
+  function closeDetail(){
+    setViewing(null);
+    writeUrlState({
+      q: searchQueryRef.current,
+      city: searchQueryRef.current ? city.id : ''
+    }, true);  // replace (no extra history entry)
+  }
 
   return (
     <div className="app">
