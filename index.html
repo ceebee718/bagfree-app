@@ -70,6 +70,46 @@ a{text-decoration:none}
 .meta-row{display:flex;align-items:center;gap:1.4rem;margin-top:0.9rem;flex-wrap:wrap}
 .meta-item{display:flex;align-items:center;gap:0.45rem;color:var(--muted);font-size:0.85rem}
 .meta-item svg{width:14px;height:14px;color:var(--gold)}
+.meta-item.clickable{cursor:pointer;padding:0.35rem 0.7rem;border-radius:30px;border:1px solid var(--border-soft);transition:all 0.2s;background:rgba(255,255,255,0.02)}
+.meta-item.clickable:hover{border-color:var(--border);background:rgba(201,169,110,0.06);color:var(--white)}
+.meta-item.clickable .chev{width:11px;height:11px;color:var(--muted);transition:transform 0.2s}
+.meta-item.clickable.open .chev{transform:rotate(180deg)}
+
+.city-menu{
+  position:absolute;top:calc(100% + 8px);left:0;z-index:60;
+  min-width:240px;background:var(--card);
+  border:1px solid var(--border);border-radius:10px;
+  padding:0.4rem;box-shadow:0 20px 40px rgba(0,0,0,0.5);
+  animation:menuIn 0.18s ease-out;
+}
+@keyframes menuIn{from{opacity:0;transform:translateY(-4px)}to{opacity:1;transform:none}}
+.city-menu-item{
+  display:flex;align-items:center;justify-content:space-between;gap:0.8rem;
+  padding:0.7rem 0.85rem;border-radius:6px;
+  font-size:0.85rem;color:var(--white);font-weight:400;cursor:pointer;
+  transition:background 0.15s;width:100%;text-align:left;
+}
+.city-menu-item:hover{background:rgba(201,169,110,0.08)}
+.city-menu-item.active{color:var(--gold)}
+.city-menu-item .city-region{font-size:0.7rem;color:var(--faint);font-weight:300;margin-top:0.15rem;display:block}
+.city-menu-item .tick{color:var(--gold);font-size:0.85rem}
+.city-menu-item.disabled{color:var(--faint);cursor:not-allowed}
+.city-menu-item.disabled:hover{background:transparent}
+.city-menu-item .soon{font-size:0.55rem;letter-spacing:1.5px;text-transform:uppercase;color:var(--gold);opacity:0.7;background:rgba(201,169,110,0.08);padding:0.15rem 0.4rem;border-radius:3px}
+.meta-anchor{position:relative}
+
+.sidebar-city{
+  margin-top:-1.2rem;padding:0.7rem 0.95rem;border-radius:8px;
+  border:1px solid var(--border-soft);background:rgba(201,169,110,0.03);
+  display:flex;align-items:center;justify-content:space-between;gap:0.5rem;
+  cursor:pointer;transition:all 0.2s;
+}
+.sidebar-city:hover{border-color:var(--border);background:rgba(201,169,110,0.06)}
+.sidebar-city-info{display:flex;flex-direction:column;gap:0.1rem;min-width:0}
+.sidebar-city-label{font-size:0.55rem;letter-spacing:2.5px;color:var(--gold);text-transform:uppercase;font-weight:600}
+.sidebar-city-name{font-size:0.88rem;color:var(--white);font-weight:400;letter-spacing:0.3px;display:flex;align-items:center;gap:0.4rem}
+.sidebar-city-name svg{width:12px;height:12px;color:var(--gold)}
+.sidebar-city .swap{width:14px;height:14px;color:var(--muted);flex-shrink:0}
 
 .topbar-actions{display:flex;align-items:center;gap:0.4rem;padding-top:0.3rem}
 .icon-btn{width:42px;height:42px;border-radius:50%;display:flex;align-items:center;justify-content:center;color:var(--muted);transition:all 0.2s;position:relative}
@@ -259,8 +299,23 @@ const Icon = {
   Star: () => <svg viewBox="0 0 24 24"><polygon points="12 2 15.09 8.26 22 9.27 17 14.14 18.18 21.02 12 17.77 5.82 21.02 7 14.14 2 9.27 8.91 8.26 12 2"/></svg>,
   Calendar: () => <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" strokeWidth="1.5"><rect x="3" y="4" width="18" height="18" rx="2"/><line x1="16" y1="2" x2="16" y2="6"/><line x1="8" y1="2" x2="8" y2="6"/><line x1="3" y1="10" x2="21" y2="10"/></svg>,
   Package: () => <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" strokeWidth="1.5"><path d="M21 16 V8 a2 2 0 00-1 -1.73 l-7 -4 a2 2 0 00-2 0 l-7 4 A2 2 0 003 8 v8 a2 2 0 001 1.73 l7 4 a2 2 0 002 0 l7 -4 A2 2 0 0021 16 z"/><polyline points="3.27 6.96 12 12.01 20.73 6.96"/><line x1="12" y1="22.08" x2="12" y2="12"/></svg>,
-  Chat: () => <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" strokeWidth="1.5"><path d="M21 11.5 a8.38 8.38 0 01-.9 3.8 a8.5 8.5 0 01-7.6 4.7 a8.38 8.38 0 01-3.8 -.9 L3 21 l1.9 -5.7 a8.38 8.38 0 01-.9 -3.8 a8.5 8.5 0 014.7 -7.6 a8.38 8.38 0 013.8 -.9 h.5 a8.48 8.48 0 018 8 z"/></svg>
+  Chat: () => <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" strokeWidth="1.5"><path d="M21 11.5 a8.38 8.38 0 01-.9 3.8 a8.5 8.5 0 01-7.6 4.7 a8.38 8.38 0 01-3.8 -.9 L3 21 l1.9 -5.7 a8.38 8.38 0 01-.9 -3.8 a8.5 8.5 0 014.7 -7.6 a8.38 8.38 0 013.8 -.9 h.5 a8.48 8.48 0 018 8 z"/></svg>,
+  Swap: () => <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" strokeWidth="1.5"><polyline points="17 1 21 5 17 9"/><path d="M3 11V9a4 4 0 014-4h14"/><polyline points="7 23 3 19 7 15"/><path d="M21 13v2a4 4 0 01-4 4H3"/></svg>
 };
+
+const CITIES = [
+  { id:'savannah', name:'Savannah', region:'Georgia', temp:'72°F',
+    curator:{ name:'Jasmine L.', role:'Savannah Insider', rating:'4.9', reviews:'128', avatar:'https://images.unsplash.com/photo-1494790108377-be9c29b29330?w=120&h=120&fit=crop&crop=faces' } },
+  { id:'atlanta', name:'Atlanta', region:'Georgia', temp:'68°F',
+    curator:{ name:'Marcus D.', role:'Atlanta Insider', rating:'4.8', reviews:'94', avatar:'https://images.unsplash.com/photo-1507003211169-0a1dd7228f2d?w=120&h=120&fit=crop&crop=faces' } },
+  { id:'tampa', name:'Tampa', region:'Florida', temp:'81°F',
+    curator:{ name:'Sofia R.', role:'Tampa Insider', rating:'4.9', reviews:'112', avatar:'https://images.unsplash.com/photo-1438761681033-6461ffad8d80?w=120&h=120&fit=crop&crop=faces' } },
+  { id:'orlando', name:'Orlando', region:'Florida', temp:'79°F',
+    curator:{ name:'Elena V.', role:'Orlando Insider', rating:'4.8', reviews:'87', avatar:'https://images.unsplash.com/photo-1573496359142-b8d87734a5a2?w=120&h=120&fit=crop&crop=faces' } },
+  { id:'miami', name:'Miami', region:'Florida', temp:'84°F', tag:'Next-day',
+    curator:{ name:'Camila P.', role:'Miami Insider', rating:'5.0', reviews:'63', avatar:'https://images.unsplash.com/photo-1580489944761-15a19d654956?w=120&h=120&fit=crop&crop=faces' } },
+  { id:'caribbean', name:'Caribbean', region:'Coming soon', soon:true }
+];
 
 const NAV = [
   { id:'home', label:'Home', icon:Icon.Grid, href:'/' },
@@ -274,7 +329,7 @@ const NAV = [
 ];
 
 const TILES = [
-  { id:'clothing', title:'Clothing Rentals', desc:'Look your best for any occasion.', icon:Icon.Hanger, link:'/departure-lounge-landing.html', img:'https://images.unsplash.com/photo-1490481651871-ab68de25d43d?w=600&h=400&fit=crop' },
+  { id:'clothing', title:'Clothing', desc:'Shop or rent for any occasion.', icon:Icon.Hanger, link:'/departure-lounge-landing.html', img:'https://images.unsplash.com/photo-1490481651871-ab68de25d43d?w=600&h=400&fit=crop' },
   { id:'meals', title:'Arrival Meals', desc:'Chef-prepared meals delivered to your hotel.', icon:Icon.Dome, link:'/legacy.html#essentials', img:'https://images.unsplash.com/photo-1546069901-ba9599a7e63c?w=600&h=400&fit=crop' },
   { id:'snacks', title:'Snacks & Drinks', desc:'Handpicked favorites for your stay.', icon:Icon.Cup, link:'/legacy.html#essentials', img:'https://images.unsplash.com/photo-1599490659213-e2b9527bd087?w=600&h=400&fit=crop' },
   { id:'essentials', title:'Hotel Essentials', desc:'Forgot something? We have got you.', icon:Icon.Bottle, link:'/legacy.html#essentials', img:'https://images.unsplash.com/photo-1556228720-195a672e8a03?w=600&h=400&fit=crop' },
@@ -285,6 +340,17 @@ const TILES = [
 ];
 
 function Sidebar(props) {
+  const menuState = useState(false);
+  const open = menuState[0];
+  const setOpen = menuState[1];
+
+  React.useEffect(function(){
+    if (!open) return;
+    function onDoc(){ setOpen(false); }
+    document.addEventListener('click', onDoc);
+    return function(){ document.removeEventListener('click', onDoc); };
+  }, [open]);
+
   return (
     <aside className="sidebar">
       <div className="brand">
@@ -292,6 +358,18 @@ function Sidebar(props) {
         <div className="brand-name">BAGFREE</div>
         <div className="brand-tag">TRAVEL LIGHT</div>
       </div>
+
+      <div className="meta-anchor" style={{ marginTop:'-1.4rem' }}>
+        <div className="sidebar-city" onClick={function(e){ e.stopPropagation(); setOpen(!open); }}>
+          <div className="sidebar-city-info">
+            <div className="sidebar-city-label">Current City</div>
+            <div className="sidebar-city-name"><Icon.Pin/> {props.city.name}</div>
+          </div>
+          <Icon.Swap/>
+        </div>
+        {open ? <CityMenu city={props.city} setCity={props.setCity} close={function(){ setOpen(false); }}/> : null}
+      </div>
+
       <nav className="nav">
         {NAV.map(function(n){
           const I = n.icon;
@@ -315,16 +393,58 @@ function Sidebar(props) {
   );
 }
 
-function TopBar() {
+function CityMenu(props) {
+  return (
+    <div className="city-menu" onClick={function(e){ e.stopPropagation(); }}>
+      {CITIES.map(function(c){
+        const isActive = c.id === props.city.id;
+        const cls = 'city-menu-item' + (isActive ? ' active' : '') + (c.soon ? ' disabled' : '');
+        return (
+          <button key={c.id} className={cls}
+            onClick={function(){ if(!c.soon){ props.setCity(c); props.close(); } }}>
+            <span>
+              {c.name}
+              <span className="city-region">{c.region}{c.tag ? ' · ' + c.tag : ''}</span>
+            </span>
+            {c.soon
+              ? <span className="soon">Soon</span>
+              : (isActive ? <span className="tick">✓</span> : null)}
+          </button>
+        );
+      })}
+    </div>
+  );
+}
+
+function TopBar(props) {
+  const menuState = useState(false);
+  const open = menuState[0];
+  const setOpen = menuState[1];
+
+  React.useEffect(function(){
+    if (!open) return;
+    function onDoc(){ setOpen(false); }
+    document.addEventListener('click', onDoc);
+    return function(){ document.removeEventListener('click', onDoc); };
+  }, [open]);
+
+  const cls = 'meta-item clickable' + (open ? ' open' : '');
+
   return (
     <div className="topbar">
       <div className="greeting">
         <div className="greeting-sub">Good Morning, Olivia <Icon.Sun/></div>
-        <h1 className="greeting-title">Welcome to Savannah</h1>
+        <h1 className="greeting-title">Welcome to {props.city.name}</h1>
         <div className="greeting-tag">Everything you need. Delivered before you arrive.</div>
         <div className="meta-row">
-          <div className="meta-item"><Icon.Pin/> Savannah, Georgia</div>
-          <div className="meta-item"><Icon.Sun/> 72°F</div>
+          <div className="meta-anchor">
+            <div className={cls} onClick={function(e){ e.stopPropagation(); setOpen(!open); }}>
+              <Icon.Pin/> {props.city.name}, {props.city.region}
+              <span className="chev"><Icon.Chevron/></span>
+            </div>
+            {open ? <CityMenu city={props.city} setCity={props.setCity} close={function(){ setOpen(false); }}/> : null}
+          </div>
+          {props.city.temp ? <div className="meta-item"><Icon.Sun/> {props.city.temp}</div> : null}
         </div>
       </div>
       <div className="topbar-actions">
@@ -397,28 +517,32 @@ function VideoSection() {
   );
 }
 
-function RightRail() {
+function RightRail(props) {
+  const c = props.city;
+  const cur = c.curator || {};
   return (
     <aside className="right-rail">
+      {c.curator ? (
       <div className="widget">
         <div className="widget-label">Your Curator</div>
         <div className="curator-row">
-          <div className="curator-avatar"></div>
+          <div className="curator-avatar" style={{ backgroundImage:'url(' + cur.avatar + ')' }}></div>
           <div className="curator-info">
-            <div className="curator-name">Jasmine L.</div>
-            <div className="curator-role">Savannah Insider</div>
-            <div className="curator-rating"><Icon.Star/> 4.9 <span>(128)</span></div>
+            <div className="curator-name">{cur.name}</div>
+            <div className="curator-role">{cur.role}</div>
+            <div className="curator-rating"><Icon.Star/> {cur.rating} <span>({cur.reviews})</span></div>
           </div>
         </div>
         <button className="btn-outline">View Profile</button>
       </div>
+      ) : null}
 
       <div className="widget">
         <div className="widget-label">Your Trip</div>
         <div className="trip-row">
           <div>
             <div className="trip-dates">May 24 - May 27, 2025</div>
-            <div className="trip-hotel">The Alida, Savannah</div>
+            <div className="trip-hotel">{c.id === 'savannah' ? 'The Alida, ' : ''}{c.name}</div>
           </div>
           <Icon.Calendar/>
         </div>
@@ -447,14 +571,14 @@ function RightRail() {
       </div>
 
       <div className="widget">
-        <div className="widget-label">Savannah Guide</div>
+        <div className="widget-label">{c.name} Guide</div>
         <div className="guide-row">
           <div className="guide-left">
-            <div className="guide-tag">Your curated guide to the best of Savannah.</div>
+            <div className="guide-tag">Your curated guide to the best of {c.name}.</div>
             <a href="#guide" className="link-gold">View Guide <Icon.ArrowRight/></a>
           </div>
           <div className="guide-img">
-            <div className="guide-img-label">SAVANNAH</div>
+            <div className="guide-img-label">{c.name.toUpperCase()}</div>
             <div className="guide-img-mini">GUIDE</div>
           </div>
         </div>
@@ -472,19 +596,41 @@ function ConciergeChat() {
 }
 
 function App() {
-  const state = useState('home');
-  const active = state[0];
-  const setActive = state[1];
+  const stateActive = useState('home');
+  const active = stateActive[0];
+  const setActive = stateActive[1];
+
+  const initCity = (function(){
+    try {
+      const saved = localStorage.getItem('bf_city');
+      if (saved) {
+        const c = CITIES.find(function(x){ return x.id === saved; });
+        if (c && !c.soon) return c;
+      }
+    } catch(e) {}
+    return CITIES[0];
+  })();
+
+  const stateCity = useState(initCity);
+  const city = stateCity[0];
+  const setCityState = stateCity[1];
+
+  function setCity(c) {
+    if (c.soon) return;
+    try { localStorage.setItem('bf_city', c.id); } catch(e) {}
+    setCityState(c);
+  }
+
   return (
     <div className="app">
-      <Sidebar active={active} setActive={setActive}/>
+      <Sidebar active={active} setActive={setActive} city={city} setCity={setCity}/>
       <main className="main">
-        <TopBar/>
+        <TopBar city={city} setCity={setCity}/>
         <Grid/>
         <QuoteSection/>
         <VideoSection/>
       </main>
-      <RightRail/>
+      <RightRail city={city}/>
       <ConciergeChat/>
     </div>
   );
