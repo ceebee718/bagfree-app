@@ -186,6 +186,17 @@ a{text-decoration:none}
 .results-clear:hover{gap:0.55rem}
 .results-clear svg{width:12px;height:12px}
 
+.smart-match{
+  display:inline-flex;align-items:center;gap:0.5rem;
+  background:linear-gradient(135deg,rgba(201,169,110,0.10),rgba(201,169,110,0.04));
+  border:1px solid rgba(201,169,110,0.25);
+  padding:0.55rem 0.9rem;border-radius:30px;margin-top:0.7rem;
+  font-size:0.78rem;color:var(--white);font-weight:300;
+}
+.smart-match svg{width:13px;height:13px;color:var(--gold);flex-shrink:0}
+.smart-match-label{color:var(--gold);font-weight:600;font-size:0.6rem;letter-spacing:2px;text-transform:uppercase;margin-right:0.15rem}
+.smart-match-terms{color:var(--white);font-weight:400}
+
 .results-group{display:flex;flex-direction:column;gap:1rem;margin-top:1.4rem}
 .results-group-head{display:flex;align-items:baseline;justify-content:space-between;gap:0.8rem;padding-left:0.2rem}
 .results-group-title{font-family:var(--ff-display);font-size:1.4rem;font-weight:500;letter-spacing:-0.2px}
@@ -510,12 +521,12 @@ const CATEGORY_ORDER = ['essentials','clothing','meals','snacks','favorites','so
 
 // ── Suggested searches (Phase 1: static; later: from search_queries table) ──
 const SUGGESTED = [
+  { q:'I forgot SPF',                  icon:'Sparkles' },
+  { q:'Dinner outfit',                 icon:'Sparkles' },
   { q:'Arrival meals in Savannah',     icon:'Dome'     },
-  { q:'3-day clothing rental',         icon:'Hanger'   },
+  { q:'Where locals go',               icon:'Sparkles' },
   { q:'Hotel essentials',              icon:'Bottle'   },
-  { q:'Local favorites',               icon:'Sparkles' },
   { q:'Trending on TikTok',            icon:'Play'     },
-  { q:'Travel curators',               icon:'Person'   },
   { q:'Experiences near my hotel',     icon:'Compass'  }
 ];
 
@@ -716,6 +727,79 @@ const SEARCHABLE = [
     popularity_score:65, freshness_score:80, conversion_score:48 }
 ];
 
+// ── Semantic intent (Phase 2.1 client shim) ─────────────────────────────────
+// Maps natural-language phrasings to canonical search tokens so queries like
+// "I forgot SPF", "dinner outfit", or "where locals go" actually return the
+// right items. Phase 2.2 will replace this with real pgvector embeddings via
+// bf_search_hybrid — the front-end contract stays identical.
+const CONCEPTS = [
+  { triggers:['spf','sun protection','sunblock','sunburn','forgot sunscreen','beach essentials','avoid burning'],
+    expansion:'sunscreen beach spf summer' },
+  { triggers:['dinner outfit','something to wear','nice clothes','fancy clothes','formal','black tie','dressed up'],
+    expansion:'dress wardrobe rental clothing formal suit' },
+  { triggers:['where locals go','hidden gems','local favorite','locals love','off the beaten path','authentic'],
+    expansion:'local hidden curator favorite insider' },
+  { triggers:['hungry','what to eat','where to eat','need food','grab a bite'],
+    expansion:'meal food dinner brunch arrival' },
+  { triggers:['charge','charger','battery','phone died','dead phone','cable'],
+    expansion:'charger cable usb phone tech' },
+  { triggers:['after dark','nightlife','late night','bars','speakeasy','drinks tonight'],
+    expansion:'speakeasy bar cocktail nightlife bourbon' },
+  { triggers:['vacation outfit','beach clothes','resort wear','warm weather'],
+    expansion:'resort linen swim beach pool' },
+  { triggers:['history','historic','haunted','ghosts','ghost tour'],
+    expansion:'ghost historic tour walking river' },
+  { triggers:['romantic','date night','special occasion','anniversary'],
+    expansion:'dinner wine sunset cocktail experience' },
+  { triggers:['kids','family friendly','with kids','toddler','children'],
+    expansion:'park family experience walk' },
+  { triggers:['hangover','rough morning','cure'],
+    expansion:'breakfast coffee brunch waffle' },
+  { triggers:['instagram','photo','photogenic','scenic','aesthetic'],
+    expansion:'park fountain sunset scenic riverwalk' },
+  { triggers:['cocktail','mixed drink','happy hour','wine night'],
+    expansion:'cocktail bourbon wine tea kit pairing' },
+  { triggers:['trending','popular','going viral','whats hot','everyone is talking about'],
+    expansion:'trending tiktok social viral' },
+  { triggers:['help me plan','plan my trip','what should i do','concierge'],
+    expansion:'curator concierge insider experiences favorites' },
+  { triggers:['arriving','just landed','first day','arrival'],
+    expansion:'arrival meal essentials welcome' },
+  { triggers:['leaving','last day','departure','one more night'],
+    expansion:'experience favorite curator hotel' },
+  { triggers:['toiletries','forgot','missed packing','restock','ran out'],
+    expansion:'toiletries restock essentials toothbrush deodorant' },
+  { triggers:['real food','comfort food','homesick','southern'],
+    expansion:'southern dinner low-country boil comfort' }
+];
+
+function expandQuery(qRaw) {
+  const q = (qRaw || '').trim().toLowerCase();
+  if (!q) return { original: qRaw, expanded: '', applied: false, matched: [] };
+  const matched = [];
+  const additions = [];
+  for (let i = 0; i < CONCEPTS.length; i++) {
+    const c = CONCEPTS[i];
+    for (let j = 0; j < c.triggers.length; j++) {
+      if (q.indexOf(c.triggers[j]) >= 0) {
+        matched.push(c.triggers[j]);
+        additions.push(c.expansion);
+        break;
+      }
+    }
+  }
+  if (additions.length === 0) {
+    return { original: qRaw, expanded: qRaw, applied: false, matched: [] };
+  }
+  return {
+    original: qRaw,
+    expanded: qRaw + ' ' + additions.join(' '),
+    applied: true,
+    matched: matched,
+    expansion: additions.join(', ')
+  };
+}
+
 // ── Ranking (Phase 1: client-side; mirror this in a Postgres view later) ────
 function computeRealityRank(item){
   // Phase 1 placeholder: weighted average of popularity, conversion, freshness.
@@ -723,9 +807,12 @@ function computeRealityRank(item){
   return Math.round(item.popularity_score * 0.4 + item.conversion_score * 0.4 + item.freshness_score * 0.2);
 }
 function rankResults(query, cityId, items){
-  const q = (query || '').trim().toLowerCase();
+  const original = (query || '').trim();
+  const exp = expandQuery(original);
+  // Use the expanded query for matching, but keep original for display.
+  const q = (exp.expanded || '').trim().toLowerCase();
   const words = q.split(/\s+/).filter(Boolean);
-  return items
+  const ranked = items
     .map(function(it){
       const haystack = (it.title + ' ' + it.description + ' ' + (it.tags || []).join(' ') + ' ' + it.city + ' ' + it.category).toLowerCase();
       let kw = 0;
@@ -735,8 +822,11 @@ function rankResults(query, cityId, items){
       const score = kw + cityMatch + realityRank * 0.6;
       return Object.assign({}, it, { _score:score, _kw:kw, reality_rank_score:realityRank });
     })
-    .filter(function(it){ return q === '' || it._kw > 0; })
+    .filter(function(it){ return original === '' || it._kw > 0; })
     .sort(function(a,b){ return b._score - a._score; });
+  // Attach expansion metadata so callers can show the "Smart match" hint
+  ranked.expansion = exp.applied ? exp : null;
+  return ranked;
 }
 
 // ── Analytics (Phase 1: localStorage + console; later: POST to /api/events) ─
@@ -890,7 +980,8 @@ function SearchBar(props) {
     track('search_submit', { q: final, city: props.city.id });
     const results = rankResults(final, props.city.id, SEARCHABLE);
     if (results.length === 0) track('search_no_results', { q: final, city: props.city.id });
-    props.onSearch(final, results);
+    if (results.expansion) track('search_concept_expansion', { q: final, expansion: results.expansion.expansion, matched: results.expansion.matched });
+    props.onSearch(final, results, results.expansion);
     setFocused(false);
   }
   function onSuggestClick(text){
@@ -1008,6 +1099,13 @@ function SearchResults(props) {
         <div>
           <h2 className="results-title">Results for <em>"{props.query}"</em></h2>
           <div className="results-count" style={{ marginTop:'0.35rem' }}>{props.results.length} matches across BagFree</div>
+          {props.expansion ? (
+            <div className="smart-match">
+              <Icon.Sparkles/>
+              <span className="smart-match-label">Smart match</span>
+              <span className="smart-match-terms">also searching: {props.expansion.expansion}</span>
+            </div>
+          ) : null}
         </div>
         <button className="results-clear" onClick={props.onClear}>
           <Icon.X/> Clear search
@@ -1289,16 +1387,16 @@ function App() {
     setCityState(c);
   }
 
-  const searchState = useState({ query:'', results:null });
+  const searchState = useState({ query:'', results:null, expansion:null });
   const search = searchState[0];
   const setSearch = searchState[1];
 
-  function onSearch(query, results){
-    setSearch({ query: query, results: results });
+  function onSearch(query, results, expansion){
+    setSearch({ query: query, results: results, expansion: expansion || null });
     window.scrollTo({ top: 0, behavior: 'smooth' });
   }
   function clearSearch(){
-    setSearch({ query:'', results:null });
+    setSearch({ query:'', results:null, expansion:null });
     track('search_clear', {});
   }
 
@@ -1314,7 +1412,7 @@ function App() {
             <VideoSection/>
           </React.Fragment>
         ) : (
-          <SearchResults query={search.query} results={search.results} onClear={clearSearch}/>
+          <SearchResults query={search.query} results={search.results} expansion={search.expansion} onClear={clearSearch}/>
         )}
       </main>
       <RightRail city={city}/>
