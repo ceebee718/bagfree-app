@@ -363,6 +363,19 @@ a{text-decoration:none}
 .detail-related-title{font-family:var(--ff-display);font-size:1.55rem;font-weight:500;letter-spacing:-0.2px}
 .detail-related-tag{font-size:0.78rem;color:var(--muted);font-weight:300}
 
+.detail-tags{display:flex;flex-wrap:wrap;gap:0.4rem;margin-top:0.2rem}
+.detail-tag{
+  font-size:0.7rem;color:var(--muted);
+  padding:0.3rem 0.7rem;
+  background:rgba(255,255,255,0.03);
+  border:1px solid var(--border-soft);
+  border-radius:30px;
+  letter-spacing:0.2px;
+}
+.detail-partner-row{display:flex;align-items:center;gap:0.5rem;font-size:0.78rem;color:var(--muted)}
+.detail-partner-row svg{width:13px;height:13px;color:var(--gold)}
+.detail-partner-row strong{color:var(--white);font-weight:500}
+
 .topbar-actions{display:flex;align-items:center;gap:0.4rem;padding-top:0.3rem}
 .icon-btn{width:42px;height:42px;border-radius:50%;display:flex;align-items:center;justify-content:center;color:var(--muted);transition:all 0.2s;position:relative}
 .icon-btn:hover{background:rgba(255,255,255,0.05);color:var(--white)}
@@ -541,6 +554,7 @@ const Icon = {
   Pin: () => <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" strokeWidth="1.5"><path d="M21 10 c0 7 -9 13 -9 13 s-9 -6 -9 -13 a9 9 0 0118 0 z"/><circle cx="12" cy="10" r="3"/></svg>,
   ArrowRight: () => <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" strokeWidth="1.5"><line x1="5" y1="12" x2="19" y2="12"/><polyline points="12 5 19 12 12 19"/></svg>,
   ArrowLeft: () => <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" strokeWidth="1.5"><line x1="19" y1="12" x2="5" y2="12"/><polyline points="12 19 5 12 12 5"/></svg>,
+  Check: () => <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" strokeWidth="1.8"><polyline points="20 6 9 17 4 12"/></svg>,
   Hanger: () => <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" strokeWidth="1.3"><path d="M12 6 a2 2 0 102 -2"/><path d="M3 18 l9 -6 l9 6"/><path d="M3 18 h18"/></svg>,
   Dome: () => <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" strokeWidth="1.3"><path d="M3 18 h18"/><path d="M4 18 a8 8 0 0116 0"/><circle cx="12" cy="6" r="1"/><line x1="12" y1="7" x2="12" y2="10"/></svg>,
   Cup: () => <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" strokeWidth="1.3"><path d="M4 8 h13 v6 a5 5 0 01-5 5 h-3 a5 5 0 01-5 -5 z"/><path d="M17 9 h2 a3 3 0 010 6 h-2"/><path d="M7 2 c0 1.5 1 2 1 3.5"/><path d="M11 2 c0 1.5 1 2 1 3.5"/></svg>,
@@ -572,6 +586,18 @@ const Icon = {
 
 const PLATFORM_ICONS = { tiktok:'TikTok', instagram:'Instagram', youtube:'YouTube', threads:'Threads', twitter:'Twitter', reddit:'Reddit', vimeo:'Vimeo' };
 const PLATFORM_LABELS = { tiktok:'TikTok', instagram:'Instagram', youtube:'YouTube', threads:'Threads', twitter:'X', reddit:'Reddit', vimeo:'Vimeo' };
+
+// CTA copy per category. Detail-view primary button uses these.
+const CTA_LABELS = {
+  clothing:    'Reserve',
+  essentials:  'Order Now',
+  meals:       'Order Now',
+  snacks:      'Order Now',
+  favorites:   'View Local Pick',
+  experiences: 'Book Experience',
+  curators:    'Book Curator',
+  hotels:      'Open Concierge'
+};
 
 function formatCount(n){
   if (n == null) return '';
@@ -1232,10 +1258,11 @@ function SearchResults(props) {
                   const isSocial = it.category === 'social';
                   const platformIcon = isSocial && PLATFORM_ICONS[it.platform] ? Icon[PLATFORM_ICONS[it.platform]] : null;
                   const platformLabel = isSocial ? (PLATFORM_LABELS[it.platform] || it.platform) : null;
-                  const ctaLabel = isSocial ? 'Preview' : 'View details';
-
-                  const innerContent = (
-                    <React.Fragment>
+                  return (
+                    <div key={it.id}
+                         className={'result-card' + (isSocial ? ' social' : '')}
+                         style={{ cursor:'pointer' }}
+                         onClick={function(){ props.onItemClick(it); }}>
                       <div className="result-img" style={{ backgroundImage:'url(' + it.image_url + ')' }}>
                         {isSocial && platformIcon ? (
                           <span className={'result-platform p-' + it.platform}>
@@ -1263,25 +1290,9 @@ function SearchResults(props) {
                           <div className="result-city"><Icon.Pin/> {it.city === 'all' ? 'All cities' : (CITIES.find(function(c){ return c.id === it.city; }) || {}).name || it.city}</div>
                         )}
                         <div className="result-desc">{it.description}</div>
-                        <span className="result-cta">{ctaLabel} <Icon.ArrowRight/></span>
+                        <span className="result-cta">View details <Icon.ArrowRight/></span>
                       </div>
-                    </React.Fragment>
-                  );
-
-                  return isSocial ? (
-                    <div key={it.id}
-                         className="result-card social"
-                         style={{ cursor:'pointer' }}
-                         onClick={function(){ props.onItemClick(it); }}>
-                      {innerContent}
                     </div>
-                  ) : (
-                    <a key={it.id}
-                       className="result-card"
-                       href={it.destination_url}
-                       onClick={function(){ track('result_click', { id: it.id, q: props.query }); }}>
-                      {innerContent}
-                    </a>
                   );
                 })}
               </div>
@@ -1317,11 +1328,21 @@ function ResultDetail(props){
   const platformIcon = isSocial && PLATFORM_ICONS[item.platform] ? Icon[PLATFORM_ICONS[item.platform]] : null;
   const platformLabel = isSocial ? (PLATFORM_LABELS[item.platform] || item.platform) : null;
   const related = relatedItems(item, SEARCHABLE);
+  const ctaLabel = isSocial ? ('Watch on ' + platformLabel) : (CTA_LABELS[item.category] || 'View on BagFree');
+  const categoryLabel = CATEGORIES[item.category] ? CATEGORIES[item.category].label : item.category;
+  const cityLabel = item.city === 'all' ? 'All cities' : ((CITIES.find(function(c){ return c.id === item.city; }) || {}).name || item.city);
+  const partnerName = item.partner_id && item.partner_id !== 'p_social_organic'
+    ? item.partner_id.replace(/^p_/, '').replace(/_/g, ' ').replace(/\b\w/g, function(s){ return s.toUpperCase(); })
+    : null;
 
-  function openExternal(e){
-    if (e) e.preventDefault();
+  function onHeroClick(e){
+    if (!isSocial) return;       // only social hero opens external on click
+    e.preventDefault();
     track('result_external_click', { id: item.id, platform: item.platform });
     window.open(item.destination_url, '_blank', 'noopener,noreferrer');
+  }
+  function onCtaClick(){
+    track('cta_click', { id: item.id, category: item.category, label: ctaLabel });
   }
 
   return (
@@ -1330,7 +1351,9 @@ function ResultDetail(props){
         <Icon.ArrowLeft/> Back to results
       </button>
 
-      <div className="detail-hero" style={{ backgroundImage:'url(' + item.image_url + ')' }} onClick={openExternal}>
+      <div className="detail-hero"
+           style={Object.assign({ backgroundImage:'url(' + item.image_url + ')' }, isSocial ? {} : { cursor:'default' })}
+           onClick={onHeroClick}>
         {isSocial && platformIcon ? (
           <div className="detail-hero-platform">
             <span className={'result-platform p-' + item.platform}>
@@ -1338,16 +1361,21 @@ function ResultDetail(props){
             </span>
           </div>
         ) : null}
-        <div className="detail-hero-overlay">
-          <div className="detail-play"><Icon.Play/></div>
-        </div>
+        {isSocial ? (
+          <div className="detail-hero-overlay">
+            <div className="detail-play"><Icon.Play/></div>
+          </div>
+        ) : null}
       </div>
 
       <div className="detail-info">
         <div className="detail-main">
           {isSocial && platformIcon ? (
             <div className="detail-platform-row">{React.createElement(platformIcon)} {platformLabel}</div>
-          ) : null}
+          ) : (
+            <div className="detail-platform-row">{categoryLabel}</div>
+          )}
+
           <h1 className="detail-title">{item.title}</h1>
 
           {isSocial ? (
@@ -1364,56 +1392,97 @@ function ResultDetail(props){
             </div>
           ) : (
             <div className="detail-creator-row">
-              <span className="stat-inline"><Icon.Pin/> {item.city === 'all' ? 'All cities' : ((CITIES.find(function(c){ return c.id === item.city; }) || {}).name || item.city)}</span>
-              <span className="sep">·</span>
-              <span>{CATEGORIES[item.category] ? CATEGORIES[item.category].label : item.category}</span>
+              <span className="stat-inline"><Icon.Pin/> {cityLabel}</span>
+              {partnerName ? (
+                <React.Fragment>
+                  <span className="sep">·</span>
+                  <span className="detail-partner-row"><Icon.Check/> Verified Partner</span>
+                </React.Fragment>
+              ) : null}
             </div>
           )}
 
           <p className="detail-description">{item.description}</p>
+
+          {item.tags && item.tags.length > 0 ? (
+            <div className="detail-tags">
+              {item.tags.slice(0, 8).map(function(t){
+                return <span key={t} className="detail-tag">#{t}</span>;
+              })}
+            </div>
+          ) : null}
 
           <div className="detail-actions">
             <a className="detail-cta-primary"
                href={item.destination_url}
                target={isSocial ? '_blank' : undefined}
                rel={isSocial ? 'noopener noreferrer' : undefined}
-               onClick={function(){ track('result_external_click', { id: item.id, platform: item.platform }); }}>
-              {isSocial ? ('Watch on ' + platformLabel) : 'View on BagFree'} <Icon.ArrowRight/>
+               onClick={onCtaClick}>
+              {ctaLabel} <Icon.ArrowRight/>
             </a>
           </div>
         </div>
 
-        {isSocial ? (
-          <div className="detail-aside">
-            <div className="detail-aside-label">Engagement</div>
-            <div className="detail-stat">
-              <span className="detail-stat-label">Views</span>
-              <span className="detail-stat-value">{formatCount(item.view_count) || '—'}</span>
-            </div>
-            <div className="detail-aside-divider"></div>
-            <div className="detail-stat">
-              <span className="detail-stat-label">Likes</span>
-              <span className="detail-stat-value">{formatCount(item.like_count) || '—'}</span>
-            </div>
-            <div className="detail-aside-divider"></div>
-            <div className="detail-stat">
-              <span className="detail-stat-label">RealityRank</span>
-              <span className="detail-stat-value">{item.reality_rank_score || computeRealityRank(item)}</span>
-            </div>
-            <div className="detail-aside-divider"></div>
-            <div className="detail-stat">
-              <span className="detail-stat-label">Posted</span>
-              <span className="detail-stat-value" style={{ fontSize:'0.95rem' }}>{relativeTime(item.posted_at)}</span>
-            </div>
-          </div>
-        ) : null}
+        <div className="detail-aside">
+          {isSocial ? (
+            <React.Fragment>
+              <div className="detail-aside-label">Engagement</div>
+              <div className="detail-stat">
+                <span className="detail-stat-label">Views</span>
+                <span className="detail-stat-value">{formatCount(item.view_count) || '—'}</span>
+              </div>
+              <div className="detail-aside-divider"></div>
+              <div className="detail-stat">
+                <span className="detail-stat-label">Likes</span>
+                <span className="detail-stat-value">{formatCount(item.like_count) || '—'}</span>
+              </div>
+              <div className="detail-aside-divider"></div>
+              <div className="detail-stat">
+                <span className="detail-stat-label">RealityRank</span>
+                <span className="detail-stat-value">{item.reality_rank_score || computeRealityRank(item)}</span>
+              </div>
+              <div className="detail-aside-divider"></div>
+              <div className="detail-stat">
+                <span className="detail-stat-label">Posted</span>
+                <span className="detail-stat-value" style={{ fontSize:'0.95rem' }}>{relativeTime(item.posted_at)}</span>
+              </div>
+            </React.Fragment>
+          ) : (
+            <React.Fragment>
+              <div className="detail-aside-label">Key Info</div>
+              <div className="detail-stat">
+                <span className="detail-stat-label">Category</span>
+                <span className="detail-stat-value" style={{ fontSize:'0.95rem' }}>{categoryLabel}</span>
+              </div>
+              <div className="detail-aside-divider"></div>
+              <div className="detail-stat">
+                <span className="detail-stat-label">City</span>
+                <span className="detail-stat-value" style={{ fontSize:'0.95rem' }}>{cityLabel}</span>
+              </div>
+              <div className="detail-aside-divider"></div>
+              <div className="detail-stat">
+                <span className="detail-stat-label">RealityRank</span>
+                <span className="detail-stat-value">{item.reality_rank_score || computeRealityRank(item)}</span>
+              </div>
+              {partnerName ? (
+                <React.Fragment>
+                  <div className="detail-aside-divider"></div>
+                  <div className="detail-stat">
+                    <span className="detail-stat-label">Partner</span>
+                    <span className="detail-stat-value" style={{ fontSize:'0.95rem' }}>{partnerName}</span>
+                  </div>
+                </React.Fragment>
+              ) : null}
+            </React.Fragment>
+          )}
+        </div>
       </div>
 
       {related.length > 0 ? (
         <React.Fragment>
           <div className="detail-related-head">
             <h3 className="detail-related-title">Related on BagFree</h3>
-            <span className="detail-related-tag">Based on this post's topics and city</span>
+            <span className="detail-related-tag">Based on this item's topics and city</span>
           </div>
           <div className="results-grid">
             {related.map(function(it){
@@ -1682,16 +1751,12 @@ function App() {
   }
 
   // Single click handler used by autocomplete, search results, and related cards.
-  // Social posts open an in-domain detail view; products navigate to their page.
+  // All items open an in-domain detail view; the user takes the explicit
+  // next step from there (Watch on Platform, Order Now, Book, etc.).
   function openItem(item){
-    if (item.category === 'social'){
-      track('result_view_detail', { id: item.id, platform: item.platform });
-      setViewing(item);
-      window.scrollTo({ top: 0, behavior: 'smooth' });
-    } else {
-      track('result_click', { id: item.id });
-      window.location.href = item.destination_url;
-    }
+    track('result_view_detail', { id: item.id, category: item.category, platform: item.platform || null });
+    setViewing(item);
+    window.scrollTo({ top: 0, behavior: 'smooth' });
   }
   function closeDetail(){ setViewing(null); }
 
