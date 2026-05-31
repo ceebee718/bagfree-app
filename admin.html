@@ -141,6 +141,7 @@ tr:hover td{background:rgba(201,169,110,0.03)}
         <option value="meals">Arrival Meals</option>
         <option value="snacks">Snacks &amp; Drinks</option>
         <option value="favorites">Local Favorites</option>
+        <option value="social">From Social</option>
         <option value="experiences">Experiences</option>
         <option value="curators">Curators</option>
         <option value="hotels">Hotels</option>
@@ -155,6 +156,7 @@ tr:hover td{background:rgba(201,169,110,0.03)}
         <option value="miami">Miami</option>
       </select>
       <button class="btn-primary" id="addBtn">+ Add Item</button>
+      <button class="btn-outline" id="addSocialBtn">+ Add Social Post</button>
     </div>
 
     <div class="table-wrap">
@@ -194,6 +196,85 @@ tr:hover td{background:rgba(201,169,110,0.03)}
   </div>
 </div>
 
+<!-- Social post intake modal -->
+<div class="modal-bg" id="socialModalBg">
+  <div class="modal">
+    <div class="modal-head">
+      <div class="modal-title">Index a social post</div>
+      <button class="modal-close" onclick="closeSocialModal()">×</button>
+    </div>
+    <p style="color:var(--muted);font-size:0.82rem;line-height:1.5;margin-bottom:1rem">
+      Paste a TikTok, Instagram, YouTube, Threads, or X URL. We'll auto-detect the platform and try to fetch the post metadata via oEmbed. Anything we can't get, you can fill in manually.
+    </p>
+    <form id="socialForm">
+      <div class="form-grid">
+        <div class="field full">
+          <label>Post URL</label>
+          <input id="s_url" placeholder="https://www.tiktok.com/@user/video/123…" required/>
+        </div>
+        <div class="field full" style="margin-top:-0.3rem">
+          <button type="button" class="btn-outline" id="s_fetch">Fetch metadata via oEmbed</button>
+        </div>
+        <div class="field">
+          <label>Platform</label>
+          <select id="s_platform">
+            <option value="tiktok">TikTok</option>
+            <option value="instagram">Instagram</option>
+            <option value="youtube">YouTube</option>
+            <option value="threads">Threads</option>
+            <option value="twitter">X (Twitter)</option>
+            <option value="reddit">Reddit</option>
+            <option value="vimeo">Vimeo</option>
+          </select>
+        </div>
+        <div class="field">
+          <label>City</label>
+          <select id="s_city" required>
+            <option value="all">All cities</option>
+            <option value="savannah">Savannah</option>
+            <option value="atlanta">Atlanta</option>
+            <option value="tampa">Tampa</option>
+            <option value="orlando">Orlando</option>
+            <option value="miami">Miami</option>
+          </select>
+        </div>
+        <div class="field full">
+          <label>Creator handle</label>
+          <input id="s_handle" placeholder="@elegantsavannah"/>
+        </div>
+        <div class="field full">
+          <label>Title / Caption</label>
+          <input id="s_title" required/>
+        </div>
+        <div class="field full">
+          <label>Description (short summary)</label>
+          <textarea id="s_desc" rows="2"></textarea>
+        </div>
+        <div class="field full">
+          <label>Thumbnail URL</label>
+          <input id="s_thumb" placeholder="https://…"/>
+        </div>
+        <div class="field full">
+          <label>Tags (comma separated)</label>
+          <input id="s_tags" placeholder="ghost, tour, savannah"/>
+        </div>
+        <div class="field">
+          <label>View count</label>
+          <input id="s_views" type="number" min="0" placeholder="e.g. 1240000"/>
+        </div>
+        <div class="field">
+          <label>Posted (days ago)</label>
+          <input id="s_age" type="number" min="0" value="0" placeholder="0 = today"/>
+        </div>
+      </div>
+      <div class="modal-actions">
+        <button type="button" class="btn-outline" onclick="closeSocialModal()">Cancel</button>
+        <button type="submit" class="btn-primary">Save social post</button>
+      </div>
+    </form>
+  </div>
+</div>
+
 <!-- Edit modal -->
 <div class="modal-bg" id="modalBg">
   <div class="modal">
@@ -220,6 +301,7 @@ tr:hover td{background:rgba(201,169,110,0.03)}
             <option value="meals">Arrival Meals</option>
             <option value="snacks">Snacks &amp; Drinks</option>
             <option value="favorites">Local Favorites</option>
+            <option value="social">From Social</option>
             <option value="experiences">Experiences</option>
             <option value="curators">Curators</option>
             <option value="hotels">Hotels</option>
@@ -289,7 +371,7 @@ const DEFAULTS = [
   {id:'h001',title:'The Alida, Savannah',description:'Boutique riverfront. BagFree integrated room concierge.',category:'hotels',city:'savannah',tags:['hotel','boutique','luxury'],image_url:'https://images.unsplash.com/photo-1564501049412-61c2a3083791?w=600',destination_url:'/concierge.html',partner_id:'p_alida',popularity_score:90,freshness_score:92,conversion_score:84,is_boosted:false}
 ];
 
-const CAT_LABELS = {essentials:'Essentials',clothing:'Clothing',meals:'Meals',snacks:'Snacks',favorites:'Favorites',experiences:'Experiences',curators:'Curators',hotels:'Hotels'};
+const CAT_LABELS = {essentials:'Essentials',clothing:'Clothing',meals:'Meals',snacks:'Snacks',favorites:'Favorites',social:'Social',experiences:'Experiences',curators:'Curators',hotels:'Hotels'};
 
 function load(){
   try {
@@ -391,6 +473,95 @@ function del(id){
 document.getElementById('addBtn').addEventListener('click', () => openModal(null));
 ['filter','catFilter','cityFilter'].forEach(id => {
   document.getElementById(id).addEventListener('input', render);
+});
+
+// ── Social post intake ────────────────────────────────────────────────────
+function detectPlatform(url){
+  if (!url) return null;
+  const u = url.toLowerCase();
+  if (u.includes('tiktok.com'))    return 'tiktok';
+  if (u.includes('instagram.com')) return 'instagram';
+  if (u.includes('youtube.com') || u.includes('youtu.be')) return 'youtube';
+  if (u.includes('threads.net'))   return 'threads';
+  if (u.includes('twitter.com') || u.includes('x.com'))    return 'twitter';
+  if (u.includes('reddit.com'))    return 'reddit';
+  if (u.includes('vimeo.com'))     return 'vimeo';
+  return null;
+}
+
+// oEmbed endpoints. YouTube/TikTok/Vimeo support CORS for the JSON response;
+// Instagram/Threads/X mostly do not from client-side, so those fall back to manual entry.
+const OEMBED = {
+  tiktok:    url => 'https://www.tiktok.com/oembed?url=' + encodeURIComponent(url),
+  youtube:   url => 'https://www.youtube.com/oembed?url=' + encodeURIComponent(url) + '&format=json',
+  vimeo:     url => 'https://vimeo.com/api/oembed.json?url=' + encodeURIComponent(url)
+};
+
+function openSocialModal(){
+  ['s_url','s_handle','s_title','s_desc','s_thumb','s_tags','s_views'].forEach(id => document.getElementById(id).value = '');
+  document.getElementById('s_age').value = 0;
+  document.getElementById('s_platform').value = 'tiktok';
+  document.getElementById('s_city').value = 'all';
+  document.getElementById('socialModalBg').classList.add('show');
+}
+function closeSocialModal(){ document.getElementById('socialModalBg').classList.remove('show'); }
+
+document.getElementById('addSocialBtn').addEventListener('click', openSocialModal);
+
+document.getElementById('s_url').addEventListener('input', e => {
+  const p = detectPlatform(e.target.value);
+  if (p) document.getElementById('s_platform').value = p;
+});
+
+document.getElementById('s_fetch').addEventListener('click', async () => {
+  const url = document.getElementById('s_url').value.trim();
+  if (!url){ toast('Paste a URL first'); return; }
+  const platform = detectPlatform(url);
+  if (!platform){ toast('Could not detect platform'); return; }
+  if (!OEMBED[platform]){
+    toast(`oEmbed unavailable for ${platform} — fill in manually`);
+    return;
+  }
+  try {
+    const res = await fetch(OEMBED[platform](url));
+    if (!res.ok) throw new Error('oEmbed fetch failed');
+    const data = await res.json();
+    if (data.title)         document.getElementById('s_title').value = data.title;
+    if (data.author_name)   document.getElementById('s_handle').value = (data.author_name.startsWith('@') ? '' : '@') + data.author_name;
+    if (data.thumbnail_url) document.getElementById('s_thumb').value = data.thumbnail_url;
+    toast('Metadata loaded — review and save');
+  } catch (err) {
+    toast('oEmbed fetch failed — fill in manually');
+  }
+});
+
+document.getElementById('socialForm').addEventListener('submit', e => {
+  e.preventDefault();
+  const ageDays = parseInt(document.getElementById('s_age').value, 10) || 0;
+  const views = parseInt(document.getElementById('s_views').value, 10) || 0;
+  const freshness = Math.max(20, Math.min(100, Math.round(100 - ageDays * 2)));   // recent = high freshness
+  const popularity = Math.max(40, Math.min(100, Math.round(40 + Math.log10(Math.max(views, 1)) * 10)));
+  const payload = {
+    id: 'soc' + Math.floor(Math.random()*9000+1000),
+    title: document.getElementById('s_title').value.trim(),
+    description: document.getElementById('s_desc').value.trim() || document.getElementById('s_title').value.trim(),
+    category: 'social',
+    city: document.getElementById('s_city').value,
+    tags: document.getElementById('s_tags').value.split(',').map(s=>s.trim()).filter(Boolean),
+    image_url: document.getElementById('s_thumb').value.trim(),
+    destination_url: document.getElementById('s_url').value.trim(),
+    partner_id: 'p_social_organic',
+    platform: document.getElementById('s_platform').value,
+    creator_handle: document.getElementById('s_handle').value.trim(),
+    view_count: views,
+    posted_at: new Date(Date.now() - ageDays * 864e5).toISOString(),
+    popularity_score: popularity,
+    freshness_score: freshness,
+    conversion_score: 50,
+    is_boosted: false
+  };
+  items.unshift(payload);
+  save(items); render(); closeSocialModal(); toast('Social post indexed');
 });
 
 document.getElementById('itemForm').addEventListener('submit', e => {
