@@ -263,25 +263,25 @@ const Icon = {
 };
 
 const NAV = [
-  { id:'home', label:'Home', icon:Icon.Grid },
-  { id:'orders', label:'Orders', icon:Icon.Clipboard },
-  { id:'curators', label:'Travel Curators', icon:Icon.Map },
-  { id:'essentials', label:'Essentials', icon:Icon.Bag },
-  { id:'rewards', label:'Rewards', icon:Icon.Heart },
-  { id:'gifts', label:'Gift Cards', icon:Icon.Gift },
-  { id:'hotels', label:'Hotel Partners', icon:Icon.Hotel },
-  { id:'support', label:'Support', icon:Icon.Help }
+  { id:'home', label:'Home', icon:Icon.Grid, href:'/' },
+  { id:'orders', label:'Orders', icon:Icon.Clipboard, href:'/#orders' },
+  { id:'curators', label:'Travel Curators', icon:Icon.Map, href:'/curators.html' },
+  { id:'essentials', label:'Essentials', icon:Icon.Bag, href:'/#essentials' },
+  { id:'rewards', label:'Rewards', icon:Icon.Heart, href:'/#rewards' },
+  { id:'gifts', label:'Gift Cards', icon:Icon.Gift, href:'/#gifts' },
+  { id:'hotels', label:'Hotel Partners', icon:Icon.Hotel, href:'/concierge.html' },
+  { id:'support', label:'Support', icon:Icon.Help, href:'/#support' }
 ];
 
 const TILES = [
-  { id:'clothing', title:'Clothing Rentals', desc:'Look your best for any occasion.', icon:Icon.Hanger, img:'https://images.unsplash.com/photo-1490481651871-ab68de25d43d?w=600&h=400&fit=crop' },
-  { id:'meals', title:'Arrival Meals', desc:'Chef-prepared meals delivered to your hotel.', icon:Icon.Dome, img:'https://images.unsplash.com/photo-1546069901-ba9599a7e63c?w=600&h=400&fit=crop' },
-  { id:'snacks', title:'Snacks & Drinks', desc:'Handpicked favorites for your stay.', icon:Icon.Cup, img:'https://images.unsplash.com/photo-1599490659213-e2b9527bd087?w=600&h=400&fit=crop' },
-  { id:'essentials', title:'Hotel Essentials', desc:'Forgot something? We have got you.', icon:Icon.Bottle, img:'https://images.unsplash.com/photo-1556228720-195a672e8a03?w=600&h=400&fit=crop' },
-  { id:'curators', title:'Travel Curators', desc:'Local experts. Personalized experiences.', icon:Icon.Person, img:'https://images.unsplash.com/photo-1572476244958-37b9eaa499fa?w=600&h=400&fit=crop', badge:'NEW' },
-  { id:'experiences', title:'Local Experiences', desc:'Tours, activities and hidden gems.', icon:Icon.Compass, img:'https://images.unsplash.com/photo-1571893544028-06b07af6dade?w=600&h=400&fit=crop' },
-  { id:'hotels', title:'Hotel Partners', desc:'Preferred hotels and exclusive perks.', icon:Icon.Building, img:'https://images.unsplash.com/photo-1564501049412-61c2a3083791?w=600&h=400&fit=crop' },
-  { id:'rewards', title:'BAG Rewards', desc:'Earn points. Unlock exclusive benefits.', icon:Icon.GiftBox, img:'https://images.unsplash.com/photo-1549465220-1a8b9238cd48?w=600&h=400&fit=crop' }
+  { id:'clothing', title:'Clothing Rentals', desc:'Look your best for any occasion.', icon:Icon.Hanger, link:'/departure-lounge-landing.html', img:'https://images.unsplash.com/photo-1490481651871-ab68de25d43d?w=600&h=400&fit=crop' },
+  { id:'meals', title:'Arrival Meals', desc:'Chef-prepared meals delivered to your hotel.', icon:Icon.Dome, link:'/#essentials', img:'https://images.unsplash.com/photo-1546069901-ba9599a7e63c?w=600&h=400&fit=crop' },
+  { id:'snacks', title:'Snacks & Drinks', desc:'Handpicked favorites for your stay.', icon:Icon.Cup, link:'/#essentials', img:'https://images.unsplash.com/photo-1599490659213-e2b9527bd087?w=600&h=400&fit=crop' },
+  { id:'essentials', title:'Hotel Essentials', desc:'Forgot something? We have got you.', icon:Icon.Bottle, link:'/#essentials', img:'https://images.unsplash.com/photo-1556228720-195a672e8a03?w=600&h=400&fit=crop' },
+  { id:'curators', title:'Travel Curators', desc:'Local experts. Personalized experiences.', icon:Icon.Person, link:'/curators.html', img:'https://images.unsplash.com/photo-1572476244958-37b9eaa499fa?w=600&h=400&fit=crop', badge:'NEW' },
+  { id:'experiences', title:'Local Experiences', desc:'Tours, activities and hidden gems.', icon:Icon.Compass, link:'/#essentials', img:'https://images.unsplash.com/photo-1571893544028-06b07af6dade?w=600&h=400&fit=crop' },
+  { id:'hotels', title:'Hotel Partners', desc:'Preferred hotels and exclusive perks.', icon:Icon.Building, link:'/concierge.html', img:'https://images.unsplash.com/photo-1564501049412-61c2a3083791?w=600&h=400&fit=crop' },
+  { id:'rewards', title:'BAG Rewards', desc:'Earn points. Unlock exclusive benefits.', icon:Icon.GiftBox, link:'/#rewards', img:'https://images.unsplash.com/photo-1549465220-1a8b9238cd48?w=600&h=400&fit=crop' }
 ];
 
 function Sidebar(props) {
@@ -297,8 +297,7 @@ function Sidebar(props) {
           const I = n.icon;
           const cls = 'nav-item' + (props.active === n.id ? ' active' : '');
           return (
-            <a key={n.id} href={'#' + n.id} className={cls}
-               onClick={function(e){ e.preventDefault(); props.setActive(n.id); }}>
+            <a key={n.id} href={n.href} className={cls}>
               <I/><span>{n.label}</span>
             </a>
           );
@@ -308,8 +307,7 @@ function Sidebar(props) {
         <div className="rewards-head"><Icon.Crown/> BAG REWARDS</div>
         <div className="rewards-points">2,450</div>
         <div className="rewards-label">Points Available</div>
-        <a href="#rewards" className="rewards-link"
-           onClick={function(e){ e.preventDefault(); props.setActive('rewards'); }}>
+        <a href="/#rewards" className="rewards-link">
           View Rewards <Icon.ArrowRight/>
         </a>
       </div>
@@ -347,7 +345,7 @@ function Tile(props) {
   const t = props.tile;
   const I = t.icon;
   return (
-    <div className="tile">
+    <a className="tile" href={t.link || '#'}>
       {t.badge ? <div className="tile-badge">{t.badge}</div> : null}
       <div className="tile-image" style={{ backgroundImage: 'url(' + t.img + ')' }}></div>
       <div className="tile-top">
@@ -356,7 +354,7 @@ function Tile(props) {
         <div className="tile-desc">{t.desc}</div>
       </div>
       <div className="tile-arrow"><Icon.ArrowRight/></div>
-    </div>
+    </a>
   );
 }
 
@@ -430,7 +428,7 @@ function RightRail() {
             <div className="trip-orders-icon"><Icon.Package/></div>
             <div>
               <div className="trip-orders-text">3 Orders Confirmed</div>
-              <a href="#orders" className="link-gold" style={{ marginTop:'0.25rem' }}>View Orders <Icon.ArrowRight/></a>
+              <a href="/#orders" className="link-gold" style={{ marginTop:'0.25rem' }}>View Orders <Icon.ArrowRight/></a>
             </div>
           </div>
         </div>
