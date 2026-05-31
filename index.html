@@ -219,6 +219,41 @@ a{text-decoration:none}
 .results-empty-title{font-family:var(--ff-display);font-size:1.4rem;color:var(--white);margin-bottom:0.5rem;font-weight:400}
 .results-empty-tag{font-size:0.85rem;line-height:1.55}
 
+/* Social result variants */
+.result-card.social .result-img{aspect-ratio:1/1.1}
+.result-platform{
+  position:absolute;top:0.7rem;left:0.7rem;z-index:2;
+  display:flex;align-items:center;gap:0.35rem;
+  font-size:0.62rem;letter-spacing:1.5px;text-transform:uppercase;
+  color:var(--white);background:rgba(10,15,30,0.78);backdrop-filter:blur(8px);
+  padding:0.3rem 0.55rem;border-radius:4px;font-weight:600;border:1px solid rgba(255,255,255,0.12);
+}
+.result-platform svg{width:11px;height:11px}
+.result-platform.p-tiktok{background:rgba(0,242,234,0.18);border-color:rgba(0,242,234,0.4);color:#22f5ed}
+.result-platform.p-instagram{background:linear-gradient(135deg,rgba(225,48,108,0.25),rgba(245,133,41,0.18));border-color:rgba(225,48,108,0.4);color:#f8a4be}
+.result-platform.p-youtube{background:rgba(255,0,0,0.18);border-color:rgba(255,0,0,0.4);color:#ff7a7a}
+.result-platform.p-threads{background:rgba(255,255,255,0.08);border-color:rgba(255,255,255,0.2);color:var(--white)}
+.result-platform.p-twitter{background:rgba(29,161,242,0.15);border-color:rgba(29,161,242,0.4);color:#7fc9ff}
+.result-platform.p-reddit{background:rgba(255,69,0,0.15);border-color:rgba(255,69,0,0.4);color:#ff9966}
+.result-platform.p-vimeo{background:rgba(26,183,234,0.15);border-color:rgba(26,183,234,0.4);color:#5fcfee}
+.result-play{
+  position:absolute;inset:0;display:flex;align-items:center;justify-content:center;z-index:2;
+  pointer-events:none;
+}
+.result-play-btn{
+  width:54px;height:54px;border-radius:50%;background:rgba(10,15,30,0.7);
+  border:1.5px solid rgba(255,255,255,0.35);backdrop-filter:blur(6px);
+  display:flex;align-items:center;justify-content:center;color:var(--white);
+  transition:all 0.3s ease;
+}
+.result-card.social:hover .result-play-btn{background:var(--gold);color:var(--bg);transform:scale(1.05);border-color:var(--gold)}
+.result-play-btn svg{width:20px;height:20px;margin-left:3px}
+.result-creator{display:flex;align-items:center;gap:0.5rem;font-size:0.75rem;color:var(--muted);font-weight:400}
+.result-creator-handle{color:var(--white);font-weight:500}
+.result-creator-stats{margin-left:auto;font-size:0.7rem;color:var(--faint);display:flex;align-items:center;gap:0.3rem}
+.result-creator-stats svg{width:11px;height:11px;color:var(--gold)}
+.result-card.social .result-title{font-size:1.05rem;font-family:var(--ff-body);font-weight:500;letter-spacing:0;line-height:1.35}
+
 .topbar-actions{display:flex;align-items:center;gap:0.4rem;padding-top:0.3rem}
 .icon-btn{width:42px;height:42px;border-radius:50%;display:flex;align-items:center;justify-content:center;color:var(--muted);transition:all 0.2s;position:relative}
 .icon-btn:hover{background:rgba(255,255,255,0.05);color:var(--white)}
@@ -413,8 +448,37 @@ const Icon = {
   Fire: () => <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" strokeWidth="1.5"><path d="M12 22c4.5 0 8-3.5 8-7.5 0-3-2-5.5-3-6-1 2.5-2 3.5-2.5 3 0-2 1-5.5-2.5-9-1 4.5-3 4.5-4 8.5-.5 2-.5 4 0 6 1 2.5 2.5 4 4 5z"/></svg>,
   Clock: () => <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" strokeWidth="1.5"><circle cx="12" cy="12" r="10"/><polyline points="12 6 12 12 16 14"/></svg>,
   X: () => <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" strokeWidth="2"><line x1="18" y1="6" x2="6" y2="18"/><line x1="6" y1="6" x2="18" y2="18"/></svg>,
-  Trophy: () => <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" strokeWidth="1.5"><path d="M8 21h8M12 17v4M7 4h10v5a5 5 0 01-10 0V4zM21 5h-4M3 5h4"/></svg>
+  Trophy: () => <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" strokeWidth="1.5"><path d="M8 21h8M12 17v4M7 4h10v5a5 5 0 01-10 0V4zM21 5h-4M3 5h4"/></svg>,
+  Play: () => <svg viewBox="0 0 24 24" fill="currentColor"><polygon points="6 4 22 12 6 20 6 4"/></svg>,
+  Eye: () => <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" strokeWidth="1.5"><path d="M1 12s4-8 11-8 11 8 11 8-4 8-11 8-11-8-11-8z"/><circle cx="12" cy="12" r="3"/></svg>,
+  TikTok: () => <svg viewBox="0 0 24 24" fill="currentColor"><path d="M16.6 5.82a4.28 4.28 0 01-1.21-1.16 4.16 4.16 0 01-.81-2.66H11.4v11.71a2.55 2.55 0 01-2.55 2.55 2.55 2.55 0 010-5.1c.14 0 .27.02.4.04V8a5.62 5.62 0 105.62 5.62V8.05a7.05 7.05 0 004.13 1.32V6.18a4.18 4.18 0 01-2.4-.36z"/></svg>,
+  Instagram: () => <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" strokeWidth="1.6"><rect x="3" y="3" width="18" height="18" rx="5"/><circle cx="12" cy="12" r="4"/><circle cx="17.5" cy="6.5" r="1" fill="currentColor"/></svg>,
+  YouTube: () => <svg viewBox="0 0 24 24" fill="currentColor"><path d="M23 7.5s-.2-1.6-.9-2.3c-.8-.9-1.7-.9-2.1-1C16.9 4 12 4 12 4s-4.9 0-8 .2c-.4 0-1.3 0-2.1 1C1.2 5.9 1 7.5 1 7.5S.8 9.3.8 11.2v1.7c0 1.8.2 3.7.2 3.7s.2 1.6.9 2.3c.8.9 1.9.9 2.4 1 1.7.2 7.7.2 7.7.2s4.9 0 8-.2c.4 0 1.3 0 2.1-1 .7-.7.9-2.3.9-2.3s.2-1.8.2-3.7v-1.7c0-1.8-.2-3.7-.2-3.7zM9.7 14.6V8.4l6.4 3.1z"/></svg>,
+  Threads: () => <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" strokeWidth="1.6"><path d="M17.5 11.5c-.5-3-2.5-4.5-5-4.5-3 0-4.5 1.5-4.5 3.5 0 1.5 1 2.5 3 3 1.5.4 5 .8 5 3 0 2-2 3-4 3-2.5 0-4-1.5-4.5-3"/></svg>,
+  Twitter: () => <svg viewBox="0 0 24 24" fill="currentColor"><path d="M18.244 2.25h3.308l-7.227 8.26 8.502 11.24H16.17l-5.214-6.817L4.99 21.75H1.68l7.73-8.835L1.254 2.25H8.08l4.713 6.231zm-1.161 17.52h1.833L7.084 4.126H5.117z"/></svg>,
+  Reddit: () => <svg viewBox="0 0 24 24" fill="currentColor"><circle cx="12" cy="12" r="10" fill="none" stroke="currentColor" strokeWidth="1.6"/><circle cx="9" cy="13" r="1"/><circle cx="15" cy="13" r="1"/><path d="M9 16c1 1 2 1.3 3 1.3s2-.3 3-1.3" fill="none" stroke="currentColor" strokeWidth="1.4"/></svg>,
+  Vimeo: () => <svg viewBox="0 0 24 24" fill="currentColor"><path d="M23.97 6.44c-.1 2.18-1.62 5.16-4.57 8.95-3.05 3.96-5.64 5.94-7.75 5.94-1.31 0-2.42-1.21-3.32-3.63-.61-2.21-1.21-4.42-1.82-6.64-.67-2.41-1.39-3.62-2.17-3.62-.17 0-.76.36-1.78 1.07L1.5 7.13c1.12-.98 2.21-1.96 3.31-2.94 1.5-1.3 2.63-1.98 3.38-2.05 1.78-.17 2.87 1.05 3.28 3.66.44 2.83.75 4.58.92 5.27.5 2.27 1.06 3.4 1.66 3.4.47 0 1.17-.74 2.12-2.22.94-1.48 1.45-2.6 1.51-3.37.13-1.21-.34-1.82-1.41-1.82-.5 0-1.02.12-1.55.34 1.04-3.4 3.02-5.06 5.94-4.97 2.17.06 3.19 1.47 3.06 4.21z"/></svg>
 };
+
+const PLATFORM_ICONS = { tiktok:'TikTok', instagram:'Instagram', youtube:'YouTube', threads:'Threads', twitter:'Twitter', reddit:'Reddit', vimeo:'Vimeo' };
+const PLATFORM_LABELS = { tiktok:'TikTok', instagram:'Instagram', youtube:'YouTube', threads:'Threads', twitter:'X', reddit:'Reddit', vimeo:'Vimeo' };
+
+function formatCount(n){
+  if (n == null) return '';
+  if (n >= 1000000) return (n / 1000000).toFixed(n >= 10000000 ? 0 : 1) + 'M';
+  if (n >= 1000) return (n / 1000).toFixed(n >= 10000 ? 0 : 1) + 'K';
+  return String(n);
+}
+function relativeTime(iso){
+  if (!iso) return '';
+  const then = new Date(iso).getTime();
+  const days = Math.floor((Date.now() - then) / (1000 * 60 * 60 * 24));
+  if (days < 1) return 'today';
+  if (days < 7) return days + 'd ago';
+  if (days < 30) return Math.floor(days / 7) + 'w ago';
+  if (days < 365) return Math.floor(days / 30) + 'mo ago';
+  return Math.floor(days / 365) + 'y ago';
+}
 
 const CITIES = [
   { id:'savannah', name:'Savannah', region:'Georgia', temp:'72°F',
@@ -432,16 +496,17 @@ const CITIES = [
 
 // ── Search categories (drives UI grouping + icons) ───────────────────────────
 const CATEGORIES = {
-  essentials:    { label:'Essentials',       icon:'Bottle'   },
-  clothing:      { label:'Clothing Rentals', icon:'Hanger'   },
-  meals:         { label:'Arrival Meals',    icon:'Dome'     },
-  snacks:        { label:'Snacks & Drinks',  icon:'Cup'      },
-  favorites:     { label:'Local Favorites',  icon:'Sparkles' },
-  experiences:   { label:'Experiences',      icon:'Compass'  },
-  curators:      { label:'Curators',         icon:'Person'   },
-  hotels:        { label:'Hotels',           icon:'Building' }
+  essentials:    { label:'Essentials',       icon:'Bottle'    },
+  clothing:      { label:'Clothing Rentals', icon:'Hanger'    },
+  meals:         { label:'Arrival Meals',    icon:'Dome'      },
+  snacks:        { label:'Snacks & Drinks',  icon:'Cup'       },
+  favorites:     { label:'Local Favorites',  icon:'Sparkles'  },
+  social:        { label:'From Social',      icon:'Play'      },
+  experiences:   { label:'Experiences',      icon:'Compass'   },
+  curators:      { label:'Curators',         icon:'Person'    },
+  hotels:        { label:'Hotels',           icon:'Building'  }
 };
-const CATEGORY_ORDER = ['essentials','clothing','meals','snacks','favorites','experiences','curators','hotels'];
+const CATEGORY_ORDER = ['essentials','clothing','meals','snacks','favorites','social','experiences','curators','hotels'];
 
 // ── Suggested searches (Phase 1: static; later: from search_queries table) ──
 const SUGGESTED = [
@@ -449,6 +514,7 @@ const SUGGESTED = [
   { q:'3-day clothing rental',         icon:'Hanger'   },
   { q:'Hotel essentials',              icon:'Bottle'   },
   { q:'Local favorites',               icon:'Sparkles' },
+  { q:'Trending on TikTok',            icon:'Play'     },
   { q:'Travel curators',               icon:'Person'   },
   { q:'Experiences near my hotel',     icon:'Compass'  }
 ];
@@ -580,7 +646,74 @@ const SEARCHABLE = [
     category:'hotels', city:'all', region:'Florida', tags:['hotel','gulf','spa','luxury','sandestin'],
     image_url:'https://images.unsplash.com/photo-1571896349842-33c89424de2d?w=600&h=400&fit=crop',
     destination_url:'/concierge.html', partner_id:'p_effie',
-    popularity_score:78, freshness_score:86, conversion_score:75 }
+    popularity_score:78, freshness_score:86, conversion_score:75 },
+
+  // ── Social mentions (indexed from TikTok / Instagram / YouTube / Threads) ──
+  { id:'soc001', title:"5 Savannah ghost stories locals don't tell tourists",
+    description:"60-second walk through River Street with a Savannah-born guide. Pin in description.",
+    category:'social', city:'savannah', region:'Georgia',
+    tags:['ghost','tour','river-street','savannah','tiktok','locals'],
+    image_url:'https://images.unsplash.com/photo-1568854728811-bc4ac9b9c5b4?w=800&h=600&fit=crop',
+    destination_url:'https://www.tiktok.com/@elegantsavannah/video/example001',
+    partner_id:'p_social_organic',
+    platform:'tiktok', creator_handle:'@elegantsavannah',
+    view_count:1240000, like_count:89000, posted_at: new Date(Date.now() - 4*864e5).toISOString(),
+    popularity_score:89, freshness_score:96, conversion_score:64 },
+
+  { id:'soc002', title:'Best brunch spots in Buckhead this month',
+    description:"Three-place tour I'd send my best friend to. Atlanta locals approved.",
+    category:'social', city:'atlanta', region:'Georgia',
+    tags:['brunch','buckhead','atlanta','food','instagram','reel'],
+    image_url:'https://images.unsplash.com/photo-1525351484163-7529414344d8?w=800&h=600&fit=crop',
+    destination_url:'https://www.instagram.com/reel/example002',
+    partner_id:'p_social_organic',
+    platform:'instagram', creator_handle:'@atlantaeats',
+    view_count:412000, like_count:31500, posted_at: new Date(Date.now() - 9*864e5).toISOString(),
+    popularity_score:78, freshness_score:90, conversion_score:58 },
+
+  { id:'soc003', title:'Tampa Riverwalk in 60 seconds',
+    description:'Quick walking tour of the Hillsborough Riverwalk with my favorite three stops.',
+    category:'social', city:'tampa', region:'Florida',
+    tags:['riverwalk','tampa','tour','youtube','shorts'],
+    image_url:'https://images.unsplash.com/photo-1555939594-58d7cb561ad1?w=800&h=600&fit=crop',
+    destination_url:'https://www.youtube.com/shorts/example003',
+    partner_id:'p_social_organic',
+    platform:'youtube', creator_handle:'@tampaviews',
+    view_count:285000, like_count:14200, posted_at: new Date(Date.now() - 12*864e5).toISOString(),
+    popularity_score:71, freshness_score:86, conversion_score:52 },
+
+  { id:'soc004', title:'Where I take my friends for low-country dinner',
+    description:"The Grey is everyone's pick. Here's what to actually order.",
+    category:'social', city:'savannah', region:'Georgia',
+    tags:['dinner','the-grey','savannah','food','instagram','low-country'],
+    image_url:'https://images.unsplash.com/photo-1546069901-ba9599a7e63c?w=800&h=600&fit=crop',
+    destination_url:'https://www.instagram.com/p/example004',
+    partner_id:'p_social_organic',
+    platform:'instagram', creator_handle:'@savannahbites',
+    view_count:198000, like_count:18900, posted_at: new Date(Date.now() - 21*864e5).toISOString(),
+    popularity_score:74, freshness_score:78, conversion_score:61 },
+
+  { id:'soc005', title:'Hidden speakeasies in South Beach',
+    description:'Three bars locals send their friends to. Number 2 changed me.',
+    category:'social', city:'miami', region:'Florida',
+    tags:['speakeasy','south-beach','miami','nightlife','tiktok','bars'],
+    image_url:'https://images.unsplash.com/photo-1572116469696-31de0f17cc34?w=800&h=600&fit=crop',
+    destination_url:'https://www.tiktok.com/@miamilatenights/video/example005',
+    partner_id:'p_social_organic',
+    platform:'tiktok', creator_handle:'@miamilatenights',
+    view_count:670000, like_count:52000, posted_at: new Date(Date.now() - 6*864e5).toISOString(),
+    popularity_score:82, freshness_score:93, conversion_score:56 },
+
+  { id:'soc006', title:'Why Atlanta is the most underrated weekend trip',
+    description:'Threads thread on why ATL deserves more than a layover. 47 places linked.',
+    category:'social', city:'atlanta', region:'Georgia',
+    tags:['atlanta','weekend','threads','underrated','travel'],
+    image_url:'https://images.unsplash.com/photo-1575408264798-b50b252663e6?w=800&h=600&fit=crop',
+    destination_url:'https://www.threads.net/@atltravelclub/post/example006',
+    partner_id:'p_social_organic',
+    platform:'threads', creator_handle:'@atltravelclub',
+    view_count:92000, like_count:4800, posted_at: new Date(Date.now() - 15*864e5).toISOString(),
+    popularity_score:65, freshness_score:80, conversion_score:48 }
 ];
 
 // ── Ranking (Phase 1: client-side; mirror this in a Postgres view later) ────
@@ -828,6 +961,8 @@ function SearchBar(props) {
                 <div className="search-section">
                   <div className="search-section-label"><Icon.Fire/> Top matches</div>
                   {live.map(function(it, idx){
+                    const isSocial = it.category === 'social';
+                    const platformIcon = isSocial && PLATFORM_ICONS[it.platform] ? Icon[PLATFORM_ICONS[it.platform]] : null;
                     const I = Icon[CATEGORIES[it.category] && CATEGORIES[it.category].icon] || Icon.Search;
                     const cls = 'search-suggest' + (idx === hi ? ' hi' : '');
                     return (
@@ -836,7 +971,11 @@ function SearchBar(props) {
                         <span className="search-suggest-icon has-img" style={{ backgroundImage:'url(' + it.image_url + ')' }}></span>
                         <span className="search-suggest-text">
                           <div className="search-suggest-title">{highlight(it.title, q)}</div>
-                          <div className="search-suggest-meta">{CATEGORIES[it.category].label} · {it.city === 'all' ? 'All cities' : (CITIES.find(function(c){ return c.id === it.city; }) || {}).name || it.city}</div>
+                          <div className="search-suggest-meta">
+                            {isSocial
+                              ? (PLATFORM_LABELS[it.platform] || it.platform) + ' · ' + (it.creator_handle || '')
+                              : CATEGORIES[it.category].label + ' · ' + (it.city === 'all' ? 'All cities' : ((CITIES.find(function(c){ return c.id === it.city; }) || {}).name || it.city))}
+                          </div>
                         </span>
                         <span className="search-suggest-arrow"><Icon.ArrowRight/></span>
                       </button>
@@ -892,18 +1031,45 @@ function SearchResults(props) {
               </div>
               <div className="results-grid">
                 {items.map(function(it){
+                  const isSocial = it.category === 'social';
+                  const platformIcon = isSocial && PLATFORM_ICONS[it.platform] ? Icon[PLATFORM_ICONS[it.platform]] : null;
+                  const platformLabel = isSocial ? (PLATFORM_LABELS[it.platform] || it.platform) : null;
+                  const ctaLabel = isSocial ? ('Watch on ' + platformLabel) : 'View details';
                   return (
-                    <a key={it.id} className="result-card" href={it.destination_url}
+                    <a key={it.id}
+                       className={'result-card' + (isSocial ? ' social' : '')}
+                       href={it.destination_url}
+                       target={isSocial ? '_blank' : undefined}
+                       rel={isSocial ? 'noopener noreferrer' : undefined}
                        onClick={function(){ track('result_click', { id: it.id, q: props.query }); }}>
                       <div className="result-img" style={{ backgroundImage:'url(' + it.image_url + ')' }}>
-                        <span className="result-cat">{cat.label}</span>
+                        {isSocial && platformIcon ? (
+                          <span className={'result-platform p-' + it.platform}>
+                            {React.createElement(platformIcon)} {platformLabel}
+                          </span>
+                        ) : (
+                          <span className="result-cat">{cat.label}</span>
+                        )}
                         <span className="result-rank"><Icon.Trophy/> {it.reality_rank_score}</span>
+                        {isSocial ? (
+                          <div className="result-play"><span className="result-play-btn"><Icon.Play/></span></div>
+                        ) : null}
                       </div>
                       <div className="result-body">
                         <div className="result-title">{it.title}</div>
-                        <div className="result-city"><Icon.Pin/> {it.city === 'all' ? 'All cities' : (CITIES.find(function(c){ return c.id === it.city; }) || {}).name || it.city}</div>
+                        {isSocial ? (
+                          <div className="result-creator">
+                            <span className="result-creator-handle">{it.creator_handle}</span>
+                            <span>· {relativeTime(it.posted_at)}</span>
+                            {it.view_count ? (
+                              <span className="result-creator-stats"><Icon.Eye/> {formatCount(it.view_count)}</span>
+                            ) : null}
+                          </div>
+                        ) : (
+                          <div className="result-city"><Icon.Pin/> {it.city === 'all' ? 'All cities' : (CITIES.find(function(c){ return c.id === it.city; }) || {}).name || it.city}</div>
+                        )}
                         <div className="result-desc">{it.description}</div>
-                        <span className="result-cta">View details <Icon.ArrowRight/></span>
+                        <span className="result-cta">{ctaLabel} <Icon.ArrowRight/></span>
                       </div>
                     </a>
                   );
