@@ -265,6 +265,104 @@ a{text-decoration:none}
 .result-creator-stats svg{width:11px;height:11px;color:var(--gold)}
 .result-card.social .result-title{font-size:1.05rem;font-family:var(--ff-body);font-weight:500;letter-spacing:0;line-height:1.35}
 
+/* ── Detail view (stays on BagFree domain) ──────────────────────────────── */
+.detail-wrap{display:flex;flex-direction:column;gap:1.6rem}
+.detail-back{
+  display:inline-flex;align-items:center;gap:0.45rem;
+  font-size:0.72rem;letter-spacing:1.5px;color:var(--gold);
+  text-transform:uppercase;font-weight:600;cursor:pointer;
+  padding:0.5rem 0;transition:gap 0.2s;align-self:flex-start;background:none;border:0;
+}
+.detail-back:hover{gap:0.7rem}
+.detail-back svg{width:14px;height:14px}
+
+.detail-hero{
+  position:relative;width:100%;aspect-ratio:16/9;
+  border-radius:16px;overflow:hidden;background-color:#1a2238;
+  background-size:cover;background-position:center;
+  cursor:pointer;transition:transform 0.35s ease;
+  box-shadow:0 20px 50px -10px rgba(0,0,0,0.55);
+}
+.detail-hero::after{
+  content:'';position:absolute;inset:0;
+  background:linear-gradient(180deg, transparent 50%, rgba(10,15,30,0.45));
+}
+.detail-hero:hover{transform:translateY(-2px)}
+.detail-hero-platform{position:absolute;top:1rem;left:1rem;z-index:2}
+.detail-hero-overlay{
+  position:absolute;inset:0;display:flex;align-items:center;justify-content:center;z-index:2;pointer-events:none;
+}
+.detail-play{
+  width:84px;height:84px;border-radius:50%;
+  background:rgba(10,15,30,0.6);backdrop-filter:blur(10px);
+  border:2px solid rgba(255,255,255,0.4);
+  display:flex;align-items:center;justify-content:center;
+  color:var(--white);transition:all 0.3s;
+}
+.detail-hero:hover .detail-play{background:var(--gold);color:var(--bg);border-color:var(--gold);transform:scale(1.05)}
+.detail-play svg{width:32px;height:32px;margin-left:5px}
+
+.detail-info{display:grid;grid-template-columns:1fr 280px;gap:2rem;align-items:flex-start}
+@media (max-width:900px){.detail-info{grid-template-columns:1fr}}
+
+.detail-main{display:flex;flex-direction:column;gap:1rem;min-width:0}
+.detail-platform-row{
+  display:flex;align-items:center;gap:0.55rem;
+  font-size:0.62rem;letter-spacing:2.5px;color:var(--gold);
+  text-transform:uppercase;font-weight:600;
+}
+.detail-platform-row svg{width:13px;height:13px}
+.detail-title{
+  font-family:var(--ff-display);font-size:clamp(1.8rem,3vw,2.6rem);
+  font-weight:500;letter-spacing:-0.4px;line-height:1.1;
+}
+.detail-creator-row{
+  display:flex;flex-wrap:wrap;align-items:center;gap:0.5rem;
+  color:var(--muted);font-size:0.88rem;font-weight:300;
+}
+.detail-creator-row .handle{color:var(--white);font-weight:500}
+.detail-creator-row .sep{color:var(--faint)}
+.detail-creator-row .stat-inline{display:inline-flex;align-items:center;gap:0.3rem}
+.detail-creator-row .stat-inline svg{width:12px;height:12px;color:var(--gold)}
+.detail-description{color:var(--muted);font-size:1rem;line-height:1.65;font-weight:300}
+
+.detail-actions{display:flex;gap:0.7rem;margin-top:0.6rem;flex-wrap:wrap}
+.detail-cta-primary{
+  display:inline-flex;align-items:center;gap:0.55rem;
+  padding:0.95rem 1.7rem;background:var(--gold);color:var(--bg);
+  border-radius:10px;font-size:0.74rem;letter-spacing:2px;font-weight:700;
+  text-transform:uppercase;transition:all 0.2s;
+  box-shadow:0 6px 18px rgba(201,169,110,0.3);text-decoration:none;
+}
+.detail-cta-primary:hover{background:var(--gold-bright);transform:translateY(-1px);box-shadow:0 10px 24px rgba(201,169,110,0.4)}
+.detail-cta-primary svg{width:14px;height:14px}
+.detail-cta-secondary{
+  display:inline-flex;align-items:center;gap:0.55rem;
+  padding:0.95rem 1.4rem;background:transparent;color:var(--gold);
+  border:1px solid var(--border);border-radius:10px;
+  font-size:0.74rem;letter-spacing:2px;font-weight:700;
+  text-transform:uppercase;transition:all 0.2s;cursor:pointer;
+}
+.detail-cta-secondary:hover{background:rgba(201,169,110,0.08);border-color:rgba(201,169,110,0.4)}
+.detail-cta-secondary svg{width:14px;height:14px}
+
+.detail-aside{
+  background:var(--card);border:1px solid var(--border-soft);
+  border-radius:12px;padding:1.4rem;display:flex;flex-direction:column;gap:0.9rem;
+}
+.detail-aside-label{
+  font-size:0.55rem;letter-spacing:3px;color:var(--gold);
+  font-weight:600;text-transform:uppercase;
+}
+.detail-stat{display:flex;justify-content:space-between;align-items:center;gap:0.6rem}
+.detail-stat-label{font-size:0.78rem;color:var(--muted);font-weight:300}
+.detail-stat-value{font-family:var(--ff-display);font-size:1.25rem;color:var(--white);font-weight:500}
+.detail-aside-divider{height:1px;background:var(--border-soft);margin:0.1rem 0}
+
+.detail-related-head{display:flex;align-items:baseline;justify-content:space-between;gap:0.8rem;margin-top:1rem;padding-left:0.2rem;flex-wrap:wrap}
+.detail-related-title{font-family:var(--ff-display);font-size:1.55rem;font-weight:500;letter-spacing:-0.2px}
+.detail-related-tag{font-size:0.78rem;color:var(--muted);font-weight:300}
+
 .topbar-actions{display:flex;align-items:center;gap:0.4rem;padding-top:0.3rem}
 .icon-btn{width:42px;height:42px;border-radius:50%;display:flex;align-items:center;justify-content:center;color:var(--muted);transition:all 0.2s;position:relative}
 .icon-btn:hover{background:rgba(255,255,255,0.05);color:var(--white)}
@@ -442,6 +540,7 @@ const Icon = {
   Sun: () => <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" strokeWidth="1.5"><circle cx="12" cy="12" r="4"/><path d="M12 2 v2 M12 20 v2 M4.93 4.93 l1.41 1.41 M17.66 17.66 l1.41 1.41 M2 12 h2 M20 12 h2 M4.93 19.07 l1.41 -1.41 M17.66 6.34 l1.41 -1.41"/></svg>,
   Pin: () => <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" strokeWidth="1.5"><path d="M21 10 c0 7 -9 13 -9 13 s-9 -6 -9 -13 a9 9 0 0118 0 z"/><circle cx="12" cy="10" r="3"/></svg>,
   ArrowRight: () => <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" strokeWidth="1.5"><line x1="5" y1="12" x2="19" y2="12"/><polyline points="12 5 19 12 12 19"/></svg>,
+  ArrowLeft: () => <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" strokeWidth="1.5"><line x1="19" y1="12" x2="5" y2="12"/><polyline points="12 19 5 12 12 5"/></svg>,
   Hanger: () => <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" strokeWidth="1.3"><path d="M12 6 a2 2 0 102 -2"/><path d="M3 18 l9 -6 l9 6"/><path d="M3 18 h18"/></svg>,
   Dome: () => <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" strokeWidth="1.3"><path d="M3 18 h18"/><path d="M4 18 a8 8 0 0116 0"/><circle cx="12" cy="6" r="1"/><line x1="12" y1="7" x2="12" y2="10"/></svg>,
   Cup: () => <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" strokeWidth="1.3"><path d="M4 8 h13 v6 a5 5 0 01-5 5 h-3 a5 5 0 01-5 -5 z"/><path d="M17 9 h2 a3 3 0 010 6 h-2"/><path d="M7 2 c0 1.5 1 2 1 3.5"/><path d="M11 2 c0 1.5 1 2 1 3.5"/></svg>,
@@ -991,7 +1090,8 @@ function SearchBar(props) {
   }
   function onResultClick(item){
     track('result_click_inline', { id: item.id, q: q, city: props.city.id });
-    window.location.href = item.destination_url;
+    props.onItemClick(item);
+    setFocused(false);
   }
   function onKey(e){
     const items = live.length ? live : SUGGESTED;
@@ -1132,14 +1232,10 @@ function SearchResults(props) {
                   const isSocial = it.category === 'social';
                   const platformIcon = isSocial && PLATFORM_ICONS[it.platform] ? Icon[PLATFORM_ICONS[it.platform]] : null;
                   const platformLabel = isSocial ? (PLATFORM_LABELS[it.platform] || it.platform) : null;
-                  const ctaLabel = isSocial ? ('Watch on ' + platformLabel) : 'View details';
-                  return (
-                    <a key={it.id}
-                       className={'result-card' + (isSocial ? ' social' : '')}
-                       href={it.destination_url}
-                       target={isSocial ? '_blank' : undefined}
-                       rel={isSocial ? 'noopener noreferrer' : undefined}
-                       onClick={function(){ track('result_click', { id: it.id, q: props.query }); }}>
+                  const ctaLabel = isSocial ? 'Preview' : 'View details';
+
+                  const innerContent = (
+                    <React.Fragment>
                       <div className="result-img" style={{ backgroundImage:'url(' + it.image_url + ')' }}>
                         {isSocial && platformIcon ? (
                           <span className={'result-platform p-' + it.platform}>
@@ -1169,6 +1265,22 @@ function SearchResults(props) {
                         <div className="result-desc">{it.description}</div>
                         <span className="result-cta">{ctaLabel} <Icon.ArrowRight/></span>
                       </div>
+                    </React.Fragment>
+                  );
+
+                  return isSocial ? (
+                    <div key={it.id}
+                         className="result-card social"
+                         style={{ cursor:'pointer' }}
+                         onClick={function(){ props.onItemClick(it); }}>
+                      {innerContent}
+                    </div>
+                  ) : (
+                    <a key={it.id}
+                       className="result-card"
+                       href={it.destination_url}
+                       onClick={function(){ track('result_click', { id: it.id, q: props.query }); }}>
+                      {innerContent}
                     </a>
                   );
                 })}
@@ -1177,6 +1289,169 @@ function SearchResults(props) {
           );
         })
       )}
+    </section>
+  );
+}
+
+function relatedItems(item, all){
+  const myTags = item.tags || [];
+  return all
+    .filter(function(x){ return x.id !== item.id; })
+    .map(function(x){
+      let score = 0;
+      const itsTags = x.tags || [];
+      myTags.forEach(function(t){ if (itsTags.indexOf(t) >= 0) score += 3; });
+      if (x.city === item.city) score += 2;
+      else if (x.city === 'all') score += 1;
+      if (item.category === 'social' && x.category !== 'social') score += 0.5;
+      return Object.assign({}, x, { _related: score });
+    })
+    .filter(function(x){ return x._related > 0; })
+    .sort(function(a,b){ return b._related - a._related; })
+    .slice(0, 6);
+}
+
+function ResultDetail(props){
+  const item = props.item;
+  const isSocial = item.category === 'social';
+  const platformIcon = isSocial && PLATFORM_ICONS[item.platform] ? Icon[PLATFORM_ICONS[item.platform]] : null;
+  const platformLabel = isSocial ? (PLATFORM_LABELS[item.platform] || item.platform) : null;
+  const related = relatedItems(item, SEARCHABLE);
+
+  function openExternal(e){
+    if (e) e.preventDefault();
+    track('result_external_click', { id: item.id, platform: item.platform });
+    window.open(item.destination_url, '_blank', 'noopener,noreferrer');
+  }
+
+  return (
+    <section className="detail-wrap">
+      <button className="detail-back" onClick={props.onBack}>
+        <Icon.ArrowLeft/> Back to results
+      </button>
+
+      <div className="detail-hero" style={{ backgroundImage:'url(' + item.image_url + ')' }} onClick={openExternal}>
+        {isSocial && platformIcon ? (
+          <div className="detail-hero-platform">
+            <span className={'result-platform p-' + item.platform}>
+              {React.createElement(platformIcon)} {platformLabel}
+            </span>
+          </div>
+        ) : null}
+        <div className="detail-hero-overlay">
+          <div className="detail-play"><Icon.Play/></div>
+        </div>
+      </div>
+
+      <div className="detail-info">
+        <div className="detail-main">
+          {isSocial && platformIcon ? (
+            <div className="detail-platform-row">{React.createElement(platformIcon)} {platformLabel}</div>
+          ) : null}
+          <h1 className="detail-title">{item.title}</h1>
+
+          {isSocial ? (
+            <div className="detail-creator-row">
+              <span className="handle">{item.creator_handle}</span>
+              <span className="sep">·</span>
+              <span>{relativeTime(item.posted_at)}</span>
+              {item.view_count ? (
+                <React.Fragment>
+                  <span className="sep">·</span>
+                  <span className="stat-inline"><Icon.Eye/> {formatCount(item.view_count)} views</span>
+                </React.Fragment>
+              ) : null}
+            </div>
+          ) : (
+            <div className="detail-creator-row">
+              <span className="stat-inline"><Icon.Pin/> {item.city === 'all' ? 'All cities' : ((CITIES.find(function(c){ return c.id === item.city; }) || {}).name || item.city)}</span>
+              <span className="sep">·</span>
+              <span>{CATEGORIES[item.category] ? CATEGORIES[item.category].label : item.category}</span>
+            </div>
+          )}
+
+          <p className="detail-description">{item.description}</p>
+
+          <div className="detail-actions">
+            <a className="detail-cta-primary"
+               href={item.destination_url}
+               target={isSocial ? '_blank' : undefined}
+               rel={isSocial ? 'noopener noreferrer' : undefined}
+               onClick={function(){ track('result_external_click', { id: item.id, platform: item.platform }); }}>
+              {isSocial ? ('Watch on ' + platformLabel) : 'View on BagFree'} <Icon.ArrowRight/>
+            </a>
+          </div>
+        </div>
+
+        {isSocial ? (
+          <div className="detail-aside">
+            <div className="detail-aside-label">Engagement</div>
+            <div className="detail-stat">
+              <span className="detail-stat-label">Views</span>
+              <span className="detail-stat-value">{formatCount(item.view_count) || '—'}</span>
+            </div>
+            <div className="detail-aside-divider"></div>
+            <div className="detail-stat">
+              <span className="detail-stat-label">Likes</span>
+              <span className="detail-stat-value">{formatCount(item.like_count) || '—'}</span>
+            </div>
+            <div className="detail-aside-divider"></div>
+            <div className="detail-stat">
+              <span className="detail-stat-label">RealityRank</span>
+              <span className="detail-stat-value">{item.reality_rank_score || computeRealityRank(item)}</span>
+            </div>
+            <div className="detail-aside-divider"></div>
+            <div className="detail-stat">
+              <span className="detail-stat-label">Posted</span>
+              <span className="detail-stat-value" style={{ fontSize:'0.95rem' }}>{relativeTime(item.posted_at)}</span>
+            </div>
+          </div>
+        ) : null}
+      </div>
+
+      {related.length > 0 ? (
+        <React.Fragment>
+          <div className="detail-related-head">
+            <h3 className="detail-related-title">Related on BagFree</h3>
+            <span className="detail-related-tag">Based on this post's topics and city</span>
+          </div>
+          <div className="results-grid">
+            {related.map(function(it){
+              const isSoc = it.category === 'social';
+              const pIcon = isSoc && PLATFORM_ICONS[it.platform] ? Icon[PLATFORM_ICONS[it.platform]] : null;
+              const pLabel = isSoc ? (PLATFORM_LABELS[it.platform] || it.platform) : null;
+              return (
+                <div key={it.id} className={'result-card' + (isSoc ? ' social' : '')}
+                     style={{ cursor:'pointer' }}
+                     onClick={function(){ props.onItemClick(it); }}>
+                  <div className="result-img" style={{ backgroundImage:'url(' + it.image_url + ')' }}>
+                    {isSoc && pIcon ? (
+                      <span className={'result-platform p-' + it.platform}>
+                        {React.createElement(pIcon)} {pLabel}
+                      </span>
+                    ) : (
+                      <span className="result-cat">{CATEGORIES[it.category].label}</span>
+                    )}
+                  </div>
+                  <div className="result-body">
+                    <div className="result-title">{it.title}</div>
+                    {isSoc ? (
+                      <div className="result-creator">
+                        <span className="result-creator-handle">{it.creator_handle}</span>
+                        {it.view_count ? (<span className="result-creator-stats"><Icon.Eye/> {formatCount(it.view_count)}</span>) : null}
+                      </div>
+                    ) : (
+                      <div className="result-city"><Icon.Pin/> {it.city === 'all' ? 'All cities' : ((CITIES.find(function(c){ return c.id === it.city; }) || {}).name || it.city)}</div>
+                    )}
+                    <div className="result-desc">{it.description}</div>
+                    <span className="result-cta">View details <Icon.ArrowRight/></span>
+                  </div>
+                </div>
+              );
+            })}
+          </div>
+        </React.Fragment>
+      ) : null}
     </section>
   );
 }
@@ -1211,7 +1486,7 @@ function TopBar(props) {
           </div>
           {props.city.temp ? <div className="meta-item"><Icon.Sun/> {props.city.temp}</div> : null}
         </div>
-        <SearchBar city={props.city} onSearch={props.onSearch}/>
+        <SearchBar city={props.city} onSearch={props.onSearch} onItemClick={props.onItemClick}/>
       </div>
       <div className="topbar-actions">
         <button className="icon-btn" title="Search"><Icon.Search/></button>
@@ -1391,28 +1666,50 @@ function App() {
   const search = searchState[0];
   const setSearch = searchState[1];
 
+  const viewingState = useState(null);
+  const viewing = viewingState[0];
+  const setViewing = viewingState[1];
+
   function onSearch(query, results, expansion){
     setSearch({ query: query, results: results, expansion: expansion || null });
+    setViewing(null);
     window.scrollTo({ top: 0, behavior: 'smooth' });
   }
   function clearSearch(){
     setSearch({ query:'', results:null, expansion:null });
+    setViewing(null);
     track('search_clear', {});
   }
+
+  // Single click handler used by autocomplete, search results, and related cards.
+  // Social posts open an in-domain detail view; products navigate to their page.
+  function openItem(item){
+    if (item.category === 'social'){
+      track('result_view_detail', { id: item.id, platform: item.platform });
+      setViewing(item);
+      window.scrollTo({ top: 0, behavior: 'smooth' });
+    } else {
+      track('result_click', { id: item.id });
+      window.location.href = item.destination_url;
+    }
+  }
+  function closeDetail(){ setViewing(null); }
 
   return (
     <div className="app">
       <Sidebar active={active} setActive={setActive} city={city} setCity={setCity}/>
       <main className="main">
-        <TopBar city={city} setCity={setCity} onSearch={onSearch}/>
-        {search.results === null ? (
+        <TopBar city={city} setCity={setCity} onSearch={onSearch} onItemClick={openItem}/>
+        {viewing ? (
+          <ResultDetail item={viewing} onBack={closeDetail} onItemClick={openItem}/>
+        ) : search.results === null ? (
           <React.Fragment>
             <Grid/>
             <QuoteSection/>
             <VideoSection/>
           </React.Fragment>
         ) : (
-          <SearchResults query={search.query} results={search.results} expansion={search.expansion} onClear={clearSearch}/>
+          <SearchResults query={search.query} results={search.results} expansion={search.expansion} onClear={clearSearch} onItemClick={openItem}/>
         )}
       </main>
       <RightRail city={city}/>
