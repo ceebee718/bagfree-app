@@ -151,6 +151,13 @@ a{text-decoration:none}
 .concierge:hover{background:var(--card-hover);border-color:rgba(201,169,110,0.35);transform:translateY(-2px)}
 .concierge svg{width:16px;height:16px}
 
+.video-section{display:flex;flex-direction:column;gap:0.9rem;margin-top:0.4rem}
+.video-head{display:flex;align-items:baseline;gap:0.9rem;padding-left:0.2rem}
+.video-eyebrow{color:var(--gold);font-size:0.6rem;letter-spacing:3px;font-weight:600;text-transform:uppercase}
+.video-title{font-family:var(--ff-display);font-size:1.65rem;font-weight:400;letter-spacing:-0.3px;line-height:1.1}
+.video-frame{position:relative;width:100%;padding-top:56.25%;border-radius:14px;overflow:hidden;border:1px solid var(--border);background:#000;box-shadow:0 20px 50px -10px rgba(0,0,0,0.6)}
+.video-frame iframe{position:absolute;top:0;left:0;width:100%;height:100%;border:0}
+
 #err-box{display:none;position:fixed;top:0;left:0;right:0;background:#5a1818;color:#fff;padding:1rem 1.5rem;font-family:monospace;font-size:13px;z-index:9999;border-bottom:2px solid #d44;white-space:pre-wrap;max-height:50vh;overflow:auto}
 
 #loader{position:fixed;inset:0;background:var(--bg);display:flex;align-items:center;justify-content:center;z-index:100;transition:opacity .4s}
@@ -373,6 +380,25 @@ function QuoteSection() {
   );
 }
 
+function VideoSection() {
+  return (
+    <section className="video-section">
+      <div className="video-head">
+        <span className="video-eyebrow">Watch</span>
+        <h2 className="video-title">The BagFree story</h2>
+      </div>
+      <div className="video-frame">
+        <iframe
+          src="https://player.vimeo.com/video/1195690381?badge=0&autopause=0&player_id=0&app_id=58479"
+          allow="autoplay; fullscreen; picture-in-picture; clipboard-write; encrypted-media; web-share"
+          referrerPolicy="strict-origin-when-cross-origin"
+          title="BagFree"
+        />
+      </div>
+    </section>
+  );
+}
+
 function RightRail() {
   return (
     <aside className="right-rail">
@@ -458,6 +484,7 @@ function App() {
         <TopBar/>
         <Grid/>
         <QuoteSection/>
+        <VideoSection/>
       </main>
       <RightRail/>
       <ConciergeChat/>
@@ -489,6 +516,8 @@ setTimeout(function(){
   console.error('Render error:', err);
 }
 </script>
+
+<script src="https://player.vimeo.com/api/player.js"></script>
 
 </body>
 </html>
