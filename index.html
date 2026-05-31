@@ -617,15 +617,15 @@ function relativeTime(iso){
 }
 
 const CITIES = [
-  { id:'savannah', name:'Savannah', region:'Georgia', temp:'72°F',
+  { id:'savannah', name:'Savannah', region:'Georgia', temp:'72°F', hotel:'The Alida',
     curator:{ name:'Jasmine L.', role:'Savannah Insider', rating:'4.9', reviews:'128', avatar:'https://images.unsplash.com/photo-1494790108377-be9c29b29330?w=120&h=120&fit=crop&crop=faces' } },
-  { id:'atlanta', name:'Atlanta', region:'Georgia', temp:'68°F',
+  { id:'atlanta', name:'Atlanta', region:'Georgia', temp:'68°F', hotel:'Hotel Clermont',
     curator:{ name:'Marcus D.', role:'Atlanta Insider', rating:'4.8', reviews:'94', avatar:'https://images.unsplash.com/photo-1507003211169-0a1dd7228f2d?w=120&h=120&fit=crop&crop=faces' } },
-  { id:'tampa', name:'Tampa', region:'Florida', temp:'81°F',
+  { id:'tampa', name:'Tampa', region:'Florida', temp:'81°F', hotel:'Tampa EDITION',
     curator:{ name:'Sofia R.', role:'Tampa Insider', rating:'4.9', reviews:'112', avatar:'https://images.unsplash.com/photo-1438761681033-6461ffad8d80?w=120&h=120&fit=crop&crop=faces' } },
-  { id:'orlando', name:'Orlando', region:'Florida', temp:'79°F',
+  { id:'orlando', name:'Orlando', region:'Florida', temp:'79°F', hotel:'Waldorf Astoria',
     curator:{ name:'Elena V.', role:'Orlando Insider', rating:'4.8', reviews:'87', avatar:'https://images.unsplash.com/photo-1573496359142-b8d87734a5a2?w=120&h=120&fit=crop&crop=faces' } },
-  { id:'miami', name:'Miami', region:'Florida', temp:'84°F', tag:'Next-day',
+  { id:'miami', name:'Miami', region:'Florida', temp:'84°F', tag:'Next-day', hotel:'Faena Hotel',
     curator:{ name:'Camila P.', role:'Miami Insider', rating:'5.0', reviews:'63', avatar:'https://images.unsplash.com/photo-1580489944761-15a19d654956?w=120&h=120&fit=crop&crop=faces' } },
   { id:'caribbean', name:'Caribbean', region:'Coming soon', soon:true }
 ];
@@ -645,15 +645,19 @@ const CATEGORIES = {
 const CATEGORY_ORDER = ['essentials','clothing','meals','snacks','favorites','social','experiences','curators','hotels'];
 
 // ── Suggested searches (Phase 1: static; later: from search_queries table) ──
-const SUGGESTED = [
-  { q:'I forgot SPF',                  icon:'Sparkles' },
-  { q:'Dinner outfit',                 icon:'Sparkles' },
-  { q:'Arrival meals in Savannah',     icon:'Dome'     },
-  { q:'Where locals go',               icon:'Sparkles' },
-  { q:'Hotel essentials',              icon:'Bottle'   },
-  { q:'Trending on TikTok',            icon:'Play'     },
-  { q:'Experiences near my hotel',     icon:'Compass'  }
-];
+// ── Suggested searches (Phase 1: static; later: from search_queries table) ──
+// Dynamic so they mention the user's current city.
+function getSuggested(city){
+  return [
+    { q:'I forgot SPF',                              icon:'Sparkles' },
+    { q:'Dinner outfit',                             icon:'Sparkles' },
+    { q:'Arrival meals in ' + city.name,             icon:'Dome'     },
+    { q:'Where locals go in ' + city.name,           icon:'Sparkles' },
+    { q:'Hotel essentials',                          icon:'Bottle'   },
+    { q:'Trending on TikTok',                        icon:'Play'     },
+    { q:'Experiences near my hotel',                 icon:'Compass'  }
+  ];
+}
 
 // ── Searchable content (mirrors the searchable_content table schema) ────────
 // Phase 1: client-side seed. In production this comes from Supabase.
@@ -1098,6 +1102,7 @@ function SearchBar(props) {
 
   const live = q.trim() ? rankResults(q, props.city.id, SEARCHABLE).slice(0, 6) : [];
   const showDrop = focused;
+  const suggestions = getSuggested(props.city);
 
   function submit(query){
     const final = (query || q).trim();
@@ -1120,13 +1125,13 @@ function SearchBar(props) {
     setFocused(false);
   }
   function onKey(e){
-    const items = live.length ? live : SUGGESTED;
+    const items = live.length ? live : suggestions;
     if (e.key === 'ArrowDown'){ e.preventDefault(); setHi(Math.min(hi + 1, items.length - 1)); }
     else if (e.key === 'ArrowUp'){ e.preventDefault(); setHi(Math.max(hi - 1, 0)); }
     else if (e.key === 'Enter'){
       if (live.length){ onResultClick(live[hi] || live[0]); }
       else if (q.trim()){ submit(); }
-      else if (SUGGESTED[hi]){ onSuggestClick(SUGGESTED[hi].q); }
+      else if (suggestions[hi]){ onSuggestClick(suggestions[hi].q); }
     }
     else if (e.key === 'Escape'){ setFocused(false); }
   }
@@ -1153,7 +1158,7 @@ function SearchBar(props) {
           {q.trim() === '' ? (
             <div className="search-section">
               <div className="search-section-label"><Icon.Sparkles/> Suggested searches</div>
-              {SUGGESTED.map(function(s, idx){
+              {suggestions.map(function(s, idx){
                 const I = Icon[s.icon] || Icon.Search;
                 const cls = 'search-suggest' + (idx === hi ? ' hi' : '');
                 return (
@@ -1652,7 +1657,7 @@ function RightRail(props) {
         <div className="trip-row">
           <div>
             <div className="trip-dates">May 24 - May 27, 2025</div>
-            <div className="trip-hotel">{c.id === 'savannah' ? 'The Alida, ' : ''}{c.name}</div>
+            <div className="trip-hotel">{c.hotel ? c.hotel + ', ' : ''}{c.name}</div>
           </div>
           <Icon.Calendar/>
         </div>
@@ -1729,6 +1734,13 @@ function App() {
     if (c.soon) return;
     try { localStorage.setItem('bf_city', c.id); } catch(e) {}
     setCityState(c);
+    // If a search is active, re-rank its results with the new city so the
+    // listing immediately reflects the city change.
+    if (search.results !== null && search.query) {
+      track('search_recompute_city', { q: search.query, from: city.id, to: c.id });
+      const reranked = rankResults(search.query, c.id, SEARCHABLE);
+      setSearch({ query: search.query, results: reranked, expansion: reranked.expansion || null });
+    }
   }
 
   const searchState = useState({ query:'', results:null, expansion:null });
