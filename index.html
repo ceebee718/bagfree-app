@@ -774,6 +774,26 @@ function getSuggested(city){
 const SUPABASE_URL = 'https://vkctidpaghpdlmleezvq.supabase.co';
 const SUPABASE_ANON_KEY = 'eyJhbGciOiJIUzI1NiIsInR5cCI6IkpXVCJ9.eyJpc3MiOiJzdXBhYmFzZSIsInJlZiI6InZrY3RpZHBhZ2hwZGxtbGVlenZxIiwicm9sZSI6ImFub24iLCJpYXQiOjE3NzUzMjI5MjgsImV4cCI6MjA5MDg5ODkyOH0.wKtG6XD6CwLy3rJDZc4S10-NqNr3fcCXHYOWJt_C628';
 
+// Anthropic requests go through the Supabase Edge Function "concierge" so the
+// API key stays server-side. (Deploy: supabase functions deploy concierge)
+const CLAUDE_PROXY_URL = SUPABASE_URL + '/functions/v1/concierge';
+
+// Shared helper: send a messages request to Claude via the proxy.
+// Returns the parsed JSON (same shape as the Anthropic API response).
+async function callClaude(payload) {
+  const res = await fetch(CLAUDE_PROXY_URL, {
+    method: 'POST',
+    headers: {
+      'Content-Type': 'application/json',
+      'Authorization': 'Bearer ' + SUPABASE_ANON_KEY,
+      'apikey': SUPABASE_ANON_KEY
+    },
+    body: JSON.stringify(payload)
+  });
+  if (!res.ok) throw new Error('Proxy HTTP ' + res.status);
+  return res.json();
+}
+
 async function fetchSearchableContent() {
   try {
     const res = await fetch(
@@ -1370,17 +1390,12 @@ function SearchBar(props) {
     const categoryList = Object.entries(CATEGORIES).map(function([k,v]){ return k + ' (' + v.label + ')'; }).join(', ');
     const tagList = Array.from(new Set(SEARCHABLE.flatMap(function(x){ return x.tags || []; }))).slice(0, 60).join(', ');
     try {
-      const res = await fetch('https://api.anthropic.com/v1/messages', {
-        method: 'POST',
-        headers: { 'Content-Type': 'application/json' },
-        body: JSON.stringify({
-          model: 'claude-sonnet-4-20250514',
-          max_tokens: 150,
-          system: 'You are a search assistant for BagFree, a travel concierge that delivers clothing rentals, meals, essentials, snacks, local favorites, experiences, and social content recommendations to hotel guests. Given a natural-language search query, respond ONLY with a JSON object (no markdown, no extra text) with two fields: "keywords" (3-8 space-separated search keywords that best map the intent to catalog items) and "hint" (a short plain-English note under 12 words explaining what you understood). Available categories: ' + categoryList + '. Common catalog tags: ' + tagList + '. Current city: ' + props.city.name + ', ' + props.city.region + '.',
-          messages: [{ role: 'user', content: rawQuery }]
-        })
+      const data = await callClaude({
+        model: 'claude-sonnet-4-20250514',
+        max_tokens: 150,
+        system: 'You are a search assistant for BagFree, a travel concierge that delivers clothing rentals, meals, essentials, snacks, local favorites, experiences, and social content recommendations to hotel guests. Given a natural-language search query, respond ONLY with a JSON object (no markdown, no extra text) with two fields: "keywords" (3-8 space-separated search keywords that best map the intent to catalog items) and "hint" (a short plain-English note under 12 words explaining what you understood). Available categories: ' + categoryList + '. Common catalog tags: ' + tagList + '. Current city: ' + props.city.name + ', ' + props.city.region + '.',
+        messages: [{ role: 'user', content: rawQuery }]
       });
-      const data = await res.json();
       if (data.content && data.content[0] && data.content[0].text) {
         const cleaned = data.content[0].text.replace(/```json|```/g, '').trim();
         return JSON.parse(cleaned);
@@ -2148,17 +2163,12 @@ function ConciergeChat(props) {
       return { role: m.role === 'user' ? 'user' : 'assistant', content: m.text };
     });
 
-    const res = await fetch('https://api.anthropic.com/v1/messages', {
-      method: 'POST',
-      headers: { 'Content-Type': 'application/json' },
-      body: JSON.stringify({
-        model: 'claude-sonnet-4-20250514',
-        max_tokens: 400,
-        system: systemPrompt,
-        messages: apiMessages
-      })
+    const data = await callClaude({
+      model: 'claude-sonnet-4-20250514',
+      max_tokens: 400,
+      system: systemPrompt,
+      messages: apiMessages
     });
-    const data = await res.json();
     if (data && data.content && data.content[0] && data.content[0].text) {
       return data.content[0].text;
     }
