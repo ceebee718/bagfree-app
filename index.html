@@ -34,7 +34,28 @@ a{text-decoration:none}
 .app{display:grid;grid-template-columns:260px 1fr 340px;min-height:100vh}
 @media (max-width:1280px){.app{grid-template-columns:240px 1fr 300px}}
 @media (max-width:1024px){.app{grid-template-columns:220px 1fr}.right-rail{display:none}}
-@media (max-width:720px){.app{grid-template-columns:1fr}.sidebar{display:none}}
+/* mobile shell defaults (overridden in the 720px block) */
+.mobile-bar{display:none}
+.drawer-overlay{display:none}
+.sidebar-close{display:none}
+.hamburger{background:none;border:0;display:flex;flex-direction:column;gap:5px;padding:8px;cursor:pointer}
+.hamburger span{display:block;width:22px;height:2px;background:var(--gold);border-radius:2px}
+.mobile-brand{font-family:var(--ff-display);letter-spacing:5px;color:var(--gold);font-size:1.05rem;font-weight:500}
+@media (max-width:720px){
+  .app{grid-template-columns:1fr}
+  .mobile-bar{display:flex;align-items:center;gap:0.8rem;position:sticky;top:0;z-index:90;background:var(--bg-2);border-bottom:1px solid var(--border-soft);padding:0.6rem 1rem;height:56px}
+  .mobile-bar-spacer{flex:1}
+  .sidebar{position:fixed;top:0;left:0;bottom:0;height:100%;width:284px;max-width:84vw;z-index:120;transform:translateX(-100%);transition:transform .28s ease;border-right:1px solid var(--border-soft)}
+  .sidebar.sidebar--open{transform:translateX(0)}
+  .drawer-overlay{display:block;position:fixed;inset:0;background:rgba(0,0,0,0.55);z-index:110;opacity:0;pointer-events:none;transition:opacity .28s}
+  .drawer-overlay.show{opacity:1;pointer-events:auto}
+  .sidebar-close{display:flex;align-items:center;justify-content:center;position:absolute;top:0.8rem;right:0.8rem;width:32px;height:32px;border:1px solid var(--border-soft);border-radius:50%;background:none;color:var(--white);cursor:pointer;z-index:2}
+  .sidebar-close svg{width:15px;height:15px}
+  .main{padding:1.2rem 1.1rem 4rem}
+  .topbar{flex-direction:column;gap:0}
+  .topbar-actions{display:none}
+  .greeting-title{font-size:2rem}
+}
 
 .sidebar{background:var(--bg-2);border-right:1px solid var(--border-soft);padding:2rem 1.4rem;display:flex;flex-direction:column;gap:2.4rem;position:sticky;top:0;height:100vh;overflow-y:auto}
 .brand{display:flex;flex-direction:column;align-items:center;gap:0.4rem;padding:0.4rem 0 0.6rem}
@@ -484,6 +505,35 @@ a{text-decoration:none}
 #loader.hide{opacity:0;pointer-events:none}
 .loader-mark{font-family:var(--ff-display);font-size:1.5rem;letter-spacing:6px;color:var(--gold);font-weight:500}
 .loader-tag{font-size:0.6rem;letter-spacing:4px;color:var(--gold);opacity:0.7;margin-top:0.4rem;text-align:center}
+
+/* == Responsive overrides — placed LAST so they win source-order ties == */
+.brand-link{display:flex;align-items:center;justify-content:center;padding:0.6rem 0;text-decoration:none}
+.brand-img{width:130px;max-width:90%;object-fit:contain}
+.brand-img--sm{height:34px;width:auto;object-fit:contain}
+.loader-logo{width:160px;max-width:70vw;object-fit:contain}
+
+@media (max-width:1024px){
+  .app{grid-template-columns:220px 1fr}
+  .right-rail{display:none !important}
+}
+@media (max-width:720px){
+  .app{grid-template-columns:1fr}
+  .right-rail{display:none !important}
+  /* Sidebar becomes off-canvas drawer */
+  .sidebar{
+    position:fixed !important;
+    top:0;left:0;
+    width:284px;max-width:84vw;
+    height:100% !important;
+    z-index:120;
+    transform:translateX(-100%);
+    transition:transform .28s cubic-bezier(.4,0,.2,1);
+    display:flex !important;
+  }
+  .sidebar.sidebar--open{transform:translateX(0) !important}
+  .topbar-actions{display:none !important}
+  .main{padding:1.2rem 1.1rem 4.5rem}
+}
 </style>
 </head>
 <body>
@@ -494,8 +544,7 @@ a{text-decoration:none}
 <!-- Loader (hides once React mounts) -->
 <div id="loader">
   <div>
-    <div class="loader-mark">BAGFREE</div>
-    <div class="loader-tag">TRAVEL LIGHT</div>
+    <img src="/bagfree-logo.png" alt="BagFree" class="loader-logo"/>
   </div>
 </div>
 
@@ -1085,12 +1134,13 @@ function Sidebar(props) {
   }, [open]);
 
   return (
-    <aside className="sidebar">
-      <div className="brand">
-        <div className="brand-ornament"><Icon.Diamond/></div>
-        <div className="brand-name">BAGFREE</div>
-        <div className="brand-tag">TRAVEL LIGHT</div>
-      </div>
+    <aside className={'sidebar' + (props.mobileOpen ? ' sidebar--open' : '')}>
+      <button className="sidebar-close" aria-label="Close menu" onClick={props.onClose}>
+        <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" strokeWidth="1.6"><line x1="6" y1="6" x2="18" y2="18"/><line x1="18" y1="6" x2="6" y2="18"/></svg>
+      </button>
+      <a href="/" className="brand-link" onClick={function(){ if(props.onClose) props.onClose(); }}>
+        <img src="/bagfree-logo.png" alt="BagFree" className="brand-img"/>
+      </a>
 
       <div className="meta-anchor" style={{ marginTop:'-1.4rem' }}>
         <div className="sidebar-city" onClick={function(e){ e.stopPropagation(); setOpen(!open); }}>
@@ -1870,6 +1920,10 @@ function App() {
   const viewing = viewingState[0];
   const setViewing = viewingState[1];
 
+  const drawerState = useState(false);
+  const drawerOpen = drawerState[0];
+  const setDrawerOpen = drawerState[1];
+
   // Ref so popstate (with stale closure) can read current city
   const cityRef = React.useRef(city);
   React.useEffect(function(){ cityRef.current = city; }, [city]);
@@ -1976,7 +2030,15 @@ function App() {
 
   return (
     <div className="app">
-      <Sidebar active={active} setActive={setActive} city={city} setCity={setCity}/>
+      <div className="mobile-bar">
+        <button className="hamburger" aria-label="Open menu" onClick={function(){ setDrawerOpen(true); }}>
+          <span></span><span></span><span></span>
+        </button>
+        <a href="/" className="brand-link"><img src="/bagfree-logo.png" alt="BagFree" className="brand-img--sm"/></a>
+        <div className="mobile-bar-spacer"></div>
+      </div>
+      <div className={'drawer-overlay' + (drawerOpen ? ' show' : '')} onClick={function(){ setDrawerOpen(false); }}></div>
+      <Sidebar mobileOpen={drawerOpen} onClose={function(){ setDrawerOpen(false); }} active={active} setActive={setActive} city={city} setCity={setCity}/>
       <main className="main">
         <TopBar city={city} setCity={setCity} onSearch={onSearch} onItemClick={openItem}/>
         {viewing ? (
