@@ -496,6 +496,47 @@ a{text-decoration:none}
 .concierge:hover{background:var(--card-hover);border-color:rgba(201,169,110,0.35);transform:translateY(-2px)}
 .concierge svg{width:16px;height:16px}
 
+/* ── Concierge chat panel ──────────────────────────────────────────────── */
+.chat-panel{position:fixed;bottom:1.6rem;right:1.6rem;z-index:80;width:380px;max-width:calc(100vw - 2rem);height:560px;max-height:calc(100vh - 3rem);background:var(--card);border:1px solid var(--border);border-radius:16px;box-shadow:0 24px 60px rgba(0,0,0,0.6);display:flex;flex-direction:column;overflow:hidden;animation:chatIn 0.28s cubic-bezier(.4,0,.2,1)}
+@keyframes chatIn{from{opacity:0;transform:translateY(20px) scale(0.97)}to{opacity:1;transform:none}}
+@media (max-width:480px){.chat-panel{bottom:0;right:0;left:0;width:100%;max-width:100%;height:100%;max-height:100%;border-radius:0}}
+.chat-head{display:flex;align-items:center;gap:0.7rem;padding:1.05rem 1.2rem;border-bottom:1px solid var(--border-soft);background:linear-gradient(165deg,rgba(201,169,110,0.08),transparent)}
+.chat-head-avatar{width:38px;height:38px;border-radius:50%;background:linear-gradient(135deg,var(--gold),#a8884f);display:flex;align-items:center;justify-content:center;color:var(--bg);flex-shrink:0}
+.chat-head-avatar svg{width:19px;height:19px}
+.chat-head-info{flex:1;min-width:0}
+.chat-head-title{font-family:var(--ff-display);font-size:1.1rem;font-weight:500;color:var(--white);line-height:1.1}
+.chat-head-sub{font-size:0.68rem;color:var(--gold);letter-spacing:1px;text-transform:uppercase;font-weight:500;margin-top:0.15rem;display:flex;align-items:center;gap:0.35rem}
+.chat-head-dot{width:6px;height:6px;border-radius:50%;background:#4ade80;box-shadow:0 0 6px #4ade80}
+.chat-close{width:30px;height:30px;border-radius:50%;border:1px solid var(--border-soft);background:none;color:var(--muted);display:flex;align-items:center;justify-content:center;cursor:pointer;flex-shrink:0;transition:all 0.2s}
+.chat-close:hover{background:rgba(255,255,255,0.06);color:var(--white)}
+.chat-close svg{width:14px;height:14px}
+.chat-body{flex:1;overflow-y:auto;padding:1.2rem;display:flex;flex-direction:column;gap:0.9rem}
+.chat-msg{max-width:84%;padding:0.75rem 1rem;border-radius:14px;font-size:0.88rem;line-height:1.5;font-weight:300;white-space:pre-wrap;word-wrap:break-word}
+.chat-msg.user{align-self:flex-end;background:var(--gold);color:var(--bg);border-bottom-right-radius:4px;font-weight:400}
+.chat-msg.bot{align-self:flex-start;background:rgba(255,255,255,0.04);border:1px solid var(--border-soft);color:var(--white);border-bottom-left-radius:4px}
+.chat-msg.bot.thinking{color:var(--muted);font-style:italic}
+.chat-typing{display:inline-flex;gap:3px;align-items:center}
+.chat-typing span{width:6px;height:6px;border-radius:50%;background:var(--gold);opacity:0.6;animation:typing 1.2s infinite}
+.chat-typing span:nth-child(2){animation-delay:0.2s}
+.chat-typing span:nth-child(3){animation-delay:0.4s}
+@keyframes typing{0%,60%,100%{transform:translateY(0);opacity:0.4}30%{transform:translateY(-4px);opacity:1}}
+.chat-foot{padding:0.9rem 1rem;border-top:1px solid var(--border-soft);display:flex;gap:0.6rem;align-items:flex-end}
+.chat-input{flex:1;background:rgba(255,255,255,0.04);border:1px solid var(--border-soft);border-radius:12px;padding:0.7rem 0.9rem;color:var(--white);font-family:var(--ff-body);font-size:0.88rem;font-weight:300;resize:none;outline:none;max-height:100px;line-height:1.4;transition:border-color 0.2s}
+.chat-input:focus{border-color:rgba(201,169,110,0.4)}
+.chat-input::placeholder{color:var(--faint)}
+.chat-send{width:40px;height:40px;border-radius:11px;background:var(--gold);color:var(--bg);display:flex;align-items:center;justify-content:center;cursor:pointer;flex-shrink:0;border:0;transition:all 0.2s}
+.chat-send:hover{background:var(--gold-bright)}
+.chat-send:disabled{opacity:0.4;cursor:not-allowed}
+.chat-send svg{width:18px;height:18px}
+.chat-suggest-row{display:flex;flex-wrap:wrap;gap:0.45rem;margin-top:0.3rem}
+.chat-chip{font-size:0.74rem;color:var(--gold);border:1px solid var(--border);background:rgba(201,169,110,0.05);padding:0.4rem 0.7rem;border-radius:20px;cursor:pointer;transition:all 0.2s;font-weight:300}
+.chat-chip:hover{background:rgba(201,169,110,0.12)}
+
+/* "Ask concierge" callout inside empty search results */
+.empty-concierge{margin-top:1.3rem;display:inline-flex;align-items:center;gap:0.55rem;background:var(--gold);color:var(--bg);border:0;padding:0.8rem 1.4rem;border-radius:30px;font-size:0.74rem;letter-spacing:1.5px;font-weight:600;text-transform:uppercase;cursor:pointer;transition:all 0.25s}
+.empty-concierge:hover{background:var(--gold-bright);transform:translateY(-2px)}
+.empty-concierge svg{width:15px;height:15px}
+
 .video-section{display:flex;flex-direction:column;gap:0.9rem;margin-top:0.4rem}
 .video-head{display:flex;align-items:baseline;gap:0.9rem;padding-left:0.2rem}
 .video-eyebrow{color:var(--gold);font-size:0.6rem;letter-spacing:3px;font-weight:600;text-transform:uppercase}
@@ -1596,8 +1637,11 @@ function SearchResults(props) {
 
       {props.results.length === 0 ? (
         <div className="results-empty">
-          <div className="results-empty-title">No matches found</div>
-          <div className="results-empty-tag">Try one of the suggested searches above, or simplify your query.</div>
+          <div className="results-empty-title">No matches in the catalog</div>
+          <div className="results-empty-tag">We couldn’t find a BagFree item for “{props.query}”. Our concierge can help with travel questions, recommendations, and anything we don’t stock.</div>
+          <button className="empty-concierge" onClick={function(){ if(props.onAskConcierge) props.onAskConcierge(props.query); }}>
+            <Icon.Chat/> Ask the Concierge
+          </button>
         </div>
       ) : (
         CATEGORY_ORDER.filter(function(c){ return grouped[c].length > 0; }).map(function(catKey){
@@ -2053,11 +2097,146 @@ function RightRail(props) {
   );
 }
 
-function ConciergeChat() {
+function ConciergeChat(props) {
+  const open = props.open;
+  const setOpen = props.setOpen;
+  const city = props.city;
+
+  const msgsState = useState([]);
+  const msgs = msgsState[0]; const setMsgs = msgsState[1];
+  const inputState = useState('');
+  const input = inputState[0]; const setInput = inputState[1];
+  const busyState = useState(false);
+  const busy = busyState[0]; const setBusy = busyState[1];
+  const bodyRef = React.useRef(null);
+  const seedHandled = React.useRef(false);
+
+  // Auto-scroll to newest message
+  React.useEffect(function(){
+    if (bodyRef.current) bodyRef.current.scrollTop = bodyRef.current.scrollHeight;
+  }, [msgs, busy, open]);
+
+  // Greeting on first open
+  React.useEffect(function(){
+    if (open && msgs.length === 0 && !props.seed) {
+      setMsgs([{ role:'bot', text:'Hi! I\u2019m your BagFree concierge for ' + city.name + '. Ask me anything \u2014 what to pack, where to eat, things to do, or help with your order.' }]);
+    }
+  }, [open]);
+
+  // If opened with a seed query (from a failed search), send it automatically
+  React.useEffect(function(){
+    if (open && props.seed && !seedHandled.current) {
+      seedHandled.current = true;
+      sendMessage(props.seed);
+    }
+    if (!open) seedHandled.current = false;
+  }, [open, props.seed]);
+
+  async function callConcierge(history) {
+    const catalogSummary = SEARCHABLE.slice(0, 40).map(function(it){
+      return '- ' + it.title + ' (' + (CATEGORIES[it.category] ? CATEGORIES[it.category].label : it.category) + ', ' + (it.city === 'all' ? 'all cities' : it.city) + ')';
+    }).join('\n');
+    const systemPrompt =
+      'You are the BagFree concierge, a warm, concise travel assistant. BagFree delivers clothing rentals, meals, snacks, essentials, local experiences, and curator services to hotel guests in these cities: Savannah, Atlanta, Tampa, Orlando, and Miami. ' +
+      'The guest is currently in ' + city.name + ', ' + (city.region || '') + '. ' +
+      'Help with travel questions, recommendations, packing, and what BagFree offers. Keep replies short (2-4 sentences) and friendly. ' +
+      'If asked about something outside the cities BagFree serves, gently note BagFree operates in the Southeast US but still try to be helpful. ' +
+      'You cannot access real-time data (exact current time, live weather, flight status). If asked for those, say so briefly and suggest how they could check. ' +
+      'When relevant, mention specific BagFree items from this catalog:\n' + catalogSummary;
+
+    const apiMessages = history.map(function(m){
+      return { role: m.role === 'user' ? 'user' : 'assistant', content: m.text };
+    });
+
+    const res = await fetch('https://api.anthropic.com/v1/messages', {
+      method: 'POST',
+      headers: { 'Content-Type': 'application/json' },
+      body: JSON.stringify({
+        model: 'claude-sonnet-4-20250514',
+        max_tokens: 400,
+        system: systemPrompt,
+        messages: apiMessages
+      })
+    });
+    const data = await res.json();
+    if (data && data.content && data.content[0] && data.content[0].text) {
+      return data.content[0].text;
+    }
+    throw new Error('No response');
+  }
+
+  async function sendMessage(text) {
+    const content = (text || input).trim();
+    if (!content || busy) return;
+    track('concierge_message', { city: city.id });
+    const userMsg = { role:'user', text: content };
+    const nextMsgs = msgs.concat([userMsg]);
+    setMsgs(nextMsgs);
+    setInput('');
+    setBusy(true);
+    try {
+      const reply = await callConcierge(nextMsgs);
+      setMsgs(nextMsgs.concat([{ role:'bot', text: reply }]));
+    } catch(e) {
+      setMsgs(nextMsgs.concat([{ role:'bot', text:'Sorry \u2014 I had trouble responding just now. Please try again in a moment.' }]));
+    }
+    setBusy(false);
+  }
+
+  function onKey(e){
+    if (e.key === 'Enter' && !e.shiftKey) { e.preventDefault(); sendMessage(); }
+  }
+
+  const starters = ['What should I pack?', 'Best dinner in ' + city.name + '?', 'Things to do nearby'];
+
+  if (!open) {
+    return (
+      <button className="concierge" onClick={function(){ setOpen(true); track('concierge_open', { city: city.id }); }}>
+        <Icon.Chat/> Concierge Chat
+      </button>
+    );
+  }
+
   return (
-    <button className="concierge">
-      <Icon.Chat/> Concierge Chat
-    </button>
+    <div className="chat-panel">
+      <div className="chat-head">
+        <div className="chat-head-avatar"><Icon.Chat/></div>
+        <div className="chat-head-info">
+          <div className="chat-head-title">BagFree Concierge</div>
+          <div className="chat-head-sub"><span className="chat-head-dot"></span> Online · {city.name}</div>
+        </div>
+        <button className="chat-close" aria-label="Close chat" onClick={function(){ setOpen(false); }}><Icon.X/></button>
+      </div>
+
+      <div className="chat-body" ref={bodyRef}>
+        {msgs.map(function(m, i){
+          return <div key={i} className={'chat-msg ' + (m.role === 'user' ? 'user' : 'bot')}>{m.text}</div>;
+        })}
+        {busy ? (
+          <div className="chat-msg bot">
+            <span className="chat-typing"><span></span><span></span><span></span></span>
+          </div>
+        ) : null}
+        {msgs.length <= 1 && !busy ? (
+          <div className="chat-suggest-row">
+            {starters.map(function(s){
+              return <button key={s} className="chat-chip" onClick={function(){ sendMessage(s); }}>{s}</button>;
+            })}
+          </div>
+        ) : null}
+      </div>
+
+      <div className="chat-foot">
+        <textarea className="chat-input" rows={1}
+          placeholder="Message the concierge…"
+          value={input}
+          onChange={function(e){ setInput(e.target.value); }}
+          onKeyDown={onKey}/>
+        <button className="chat-send" disabled={busy || !input.trim()} onClick={function(){ sendMessage(); }} aria-label="Send">
+          <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" strokeWidth="2"><line x1="22" y1="2" x2="11" y2="13"/><polygon points="22 2 15 22 11 13 2 9 22 2"/></svg>
+        </button>
+      </div>
+    </div>
   );
 }
 
@@ -2098,6 +2277,20 @@ function App() {
   const drawerState = useState(false);
   const drawerOpen = drawerState[0];
   const setDrawerOpen = drawerState[1];
+
+  const chatOpenState = useState(false);
+  const chatOpen = chatOpenState[0];
+  const setChatOpen = chatOpenState[1];
+  const chatSeedState = useState(null);
+  const chatSeed = chatSeedState[0];
+  const setChatSeed = chatSeedState[1];
+
+  // Open the concierge chat, optionally seeding it with a question
+  function askConcierge(seedText){
+    setChatSeed(seedText || null);
+    setChatOpen(true);
+    track('concierge_open_from_search', { seed: seedText || null, city: cityRef.current.id });
+  }
 
   // Ref so popstate (with stale closure) can read current city
   const cityRef = React.useRef(city);
@@ -2177,6 +2370,13 @@ function App() {
     setViewing(null);
     writeUrlState({ q: query, city: city.id }, false);  // push
     window.scrollTo({ top: 0, behavior: 'smooth' });
+    // If the catalog had nothing, gently open the concierge after a beat so the
+    // user sees the "no matches" message first, then the chat slides up seeded
+    // with their question. Set AUTO_OPEN_CONCIERGE to false to require a click instead.
+    var AUTO_OPEN_CONCIERGE = true;
+    if (AUTO_OPEN_CONCIERGE && results && results.length === 0 && query && query.trim()) {
+      setTimeout(function(){ askConcierge(query); }, 900);
+    }
   }
   function clearSearch(){
     setSearch({ query:'', results:null, expansion:null, aiHint:null });
@@ -2225,11 +2425,11 @@ function App() {
             <VideoSection/>
           </React.Fragment>
         ) : (
-          <SearchResults query={search.query} results={search.results} expansion={search.expansion} aiHint={search.aiHint} onClear={clearSearch} onItemClick={openItem}/>
+          <SearchResults query={search.query} results={search.results} expansion={search.expansion} aiHint={search.aiHint} onClear={clearSearch} onItemClick={openItem} onAskConcierge={askConcierge}/>
         )}
       </main>
       <RightRail city={city}/>
-      <ConciergeChat/>
+      <ConciergeChat open={chatOpen} setOpen={setChatOpen} city={city} seed={chatSeed}/>
     </div>
   );
 }
