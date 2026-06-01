@@ -1,0 +1,587 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+<meta charset="UTF-8">
+<meta name="viewport" content="width=device-width, initial-scale=1.0">
+<title>BagFree — Membership & Events</title>
+<meta name="description" content="Join the BagFree community. Gold, Emerald, and Platinum tiers unlock curated travel events.">
+<meta name="theme-color" content="#0a0f1e">
+<link rel="preconnect" href="https://fonts.googleapis.com">
+<link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+<link href="https://fonts.googleapis.com/css2?family=Cormorant+Garamond:ital,wght@0,300;0,400;0,500;0,600;1,400&family=DM+Sans:wght@300;400;500;600&display=swap" rel="stylesheet">
+<style>
+*{margin:0;padding:0;box-sizing:border-box}
+:root{
+  --bg:#0a0f1e;--bg2:#0f1525;--card:#131a2c;--card-hover:#1a2238;
+  --white:#f8f7f4;--muted:#8a8fa0;--faint:#555a6e;
+  --gold:#c9a96e;--gold-bright:#d4b87a;
+  --emerald:#50C878;--emerald-dim:#3a9458;
+  --platinum:#E5E4E2;--platinum-dim:#b0afad;
+  --border:rgba(255,255,255,0.06);--border-soft:rgba(255,255,255,0.04);
+  --ff-display:'Cormorant Garamond',Georgia,serif;
+  --ff-body:'DM Sans','Helvetica Neue',sans-serif;
+  --radius:14px;
+}
+html{background:var(--bg);color:var(--white);font-family:var(--ff-body);font-weight:300;-webkit-font-smoothing:antialiased}
+body{min-height:100vh}
+a{color:var(--gold);text-decoration:none}
+
+/* ── Nav ─────────────────────────────────────────── */
+.top-nav{position:sticky;top:0;z-index:50;backdrop-filter:blur(18px);background:rgba(10,15,30,0.85);border-bottom:1px solid var(--border);padding:0.9rem 2rem;display:flex;align-items:center;justify-content:space-between}
+.nav-logo{font-family:var(--ff-display);font-size:1.3rem;font-weight:500;letter-spacing:1px;color:var(--gold)}
+.nav-links{display:flex;gap:1.8rem;align-items:center}
+.nav-links a{font-size:0.78rem;letter-spacing:1.5px;text-transform:uppercase;color:var(--muted);font-weight:500;transition:color 0.2s}
+.nav-links a:hover{color:var(--gold)}
+.nav-links a.active{color:var(--gold)}
+
+/* ── Hero ────────────────────────────────────────── */
+.hero{text-align:center;padding:5rem 2rem 3.5rem;position:relative;overflow:hidden}
+.hero::before{content:'';position:absolute;top:-40%;left:50%;transform:translateX(-50%);width:800px;height:800px;background:radial-gradient(ellipse,rgba(201,169,110,0.06) 0%,transparent 70%);pointer-events:none}
+.hero-eyebrow{font-size:0.68rem;letter-spacing:4px;text-transform:uppercase;color:var(--gold);font-weight:600;margin-bottom:1.2rem}
+.hero h1{font-family:var(--ff-display);font-size:clamp(2.4rem,5vw,3.8rem);font-weight:300;line-height:1.15;margin-bottom:1rem}
+.hero h1 em{font-style:italic;color:var(--gold)}
+.hero-sub{color:var(--muted);font-size:1.05rem;max-width:600px;margin:0 auto;line-height:1.6}
+
+/* ── Section layout ──────────────────────────────── */
+.section{padding:3rem 2rem;max-width:1200px;margin:0 auto}
+.section-label{font-size:0.62rem;letter-spacing:4px;text-transform:uppercase;color:var(--gold);font-weight:600;margin-bottom:0.6rem}
+.section-title{font-family:var(--ff-display);font-size:2rem;font-weight:400;margin-bottom:0.4rem}
+.section-sub{color:var(--muted);font-size:0.9rem;margin-bottom:2rem}
+
+/* ── Tier Cards ──────────────────────────────────── */
+.tiers{display:grid;grid-template-columns:repeat(auto-fit,minmax(300px,1fr));gap:1.5rem;margin-bottom:1rem}
+.tier-card{background:var(--card);border:1px solid var(--border);border-radius:var(--radius);padding:2.2rem 1.8rem;position:relative;overflow:hidden;transition:all 0.3s;display:flex;flex-direction:column}
+.tier-card:hover{transform:translateY(-4px);box-shadow:0 20px 50px rgba(0,0,0,0.4)}
+.tier-card.featured{border-color:rgba(201,169,110,0.35)}
+.tier-card.featured::before{content:'MOST POPULAR';position:absolute;top:14px;right:-30px;background:var(--gold);color:var(--bg);font-size:0.55rem;font-weight:700;letter-spacing:2px;padding:4px 40px;transform:rotate(45deg);z-index:2}
+.tier-card.gold{border-top:3px solid var(--gold)}
+.tier-card.emerald{border-top:3px solid var(--emerald)}
+.tier-card.platinum{border-top:3px solid var(--platinum)}
+.tier-icon{font-size:1.6rem;margin-bottom:0.8rem}
+.tier-name{font-family:var(--ff-display);font-size:1.7rem;font-weight:500;margin-bottom:0.3rem}
+.tier-card.gold .tier-name{color:var(--gold)}
+.tier-card.emerald .tier-name{color:var(--emerald)}
+.tier-card.platinum .tier-name{color:var(--platinum)}
+.tier-price{font-size:2.2rem;font-weight:600;margin-bottom:0.15rem;display:flex;align-items:baseline;gap:0.3rem}
+.tier-price span{font-size:0.85rem;font-weight:300;color:var(--muted)}
+.tier-annual{font-size:0.78rem;color:var(--faint);margin-bottom:1.4rem}
+.tier-event-badge{display:inline-flex;align-items:center;gap:0.4rem;padding:0.45rem 0.9rem;border-radius:20px;font-size:0.72rem;font-weight:600;letter-spacing:1px;text-transform:uppercase;margin-bottom:1.4rem;width:fit-content}
+.tier-card.gold .tier-event-badge{background:rgba(201,169,110,0.12);color:var(--gold);border:1px solid rgba(201,169,110,0.25)}
+.tier-card.emerald .tier-event-badge{background:rgba(80,200,120,0.1);color:var(--emerald);border:1px solid rgba(80,200,120,0.2)}
+.tier-card.platinum .tier-event-badge{background:rgba(229,228,226,0.08);color:var(--platinum);border:1px solid rgba(229,228,226,0.15)}
+.tier-perks{list-style:none;flex:1;margin-bottom:1.6rem}
+.tier-perks li{padding:0.45rem 0;font-size:0.85rem;color:var(--muted);border-bottom:1px solid var(--border-soft);display:flex;align-items:flex-start;gap:0.5rem;line-height:1.45}
+.tier-perks li:last-child{border-bottom:0}
+.tier-perks li::before{content:'✓';font-size:0.75rem;font-weight:700;flex-shrink:0;margin-top:0.15rem}
+.tier-card.gold .tier-perks li::before{color:var(--gold)}
+.tier-card.emerald .tier-perks li::before{color:var(--emerald)}
+.tier-card.platinum .tier-perks li::before{color:var(--platinum)}
+.tier-btn{display:block;text-align:center;padding:0.9rem;border-radius:10px;font-size:0.78rem;font-weight:600;letter-spacing:1.5px;text-transform:uppercase;cursor:pointer;transition:all 0.25s;border:0;width:100%}
+.tier-card.gold .tier-btn{background:var(--gold);color:var(--bg)}
+.tier-card.gold .tier-btn:hover{background:var(--gold-bright)}
+.tier-card.emerald .tier-btn{background:var(--emerald);color:var(--bg)}
+.tier-card.emerald .tier-btn:hover{background:var(--emerald-dim)}
+.tier-card.platinum .tier-btn{background:var(--platinum);color:var(--bg)}
+.tier-card.platinum .tier-btn:hover{background:var(--platinum-dim)}
+
+/* ── Events ──────────────────────────────────────── */
+.events-grid{display:grid;grid-template-columns:repeat(auto-fill,minmax(340px,1fr));gap:1.5rem}
+.event-card{background:var(--card);border:1px solid var(--border);border-radius:var(--radius);overflow:hidden;transition:all 0.3s;display:flex;flex-direction:column}
+.event-card:hover{transform:translateY(-3px);box-shadow:0 16px 40px rgba(0,0,0,0.35)}
+.event-img{width:100%;height:200px;object-fit:cover;display:block}
+.event-body{padding:1.4rem 1.5rem;flex:1;display:flex;flex-direction:column}
+.event-meta{display:flex;align-items:center;gap:0.6rem;margin-bottom:0.7rem;flex-wrap:wrap}
+.event-tag{font-size:0.62rem;letter-spacing:1.5px;text-transform:uppercase;padding:0.3rem 0.65rem;border-radius:4px;font-weight:600}
+.event-tag.food{background:rgba(255,160,80,0.12);color:#ffa050}
+.event-tag.social{background:rgba(100,180,255,0.12);color:#64b4ff}
+.event-tag.culture{background:rgba(180,130,255,0.12);color:#b482ff}
+.event-tag.nightlife{background:rgba(255,100,150,0.12);color:#ff6496}
+.event-tag.gold-only{background:rgba(201,169,110,0.15);color:var(--gold);border:1px solid rgba(201,169,110,0.3)}
+.event-city{font-size:0.68rem;color:var(--faint);letter-spacing:1px;text-transform:uppercase}
+.event-title{font-family:var(--ff-display);font-size:1.35rem;font-weight:500;margin-bottom:0.5rem;line-height:1.25}
+.event-desc{font-size:0.85rem;color:var(--muted);line-height:1.55;margin-bottom:1rem;flex:1}
+.event-detail-row{display:flex;align-items:center;gap:0.5rem;font-size:0.8rem;color:var(--faint);margin-bottom:0.35rem}
+.event-detail-row svg{width:14px;height:14px;flex-shrink:0}
+.event-footer{border-top:1px solid var(--border-soft);padding:1.1rem 1.5rem;display:flex;flex-wrap:wrap;gap:0.6rem}
+.event-price{display:flex;align-items:center;gap:0.35rem;font-size:0.72rem;font-weight:500;padding:0.35rem 0.7rem;border-radius:6px;border:1px solid var(--border-soft)}
+.event-price.gold{color:var(--gold);border-color:rgba(201,169,110,0.25)}
+.event-price.gold .event-price-val{font-weight:700}
+.event-price.emerald{color:var(--emerald);border-color:rgba(80,200,120,0.2)}
+.event-price.platinum{color:var(--platinum-dim);border-color:rgba(229,228,226,0.15)}
+.event-price-label{font-size:0.6rem;letter-spacing:1px;text-transform:uppercase;opacity:0.7}
+.event-spots{font-size:0.72rem;color:var(--faint);margin-left:auto;display:flex;align-items:center;gap:0.3rem}
+.event-spots .dot{width:6px;height:6px;border-radius:50%}
+.event-spots .dot.green{background:#4ade80}
+.event-spots .dot.yellow{background:#facc15}
+.event-spots .dot.red{background:#f87171}
+
+/* ── Comparison Table ────────────────────────────── */
+.compare-wrap{overflow-x:auto;margin-top:2rem;border:1px solid var(--border);border-radius:var(--radius);background:var(--card)}
+.compare-table{width:100%;border-collapse:collapse;min-width:600px}
+.compare-table th,.compare-table td{padding:0.75rem 1.2rem;text-align:left;border-bottom:1px solid var(--border-soft);font-size:0.85rem}
+.compare-table th{font-family:var(--ff-display);font-weight:500;font-size:1rem;color:var(--white);background:rgba(255,255,255,0.02)}
+.compare-table th.gold-col{color:var(--gold)}
+.compare-table th.emerald-col{color:var(--emerald)}
+.compare-table th.platinum-col{color:var(--platinum)}
+.compare-table td{color:var(--muted)}
+.compare-table td.feature{color:var(--white);font-weight:400}
+.compare-table .check{color:var(--gold);font-weight:700}
+.compare-table .partial{color:var(--muted)}
+.compare-table .no{color:var(--faint);font-style:italic}
+.compare-table tr:last-child td{border-bottom:0}
+.compare-table tr:hover td{background:rgba(255,255,255,0.015)}
+
+/* ── CTA Banner ──────────────────────────────────── */
+.cta-banner{text-align:center;padding:4rem 2rem;margin:2rem 0;position:relative}
+.cta-banner::before{content:'';position:absolute;inset:0;background:linear-gradient(135deg,rgba(201,169,110,0.06),rgba(80,200,120,0.04),transparent);border-radius:20px;pointer-events:none}
+.cta-banner h2{font-family:var(--ff-display);font-size:2rem;font-weight:400;margin-bottom:0.7rem}
+.cta-banner p{color:var(--muted);margin-bottom:1.5rem;font-size:0.95rem}
+.cta-banner .btn-gold{display:inline-block;background:var(--gold);color:var(--bg);padding:0.9rem 2.5rem;border-radius:30px;font-size:0.78rem;font-weight:600;letter-spacing:1.5px;text-transform:uppercase;transition:all 0.25s;text-decoration:none}
+.cta-banner .btn-gold:hover{background:var(--gold-bright);transform:translateY(-2px)}
+
+/* ── Footer ──────────────────────────────────────── */
+.page-footer{text-align:center;padding:2.5rem 2rem;border-top:1px solid var(--border);color:var(--faint);font-size:0.75rem}
+.page-footer a{color:var(--gold)}
+
+/* ── Billing Toggle ──────────────────────────────── */
+.billing-toggle{display:flex;align-items:center;justify-content:center;gap:1rem;margin-bottom:2rem}
+.billing-toggle label{font-size:0.85rem;color:var(--muted);cursor:pointer;transition:color 0.2s}
+.billing-toggle label.active{color:var(--white);font-weight:500}
+.toggle-track{width:52px;height:28px;background:var(--card);border:1px solid var(--border);border-radius:14px;cursor:pointer;position:relative;transition:background 0.2s}
+.toggle-track::after{content:'';position:absolute;top:3px;left:3px;width:20px;height:20px;border-radius:50%;background:var(--gold);transition:transform 0.2s}
+.toggle-track.annual::after{transform:translateX(24px)}
+.billing-save{font-size:0.68rem;color:var(--emerald);font-weight:600;letter-spacing:0.5px;background:rgba(80,200,120,0.1);padding:0.25rem 0.6rem;border-radius:10px}
+.status-banner{max-width:700px;margin:0 auto 2rem;padding:1.2rem 1.6rem;border-radius:12px;text-align:center;animation:fadeUp 0.4s ease both}
+.status-banner.success{background:rgba(80,200,120,0.1);border:1px solid rgba(80,200,120,0.25);color:var(--emerald)}
+.status-banner.cancelled{background:rgba(255,160,80,0.08);border:1px solid rgba(255,160,80,0.2);color:#ffa050}
+.status-banner h3{font-family:var(--ff-display);font-size:1.3rem;font-weight:500;margin-bottom:0.3rem}
+.status-banner p{font-size:0.85rem;opacity:0.85}
+.loading-spinner{display:inline-block;width:18px;height:18px;border:2px solid rgba(255,255,255,0.2);border-top-color:var(--gold);border-radius:50%;animation:spin 0.7s linear infinite;margin-right:0.5rem;vertical-align:middle}
+@keyframes spin{to{transform:rotate(360deg)}}
+
+/* ── Animations ──────────────────────────────────── */
+@keyframes fadeUp{from{opacity:0;transform:translateY(20px)}to{opacity:1;transform:none}}
+.tier-card,.event-card{animation:fadeUp 0.5s ease both}
+.tier-card:nth-child(2){animation-delay:0.08s}
+.tier-card:nth-child(3){animation-delay:0.16s}
+.event-card:nth-child(2){animation-delay:0.06s}
+.event-card:nth-child(3){animation-delay:0.12s}
+.event-card:nth-child(4){animation-delay:0.18s}
+
+/* ── Responsive ──────────────────────────────────── */
+@media(max-width:680px){
+  .hero{padding:3.5rem 1.2rem 2.5rem}
+  .section{padding:2rem 1.2rem}
+  .tiers{grid-template-columns:1fr}
+  .events-grid{grid-template-columns:1fr}
+  .nav-links{gap:1rem}
+  .nav-links a{font-size:0.65rem;letter-spacing:1px}
+}
+</style>
+</head>
+<body>
+
+<!-- Nav -->
+<nav class="top-nav">
+  <a href="/" class="nav-logo">BAGFREE</a>
+  <div class="nav-links">
+    <a href="#tiers" class="active">Membership</a>
+    <a href="#events">Events</a>
+    <a href="/">Home</a>
+  </div>
+</nav>
+
+<!-- Hero -->
+<header class="hero">
+  <div class="hero-eyebrow">BagFree Membership</div>
+  <h1>Travel together.<br><em>Experience more.</em></h1>
+  <p class="hero-sub">Join the BagFree community and unlock curated events in every city we serve. Gold members experience everything — no add-on fees, ever.</p>
+</header>
+
+<!-- Tiers -->
+<section class="section" id="tiers">
+  <div class="section-label">Choose Your Tier</div>
+  <div class="section-title">Three tiers. One community.</div>
+  <div class="section-sub">Every tier includes access to our event calendar and member community. Higher tiers unlock more perks and lower event costs.</div>
+
+  <div id="status-banner"></div>
+
+  <div class="billing-toggle">
+    <label id="lbl-monthly" class="active" onclick="setBilling('monthly')">Monthly</label>
+    <div id="billing-track" class="toggle-track" onclick="toggleBilling()"></div>
+    <label id="lbl-annual" onclick="setBilling('annual')">Annual</label>
+    <span class="billing-save" id="save-badge">Save up to 20%</span>
+  </div>
+
+  <div class="tiers">
+    <!-- Platinum (entry) -->
+    <div class="tier-card platinum">
+      <div class="tier-icon">✦</div>
+      <div class="tier-name">Platinum</div>
+      <div class="tier-price" data-tier="platinum">$19<span>/month</span></div>
+      <div class="tier-annual">or $180/year (save $48)</div>
+      <div class="tier-event-badge">Events: add-on fees apply</div>
+      <ul class="tier-perks">
+        <li>Access to all public events (add-on fees apply)</li>
+        <li>Member-only pricing on events</li>
+        <li>5% off BagFree orders</li>
+        <li>Monthly destination guide</li>
+        <li>Community forum access</li>
+      </ul>
+      <button class="tier-btn" onclick="selectTier('platinum')">Get Platinum</button>
+    </div>
+
+    <!-- Emerald (mid) -->
+    <div class="tier-card emerald featured">
+      <div class="tier-icon">💎</div>
+      <div class="tier-name">Emerald</div>
+      <div class="tier-price" data-tier="emerald">$49<span>/month</span></div>
+      <div class="tier-annual">or $468/year (save $120)</div>
+      <div class="tier-event-badge">Events: reduced fees (~50% off)</div>
+      <ul class="tier-perks">
+        <li>Reduced event fees (typically 50% off)</li>
+        <li>Early access to new events (48hr head start)</li>
+        <li>Quarterly curated experience box</li>
+        <li>10% off all BagFree orders</li>
+        <li>Free standard delivery</li>
+        <li>Curator direct messaging</li>
+      </ul>
+      <button class="tier-btn" onclick="selectTier('emerald')">Get Emerald</button>
+    </div>
+
+    <!-- Gold (highest) -->
+    <div class="tier-card gold">
+      <div class="tier-icon">👑</div>
+      <div class="tier-name">Gold</div>
+      <div class="tier-price" data-tier="gold">$99<span>/month</span></div>
+      <div class="tier-annual">or $948/year (save $240)</div>
+      <div class="tier-event-badge">✦ All events included — free</div>
+      <ul class="tier-perks">
+        <li>All events included — no add-on fees</li>
+        <li>Priority booking for limited-capacity events</li>
+        <li>Exclusive Gold-only events and tastings</li>
+        <li>Complimentary welcome package at partner hotels</li>
+        <li>Personal concierge planning for every trip</li>
+        <li>20% off all BagFree orders</li>
+        <li>Free same-day delivery upgrades</li>
+      </ul>
+      <button class="tier-btn" onclick="selectTier('gold')">Get Gold</button>
+    </div>
+  </div>
+</section>
+
+<!-- Comparison Table -->
+<section class="section">
+  <div class="section-label">Compare</div>
+  <div class="section-title">What's included</div>
+  <div class="compare-wrap">
+    <table class="compare-table">
+      <thead>
+        <tr>
+          <th style="width:35%">Feature</th>
+          <th class="platinum-col">Platinum</th>
+          <th class="emerald-col">Emerald</th>
+          <th class="gold-col">Gold</th>
+        </tr>
+      </thead>
+      <tbody>
+        <tr><td class="feature">Event access</td><td class="partial">Add-on fees</td><td class="partial">Reduced fees</td><td class="check">Free — all events</td></tr>
+        <tr><td class="feature">Gold-only events</td><td class="no">—</td><td class="no">—</td><td class="check">✓</td></tr>
+        <tr><td class="feature">Priority booking</td><td class="no">—</td><td class="partial">48hr early access</td><td class="check">✓ Priority</td></tr>
+        <tr><td class="feature">BagFree discount</td><td>5%</td><td>10%</td><td class="check">20%</td></tr>
+        <tr><td class="feature">Free delivery</td><td class="no">—</td><td>Standard</td><td class="check">Same-day</td></tr>
+        <tr><td class="feature">Concierge planning</td><td class="no">—</td><td class="no">—</td><td class="check">✓ Personal</td></tr>
+        <tr><td class="feature">Welcome package</td><td class="no">—</td><td class="no">—</td><td class="check">✓ At partner hotels</td></tr>
+        <tr><td class="feature">Experience box</td><td class="no">—</td><td>Quarterly</td><td class="check">Quarterly + exclusives</td></tr>
+        <tr><td class="feature">Curator messaging</td><td class="no">—</td><td class="check">✓</td><td class="check">✓</td></tr>
+        <tr><td class="feature">Community forum</td><td class="check">✓</td><td class="check">✓</td><td class="check">✓</td></tr>
+        <tr><td class="feature">Monthly price</td><td>$19</td><td>$49</td><td class="check">$99</td></tr>
+      </tbody>
+    </table>
+  </div>
+</section>
+
+<!-- Events -->
+<section class="section" id="events">
+  <div class="section-label">Upcoming</div>
+  <div class="section-title">Events</div>
+  <div class="section-sub">Curated experiences across our Southeast cities. Pricing shown per membership tier.</div>
+
+  <div class="events-grid">
+
+    <!-- Food Crawl -->
+    <div class="event-card">
+      <img class="event-img" src="https://images.unsplash.com/photo-1555939594-58d7cb561ad1?w=800&h=500&fit=crop" alt="Savannah Food Crawl">
+      <div class="event-body">
+        <div class="event-meta">
+          <span class="event-tag food">Food</span>
+          <span class="event-city">Savannah</span>
+        </div>
+        <div class="event-title">Savannah Food Crawl</div>
+        <div class="event-desc">Three-stop guided tasting tour through Savannah's best kitchens. Low-country boil, shrimp & grits, and praline desserts.</div>
+        <div class="event-detail-row">
+          <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.5"><rect x="3" y="4" width="18" height="18" rx="2"/><line x1="16" y1="2" x2="16" y2="6"/><line x1="8" y1="2" x2="8" y2="6"/><line x1="3" y1="10" x2="21" y2="10"/></svg>
+          In 12 days · 3 hours
+        </div>
+        <div class="event-detail-row">
+          <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.5"><path d="M21 10c0 7-9 13-9 13s-9-6-9-13a9 9 0 0118 0z"/><circle cx="12" cy="10" r="3"/></svg>
+          Starts at The Grey
+        </div>
+      </div>
+      <div class="event-footer">
+        <div class="event-price gold"><span class="event-price-label">Gold</span> <span class="event-price-val">Free</span></div>
+        <div class="event-price emerald"><span class="event-price-label">Emerald</span> $25</div>
+        <div class="event-price platinum"><span class="event-price-label">Platinum</span> $49</div>
+        <div class="event-spots"><span class="dot green"></span> 20 spots</div>
+      </div>
+    </div>
+
+    <!-- Brunch Group -->
+    <div class="event-card">
+      <img class="event-img" src="https://images.unsplash.com/photo-1525351484163-7529414344d8?w=800&h=500&fit=crop" alt="Buckhead Brunch Group">
+      <div class="event-body">
+        <div class="event-meta">
+          <span class="event-tag social">Social</span>
+          <span class="event-city">Atlanta</span>
+        </div>
+        <div class="event-title">Buckhead Brunch Group</div>
+        <div class="event-desc">Monthly brunch at a rotating Buckhead restaurant. Meet fellow travelers, swap stories, eat well.</div>
+        <div class="event-detail-row">
+          <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.5"><rect x="3" y="4" width="18" height="18" rx="2"/><line x1="16" y1="2" x2="16" y2="6"/><line x1="8" y1="2" x2="8" y2="6"/><line x1="3" y1="10" x2="21" y2="10"/></svg>
+          In 8 days · 2 hours
+        </div>
+        <div class="event-detail-row">
+          <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.5"><path d="M21 10c0 7-9 13-9 13s-9-6-9-13a9 9 0 0118 0z"/><circle cx="12" cy="10" r="3"/></svg>
+          Rotating — TBA
+        </div>
+      </div>
+      <div class="event-footer">
+        <div class="event-price gold"><span class="event-price-label">Gold</span> <span class="event-price-val">Free</span></div>
+        <div class="event-price emerald"><span class="event-price-label">Emerald</span> $15</div>
+        <div class="event-price platinum"><span class="event-price-label">Platinum</span> $29</div>
+        <div class="event-spots"><span class="dot yellow"></span> 16 spots</div>
+      </div>
+    </div>
+
+    <!-- Walking Tour -->
+    <div class="event-card">
+      <img class="event-img" src="https://images.unsplash.com/photo-1568854728811-bc4ac9b9c5b4?w=800&h=500&fit=crop" alt="Historic Walking Tour">
+      <div class="event-body">
+        <div class="event-meta">
+          <span class="event-tag culture">Culture</span>
+          <span class="event-city">Savannah</span>
+        </div>
+        <div class="event-title">Historic Walking Tour</div>
+        <div class="event-desc">Savannah's historic district with a local historian. Squares, mansions, ghost stories.</div>
+        <div class="event-detail-row">
+          <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.5"><rect x="3" y="4" width="18" height="18" rx="2"/><line x1="16" y1="2" x2="16" y2="6"/><line x1="8" y1="2" x2="8" y2="6"/><line x1="3" y1="10" x2="21" y2="10"/></svg>
+          In 5 days · 90 min
+        </div>
+        <div class="event-detail-row">
+          <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.5"><path d="M21 10c0 7-9 13-9 13s-9-6-9-13a9 9 0 0118 0z"/><circle cx="12" cy="10" r="3"/></svg>
+          Forsyth Park Fountain
+        </div>
+      </div>
+      <div class="event-footer">
+        <div class="event-price gold"><span class="event-price-label">Gold</span> <span class="event-price-val">Free</span></div>
+        <div class="event-price emerald"><span class="event-price-label">Emerald</span> $10</div>
+        <div class="event-price platinum"><span class="event-price-label">Platinum</span> $22</div>
+        <div class="event-spots"><span class="dot yellow"></span> 12 spots</div>
+      </div>
+    </div>
+
+    <!-- Rooftop Meetup -->
+    <div class="event-card">
+      <img class="event-img" src="https://images.unsplash.com/photo-1572116469696-31de0f17cc34?w=800&h=500&fit=crop" alt="Rooftop Meetup">
+      <div class="event-body">
+        <div class="event-meta">
+          <span class="event-tag nightlife">Nightlife</span>
+          <span class="event-city">Tampa</span>
+        </div>
+        <div class="event-title">Rooftop Meetup</div>
+        <div class="event-desc">Sunset cocktails and networking at a private rooftop in downtown Tampa. DJ set after dark.</div>
+        <div class="event-detail-row">
+          <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.5"><rect x="3" y="4" width="18" height="18" rx="2"/><line x1="16" y1="2" x2="16" y2="6"/><line x1="8" y1="2" x2="8" y2="6"/><line x1="3" y1="10" x2="21" y2="10"/></svg>
+          In 15 days · 4 hours
+        </div>
+        <div class="event-detail-row">
+          <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.5"><path d="M21 10c0 7-9 13-9 13s-9-6-9-13a9 9 0 0118 0z"/><circle cx="12" cy="10" r="3"/></svg>
+          The Current Hotel — Rooftop
+        </div>
+      </div>
+      <div class="event-footer">
+        <div class="event-price gold"><span class="event-price-label">Gold</span> <span class="event-price-val">Free</span></div>
+        <div class="event-price emerald"><span class="event-price-label">Emerald</span> $20</div>
+        <div class="event-price platinum"><span class="event-price-label">Platinum</span> $39</div>
+        <div class="event-spots"><span class="dot green"></span> 40 spots</div>
+      </div>
+    </div>
+
+    <!-- Gold-Only Event -->
+    <div class="event-card">
+      <img class="event-img" src="https://images.unsplash.com/photo-1546069901-ba9599a7e63c?w=800&h=500&fit=crop" alt="Private Chef Dinner">
+      <div class="event-body">
+        <div class="event-meta">
+          <span class="event-tag food">Food</span>
+          <span class="event-tag gold-only">Gold Only</span>
+          <span class="event-city">Savannah</span>
+        </div>
+        <div class="event-title">Private Chef Dinner</div>
+        <div class="event-desc">An intimate 8-course dinner by a James Beard nominee at a private Savannah home. Gold members only.</div>
+        <div class="event-detail-row">
+          <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.5"><rect x="3" y="4" width="18" height="18" rx="2"/><line x1="16" y1="2" x2="16" y2="6"/><line x1="8" y1="2" x2="8" y2="6"/><line x1="3" y1="10" x2="21" y2="10"/></svg>
+          In 20 days · 3 hours
+        </div>
+        <div class="event-detail-row">
+          <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.5"><path d="M21 10c0 7-9 13-9 13s-9-6-9-13a9 9 0 0118 0z"/><circle cx="12" cy="10" r="3"/></svg>
+          Private residence — address after RSVP
+        </div>
+      </div>
+      <div class="event-footer">
+        <div class="event-price gold"><span class="event-price-label">Gold</span> <span class="event-price-val">Free</span></div>
+        <div class="event-price emerald" style="opacity:0.4"><span class="event-price-label">Emerald</span> Locked</div>
+        <div class="event-price platinum" style="opacity:0.4"><span class="event-price-label">Platinum</span> Locked</div>
+        <div class="event-spots"><span class="dot red"></span> 8 spots</div>
+      </div>
+    </div>
+
+  </div>
+</section>
+
+<!-- CTA -->
+<section class="section">
+  <div class="cta-banner">
+    <h2>Ready to join?</h2>
+    <p>Start with any tier and upgrade anytime. Gold members never pay for events.</p>
+    <a href="#tiers" class="btn-gold">View Membership Tiers</a>
+  </div>
+</section>
+
+<!-- Footer -->
+<footer class="page-footer">
+  <a href="/">BagFree.app</a> · Membership & Events<br>
+  <span style="margin-top:0.4rem;display:inline-block">© 2026 BagFree. All rights reserved.</span>
+</footer>
+
+<script>
+// ── Config ──────────────────────────────────────────────────
+var SUPABASE_URL = 'https://vkctidpaghpdlmleezvq.supabase.co';
+var SUPABASE_ANON_KEY = 'eyJhbGciOiJIUzI1NiIsInR5cCI6IkpXVCJ9.eyJpc3MiOiJzdXBhYmFzZSIsInJlZiI6InZrY3RpZHBhZ2hwZGxtbGVlenZxIiwicm9sZSI6ImFub24iLCJpYXQiOjE3NzUzMjI5MjgsImV4cCI6MjA5MDg5ODkyOH0.wKtG6XD6CwLy3rJDZc4S10-NqNr3fcCXHYOWJt_C628';
+
+var billingCycle = 'monthly';
+
+var TIER_PRICES = {
+  gold:     { monthly: '$99', annual: '$79' },
+  emerald:  { monthly: '$49', annual: '$39' },
+  platinum: { monthly: '$19', annual: '$15' }
+};
+
+// ── Billing Toggle ──────────────────────────────────────────
+function setBilling(cycle) {
+  billingCycle = cycle;
+  var track = document.getElementById('billing-track');
+  var lblM = document.getElementById('lbl-monthly');
+  var lblA = document.getElementById('lbl-annual');
+  var badge = document.getElementById('save-badge');
+  if (cycle === 'annual') {
+    track.classList.add('annual');
+    lblM.classList.remove('active');
+    lblA.classList.add('active');
+    badge.style.opacity = '1';
+  } else {
+    track.classList.remove('annual');
+    lblM.classList.add('active');
+    lblA.classList.remove('active');
+    badge.style.opacity = '0.4';
+  }
+  // Update displayed prices
+  document.querySelectorAll('.tier-price').forEach(function(el) {
+    var tier = el.getAttribute('data-tier');
+    if (tier && TIER_PRICES[tier]) {
+      var price = TIER_PRICES[tier][cycle];
+      el.innerHTML = price + '<span>/' + (cycle === 'annual' ? 'mo (billed yearly)' : 'month') + '</span>';
+    }
+  });
+}
+function toggleBilling() {
+  setBilling(billingCycle === 'monthly' ? 'annual' : 'monthly');
+}
+
+// ── Stripe Checkout ─────────────────────────────────────────
+async function selectTier(tier) {
+  var btn = event.target;
+  var origText = btn.textContent;
+  btn.disabled = true;
+  btn.innerHTML = '<span class="loading-spinner"></span> Redirecting\u2026';
+
+  try {
+    var res = await fetch(SUPABASE_URL + '/functions/v1/stripe-checkout', {
+      method: 'POST',
+      headers: {
+        'Content-Type': 'application/json',
+        'Authorization': 'Bearer ' + SUPABASE_ANON_KEY,
+        'apikey': SUPABASE_ANON_KEY
+      },
+      body: JSON.stringify({
+        tier_id: tier,
+        billing_cycle: billingCycle
+      })
+    });
+
+    var data = await res.json();
+
+    if (data.url) {
+      window.location.href = data.url;
+    } else {
+      throw new Error(data.error || 'Could not create checkout session');
+    }
+  } catch (err) {
+    btn.disabled = false;
+    btn.textContent = origText;
+    showBanner('cancelled', 'Something went wrong', err.message || 'Please try again in a moment.');
+  }
+}
+
+// ── Status Banner ───────────────────────────────────────────
+function showBanner(type, title, message) {
+  var el = document.getElementById('status-banner');
+  el.innerHTML = '<div class="status-banner ' + type + '"><h3>' + title + '</h3><p>' + message + '</p></div>';
+  el.scrollIntoView({ behavior: 'smooth', block: 'center' });
+}
+
+// Check URL params on load
+(function() {
+  var params = new URLSearchParams(window.location.search);
+  if (params.get('success') === 'true') {
+    var tier = params.get('tier') || '';
+    var names = { gold: 'Gold', emerald: 'Emerald', platinum: 'Platinum' };
+    showBanner('success',
+      'Welcome to BagFree ' + (names[tier] || '') + '!',
+      'Your membership is active. Check your email for login details and next steps.'
+    );
+    // Clean URL
+    window.history.replaceState({}, '', window.location.pathname);
+  }
+  if (params.get('cancelled') === 'true') {
+    showBanner('cancelled',
+      'Checkout cancelled',
+      'No worries \u2014 your card was not charged. You can try again anytime.'
+    );
+    window.history.replaceState({}, '', window.location.pathname);
+  }
+})();
+
+// ── Smooth scroll ───────────────────────────────────────────
+document.querySelectorAll('a[href^="#"]').forEach(function(a) {
+  a.addEventListener('click', function(e) {
+    var target = document.querySelector(this.getAttribute('href'));
+    if (target) {
+      e.preventDefault();
+      target.scrollIntoView({ behavior: 'smooth', block: 'start' });
+    }
+  });
+});
+</script>
+
+</body>
+</html>
