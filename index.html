@@ -724,9 +724,70 @@ function getSuggested(city){
   ];
 }
 
-// ── Searchable content (mirrors the searchable_content table schema) ────────
-// Phase 1: client-side seed. In production this comes from Supabase.
-const SEARCHABLE = [
+// ── Supabase config ────────────────────────────────────────────────────────────────────────────────
+const SUPABASE_URL = 'https://vkctidpaghpdlmleezvq.supabase.co';
+const SUPABASE_ANON_KEY = 'eyJhbGciOiJIUzI1NiIsInR5cCI6IkpXVCJ9.eyJpc3MiOiJzdXBhYmFzZSIsInJlZiI6InZrY3RpZHBhZ2hwZGxtbGVlenZxIiwicm9sZSI6ImFub24iLCJpYXQiOjE3NzUzMjI5MjgsImV4cCI6MjA5MDg5ODkyOH0.wKtG6XD6CwLy3rJDZc4S10-NqNr3fcCXHYOWJt_C628';
+
+async function fetchSearchableContent() {
+  try {
+    const res = await fetch(
+      SUPABASE_URL + '/rest/v1/searchable_content?select=*&order=popularity_score.desc&limit=500',
+      {
+        headers: {
+          'apikey': SUPABASE_ANON_KEY,
+          'Authorization': 'Bearer ' + SUPABASE_ANON_KEY,
+          'Content-Type': 'application/json'
+        }
+      }
+    );
+    if (!res.ok) throw new Error('HTTP ' + res.status);
+    const data = await res.json();
+    if (!Array.isArray(data) || data.length === 0) throw new Error('empty response');
+    return data.map(function(row) {
+      return Object.assign({}, row, {
+        tags: Array.isArray(row.tags) ? row.tags
+              : typeof row.tags === 'string' ? row.tags.split(',').map(function(t){ return t.trim(); })
+              : []
+      });
+    });
+  } catch(e) {
+    console.warn('[BagFree] Supabase fetch failed, using seed data:', e.message);
+    return null;
+  }
+}
+
+// ── Supabase live search (queries DB directly for real-time results) ────────────────────
+async function supabaseSearch(query, cityId) {
+  try {
+    // Build a PostgREST full-text / ilike search across title, description, tags
+    const q = encodeURIComponent('%' + query + '%');
+    const cityFilter = cityId ? '&or=(city.eq.' + cityId + ',city.eq.all)' : '';
+    const url = SUPABASE_URL + '/rest/v1/searchable_content?select=*' + cityFilter +
+                '&or=(title.ilike.' + q + ',description.ilike.' + q + ')' +
+                '&order=popularity_score.desc&limit=100';
+    const res = await fetch(url, {
+      headers: {
+        'apikey': SUPABASE_ANON_KEY,
+        'Authorization': 'Bearer ' + SUPABASE_ANON_KEY
+      }
+    });
+    if (!res.ok) return null;
+    const data = await res.json();
+    if (!Array.isArray(data)) return null;
+    return data.map(function(row) {
+      return Object.assign({}, row, {
+        tags: Array.isArray(row.tags) ? row.tags
+              : typeof row.tags === 'string' ? row.tags.split(',').map(function(t){ return t.trim(); })
+              : []
+      });
+    });
+  } catch(e) {
+    return null;
+  }
+}
+
+// ── Seed data (fallback if Supabase is unreachable or table is empty) ───────────────────────
+const SEED_SEARCHABLE = [
   // ── Essentials ──
   { id:'e001', title:'Toiletry Restock Kit', description:'Forget toothpaste, deodorant, razors? Restock kit delivered in 90 minutes.',
     category:'essentials', city:'savannah', region:'Georgia', tags:['toiletries','toothbrush','deodorant','razor','shampoo'],
@@ -920,6 +981,9 @@ const SEARCHABLE = [
     view_count:92000, like_count:4800, posted_at: new Date(Date.now() - 15*864e5).toISOString(),
     popularity_score:65, freshness_score:80, conversion_score:48 }
 ];
+
+// Active searchable data - starts as seed, gets replaced by Supabase on load
+let SEARCHABLE = SEED_SEARCHABLE.slice();
 
 // ── Semantic intent (Phase 2.1 client shim) ─────────────────────────────────
 // Maps natural-language phrasings to canonical search tokens so queries like
@@ -1261,11 +1325,28 @@ function SearchBar(props) {
     let searchQuery = final;
     let aiHint = null;
 
+    // Run AI interpretation and Supabase search in parallel
     try {
-      const ai = await interpretWithAI(final);
+      const [ai, dbRows] = await Promise.all([
+        interpretWithAI(final),
+        supabaseSearch(final, props.city.id)
+      ]);
       if (ai && ai.keywords) {
         searchQuery = final + ' ' + ai.keywords;
         aiHint = ai.hint || null;
+      }
+      // If Supabase returned rows, use them as the ranking pool; else fall back to in-memory
+      if (dbRows && dbRows.length > 0) {
+        // Merge DB results with full SEARCHABLE so local ranking algo can score them
+        const dbIds = new Set(dbRows.map(function(r){ return r.id; }));
+        const merged = dbRows.concat(SEARCHABLE.filter(function(x){ return !dbIds.has(x.id); }));
+        const results = rankResults(searchQuery, props.city.id, merged);
+        if (results.length === 0) track('search_no_results', { q: final, city: props.city.id, source: 'supabase' });
+        if (results.expansion) track('search_concept_expansion', { q: final, expansion: results.expansion.expansion, matched: results.expansion.matched });
+        setRecents(pushRecent(final));
+        setLoading(false);
+        props.onSearch(final, results, results.expansion, aiHint);
+        return;
       }
     } catch(e) {}
 
@@ -2124,7 +2205,27 @@ const rootEl = document.getElementById('root');
 if (!rootEl) {
   throw new Error('Root element #root not found');
 }
-ReactDOM.render(<App/>, rootEl);
+
+// Show a "Connecting…" state while we fetch live data from Supabase
+function renderApp(searchable) {
+  if (searchable) {
+    SEARCHABLE = searchable;
+    console.log('[BagFree] Loaded ' + searchable.length + ' items from Supabase');
+  } else {
+    console.log('[BagFree] Using ' + SEED_SEARCHABLE.length + ' seed items');
+  }
+  ReactDOM.render(<App/>, rootEl);
+}
+
+// Fetch live content then render; if fetch takes >4s just render with seed data
+const fetchTimeout = setTimeout(function(){ renderApp(null); }, 4000);
+fetchSearchableContent().then(function(data) {
+  clearTimeout(fetchTimeout);
+  renderApp(data);
+}).catch(function() {
+  clearTimeout(fetchTimeout);
+  renderApp(null);
+});
 
 // Hide loader once rendered
 setTimeout(function(){
