@@ -14,7 +14,7 @@
 <style>
 :root{
   --bg:#0a0f1e; --bg-2:#0f1525; --card:#131a2c; --card-hover:#1a2238;
-  --gold:#c9a96e; --gold-bright:#d4b87a;
+  --gold:#c9a96e; --gold-bright:#d4b87a; --gold-light:#e8cfa0;
   --white:#fdfcf8; --muted:rgba(253,252,248,0.62); --faint:rgba(253,252,248,0.38);
   --border:rgba(201,169,110,0.16); --border-soft:rgba(253,252,248,0.06);
   --ff-display:'Cormorant Garamond',Georgia,serif;
@@ -103,6 +103,7 @@ a{text-decoration:none}
   padding:0.4rem;box-shadow:0 20px 40px rgba(0,0,0,0.5);
   animation:menuIn 0.18s ease-out;
 }
+@keyframes spin{from{transform:rotate(0deg)}to{transform:rotate(360deg)}}
 @keyframes menuIn{from{opacity:0;transform:translateY(-4px)}to{opacity:1;transform:none}}
 .city-menu-item{
   display:flex;align-items:center;justify-content:space-between;gap:0.8rem;
@@ -1013,7 +1014,7 @@ function rankResults(query, cityId, items){
       const cityMatch = (cityId && (it.city === cityId || it.city === 'all')) ? 30 : 0;
       const realityRank = computeRealityRank(it);
       const score = kw + cityMatch + realityRank * 0.6;
-      return Object.assign({}, it, { _score:score, _kw:kw, reality_rank_score:realityRank });
+      return Object.assign({}, it, { _score:score, _kw:kw, reality_rank_score: computeRealityRank(it) });
     })
     .filter(function(it){ return original === '' || it._kw > 0; })
     .sort(function(a,b){ return b._score - a._score; });
@@ -1210,6 +1211,8 @@ function SearchBar(props) {
   const hi = hiState[0]; const setHi = hiState[1];
   const recentState = useState(getRecent());
   const recents = recentState[0]; const setRecents = recentState[1];
+  const loadingState = useState(false);
+  const loading = loadingState[0]; const setLoading = loadingState[1];
   const wrapRef = React.useRef(null);
 
   React.useEffect(function(){
@@ -1221,20 +1224,59 @@ function SearchBar(props) {
   }, []);
 
   const live = q.trim() ? rankResults(q, props.city.id, SEARCHABLE).slice(0, 6) : [];
-  const showDrop = focused;
+  const showDrop = focused && !loading;
   const suggestions = getSuggested(props.city);
 
-  function submit(query){
+  // AI-powered query interpretation via Claude API
+  async function interpretWithAI(rawQuery) {
+    const categoryList = Object.entries(CATEGORIES).map(function([k,v]){ return k + ' (' + v.label + ')'; }).join(', ');
+    const tagList = Array.from(new Set(SEARCHABLE.flatMap(function(x){ return x.tags || []; }))).slice(0, 60).join(', ');
+    try {
+      const res = await fetch('https://api.anthropic.com/v1/messages', {
+        method: 'POST',
+        headers: { 'Content-Type': 'application/json' },
+        body: JSON.stringify({
+          model: 'claude-sonnet-4-20250514',
+          max_tokens: 150,
+          system: 'You are a search assistant for BagFree, a travel concierge that delivers clothing rentals, meals, essentials, snacks, local favorites, experiences, and social content recommendations to hotel guests. Given a natural-language search query, respond ONLY with a JSON object (no markdown, no extra text) with two fields: "keywords" (3-8 space-separated search keywords that best map the intent to catalog items) and "hint" (a short plain-English note under 12 words explaining what you understood). Available categories: ' + categoryList + '. Common catalog tags: ' + tagList + '. Current city: ' + props.city.name + ', ' + props.city.region + '.',
+          messages: [{ role: 'user', content: rawQuery }]
+        })
+      });
+      const data = await res.json();
+      if (data.content && data.content[0] && data.content[0].text) {
+        const cleaned = data.content[0].text.replace(/```json|```/g, '').trim();
+        return JSON.parse(cleaned);
+      }
+    } catch(e) {}
+    return null;
+  }
+
+  async function submit(query) {
     const final = (query || q).trim();
     if (!final) return;
     track('search_submit', { q: final, city: props.city.id });
-    const results = rankResults(final, props.city.id, SEARCHABLE);
+    setLoading(true);
+    setFocused(false);
+
+    let searchQuery = final;
+    let aiHint = null;
+
+    try {
+      const ai = await interpretWithAI(final);
+      if (ai && ai.keywords) {
+        searchQuery = final + ' ' + ai.keywords;
+        aiHint = ai.hint || null;
+      }
+    } catch(e) {}
+
+    const results = rankResults(searchQuery, props.city.id, SEARCHABLE);
     if (results.length === 0) track('search_no_results', { q: final, city: props.city.id });
     if (results.expansion) track('search_concept_expansion', { q: final, expansion: results.expansion.expansion, matched: results.expansion.matched });
     setRecents(pushRecent(final));
-    props.onSearch(final, results, results.expansion);
-    setFocused(false);
+    setLoading(false);
+    props.onSearch(final, results, results.expansion, aiHint);
   }
+
   function onSuggestClick(text){
     setQ(text);
     track('suggestion_click', { q: text, city: props.city.id });
@@ -1282,23 +1324,35 @@ function SearchBar(props) {
 
   return (
     <div className="search-wrap" ref={wrapRef}>
-      <div className={'search-bar' + (focused ? ' focused' : '')} onClick={function(){ setFocused(true); }}>
+      <div className={'search-bar' + (focused ? ' focused' : '') + (loading ? ' focused' : '')} onClick={function(){ if (!loading) setFocused(true); }}>
         <span className="search-go" role="button" tabIndex={0} title="Search"
-          onClick={function(e){ e.stopPropagation(); if (q.trim()) submit(); }}
-          onKeyDown={function(e){ if (e.key === 'Enter' && q.trim()) submit(); }}>
-          <Icon.Search/>
+          onClick={function(e){ e.stopPropagation(); if (q.trim() && !loading) submit(); }}
+          onKeyDown={function(e){ if (e.key === 'Enter' && q.trim() && !loading) submit(); }}>
+          {loading ? (
+            <svg viewBox="0 0 24 24" width="20" height="20" stroke="var(--gold)" strokeWidth="2" fill="none" style={{ animation:'spin 0.8s linear infinite' }}>
+              <circle cx="12" cy="12" r="10" stroke="rgba(201,169,110,0.25)" strokeWidth="2.5"/>
+              <path d="M12 2 a10 10 0 010 20" strokeLinecap="round"/>
+            </svg>
+          ) : (
+            <Icon.Search/>
+          )}
         </span>
         <input className="search-input"
           placeholder={'Search your trip: meals, essentials, outfits, experiences\u2026'}
           value={q}
+          disabled={loading}
           onChange={function(e){ setQ(e.target.value); setHi(-1); }}
           onFocus={function(){ setFocused(true); }}
           onKeyDown={onKey}
+          style={loading ? { opacity: 0.6 } : {}}
         />
-        {q ? (
-          <span className="search-clear" onClick={function(e){ e.stopPropagation(); setQ(''); }}><Icon.X/></span>
-        ) : null}
-        <span className="search-kbd">ENTER</span>
+        {loading ? (
+          <span className="search-kbd" style={{ color:'var(--gold)', borderColor:'rgba(201,169,110,0.3)', opacity:1 }}>AI ✦</span>
+        ) : q ? (
+          <span className="search-clear" onClick={function(e){ e.stopPropagation(); setQ(''); if (props.onClearResults) props.onClearResults(); }}><Icon.X/></span>
+        ) : (
+          <span className="search-kbd">ENTER</span>
+        )}
       </div>
 
       {showDrop ? (
@@ -1411,6 +1465,13 @@ function SearchResults(props) {
               <Icon.Sparkles/>
               <span className="smart-match-label">Smart match</span>
               <span className="smart-match-terms">also searching: {props.expansion.expansion}</span>
+            </div>
+          ) : null}
+          {props.aiHint ? (
+            <div className="smart-match" style={{ marginTop:'0.45rem', background:'linear-gradient(135deg,rgba(100,140,255,0.10),rgba(100,140,255,0.04))', borderColor:'rgba(100,140,255,0.25)' }}>
+              <svg viewBox="0 0 24 24" width="13" height="13" fill="none" stroke="#7aa2f7" strokeWidth="1.5"><path d="M12 3 L13.5 9 L19.5 10.5 L13.5 12 L12 18 L10.5 12 L4.5 10.5 L10.5 9 Z"/></svg>
+              <span className="smart-match-label" style={{ color:'#7aa2f7' }}>AI</span>
+              <span className="smart-match-terms">{props.aiHint}</span>
             </div>
           ) : null}
         </div>
@@ -1736,7 +1797,7 @@ function TopBar(props) {
           </div>
           {props.city.temp ? <div className="meta-item"><Icon.Sun/> {props.city.temp}</div> : null}
         </div>
-        <SearchBar city={props.city} onSearch={props.onSearch} onItemClick={props.onItemClick}/>
+        <SearchBar city={props.city} onSearch={props.onSearch} onItemClick={props.onItemClick} onClearResults={props.onClearResults}/>
       </div>
       <div className="topbar-actions">
         <button className="icon-btn" title="Search"><Icon.Search/></button>
@@ -1912,7 +1973,7 @@ function App() {
   const city = stateCity[0];
   const setCityState = stateCity[1];
 
-  const searchState = useState({ query:'', results:null, expansion:null });
+  const searchState = useState({ query:'', results:null, expansion:null, aiHint:null });
   const search = searchState[0];
   const setSearch = searchState[1];
 
@@ -1935,7 +1996,7 @@ function App() {
     const url = readUrlState();
     if (url.q) {
       const ranked = rankResults(url.q, cityRef.current.id, SEARCHABLE);
-      setSearch({ query: url.q, results: ranked, expansion: ranked.expansion || null });
+      setSearch({ query: url.q, results: ranked, expansion: ranked.expansion || null, aiHint: null });
       track('search_restored_from_url', { q: url.q, city: cityRef.current.id });
     }
     if (url.view) {
@@ -1965,9 +2026,9 @@ function App() {
       // Search
       if (url.q) {
         const ranked = rankResults(url.q, (url.city || cityRef.current.id), SEARCHABLE);
-        setSearch({ query: url.q, results: ranked, expansion: ranked.expansion || null });
+        setSearch({ query: url.q, results: ranked, expansion: ranked.expansion || null, aiHint: null });
       } else {
-        setSearch({ query:'', results:null, expansion:null });
+        setSearch({ query:'', results:null, expansion:null, aiHint:null });
       }
       // View
       if (url.view) {
@@ -1988,7 +2049,7 @@ function App() {
     if (search.results !== null && search.query) {
       track('search_recompute_city', { q: search.query, from: city.id, to: c.id });
       const reranked = rankResults(search.query, c.id, SEARCHABLE);
-      setSearch({ query: search.query, results: reranked, expansion: reranked.expansion || null });
+      setSearch({ query: search.query, results: reranked, expansion: reranked.expansion || null, aiHint: null });
       writeUrlState({ q: search.query, city: c.id, view: viewing ? viewing.id : '' }, true);
     } else if (readUrlState().city) {
       // Only persist city to URL if it was already there (avoid polluting the homepage URL)
@@ -1997,14 +2058,14 @@ function App() {
     }
   }
 
-  function onSearch(query, results, expansion){
-    setSearch({ query: query, results: results, expansion: expansion || null });
+  function onSearch(query, results, expansion, aiHint){
+    setSearch({ query: query, results: results, expansion: expansion || null, aiHint: aiHint || null });
     setViewing(null);
     writeUrlState({ q: query, city: city.id }, false);  // push
     window.scrollTo({ top: 0, behavior: 'smooth' });
   }
   function clearSearch(){
-    setSearch({ query:'', results:null, expansion:null });
+    setSearch({ query:'', results:null, expansion:null, aiHint:null });
     setViewing(null);
     writeUrlState({}, false);  // push (so back returns to results)
     track('search_clear', {});
@@ -2040,7 +2101,7 @@ function App() {
       <div className={'drawer-overlay' + (drawerOpen ? ' show' : '')} onClick={function(){ setDrawerOpen(false); }}></div>
       <Sidebar mobileOpen={drawerOpen} onClose={function(){ setDrawerOpen(false); }} active={active} setActive={setActive} city={city} setCity={setCity}/>
       <main className="main">
-        <TopBar city={city} setCity={setCity} onSearch={onSearch} onItemClick={openItem}/>
+        <TopBar city={city} setCity={setCity} onSearch={onSearch} onItemClick={openItem} onClearResults={clearSearch}/>
         {viewing ? (
           <ResultDetail item={viewing} onBack={closeDetail} onItemClick={openItem}/>
         ) : search.results === null ? (
@@ -2050,7 +2111,7 @@ function App() {
             <VideoSection/>
           </React.Fragment>
         ) : (
-          <SearchResults query={search.query} results={search.results} expansion={search.expansion} onClear={clearSearch} onItemClick={openItem}/>
+          <SearchResults query={search.query} results={search.results} expansion={search.expansion} aiHint={search.aiHint} onClear={clearSearch} onItemClick={openItem}/>
         )}
       </main>
       <RightRail city={city}/>
