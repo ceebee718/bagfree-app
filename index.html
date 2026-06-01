@@ -1069,23 +1069,51 @@ function computeRealityRank(item){
   // Future: + verified outcomes, curator trust, repeat visits, regret score.
   return Math.round(item.popularity_score * 0.4 + item.conversion_score * 0.4 + item.freshness_score * 0.2);
 }
+// Common English stopwords + question words that shouldn't drive product matches
+var SEARCH_STOPWORDS = {
+  'a':1,'an':1,'and':1,'are':1,'as':1,'at':1,'be':1,'by':1,'for':1,'from':1,'how':1,
+  'in':1,'is':1,'it':1,'of':1,'on':1,'or':1,'the':1,'to':1,'was':1,'what':1,'when':1,
+  'where':1,'which':1,'who':1,'why':1,'will':1,'with':1,'i':1,'me':1,'my':1,'do':1,
+  'does':1,'can':1,'you':1,'your':1,'this':1,'that':1,'near':1,'get':1,'got':1,'now':1,
+  'current':1,'currently':1,'time':1,'today':1,'uk':1,'us':1
+};
+
 function rankResults(query, cityId, items){
   const original = (query || '').trim();
   const exp = expandQuery(original);
   // Use the expanded query for matching, but keep original for display.
   const q = (exp.expanded || '').trim().toLowerCase();
-  const words = q.split(/\s+/).filter(Boolean);
+  // Tokenise into meaningful words: length >= 3, not a stopword
+  const allWords = q.split(/[^a-z0-9]+/).filter(Boolean);
+  const words = allWords.filter(function(w){ return w.length >= 3 && !SEARCH_STOPWORDS[w]; });
+  // How many distinct query words exist (used to require a minimum match ratio)
   const ranked = items
     .map(function(it){
-      const haystack = (it.title + ' ' + it.description + ' ' + (it.tags || []).join(' ') + ' ' + it.city + ' ' + it.category).toLowerCase();
-      let kw = 0;
-      words.forEach(function(w){ if (haystack.indexOf(w) >= 0) kw += 25; });
+      // Build a haystack of discrete, lowercased words for whole-word matching
+      const haystackWords = (it.title + ' ' + it.description + ' ' + (it.tags || []).join(' ') + ' ' + it.city + ' ' + it.category)
+        .toLowerCase().split(/[^a-z0-9]+/).filter(Boolean);
+      const haystackSet = {};
+      haystackWords.forEach(function(hw){ haystackSet[hw] = 1; });
+
+      let kw = 0, hits = 0;
+      words.forEach(function(w){
+        if (haystackSet[w]) {
+          // Whole-word match: strong signal
+          kw += 25; hits++;
+        } else if (w.length >= 5 && haystackWords.some(function(hw){ return hw.length >= 5 && (hw.indexOf(w) >= 0 || w.indexOf(hw) >= 0); })) {
+          // Partial match only between two substantial words (both >=5 chars), e.g.
+          // "sunscreen" <-> "sunscreens". The length floor prevents "london"~"on".
+          kw += 10; hits++;
+        }
+      });
       const cityMatch = (cityId && (it.city === cityId || it.city === 'all')) ? 30 : 0;
       const realityRank = computeRealityRank(it);
       const score = kw + cityMatch + realityRank * 0.6;
-      return Object.assign({}, it, { _score:score, _kw:kw, reality_rank_score: computeRealityRank(it) });
+      return Object.assign({}, it, { _score:score, _kw:kw, _hits:hits, reality_rank_score: computeRealityRank(it) });
     })
-    .filter(function(it){ return original === '' || it._kw > 0; })
+    // Require at least one real keyword hit. If the query had NO meaningful words
+    // at all (e.g. only stopwords like "what is the time"), match nothing.
+    .filter(function(it){ return words.length > 0 && it._hits > 0; })
     .sort(function(a,b){ return b._score - a._score; });
   // Attach expansion metadata so callers can show the "Smart match" hint
   ranked.expansion = exp.applied ? exp : null;
