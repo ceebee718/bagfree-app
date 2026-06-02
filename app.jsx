@@ -648,7 +648,7 @@ const NAV = [
 const TILES = [
   { id:'clothing', title:'Clothing', desc:'Shop or rent for any occasion.', icon:Icon.Hanger, link:'/departure-lounge-landing.html', img:'https://images.unsplash.com/photo-1490481651871-ab68de25d43d?w=600&h=400&fit=crop' },
   { id:'meals', title:'Arrival Meals', desc:'Chef-prepared meals delivered to your hotel.', icon:Icon.Dome, link:'/legacy.html#essentials', img:'https://images.unsplash.com/photo-1546069901-ba9599a7e63c?w=600&h=400&fit=crop' },
-  { id:'snacks', title:'Snacks & Drinks', desc:'Handpicked favorites for your stay.', icon:Icon.Cup, link:'/legacy.html#essentials', img:'https://images.unsplash.com/photo-1599490659213-e2b9527bd087?w=600&h=400&fit=crop' },
+  { id:'snacks', title:'Snacks & Drinks', desc:'Handpicked favorites for your stay.', icon:Icon.Cup, link:'/legacy.html#essentials', img:'/snacks-card.jpg' },
   { id:'essentials', title:'Hotel Essentials', desc:'Premium comforts for a seamless stay.', icon:Icon.Bottle, link:'/legacy.html#essentials', img:ESSENTIALS_IMG },
   { id:'curators', title:'Travel Curators', desc:'Local experts. Personalized experiences.', icon:Icon.Person, link:'/curators.html', img:'https://images.unsplash.com/photo-1529156069898-49953e39b3ac?w=600&h=400&fit=crop', badge:'NEW' },
   { id:'experiences', title:'Local Experiences', desc:'Tours, activities and hidden gems.', icon:Icon.Compass, link:'/legacy.html#essentials', img:'https://images.unsplash.com/photo-1571893544028-06b07af6dade?w=600&h=400&fit=crop' },
