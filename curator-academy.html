@@ -1,0 +1,624 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+<meta charset="UTF-8">
+<meta name="viewport" content="width=device-width, initial-scale=1.0">
+<title>Curator Academy™ — BagFree</title>
+<meta name="description" content="Create. Compete. Inspire. Earn recognition as a BagFree travel curator.">
+<meta name="theme-color" content="#0a0f1e">
+<link rel="preconnect" href="https://fonts.googleapis.com">
+<link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+<link href="https://fonts.googleapis.com/css2?family=Cormorant+Garamond:ital,wght@0,300;0,400;0,500;0,600;1,400&family=DM+Sans:wght@300;400;500;600&display=swap" rel="stylesheet">
+<style>
+*{margin:0;padding:0;box-sizing:border-box}
+:root{
+  --bg:#0a0f1e;--bg2:#0f1525;--card:#131a2c;--card-hover:#1a2238;
+  --white:#f8f7f4;--muted:#8a8fa0;--faint:#555a6e;
+  --gold:#c9a96e;--gold-bright:#d4b87a;--gold-dim:rgba(201,169,110,0.15);
+  --emerald:#50C878;--emerald-dim:rgba(80,200,120,0.12);
+  --platinum:#E5E4E2;--plat-dim:rgba(229,228,226,0.1);
+  --silver:#c0c0c0;--bronze:#cd7f32;
+  --border:rgba(255,255,255,0.06);--border-soft:rgba(255,255,255,0.04);
+  --ff-display:'Cormorant Garamond',Georgia,serif;
+  --ff-body:'DM Sans','Helvetica Neue',sans-serif;
+  --radius:14px;
+}
+html{background:var(--bg);color:var(--white);font-family:var(--ff-body);font-weight:300;-webkit-font-smoothing:antialiased}
+body{min-height:100vh}
+a{color:var(--gold);text-decoration:none}
+
+/* ── Nav ──── */
+.top-nav{position:sticky;top:0;z-index:50;backdrop-filter:blur(18px);background:rgba(10,15,30,0.88);border-bottom:1px solid var(--border);padding:0.9rem 2rem;display:flex;align-items:center;justify-content:space-between}
+.nav-logo{font-family:var(--ff-display);font-size:1.3rem;font-weight:500;letter-spacing:1px;color:var(--gold)}
+.nav-links{display:flex;gap:1.6rem;align-items:center}
+.nav-links a{font-size:0.72rem;letter-spacing:1.5px;text-transform:uppercase;color:var(--muted);font-weight:500;transition:color 0.2s}
+.nav-links a:hover,.nav-links a.active{color:var(--gold)}
+
+/* ── Hero ──── */
+.hero{padding:4rem 2rem 2.5rem;text-align:center;position:relative;overflow:hidden}
+.hero::before{content:'';position:absolute;top:-50%;left:50%;transform:translateX(-50%);width:1000px;height:1000px;background:radial-gradient(ellipse,rgba(201,169,110,0.08) 0%,transparent 65%);pointer-events:none}
+.hero-badge{font-size:0.6rem;letter-spacing:4px;text-transform:uppercase;color:var(--gold);font-weight:600;display:inline-flex;align-items:center;gap:0.5rem;margin-bottom:1rem}
+.hero-badge::before,.hero-badge::after{content:'';width:30px;height:1px;background:var(--gold);opacity:0.4}
+.hero h1{font-family:var(--ff-display);font-size:clamp(2.6rem,5.5vw,4rem);font-weight:300;line-height:1.1;margin-bottom:0.5rem;letter-spacing:-0.5px}
+.hero h1 em{font-style:italic;color:var(--gold)}
+.hero-sub{color:var(--muted);font-size:0.95rem;margin-bottom:0.8rem;max-width:550px;margin-left:auto;margin-right:auto}
+.hero-tagline{font-family:var(--ff-display);font-size:1.15rem;color:var(--white);font-weight:400;font-style:italic;margin-bottom:2rem}
+
+/* Stats row */
+.stats-row{display:flex;justify-content:center;gap:2rem;flex-wrap:wrap;margin-bottom:1.5rem}
+.stat{display:flex;align-items:center;gap:0.6rem;background:var(--card);border:1px solid var(--border);border-radius:10px;padding:0.7rem 1.2rem}
+.stat-icon{width:28px;height:28px;border-radius:50%;background:var(--gold-dim);display:flex;align-items:center;justify-content:center;font-size:0.85rem}
+.stat-val{font-size:1.4rem;font-weight:600;line-height:1}
+.stat-label{font-size:0.65rem;color:var(--muted);text-transform:uppercase;letter-spacing:1px}
+
+/* ── Sections ──── */
+.section{padding:2.5rem 2rem;max-width:1200px;margin:0 auto}
+.section-label{font-size:0.6rem;letter-spacing:4px;text-transform:uppercase;color:var(--gold);font-weight:600;margin-bottom:0.5rem}
+.section-title{font-family:var(--ff-display);font-size:1.9rem;font-weight:400;margin-bottom:0.4rem}
+.section-sub{color:var(--muted);font-size:0.88rem;margin-bottom:1.8rem;max-width:700px}
+
+/* ── Award System / Levels ──── */
+.levels-track{display:flex;gap:0;overflow-x:auto;padding-bottom:1rem;position:relative}
+.levels-track::before{content:'';position:absolute;top:50%;left:0;right:0;height:2px;background:linear-gradient(90deg,var(--bronze),var(--silver),var(--gold),var(--emerald),var(--platinum),var(--gold));opacity:0.3;z-index:0}
+.level-card{flex:0 0 160px;background:var(--card);border:1px solid var(--border);border-radius:var(--radius);padding:1.4rem 1rem;text-align:center;position:relative;z-index:1;transition:all 0.3s}
+.level-card:hover{transform:translateY(-4px);box-shadow:0 12px 30px rgba(0,0,0,0.4)}
+.level-badge{width:72px;height:72px;margin:0 auto 0.7rem;position:relative}
+.level-badge svg{width:100%;height:100%}
+.level-stars{display:flex;justify-content:center;gap:2px;margin-bottom:0.4rem}
+.level-stars span{font-size:0.7rem}
+.level-name{font-family:var(--ff-display);font-size:1rem;font-weight:500;margin-bottom:0.15rem}
+.level-title{font-size:0.62rem;color:var(--muted);letter-spacing:1px;text-transform:uppercase}
+.level-card.start{border-color:rgba(205,127,50,0.3)}
+.level-card.start .level-name{color:var(--bronze)}
+.level-card.silver .level-name{color:var(--silver)}
+.level-card.gold .level-name{color:var(--gold)}
+.level-card.emerald{border-color:rgba(80,200,120,0.2)}
+.level-card.emerald .level-name{color:var(--emerald)}
+.level-card.platinum .level-name{color:var(--platinum)}
+.level-card.blackgold{border-color:rgba(201,169,110,0.35);background:linear-gradient(165deg,#1a1a1a,#131a2c)}
+.level-card.blackgold .level-name{background:linear-gradient(135deg,var(--gold),#fff,var(--gold));-webkit-background-clip:text;-webkit-text-fill-color:transparent}
+.level-start-tag{position:absolute;bottom:-8px;left:50%;transform:translateX(-50%);font-size:0.5rem;letter-spacing:2px;text-transform:uppercase;background:var(--bg);border:1px solid var(--border);padding:0.15rem 0.5rem;border-radius:4px;color:var(--muted);white-space:nowrap}
+.level-journey{color:var(--muted);font-size:0.8rem;margin-top:1.2rem;display:flex;align-items:center;gap:0.4rem;justify-content:center}
+.level-journey svg{width:14px;height:14px;color:var(--gold)}
+
+/* ── Competitions ──── */
+.comp-grid{display:grid;grid-template-columns:repeat(auto-fill,minmax(340px,1fr));gap:1.2rem}
+.comp-card{background:var(--card);border:1px solid var(--border);border-radius:var(--radius);padding:1.5rem;transition:all 0.3s}
+.comp-card:hover{border-color:rgba(201,169,110,0.2);transform:translateY(-2px)}
+.comp-head{display:flex;justify-content:space-between;align-items:flex-start;margin-bottom:0.8rem}
+.comp-type{font-size:0.58rem;letter-spacing:2px;text-transform:uppercase;padding:0.3rem 0.6rem;border-radius:4px;font-weight:600}
+.comp-type.weekly{background:rgba(100,180,255,0.1);color:#64b4ff}
+.comp-type.monthly{background:var(--gold-dim);color:var(--gold)}
+.comp-type.special{background:var(--emerald-dim);color:var(--emerald)}
+.comp-status{font-size:0.6rem;color:var(--muted);display:flex;align-items:center;gap:0.3rem}
+.comp-status .dot{width:6px;height:6px;border-radius:50%}
+.comp-status .dot.active{background:#4ade80}
+.comp-status .dot.upcoming{background:#facc15}
+.comp-title{font-family:var(--ff-display);font-size:1.25rem;font-weight:500;margin-bottom:0.4rem}
+.comp-desc{font-size:0.82rem;color:var(--muted);line-height:1.5;margin-bottom:1rem}
+.comp-meta{display:flex;gap:1rem;flex-wrap:wrap;font-size:0.72rem;color:var(--faint)}
+.comp-meta span{display:flex;align-items:center;gap:0.3rem}
+.comp-btn{display:block;text-align:center;margin-top:1.2rem;padding:0.75rem;border-radius:8px;font-size:0.72rem;font-weight:600;letter-spacing:1.5px;text-transform:uppercase;cursor:pointer;border:1px solid rgba(201,169,110,0.3);background:transparent;color:var(--gold);transition:all 0.2s;width:100%}
+.comp-btn:hover{background:var(--gold-dim)}
+
+/* ── Leaderboards ──── */
+.lb-tabs{display:flex;gap:0.5rem;margin-bottom:1.2rem;flex-wrap:wrap}
+.lb-tab{font-size:0.7rem;letter-spacing:1px;text-transform:uppercase;padding:0.5rem 1rem;border-radius:8px;border:1px solid var(--border);background:transparent;color:var(--muted);cursor:pointer;font-weight:500;transition:all 0.2s;font-family:var(--ff-body)}
+.lb-tab:hover{border-color:rgba(201,169,110,0.2);color:var(--white)}
+.lb-tab.active{background:var(--gold-dim);border-color:rgba(201,169,110,0.3);color:var(--gold)}
+.lb-table{width:100%;border-collapse:collapse;background:var(--card);border:1px solid var(--border);border-radius:var(--radius);overflow:hidden}
+.lb-table th{padding:0.7rem 1rem;text-align:left;font-size:0.65rem;letter-spacing:1.5px;text-transform:uppercase;color:var(--muted);background:rgba(255,255,255,0.02);font-weight:600}
+.lb-table td{padding:0.7rem 1rem;border-top:1px solid var(--border-soft);font-size:0.85rem}
+.lb-rank{font-weight:600;width:40px}
+.lb-rank.gold{color:var(--gold)}
+.lb-rank.silver{color:var(--silver)}
+.lb-rank.bronze{color:var(--bronze)}
+.lb-user{display:flex;align-items:center;gap:0.6rem}
+.lb-avatar{width:32px;height:32px;border-radius:50%;background:var(--card-hover);border:1px solid var(--border);display:flex;align-items:center;justify-content:center;font-size:0.7rem;font-weight:600}
+.lb-name{font-weight:400}
+.lb-city{font-size:0.7rem;color:var(--faint)}
+.lb-score{font-weight:600;color:var(--gold)}
+.lb-level{font-size:0.65rem;letter-spacing:0.5px;padding:0.2rem 0.5rem;border-radius:4px;font-weight:500}
+
+/* ── Submit Form ──── */
+.submit-section{background:var(--card);border:1px solid var(--border);border-radius:var(--radius);padding:2rem}
+.form-row{margin-bottom:1.2rem}
+.form-label{font-size:0.7rem;letter-spacing:1px;text-transform:uppercase;color:var(--muted);font-weight:500;margin-bottom:0.4rem;display:block}
+.form-input,.form-select,.form-textarea{width:100%;background:rgba(255,255,255,0.03);border:1px solid var(--border);border-radius:8px;padding:0.7rem 0.9rem;color:var(--white);font-family:var(--ff-body);font-size:0.88rem;font-weight:300;transition:border-color 0.2s;outline:none}
+.form-input:focus,.form-select:focus,.form-textarea:focus{border-color:rgba(201,169,110,0.4)}
+.form-select{appearance:none;background-image:url("data:image/svg+xml,%3Csvg xmlns='http://www.w3.org/2000/svg' width='12' height='12' viewBox='0 0 24 24' fill='none' stroke='%238a8fa0' stroke-width='2'%3E%3Cpath d='M6 9l6 6 6-6'/%3E%3C/svg%3E");background-repeat:no-repeat;background-position:right 0.9rem center}
+.form-select option{background:var(--bg);color:var(--white)}
+.form-textarea{min-height:100px;resize:vertical;line-height:1.5}
+
+.stop-list{display:flex;flex-direction:column;gap:0.6rem;margin-bottom:0.8rem}
+.stop-item{display:grid;grid-template-columns:40px 1fr 120px 100px 90px 36px;gap:0.5rem;align-items:center}
+.stop-num{width:28px;height:28px;border-radius:50%;background:var(--gold-dim);color:var(--gold);display:flex;align-items:center;justify-content:center;font-size:0.7rem;font-weight:600}
+.stop-input{background:rgba(255,255,255,0.03);border:1px solid var(--border);border-radius:6px;padding:0.5rem 0.7rem;color:var(--white);font-family:var(--ff-body);font-size:0.82rem;outline:none}
+.stop-input:focus{border-color:rgba(201,169,110,0.3)}
+.stop-remove{width:28px;height:28px;border-radius:50%;border:1px solid var(--border);background:none;color:var(--faint);cursor:pointer;display:flex;align-items:center;justify-content:center;font-size:0.9rem;transition:all 0.2s}
+.stop-remove:hover{border-color:#f87171;color:#f87171}
+.add-stop-btn{display:flex;align-items:center;gap:0.4rem;font-size:0.75rem;color:var(--gold);background:none;border:1px dashed rgba(201,169,110,0.3);padding:0.6rem;border-radius:8px;cursor:pointer;font-family:var(--ff-body);width:100%;justify-content:center;transition:all 0.2s}
+.add-stop-btn:hover{background:var(--gold-dim)}
+
+.submit-btn{display:block;width:100%;padding:0.9rem;border-radius:10px;font-size:0.78rem;font-weight:600;letter-spacing:1.5px;text-transform:uppercase;cursor:pointer;border:0;background:var(--gold);color:var(--bg);transition:all 0.25s;font-family:var(--ff-body)}
+.submit-btn:hover{background:var(--gold-bright);transform:translateY(-1px)}
+.submit-btn:disabled{opacity:0.4;cursor:not-allowed;transform:none}
+
+/* ── Score Results ──── */
+.score-result{background:var(--card);border:1px solid var(--border);border-radius:var(--radius);padding:2rem;margin-top:1.5rem;display:none}
+.score-result.show{display:block;animation:fadeUp 0.5s ease}
+.score-big{font-size:3.5rem;font-weight:700;text-align:center;margin-bottom:0.3rem}
+.score-big.excellent{color:var(--gold)}
+.score-big.good{color:var(--emerald)}
+.score-big.avg{color:var(--platinum)}
+.score-big.low{color:var(--muted)}
+.score-label{text-align:center;font-size:0.85rem;color:var(--muted);margin-bottom:1.5rem}
+.score-bars{display:grid;grid-template-columns:1fr 1fr;gap:0.8rem}
+.score-bar{display:flex;flex-direction:column;gap:0.3rem}
+.score-bar-label{font-size:0.7rem;color:var(--muted);display:flex;justify-content:space-between}
+.score-bar-track{height:6px;background:rgba(255,255,255,0.06);border-radius:3px;overflow:hidden}
+.score-bar-fill{height:100%;border-radius:3px;transition:width 1s ease}
+.score-feedback{margin-top:1.5rem;padding:1rem;background:rgba(201,169,110,0.06);border:1px solid rgba(201,169,110,0.15);border-radius:8px;font-size:0.85rem;color:var(--muted);line-height:1.6}
+.score-bag{text-align:center;margin-top:1rem;font-size:0.9rem;color:var(--gold);font-weight:500}
+
+/* ── Awards ──── */
+.awards-grid{display:grid;grid-template-columns:repeat(auto-fill,minmax(200px,1fr));gap:1rem}
+.award-card{background:var(--card);border:1px solid var(--border);border-radius:var(--radius);padding:1.4rem;text-align:center;transition:all 0.3s}
+.award-card:hover{transform:translateY(-3px);box-shadow:0 12px 30px rgba(0,0,0,0.35)}
+.award-laurel{width:100px;height:100px;margin:0 auto 0.8rem;position:relative}
+.award-laurel svg{width:100%;height:100%}
+.award-title{font-family:var(--ff-display);font-size:1rem;font-weight:500;margin-bottom:0.2rem}
+.award-year{font-size:0.65rem;color:var(--muted);letter-spacing:1.5px}
+.award-share{display:flex;gap:0.4rem;justify-content:center;margin-top:0.8rem}
+.award-share-btn{width:28px;height:28px;border-radius:50%;border:1px solid var(--border);background:none;color:var(--muted);cursor:pointer;display:flex;align-items:center;justify-content:center;font-size:0.65rem;transition:all 0.2s}
+.award-share-btn:hover{border-color:var(--gold);color:var(--gold)}
+
+/* ── Footer ──── */
+.page-footer{text-align:center;padding:2.5rem 2rem;border-top:1px solid var(--border);color:var(--faint);font-size:0.75rem}
+
+/* ── Animations ──── */
+@keyframes fadeUp{from{opacity:0;transform:translateY(16px)}to{opacity:1;transform:none}}
+.comp-card,.level-card,.award-card{animation:fadeUp 0.5s ease both}
+.comp-card:nth-child(2){animation-delay:0.06s}
+.comp-card:nth-child(3){animation-delay:0.12s}
+
+/* ── Mobile ──── */
+@media(max-width:768px){
+  .hero{padding:3rem 1.2rem 2rem}
+  .section{padding:2rem 1.2rem}
+  .stats-row{gap:0.6rem}
+  .stat{padding:0.5rem 0.8rem}
+  .stat-val{font-size:1.1rem}
+  .levels-track{gap:0.5rem}
+  .level-card{flex:0 0 130px;padding:1rem 0.7rem}
+  .comp-grid{grid-template-columns:1fr}
+  .score-bars{grid-template-columns:1fr}
+  .stop-item{grid-template-columns:30px 1fr;gap:0.4rem}
+  .stop-item .stop-input:nth-child(n+3){grid-column:2}
+  .awards-grid{grid-template-columns:repeat(2,1fr)}
+}
+</style>
+</head>
+<body>
+
+<!-- Nav -->
+<nav class="top-nav">
+  <a href="/" class="nav-logo">BAGFREE</a>
+  <div class="nav-links">
+    <a href="#compete" class="active">Compete</a>
+    <a href="#leaderboard">Leaderboard</a>
+    <a href="#awards">Awards</a>
+    <a href="/curators.html">Curators</a>
+    <a href="/">Home</a>
+  </div>
+</nav>
+
+<!-- Hero -->
+<header class="hero">
+  <div class="hero-badge">✦ Curator Academy™ ✦</div>
+  <h1>Create. Compete. <em>Inspire.</em></h1>
+  <p class="hero-sub">Earn recognition, climb the ranks, and become the world's most trusted travel curator.</p>
+  <p class="hero-tagline">"Every curator starts their journey here."</p>
+
+  <div class="stats-row">
+    <div class="stat"><div class="stat-icon">🏆</div><div><div class="stat-val" id="stat-awards">0</div><div class="stat-label">Awards Earned</div></div></div>
+    <div class="stat"><div class="stat-icon">🏅</div><div><div class="stat-val" id="stat-comps">0</div><div class="stat-label">Competitions</div></div></div>
+    <div class="stat"><div class="stat-icon">💎</div><div><div class="stat-val" id="stat-bag">0</div><div class="stat-label">BAG Earned</div></div></div>
+    <div class="stat"><div class="stat-icon">🌍</div><div><div class="stat-val" id="stat-rank">—</div><div class="stat-label">Global Rank</div></div></div>
+  </div>
+</header>
+
+<!-- Award System / Levels -->
+<section class="section" id="levels">
+  <div class="section-label">BagFree Award System</div>
+  <div class="section-title">Climb the Ranks</div>
+
+  <div class="levels-track">
+    <div class="level-card start">
+      <div class="level-badge"><svg viewBox="0 0 72 72"><circle cx="36" cy="36" r="32" fill="none" stroke="#cd7f32" stroke-width="1.5" opacity="0.5"/><text x="36" y="26" text-anchor="middle" fill="#cd7f32" font-size="20">🐦</text><text x="36" y="48" text-anchor="middle" fill="#cd7f32" font-size="7" font-weight="600">TRAVELER</text></svg></div>
+      <div class="level-name" style="color:var(--bronze)">Traveler</div>
+      <div class="level-title">Starting Point</div>
+      <div class="level-start-tag">Starts Here</div>
+    </div>
+
+    <div class="level-card silver">
+      <div class="level-badge"><svg viewBox="0 0 72 72"><circle cx="36" cy="36" r="32" fill="none" stroke="#c0c0c0" stroke-width="1.5" opacity="0.5"/><text x="36" y="22" text-anchor="middle" fill="#c0c0c0" font-size="8">★</text><text x="36" y="36" text-anchor="middle" fill="#c0c0c0" font-size="16">🐦</text><text x="36" y="52" text-anchor="middle" fill="#c0c0c0" font-size="6" font-weight="600">EXPLORER</text></svg></div>
+      <div class="level-name" style="color:var(--silver)">Explorer</div>
+      <div class="level-title">Score 50+ · 100 BAG</div>
+    </div>
+
+    <div class="level-card silver">
+      <div class="level-badge"><svg viewBox="0 0 72 72"><circle cx="36" cy="36" r="32" fill="none" stroke="#c0c0c0" stroke-width="1.5" opacity="0.6"/><text x="28" y="22" text-anchor="middle" fill="#c0c0c0" font-size="8">★</text><text x="44" y="22" text-anchor="middle" fill="#c0c0c0" font-size="8">★</text><text x="36" y="38" text-anchor="middle" fill="#c0c0c0" font-size="16">🐦</text><text x="36" y="53" text-anchor="middle" fill="#c0c0c0" font-size="6" font-weight="600">INSIDER</text></svg></div>
+      <div class="level-name" style="color:var(--silver)">Insider</div>
+      <div class="level-title">Score 65+ · 500 BAG</div>
+    </div>
+
+    <div class="level-card gold">
+      <div class="level-badge"><svg viewBox="0 0 72 72"><circle cx="36" cy="36" r="32" fill="none" stroke="#c9a96e" stroke-width="2" opacity="0.6"/><text x="22" y="20" text-anchor="middle" fill="#c9a96e" font-size="8">★</text><text x="36" y="17" text-anchor="middle" fill="#c9a96e" font-size="8">★</text><text x="50" y="20" text-anchor="middle" fill="#c9a96e" font-size="8">★</text><text x="36" y="40" text-anchor="middle" fill="#c9a96e" font-size="18">🐦</text><text x="36" y="55" text-anchor="middle" fill="#c9a96e" font-size="5.5" font-weight="700">CURATOR</text></svg></div>
+      <div class="level-name">Curator Candidate</div>
+      <div class="level-title">Score 75+ · 1,500 BAG</div>
+    </div>
+
+    <div class="level-card emerald">
+      <div class="level-badge"><svg viewBox="0 0 72 72"><circle cx="36" cy="36" r="32" fill="none" stroke="#50C878" stroke-width="2" opacity="0.6"/><text x="22" y="20" text-anchor="middle" fill="#50C878" font-size="8">★</text><text x="36" y="17" text-anchor="middle" fill="#50C878" font-size="8">★</text><text x="50" y="20" text-anchor="middle" fill="#50C878" font-size="8">★</text><text x="36" y="40" text-anchor="middle" fill="#50C878" font-size="18">🐦</text><text x="36" y="55" text-anchor="middle" fill="#50C878" font-size="5" font-weight="700">VERIFIED</text></svg></div>
+      <div class="level-name">Verified Curator</div>
+      <div class="level-title">Score 82+ · 3,000 BAG</div>
+    </div>
+
+    <div class="level-card gold">
+      <div class="level-badge"><svg viewBox="0 0 72 72"><circle cx="36" cy="36" r="32" fill="none" stroke="#c9a96e" stroke-width="2.5" opacity="0.7"/><text x="16" y="18" text-anchor="middle" fill="#c9a96e" font-size="8">★</text><text x="36" y="14" text-anchor="middle" fill="#c9a96e" font-size="9">★</text><text x="56" y="18" text-anchor="middle" fill="#c9a96e" font-size="8">★</text><text x="36" y="40" text-anchor="middle" fill="#c9a96e" font-size="20">🐦</text><text x="36" y="56" text-anchor="middle" fill="#c9a96e" font-size="5" font-weight="700">ELITE</text></svg></div>
+      <div class="level-name">Elite Curator</div>
+      <div class="level-title">Score 90+ · 7,500 BAG</div>
+    </div>
+
+    <div class="level-card blackgold">
+      <div class="level-badge"><svg viewBox="0 0 72 72"><circle cx="36" cy="36" r="32" fill="none" stroke="#c9a96e" stroke-width="3" opacity="0.8"/><text x="12" y="18" text-anchor="middle" fill="#c9a96e" font-size="7">★</text><text x="24" y="14" text-anchor="middle" fill="#c9a96e" font-size="8">★</text><text x="36" y="12" text-anchor="middle" fill="#c9a96e" font-size="9">★</text><text x="48" y="14" text-anchor="middle" fill="#c9a96e" font-size="8">★</text><text x="60" y="18" text-anchor="middle" fill="#c9a96e" font-size="7">★</text><text x="36" y="42" text-anchor="middle" fill="#c9a96e" font-size="20">🐦</text><text x="36" y="57" text-anchor="middle" fill="#c9a96e" font-size="4.5" font-weight="700">AMBASSADOR</text></svg></div>
+      <div class="level-name">City Ambassador</div>
+      <div class="level-title">Score 95+ · 15,000 BAG</div>
+    </div>
+  </div>
+
+  <div class="level-journey">
+    <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.5"><path d="M12 2L12 22M12 22L5 15M12 22L19 15"/></svg>
+    Every curator starts their journey here. Earn stars, climb the ranks, and inspire the world.
+  </div>
+</section>
+
+<!-- Active Competitions -->
+<section class="section" id="compete">
+  <div class="section-label">Competitions</div>
+  <div class="section-title">Active Challenges</div>
+  <div class="section-sub">Pick a challenge, submit your itinerary, and let the AI judge your curator skills.</div>
+
+  <div class="comp-grid">
+    <div class="comp-card">
+      <div class="comp-head">
+        <span class="comp-type weekly">Weekly</span>
+        <span class="comp-status"><span class="dot active"></span> Live</span>
+      </div>
+      <div class="comp-title">Best Day in Savannah</div>
+      <div class="comp-desc">Design the perfect single-day itinerary for a first-time visitor to Savannah. Include breakfast, lunch, dinner, 2+ attractions, and at least one hidden gem. Budget: under $150.</div>
+      <div class="comp-meta">
+        <span>📍 Savannah</span>
+        <span>🏷️ Culture</span>
+        <span>💰 500 BAG</span>
+        <span>⏱️ 6 days left</span>
+      </div>
+      <button class="comp-btn" onclick="document.getElementById('submit-form').scrollIntoView({behavior:'smooth'})">Submit Itinerary →</button>
+    </div>
+
+    <div class="comp-card">
+      <div class="comp-head">
+        <span class="comp-type weekly">Weekly</span>
+        <span class="comp-status"><span class="dot upcoming"></span> Opens in 3 days</span>
+      </div>
+      <div class="comp-title">Atlanta Food Crawl Challenge</div>
+      <div class="comp-desc">Map out the ultimate food crawl through Atlanta — 4+ stops, $75 budget. Each stop walkable or a short rideshare from the last.</div>
+      <div class="comp-meta">
+        <span>📍 Atlanta</span>
+        <span>🏷️ Food</span>
+        <span>💰 750 BAG</span>
+        <span>⏱️ Opens soon</span>
+      </div>
+      <button class="comp-btn" disabled>Coming Soon</button>
+    </div>
+
+    <div class="comp-card">
+      <div class="comp-head">
+        <span class="comp-type monthly">Monthly</span>
+        <span class="comp-status"><span class="dot active"></span> Live</span>
+      </div>
+      <div class="comp-title">Tampa Nightlife Guide</div>
+      <div class="comp-desc">Create the definitive Friday + Saturday night itinerary in Tampa. Cocktail bars, live music, rooftop venues, late-night food. Budget: $100/night.</div>
+      <div class="comp-meta">
+        <span>📍 Tampa</span>
+        <span>🏷️ Nightlife</span>
+        <span>💰 1,500 BAG</span>
+        <span>⏱️ 24 days left</span>
+      </div>
+      <button class="comp-btn" onclick="document.getElementById('submit-form').scrollIntoView({behavior:'smooth'})">Submit Itinerary →</button>
+    </div>
+  </div>
+</section>
+
+<!-- Leaderboard -->
+<section class="section" id="leaderboard">
+  <div class="section-label">Leaderboards</div>
+  <div class="section-title">Top Curators</div>
+
+  <div class="lb-tabs">
+    <button class="lb-tab active" onclick="switchLB(this,'global')">Global</button>
+    <button class="lb-tab" onclick="switchLB(this,'savannah')">Savannah</button>
+    <button class="lb-tab" onclick="switchLB(this,'atlanta')">Atlanta</button>
+    <button class="lb-tab" onclick="switchLB(this,'tampa')">Tampa</button>
+    <button class="lb-tab" onclick="switchLB(this,'weekly')">Weekly Winners</button>
+  </div>
+
+  <table class="lb-table">
+    <thead>
+      <tr><th style="width:50px">Rank</th><th>Curator</th><th>Level</th><th>Score</th><th>BAG</th></tr>
+    </thead>
+    <tbody id="lb-body">
+      <tr><td class="lb-rank gold">1</td><td><div class="lb-user"><div class="lb-avatar">IM</div><div><div class="lb-name">Isabella Martinez</div><div class="lb-city">Savannah, GA</div></div></div></td><td><span class="lb-level" style="background:rgba(201,169,110,0.15);color:var(--gold)">Elite Curator</span></td><td class="lb-score">96.4</td><td>12,450</td></tr>
+      <tr><td class="lb-rank silver">2</td><td><div class="lb-user"><div class="lb-avatar">MJ</div><div><div class="lb-name">Marcus Johnson</div><div class="lb-city">Atlanta, GA</div></div></div></td><td><span class="lb-level" style="background:rgba(80,200,120,0.1);color:var(--emerald)">Verified Curator</span></td><td class="lb-score">93.1</td><td>8,200</td></tr>
+      <tr><td class="lb-rank bronze">3</td><td><div class="lb-user"><div class="lb-avatar">AT</div><div><div class="lb-name">Ava Thompson</div><div class="lb-city">Tampa, FL</div></div></div></td><td><span class="lb-level" style="background:rgba(80,200,120,0.1);color:var(--emerald)">Verified Curator</span></td><td class="lb-score">92.7</td><td>7,800</td></tr>
+      <tr><td class="lb-rank">4</td><td><div class="lb-user"><div class="lb-avatar">LC</div><div><div class="lb-name">Liam Chen</div><div class="lb-city">Savannah, GA</div></div></div></td><td><span class="lb-level" style="background:rgba(201,169,110,0.1);color:var(--gold)">Curator Candidate</span></td><td class="lb-score">89.5</td><td>5,300</td></tr>
+      <tr><td class="lb-rank">5</td><td><div class="lb-user"><div class="lb-avatar">SP</div><div><div class="lb-name">Sophia Patel</div><div class="lb-city">Orlando, FL</div></div></div></td><td><span class="lb-level" style="background:var(--plat-dim);color:var(--platinum)">Insider</span></td><td class="lb-score">87.2</td><td>3,100</td></tr>
+    </tbody>
+  </table>
+</section>
+
+<!-- Submit Itinerary -->
+<section class="section" id="submit-form">
+  <div class="section-label">Submit</div>
+  <div class="section-title">Create Your Itinerary</div>
+  <div class="section-sub">Choose a city, add your stops, and let our AI judge score your curator skills.</div>
+
+  <div class="submit-section">
+    <div class="form-row">
+      <label class="form-label">City</label>
+      <select class="form-select" id="itin-city">
+        <option value="">Select a city…</option>
+        <option value="savannah">Savannah, GA</option>
+        <option value="atlanta">Atlanta, GA</option>
+        <option value="tampa">Tampa, FL</option>
+        <option value="orlando">Orlando, FL</option>
+        <option value="miami">Miami, FL</option>
+      </select>
+    </div>
+
+    <div class="form-row">
+      <label class="form-label">Itinerary Title</label>
+      <input class="form-input" id="itin-title" placeholder="e.g. The Perfect Savannah Day Trip">
+    </div>
+
+    <div class="form-row">
+      <label class="form-label">Budget (per person)</label>
+      <input class="form-input" id="itin-budget" type="number" placeholder="150" min="0">
+    </div>
+
+    <div class="form-row">
+      <label class="form-label">Stops</label>
+      <div class="stop-list" id="stop-list">
+        <div class="stop-item">
+          <div class="stop-num">1</div>
+          <input class="stop-input" placeholder="Place name" data-field="name">
+          <input class="stop-input" placeholder="Time (e.g. 9:00 AM)" data-field="time">
+          <input class="stop-input" placeholder="Cost ($)" data-field="cost" type="number">
+          <input class="stop-input" placeholder="Type" data-field="type" list="stop-types">
+          <button class="stop-remove" onclick="removeStop(this)" title="Remove">×</button>
+        </div>
+      </div>
+      <datalist id="stop-types">
+        <option value="Restaurant"><option value="Cafe"><option value="Bar"><option value="Attraction">
+        <option value="Museum"><option value="Park"><option value="Shopping"><option value="Tour">
+        <option value="Hidden Gem"><option value="Nightlife"><option value="Transport">
+      </datalist>
+      <button class="add-stop-btn" onclick="addStop()">+ Add Stop</button>
+    </div>
+
+    <div class="form-row">
+      <label class="form-label">Notes (optional)</label>
+      <textarea class="form-textarea" id="itin-notes" placeholder="Insider tips, must-order dishes, best times to visit, travel tips between stops…"></textarea>
+    </div>
+
+    <button class="submit-btn" id="submit-btn" onclick="submitItinerary()">Submit for AI Scoring</button>
+  </div>
+
+  <!-- Score Results (shown after submission) -->
+  <div class="score-result" id="score-result">
+    <div class="score-big" id="score-total">—</div>
+    <div class="score-label" id="score-level">Curator Score</div>
+    <div class="score-bars" id="score-bars"></div>
+    <div class="score-feedback" id="score-feedback"></div>
+    <div class="score-bag" id="score-bag"></div>
+  </div>
+</section>
+
+<!-- Sample Awards -->
+<section class="section" id="awards">
+  <div class="section-label">Recognition</div>
+  <div class="section-title">Award Gallery</div>
+  <div class="section-sub">Top curators earn professional awards they can share on social media and personal websites.</div>
+
+  <div class="awards-grid">
+    <div class="award-card">
+      <div class="award-laurel"><svg viewBox="0 0 100 100"><circle cx="50" cy="50" r="42" fill="none" stroke="#cd7f32" stroke-width="1.5" opacity="0.6"/><text x="50" y="40" text-anchor="middle" fill="#cd7f32" font-size="24">🐦</text><text x="50" y="58" text-anchor="middle" fill="#cd7f32" font-size="6" font-weight="700" font-family="sans-serif">OFFICIAL</text><text x="50" y="66" text-anchor="middle" fill="#cd7f32" font-size="5.5" font-weight="600" font-family="sans-serif">SELECTION</text></svg></div>
+      <div class="award-title">Official Selection</div>
+      <div class="award-year">Curator Academy 2026</div>
+    </div>
+
+    <div class="award-card">
+      <div class="award-laurel"><svg viewBox="0 0 100 100"><circle cx="50" cy="50" r="42" fill="none" stroke="#c9a96e" stroke-width="2" opacity="0.7"/><text x="50" y="38" text-anchor="middle" fill="#c9a96e" font-size="22">🐦</text><text x="50" y="56" text-anchor="middle" fill="#c9a96e" font-size="5.5" font-weight="700" font-family="sans-serif">BEST SAVANNAH</text><text x="50" y="64" text-anchor="middle" fill="#c9a96e" font-size="5.5" font-weight="600" font-family="sans-serif">CURATOR</text></svg></div>
+      <div class="award-title">Best Savannah Curator</div>
+      <div class="award-year">2026</div>
+    </div>
+
+    <div class="award-card">
+      <div class="award-laurel"><svg viewBox="0 0 100 100"><circle cx="50" cy="50" r="42" fill="none" stroke="#c9a96e" stroke-width="2" opacity="0.7"/><text x="50" y="38" text-anchor="middle" fill="#c9a96e" font-size="22">🐦</text><text x="50" y="56" text-anchor="middle" fill="#c9a96e" font-size="5.5" font-weight="700" font-family="sans-serif">BEST FOOD</text><text x="50" y="64" text-anchor="middle" fill="#c9a96e" font-size="5.5" font-weight="600" font-family="sans-serif">CURATOR</text></svg></div>
+      <div class="award-title">Best Food Curator</div>
+      <div class="award-year">2026</div>
+    </div>
+
+    <div class="award-card">
+      <div class="award-laurel"><svg viewBox="0 0 100 100"><circle cx="50" cy="50" r="42" fill="none" stroke="#50C878" stroke-width="2.5" opacity="0.7"/><text x="50" y="38" text-anchor="middle" fill="#50C878" font-size="22">🐦</text><text x="50" y="56" text-anchor="middle" fill="#50C878" font-size="5" font-weight="700" font-family="sans-serif">TOP 10 CURATORS</text><text x="50" y="64" text-anchor="middle" fill="#50C878" font-size="5" font-weight="600" font-family="sans-serif">WORLDWIDE</text></svg></div>
+      <div class="award-title">Top 10 Worldwide</div>
+      <div class="award-year">2026</div>
+    </div>
+
+    <div class="award-card">
+      <div class="award-laurel"><svg viewBox="0 0 100 100"><circle cx="50" cy="50" r="42" fill="none" stroke="#c9a96e" stroke-width="3" opacity="0.8"/><circle cx="50" cy="50" r="38" fill="none" stroke="#c9a96e" stroke-width="1" opacity="0.3"/><text x="50" y="36" text-anchor="middle" fill="#c9a96e" font-size="20">👑</text><text x="50" y="56" text-anchor="middle" fill="#c9a96e" font-size="4.5" font-weight="700" font-family="sans-serif">GRAND CHAMPION</text><text x="50" y="64" text-anchor="middle" fill="#c9a96e" font-size="5" font-weight="600" font-family="sans-serif">CURATOR ACADEMY</text></svg></div>
+      <div class="award-title">Grand Champion</div>
+      <div class="award-year">Curator Academy™</div>
+    </div>
+  </div>
+</section>
+
+<footer class="page-footer">
+  <a href="/">BagFree.app</a> · Curator Academy™<br>
+  <span style="margin-top:0.4rem;display:inline-block">© 2026 BagFree. All rights reserved.</span>
+</footer>
+
+<script>
+var SUPABASE_URL = 'https://vkctidpaghpdlmleezvq.supabase.co';
+var SUPABASE_ANON_KEY = 'eyJhbGciOiJIUzI1NiIsInR5cCI6IkpXVCJ9.eyJpc3MiOiJzdXBhYmFzZSIsInJlZiI6InZrY3RpZHBhZ2hwZGxtbGVlenZxIiwicm9sZSI6ImFub24iLCJpYXQiOjE3NzUzMjI5MjgsImV4cCI6MjA5MDg5ODkyOH0.wKtG6XD6CwLy3rJDZc4S10-NqNr3fcCXHYOWJt_C628';
+var stopCount = 1;
+
+function addStop() {
+  stopCount++;
+  var list = document.getElementById('stop-list');
+  var item = document.createElement('div');
+  item.className = 'stop-item';
+  item.innerHTML = '<div class="stop-num">' + stopCount + '</div>' +
+    '<input class="stop-input" placeholder="Place name" data-field="name">' +
+    '<input class="stop-input" placeholder="Time" data-field="time">' +
+    '<input class="stop-input" placeholder="Cost ($)" data-field="cost" type="number">' +
+    '<input class="stop-input" placeholder="Type" data-field="type" list="stop-types">' +
+    '<button class="stop-remove" onclick="removeStop(this)" title="Remove">\u00d7</button>';
+  list.appendChild(item);
+}
+
+function removeStop(btn) {
+  if (document.querySelectorAll('.stop-item').length > 1) {
+    btn.closest('.stop-item').remove();
+    renumberStops();
+  }
+}
+
+function renumberStops() {
+  document.querySelectorAll('.stop-item').forEach(function(item, i) {
+    item.querySelector('.stop-num').textContent = i + 1;
+  });
+  stopCount = document.querySelectorAll('.stop-item').length;
+}
+
+function getStops() {
+  var stops = [];
+  document.querySelectorAll('.stop-item').forEach(function(item) {
+    var name = item.querySelector('[data-field="name"]').value.trim();
+    var time = item.querySelector('[data-field="time"]').value.trim();
+    var cost = item.querySelector('[data-field="cost"]').value;
+    var type = item.querySelector('[data-field="type"]').value.trim();
+    if (name) stops.push({ name:name, time:time, cost:parseFloat(cost)||0, type:type });
+  });
+  return stops;
+}
+
+async function submitItinerary() {
+  var city = document.getElementById('itin-city').value;
+  var title = document.getElementById('itin-title').value.trim();
+  var budget = document.getElementById('itin-budget').value;
+  var notes = document.getElementById('itin-notes').value.trim();
+  var stops = getStops();
+
+  if (!city || !title || stops.length < 2) {
+    alert('Please fill in a city, title, and at least 2 stops.');
+    return;
+  }
+
+  var btn = document.getElementById('submit-btn');
+  btn.disabled = true;
+  btn.textContent = 'Scoring your itinerary\u2026';
+
+  var itineraryText = stops.map(function(s, i) {
+    return (i+1) + '. ' + s.name + (s.time ? ' (' + s.time + ')' : '') + (s.type ? ' [' + s.type + ']' : '') + (s.cost ? ' — $' + s.cost : '');
+  }).join('\n');
+
+  try {
+    var res = await fetch(SUPABASE_URL + '/functions/v1/concierge', {
+      method: 'POST',
+      headers: {
+        'Content-Type': 'application/json',
+        'Authorization': 'Bearer ' + SUPABASE_ANON_KEY,
+        'apikey': SUPABASE_ANON_KEY
+      },
+      body: JSON.stringify({
+        system: 'You are BagFree\'s Curator Academy judge. Score this travel itinerary on 7 criteria (0-100 each): budget_fit, authenticity, walkability, food_diversity, experience_variety, time_efficiency, uniqueness. Calculate total_score as weighted average (authenticity 20%, uniqueness 18%, experience_variety 15%, food_diversity 12%, time_efficiency 12%, budget_fit 12%, walkability 11%). Respond ONLY with JSON: {"total_score":N,"budget_fit":N,"authenticity":N,"walkability":N,"food_diversity":N,"experience_variety":N,"time_efficiency":N,"uniqueness":N,"feedback":"2-3 sentences"}',
+        messages: [{ role: 'user', content: 'City: ' + city + '\nTitle: ' + title + '\nBudget: $' + (budget || '?') + '\nStops:\n' + itineraryText + (notes ? '\nNotes: ' + notes : '') }],
+        max_tokens: 400
+      })
+    });
+
+    var data = await res.json();
+    var text = data.content && data.content[0] ? data.content[0].text : '';
+    var scores = JSON.parse(text.replace(/```json|```/g, '').trim());
+    showScores(scores);
+  } catch (err) {
+    alert('Scoring failed: ' + (err.message || 'Please try again.'));
+  }
+
+  btn.disabled = false;
+  btn.textContent = 'Submit for AI Scoring';
+}
+
+function showScores(s) {
+  var el = document.getElementById('score-result');
+  el.classList.add('show');
+  el.scrollIntoView({ behavior: 'smooth', block: 'center' });
+
+  var total = Math.round(s.total_score);
+  var bigEl = document.getElementById('score-total');
+  bigEl.textContent = total;
+  bigEl.className = 'score-big ' + (total >= 90 ? 'excellent' : total >= 75 ? 'good' : total >= 50 ? 'avg' : 'low');
+
+  var level = total >= 95 ? 'City Ambassador' : total >= 90 ? 'Elite Curator' : total >= 82 ? 'Verified Curator' : total >= 75 ? 'Curator Candidate' : total >= 65 ? 'Insider' : total >= 50 ? 'Explorer' : 'Traveler';
+  document.getElementById('score-level').textContent = level + ' · Curator Score';
+
+  var criteria = [
+    { key: 'authenticity', label: 'Authenticity', weight: '20%' },
+    { key: 'uniqueness', label: 'Uniqueness', weight: '18%' },
+    { key: 'experience_variety', label: 'Experience Variety', weight: '15%' },
+    { key: 'food_diversity', label: 'Food Diversity', weight: '12%' },
+    { key: 'time_efficiency', label: 'Time Efficiency', weight: '12%' },
+    { key: 'budget_fit', label: 'Budget Fit', weight: '12%' },
+    { key: 'walkability', label: 'Walkability', weight: '11%' }
+  ];
+
+  var barsHtml = criteria.map(function(c) {
+    var val = Math.round(s[c.key] || 0);
+    var color = val >= 85 ? 'var(--gold)' : val >= 70 ? 'var(--emerald)' : val >= 50 ? 'var(--platinum)' : '#f87171';
+    return '<div class="score-bar"><div class="score-bar-label"><span>' + c.label + ' (' + c.weight + ')</span><span>' + val + '</span></div><div class="score-bar-track"><div class="score-bar-fill" style="width:' + val + '%;background:' + color + '"></div></div></div>';
+  }).join('');
+  document.getElementById('score-bars').innerHTML = barsHtml;
+
+  document.getElementById('score-feedback').textContent = s.feedback || '';
+
+  var bag = total >= 95 ? 200 : total >= 90 ? 100 : total >= 80 ? 50 : total >= 70 ? 25 : total >= 50 ? 10 : 5;
+  document.getElementById('score-bag').textContent = '+' + bag + ' BAG earned';
+}
+
+function switchLB(btn, type) {
+  document.querySelectorAll('.lb-tab').forEach(function(t) { t.classList.remove('active'); });
+  btn.classList.add('active');
+}
+
+// Smooth scroll
+document.querySelectorAll('a[href^="#"]').forEach(function(a) {
+  a.addEventListener('click', function(e) {
+    var target = document.querySelector(this.getAttribute('href'));
+    if (target) { e.preventDefault(); target.scrollIntoView({ behavior: 'smooth' }); }
+  });
+});
+</script>
+</body>
+</html>
