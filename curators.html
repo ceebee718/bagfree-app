@@ -436,9 +436,100 @@ a{color:inherit}
     </div>
   </section>
 </div>
-<a href="/curator-academy.html" style="...your styles...">
-  Enter Curator Academy™ →
-</a>
+<!-- ============================================================
+     CURATOR ACADEMY™ SECTION
+     
+     Paste this into curators.html, replacing the plain
+     "Enter Curator Academy™ →" link near the bottom.
+     
+     Place it AFTER the application form section and BEFORE
+     the footer.
+     ============================================================ -->
+
+<style>
+/* ── Curator Academy CTA Section ──────────────────────────── */
+.academy-section{position:relative;padding:4rem 2rem;margin:3rem auto;max-width:900px;text-align:center;overflow:hidden}
+.academy-section::before{content:'';position:absolute;inset:0;background:linear-gradient(165deg,rgba(201,169,110,0.08) 0%,rgba(80,200,120,0.04) 40%,transparent 70%);border-radius:24px;pointer-events:none}
+.academy-section::after{content:'';position:absolute;inset:0;border:1px solid rgba(201,169,110,0.15);border-radius:24px;pointer-events:none}
+.academy-inner{position:relative;z-index:1}
+.academy-badge-row{display:flex;justify-content:center;gap:0.8rem;margin-bottom:1.5rem}
+.academy-badge{width:48px;height:48px;border-radius:50%;display:flex;align-items:center;justify-content:center;font-size:1.2rem}
+.academy-badge.bronze{background:rgba(205,127,50,0.12);border:1px solid rgba(205,127,50,0.25)}
+.academy-badge.silver{background:rgba(192,192,192,0.1);border:1px solid rgba(192,192,192,0.2)}
+.academy-badge.gold{background:rgba(201,169,110,0.12);border:1px solid rgba(201,169,110,0.25)}
+.academy-badge.emerald{background:rgba(80,200,120,0.1);border:1px solid rgba(80,200,120,0.2)}
+.academy-badge.platinum{background:rgba(229,228,226,0.08);border:1px solid rgba(229,228,226,0.15)}
+.academy-eyebrow{font-size:0.6rem;letter-spacing:4px;text-transform:uppercase;color:#c9a96e;font-weight:600;display:inline-flex;align-items:center;gap:0.6rem;margin-bottom:1rem}
+.academy-eyebrow::before,.academy-eyebrow::after{content:'';width:24px;height:1px;background:#c9a96e;opacity:0.4}
+.academy-title{font-family:'Cormorant Garamond',Georgia,serif;font-size:clamp(2rem,4vw,2.8rem);font-weight:300;color:#f8f7f4;line-height:1.15;margin-bottom:0.6rem}
+.academy-title em{font-style:italic;color:#c9a96e}
+.academy-desc{color:#8a8fa0;font-size:0.95rem;max-width:550px;margin:0 auto 1.8rem;line-height:1.6}
+.academy-stats{display:flex;justify-content:center;gap:2.5rem;margin-bottom:2rem;flex-wrap:wrap}
+.academy-stat{text-align:center}
+.academy-stat-val{font-size:1.6rem;font-weight:600;color:#f8f7f4;line-height:1}
+.academy-stat-label{font-size:0.62rem;letter-spacing:1.5px;text-transform:uppercase;color:#555a6e;margin-top:0.2rem}
+.academy-cta{display:inline-flex;align-items:center;gap:0.7rem;background:#c9a96e;color:#0a0f1e;padding:1rem 2.5rem;border-radius:30px;font-size:0.78rem;font-weight:600;letter-spacing:1.8px;text-transform:uppercase;text-decoration:none;transition:all 0.3s;box-shadow:0 8px 25px rgba(201,169,110,0.25)}
+.academy-cta:hover{background:#d4b87a;transform:translateY(-3px);box-shadow:0 12px 35px rgba(201,169,110,0.35)}
+.academy-cta svg{width:18px;height:18px}
+.academy-sub{margin-top:1.2rem;font-size:0.72rem;color:#555a6e;letter-spacing:0.5px}
+.academy-sub a{color:#c9a96e;text-decoration:none}
+@media(max-width:600px){
+  .academy-section{padding:3rem 1.2rem;margin:2rem 1rem}
+  .academy-stats{gap:1.5rem}
+}
+</style>
+
+<section class="academy-section">
+  <div class="academy-inner">
+
+    <div class="academy-badge-row">
+      <div class="academy-badge bronze">★</div>
+      <div class="academy-badge silver">★</div>
+      <div class="academy-badge gold">★</div>
+      <div class="academy-badge emerald">★</div>
+      <div class="academy-badge platinum">★</div>
+    </div>
+
+    <div class="academy-eyebrow">✦ Now Open ✦</div>
+
+    <h2 class="academy-title">Curator <em>Academy™</em></h2>
+
+    <p class="academy-desc">
+      Create travel itineraries, compete in weekly challenges, earn BAG points, 
+      and climb from Traveler to City Ambassador. AI-scored. Curator-approved.
+    </p>
+
+    <div class="academy-stats">
+      <div class="academy-stat">
+        <div class="academy-stat-val">3</div>
+        <div class="academy-stat-label">Active Challenges</div>
+      </div>
+      <div class="academy-stat">
+        <div class="academy-stat-val">7</div>
+        <div class="academy-stat-label">Curator Levels</div>
+      </div>
+      <div class="academy-stat">
+        <div class="academy-stat-val">5</div>
+        <div class="academy-stat-label">Cities</div>
+      </div>
+      <div class="academy-stat">
+        <div class="academy-stat-val">∞</div>
+        <div class="academy-stat-label">BAG to Earn</div>
+      </div>
+    </div>
+
+    <a href="/curator-academy.html" class="academy-cta">
+      <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2"><polygon points="12 2 15.09 8.26 22 9.27 17 14.14 18.18 21.02 12 17.77 5.82 21.02 7 14.14 2 9.27 8.91 8.26 12 2"/></svg>
+      Enter Curator Academy
+    </a>
+
+    <p class="academy-sub">
+      Free to join · No experience required · <a href="/curator-academy.html#levels">View all levels →</a>
+    </p>
+
+  </div>
+</section>
+
 <!-- ─── FOOTER ─── -->
 <div class="footer">
   Curators are coming to <span class="gold">Tampa</span>, <span class="gold">Savannah</span>, <span class="gold">Atlanta</span>, <span class="gold">Orlando</span>, and <span class="gold">Miami</span>.
