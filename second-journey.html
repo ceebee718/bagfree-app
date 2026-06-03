@@ -163,6 +163,7 @@ a{color:var(--gold);text-decoration:none}
   <div class="nav-links">
     <a href="#browse" class="active">Browse</a>
     <a href="#donate">Donate</a>
+    <a href="#contribute">Contribute</a>
     <a href="#partners">Partners</a>
     <a href="#impact">Impact</a>
     <a href="/">Home</a>
@@ -419,6 +420,97 @@ a{color:var(--gold);text-decoration:none}
   </div>
 </section>
 
+
+<!-- Community Contributions -->
+<section class="sec" id="contribute">
+  <div class="sec-label">Community</div>
+  <div class="sec-title">Support Second Journey™</div>
+  <div class="sec-sub">You don’t have to be checking out of a hotel to contribute. Members, locals, and travelers can support Second Journey in many ways — and earn BAG Points for every approved contribution.</div>
+
+  <div style="display:grid;grid-template-columns:repeat(auto-fill,minmax(170px,1fr));gap:0.8rem;margin-bottom:2rem">
+    <div style="background:var(--card);border:1px solid var(--border);border-radius:12px;padding:1.1rem;text-align:center;cursor:pointer;transition:all 0.2s" onclick="setContribType('cash')">
+      <div style="margin-bottom:0.4rem"><svg viewBox="0 0 24 24" width="24" height="24" fill="none" stroke="var(--sage)" stroke-width="1.3"><circle cx="12" cy="12" r="10"/><path d="M12 6v12"/><path d="M15.5 9.5c-.8-1-2-1.5-3.5-1.5-2.5 0-3.5 1.5-3.5 2.5s1 2.5 3.5 2.5 3.5 1.5 3.5 2.5-1 2.5-3.5 2.5c-1.5 0-2.7-.5-3.5-1.5"/></svg></div>
+      <div style="font-family:var(--ff-d);font-size:0.9rem;font-weight:500">Cash Support</div>
+      <div style="font-size:0.6rem;color:var(--faint);margin-top:0.15rem">Fund operations</div>
+    </div>
+    <div style="background:var(--card);border:1px solid var(--border);border-radius:12px;padding:1.1rem;text-align:center;cursor:pointer;transition:all 0.2s" onclick="setContribType('essentials')">
+      <div style="margin-bottom:0.4rem"><svg viewBox="0 0 24 24" width="24" height="24" fill="none" stroke="var(--sage)" stroke-width="1.3"><rect x="2" y="7" width="20" height="14" rx="2"/><path d="M16 7V5a4 4 0 00-8 0v2"/></svg></div>
+      <div style="font-family:var(--ff-d);font-size:0.9rem;font-weight:500">Travel Essentials</div>
+      <div style="font-size:0.6rem;color:var(--faint);margin-top:0.15rem">Chargers, toiletries</div>
+    </div>
+    <div style="background:var(--card);border:1px solid var(--border);border-radius:12px;padding:1.1rem;text-align:center;cursor:pointer;transition:all 0.2s" onclick="setContribType('clothing')">
+      <div style="margin-bottom:0.4rem"><svg viewBox="0 0 24 24" width="24" height="24" fill="none" stroke="var(--sage)" stroke-width="1.3"><path d="M20.38 3.46L16 2 12 3.46 8 2 3.62 3.46a1 1 0 00-.62 1v16a1 1 0 001.22 1l3.78-1L12 22l4-1.54L19.78 22A1 1 0 0021 21V4.46a1 1 0 00-.62-1z"/></svg></div>
+      <div style="font-family:var(--ff-d);font-size:0.9rem;font-weight:500">Clothing</div>
+      <div style="font-size:0.6rem;color:var(--faint);margin-top:0.15rem">Quality apparel</div>
+    </div>
+    <div style="background:var(--card);border:1px solid var(--border);border-radius:12px;padding:1.1rem;text-align:center;cursor:pointer;transition:all 0.2s" onclick="setContribType('accessories')">
+      <div style="margin-bottom:0.4rem"><svg viewBox="0 0 24 24" width="24" height="24" fill="none" stroke="var(--sage)" stroke-width="1.3"><circle cx="12" cy="12" r="10"/><path d="M2 12h20"/><path d="M12 2a15.3 15.3 0 014 10 15.3 15.3 0 01-4 10 15.3 15.3 0 01-4-10 15.3 15.3 0 014-10z"/></svg></div>
+      <div style="font-family:var(--ff-d);font-size:0.9rem;font-weight:500">Travel Accessories</div>
+      <div style="font-size:0.6rem;color:var(--faint);margin-top:0.15rem">Bags, adapters, gear</div>
+    </div>
+    <div style="background:var(--card);border:1px solid var(--border);border-radius:12px;padding:1.1rem;text-align:center;cursor:pointer;transition:all 0.2s" onclick="setContribType('sponsor')">
+      <div style="margin-bottom:0.4rem"><svg viewBox="0 0 24 24" width="24" height="24" fill="rgba(201,169,110,0.1)" stroke="var(--gold)" stroke-width="1.3"><path d="M20.84 4.61a5.5 5.5 0 00-7.78 0L12 5.67l-1.06-1.06a5.5 5.5 0 00-7.78 7.78L12 21.23l8.84-8.84a5.5 5.5 0 000-7.78z"/></svg></div>
+      <div style="font-family:var(--ff-d);font-size:0.9rem;font-weight:500">Sponsor a Traveler</div>
+      <div style="font-size:0.6rem;color:var(--faint);margin-top:0.15rem">Gift BAG to someone</div>
+    </div>
+    <div style="background:var(--card);border:1px solid var(--border);border-radius:12px;padding:1.1rem;text-align:center;cursor:pointer;transition:all 0.2s" onclick="setContribType('storage')">
+      <div style="margin-bottom:0.4rem"><svg viewBox="0 0 24 24" width="24" height="24" fill="none" stroke="var(--sage)" stroke-width="1.3"><path d="M3 9l9-7 9 7v11a2 2 0 01-2 2H5a2 2 0 01-2-2z"/><path d="M9 22V12h6v10"/></svg></div>
+      <div style="font-family:var(--ff-d);font-size:0.9rem;font-weight:500">Volunteer Storage</div>
+      <div style="font-size:0.6rem;color:var(--faint);margin-top:0.15rem">Local space for items</div>
+    </div>
+  </div>
+
+  <!-- Contribution Form -->
+  <div class="donate-card">
+    <div style="font-family:var(--ff-d);font-size:1.2rem;font-weight:500;margin-bottom:1.2rem">Contribution Form</div>
+    <div class="form-grid">
+      <div class="form-row"><label class="form-label">Your Name</label><input class="form-input" id="contrib-name" placeholder="Full name"></div>
+      <div class="form-row"><label class="form-label">Email</label><input class="form-input" id="contrib-email" type="email" placeholder="you@email.com"></div>
+      <div class="form-row"><label class="form-label">City</label><select class="form-select" id="contrib-city"><option>Savannah (Pilot City)</option></select></div>
+      <div class="form-row"><label class="form-label">Contribution Type</label><select class="form-select" id="contrib-type"><option value="essentials">Travel Essentials</option><option value="clothing">Clothing</option><option value="accessories">Travel Accessories</option><option value="cash">Cash Support</option><option value="sponsor">Sponsor a Traveler</option><option value="storage">Volunteer Storage Space</option></select></div>
+    </div>
+    <div class="form-row"><label class="form-label">Description</label><textarea class="form-textarea" id="contrib-desc" placeholder="Describe what you’d like to contribute — item details, quantity, condition, or how you’d like to help…"></textarea></div>
+    <div class="form-row">
+      <label class="form-label">BAG Reward Preference</label>
+      <div style="display:flex;gap:0.6rem;flex-wrap:wrap">
+        <label style="display:flex;align-items:center;gap:0.4rem;font-size:0.82rem;color:var(--muted);cursor:pointer"><input type="radio" name="bag-pref" value="bag" checked style="accent-color:var(--sage)"> Earn BAG Points</label>
+        <label style="display:flex;align-items:center;gap:0.4rem;font-size:0.82rem;color:var(--muted);cursor:pointer"><input type="radio" name="bag-pref" value="credit" style="accent-color:var(--sage)"> Store Credit</label>
+        <label style="display:flex;align-items:center;gap:0.4rem;font-size:0.82rem;color:var(--muted);cursor:pointer"><input type="radio" name="bag-pref" value="donate" style="accent-color:var(--sage)"> Donate (No Reward)</label>
+      </div>
+    </div>
+    <button class="btn btn-sage" style="width:100%;justify-content:center;margin-top:0.5rem" onclick="submitContribution()">Submit Contribution</button>
+    <p style="font-size:0.72rem;color:var(--faint);margin-top:0.8rem;text-align:center">Contributions are reviewed within 24 hours. Approved item donations earn 50–200 BAG depending on value and condition.</p>
+  </div>
+
+  <!-- Contribution Rewards Table -->
+  <div style="margin-top:2rem;background:var(--card);border:1px solid var(--border);border-radius:var(--r);padding:1.5rem">
+    <div style="font-family:var(--ff-d);font-size:1.1rem;font-weight:500;margin-bottom:1rem">BAG Rewards by Contribution</div>
+    <table style="width:100%;border-collapse:collapse;font-size:0.82rem">
+      <tr style="border-bottom:1px solid var(--bs)"><td style="padding:0.5rem 0;color:var(--white)">Travel essentials (charger, toiletries)</td><td style="padding:0.5rem 0;text-align:right;color:var(--gold);font-weight:600">50–100 BAG</td></tr>
+      <tr style="border-bottom:1px solid var(--bs)"><td style="padding:0.5rem 0;color:var(--white)">Clothing item (good condition)</td><td style="padding:0.5rem 0;text-align:right;color:var(--gold);font-weight:600">75–150 BAG</td></tr>
+      <tr style="border-bottom:1px solid var(--bs)"><td style="padding:0.5rem 0;color:var(--white)">Jacket or outerwear</td><td style="padding:0.5rem 0;text-align:right;color:var(--gold);font-weight:600">100–200 BAG</td></tr>
+      <tr style="border-bottom:1px solid var(--bs)"><td style="padding:0.5rem 0;color:var(--white)">Travel gear (bag, adapter kit)</td><td style="padding:0.5rem 0;text-align:right;color:var(--gold);font-weight:600">75–175 BAG</td></tr>
+      <tr style="border-bottom:1px solid var(--bs)"><td style="padding:0.5rem 0;color:var(--white)">Cash contribution ($25+)</td><td style="padding:0.5rem 0;text-align:right;color:var(--gold);font-weight:600">100+ BAG</td></tr>
+      <tr style="border-bottom:1px solid var(--bs)"><td style="padding:0.5rem 0;color:var(--white)">Sponsor a traveler</td><td style="padding:0.5rem 0;text-align:right;color:var(--gold);font-weight:600">150 BAG + badge</td></tr>
+      <tr><td style="padding:0.5rem 0;color:var(--white)">Volunteer storage space (monthly)</td><td style="padding:0.5rem 0;text-align:right;color:var(--gold);font-weight:600">200 BAG/month</td></tr>
+    </table>
+  </div>
+</section>
+
+<!-- Community Impact -->
+<section class="sec">
+  <div style="text-align:center;margin-bottom:2rem">
+    <div class="sec-label">Community Impact</div>
+    <div class="sec-title">Together, We Travel Better</div>
+  </div>
+  <div class="stats" style="margin:0">
+    <div class="stat"><div class="stat-v"><span>85</span>+</div><div class="stat-l">Community Contributors</div></div>
+    <div class="stat"><div class="stat-v"><span>420</span> lbs</div><div class="stat-l">Waste Diverted</div></div>
+    <div class="stat"><div class="stat-v"><span>12,400</span></div><div class="stat-l">BAG Awarded</div></div>
+    <div class="stat"><div class="stat-v"><span>3</span></div><div class="stat-l">Storage Volunteers</div></div>
+  </div>
+</section>
+
 <!-- Partners -->
 <section class="sec" id="partners">
   <div class="sec-head">
@@ -490,6 +582,31 @@ document.querySelectorAll('a[href^="#"]').forEach(function(a){
     if(t){e.preventDefault();t.scrollIntoView({behavior:'smooth'});}
   });
 });
+
+function setContribType(type) {
+  var sel = document.getElementById('contrib-type');
+  if (sel) {
+    for (var i = 0; i < sel.options.length; i++) {
+      if (sel.options[i].value === type) { sel.selectedIndex = i; break; }
+    }
+  }
+  document.getElementById('contrib-desc').focus();
+}
+
+function submitContribution() {
+  var name = document.getElementById('contrib-name').value.trim();
+  var email = document.getElementById('contrib-email').value.trim();
+  if (!name || !email) { alert('Please enter your name and email.'); return; }
+  var type = document.getElementById('contrib-type').value;
+  var desc = document.getElementById('contrib-desc').value.trim();
+  var pref = document.querySelector('input[name="bag-pref"]:checked');
+  
+  // Simulate submission
+  alert('Thank you, ' + name + '! Your ' + type + ' contribution has been submitted for review. You\'ll receive a confirmation email within 24 hours.');
+  document.getElementById('contrib-name').value = '';
+  document.getElementById('contrib-email').value = '';
+  document.getElementById('contrib-desc').value = '';
+}
 </script>
 </body>
 </html>
