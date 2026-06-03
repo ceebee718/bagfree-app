@@ -36,9 +36,9 @@
   --text-rgb: 253, 252, 248;
   --bg-rgb: 13, 21, 37;
   --gold-rgb: 201, 169, 110;
-  --noir:#0D1525;
-  --noir-2:#111C30;
-  --noir-3:#172138;
+  --noir:#0d1a32;
+  --noir-2:#111f3a;
+  --noir-3:#162240;
   --gold:#C9A96E;
   --gold-light:#E8D5B0;
   --gold-dim:#8A6F45;
@@ -63,7 +63,7 @@
   --gold:#A6864A;
   --gold-light:#8A6B33;
   --gold-dim:#C9A96E;
-  --white:#0D1525;
+  --white:#0d1a32;
   --green:#2D8A60;
 }
 
@@ -85,7 +85,7 @@ input,select,textarea{outline:none}
 /* ─── LIGHT MODE: darken the gold logo so it reads against cream ─── */
 /* The base PNG is gold-on-transparent. In light mode we shift it to a
    deep navy that matches the body text color (--white in light theme =
-   #0D1525), preserving the wordmark's silhouette while restoring contrast. */
+   #0d1a32), preserving the wordmark's silhouette while restoring contrast. */
 :root[data-theme="light"] .nav-logo{filter:drop-shadow(0 1px 1px rgba(13,21,37,0.25));}
 :root[data-theme="light"] .nav-logo img{
   /* brightness(0) makes the alpha shape pure black, then invert + sepia +
@@ -601,7 +601,7 @@ input,select,textarea{outline:none}
 .hotel-input{margin-top:0.55rem;display:none;}
 .hotel-input.show{display:block}
 .hotel-select option{background:var(--noir-2);color:var(--white);}
-:root[data-theme="light"] .hotel-select option{background:#FAF7F0;color:#0D1525;}
+:root[data-theme="light"] .hotel-select option{background:#FAF7F0;color:#0d1a32;}
 
 .reserve-cta{width:100%;margin-top:0.4rem;background:linear-gradient(135deg,var(--gold) 0%,#d8b06a 50%,#b8893e 100%);color:var(--noir);padding:1.2rem 1.5rem;font-size:0.82rem;font-weight:600;letter-spacing:3.5px;text-transform:uppercase;box-shadow:0 8px 24px rgba(var(--gold-rgb),0.28), inset 0 1px 0 rgba(255,255,255,0.3);transition:all 0.3s cubic-bezier(.4,0,.2,1);}
 .reserve-cta:hover:not(:disabled){transform:translateY(-2px);box-shadow:0 16px 38px rgba(var(--gold-rgb),0.42), inset 0 1px 0 rgba(255,255,255,0.4);letter-spacing:4.5px;}
