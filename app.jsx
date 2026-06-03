@@ -1355,7 +1355,7 @@ function TopBar(props) {
           <div style={{width:'5px',height:'5px',borderRadius:'50%',background:'var(--gold)'}}></div>
           <div style={{width:'60px',height:'1px',background:'var(--gold)'}}></div>
         </div>
-        <div className="greeting-sub" style={{fontSize:'1.15rem',fontFamily:'var(--ff-display)',fontWeight:400,marginBottom:'0.2rem'}}>Welcome to {props.city.name}</div>
+        <div className="greeting-sub" style={{fontSize:'1.15rem',fontFamily:'var(--ff-display)',fontWeight:400,marginBottom:'0.2rem'}}>Welcome to {props.city.name}!</div>
         <div className="greeting-tag">Everything you need. Delivered before you arrive.</div>
         <div className="meta-row">
           <div className="meta-anchor">
