@@ -1347,14 +1347,11 @@ function TopBar(props) {
           <div style={{marginBottom:'0.6rem'}}>Experience More.</div>
           <em style={{color:'var(--gold)',fontStyle:'italic',fontSize:'0.9em'}}>Leave Less Behind.</em>
         </h1>
-        <div style={{marginTop:'2rem',marginBottom:'1.8rem',maxWidth:'520px'}}>
-          <div style={{fontFamily:'var(--ff-display)',fontSize:'1.2rem',fontWeight:500,marginBottom:'0.8rem'}}>Why BagFree</div>
-          <div style={{background:'rgba(255,255,255,0.04)',border:'1px solid var(--border)',borderRadius:'12px',padding:'1rem 1.2rem'}}>
-            <div style={{display:'flex',alignItems:'center',gap:'0.6rem',padding:'0.4rem 0',fontSize:'0.9rem'}}><span style={{color:'var(--gold)'}}>✓</span> Arrive Prepared</div>
-            <div style={{display:'flex',alignItems:'center',gap:'0.6rem',padding:'0.4rem 0',fontSize:'0.9rem'}}><span style={{color:'var(--gold)'}}>✓</span> Discover Like a Local</div>
-            <div style={{display:'flex',alignItems:'center',gap:'0.6rem',padding:'0.4rem 0',fontSize:'0.9rem'}}><span style={{color:'var(--gold)'}}>✓</span> Earn Rewards</div>
-            <div style={{display:'flex',alignItems:'center',gap:'0.6rem',padding:'0.4rem 0',fontSize:'0.9rem'}}><span style={{color:'var(--gold)'}}>✓</span> Travel More Sustainably</div>
-          </div>
+        <div style={{marginTop:'2rem',marginBottom:'1.8rem',maxWidth:'520px',display:'flex',flexDirection:'column',gap:'0.5rem'}}>
+          <div style={{display:'flex',alignItems:'center',gap:'0.6rem',fontSize:'0.9rem'}}><span style={{color:'var(--gold)'}}>✓</span> Arrive Prepared</div>
+          <div style={{display:'flex',alignItems:'center',gap:'0.6rem',fontSize:'0.9rem'}}><span style={{color:'var(--gold)'}}>✓</span> Discover Like a Local</div>
+          <div style={{display:'flex',alignItems:'center',gap:'0.6rem',fontSize:'0.9rem'}}><span style={{color:'var(--gold)'}}>✓</span> Earn Rewards</div>
+          <div style={{display:'flex',alignItems:'center',gap:'0.6rem',fontSize:'0.9rem'}}><span style={{color:'var(--gold)'}}>✓</span> Travel More Sustainably</div>
         </div>
         <div style={{display:'flex',alignItems:'center',gap:'0.6rem',marginBottom:'1rem',opacity:0.5}}>
           <div style={{width:'60px',height:'1px',background:'var(--gold)'}}></div>
