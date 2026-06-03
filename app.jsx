@@ -647,7 +647,8 @@ const NAV = [
   { id:'membership', label:'Membership', icon:Icon.Crown, href:'/membership.html' },
   { id:'rewards', label:'BAG Rewards', icon:Icon.Star, href:'/legacy.html#rewards' },
   { type:'header', label:'Sustain' },
-  { id:'secondjourney', label:'Second Journey™', icon:SecondJourneyIcon, href:'/second-journey.html' }
+  { id:'secondjourney', label:'Second Journey™', icon:SecondJourneyIcon, href:'/second-journey.html' },
+  { id:'contribute', label:'Contribute', icon:Icon.Gift, href:'/second-journey.html#contribute' }
 ];
 
 const TILES = [
