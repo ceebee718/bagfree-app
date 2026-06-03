@@ -1412,8 +1412,13 @@ function QuoteSection() {
     <div className="quote-section">
       <div className="quote-bg"></div>
       <div className="quote-text">
-        <div className="quote-body">Travel is the only thing you buy that makes you richer.</div>
-        <div className="quote-attr">- Anonymous</div>
+        <div style={{fontFamily:'var(--ff-display)',fontSize:'1.3rem',fontWeight:500,marginBottom:'0.8rem'}}>Why BagFree</div>
+        <div style={{display:'flex',flexDirection:'column',gap:'0.5rem'}}>
+          <div style={{display:'flex',alignItems:'center',gap:'0.6rem',fontSize:'0.92rem'}}><span style={{color:'var(--gold)'}}>✓</span> Arrive Prepared</div>
+          <div style={{display:'flex',alignItems:'center',gap:'0.6rem',fontSize:'0.92rem'}}><span style={{color:'var(--gold)'}}>✓</span> Discover Like a Local</div>
+          <div style={{display:'flex',alignItems:'center',gap:'0.6rem',fontSize:'0.92rem'}}><span style={{color:'var(--gold)'}}>✓</span> Earn Rewards</div>
+          <div style={{display:'flex',alignItems:'center',gap:'0.6rem',fontSize:'0.92rem'}}><span style={{color:'var(--gold)'}}>✓</span> Travel More Sustainably</div>
+        </div>
       </div>
     </div>
   );
