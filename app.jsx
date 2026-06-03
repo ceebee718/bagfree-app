@@ -1391,7 +1391,6 @@ function Tile(props) {
         <div className="tile-title">{t.title}</div>
         <div className="tile-desc">{t.desc}</div>
       </div>
-      <div className="tile-arrow"><Icon.ArrowRight/></div>
     </a>
   );
 }
