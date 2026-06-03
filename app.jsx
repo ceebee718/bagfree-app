@@ -1339,7 +1339,7 @@ function TopBar(props) {
   return (
     <div className="topbar">
       <div className="greeting">
-        <h1 className="greeting-title">Travel Light. Experience More. <em style={{color:'var(--gold)',fontStyle:'italic'}}>Leave Less Behind.</em></h1>
+        <h1 className="greeting-title">Travel Light. Experience More.<br/><em style={{color:'var(--gold)',fontStyle:'italic'}}>Leave Less Behind.</em></h1>
         <div className="greeting-sub" style={{fontSize:'1.15rem',fontFamily:'var(--ff-display)',fontWeight:400,marginBottom:'0.2rem'}}>Welcome to {props.city.name}</div>
         <div className="greeting-tag">Everything you need. Delivered before you arrive.</div>
         <div className="meta-row">
