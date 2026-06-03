@@ -638,10 +638,9 @@ const NAV = [
   { id:'curators', label:'Travel Curators', icon:Icon.Map, href:'/curators.html' },
   { id:'academy', label:'Curator Academy', icon:Icon.Trophy, href:'/curator-academy.html' },
   { id:'experiences', label:'Experiences', icon:Icon.Compass, href:'/experiences.html' },
-  { id:'essentials', label:'Essentials', icon:Icon.Bag, href:'/legacy.html#essentials' },
+  { id:'shop', label:'Shop', icon:Icon.Bag, href:'/departure-lounge-landing.html' },
   { id:'rewards', label:'Rewards', icon:Icon.Heart, href:'/legacy.html#rewards' },
   { id:'membership', label:'Membership', icon:Icon.Crown, href:'/membership.html' },
-  { id:'shop', label:'Shop Now', icon:Icon.Hanger, href:'/departure-lounge-landing.html' },
   { id:'hotels', label:'Hotel Partners', icon:Icon.Hotel, href:'/concierge.html' },
   { id:'support', label:'Support', icon:Icon.Help, href:'/#support' }
 ];
