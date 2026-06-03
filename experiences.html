@@ -1,0 +1,513 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+<meta charset="UTF-8">
+<meta name="viewport" content="width=device-width, initial-scale=1.0">
+<title>Experiences — BagFree</title>
+<meta name="description" content="Discover curated travel experiences created by trusted local experts. BagFree connects you with the people who know their cities best.">
+<meta name="theme-color" content="#0a0f1e">
+<link rel="preconnect" href="https://fonts.googleapis.com">
+<link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+<link href="https://fonts.googleapis.com/css2?family=Cormorant+Garamond:ital,wght@0,300;0,400;0,500;0,600;1,400&family=DM+Sans:wght@300;400;500;600&display=swap" rel="stylesheet">
+<style>
+*{margin:0;padding:0;box-sizing:border-box}
+:root{--bg:#0a0f1e;--bg2:#0f1525;--card:#131a2c;--card-hover:#1a2238;--white:#f8f7f4;--muted:#8a8fa0;--faint:#555a6e;--gold:#c9a96e;--gold-bright:#d4b87a;--gold-dim:rgba(201,169,110,0.12);--emerald:#50C878;--em-dim:rgba(80,200,120,0.1);--platinum:#E5E4E2;--plat-dim:rgba(229,228,226,0.08);--border:rgba(255,255,255,0.06);--border-s:rgba(255,255,255,0.04);--ff-d:'Cormorant Garamond',Georgia,serif;--ff-b:'DM Sans','Helvetica Neue',sans-serif;--r:14px}
+html{background:var(--bg);color:var(--white);font-family:var(--ff-b);font-weight:300;-webkit-font-smoothing:antialiased}
+a{color:var(--gold);text-decoration:none}
+
+/* Nav */
+.nav{position:sticky;top:0;z-index:50;backdrop-filter:blur(18px);background:rgba(10,15,30,0.88);border-bottom:1px solid var(--border);padding:0.9rem 2rem;display:flex;align-items:center;justify-content:space-between}
+.nav-logo{font-family:var(--ff-d);font-size:1.3rem;font-weight:500;letter-spacing:1px;color:var(--gold)}
+.nav-links{display:flex;gap:1.6rem;align-items:center}
+.nav-links a{font-size:0.72rem;letter-spacing:1.5px;text-transform:uppercase;color:var(--muted);font-weight:500;transition:color 0.2s}
+.nav-links a:hover,.nav-links a.active{color:var(--gold)}
+
+/* Sections */
+.sec{padding:3rem 2rem;max-width:1200px;margin:0 auto}
+.sec-label{font-size:0.56rem;letter-spacing:4.5px;text-transform:uppercase;color:var(--gold);font-weight:600;margin-bottom:0.5rem}
+.sec-title{font-family:var(--ff-d);font-size:2rem;font-weight:400;margin-bottom:0.35rem}
+.sec-sub{color:var(--muted);font-size:0.9rem;margin-bottom:2rem;max-width:650px;line-height:1.6}
+.sec-head{display:flex;justify-content:space-between;align-items:flex-end;margin-bottom:1.5rem;flex-wrap:wrap;gap:0.5rem}
+.sec-more{font-size:0.72rem;letter-spacing:1px;text-transform:uppercase;color:var(--gold);font-weight:500}
+
+/* Hero */
+.hero{text-align:center;padding:5rem 2rem 3.5rem;position:relative;overflow:hidden}
+.hero::before{content:'';position:absolute;top:-40%;left:50%;transform:translateX(-50%);width:1000px;height:1000px;background:radial-gradient(ellipse,rgba(201,169,110,0.07) 0%,transparent 60%);pointer-events:none}
+.hero-ey{font-size:0.58rem;letter-spacing:5px;text-transform:uppercase;color:var(--gold);font-weight:600;margin-bottom:1.3rem;display:inline-flex;align-items:center;gap:0.6rem}
+.hero-ey::before,.hero-ey::after{content:'';width:28px;height:1px;background:var(--gold);opacity:0.4}
+.hero h1{font-family:var(--ff-d);font-size:clamp(2.4rem,5vw,3.6rem);font-weight:300;line-height:1.12;margin-bottom:1rem}
+.hero h1 em{font-style:italic;color:var(--gold)}
+.hero-p{color:var(--muted);font-size:1rem;max-width:620px;margin:0 auto 2rem;line-height:1.65}
+
+/* Search */
+.search-wrap{max-width:700px;margin:0 auto 1rem}
+.search-bar{display:flex;background:var(--card);border:1px solid var(--border);border-radius:30px;overflow:hidden;transition:border-color 0.3s}
+.search-bar:focus-within{border-color:rgba(201,169,110,0.35)}
+.search-input{flex:1;padding:0.9rem 1.4rem;background:none;border:0;color:var(--white);font-family:var(--ff-b);font-size:0.9rem;outline:none;font-weight:300}
+.search-input::placeholder{color:var(--faint)}
+.search-btn{padding:0.9rem 1.6rem;background:var(--gold);color:var(--bg);border:0;cursor:pointer;font-size:0.72rem;font-weight:600;letter-spacing:1.5px;text-transform:uppercase;transition:background 0.2s;font-family:var(--ff-b)}
+.search-btn:hover{background:var(--gold-bright)}
+.search-tags{display:flex;gap:0.5rem;justify-content:center;flex-wrap:wrap;margin-top:1rem}
+.search-tag{font-size:0.68rem;color:var(--faint);border:1px solid var(--border);padding:0.3rem 0.7rem;border-radius:14px;cursor:pointer;transition:all 0.2s}
+.search-tag:hover{border-color:rgba(201,169,110,0.3);color:var(--gold)}
+
+/* Proof */
+.proof{display:flex;justify-content:center;gap:3rem;margin:2rem 0;flex-wrap:wrap}
+.proof-i{text-align:center}
+.proof-v{font-size:1.5rem;font-weight:600}
+.proof-l{font-size:0.6rem;letter-spacing:1.5px;text-transform:uppercase;color:var(--faint);margin-top:0.1rem}
+
+/* Categories */
+.cats{display:flex;gap:0.8rem;overflow-x:auto;padding-bottom:0.5rem;-webkit-overflow-scrolling:touch}
+.cat{flex:0 0 auto;background:var(--card);border:1px solid var(--border);border-radius:12px;padding:1.1rem 1.4rem;text-align:center;cursor:pointer;transition:all 0.25s;min-width:140px}
+.cat:hover{border-color:rgba(201,169,110,0.25);transform:translateY(-2px)}
+.cat-icon{font-size:1.4rem;margin-bottom:0.4rem}
+.cat-name{font-family:var(--ff-d);font-size:0.95rem;font-weight:500;color:var(--white)}
+.cat-count{font-size:0.62rem;color:var(--faint);margin-top:0.15rem}
+
+/* Experience Cards */
+.exp-grid{display:grid;grid-template-columns:repeat(auto-fill,minmax(320px,1fr));gap:1.4rem}
+.exp-card{background:var(--card);border:1px solid var(--border);border-radius:var(--r);overflow:hidden;transition:all 0.3s;display:flex;flex-direction:column}
+.exp-card:hover{transform:translateY(-4px);box-shadow:0 18px 45px rgba(0,0,0,0.4)}
+.exp-img{width:100%;height:210px;object-fit:cover;display:block;position:relative}
+.exp-img-wrap{position:relative;overflow:hidden}
+.exp-tier{position:absolute;top:12px;left:12px;font-size:0.55rem;letter-spacing:1.5px;text-transform:uppercase;padding:0.3rem 0.6rem;border-radius:5px;font-weight:600;backdrop-filter:blur(8px)}
+.exp-tier.gold{background:rgba(201,169,110,0.85);color:var(--bg)}
+.exp-tier.emerald{background:rgba(80,200,120,0.85);color:var(--bg)}
+.exp-tier.platinum{background:rgba(229,228,226,0.85);color:var(--bg)}
+.exp-tier.all{background:rgba(255,255,255,0.15);color:var(--white)}
+.exp-dur{position:absolute;bottom:12px;right:12px;font-size:0.65rem;background:rgba(0,0,0,0.65);color:var(--white);padding:0.25rem 0.6rem;border-radius:5px;backdrop-filter:blur(4px)}
+.exp-body{padding:1.3rem 1.4rem;flex:1;display:flex;flex-direction:column}
+.exp-curator{display:flex;align-items:center;gap:0.6rem;margin-bottom:0.7rem}
+.exp-avatar{width:30px;height:30px;border-radius:50%;background:var(--card-hover);border:1.5px solid var(--border);display:flex;align-items:center;justify-content:center;font-size:0.65rem;font-weight:600;overflow:hidden}
+.exp-avatar img{width:100%;height:100%;object-fit:cover}
+.exp-curator-info{flex:1;min-width:0}
+.exp-curator-name{font-size:0.78rem;font-weight:500;display:flex;align-items:center;gap:0.3rem}
+.exp-curator-badge{font-size:0.55rem;color:var(--gold);background:var(--gold-dim);padding:0.1rem 0.35rem;border-radius:3px;font-weight:600;letter-spacing:0.5px}
+.exp-curator-city{font-size:0.65rem;color:var(--faint)}
+.exp-rating{display:flex;align-items:center;gap:0.2rem;font-size:0.72rem;color:var(--gold);font-weight:500;margin-left:auto}
+.exp-title{font-family:var(--ff-d);font-size:1.2rem;font-weight:500;margin-bottom:0.4rem;line-height:1.25}
+.exp-desc{font-size:0.82rem;color:var(--muted);line-height:1.5;margin-bottom:1rem;flex:1}
+.exp-meta{display:flex;gap:0.8rem;flex-wrap:wrap;font-size:0.68rem;color:var(--faint);margin-bottom:1rem}
+.exp-meta span{display:flex;align-items:center;gap:0.25rem}
+.exp-foot{display:flex;align-items:center;justify-content:space-between;padding-top:1rem;border-top:1px solid var(--border-s)}
+.exp-price{font-size:1.1rem;font-weight:600}
+.exp-price span{font-size:0.72rem;font-weight:300;color:var(--muted)}
+.exp-btns{display:flex;gap:0.5rem}
+.exp-btn{padding:0.55rem 1rem;border-radius:8px;font-size:0.68rem;font-weight:600;letter-spacing:1px;text-transform:uppercase;cursor:pointer;transition:all 0.2s;border:0;font-family:var(--ff-b)}
+.exp-btn.primary{background:var(--gold);color:var(--bg)}
+.exp-btn.primary:hover{background:var(--gold-bright)}
+.exp-btn.secondary{background:transparent;border:1px solid var(--border);color:var(--muted)}
+.exp-btn.secondary:hover{border-color:rgba(201,169,110,0.3);color:var(--gold)}
+
+/* Curator Cards */
+.cur-grid{display:grid;grid-template-columns:repeat(auto-fill,minmax(260px,1fr));gap:1.2rem}
+.cur-card{background:var(--card);border:1px solid var(--border);border-radius:var(--r);padding:1.5rem;text-align:center;transition:all 0.3s}
+.cur-card:hover{transform:translateY(-3px);box-shadow:0 14px 35px rgba(0,0,0,0.35)}
+.cur-rank{font-size:0.85rem;font-weight:700;color:var(--gold);margin-bottom:0.6rem}
+.cur-rank.r1{font-size:1.1rem}
+.cur-photo{width:72px;height:72px;border-radius:50%;margin:0 auto 0.8rem;border:2px solid var(--border);overflow:hidden;background:var(--card-hover);display:flex;align-items:center;justify-content:center;font-size:1.2rem;font-weight:600}
+.cur-photo img{width:100%;height:100%;object-fit:cover}
+.cur-name{font-family:var(--ff-d);font-size:1.15rem;font-weight:500;margin-bottom:0.15rem}
+.cur-city{font-size:0.7rem;color:var(--faint);letter-spacing:1px;text-transform:uppercase;margin-bottom:0.6rem}
+.cur-level{display:inline-block;font-size:0.6rem;letter-spacing:1px;text-transform:uppercase;padding:0.25rem 0.65rem;border-radius:5px;font-weight:600;margin-bottom:0.8rem}
+.cur-level.elite{background:var(--gold-dim);color:var(--gold)}
+.cur-level.verified{background:var(--em-dim);color:var(--emerald)}
+.cur-level.ambassador{background:rgba(201,169,110,0.15);color:var(--gold);border:1px solid rgba(201,169,110,0.2)}
+.cur-stats{display:flex;justify-content:center;gap:1.2rem;margin-bottom:0.8rem}
+.cur-stat-v{font-size:0.95rem;font-weight:600;line-height:1}
+.cur-stat-l{font-size:0.55rem;color:var(--faint);text-transform:uppercase;letter-spacing:0.5px}
+.cur-awards{display:flex;gap:0.3rem;justify-content:center;flex-wrap:wrap}
+.cur-award{font-size:0.55rem;background:rgba(201,169,110,0.08);border:1px solid rgba(201,169,110,0.15);color:var(--gold);padding:0.2rem 0.5rem;border-radius:4px;font-weight:500}
+
+/* Spotlight */
+.spot{display:grid;grid-template-columns:280px 1fr;gap:2rem;background:var(--card);border:1px solid var(--border);border-radius:var(--r);padding:2rem;align-items:start}
+.spot-photo{width:100%;aspect-ratio:3/4;border-radius:12px;overflow:hidden;background:var(--bg2);position:relative}
+.spot-photo img{width:100%;height:100%;object-fit:cover}
+.spot-verified{position:absolute;bottom:12px;left:12px;font-size:0.55rem;letter-spacing:1.5px;text-transform:uppercase;background:rgba(201,169,110,0.9);color:var(--bg);padding:0.3rem 0.7rem;border-radius:5px;font-weight:700}
+.spot-name{font-family:var(--ff-d);font-size:1.8rem;font-weight:500;margin-bottom:0.2rem}
+.spot-city{font-size:0.72rem;color:var(--gold);letter-spacing:1.5px;text-transform:uppercase;font-weight:500;margin-bottom:0.8rem}
+.spot-bio{font-size:0.88rem;color:var(--muted);line-height:1.6;margin-bottom:1.2rem}
+.spot-quote{font-family:var(--ff-d);font-size:1.1rem;font-style:italic;color:var(--white);line-height:1.45;border-left:2px solid var(--gold);padding-left:1rem;margin-bottom:1.2rem}
+.spot-awards{display:flex;gap:0.5rem;flex-wrap:wrap;margin-bottom:1.2rem}
+.spot-award{font-size:0.6rem;letter-spacing:0.5px;background:var(--gold-dim);border:1px solid rgba(201,169,110,0.2);color:var(--gold);padding:0.3rem 0.7rem;border-radius:5px;font-weight:600}
+.spot-btn{display:inline-flex;align-items:center;gap:0.5rem;background:var(--gold);color:var(--bg);padding:0.75rem 1.6rem;border-radius:8px;font-size:0.72rem;font-weight:600;letter-spacing:1.5px;text-transform:uppercase;transition:all 0.2s;text-decoration:none}
+.spot-btn:hover{background:var(--gold-bright)}
+
+/* ExperienceRank */
+.rank-grid{display:grid;grid-template-columns:repeat(auto-fit,minmax(180px,1fr));gap:1rem}
+.rank-card{background:var(--card);border:1px solid var(--border);border-radius:12px;padding:1.3rem;text-align:center;transition:all 0.2s}
+.rank-card:hover{border-color:rgba(201,169,110,0.15)}
+.rank-icon{font-size:1.5rem;margin-bottom:0.5rem}
+.rank-name{font-family:var(--ff-d);font-size:0.95rem;font-weight:500;margin-bottom:0.2rem;color:var(--white)}
+.rank-desc{font-size:0.72rem;color:var(--muted);line-height:1.4}
+
+/* Why section */
+.why-grid{display:grid;grid-template-columns:repeat(auto-fit,minmax(240px,1fr));gap:1.2rem}
+.why-card{padding:1.5rem;border-left:2px solid var(--gold);background:linear-gradient(135deg,rgba(201,169,110,0.03),transparent)}
+.why-icon{font-size:1.2rem;margin-bottom:0.6rem}
+.why-title{font-family:var(--ff-d);font-size:1.05rem;font-weight:500;margin-bottom:0.3rem}
+.why-desc{font-size:0.8rem;color:var(--muted);line-height:1.5}
+
+/* CTA */
+.cta{text-align:center;padding:4rem 2rem;position:relative}
+.cta::before{content:'';position:absolute;inset:0;background:linear-gradient(135deg,rgba(201,169,110,0.06),rgba(80,200,120,0.03),transparent);border-radius:20px;pointer-events:none}
+.cta h2{font-family:var(--ff-d);font-size:2rem;font-weight:400;margin-bottom:0.6rem;position:relative}
+.cta p{color:var(--muted);font-size:0.92rem;margin-bottom:1.5rem;position:relative}
+.cta-btn{display:inline-block;background:var(--gold);color:var(--bg);padding:0.95rem 2.5rem;border-radius:30px;font-size:0.76rem;font-weight:600;letter-spacing:1.5px;text-transform:uppercase;transition:all 0.25s;text-decoration:none;position:relative}
+.cta-btn:hover{background:var(--gold-bright);transform:translateY(-2px)}
+
+/* Footer */
+.ft{text-align:center;padding:2.5rem 2rem;border-top:1px solid var(--border);color:var(--faint);font-size:0.75rem}
+
+/* Animations */
+@keyframes fadeUp{from{opacity:0;transform:translateY(16px)}to{opacity:1;transform:none}}
+.exp-card,.cur-card,.rank-card,.why-card,.cat{animation:fadeUp 0.5s ease both}
+
+/* Mobile */
+@media(max-width:768px){
+  .hero{padding:3.5rem 1.2rem 2.5rem}
+  .sec{padding:2rem 1.2rem}
+  .exp-grid{grid-template-columns:1fr}
+  .cur-grid{grid-template-columns:1fr 1fr}
+  .spot{grid-template-columns:1fr;gap:1.5rem}
+  .spot-photo{max-width:300px;margin:0 auto}
+  .rank-grid{grid-template-columns:1fr 1fr}
+  .why-grid{grid-template-columns:1fr}
+  .exp-btns{flex-direction:column}
+}
+</style>
+</head>
+<body>
+
+<nav class="nav">
+  <a href="/" class="nav-logo">BAGFREE</a>
+  <div class="nav-links">
+    <a href="#experiences" class="active">Experiences</a>
+    <a href="#curators">Curators</a>
+    <a href="#rank">How It Works</a>
+    <a href="/membership.html">Membership</a>
+    <a href="/">Home</a>
+  </div>
+</nav>
+
+<!-- Hero -->
+<header class="hero">
+  <div class="hero-ey">✦ Experiences Marketplace ✦</div>
+  <h1>Discover experiences<br>created by <em>local experts.</em></h1>
+  <p class="hero-p">Every experience on BagFree is designed, tested, and ranked by a real curator who knows their city like no guidebook ever could. This isn't a list of attractions — it's a network of people who live it.</p>
+
+  <div class="search-wrap">
+    <div class="search-bar">
+      <input class="search-input" placeholder="Search by city, category, or curator name…">
+      <button class="search-btn">Search</button>
+    </div>
+    <div class="search-tags">
+      <span class="search-tag">Savannah</span>
+      <span class="search-tag">Atlanta</span>
+      <span class="search-tag">Tampa</span>
+      <span class="search-tag">Hidden Gems</span>
+      <span class="search-tag">Food & Dining</span>
+      <span class="search-tag">Weekend Getaways</span>
+    </div>
+  </div>
+
+  <div class="proof">
+    <div class="proof-i"><div class="proof-v">200+</div><div class="proof-l">Curated Experiences</div></div>
+    <div class="proof-i"><div class="proof-v">5</div><div class="proof-l">Cities</div></div>
+    <div class="proof-i"><div class="proof-v">50+</div><div class="proof-l">Active Curators</div></div>
+    <div class="proof-i"><div class="proof-v">4.9★</div><div class="proof-l">Avg Rating</div></div>
+  </div>
+</header>
+
+<!-- Categories -->
+<section class="sec">
+  <div class="sec-head">
+    <div><div class="sec-label">Browse</div><div class="sec-title">Explore by Category</div></div>
+  </div>
+  <div class="cats">
+    <div class="cat"><div class="cat-icon">💎</div><div class="cat-name">Hidden Gems</div><div class="cat-count">42 experiences</div></div>
+    <div class="cat"><div class="cat-icon">🍽️</div><div class="cat-name">Food & Dining</div><div class="cat-count">58 experiences</div></div>
+    <div class="cat"><div class="cat-icon">🎵</div><div class="cat-name">Music & Nightlife</div><div class="cat-count">31 experiences</div></div>
+    <div class="cat"><div class="cat-icon">👨‍👩‍👧‍👦</div><div class="cat-name">Family Adventures</div><div class="cat-count">24 experiences</div></div>
+    <div class="cat"><div class="cat-icon">✨</div><div class="cat-name">Luxury Escapes</div><div class="cat-count">18 experiences</div></div>
+    <div class="cat"><div class="cat-icon">🧘</div><div class="cat-name">Wellness</div><div class="cat-count">15 experiences</div></div>
+    <div class="cat"><div class="cat-icon">🌅</div><div class="cat-name">Weekend Getaways</div><div class="cat-count">36 experiences</div></div>
+  </div>
+</section>
+
+<!-- Featured Experiences -->
+<section class="sec" id="experiences">
+  <div class="sec-head">
+    <div><div class="sec-label">Featured</div><div class="sec-title">Experiences Travelers Love</div></div>
+    <a href="#" class="sec-more">View All →</a>
+  </div>
+
+  <div class="exp-grid">
+
+    <div class="exp-card">
+      <div class="exp-img-wrap">
+        <img class="exp-img" src="https://images.unsplash.com/photo-1555939594-58d7cb561ad1?w=700&h=420&fit=crop" alt="Savannah Food Crawl">
+        <span class="exp-tier all">All Members</span>
+        <span class="exp-dur">4 hours</span>
+      </div>
+      <div class="exp-body">
+        <div class="exp-curator">
+          <div class="exp-avatar">IM</div>
+          <div class="exp-curator-info">
+            <div class="exp-curator-name">Isabella Martinez <span class="exp-curator-badge">Elite</span></div>
+            <div class="exp-curator-city">Savannah, GA</div>
+          </div>
+          <div class="exp-rating">★ 4.9</div>
+        </div>
+        <div class="exp-title">The Savannah Food Crawl Nobody Talks About</div>
+        <div class="exp-desc">Three stops, three neighborhoods, three stories. Low-country boil at a place with no sign, shrimp and grits where the locals go, and pralines from a family recipe that predates the Civil War.</div>
+        <div class="exp-meta"><span>📍 Savannah</span><span>🍽️ Food & Dining</span><span>👥 127 booked</span><span>⭐ 48 reviews</span></div>
+        <div class="exp-foot">
+          <div class="exp-price">$65 <span>/person</span></div>
+          <div class="exp-btns">
+            <button class="exp-btn secondary">View</button>
+            <button class="exp-btn primary">Book</button>
+          </div>
+        </div>
+      </div>
+    </div>
+
+    <div class="exp-card">
+      <div class="exp-img-wrap">
+        <img class="exp-img" src="https://images.unsplash.com/photo-1572116469696-31de0f17cc34?w=700&h=420&fit=crop" alt="Hidden Speakeasies">
+        <span class="exp-tier emerald">Emerald+</span>
+        <span class="exp-dur">3 hours</span>
+      </div>
+      <div class="exp-body">
+        <div class="exp-curator">
+          <div class="exp-avatar">MD</div>
+          <div class="exp-curator-info">
+            <div class="exp-curator-name">Marcus Davis <span class="exp-curator-badge">Verified</span></div>
+            <div class="exp-curator-city">Atlanta, GA</div>
+          </div>
+          <div class="exp-rating">★ 4.8</div>
+        </div>
+        <div class="exp-title">Buckhead After Dark: Three Speakeasies Only Locals Know</div>
+        <div class="exp-desc">No map. No Google reviews. These three bars are the kind of places you only find if someone takes you there. Hidden entrances, craft cocktails, and stories from the bartenders who built them.</div>
+        <div class="exp-meta"><span>📍 Atlanta</span><span>🌙 Nightlife</span><span>👥 89 booked</span><span>⭐ 34 reviews</span></div>
+        <div class="exp-foot">
+          <div class="exp-price">$45 <span>/person</span></div>
+          <div class="exp-btns">
+            <button class="exp-btn secondary">View</button>
+            <button class="exp-btn primary">Book</button>
+          </div>
+        </div>
+      </div>
+    </div>
+
+    <div class="exp-card">
+      <div class="exp-img-wrap">
+        <img class="exp-img" src="https://images.unsplash.com/photo-1546069901-ba9599a7e63c?w=700&h=420&fit=crop" alt="Private Chef Dinner">
+        <span class="exp-tier gold">Gold Only</span>
+        <span class="exp-dur">3.5 hours</span>
+      </div>
+      <div class="exp-body">
+        <div class="exp-curator">
+          <div class="exp-avatar">IM</div>
+          <div class="exp-curator-info">
+            <div class="exp-curator-name">Isabella Martinez <span class="exp-curator-badge">Elite</span></div>
+            <div class="exp-curator-city">Savannah, GA</div>
+          </div>
+          <div class="exp-rating">★ 5.0</div>
+        </div>
+        <div class="exp-title">Private Chef Dinner: 8 Courses at a Secret Savannah Home</div>
+        <div class="exp-desc">A James Beard nominee cooks in a private historic home. Eight courses, wine pairings, and a table of eight strangers who leave as friends. Invitation only for Gold members.</div>
+        <div class="exp-meta"><span>📍 Savannah</span><span>✨ Luxury</span><span>👥 8 seats</span><span>⭐ 12 reviews</span></div>
+        <div class="exp-foot">
+          <div class="exp-price">$195 <span>/person</span></div>
+          <div class="exp-btns">
+            <button class="exp-btn secondary">View</button>
+            <button class="exp-btn primary">Book</button>
+          </div>
+        </div>
+      </div>
+    </div>
+
+    <div class="exp-card">
+      <div class="exp-img-wrap">
+        <img class="exp-img" src="https://images.unsplash.com/photo-1473773508845-188df298d2d1?w=700&h=420&fit=crop" alt="Tybee Sunset Sail">
+        <span class="exp-tier all">All Members</span>
+        <span class="exp-dur">5 hours</span>
+      </div>
+      <div class="exp-body">
+        <div class="exp-curator">
+          <div class="exp-avatar">SR</div>
+          <div class="exp-curator-info">
+            <div class="exp-curator-name">Sofia Reyes <span class="exp-curator-badge">Verified</span></div>
+            <div class="exp-curator-city">Tampa, FL</div>
+          </div>
+          <div class="exp-rating">★ 4.9</div>
+        </div>
+        <div class="exp-title">Sunset Sail to Tybee: Dolphins, Wine, and the Golden Hour</div>
+        <div class="exp-desc">A private charter along the Intracoastal. Your captain knows every dolphin pod by name. Wine and cheese onboard, sunset from the water, return under the stars.</div>
+        <div class="exp-meta"><span>📍 Savannah</span><span>🌅 Adventure</span><span>👥 64 booked</span><span>⭐ 29 reviews</span></div>
+        <div class="exp-foot">
+          <div class="exp-price">$120 <span>/person</span></div>
+          <div class="exp-btns">
+            <button class="exp-btn secondary">View</button>
+            <button class="exp-btn primary">Book</button>
+          </div>
+        </div>
+      </div>
+    </div>
+
+  </div>
+</section>
+
+<!-- Curator Spotlight -->
+<section class="sec">
+  <div class="sec-label">Curator Spotlight</div>
+  <div class="sec-title" style="margin-bottom:1.5rem">Meet Isabella Martinez</div>
+
+  <div class="spot">
+    <div class="spot-photo">
+      <img src="https://images.unsplash.com/photo-1494790108377-be9c29b29330?w=400&h=540&fit=crop" alt="Isabella Martinez">
+      <div class="spot-verified">✦ Elite Curator</div>
+    </div>
+    <div>
+      <div class="spot-name">Isabella Martinez</div>
+      <div class="spot-city">Savannah, Georgia · Curator since 2024</div>
+      <p class="spot-bio">Born and raised in Savannah. Isabella spent 12 years in hospitality before becoming one of BagFree's founding curators. She's designed 34 experiences, guided 400+ travelers, and maintains a 4.9-star rating across every single one. She knows every chef, bartender, and boat captain in the Lowcountry by first name.</p>
+      <blockquote class="spot-quote">"I don't send people to restaurants. I send them to the people who cook with their whole heart. That's the difference between a meal and a memory."</blockquote>
+      <div class="spot-awards">
+        <span class="spot-award">🏆 Best Savannah Curator 2026</span>
+        <span class="spot-award">⭐ Top 10 Worldwide</span>
+        <span class="spot-award">🐦 Elite Hummingbird</span>
+        <span class="spot-award">🍽️ Best Food Curator</span>
+      </div>
+      <a href="/curators.html" class="spot-btn">View Full Profile →</a>
+    </div>
+  </div>
+</section>
+
+<!-- Top Curators -->
+<section class="sec" id="curators">
+  <div class="sec-head">
+    <div><div class="sec-label">Leaderboard</div><div class="sec-title">Top-Ranked Curators</div></div>
+    <a href="/curator-academy.html" class="sec-more">Curator Academy →</a>
+  </div>
+
+  <div class="cur-grid">
+    <div class="cur-card">
+      <div class="cur-rank r1">#1</div>
+      <div class="cur-photo">IM</div>
+      <div class="cur-name">Isabella Martinez</div>
+      <div class="cur-city">Savannah, GA</div>
+      <span class="cur-level elite">Elite Curator</span>
+      <div class="cur-stats">
+        <div><div class="cur-stat-v">96.4</div><div class="cur-stat-l">Score</div></div>
+        <div><div class="cur-stat-v">34</div><div class="cur-stat-l">Experiences</div></div>
+        <div><div class="cur-stat-v">1.2k</div><div class="cur-stat-l">Followers</div></div>
+      </div>
+      <div class="cur-awards"><span class="cur-award">🏆 Best Savannah</span><span class="cur-award">⭐ Top 10</span></div>
+    </div>
+
+    <div class="cur-card">
+      <div class="cur-rank">#2</div>
+      <div class="cur-photo">MJ</div>
+      <div class="cur-name">Marcus Johnson</div>
+      <div class="cur-city">Atlanta, GA</div>
+      <span class="cur-level verified">Verified Curator</span>
+      <div class="cur-stats">
+        <div><div class="cur-stat-v">93.1</div><div class="cur-stat-l">Score</div></div>
+        <div><div class="cur-stat-v">22</div><div class="cur-stat-l">Experiences</div></div>
+        <div><div class="cur-stat-v">890</div><div class="cur-stat-l">Followers</div></div>
+      </div>
+      <div class="cur-awards"><span class="cur-award">🎵 Best Nightlife</span></div>
+    </div>
+
+    <div class="cur-card">
+      <div class="cur-rank">#3</div>
+      <div class="cur-photo">AT</div>
+      <div class="cur-name">Ava Thompson</div>
+      <div class="cur-city">Tampa, FL</div>
+      <span class="cur-level verified">Verified Curator</span>
+      <div class="cur-stats">
+        <div><div class="cur-stat-v">92.7</div><div class="cur-stat-l">Score</div></div>
+        <div><div class="cur-stat-v">19</div><div class="cur-stat-l">Experiences</div></div>
+        <div><div class="cur-stat-v">720</div><div class="cur-stat-l">Followers</div></div>
+      </div>
+      <div class="cur-awards"><span class="cur-award">🌅 Best Adventure</span></div>
+    </div>
+
+    <div class="cur-card">
+      <div class="cur-rank">#4</div>
+      <div class="cur-photo">SR</div>
+      <div class="cur-name">Sofia Reyes</div>
+      <div class="cur-city">Tampa, FL</div>
+      <span class="cur-level verified">Verified Curator</span>
+      <div class="cur-stats">
+        <div><div class="cur-stat-v">91.3</div><div class="cur-stat-l">Score</div></div>
+        <div><div class="cur-stat-v">16</div><div class="cur-stat-l">Experiences</div></div>
+        <div><div class="cur-stat-v">650</div><div class="cur-stat-l">Followers</div></div>
+      </div>
+      <div class="cur-awards"><span class="cur-award">🍽️ Best Food Tampa</span></div>
+    </div>
+  </div>
+</section>
+
+<!-- ExperienceRank™ -->
+<section class="sec" id="rank">
+  <div style="text-align:center;margin-bottom:2rem">
+    <div class="sec-label">How It Works</div>
+    <div class="sec-title">ExperienceRank™</div>
+    <p style="color:var(--muted);font-size:0.9rem;max-width:600px;margin:0.5rem auto 0;line-height:1.6">Every experience on BagFree is scored and ranked using a combination of AI evaluation and real traveler feedback. The result: a trust system built on proof, not promises.</p>
+  </div>
+
+  <div class="rank-grid">
+    <div class="rank-card"><div class="rank-icon">⭐</div><div class="rank-name">Traveler Satisfaction</div><div class="rank-desc">Real reviews from verified travelers who completed the experience.</div></div>
+    <div class="rank-card"><div class="rank-icon">✅</div><div class="rank-name">Booking Completion</div><div class="rank-desc">How often bookings follow through. High completion = trusted experience.</div></div>
+    <div class="rank-card"><div class="rank-icon">🏆</div><div class="rank-name">Curator Reputation</div><div class="rank-desc">Academy rank, award history, follower count, and response quality.</div></div>
+    <div class="rank-card"><div class="rank-icon">📍</div><div class="rank-name">Verified Visits</div><div class="rank-desc">Confirmed traveler check-ins at recommended stops and venues.</div></div>
+    <div class="rank-card"><div class="rank-icon">👥</div><div class="rank-name">Community Validation</div><div class="rank-desc">Upvotes, saves, and shares from the BagFree traveler community.</div></div>
+    <div class="rank-card"><div class="rank-icon">🤖</div><div class="rank-name">AI Quality Score</div><div class="rank-desc">Curator Academy's AI evaluates itinerary quality, diversity, and authenticity.</div></div>
+  </div>
+</section>
+
+<!-- Why BagFree -->
+<section class="sec">
+  <div style="text-align:center;margin-bottom:2rem">
+    <div class="sec-label">The Difference</div>
+    <div class="sec-title">Why Travelers Choose BagFree</div>
+  </div>
+
+  <div class="why-grid">
+    <div class="why-card"><div class="why-icon">🗝️</div><div class="why-title">Trusted Local Expertise</div><div class="why-desc">Every curator is vetted, ranked, and reviewed. You're not reading a blog post — you're getting advice from someone who lives it daily.</div></div>
+    <div class="why-card"><div class="why-icon">⏱️</div><div class="why-title">Time You Get Back</div><div class="why-desc">Stop researching. Your curator already spent years finding the places worth going. Your job is to show up.</div></div>
+    <div class="why-card"><div class="why-icon">🔑</div><div class="why-title">Insider Access</div><div class="why-desc">Hidden speakeasies, private chef dinners, rooftops with no sign. The kind of places you only find when someone local takes you there.</div></div>
+    <div class="why-card"><div class="why-icon">💬</div><div class="why-title">Real People, Real Time</div><div class="why-desc">Emerald and Gold members message curators directly. Mid-trip, plans change? Your curator adapts with you.</div></div>
+  </div>
+</section>
+
+<!-- CTA -->
+<section class="sec">
+  <div class="cta">
+    <h2>The best trips start with the right people.</h2>
+    <p>Join BagFree and unlock access to the curators, experiences, and insider knowledge that guidebooks can't offer.</p>
+    <a href="/membership.html" class="cta-btn">View Membership Tiers</a>
+  </div>
+</section>
+
+<footer class="ft"><a href="/">BagFree.app</a> · Experiences Marketplace<br><span style="margin-top:0.4rem;display:inline-block">© 2026 BagFree. All rights reserved.</span></footer>
+
+<script>
+document.querySelectorAll('.search-tag').forEach(function(t){
+  t.addEventListener('click',function(){
+    document.querySelector('.search-input').value=this.textContent;
+  });
+});
+document.querySelectorAll('a[href^="#"]').forEach(function(a){
+  a.addEventListener('click',function(e){
+    var t=document.querySelector(this.getAttribute('href'));
+    if(t){e.preventDefault();t.scrollIntoView({behavior:'smooth'});}
+  });
+});
+</script>
+</body>
+</html>
