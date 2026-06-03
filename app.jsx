@@ -1345,11 +1345,11 @@ function TopBar(props) {
         <h1 className="greeting-title">Travel Light. Experience More.<br/><em style={{color:'var(--gold)',fontStyle:'italic'}}>Leave Less Behind.</em></h1>
         <div style={{fontSize:'0.92rem',color:'var(--muted)',fontWeight:300,marginBottom:'1.8rem',lineHeight:1.6,maxWidth:'520px'}}>Travel lighter, discover more, and help create a more sustainable way to explore the world.</div>
         <div style={{display:'flex',alignItems:'center',gap:'0.6rem',marginBottom:'1rem',opacity:0.5}}>
-          <div style={{width:'60px',height:'1px',background:'linear-gradient(90deg,var(--gold),rgba(201,169,110,0.3))'}}></div>
+          <div style={{width:'60px',height:'1px',background:'var(--gold)'}}></div>
           <div style={{width:'5px',height:'5px',borderRadius:'50%',background:'var(--gold)'}}></div>
           <div style={{width:'6px',height:'6px',border:'1px solid var(--gold)',transform:'rotate(45deg)'}}></div>
           <div style={{width:'5px',height:'5px',borderRadius:'50%',background:'var(--gold)'}}></div>
-          <div style={{width:'60px',height:'1px',background:'linear-gradient(90deg,rgba(201,169,110,0.3),transparent)'}}></div>
+          <div style={{width:'60px',height:'1px',background:'var(--gold)'}}></div>
         </div>
         <div className="greeting-sub" style={{fontSize:'1.15rem',fontFamily:'var(--ff-display)',fontWeight:400,marginBottom:'0.2rem'}}>Welcome to {props.city.name}</div>
         <div className="greeting-tag">Everything you need. Delivered before you arrive.</div>
