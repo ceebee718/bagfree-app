@@ -641,6 +641,7 @@ const NAV = [
   { id:'shop', label:'Shop', icon:Icon.Bag, href:'/departure-lounge-landing.html' },
   { id:'rewards', label:'Rewards', icon:Icon.Heart, href:'/legacy.html#rewards' },
   { id:'membership', label:'Membership', icon:Icon.Crown, href:'/membership.html' },
+  { id:'secondjourney', label:'Second Journey', icon:Icon.Heart, href:'/second-journey.html' },
   { id:'hotels', label:'Hotel Partners', icon:Icon.Hotel, href:'/concierge.html' },
   { id:'support', label:'Support', icon:Icon.Help, href:'/#support' }
 ];
