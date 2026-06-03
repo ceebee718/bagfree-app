@@ -1345,14 +1345,9 @@ function TopBar(props) {
         <h1 className="greeting-title">
           <div style={{marginBottom:'0.6rem'}}>Travel Light.</div>
           <div style={{marginBottom:'0.6rem'}}>Experience More.</div>
-          <em style={{color:'var(--gold)',fontStyle:'italic',fontSize:'0.9em'}}>Leave Less Behind.</em>
+          <em style={{color:'var(--gold)',fontStyle:'italic'}}>Leave Less Behind.</em>
         </h1>
-        <div style={{marginTop:'2rem',marginBottom:'1.8rem',maxWidth:'520px',display:'flex',flexDirection:'column',gap:'0.5rem'}}>
-          <div style={{display:'flex',alignItems:'center',gap:'0.6rem',fontSize:'0.9rem'}}><span style={{color:'var(--gold)'}}>✓</span> Arrive Prepared</div>
-          <div style={{display:'flex',alignItems:'center',gap:'0.6rem',fontSize:'0.9rem'}}><span style={{color:'var(--gold)'}}>✓</span> Discover Like a Local</div>
-          <div style={{display:'flex',alignItems:'center',gap:'0.6rem',fontSize:'0.9rem'}}><span style={{color:'var(--gold)'}}>✓</span> Earn Rewards</div>
-          <div style={{display:'flex',alignItems:'center',gap:'0.6rem',fontSize:'0.9rem'}}><span style={{color:'var(--gold)'}}>✓</span> Travel More Sustainably</div>
-        </div>
+        <div style={{fontSize:'0.92rem',color:'var(--muted)',fontWeight:300,marginBottom:'1.8rem',lineHeight:1.6,maxWidth:'520px'}}>Travel lighter, discover more, and help create a more sustainable way to explore the world.</div>
         <div style={{display:'flex',alignItems:'center',gap:'0.6rem',marginBottom:'1rem',opacity:0.5}}>
           <div style={{width:'60px',height:'1px',background:'var(--gold)'}}></div>
           <div style={{width:'5px',height:'5px',borderRadius:'50%',background:'var(--gold)'}}></div>
