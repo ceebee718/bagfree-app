@@ -634,16 +634,18 @@ function highlight(text, q){
 
 const NAV = [
   { id:'home', label:'Home', icon:Icon.Grid, href:'/' },
-  { id:'orders', label:'Orders', icon:Icon.Clipboard, href:'/departure-lounge-landing.html' },
-  { id:'curators', label:'Travel Curators', icon:Icon.Map, href:'/curators.html' },
-  { id:'academy', label:'Curator Academy', icon:Icon.Trophy, href:'/curator-academy.html' },
+  { type:'header', label:'Arrive' },
+  { id:'clothing', label:'Clothing', icon:Icon.Hanger, href:'/departure-lounge-landing.html' },
+  { id:'meals', label:'Meals', icon:Icon.Cup, href:'/legacy.html#essentials' },
+  { id:'essentials', label:'Essentials', icon:Icon.Bag, href:'/legacy.html#essentials' },
+  { type:'header', label:'Discover' },
+  { id:'curators', label:'Curators', icon:Icon.Map, href:'/curators.html' },
   { id:'experiences', label:'Experiences', icon:Icon.Compass, href:'/experiences.html' },
-  { id:'shop', label:'Shop', icon:Icon.Bag, href:'/departure-lounge-landing.html' },
-  { id:'rewards', label:'Rewards', icon:Icon.Heart, href:'/legacy.html#rewards' },
+  { type:'header', label:'Reward' },
   { id:'membership', label:'Membership', icon:Icon.Crown, href:'/membership.html' },
-  { id:'secondjourney', label:'Second Journey', icon:Icon.Heart, href:'/second-journey.html' },
-  { id:'hotels', label:'Hotel Partners', icon:Icon.Hotel, href:'/concierge.html' },
-  { id:'support', label:'Support', icon:Icon.Help, href:'/#support' }
+  { id:'rewards', label:'BAG Rewards', icon:Icon.Star, href:'/legacy.html#rewards' },
+  { type:'header', label:'Sustain' },
+  { id:'secondjourney', label:'Second Journey™', icon:Icon.Heart, href:'/second-journey.html' }
 ];
 
 const TILES = [
@@ -692,7 +694,10 @@ function Sidebar(props) {
       </div>
 
       <nav className="nav">
-        {NAV.map(function(n){
+        {NAV.map(function(n, idx){
+          if (n.type === 'header') {
+            return <div key={'hdr-'+n.label} className="nav-section-header">{n.label}</div>;
+          }
           const I = n.icon;
           const cls = 'nav-item' + (props.active === n.id ? ' active' : '');
           return (
@@ -1334,7 +1339,7 @@ function TopBar(props) {
   return (
     <div className="topbar">
       <div className="greeting">
-        <h1 className="greeting-title">Travel Light. <em style={{color:'var(--gold)',fontStyle:'italic'}}>Experience More.</em></h1>
+        <h1 className="greeting-title">Travel Light. Experience More. <em style={{color:'var(--gold)',fontStyle:'italic'}}>Leave Less Behind.</em></h1>
         <div className="greeting-sub" style={{fontSize:'1.15rem',fontFamily:'var(--ff-display)',fontWeight:400,marginBottom:'0.2rem'}}>Welcome to {props.city.name}</div>
         <div className="greeting-tag">Everything you need. Delivered before you arrive.</div>
         <div className="meta-row">
