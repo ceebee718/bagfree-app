@@ -1344,6 +1344,22 @@ function TopBar(props) {
       <div className="greeting">
         <h1 className="greeting-title">Travel Light. Experience More.<br/><em style={{color:'var(--gold)',fontStyle:'italic'}}>Leave Less Behind.</em></h1>
         <div style={{fontSize:'0.92rem',color:'var(--muted)',fontWeight:300,marginBottom:'1.8rem',lineHeight:1.6,maxWidth:'520px'}}>Travel lighter, discover more, and help create a more sustainable way to explore the world.</div>
+        <div style={{display:'flex',alignItems:'center',justifyContent:'center',gap:'0',marginBottom:'1rem',opacity:0.6}}>
+          <svg viewBox="0 0 200 24" width="280" height="24" style={{overflow:'visible'}}>
+            <defs>
+              <linearGradient id="gl" x1="0" y1="0" x2="1" y2="0"><stop offset="0%" stopColor="transparent"/><stop offset="100%" stopColor="#c9a96e"/></linearGradient>
+              <linearGradient id="gr" x1="0" y1="0" x2="1" y2="0"><stop offset="0%" stopColor="#c9a96e"/><stop offset="100%" stopColor="transparent"/></linearGradient>
+            </defs>
+            <line x1="10" y1="12" x2="75" y2="12" stroke="url(#gl)" strokeWidth="0.6"/>
+            <circle cx="80" cy="12" r="1.2" fill="#c9a96e"/>
+            <line x1="85" y1="12" x2="92" y2="12" stroke="#c9a96e" strokeWidth="0.5"/>
+            <polygon points="100,5 104,12 100,19 96,12" fill="none" stroke="#c9a96e" strokeWidth="0.8"/>
+            <polygon points="100,8 102,12 100,16 98,12" fill="#c9a96e" opacity="0.3"/>
+            <line x1="108" y1="12" x2="115" y2="12" stroke="#c9a96e" strokeWidth="0.5"/>
+            <circle cx="120" cy="12" r="1.2" fill="#c9a96e"/>
+            <line x1="125" y1="12" x2="190" y2="12" stroke="url(#gr)" strokeWidth="0.6"/>
+          </svg>
+        </div>
         <div className="greeting-sub" style={{fontSize:'1.15rem',fontFamily:'var(--ff-display)',fontWeight:400,marginBottom:'0.2rem'}}>Welcome to {props.city.name}</div>
         <div className="greeting-tag">Everything you need. Delivered before you arrive.</div>
         <div className="meta-row">
