@@ -637,6 +637,7 @@ const NAV = [
   { id:'orders', label:'Orders', icon:Icon.Clipboard, href:'/departure-lounge-landing.html' },
   { id:'curators', label:'Travel Curators', icon:Icon.Map, href:'/curators.html' },
   { id:'academy', label:'Curator Academy', icon:Icon.Trophy, href:'/curator-academy.html' },
+  { id:'experiences', label:'Experiences', icon:Icon.Compass, href:'/experiences.html' },
   { id:'essentials', label:'Essentials', icon:Icon.Bag, href:'/legacy.html#essentials' },
   { id:'rewards', label:'Rewards', icon:Icon.Heart, href:'/legacy.html#rewards' },
   { id:'membership', label:'Membership', icon:Icon.Crown, href:'/membership.html' },
