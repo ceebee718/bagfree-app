@@ -662,6 +662,27 @@ const TILES = [
   { id:'rewards', title:'BAG Rewards', desc:'Earn points. Unlock exclusive benefits.', icon:Icon.GiftBox, link:'/legacy.html#rewards', img:'https://images.unsplash.com/photo-1549465220-1a8b9238cd48?w=600&h=400&fit=crop' }
 ];
 
+
+const SunSVG = '<svg viewBox="0 0 24 24" stroke-width="2"><circle cx="12" cy="12" r="5"/><path d="M12 1v2m0 18v2M4.22 4.22l1.42 1.42m12.72 12.72l1.42 1.42M1 12h2m18 0h2M4.22 19.78l1.42-1.42M18.36 5.64l1.42-1.42"/></svg>';
+const MoonSVG = '<svg viewBox="0 0 24 24" stroke-width="2"><path d="M21 12.79A9 9 0 1111.21 3 7 7 0 0021 12.79z"/></svg>';
+
+function ThemeToggle() {
+  const [light, setLight] = React.useState(function(){ try { return localStorage.getItem('bf_theme') === 'light'; } catch(e){ return false; }});
+  React.useEffect(function(){
+    if (light) { document.documentElement.classList.add('light'); } else { document.documentElement.classList.remove('light'); }
+    try { localStorage.setItem('bf_theme', light ? 'light' : 'dark'); } catch(e){}
+  }, [light]);
+  return (
+    <button className="theme-pill" onClick={function(){ setLight(!light); }} aria-label="Toggle theme">
+      <span className="pill-tracks">
+        <svg viewBox="0 0 24 24" fill="none" stroke="var(--gold)" strokeWidth="2"><circle cx="12" cy="12" r="5"/><path d="M12 1v2m0 18v2M4.22 4.22l1.42 1.42m12.72 12.72l1.42 1.42M1 12h2m18 0h2M4.22 19.78l1.42-1.42M18.36 5.64l1.42-1.42"/></svg>
+        <svg viewBox="0 0 24 24" fill="none" stroke="var(--muted)" strokeWidth="2"><path d="M21 12.79A9 9 0 1111.21 3 7 7 0 0021 12.79z"/></svg>
+      </span>
+      <span className="pill-knob" dangerouslySetInnerHTML={{__html: light ? MoonSVG : SunSVG}}></span>
+    </button>
+  );
+}
+
 function Sidebar(props) {
   const menuState = useState(false);
   const open = menuState[0];
@@ -682,6 +703,7 @@ function Sidebar(props) {
       <a href="/" className="brand-link" onClick={function(){ if(props.onClose) props.onClose(); }}>
         <img src={LOGO_SRC} alt="BagFree" className="brand-img"/>
       </a>
+      <div style={{display:'flex',justifyContent:'flex-end',padding:'0 0.95rem',marginTop:'-0.5rem',marginBottom:'0.5rem'}}><ThemeToggle/></div>
 
       <div className="meta-anchor" style={{ marginTop:'-1.4rem' }}>
         <div className="sidebar-city" onClick={function(e){ e.stopPropagation(); setOpen(!open); }}>
@@ -1816,6 +1838,7 @@ function App() {
           <span></span><span></span><span></span>
         </button>
         <a href="/" className="brand-link"><img src={LOGO_SRC} alt="BagFree" className="brand-img--sm"/></a>
+        <ThemeToggle/>
         <div className="mobile-bar-spacer"></div>
       </div>
       <div className={'drawer-overlay' + (drawerOpen ? ' show' : '')} onClick={function(){ setDrawerOpen(false); }}></div>
