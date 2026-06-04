@@ -119,13 +119,25 @@ a{color:var(--gold);text-decoration:none}
 .tc,.why-card{animation:fadeUp 0.5s ease both}
 .tc:nth-child(2){animation-delay:0.08s}.tc:nth-child(3){animation-delay:0.16s}
 @media(max-width:680px){.hero{padding:3.5rem 1.2rem 2rem}.s{padding:2rem 1.2rem}.tiers{grid-template-columns:1fr}.why{grid-template-columns:1fr 1fr}.nav-links{gap:1rem}}
+
+/* Light Mode */
+html.light{--bg:#f5f3ee;--bg2:#eceae4;--card:#ffffff;--card-h:#f8f7f4;--w:#1a1a2e;--m:#555a6e;--f:#8a8fa0;--b:rgba(0,0,0,0.08);--bs:rgba(0,0,0,0.04)}
+html.light .nav{background:rgba(245,243,238,0.92)}
+html.light .tc{background:var(--card);box-shadow:0 2px 10px rgba(0,0,0,0.06)}
+html.light .nm{background:rgba(0,0,0,0.02);border-color:rgba(0,0,0,0.15)}
+html.light .why-card{background:var(--card);box-shadow:0 2px 10px rgba(0,0,0,0.05)}
+html.light .sj-banner{background:linear-gradient(135deg,rgba(127,183,126,0.08),rgba(201,169,110,0.05));border-color:rgba(127,183,126,0.2)}
+html.light .ft{border-color:rgba(0,0,0,0.08)}
+html.light .toggle{background:var(--card);border-color:rgba(0,0,0,0.12)}
+.theme-toggle{width:40px;height:40px;border-radius:50%;border:1px solid var(--b);background:var(--card);color:var(--gold);display:flex;align-items:center;justify-content:center;cursor:pointer;transition:all 0.3s;font-size:1.1rem}
+.theme-toggle:hover{border-color:rgba(201,169,110,0.4);transform:scale(1.05)}
 </style>
 </head>
 <body>
 
 <nav class="nav">
   <a href="/" class="nav-logo">BAGFREE</a>
-  <div class="nav-links">
+  <div class="nav-links"><button class="theme-toggle" onclick="togT()" id="tb">☀️</button>
     <a href="#tiers" class="active">Tiers</a>
     <a href="#why">Why Join</a>
     <a href="#sustain">Sustainability</a>
@@ -357,6 +369,9 @@ function togB(){setB(bc==='m'?'a':'m');}
 async function go(tier){var btn=event.target,ot=btn.textContent;btn.disabled=true;btn.textContent='Redirecting\u2026';try{var r=await fetch(SU+'/functions/v1/stripe-checkout',{method:'POST',headers:{'Content-Type':'application/json','Authorization':'Bearer '+SK,'apikey':SK},body:JSON.stringify({tier_id:tier,billing_cycle:bc==='a'?'annual':'monthly'})});var d=await r.json();if(d.url){window.location.href=d.url;}else{throw new Error(d.error||'Could not create session');}}catch(e){btn.disabled=false;btn.textContent=ot;alert(e.message||'Please try again.');}}
 document.querySelectorAll('a[href^="#"]').forEach(function(a){a.addEventListener('click',function(e){var t=document.querySelector(this.getAttribute('href'));if(t){e.preventDefault();t.scrollIntoView({behavior:'smooth'});}});});
 (function(){var p=new URLSearchParams(window.location.search);if(p.get('success')==='true'){alert('Welcome to BagFree! Your membership is active.');window.history.replaceState({},'',window.location.pathname);}if(p.get('cancelled')==='true'){alert('Checkout cancelled. Your card was not charged.');window.history.replaceState({},'',window.location.pathname);}})();
+
+function togT(){var l=document.documentElement.classList.toggle('light');document.getElementById('tb').textContent=l?'🌙':'☀️';try{localStorage.setItem('bf_mem_theme',l?'light':'dark');}catch(e){}}
+(function(){try{if(localStorage.getItem('bf_mem_theme')==='light'){document.documentElement.classList.add('light');document.getElementById('tb').textContent='🌙';}}catch(e){}})();
 </script>
 </body>
 </html>
