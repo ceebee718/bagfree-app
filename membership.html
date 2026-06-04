@@ -3,524 +3,360 @@
 <head>
 <meta charset="UTF-8">
 <meta name="viewport" content="width=device-width, initial-scale=1.0">
-<title>BagFree — Membership</title>
-<meta name="description" content="Join the BagFree travel network. Discover local curators, unlock premium experiences, and travel like an insider.">
+<title>Membership — BagFree</title>
+<meta name="description" content="Memberships built for better travel. Access curators, experiences, BAG Rewards, and Second Journey sustainable travel.">
 <meta name="theme-color" content="#0d1a32">
 <link rel="preconnect" href="https://fonts.googleapis.com">
 <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
 <link href="https://fonts.googleapis.com/css2?family=Cormorant+Garamond:ital,wght@0,300;0,400;0,500;0,600;1,400&family=DM+Sans:wght@300;400;500;600&display=swap" rel="stylesheet">
 <style>
 *{margin:0;padding:0;box-sizing:border-box}
-:root{
-  --bg:#0d1a32;--bg2:#111f3a;--card:#162240;--card-hover:#1c2a48;
-  --white:#f8f7f4;--muted:#8a8fa0;--faint:#555a6e;
-  --gold:#c9a96e;--gold-bright:#d4b87a;
-  --emerald:#50C878;--emerald-dim:#3a9458;
-  --platinum:#E5E4E2;--platinum-dim:#b0afad;
-  --border:rgba(255,255,255,0.06);--border-soft:rgba(255,255,255,0.04);
-  --ff-display:'Cormorant Garamond',Georgia,serif;
-  --ff-body:'DM Sans','Helvetica Neue',sans-serif;
-  --radius:14px;
-}
-html{background:var(--bg);color:var(--white);font-family:var(--ff-body);font-weight:300;-webkit-font-smoothing:antialiased}
-body{min-height:100vh}
+:root{--bg:#0d1a32;--bg2:#111f3a;--card:#162240;--card-h:#1c2a48;--w:#f8f7f4;--m:#8a8fa0;--f:#555a6e;--gold:#c9a96e;--gold-b:#d4b87a;--gd:rgba(201,169,110,0.12);--em:#50C878;--emd:rgba(80,200,120,0.1);--plat:#E5E4E2;--pd:rgba(229,228,226,0.08);--sage:#7fb77e;--b:rgba(255,255,255,0.06);--bs:rgba(255,255,255,0.04);--fd:'Cormorant Garamond',Georgia,serif;--fb:'DM Sans','Helvetica Neue',sans-serif;--r:14px}
+html{background:var(--bg);color:var(--w);font-family:var(--fb);font-weight:300;-webkit-font-smoothing:antialiased}
 a{color:var(--gold);text-decoration:none}
-
-/* Nav */
-.top-nav{position:sticky;top:0;z-index:50;backdrop-filter:blur(18px);background:rgba(13,26,50,0.85);border-bottom:1px solid var(--border);padding:0.9rem 2rem;display:flex;align-items:center;justify-content:space-between}
-.nav-logo{font-family:var(--ff-display);font-size:1.3rem;font-weight:500;letter-spacing:1px;color:var(--gold)}
-.nav-links{display:flex;gap:1.8rem;align-items:center}
-.nav-links a{font-size:0.78rem;letter-spacing:1.5px;text-transform:uppercase;color:var(--muted);font-weight:500;transition:color 0.2s}
-.nav-links a:hover{color:var(--gold)}
+.nav{position:sticky;top:0;z-index:50;backdrop-filter:blur(18px);background:rgba(13,26,50,0.88);border-bottom:1px solid var(--b);padding:0.9rem 2rem;display:flex;align-items:center;justify-content:space-between}
+.nav-logo{font-family:var(--fd);font-size:1.3rem;font-weight:500;letter-spacing:1px;color:var(--gold)}
+.nav-links{display:flex;gap:1.6rem;align-items:center}
+.nav-links a{font-size:0.72rem;letter-spacing:1.5px;text-transform:uppercase;color:var(--m);font-weight:500;transition:color 0.2s}
+.nav-links a:hover,.nav-links a.active{color:var(--gold)}
+.s{padding:3rem 2rem;max-width:1200px;margin:0 auto}
+.sl{font-size:0.56rem;letter-spacing:4.5px;text-transform:uppercase;color:var(--gold);font-weight:600;margin-bottom:0.5rem}
+.st{font-family:var(--fd);font-size:2rem;font-weight:400;margin-bottom:0.35rem}
+.ss{color:var(--m);font-size:0.9rem;margin-bottom:2rem;max-width:650px;line-height:1.6}
 
 /* Hero */
-.hero{text-align:center;padding:5.5rem 2rem 3rem;position:relative;overflow:hidden}
-.hero::before{content:'';position:absolute;top:-40%;left:50%;transform:translateX(-50%);width:900px;height:900px;background:radial-gradient(ellipse,rgba(201,169,110,0.07) 0%,transparent 65%);pointer-events:none}
-.hero-eyebrow{font-size:0.62rem;letter-spacing:5px;text-transform:uppercase;color:var(--gold);font-weight:600;margin-bottom:1.4rem;display:inline-flex;align-items:center;gap:0.6rem}
-.hero-eyebrow::before,.hero-eyebrow::after{content:'';width:28px;height:1px;background:var(--gold);opacity:0.4}
-.hero h1{font-family:var(--ff-display);font-size:clamp(2.6rem,5.5vw,4rem);font-weight:300;line-height:1.12;margin-bottom:1.2rem;letter-spacing:-0.5px}
+.hero{text-align:center;padding:5rem 2rem 2.5rem;position:relative;overflow:hidden}
+.hero::before{content:'';position:absolute;top:-40%;left:50%;transform:translateX(-50%);width:900px;height:900px;background:radial-gradient(ellipse,rgba(201,169,110,0.07) 0%,transparent 60%);pointer-events:none}
+.hero-ey{font-size:0.58rem;letter-spacing:5px;text-transform:uppercase;color:var(--gold);font-weight:600;margin-bottom:1.3rem;display:inline-flex;align-items:center;gap:0.6rem}
+.hero-ey::before,.hero-ey::after{content:'';width:28px;height:1px;background:var(--gold);opacity:0.4}
+.hero h1{font-family:var(--fd);font-size:clamp(2.4rem,5vw,3.4rem);font-weight:300;line-height:1.15;margin-bottom:1rem}
 .hero h1 em{font-style:italic;color:var(--gold)}
-.hero-sub{color:var(--muted);font-size:1.05rem;max-width:640px;margin:0 auto 1rem;line-height:1.65}
-.hero-proof{display:flex;justify-content:center;gap:2.5rem;margin-top:2.2rem;flex-wrap:wrap}
-.hero-proof-item{text-align:center}
-.hero-proof-val{font-size:1.5rem;font-weight:600;color:var(--white)}
-.hero-proof-label{font-size:0.62rem;letter-spacing:1.5px;text-transform:uppercase;color:var(--faint);margin-top:0.1rem}
+.hero-sub{color:var(--m);font-size:1rem;max-width:620px;margin:0 auto;line-height:1.65}
 
-/* Section */
-.section{padding:3rem 2rem;max-width:1200px;margin:0 auto}
-.section-label{font-size:0.58rem;letter-spacing:4.5px;text-transform:uppercase;color:var(--gold);font-weight:600;margin-bottom:0.5rem}
-.section-title{font-family:var(--ff-display);font-size:2.1rem;font-weight:400;margin-bottom:0.4rem}
-.section-sub{color:var(--muted);font-size:0.92rem;margin-bottom:2rem;max-width:680px;line-height:1.6}
+/* SJ Banner */
+.sj-banner{max-width:800px;margin:1.5rem auto 0;background:linear-gradient(135deg,rgba(127,183,126,0.08),rgba(201,169,110,0.05));border:1px solid rgba(127,183,126,0.18);border-radius:14px;padding:1.3rem 2rem;text-align:center}
+.sj-banner-title{font-family:var(--fd);font-size:1.1rem;font-weight:500;color:var(--sage);margin-bottom:0.3rem;display:flex;align-items:center;justify-content:center;gap:0.5rem}
+.sj-banner-sub{font-size:0.82rem;color:var(--m)}
 
-/* Journey */
-.journey{display:flex;justify-content:center;align-items:center;gap:0;margin-bottom:2.5rem;flex-wrap:wrap}
-.journey-step{text-align:center;padding:0 1.8rem}
-.journey-icon{font-size:1.3rem;margin-bottom:0.3rem}
-.journey-name{font-family:var(--ff-display);font-size:1.15rem;font-weight:500}
-.journey-step:nth-child(1) .journey-name{color:var(--platinum)}
-.journey-step:nth-child(3) .journey-name{color:var(--emerald)}
-.journey-step:nth-child(5) .journey-name{color:var(--gold)}
-.journey-arrow{color:var(--faint);font-size:1.1rem;padding:0 0.2rem}
+/* Non-member */
+.nm{max-width:500px;margin:0 auto 2.5rem;background:rgba(255,255,255,0.02);border:1px dashed rgba(255,255,255,0.1);border-radius:var(--r);padding:1.6rem 2rem;text-align:center}
+.nm-title{font-size:0.62rem;letter-spacing:3px;text-transform:uppercase;color:var(--f);font-weight:600;margin-bottom:1rem}
+.nm-list{list-style:none;display:flex;flex-direction:column;gap:0.4rem;text-align:left;max-width:300px;margin:0 auto}
+.nm-list li{font-size:0.82rem;color:var(--f);display:flex;align-items:center;gap:0.5rem}
+.nm-list li::before{content:'·';color:var(--f);font-size:1.2rem}
 
-/* Billing Toggle */
-.billing-toggle{display:flex;align-items:center;justify-content:center;gap:1rem;margin-bottom:2.2rem}
-.billing-toggle label{font-size:0.85rem;color:var(--muted);cursor:pointer;transition:color 0.2s}
-.billing-toggle label.active{color:var(--white);font-weight:500}
-.toggle-track{width:52px;height:28px;background:var(--card);border:1px solid var(--border);border-radius:14px;cursor:pointer;position:relative;transition:background 0.2s}
-.toggle-track::after{content:'';position:absolute;top:3px;left:3px;width:20px;height:20px;border-radius:50%;background:var(--gold);transition:transform 0.2s}
-.toggle-track.annual::after{transform:translateX(24px)}
-.billing-save{font-size:0.65rem;color:var(--emerald);font-weight:600;letter-spacing:0.5px;background:rgba(80,200,120,0.1);padding:0.25rem 0.6rem;border-radius:10px}
+/* Billing */
+.billing{display:flex;align-items:center;justify-content:center;gap:1rem;margin-bottom:2.2rem}
+.billing label{font-size:0.85rem;color:var(--m);cursor:pointer;transition:color 0.2s}
+.billing label.active{color:var(--w);font-weight:500}
+.toggle{width:52px;height:28px;background:var(--card);border:1px solid var(--b);border-radius:14px;cursor:pointer;position:relative;transition:background 0.2s}
+.toggle::after{content:'';position:absolute;top:3px;left:3px;width:20px;height:20px;border-radius:50%;background:var(--gold);transition:transform 0.2s}
+.toggle.on::after{transform:translateX(24px)}
+.billing-save{font-size:0.62rem;color:var(--em);font-weight:600;background:var(--emd);padding:0.2rem 0.55rem;border-radius:10px}
 
-/* Status Banner */
-.status-banner{max-width:700px;margin:0 auto 2rem;padding:1.2rem 1.6rem;border-radius:12px;text-align:center;animation:fadeUp 0.4s ease both}
-.status-banner.success{background:rgba(80,200,120,0.1);border:1px solid rgba(80,200,120,0.25);color:var(--emerald)}
-.status-banner.cancelled{background:rgba(255,160,80,0.08);border:1px solid rgba(255,160,80,0.2);color:#ffa050}
-.status-banner h3{font-family:var(--ff-display);font-size:1.3rem;font-weight:500;margin-bottom:0.3rem}
-.status-banner p{font-size:0.85rem;opacity:0.85}
+/* Tiers */
+.tiers{display:grid;grid-template-columns:repeat(auto-fit,minmax(310px,1fr));gap:1.5rem}
+.tc{background:var(--card);border:1px solid var(--b);border-radius:var(--r);padding:2.2rem 1.8rem;position:relative;overflow:hidden;transition:all 0.3s;display:flex;flex-direction:column}
+.tc:hover{transform:translateY(-4px);box-shadow:0 20px 50px rgba(0,0,0,0.4)}
+.tc.feat{border-color:rgba(80,200,120,0.25)}
+.tc.feat::before{content:'MOST POPULAR';position:absolute;top:14px;right:-32px;background:var(--em);color:var(--bg);font-size:0.5rem;font-weight:700;letter-spacing:2px;padding:4px 42px;transform:rotate(45deg);z-index:2}
+.tc.plat{border-top:3px solid var(--plat)}
+.tc.emer{border-top:3px solid var(--em)}
+.tc.gold{border-top:3px solid var(--gold)}
+.tc-phase{font-size:0.56rem;letter-spacing:3px;text-transform:uppercase;font-weight:600;margin-bottom:0.5rem}
+.tc.plat .tc-phase{color:var(--plat)}
+.tc.emer .tc-phase{color:var(--em)}
+.tc.gold .tc-phase{color:var(--gold)}
+.tc-name{font-family:var(--fd);font-size:1.8rem;font-weight:500;margin-bottom:0.2rem}
+.tc.plat .tc-name{color:var(--plat)}
+.tc.emer .tc-name{color:var(--em)}
+.tc.gold .tc-name{color:var(--gold)}
+.tc-tag{font-size:0.82rem;color:var(--m);font-style:italic;margin-bottom:1rem;line-height:1.4}
+.tc-price{font-size:2.2rem;font-weight:600;display:flex;align-items:baseline;gap:0.3rem;margin-bottom:0.15rem}
+.tc-price span{font-size:0.85rem;font-weight:300;color:var(--m)}
+.tc-annual{font-size:0.75rem;color:var(--f);margin-bottom:1.5rem}
+.tc-div{height:1px;background:var(--b);margin-bottom:1.2rem}
 
-/* Tier Cards */
-.tiers{display:grid;grid-template-columns:repeat(auto-fit,minmax(310px,1fr));gap:1.5rem;margin-bottom:1rem}
-.tier-card{background:var(--card);border:1px solid var(--border);border-radius:var(--radius);padding:2.4rem 1.8rem;position:relative;overflow:hidden;transition:all 0.3s;display:flex;flex-direction:column}
-.tier-card:hover{transform:translateY(-4px);box-shadow:0 20px 50px rgba(0,0,0,0.4)}
-.tier-card.featured{border-color:rgba(80,200,120,0.25)}
-.tier-card.featured::before{content:'RECOMMENDED';position:absolute;top:14px;right:-32px;background:var(--emerald);color:var(--bg);font-size:0.52rem;font-weight:700;letter-spacing:2px;padding:4px 42px;transform:rotate(45deg);z-index:2}
-.tier-card.platinum{border-top:3px solid var(--platinum)}
-.tier-card.emerald{border-top:3px solid var(--emerald)}
-.tier-card.gold{border-top:3px solid var(--gold)}
+/* Benefit Groups */
+.bg-label{font-size:0.55rem;letter-spacing:2.5px;text-transform:uppercase;font-weight:600;margin-bottom:0.5rem;margin-top:0.8rem;display:flex;align-items:center;gap:0.4rem;color:var(--gold)}
+.bg-label svg{width:14px;height:14px}
+.tc-perks{list-style:none;margin-bottom:0.4rem}
+.tc-perks li{padding:0.35rem 0;font-size:0.82rem;color:var(--m);display:flex;align-items:flex-start;gap:0.5rem;line-height:1.4}
+.tc-perks li::before{content:'✓';font-size:0.7rem;font-weight:700;flex-shrink:0;margin-top:0.15rem}
+.tc.plat .tc-perks li::before{color:var(--plat)}
+.tc.emer .tc-perks li::before{color:var(--em)}
+.tc.gold .tc-perks li::before{color:var(--gold)}
+.tc-perks li.hl{color:var(--w);font-weight:400}
 
-.tier-phase{font-size:0.58rem;letter-spacing:3px;text-transform:uppercase;font-weight:600;margin-bottom:0.6rem}
-.tier-card.platinum .tier-phase{color:var(--platinum)}
-.tier-card.emerald .tier-phase{color:var(--emerald)}
-.tier-card.gold .tier-phase{color:var(--gold)}
+.tc-btn{display:block;text-align:center;padding:0.9rem;border-radius:10px;font-size:0.74rem;font-weight:600;letter-spacing:1.5px;text-transform:uppercase;cursor:pointer;transition:all 0.25s;border:0;width:100%;font-family:var(--fb);margin-top:auto}
+.tc.plat .tc-btn{background:var(--plat);color:var(--bg)}
+.tc.emer .tc-btn{background:var(--em);color:var(--bg)}
+.tc.gold .tc-btn{background:var(--gold);color:var(--bg)}
+.tc-btn:hover{transform:translateY(-1px);opacity:0.92}
 
-.tier-name{font-family:var(--ff-display);font-size:1.8rem;font-weight:500;margin-bottom:0.25rem}
-.tier-card.platinum .tier-name{color:var(--platinum)}
-.tier-card.emerald .tier-name{color:var(--emerald)}
-.tier-card.gold .tier-name{color:var(--gold)}
+/* Why */
+.why{display:grid;grid-template-columns:repeat(auto-fit,minmax(240px,1fr));gap:1.2rem}
+.why-card{background:var(--card);border:1px solid var(--b);border-radius:var(--r);padding:1.8rem;transition:all 0.3s;text-align:center}
+.why-card:hover{transform:translateY(-3px);box-shadow:0 14px 35px rgba(0,0,0,0.3)}
+.why-icon{margin:0 auto 1rem;width:52px;height:52px;border-radius:50%;display:flex;align-items:center;justify-content:center}
+.why-title{font-family:var(--fd);font-size:1.15rem;font-weight:500;margin-bottom:0.3rem}
+.why-desc{font-size:0.8rem;color:var(--m);line-height:1.5}
 
-.tier-tagline{font-size:0.82rem;color:var(--muted);margin-bottom:1rem;font-style:italic;line-height:1.4}
-.tier-price{font-size:2.2rem;font-weight:600;margin-bottom:0.15rem;display:flex;align-items:baseline;gap:0.3rem}
-.tier-price span{font-size:0.85rem;font-weight:300;color:var(--muted)}
-.tier-annual{font-size:0.78rem;color:var(--faint);margin-bottom:1.5rem}
-
-.tier-divider{height:1px;background:var(--border);margin-bottom:1.2rem}
-
-.tier-group-label{font-size:0.58rem;letter-spacing:2.5px;text-transform:uppercase;color:var(--gold);font-weight:600;margin-bottom:0.6rem;margin-top:0.8rem}
-.tier-perks{list-style:none;flex:1;margin-bottom:1.6rem}
-.tier-perks li{padding:0.5rem 0;font-size:0.84rem;color:var(--muted);border-bottom:1px solid var(--border-soft);display:flex;align-items:flex-start;gap:0.55rem;line-height:1.45}
-.tier-perks li:last-child{border-bottom:0}
-.tier-perks li::before{content:'✓';font-size:0.72rem;font-weight:700;flex-shrink:0;margin-top:0.18rem}
-.tier-card.platinum .tier-perks li::before{color:var(--platinum)}
-.tier-card.emerald .tier-perks li::before{color:var(--emerald)}
-.tier-card.gold .tier-perks li::before{color:var(--gold)}
-.tier-perks li.highlight{color:var(--white);font-weight:400}
-
-.tier-btn{display:block;text-align:center;padding:0.95rem;border-radius:10px;font-size:0.76rem;font-weight:600;letter-spacing:1.5px;text-transform:uppercase;cursor:pointer;transition:all 0.25s;border:0;width:100%;font-family:var(--ff-body)}
-.tier-card.platinum .tier-btn{background:var(--platinum);color:var(--bg)}
-.tier-card.platinum .tier-btn:hover{background:var(--platinum-dim)}
-.tier-card.emerald .tier-btn{background:var(--emerald);color:var(--bg)}
-.tier-card.emerald .tier-btn:hover{background:var(--emerald-dim)}
-.tier-card.gold .tier-btn{background:var(--gold);color:var(--bg)}
-.tier-card.gold .tier-btn:hover{background:var(--gold-bright)}
-.loading-spinner{display:inline-block;width:16px;height:16px;border:2px solid rgba(0,0,0,0.2);border-top-color:var(--bg);border-radius:50%;animation:spin 0.7s linear infinite;margin-right:0.4rem;vertical-align:middle}
-@keyframes spin{to{transform:rotate(360deg)}}
-
-/* Comparison */
-.compare-wrap{overflow-x:auto;margin-top:2rem;border:1px solid var(--border);border-radius:var(--radius);background:var(--card)}
-.compare-table{width:100%;border-collapse:collapse;min-width:650px}
-.compare-table th,.compare-table td{padding:0.75rem 1.2rem;text-align:left;border-bottom:1px solid var(--border-soft);font-size:0.84rem}
-.compare-table th{font-family:var(--ff-display);font-weight:500;font-size:1rem;color:var(--white);background:rgba(255,255,255,0.02)}
-.compare-table th.plat-col{color:var(--platinum)}
-.compare-table th.em-col{color:var(--emerald)}
-.compare-table th.gold-col{color:var(--gold)}
-.compare-table td{color:var(--muted)}
-.compare-table td.feat{color:var(--white);font-weight:400}
-.compare-table .yes{color:var(--gold);font-weight:600}
-.compare-table .partial{color:var(--muted)}
-.compare-table .no{color:var(--faint);font-style:italic}
-.compare-table tr:last-child td{border-bottom:0}
-.compare-table tr:hover td{background:rgba(255,255,255,0.012)}
-
-/* Marketplace Teaser */
-.marketplace{position:relative;padding:4rem 2rem;margin:2rem 0;text-align:center;overflow:hidden}
-.marketplace::before{content:'';position:absolute;inset:0;background:linear-gradient(135deg,rgba(201,169,110,0.06),rgba(80,200,120,0.04),transparent);border-radius:20px;pointer-events:none}
-.marketplace::after{content:'';position:absolute;inset:0;border:1px solid rgba(201,169,110,0.12);border-radius:20px;pointer-events:none}
-.marketplace-inner{position:relative;z-index:1}
-.marketplace h2{font-family:var(--ff-display);font-size:2rem;font-weight:400;margin-bottom:0.6rem}
-.marketplace h2 em{color:var(--gold);font-style:italic}
-.marketplace p{color:var(--muted);font-size:0.92rem;max-width:580px;margin:0 auto;line-height:1.6}
-.marketplace-grid{display:grid;grid-template-columns:repeat(auto-fit,minmax(200px,1fr));gap:1.2rem;margin-top:2rem;text-align:left}
-.marketplace-card{background:rgba(255,255,255,0.02);border:1px solid var(--border);border-radius:12px;padding:1.3rem}
-.marketplace-card-icon{font-size:1.3rem;margin-bottom:0.6rem}
-.marketplace-card-title{font-family:var(--ff-display);font-size:1.05rem;font-weight:500;margin-bottom:0.3rem;color:var(--white)}
-.marketplace-card-desc{font-size:0.78rem;color:var(--muted);line-height:1.5}
-.marketplace-tag{display:inline-block;margin-top:2rem;font-size:0.6rem;letter-spacing:3px;text-transform:uppercase;color:var(--gold);border:1px solid rgba(201,169,110,0.3);padding:0.4rem 1rem;border-radius:20px;font-weight:600}
+/* Sustain */
+.sustain{position:relative;padding:3rem 2rem;overflow:hidden;border-radius:20px;margin:1rem 0}
+.sustain::before{content:'';position:absolute;inset:0;background:linear-gradient(135deg,rgba(127,183,126,0.06),rgba(201,169,110,0.03),transparent);border-radius:20px;pointer-events:none}
+.sustain::after{content:'';position:absolute;inset:0;border:1px solid rgba(127,183,126,0.12);border-radius:20px;pointer-events:none}
 
 /* CTA */
-.cta-section{text-align:center;padding:4rem 2rem;margin:1rem 0}
-.cta-section h2{font-family:var(--ff-display);font-size:2rem;font-weight:400;margin-bottom:0.7rem}
-.cta-section p{color:var(--muted);margin-bottom:1.5rem;font-size:0.95rem}
-.btn-gold{display:inline-block;background:var(--gold);color:var(--bg);padding:0.95rem 2.5rem;border-radius:30px;font-size:0.76rem;font-weight:600;letter-spacing:1.5px;text-transform:uppercase;transition:all 0.25s;text-decoration:none}
-.btn-gold:hover{background:var(--gold-bright);transform:translateY(-2px)}
+.cta{text-align:center;padding:3.5rem 2rem}
+.cta h2{font-family:var(--fd);font-size:2rem;font-weight:400;margin-bottom:0.6rem}
+.cta p{color:var(--m);margin-bottom:1.5rem;font-size:0.92rem}
+.cta-btn{display:inline-block;background:var(--gold);color:var(--bg);padding:0.95rem 2.5rem;border-radius:30px;font-size:0.76rem;font-weight:600;letter-spacing:1.5px;text-transform:uppercase;transition:all 0.25s}
+.cta-btn:hover{background:var(--gold-b);transform:translateY(-2px)}
 
-/* Footer */
-.page-footer{text-align:center;padding:2.5rem 2rem;border-top:1px solid var(--border);color:var(--faint);font-size:0.75rem}
-.page-footer a{color:var(--gold)}
-
-/* Animations */
-@keyframes fadeUp{from{opacity:0;transform:translateY(18px)}to{opacity:1;transform:none}}
-.tier-card{animation:fadeUp 0.5s ease both}
-.tier-card:nth-child(2){animation-delay:0.08s}
-.tier-card:nth-child(3){animation-delay:0.16s}
-.marketplace-card{animation:fadeUp 0.5s ease both}
-.marketplace-card:nth-child(2){animation-delay:0.06s}
-.marketplace-card:nth-child(3){animation-delay:0.12s}
-.marketplace-card:nth-child(4){animation-delay:0.18s}
-
-/* Mobile */
-@media(max-width:680px){
-  .hero{padding:3.5rem 1.2rem 2.5rem}
-  .section{padding:2rem 1.2rem}
-  .tiers{grid-template-columns:1fr}
-  .nav-links{gap:1rem}
-  .nav-links a{font-size:0.65rem;letter-spacing:1px}
-  .hero-proof{gap:1.2rem}
-  .journey-step{padding:0 1rem}
-  .marketplace-grid{grid-template-columns:1fr 1fr}
-}
+.ft{text-align:center;padding:2.5rem 2rem;border-top:1px solid var(--b);color:var(--f);font-size:0.75rem}
+@keyframes fadeUp{from{opacity:0;transform:translateY(16px)}to{opacity:1;transform:none}}
+.tc,.why-card{animation:fadeUp 0.5s ease both}
+.tc:nth-child(2){animation-delay:0.08s}.tc:nth-child(3){animation-delay:0.16s}
+@media(max-width:680px){.hero{padding:3.5rem 1.2rem 2rem}.s{padding:2rem 1.2rem}.tiers{grid-template-columns:1fr}.why{grid-template-columns:1fr 1fr}.nav-links{gap:1rem}}
 </style>
 </head>
 <body>
 
-<nav class="top-nav">
+<nav class="nav">
   <a href="/" class="nav-logo">BAGFREE</a>
   <div class="nav-links">
-    <a href="#tiers">Membership</a>
-    <a href="#compare">Compare</a>
-    <a href="#marketplace">Marketplace</a>
+    <a href="#tiers" class="active">Tiers</a>
+    <a href="#why">Why Join</a>
+    <a href="#sustain">Sustainability</a>
     <a href="/">Home</a>
   </div>
 </nav>
 
-<!-- Hero -->
 <header class="hero">
-  <div class="hero-eyebrow">✦ BagFree Membership ✦</div>
-  <h1>Your city. <em>Their expertise.</em><br>Your experience.</h1>
-  <p class="hero-sub">BagFree connects travelers with trusted local curators who know their cities like no guidebook can. Your membership unlocks the people, experiences, and access that turn a trip into something unforgettable.</p>
-
-  <div class="hero-proof">
-    <div class="hero-proof-item"><div class="hero-proof-val">50+</div><div class="hero-proof-label">Local Curators</div></div>
-    <div class="hero-proof-item"><div class="hero-proof-val">5</div><div class="hero-proof-label">Cities</div></div>
-    <div class="hero-proof-item"><div class="hero-proof-val">200+</div><div class="hero-proof-label">Curated Experiences</div></div>
-    <div class="hero-proof-item"><div class="hero-proof-val">4.9★</div><div class="hero-proof-label">Traveler Rating</div></div>
+  <div class="hero-ey">✦ BagFree Membership ✦</div>
+  <h1>Memberships built for<br><em>better travel.</em></h1>
+  <p class="hero-sub">Access trusted local curators, curated experiences, BAG Rewards, and Second Journey™ sustainable travel benefits.</p>
+  <div class="sj-banner">
+    <div class="sj-banner-title">
+      <svg viewBox="0 0 24 24" width="18" height="18" fill="none" stroke="#7fb77e" stroke-width="1.5"><path d="M12 22c-4-4-8-7.5-8-12a8 8 0 0116 0c0 4.5-4 8-8 12z"/></svg>
+      All memberships include complimentary Second Journey™ delivery
+    </div>
+    <div class="sj-banner-sub">Travel lighter with sustainable clothing and travel essentials delivered directly to your hotel.</div>
   </div>
 </header>
 
-<!-- Journey Progression -->
-<section class="section" id="tiers">
-  <div style="text-align:center;margin-bottom:0.5rem">
-    <div class="section-label">Choose Your Path</div>
-    <div class="section-title">Three tiers. One network.</div>
+<section class="s" id="tiers">
+
+  <!-- Non-member -->
+  <div class="nm">
+    <div class="nm-title">Non-Member Access</div>
+    <ul class="nm-list">
+      <li>Access Second Journey™</li>
+      <li>Up to 2 outfits per trip</li>
+      <li>Hotel delivery fee applies</li>
+      <li>Standard inventory access</li>
+      <li>Basic BAG Rewards (1x)</li>
+    </ul>
   </div>
 
-  <div class="journey">
-    <div class="journey-step">
-      <div class="journey-icon">✦</div>
-      <div class="journey-name">Discover</div>
-    </div>
-    <div class="journey-arrow">→</div>
-    <div class="journey-step">
-      <div class="journey-icon">💎</div>
-      <div class="journey-name">Explore</div>
-    </div>
-    <div class="journey-arrow">→</div>
-    <div class="journey-step">
-      <div class="journey-icon">👑</div>
-      <div class="journey-name">Concierge</div>
-    </div>
-  </div>
-
-  <div id="status-banner"></div>
-
-  <div class="billing-toggle">
-    <label id="lbl-monthly" class="active" onclick="setBilling('monthly')">Monthly</label>
-    <div id="billing-track" class="toggle-track" onclick="toggleBilling()"></div>
-    <label id="lbl-annual" onclick="setBilling('annual')">Annual</label>
-    <span class="billing-save" id="save-badge">Save up to 20%</span>
+  <!-- Billing -->
+  <div class="billing">
+    <label id="lbl-m" class="active" onclick="setB('m')">Monthly</label>
+    <div id="trk" class="toggle" onclick="togB()"></div>
+    <label id="lbl-a" onclick="setB('a')">Annual</label>
+    <span class="billing-save" id="sv">Save up to 20%</span>
   </div>
 
   <!-- Tier Cards -->
   <div class="tiers">
 
-    <!-- PLATINUM — Discover -->
-    <div class="tier-card platinum">
-      <div class="tier-phase">Phase One</div>
-      <div class="tier-name">Platinum</div>
-      <div class="tier-tagline">For the curious traveler ready to discover what the locals know.</div>
-      <div class="tier-price" data-tier="platinum">$19<span>/month</span></div>
-      <div class="tier-annual">or $180/year (save $48)</div>
-      <div class="tier-divider"></div>
+    <!-- PLATINUM -->
+    <div class="tc plat">
+      <div class="tc-phase">Discover</div>
+      <div class="tc-name">Platinum</div>
+      <div class="tc-tag">For travelers exploring a city like a local.</div>
+      <div class="tc-price" data-t="p">$19<span>/month</span></div>
+      <div class="tc-annual">or $180/year (save $48)</div>
+      <div class="tc-div"></div>
 
-      <div class="tier-group-label">Curator Access</div>
-      <ul class="tier-perks">
-        <li class="highlight">Browse the Curator Marketplace — find curators by city, specialty, and rating</li>
-        <li>View curator profiles, reviews, and curated itineraries</li>
-        <li>Access community-rated destination guides</li>
+      <div class="bg-label"><svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.5"><circle cx="12" cy="12" r="10"/><path d="M2 12h20"/><path d="M12 2a15.3 15.3 0 014 10 15.3 15.3 0 01-4 10 15.3 15.3 0 01-4-10 15.3 15.3 0 014-10z"/></svg> Experiences</div>
+      <ul class="tc-perks">
+        <li>Curator marketplace access</li>
+        <li>Destination guides</li>
+        <li>Standard experiences</li>
+        <li>Community access</li>
       </ul>
 
-      <div class="tier-group-label">Experiences</div>
-      <ul class="tier-perks">
-        <li>Browse curated experience collections for every city</li>
-        <li>Book seamlessly through curated partner links</li>
-        <li>Monthly destination spotlight with local insider tips</li>
+      <div class="bg-label"><svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.5"><path d="M12 22c-4-4-8-7.5-8-12a8 8 0 0116 0c0 4.5-4 8-8 12z"/><path d="M12 10v4"/></svg> Second Journey™</div>
+      <ul class="tc-perks">
+        <li class="hl">Second Journey™ included</li>
+        <li>Up to 3 outfits per trip</li>
+        <li>Complimentary hotel delivery</li>
+        <li>3-day usage period</li>
       </ul>
 
-      <div class="tier-group-label">Travel Benefits</div>
-      <ul class="tier-perks">
-        <li>5% off all BagFree orders</li>
-        <li>Community forum access — connect with fellow travelers</li>
-        <li>Earn BAG points on every booking</li>
+      <div class="bg-label"><svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.5"><polygon points="12 2 15.09 8.26 22 9.27 17 14.14 18.18 21.02 12 17.77 5.82 21.02 7 14.14 2 9.27 8.91 8.26"/></svg> Rewards</div>
+      <ul class="tc-perks">
+        <li>1.25x BAG Rewards</li>
       </ul>
 
-      <button class="tier-btn" onclick="selectTier('platinum')">Start Discovering</button>
+      <button class="tc-btn" onclick="go('platinum')">Start Discovering</button>
     </div>
 
-    <!-- EMERALD — Explore -->
-    <div class="tier-card emerald featured">
-      <div class="tier-phase">Phase Two</div>
-      <div class="tier-name">Emerald</div>
-      <div class="tier-tagline">For active travelers who want direct access to the people who know best.</div>
-      <div class="tier-price" data-tier="emerald">$49<span>/month</span></div>
-      <div class="tier-annual">or $468/year (save $120)</div>
-      <div class="tier-divider"></div>
+    <!-- EMERALD -->
+    <div class="tc emer feat">
+      <div class="tc-phase">Explore</div>
+      <div class="tc-name">Emerald</div>
+      <div class="tc-tag">For travelers seeking insider access and deeper engagement.</div>
+      <div class="tc-price" data-t="e">$39<span>/month</span></div>
+      <div class="tc-annual">or $372/year (save $96)</div>
+      <div class="tc-div"></div>
 
-      <div class="tier-group-label">Curator Access</div>
-      <ul class="tier-perks">
-        <li class="highlight">Direct messaging with curators — ask questions, get recommendations in real time</li>
-        <li class="highlight">Follow curators and get notified when they publish new experiences</li>
-        <li>Early access to new experiences (48-hour head start before public release)</li>
-        <li>Request custom itineraries from your favorite curators</li>
+      <div class="bg-label"><svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.5"><circle cx="12" cy="12" r="10"/><path d="M2 12h20"/><path d="M12 2a15.3 15.3 0 014 10 15.3 15.3 0 01-4 10 15.3 15.3 0 01-4-10 15.3 15.3 0 014-10z"/></svg> Experiences</div>
+      <ul class="tc-perks">
+        <li class="hl">Everything in Platinum</li>
+        <li class="hl">Premium experiences</li>
+        <li class="hl">Priority booking</li>
       </ul>
 
-      <div class="tier-group-label">Experiences</div>
-      <ul class="tier-perks">
-        <li class="highlight">Curator-picked experiences — hand-selected, not algorithmic</li>
-        <li>Early notifications when new experiences drop in your saved cities</li>
-        <li class="highlight">Priority access to limited-capacity experiences before they sell out</li>
-        <li>Unlimited access to premium experience guides and insider notes</li>
+      <div class="bg-label"><svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.5"><path d="M17 21v-2a4 4 0 00-4-4H5a4 4 0 00-4 4v2"/><circle cx="9" cy="7" r="4"/><path d="M23 21v-2a4 4 0 00-3-3.87"/><path d="M16 3.13a4 4 0 010 7.75"/></svg> Curators</div>
+      <ul class="tc-perks">
+        <li class="hl">Direct curator messaging</li>
+        <li>Follow favorite curators</li>
+        <li>Curator style recommendations</li>
       </ul>
 
-      <div class="tier-group-label">Travel Benefits</div>
-      <ul class="tier-perks">
-        <li>10% off all BagFree orders</li>
-        <li>Free standard delivery on every order</li>
-        <li>Enhanced BAG rewards — earn 2x points on experiences</li>
-        <li>Curator-recommended packing lists for your destination</li>
+      <div class="bg-label"><svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.5"><path d="M12 22c-4-4-8-7.5-8-12a8 8 0 0116 0c0 4.5-4 8-8 12z"/><path d="M12 10v4"/></svg> Second Journey™</div>
+      <ul class="tc-perks">
+        <li class="hl">Second Journey™ included</li>
+        <li class="hl">Up to 5 outfits per trip</li>
+        <li>Complimentary hotel delivery</li>
+        <li>5-day usage period</li>
       </ul>
 
-      <button class="tier-btn" onclick="selectTier('emerald')">Start Exploring</button>
+      <div class="bg-label"><svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.5"><polygon points="12 2 15.09 8.26 22 9.27 17 14.14 18.18 21.02 12 17.77 5.82 21.02 7 14.14 2 9.27 8.91 8.26"/></svg> Rewards</div>
+      <ul class="tc-perks">
+        <li class="hl">1.5x BAG Rewards</li>
+      </ul>
+
+      <button class="tc-btn" onclick="go('emerald')">Start Exploring</button>
     </div>
 
-    <!-- GOLD — Concierge -->
-    <div class="tier-card gold">
-      <div class="tier-phase">Phase Three</div>
-      <div class="tier-name">Gold</div>
-      <div class="tier-tagline">For travelers who want a dedicated local expert planning every detail.</div>
-      <div class="tier-price" data-tier="gold">$99<span>/month</span></div>
-      <div class="tier-annual">or $948/year (save $240)</div>
-      <div class="tier-divider"></div>
+    <!-- GOLD -->
+    <div class="tc gold">
+      <div class="tc-phase">Concierge</div>
+      <div class="tc-name">Gold</div>
+      <div class="tc-tag">For travelers who want a fully curated travel experience.</div>
+      <div class="tc-price" data-t="g">$69<span>/month</span></div>
+      <div class="tc-annual">or $660/year (save $168)</div>
+      <div class="tc-div"></div>
 
-      <div class="tier-group-label">Curator Access</div>
-      <ul class="tier-perks">
-        <li class="highlight">Personal curator matching — we pair you with the ideal local expert for every trip</li>
-        <li class="highlight">Priority responses from curators — your messages go to the top</li>
-        <li>Unlimited custom itinerary requests</li>
-        <li>Behind-the-scenes access to how curators discover their hidden gems</li>
+      <div class="bg-label"><svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.5"><circle cx="12" cy="12" r="10"/><path d="M2 12h20"/><path d="M12 2a15.3 15.3 0 014 10 15.3 15.3 0 01-4 10 15.3 15.3 0 01-4-10 15.3 15.3 0 014-10z"/></svg> Experiences</div>
+      <ul class="tc-perks">
+        <li class="hl">Everything in Emerald</li>
+        <li class="hl">Exclusive Gold-only experiences</li>
+        <li>Custom itinerary requests</li>
       </ul>
 
-      <div class="tier-group-label">Experiences</div>
-      <ul class="tier-perks">
-        <li class="highlight">Personalized experience itineraries — your curator builds your trip around the best local events</li>
-        <li class="highlight">Exclusive Gold-only invitations — private dinners, insider tours, VIP access hosted by BagFree</li>
-        <li>First-to-know access to high-demand experiences before any other tier</li>
-        <li>Booking concierge — your curator handles reservations on your behalf</li>
+      <div class="bg-label"><svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.5"><path d="M17 21v-2a4 4 0 00-4-4H5a4 4 0 00-4 4v2"/><circle cx="9" cy="7" r="4"/><path d="M23 21v-2a4 4 0 00-3-3.87"/><path d="M16 3.13a4 4 0 010 7.75"/></svg> Curators</div>
+      <ul class="tc-perks">
+        <li class="hl">Personal curator matching</li>
+        <li class="hl">Priority responses</li>
+        <li>Curator-selected destination wardrobe</li>
       </ul>
 
-      <div class="tier-group-label">Concierge Services</div>
-      <ul class="tier-perks">
-        <li class="highlight">Dedicated travel concierge — real human support for planning, booking, and trip logistics</li>
-        <li>Complimentary arrival package at partner hotels — essentials waiting in your room</li>
-        <li>20% off all BagFree orders</li>
-        <li>Free same-day delivery upgrades</li>
-        <li>3x BAG rewards on every interaction</li>
+      <div class="bg-label"><svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.5"><path d="M21 15a2 2 0 01-2 2H7l-4 4V5a2 2 0 012-2h14a2 2 0 012 2z"/></svg> Concierge</div>
+      <ul class="tc-perks">
+        <li class="hl">Concierge travel assistance</li>
+        <li>Priority support</li>
+        <li>Premium collections access</li>
       </ul>
 
-      <button class="tier-btn" onclick="selectTier('gold')">Get Your Concierge</button>
+      <div class="bg-label"><svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.5"><path d="M12 22c-4-4-8-7.5-8-12a8 8 0 0116 0c0 4.5-4 8-8 12z"/><path d="M12 10v4"/></svg> Second Journey™</div>
+      <ul class="tc-perks">
+        <li class="hl">Second Journey™ included</li>
+        <li class="hl">Up to 7 outfits per trip</li>
+        <li class="hl">Priority hotel delivery</li>
+        <li>7-day usage period</li>
+      </ul>
+
+      <div class="bg-label"><svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.5"><polygon points="12 2 15.09 8.26 22 9.27 17 14.14 18.18 21.02 12 17.77 5.82 21.02 7 14.14 2 9.27 8.91 8.26"/></svg> Rewards</div>
+      <ul class="tc-perks">
+        <li class="hl">2x BAG Rewards</li>
+      </ul>
+
+      <button class="tc-btn" onclick="go('gold')">Get Your Concierge</button>
     </div>
   </div>
 </section>
 
-<!-- Comparison -->
-<section class="section" id="compare">
-  <div class="section-label">Compare</div>
-  <div class="section-title">What every tier unlocks</div>
-  <div class="compare-wrap">
-    <table class="compare-table">
-      <thead><tr>
-        <th style="width:34%">Feature</th>
-        <th class="plat-col">Platinum<br><span style="font-size:0.65rem;font-weight:300;opacity:0.7">Discover</span></th>
-        <th class="em-col">Emerald<br><span style="font-size:0.65rem;font-weight:300;opacity:0.7">Explore</span></th>
-        <th class="gold-col">Gold<br><span style="font-size:0.65rem;font-weight:300;opacity:0.7">Concierge</span></th>
-      </tr></thead>
-      <tbody>
-        <tr><td class="feat">Curator Marketplace access</td><td class="yes">✓</td><td class="yes">✓</td><td class="yes">✓</td></tr>
-        <tr><td class="feat">Direct curator messaging</td><td class="no">—</td><td class="yes">✓</td><td class="yes">✓ Priority</td></tr>
-        <tr><td class="feat">Personal curator matching</td><td class="no">—</td><td class="no">—</td><td class="yes">✓ Dedicated</td></tr>
-        <tr><td class="feat">Custom itinerary requests</td><td class="no">—</td><td class="partial">3/month</td><td class="yes">Unlimited</td></tr>
-        <tr><td class="feat">Follow curators</td><td class="no">—</td><td class="yes">✓</td><td class="yes">✓</td></tr>
-        <tr><td class="feat">Curated experience collections</td><td class="yes">Browse</td><td class="yes">Curator-picked</td><td class="yes">Personalized for you</td></tr>
-        <tr><td class="feat">BagFree-hosted VIP experiences</td><td class="no">—</td><td class="no">—</td><td class="yes">✓ Exclusive</td></tr>
-        <tr><td class="feat">Priority access</td><td class="no">—</td><td class="yes">✓</td><td class="yes">✓ + concierge books for you</td></tr>
-        <tr><td class="feat">Early experience notifications</td><td class="no">—</td><td class="partial">48hr head start</td><td class="yes">✓ First to know</td></tr>
-        <tr><td class="feat">Dedicated concierge</td><td class="no">—</td><td class="no">—</td><td class="yes">✓ Personal</td></tr>
-        <tr><td class="feat">Arrival package at hotels</td><td class="no">—</td><td class="no">—</td><td class="yes">✓ Complimentary</td></tr>
-        <tr><td class="feat">BagFree order discount</td><td>5%</td><td>10%</td><td class="yes">20%</td></tr>
-        <tr><td class="feat">Delivery</td><td class="partial">Standard rates</td><td>Free standard</td><td class="yes">Free same-day</td></tr>
-        <tr><td class="feat">BAG rewards multiplier</td><td>1x</td><td>2x</td><td class="yes">3x</td></tr>
-        <tr><td class="feat">Community forum</td><td class="yes">✓</td><td class="yes">✓</td><td class="yes">✓</td></tr>
-        <tr><td class="feat">Monthly price</td><td>$19</td><td>$49</td><td class="yes">$99</td></tr>
-      </tbody>
-    </table>
+<!-- Why Membership -->
+<section class="s" id="why">
+  <div style="text-align:center;margin-bottom:2rem">
+    <div class="sl">The BagFree Difference</div>
+    <div class="st">Why Membership?</div>
+  </div>
+
+  <div class="why">
+    <div class="why-card">
+      <div class="why-icon" style="background:var(--gd)"><svg viewBox="0 0 24 24" width="24" height="24" fill="none" stroke="var(--gold)" stroke-width="1.3"><rect x="2" y="7" width="20" height="14" rx="2"/><path d="M16 7V5a4 4 0 00-8 0v2"/></svg></div>
+      <div class="why-title">Travel Light</div>
+      <div class="why-desc">Receive clothing and travel essentials at your destination. Pack less, arrive prepared.</div>
+    </div>
+    <div class="why-card">
+      <div class="why-icon" style="background:var(--emd)"><svg viewBox="0 0 24 24" width="24" height="24" fill="none" stroke="var(--em)" stroke-width="1.3"><circle cx="12" cy="12" r="10"/><polygon points="16.24 7.76 14.12 14.12 7.76 16.24 9.88 9.88" fill="rgba(80,200,120,0.15)"/></svg></div>
+      <div class="why-title">Experience More</div>
+      <div class="why-desc">Discover cities through trusted local curators who know every hidden gem.</div>
+    </div>
+    <div class="why-card">
+      <div class="why-icon" style="background:var(--gd)"><svg viewBox="0 0 24 24" width="24" height="24" fill="rgba(201,169,110,0.15)" stroke="var(--gold)" stroke-width="1.3"><polygon points="12 2 15.09 8.26 22 9.27 17 14.14 18.18 21.02 12 17.77 5.82 21.02 7 14.14 2 9.27 8.91 8.26"/></svg></div>
+      <div class="why-title">Earn Rewards</div>
+      <div class="why-desc">Collect BAG Rewards through travel, participation, and community engagement.</div>
+    </div>
+    <div class="why-card">
+      <div class="why-icon" style="background:rgba(127,183,126,0.1)"><svg viewBox="0 0 24 24" width="24" height="24" fill="rgba(127,183,126,0.12)" stroke="var(--sage)" stroke-width="1.3"><path d="M12 22c-4-4-8-7.5-8-12a8 8 0 0116 0c0 4.5-4 8-8 12z"/></svg></div>
+      <div class="why-title">Leave Less Behind</div>
+      <div class="why-desc">Support sustainable travel through Second Journey™. Reuse, reduce, travel better.</div>
+    </div>
   </div>
 </section>
 
-<!-- Curator Marketplace Teaser -->
-<section class="section" id="marketplace">
-  <div class="marketplace">
-    <div class="marketplace-inner">
-      <div class="section-label" style="text-align:center">Coming Soon</div>
-      <h2>The Curator <em>Marketplace</em></h2>
-      <p>A new way to experience travel. Top-rated curators create and sell curated experiences — from secret food crawls to private art tours. Your membership determines your level of access.</p>
-
-      <div class="marketplace-grid">
-        <div class="marketplace-card">
-          <div class="marketplace-card-icon"><svg viewBox="0 0 24 24" width="26" height="26" fill="rgba(201,169,110,0.1)" stroke="#c9a96e" stroke-width="1.3"><rect x="3" y="3" width="18" height="18" rx="2"/><path d="M3 9h18"/><path d="M9 3v18"/></svg></div>
-          <div class="marketplace-card-title">Bookable Experiences</div>
-          <div class="marketplace-card-desc">Curators design and publish unique local experiences. Travelers book through trusted partner links. Curators earn revenue from every experience they recommend.</div>
-        </div>
-        <div class="marketplace-card">
-          <div class="marketplace-card-icon"><svg viewBox="0 0 24 24" width="26" height="26" fill="rgba(201,169,110,0.08)" stroke="#c9a96e" stroke-width="1.3"><path d="M21 15a2 2 0 01-2 2H7l-4 4V5a2 2 0 012-2h14a2 2 0 012 2z"/><path d="M8 9h8"/><path d="M8 13h5"/></svg></div>
-          <div class="marketplace-card-title">Trip Messaging</div>
-          <div class="marketplace-card-desc">Emerald and Gold members can message curators during their trip for real-time local advice and recommendations.</div>
-        </div>
-        <div class="marketplace-card">
-          <div class="marketplace-card-icon"><svg viewBox="0 0 24 24" width="26" height="26" fill="none" stroke="#c9a96e" stroke-width="1.3"><circle cx="12" cy="12" r="10"/><path d="M12 6v12"/><path d="M15.5 9.5c-.8-1-2-1.5-3.5-1.5-2.5 0-3.5 1.5-3.5 2.5s1 2.5 3.5 2.5c2.5 0 3.5 1.5 3.5 2.5s-1 2.5-3.5 2.5c-1.5 0-2.7-.5-3.5-1.5"/></svg></div>
-          <div class="marketplace-card-title">Curator Earnings</div>
-          <div class="marketplace-card-desc">Curators earn revenue from experience sales, partner bookings, and premium consulting — building real travel businesses.</div>
-        </div>
-        <div class="marketplace-card">
-          <div class="marketplace-card-icon"><svg viewBox="0 0 24 24" width="26" height="26" fill="rgba(201,169,110,0.12)" stroke="#c9a96e" stroke-width="1.3"><polygon points="12 2 15.09 8.26 22 9.27 17 14.14 18.18 21.02 12 17.77 5.82 21.02 7 14.14 2 9.27 8.91 8.26 12 2"/></svg></div>
-          <div class="marketplace-card-title">Reality Scores</div>
-          <div class="marketplace-card-desc">Verified travelers rate experiences after completing them. AI scoring + real traveler satisfaction = the most trusted travel recommendations.</div>
-        </div>
+<!-- Sustainability -->
+<section class="s" id="sustain">
+  <div class="sustain">
+    <div style="position:relative;z-index:1;text-align:center;max-width:600px;margin:0 auto">
+      <div class="sl" style="text-align:center;color:var(--sage)">Sustainability</div>
+      <div class="st" style="margin-bottom:0.8rem">Second Journey™ is included in every membership.</div>
+      <p style="color:var(--m);font-size:0.9rem;line-height:1.65;margin-bottom:1.5rem">Every BagFree member gets access to sustainable clothing and travel essentials — quality items that deserve a second journey, delivered to your hotel at no extra charge. Pack less, reduce waste, and arrive prepared for anything.</p>
+      <div style="display:flex;justify-content:center;gap:2rem;flex-wrap:wrap">
+        <div style="text-align:center"><div style="font-size:1.4rem;font-weight:600;color:var(--sage)">420+</div><div style="font-size:0.6rem;letter-spacing:1px;text-transform:uppercase;color:var(--f)">lbs diverted</div></div>
+        <div style="text-align:center"><div style="font-size:1.4rem;font-weight:600;color:var(--sage)">380+</div><div style="font-size:0.6rem;letter-spacing:1px;text-transform:uppercase;color:var(--f)">items rehomed</div></div>
+        <div style="text-align:center"><div style="font-size:1.4rem;font-weight:600;color:var(--sage)">85+</div><div style="font-size:0.6rem;letter-spacing:1px;text-transform:uppercase;color:var(--f)">travelers helped</div></div>
       </div>
-
-      <div class="marketplace-tag">✦ Launching 2026 ✦</div>
     </div>
   </div>
 </section>
 
 <!-- CTA -->
-<section class="section">
-  <div class="cta-section">
-    <h2>Every great trip starts with the right guide.</h2>
-    <p>Join BagFree and unlock access to the local experts, curated experiences, and premium support that make travel unforgettable.</p>
-    <a href="#tiers" class="btn-gold">Choose Your Tier</a>
+<section class="s">
+  <div class="cta">
+    <h2>Every great trip starts with the right membership.</h2>
+    <p>Join BagFree and unlock curators, experiences, rewards, and sustainable travel — all in one place.</p>
+    <a href="#tiers" class="cta-btn">Choose Your Tier</a>
   </div>
 </section>
 
-<footer class="page-footer">
-  <a href="/">BagFree.app</a> · Membership<br>
-  <span style="margin-top:0.4rem;display:inline-block">© 2026 BagFree. All rights reserved.</span>
-</footer>
+<footer class="ft"><a href="/">BagFree.app</a> · Membership<br><span style="margin-top:0.4rem;display:inline-block">© 2026 BagFree. All rights reserved.</span></footer>
 
 <script>
-var SUPABASE_URL = 'https://vkctidpaghpdlmleezvq.supabase.co';
-var SUPABASE_ANON_KEY = 'eyJhbGciOiJIUzI1NiIsInR5cCI6IkpXVCJ9.eyJpc3MiOiJzdXBhYmFzZSIsInJlZiI6InZrY3RpZHBhZ2hwZGxtbGVlenZxIiwicm9sZSI6ImFub24iLCJpYXQiOjE3NzUzMjI5MjgsImV4cCI6MjA5MDg5ODkyOH0.wKtG6XD6CwLy3rJDZc4S10-NqNr3fcCXHYOWJt_C628';
-var billingCycle = 'monthly';
-var TIER_PRICES = {
-  gold:     { monthly:'$99', annual:'$79' },
-  emerald:  { monthly:'$49', annual:'$39' },
-  platinum: { monthly:'$19', annual:'$15' }
-};
-
-function setBilling(cycle) {
-  billingCycle = cycle;
-  var track = document.getElementById('billing-track');
-  var lblM = document.getElementById('lbl-monthly');
-  var lblA = document.getElementById('lbl-annual');
-  var badge = document.getElementById('save-badge');
-  if (cycle === 'annual') {
-    track.classList.add('annual'); lblM.classList.remove('active'); lblA.classList.add('active'); badge.style.opacity = '1';
-  } else {
-    track.classList.remove('annual'); lblM.classList.add('active'); lblA.classList.remove('active'); badge.style.opacity = '0.4';
-  }
-  document.querySelectorAll('.tier-price').forEach(function(el) {
-    var tier = el.getAttribute('data-tier');
-    if (tier && TIER_PRICES[tier]) {
-      var price = TIER_PRICES[tier][cycle];
-      el.innerHTML = price + '<span>/' + (cycle === 'annual' ? 'mo (billed yearly)' : 'month') + '</span>';
-    }
-  });
-}
-function toggleBilling() { setBilling(billingCycle === 'monthly' ? 'annual' : 'monthly'); }
-
-async function selectTier(tier) {
-  var btn = event.target;
-  var origText = btn.textContent;
-  btn.disabled = true;
-  btn.innerHTML = '<span class="loading-spinner"></span> Redirecting\u2026';
-  try {
-    var res = await fetch(SUPABASE_URL + '/functions/v1/stripe-checkout', {
-      method: 'POST',
-      headers: { 'Content-Type': 'application/json', 'Authorization': 'Bearer ' + SUPABASE_ANON_KEY, 'apikey': SUPABASE_ANON_KEY },
-      body: JSON.stringify({ tier_id: tier, billing_cycle: billingCycle })
-    });
-    var data = await res.json();
-    if (data.url) { window.location.href = data.url; }
-    else { throw new Error(data.error || 'Could not create checkout session'); }
-  } catch (err) {
-    btn.disabled = false; btn.textContent = origText;
-    showBanner('cancelled', 'Something went wrong', err.message || 'Please try again.');
-  }
-}
-
-function showBanner(type, title, message) {
-  var el = document.getElementById('status-banner');
-  el.innerHTML = '<div class="status-banner ' + type + '"><h3>' + title + '</h3><p>' + message + '</p></div>';
-  el.scrollIntoView({ behavior: 'smooth', block: 'center' });
-}
-
-(function() {
-  var params = new URLSearchParams(window.location.search);
-  if (params.get('success') === 'true') {
-    var tier = params.get('tier') || '';
-    var names = { gold: 'Gold', emerald: 'Emerald', platinum: 'Platinum' };
-    showBanner('success', 'Welcome to BagFree ' + (names[tier] || '') + '.', 'Your membership is active. Check your email for next steps and your first curator introduction.');
-    window.history.replaceState({}, '', window.location.pathname);
-  }
-  if (params.get('cancelled') === 'true') {
-    showBanner('cancelled', 'Checkout cancelled', 'No worries \u2014 your card was not charged. You can try again anytime.');
-    window.history.replaceState({}, '', window.location.pathname);
-  }
-})();
-
-document.querySelectorAll('a[href^="#"]').forEach(function(a) {
-  a.addEventListener('click', function(e) {
-    var target = document.querySelector(this.getAttribute('href'));
-    if (target) { e.preventDefault(); target.scrollIntoView({ behavior: 'smooth', block: 'start' }); }
-  });
-});
+var SU='https://vkctidpaghpdlmleezvq.supabase.co',SK='eyJhbGciOiJIUzI1NiIsInR5cCI6IkpXVCJ9.eyJpc3MiOiJzdXBhYmFzZSIsInJlZiI6InZrY3RpZHBhZ2hwZGxtbGVlenZxIiwicm9sZSI6ImFub24iLCJpYXQiOjE3NzUzMjI5MjgsImV4cCI6MjA5MDg5ODkyOH0.wKtG6XD6CwLy3rJDZc4S10-NqNr3fcCXHYOWJt_C628';
+var bc='m',P={p:{m:'$19',a:'$15'},e:{m:'$39',a:'$31'},g:{m:'$69',a:'$55'}};
+function setB(c){bc=c;var t=document.getElementById('trk'),lm=document.getElementById('lbl-m'),la=document.getElementById('lbl-a'),sv=document.getElementById('sv');if(c==='a'){t.classList.add('on');lm.classList.remove('active');la.classList.add('active');sv.style.opacity='1';}else{t.classList.remove('on');lm.classList.add('active');la.classList.remove('active');sv.style.opacity='0.4';}document.querySelectorAll('.tc-price').forEach(function(el){var k=el.getAttribute('data-t');if(k&&P[k]){el.innerHTML=P[k][c]+'<span>/'+(c==='a'?'mo (billed yearly)':'month')+'</span>';}});}
+function togB(){setB(bc==='m'?'a':'m');}
+async function go(tier){var btn=event.target,ot=btn.textContent;btn.disabled=true;btn.textContent='Redirecting\u2026';try{var r=await fetch(SU+'/functions/v1/stripe-checkout',{method:'POST',headers:{'Content-Type':'application/json','Authorization':'Bearer '+SK,'apikey':SK},body:JSON.stringify({tier_id:tier,billing_cycle:bc==='a'?'annual':'monthly'})});var d=await r.json();if(d.url){window.location.href=d.url;}else{throw new Error(d.error||'Could not create session');}}catch(e){btn.disabled=false;btn.textContent=ot;alert(e.message||'Please try again.');}}
+document.querySelectorAll('a[href^="#"]').forEach(function(a){a.addEventListener('click',function(e){var t=document.querySelector(this.getAttribute('href'));if(t){e.preventDefault();t.scrollIntoView({behavior:'smooth'});}});});
+(function(){var p=new URLSearchParams(window.location.search);if(p.get('success')==='true'){alert('Welcome to BagFree! Your membership is active.');window.history.replaceState({},'',window.location.pathname);}if(p.get('cancelled')==='true'){alert('Checkout cancelled. Your card was not charged.');window.history.replaceState({},'',window.location.pathname);}})();
 </script>
 </body>
 </html>
