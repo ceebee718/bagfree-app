@@ -657,6 +657,31 @@ input,select,textarea{outline:none}
   .cart-summary{gap:0.5rem;flex-direction:column;align-items:flex-start;}
   .cart-continue{width:100%}
 }
+
+/* ─── SECOND JOURNEY SECTION ─── */
+.sj-section{margin-top:4rem;padding:0 0.5rem}
+.sj-header{display:flex;align-items:center;gap:0.6rem;margin-bottom:0.4rem}
+.sj-badge{font-size:0.58rem;letter-spacing:4px;text-transform:uppercase;color:#7fb77e;font-weight:600}
+.sj-title{font-family:'Cormorant Garamond',Georgia,serif;font-size:1.8rem;font-weight:400;color:rgba(var(--text-rgb),1);margin-bottom:0.4rem}
+.sj-sub{font-size:0.88rem;color:rgba(var(--text-rgb),0.55);margin-bottom:1.5rem;max-width:500px;line-height:1.55}
+.sj-grid{display:grid;grid-template-columns:repeat(auto-fill,minmax(220px,1fr));gap:1.25rem;margin-bottom:1.5rem}
+.sj-card{background:rgba(127,183,126,0.04);border:1px solid rgba(127,183,126,0.15);border-radius:14px;overflow:hidden;transition:all 0.3s cubic-bezier(.4,0,.2,1)}
+.sj-card:hover{border-color:rgba(127,183,126,0.4);transform:translateY(-4px);box-shadow:0 16px 36px rgba(0,0,0,0.18)}
+.sj-card-img{width:100%;height:180px;object-fit:cover;display:block;transition:transform 0.4s}
+.sj-card:hover .sj-card-img{transform:scale(1.04)}
+.sj-card-body{padding:1rem 1.1rem}
+.sj-card-cat{font-size:0.55rem;letter-spacing:1.5px;text-transform:uppercase;color:#7fb77e;font-weight:600;margin-bottom:0.25rem}
+.sj-card-name{font-family:'Cormorant Garamond',serif;font-size:1.05rem;font-weight:500;color:rgba(var(--text-rgb),1);margin-bottom:0.2rem}
+.sj-card-meta{font-size:0.72rem;color:rgba(var(--text-rgb),0.45);margin-bottom:0.7rem}
+.sj-card-foot{display:flex;align-items:center;justify-content:space-between;padding-top:0.6rem;border-top:1px solid rgba(127,183,126,0.08)}
+.sj-card-bag{display:flex;align-items:center;gap:0.3rem;font-weight:600;color:var(--gold)}
+.sj-card-bag span{font-size:0.65rem;font-weight:300;color:rgba(var(--text-rgb),0.4)}
+.sj-card-retail{font-size:0.65rem;color:rgba(var(--text-rgb),0.35);text-decoration:line-through}
+.sj-cta{display:inline-flex;align-items:center;gap:0.5rem;background:transparent;border:1px solid rgba(127,183,126,0.3);color:#7fb77e;padding:0.75rem 2rem;border-radius:30px;font-size:0.72rem;font-weight:600;letter-spacing:1.5px;text-transform:uppercase;transition:all 0.25s;text-decoration:none}
+.sj-cta:hover{background:rgba(127,183,126,0.08);border-color:rgba(127,183,126,0.5);transform:translateY(-2px)}
+.sj-note{font-size:0.72rem;color:rgba(var(--text-rgb),0.4);margin-top:0.8rem}
+html.light .sj-card{background:rgba(127,183,126,0.04);border-color:rgba(127,183,126,0.15)}
+html.light .sj-card:hover{border-color:rgba(127,183,126,0.35)}
 </style>
 </head>
 <body>
@@ -841,78 +866,78 @@ input,select,textarea{outline:none}
   </div>
 
   <!-- SECOND JOURNEY -->
-  <div style="margin-top:4rem;padding:0 0.5rem">
-    <div style="display:flex;align-items:center;gap:0.6rem;margin-bottom:0.4rem">
-      <svg viewBox="0 0 24 24" width="18" height="18" fill="none" stroke="rgb(127,183,126)" stroke-width="1.5"><path d="M12 22c-4-4-8-7.5-8-12a8 8 0 0116 0c0 4.5-4 8-8 12z"/></svg>
-      <span style="font-size:0.58rem;letter-spacing:4px;text-transform:uppercase;color:rgb(127,183,126);font-weight:600">Second Journey™ · Savannah</span>
+  <div class="sj-section">
+    <div class="sj-header">
+      <svg viewBox="0 0 24 24" width="18" height="18" fill="none" stroke="#7fb77e" stroke-width="1.5"><path d="M12 22c-4-4-8-7.5-8-12a8 8 0 0116 0c0 4.5-4 8-8 12z"/></svg>
+      <span class="sj-badge">Second Journey™ · Savannah</span>
     </div>
-    <h2 style="font-family:'Cormorant Garamond',Georgia,serif;font-size:1.8rem;font-weight:400;color:rgba(var(--text-rgb),1);margin-bottom:0.4rem">Sustainable travel essentials.</h2>
-    <p style="font-size:0.88rem;color:rgba(var(--text-rgb),0.55);margin-bottom:1.5rem;max-width:500px;line-height:1.55">Quality items from fellow travelers — verified, curated, and delivered to your hotel. Redeem with BAG Points.</p>
+    <h2 class="sj-title">Sustainable travel essentials.</h2>
+    <p class="sj-sub">Quality items from fellow travelers — verified, curated, and delivered to your hotel. Redeem with BAG Points.</p>
 
-    <div style="display:grid;grid-template-columns:repeat(auto-fill,minmax(220px,1fr));gap:1rem;margin-bottom:1.5rem">
-      <div style="background:var(--noir-2);border:1px solid rgba(var(--gold-rgb),0.08);border-radius:12px;overflow:hidden;transition:all 0.3s">
-        <img src="https://images.unsplash.com/photo-1556821840-3a63f95609a7?w=400&h=280&fit=crop" alt="Fleece Jacket" style="width:100%;height:160px;object-fit:cover;display:block">
-        <div style="padding:1rem">
-          <div style="font-size:0.55rem;letter-spacing:1.5px;text-transform:uppercase;color:rgb(127,183,126);font-weight:600;margin-bottom:0.25rem">Jacket</div>
-          <div style="font-family:'Cormorant Garamond',serif;font-size:1.05rem;font-weight:500;margin-bottom:0.2rem">Patagonia Better Sweater</div>
-          <div style="font-size:0.72rem;color:rgba(var(--text-rgb),0.45);margin-bottom:0.6rem">Size M · Excellent condition</div>
-          <div style="display:flex;align-items:center;justify-content:space-between">
-            <div style="display:flex;align-items:center;gap:0.3rem;font-weight:600;color:rgba(var(--gold-rgb),1)"><svg viewBox="0 0 24 24" width="14" height="14" fill="rgba(var(--gold-rgb),1)" stroke="none"><polygon points="12 2 15.09 8.26 22 9.27 17 14.14 18.18 21.02 12 17.77 5.82 21.02 7 14.14 2 9.27 8.91 8.26"/></svg> 500 <span style="font-size:0.65rem;font-weight:300;color:rgba(var(--text-rgb),0.4)">BAG</span></div>
-            <span style="font-size:0.65rem;color:rgba(var(--text-rgb),0.35);text-decoration:line-through">$149 retail</span>
+    <div class="sj-grid">
+      <div class="sj-card">
+        <img class="sj-card-img" src="https://images.unsplash.com/photo-1556821840-3a63f95609a7?w=400&h=360&fit=crop" alt="Fleece Jacket">
+        <div class="sj-card-body">
+          <div class="sj-card-cat">Jacket</div>
+          <div class="sj-card-name">Patagonia Better Sweater</div>
+          <div class="sj-card-meta">Size M · Excellent condition</div>
+          <div class="sj-card-foot">
+            <div class="sj-card-bag"><svg viewBox="0 0 24 24" width="14" height="14" fill="var(--gold)" stroke="none"><polygon points="12 2 15.09 8.26 22 9.27 17 14.14 18.18 21.02 12 17.77 5.82 21.02 7 14.14 2 9.27 8.91 8.26"/></svg> 500 <span>BAG</span></div>
+            <span class="sj-card-retail">$149 retail</span>
           </div>
         </div>
       </div>
 
-      <div style="background:var(--noir-2);border:1px solid rgba(var(--gold-rgb),0.08);border-radius:12px;overflow:hidden;transition:all 0.3s">
-        <img src="https://images.unsplash.com/photo-1490481651871-ab68de25d43d?w=400&h=280&fit=crop" alt="Linen Dress" style="width:100%;height:160px;object-fit:cover;display:block">
-        <div style="padding:1rem">
-          <div style="font-size:0.55rem;letter-spacing:1.5px;text-transform:uppercase;color:rgb(127,183,126);font-weight:600;margin-bottom:0.25rem">Clothing</div>
-          <div style="font-family:'Cormorant Garamond',serif;font-size:1.05rem;font-weight:500;margin-bottom:0.2rem">Linen Midi Dress — Ivory</div>
-          <div style="font-size:0.72rem;color:rgba(var(--text-rgb),0.45);margin-bottom:0.6rem">Size S · Good condition</div>
-          <div style="display:flex;align-items:center;justify-content:space-between">
-            <div style="display:flex;align-items:center;gap:0.3rem;font-weight:600;color:rgba(var(--gold-rgb),1)"><svg viewBox="0 0 24 24" width="14" height="14" fill="rgba(var(--gold-rgb),1)" stroke="none"><polygon points="12 2 15.09 8.26 22 9.27 17 14.14 18.18 21.02 12 17.77 5.82 21.02 7 14.14 2 9.27 8.91 8.26"/></svg> 350 <span style="font-size:0.65rem;font-weight:300;color:rgba(var(--text-rgb),0.4)">BAG</span></div>
-            <span style="font-size:0.65rem;color:rgba(var(--text-rgb),0.35);text-decoration:line-through">$85 retail</span>
+      <div class="sj-card">
+        <img class="sj-card-img" src="https://images.unsplash.com/photo-1490481651871-ab68de25d43d?w=400&h=360&fit=crop" alt="Linen Dress">
+        <div class="sj-card-body">
+          <div class="sj-card-cat">Clothing</div>
+          <div class="sj-card-name">Linen Midi Dress — Ivory</div>
+          <div class="sj-card-meta">Size S · Good condition</div>
+          <div class="sj-card-foot">
+            <div class="sj-card-bag"><svg viewBox="0 0 24 24" width="14" height="14" fill="var(--gold)" stroke="none"><polygon points="12 2 15.09 8.26 22 9.27 17 14.14 18.18 21.02 12 17.77 5.82 21.02 7 14.14 2 9.27 8.91 8.26"/></svg> 350 <span>BAG</span></div>
+            <span class="sj-card-retail">$85 retail</span>
           </div>
         </div>
       </div>
 
-      <div style="background:var(--noir-2);border:1px solid rgba(var(--gold-rgb),0.08);border-radius:12px;overflow:hidden;transition:all 0.3s">
-        <img src="https://images.unsplash.com/photo-1583863788434-e58a36330cf0?w=400&h=280&fit=crop" alt="Charger Kit" style="width:100%;height:160px;object-fit:cover;display:block">
-        <div style="padding:1rem">
-          <div style="font-size:0.55rem;letter-spacing:1.5px;text-transform:uppercase;color:rgb(127,183,126);font-weight:600;margin-bottom:0.25rem">Essentials</div>
-          <div style="font-family:'Cormorant Garamond',serif;font-size:1.05rem;font-weight:500;margin-bottom:0.2rem">USB-C + Lightning Cable Kit</div>
-          <div style="font-size:0.72rem;color:rgba(var(--text-rgb),0.45);margin-bottom:0.6rem">Universal · Like New</div>
-          <div style="display:flex;align-items:center;justify-content:space-between">
-            <div style="display:flex;align-items:center;gap:0.3rem;font-weight:600;color:rgba(var(--gold-rgb),1)"><svg viewBox="0 0 24 24" width="14" height="14" fill="rgba(var(--gold-rgb),1)" stroke="none"><polygon points="12 2 15.09 8.26 22 9.27 17 14.14 18.18 21.02 12 17.77 5.82 21.02 7 14.14 2 9.27 8.91 8.26"/></svg> 200 <span style="font-size:0.65rem;font-weight:300;color:rgba(var(--text-rgb),0.4)">BAG</span></div>
-            <span style="font-size:0.65rem;color:rgba(var(--text-rgb),0.35);text-decoration:line-through">$25 retail</span>
+      <div class="sj-card">
+        <img class="sj-card-img" src="https://images.unsplash.com/photo-1583863788434-e58a36330cf0?w=400&h=360&fit=crop" alt="Charger Kit">
+        <div class="sj-card-body">
+          <div class="sj-card-cat">Essentials</div>
+          <div class="sj-card-name">USB-C + Lightning Cable Kit</div>
+          <div class="sj-card-meta">Universal · Like New</div>
+          <div class="sj-card-foot">
+            <div class="sj-card-bag"><svg viewBox="0 0 24 24" width="14" height="14" fill="var(--gold)" stroke="none"><polygon points="12 2 15.09 8.26 22 9.27 17 14.14 18.18 21.02 12 17.77 5.82 21.02 7 14.14 2 9.27 8.91 8.26"/></svg> 200 <span>BAG</span></div>
+            <span class="sj-card-retail">$25 retail</span>
           </div>
         </div>
       </div>
 
-      <div style="background:var(--noir-2);border:1px solid rgba(var(--gold-rgb),0.08);border-radius:12px;overflow:hidden;transition:all 0.3s">
-        <img src="https://images.unsplash.com/photo-1594938298603-c8148c4dae35?w=400&h=280&fit=crop" alt="Travel Blazer" style="width:100%;height:160px;object-fit:cover;display:block">
-        <div style="padding:1rem">
-          <div style="font-size:0.55rem;letter-spacing:1.5px;text-transform:uppercase;color:rgb(127,183,126);font-weight:600;margin-bottom:0.25rem">Clothing</div>
-          <div style="font-family:'Cormorant Garamond',serif;font-size:1.05rem;font-weight:500;margin-bottom:0.2rem">Navy Wrinkle-Free Blazer</div>
-          <div style="font-size:0.72rem;color:rgba(var(--text-rgb),0.45);margin-bottom:0.6rem">Size L · Excellent condition</div>
-          <div style="display:flex;align-items:center;justify-content:space-between">
-            <div style="display:flex;align-items:center;gap:0.3rem;font-weight:600;color:rgba(var(--gold-rgb),1)"><svg viewBox="0 0 24 24" width="14" height="14" fill="rgba(var(--gold-rgb),1)" stroke="none"><polygon points="12 2 15.09 8.26 22 9.27 17 14.14 18.18 21.02 12 17.77 5.82 21.02 7 14.14 2 9.27 8.91 8.26"/></svg> 450 <span style="font-size:0.65rem;font-weight:300;color:rgba(var(--text-rgb),0.4)">BAG</span></div>
-            <span style="font-size:0.65rem;color:rgba(var(--text-rgb),0.35);text-decoration:line-through">$120 retail</span>
+      <div class="sj-card">
+        <img class="sj-card-img" src="https://images.unsplash.com/photo-1594938298603-c8148c4dae35?w=400&h=360&fit=crop" alt="Travel Blazer">
+        <div class="sj-card-body">
+          <div class="sj-card-cat">Clothing</div>
+          <div class="sj-card-name">Navy Wrinkle-Free Blazer</div>
+          <div class="sj-card-meta">Size L · Excellent condition</div>
+          <div class="sj-card-foot">
+            <div class="sj-card-bag"><svg viewBox="0 0 24 24" width="14" height="14" fill="var(--gold)" stroke="none"><polygon points="12 2 15.09 8.26 22 9.27 17 14.14 18.18 21.02 12 17.77 5.82 21.02 7 14.14 2 9.27 8.91 8.26"/></svg> 450 <span>BAG</span></div>
+            <span class="sj-card-retail">$120 retail</span>
           </div>
         </div>
       </div>
     </div>
 
     <div style="text-align:center">
-      <a href="/second-journey.html" style="display:inline-flex;align-items:center;gap:0.5rem;background:transparent;border:1px solid rgba(127,183,126,0.3);color:rgb(127,183,126);padding:0.75rem 2rem;border-radius:30px;font-size:0.72rem;font-weight:600;letter-spacing:1.5px;text-transform:uppercase;transition:all 0.25s;text-decoration:none">
+      <a href="/second-journey.html" class="sj-cta">
         <svg viewBox="0 0 24 24" width="16" height="16" fill="none" stroke="currentColor" stroke-width="1.5"><path d="M12 22c-4-4-8-7.5-8-12a8 8 0 0116 0c0 4.5-4 8-8 12z"/></svg>
         Browse All Second Journey Items
       </a>
-      <p style="font-size:0.72rem;color:rgba(var(--text-rgb),0.4);margin-top:0.8rem">Delivery included with BAG redemption · Savannah pilot</p>
+      <p class="sj-note">Delivery included with BAG redemption · Savannah pilot</p>
     </div>
   </div>
 
-  <footer class="footer">
+    <footer class="footer">
     <a href="/" class="footer-link">BagFree.app</a>&nbsp;·&nbsp;<a href="https://valetbynuor.com" class="footer-link" target="_blank" rel="noopener">Valet By Nuor</a>&nbsp;·&nbsp;<a href="/departure-lounge.html" class="footer-link">Full Lounge ↗</a>
     <div class="footer-credit">Same-day delivery · Florida &amp; Georgia · Powered by Valet By Nuor</div>
   </footer>
