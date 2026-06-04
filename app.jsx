@@ -703,7 +703,6 @@ function Sidebar(props) {
       <a href="/" className="brand-link" onClick={function(){ if(props.onClose) props.onClose(); }}>
         <img src={LOGO_SRC} alt="BagFree" className="brand-img"/>
       </a>
-      <div style={{display:'flex',justifyContent:'flex-end',padding:'0 0.95rem',marginTop:'-0.5rem',marginBottom:'0.5rem'}}><ThemeToggle/></div>
 
       <div className="meta-anchor" style={{ marginTop:'-1.4rem' }}>
         <div className="sidebar-city" onClick={function(e){ e.stopPropagation(); setOpen(!open); }}>
@@ -1392,6 +1391,7 @@ function TopBar(props) {
         <SearchBar city={props.city} onSearch={props.onSearch} onItemClick={props.onItemClick} onClearResults={props.onClearResults}/>
       </div>
       <div className="topbar-actions">
+        <ThemeToggle/>
         <button className="icon-btn" title="Search"><Icon.Search/></button>
         <button className="icon-btn" title="Notifications">
           <Icon.Bell/><span className="badge">2</span>
@@ -1838,7 +1838,6 @@ function App() {
           <span></span><span></span><span></span>
         </button>
         <a href="/" className="brand-link"><img src={LOGO_SRC} alt="BagFree" className="brand-img--sm"/></a>
-        <ThemeToggle/>
         <div className="mobile-bar-spacer"></div>
       </div>
       <div className={'drawer-overlay' + (drawerOpen ? ' show' : '')} onClick={function(){ setDrawerOpen(false); }}></div>
