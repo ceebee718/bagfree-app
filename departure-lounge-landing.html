@@ -789,7 +789,7 @@ input,select,textarea{outline:none}
         <div class="reserve-section">
           <div class="reserve-label">Your arrival</div>
           <div class="reserve-summary" id="reserveSummary"></div>
-          <div id="datePickerFallback" style="display:none;margin-top:0.5rem">
+          <div id="datePickerFallback" style="margin-top:0.5rem">
             <div style="display:grid;grid-template-columns:1fr 1fr;gap:0.6rem">
               <div>
                 <div style="font-size:0.58rem;letter-spacing:1.5px;text-transform:uppercase;color:rgba(var(--gold-rgb),0.6);margin-bottom:0.3rem">Arrive</div>
@@ -1467,6 +1467,16 @@ function changeBundleQty(id, delta) {
 }
 
 function updateCartBar() {
+  // Debug: log state before validation
+  console.log('submitReserve state:', JSON.stringify({
+    city: state.city,
+    dateArrive: state.dateArrive,
+    dateDepart: state.dateDepart,
+    hotel: state.hotel,
+    email: state.email,
+    bundles: Object.keys(state.selectedBundles || {})
+  }));
+
   const ids = Object.keys(state.selectedBundles);
   const totalQty = ids.reduce((s, id) => s + state.selectedBundles[id], 0);
   const totalPrice = ids.reduce((s, id) => {
@@ -1489,6 +1499,16 @@ function goToConfirm() {
 }
 
 function renderConfirmSummary() {
+  // Debug: log state before validation
+  console.log('submitReserve state:', JSON.stringify({
+    city: state.city,
+    dateArrive: state.dateArrive,
+    dateDepart: state.dateDepart,
+    hotel: state.hotel,
+    email: state.email,
+    bundles: Object.keys(state.selectedBundles || {})
+  }));
+
   const ids = Object.keys(state.selectedBundles);
   const c = document.getElementById('confirmBundles');
   c.innerHTML = ids.map(id => {
@@ -1551,33 +1571,16 @@ function updateDatesFromCheckout() {
   checkReserveReady();
 }
 
-// Show date picker fallback if dates aren't set when reaching Step 4
-var origGoToStep = typeof goToStep === 'function' ? goToStep : null;
+// Set default dates on page load
 document.addEventListener('DOMContentLoaded', function() {
-  // Check periodically if we're on step 4 without dates
-  var observer = new MutationObserver(function() {
-    var step4 = document.getElementById('step4');
-    if (step4 && step4.classList.contains('active')) {
-      var fb = document.getElementById('datePickerFallback');
-      if (fb && (!state.dateArrive || !state.dateDepart)) {
-        fb.style.display = 'block';
-        // Set default dates to today + 3 days
-        var today = new Date();
-        var arrive = today.toISOString().split('T')[0];
-        var depart = new Date(today.getTime() + 3*86400000).toISOString().split('T')[0];
-        document.getElementById('arriveDate').min = arrive;
-        document.getElementById('departDate').min = arrive;
-        if (!document.getElementById('arriveDate').value) {
-          document.getElementById('arriveDate').value = arrive;
-          document.getElementById('departDate').value = depart;
-          updateDatesFromCheckout();
-        }
-      } else if (fb && state.dateArrive && state.dateDepart) {
-        fb.style.display = 'none';
-      }
-    }
-  });
-  observer.observe(document.body, { attributes: true, subtree: true, attributeFilter: ['class'] });
+  var today = new Date();
+  var arrive = today.toISOString().split('T')[0];
+  var depart = new Date(today.getTime() + 3*86400000).toISOString().split('T')[0];
+  var arrEl = document.getElementById('arriveDate');
+  var depEl = document.getElementById('departDate');
+  if (arrEl) { arrEl.min = arrive; if (!arrEl.value) arrEl.value = arrive; }
+  if (depEl) { depEl.min = arrive; if (!depEl.value) depEl.value = depart; }
+  updateDatesFromCheckout();
 });
 
 function updateCityFromCheckout() {
@@ -1655,6 +1658,16 @@ async function submitReserve() {
   if (hotelEl && hotelEl.value === '__other__' && otherEl) state.hotel = otherEl.value;
   var emailEl = document.getElementById('reserveEmail');
   if (emailEl && emailEl.value) state.email = emailEl.value;
+
+  // Debug: log state before validation
+  console.log('submitReserve state:', JSON.stringify({
+    city: state.city,
+    dateArrive: state.dateArrive,
+    dateDepart: state.dateDepart,
+    hotel: state.hotel,
+    email: state.email,
+    bundles: Object.keys(state.selectedBundles || {})
+  }));
 
   const ids = Object.keys(state.selectedBundles);
   if (ids.length === 0) {
