@@ -1147,8 +1147,8 @@ input,select,textarea{outline:none}
             <li><span class="sj-check">✓</span> Hotel delivery &amp; pickup</li>
             <li class="sj-muted">No membership required</li>
           </ul>
-          <button class="sj-card-cta sj-cta-trial" onclick="selectSJTier('trial')">Start free trial</button>
-          <div class="sj-card-note">$5 delivery · Stripe test checkout</div>
+          <button class="sj-card-cta sj-cta-trial" onclick="addSJFromSection('sj-2day')">Start free trial — $5</button>
+          <div class="sj-card-note">$5 delivery · Checkout via Stripe</div>
         </div>
 
         <!-- 3-DAY · SECOND JOURNEY -->
@@ -1167,7 +1167,7 @@ input,select,textarea{outline:none}
             <li><span class="sj-check">✓</span> Free hotel delivery</li>
             <li><span class="sj-check">✓</span> Cancel anytime</li>
           </ul>
-          <button class="sj-card-cta" onclick="selectSJTier('3day')">Choose Second Journey</button>
+          <button class="sj-card-cta" onclick="openMembershipCheck('3day', 'sj-3day')">Choose Second Journey</button>
         </div>
 
         <!-- 5-DAY · EMERALD -->
@@ -1187,7 +1187,7 @@ input,select,textarea{outline:none}
             <li><span class="sj-check">✓</span> Free hotel delivery</li>
             <li><span class="sj-check">✓</span> Priority support</li>
           </ul>
-          <button class="sj-card-cta sj-cta-popular" onclick="selectSJTier('5day')">Choose Emerald</button>
+          <button class="sj-card-cta sj-cta-popular" onclick="openMembershipCheck('5day', 'sj-5day')">Choose Emerald</button>
         </div>
 
         <!-- 7-DAY · GOLD -->
@@ -1206,7 +1206,7 @@ input,select,textarea{outline:none}
             <li><span class="sj-check">✓</span> Free hotel delivery</li>
             <li><span class="sj-check">✓</span> Dedicated concierge</li>
           </ul>
-          <button class="sj-card-cta" onclick="selectSJTier('7day')">Choose Gold</button>
+          <button class="sj-card-cta" onclick="openMembershipCheck('7day', 'sj-7day')">Choose Gold</button>
         </div>
 
       </div><!-- /sj-grid -->
@@ -1558,9 +1558,8 @@ const BUNDLES = [
     "id": "sj-2day", "vendor": "second-journey",
     "title": "2-Day Explorer Bundle",
     "category": "unisex",
-    "tagline": "Try it free — just cover delivery. A curated 2-day clothing bundle delivered to your hotel. Perfect for an overnight or quick weekend trip.",
-    "price": 0,
-    "delivery_fee": 5,
+    "tagline": "Try it free — the bundle is on us, just cover $5 hotel delivery. Perfect for an overnight or quick weekend trip.",
+    "price": 5,
     "image": "https://valetbynuor.com/cdn/shop/files/ChatGPT_Image_Aug_22_2025_07_23_24_PM.png?v=1755905084&width=800",
     "units": 50,
     "sj_tier": "trial",
@@ -1790,27 +1789,52 @@ function renderSJBundleCard(b) {
   const isTrial = b.sj_tier === 'trial';
   const isMember = state.sjMemberVerified === b.sj_tier;
   const isPopular = b.badge === 'Most Popular';
+  const qty = state.selectedBundles[b.id] || 0;
+  const isSelected = qty > 0;
+
   const priceDisplay = isTrial
-    ? '<span class="sj-bp-main">Free</span>'
+    ? '<span class="sj-bp-main">$5</span><span class="sj-bp-period"> delivery only</span>'
     : '<span class="sj-bp-main">$' + (b.price % 1 === 0 ? b.price : b.price.toFixed(2)) + '</span><span class="sj-bp-period">/mo</span>';
-  const deliveryNote = isTrial ? '<div class="sj-bp-delivery">+ $5 hotel delivery</div>' : '';
+  const trialNote = isTrial ? '<div class="sj-bp-delivery">Bundle is free — just cover hotel delivery</div>' : '';
   const annualNote = b.sj_annual ? '<div class="sj-bp-annual">or ' + b.sj_annual + '</div>' : '';
   const dayLabel = b.sj_days + '-Day Clothing Bundle';
 
   // Action button logic
   let actionBtn;
   if (isTrial) {
-    actionBtn = `<button class="sj-bp-cta sj-bp-cta-trial" onclick="selectSJTier('trial')">Start free trial — $5 delivery</button>`;
-  } else if (isMember) {
-    actionBtn = `<button class="sj-bp-cta sj-bp-cta-member" onclick="addBundle('${b.id}')">✓ Member — Add to order</button>`;
+    // Trial: adds to cart like a normal $5 bundle → goes through Step 4 checkout
+    if (isSelected) {
+      actionBtn = `<div class="bundle-qty" style="justify-content:center">
+        <button class="bundle-qty-btn" onclick="changeBundleQty('${b.id}', -1)" aria-label="Decrease">−</button>
+        <span class="bundle-qty-val">${qty}</span>
+        <button class="bundle-qty-btn" onclick="changeBundleQty('${b.id}', 1)" aria-label="Increase" ${qty >= b.units ? 'disabled' : ''}>+</button>
+      </div>`;
+    } else {
+      actionBtn = `<button class="sj-bp-cta sj-bp-cta-trial" onclick="addBundle('${b.id}')">Add to order — $5</button>`;
+    }
+  } else if (isMember || isSelected) {
+    // Verified member or already added: show qty controls
+    if (isSelected) {
+      actionBtn = `<div class="bundle-qty" style="justify-content:center">
+        <button class="bundle-qty-btn" onclick="changeBundleQty('${b.id}', -1)" aria-label="Decrease">−</button>
+        <span class="bundle-qty-val">${qty}</span>
+        <button class="bundle-qty-btn" onclick="changeBundleQty('${b.id}', 1)" aria-label="Increase" ${qty >= b.units ? 'disabled' : ''}>+</button>
+      </div>`;
+    } else {
+      actionBtn = `<button class="sj-bp-cta sj-bp-cta-member" onclick="addBundle('${b.id}')">✓ Member — Add to order</button>`;
+    }
   } else {
     actionBtn = `<button class="sj-bp-cta${isPopular ? ' sj-bp-cta-popular' : ''}" onclick="openMembershipCheck('${b.sj_tier}', '${b.id}')">
-      ${b.sj_membership ? 'Sign up or verify membership' : 'Choose ' + b.title}
+      Sign up or verify membership
     </button>`;
   }
 
+  const cardClasses = ['bundle-card', 'sj-bundle-card'];
+  if (isPopular) cardClasses.push('sj-popular');
+  if (isSelected) cardClasses.push('selected');
+
   return `
-    <div class="bundle-card sj-bundle-card${isPopular ? ' sj-popular' : ''}${isMember ? ' selected' : ''}" data-bundle-id="${b.id}">
+    <div class="${cardClasses.join(' ')}" data-bundle-id="${b.id}">
       ${isPopular ? '<div class="sj-popular-ribbon">Most Popular</div>' : ''}
       <div class="bundle-img-wrap">
         <img class="bundle-img" src="${b.image}" alt="${b.title}" loading="lazy">
@@ -1823,7 +1847,7 @@ function renderSJBundleCard(b) {
         <div class="sj-bp-price-row">
           ${priceDisplay}
         </div>
-        ${deliveryNote}
+        ${trialNote}
         ${annualNote}
         <div class="bundle-tagline" style="margin-top:0.6rem">${b.tagline}</div>
         <div style="margin-top:auto;padding-top:0.8rem">
@@ -2580,106 +2604,30 @@ document.addEventListener('keydown', function(e) {
 
 // ─── SECOND JOURNEY TIER SELECTION ───
 const SJ_TIERS = {
-  trial: { name: 'Explorer (2-Day Trial)', days: 2, price: 0, delivery: 5, membership: false },
-  '3day': { name: 'Second Journey (3-Day)', days: 3, price: 9.99, delivery: 0, membership: true },
-  '5day': { name: 'Emerald (5-Day)', days: 5, price: 39, delivery: 0, membership: true },
-  '7day': { name: 'Gold (7-Day)', days: 7, price: 69, delivery: 0, membership: true },
+  trial: { name: 'Explorer (2-Day Trial)', days: 2, price: 5, membership: false },
+  '3day': { name: 'Second Journey (3-Day)', days: 3, price: 9.99, membership: true },
+  '5day': { name: 'Emerald (5-Day)', days: 5, price: 39, membership: true },
+  '7day': { name: 'Gold (7-Day)', days: 7, price: 69, membership: true },
 };
 
-function selectSJTier(tier) {
-  const info = SJ_TIERS[tier];
-  if (!info) return;
-
-  // Visual selection
-  document.querySelectorAll('.sj-card').forEach(c => c.classList.remove('sj-selected'));
-  const card = document.querySelector('.sj-card[data-tier="' + tier + '"]');
-  if (card) card.classList.add('sj-selected');
-
-  // Store in state
-  state.sjTier = tier;
-  state.sjTierInfo = info;
-
-  // For the trial ($5 delivery), go straight to Stripe checkout
-  // For paid memberships, add to cart and go to confirm step
-  const chargeAmount = info.membership ? info.price : info.delivery;
-  const description = info.membership
-    ? info.name + ' Membership — ' + info.days + '-day clothing bundle'
-    : info.name + ' — ' + info.days + '-day clothing bundle (delivery only)';
-
-  // Scroll to confirm section or trigger checkout
-  if (tier === 'trial') {
-    // Trial: go directly to Stripe for $5 delivery charge
-    initSJCheckout(tier, chargeAmount, description);
-  } else {
-    // Membership: scroll to existing confirm flow, pre-select tier
-    initSJCheckout(tier, chargeAmount, description);
+// Called from the standalone pricing section at the bottom of the page.
+// Adds the bundle to cart, navigates to Step 3 with the SJ tab active,
+// and shows the cart bar so the user can proceed to checkout (which
+// collects email, city, hotel, dates — everything Stripe needs).
+function addSJFromSection(bundleId) {
+  if (!state.selectedBundles[bundleId]) {
+    state.selectedBundles[bundleId] = 1;
   }
-}
-
-async function initSJCheckout(tier, amount, description) {
-  const info = SJ_TIERS[tier];
-  const card = document.querySelector('.sj-card[data-tier="' + tier + '"] .sj-card-cta');
-  if (card) {
-    card.disabled = true;
-    card.textContent = 'Connecting...';
-  }
-
-  // Lead capture via Formspree (non-blocking)
-  try {
-    fetch(FORMSPREE_ENDPOINT, {
-      method: 'POST',
-      headers: { 'Content-Type': 'application/json', 'Accept': 'application/json' },
-      body: JSON.stringify({
-        _subject: '🎫 Second Journey™ signup: ' + info.name,
-        type: 'sj_membership',
-        tier: tier,
-        tier_name: info.name,
-        days: info.days,
-        price: '$' + amount.toFixed(2),
-        membership: info.membership,
-        city: state.city || 'Not selected yet',
-        email: state.email || 'Not provided yet',
-        submitted_at: new Date().toISOString()
-      })
-    });
-  } catch (e) { /* non-blocking */ }
-
-  // Call Stripe checkout via Netlify function
-  try {
-    const res = await fetch('/.netlify/functions/create-checkout', {
-      method: 'POST',
-      headers: { 'Content-Type': 'application/json' },
-      body: JSON.stringify({
-        city: state.city || 'Savannah',
-        arrival: state.dateArrive || new Date().toISOString().split('T')[0],
-        departure: state.dateDepart || new Date(Date.now() + info.days * 86400000).toISOString().split('T')[0],
-        hotel: state.hotel || 'TBD',
-        email: state.email || '',
-        bundles: [{
-          id: 'sj-' + tier,
-          title: description,
-          price: amount,
-          image: '',
-          qty: 1
-        }]
-      })
-    });
-    const data = await res.json();
-    if (!res.ok || !data.url) throw new Error(data.error || 'HTTP ' + res.status);
-    window.location.href = data.url;
-  } catch (err) {
-    console.error('SJ Checkout error:', err);
-    if (card) {
-      card.disabled = false;
-      card.textContent = tier === 'trial' ? 'Start free trial' :
-        tier === '3day' ? 'Choose Second Journey' :
-        tier === '5day' ? 'Choose Emerald' : 'Choose Gold';
-    }
-    alert(
-      "Couldn't open checkout. Please try again, or email hello@bagfree.app.\n\n" +
-      "(Detail: " + (err.message || 'unknown') + ")"
-    );
-  }
+  state.filter = 'second-journey';
+  goToStep(3);
+  setTimeout(function() {
+    document.querySelectorAll('.bundle-filter-btn').forEach(function(b) { b.classList.remove('active'); });
+    var sjBtn = document.querySelector('.bundle-filter-btn[data-filter="second-journey"]');
+    if (sjBtn) sjBtn.classList.add('active');
+    renderBundles();
+    updateCartBar();
+  }, 50);
+  window.scrollTo({ top: 0, behavior: 'smooth' });
 }
 
 // ─── THEME ───
