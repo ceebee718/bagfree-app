@@ -610,6 +610,65 @@ input,select,textarea{outline:none}
   box-shadow:0 0 0 2px #5DCAA5, 0 16px 40px rgba(93,202,165,0.25);
 }
 
+/* ── SJ BUNDLE CARDS IN PICKER ── */
+.sj-bundle-card .bundle-body{padding:1.25rem 1.25rem 1rem;}
+.sj-bundle-card .bundle-img-wrap{aspect-ratio:3/2;}
+.sj-day-tag{
+  position:absolute;bottom:0.75rem;left:0.75rem;z-index:3;
+  font-family:var(--ff-body);font-size:0.55rem;letter-spacing:2.5px;text-transform:uppercase;
+  font-weight:600;color:var(--noir);background:#5DCAA5;
+  padding:0.35rem 0.7rem;
+}
+.sj-bp-price-row{display:flex;align-items:baseline;gap:0.15rem;margin-top:0.35rem;}
+.sj-bp-main{font-family:var(--ff-display);font-size:1.9rem;font-weight:400;color:var(--white);letter-spacing:-0.3px;}
+.sj-bp-period{font-size:0.78rem;color:rgba(var(--text-rgb),0.5);font-weight:300;}
+.sj-bp-delivery{font-size:0.7rem;color:#5DCAA5;font-weight:500;letter-spacing:0.8px;margin-top:0.15rem;}
+.sj-bp-annual{font-size:0.68rem;color:rgba(var(--text-rgb),0.4);margin-top:0.15rem;}
+.sj-bp-annual em{color:#5DCAA5;font-style:normal;font-weight:500;}
+.sj-bp-cta{
+  width:100%;padding:0.8rem 0.8rem;font-size:0.62rem;font-weight:600;
+  letter-spacing:2.5px;text-transform:uppercase;font-family:var(--ff-body);
+  background:transparent;border:1px solid rgba(93,202,165,0.45);color:#5DCAA5;
+  transition:all 0.3s cubic-bezier(.4,0,.2,1);cursor:pointer;
+}
+.sj-bp-cta:hover{background:#5DCAA5;color:var(--noir);border-color:#5DCAA5;transform:translateY(-2px);box-shadow:0 8px 22px rgba(93,202,165,0.3);}
+.sj-bp-cta-trial{border-color:rgba(93,202,165,0.6);background:rgba(93,202,165,0.06);}
+.sj-bp-cta-popular{background:linear-gradient(135deg,#5DCAA5,#3da882);color:var(--noir);border:none;box-shadow:0 4px 16px rgba(93,202,165,0.3);}
+.sj-bp-cta-popular:hover{background:linear-gradient(135deg,#6ed8b3,#4dbf95);box-shadow:0 12px 30px rgba(93,202,165,0.4);}
+.sj-bp-cta-member{background:#5DCAA5;color:var(--noir);border-color:#5DCAA5;}
+.sj-popular{border-color:rgba(93,202,165,0.4);background:rgba(93,202,165,0.03);}
+.sj-popular:hover{border-color:rgba(93,202,165,0.65);background:rgba(93,202,165,0.06);}
+.sj-popular-ribbon{
+  position:absolute;top:-1px;right:1rem;z-index:4;
+  background:linear-gradient(135deg,#5DCAA5,#3da882);color:var(--noir);
+  font-size:0.52rem;letter-spacing:2.5px;text-transform:uppercase;font-weight:700;
+  padding:4px 10px 3px;transform:translateY(-50%) rotate(-2deg);
+  box-shadow:0 4px 12px rgba(93,202,165,0.4);
+}
+.sj-filter-btn{color:#5DCAA5 !important;}
+.sj-filter-btn.active{background:#5DCAA5 !important;color:var(--noir) !important;}
+.sj-filter-btn:hover:not(.active){color:#6ed8b3 !important;}
+
+/* Membership modal options */
+.sj-member-opt{
+  display:flex;align-items:center;gap:0.85rem;width:100%;text-align:left;
+  padding:1rem 1.1rem;cursor:pointer;
+  background:rgba(var(--gold-rgb),0.03);border:1px solid rgba(var(--gold-rgb),0.2);
+  transition:all 0.25s;font-family:var(--ff-body);font-size:0.85rem;color:rgba(var(--text-rgb),0.7);
+}
+.sj-member-opt:hover{border-color:rgba(93,202,165,0.5);background:rgba(93,202,165,0.04);transform:translateY(-2px);}
+.sj-member-opt-icon{
+  display:flex;align-items:center;justify-content:center;
+  width:32px;height:32px;flex-shrink:0;
+  border:1px solid rgba(93,202,165,0.4);color:#5DCAA5;
+  font-size:1rem;font-weight:600;
+}
+.sj-member-err{
+  margin-top:0.8rem;padding:0.6rem 0.85rem;
+  font-size:0.78rem;color:#E07260;
+  background:rgba(224,114,96,0.08);border:1px solid rgba(224,114,96,0.3);
+}
+
 /* ── NOTIFY-ME MODAL ── */
 .notify-modal{
   display:none;position:fixed;inset:0;z-index:200;
@@ -938,6 +997,7 @@ input,select,textarea{outline:none}
         <button class="bundle-filter-btn" data-filter="valet" onclick="setBundleFilter('valet', this)">Valet By Nuor</button>
         <button class="bundle-filter-btn" data-filter="snugl" onclick="setBundleFilter('snugl', this)">SNUGL</button>
         <button class="bundle-filter-btn" data-filter="nuor-edit" onclick="setBundleFilter('nuor-edit', this)">The Nuor Edit</button>
+        <button class="bundle-filter-btn sj-filter-btn" data-filter="second-journey" onclick="setBundleFilter('second-journey', this)">Second Journey™</button>
       </div>
       <!-- Discrete action button — not a filter. Scrolls to the custom-request
            card and auto-expands it. Visually distinct (italic, gold underline)
@@ -1206,6 +1266,74 @@ input,select,textarea{outline:none}
   </div>
 </div>
 
+<!-- MEMBERSHIP CHECK MODAL -->
+<div class="notify-modal" id="memberModal" onclick="if(event.target===this)closeMemberModal()" role="dialog" aria-modal="true" aria-labelledby="memberTitle">
+  <div class="notify-box" style="max-width:480px">
+    <button class="notify-close" onclick="closeMemberModal()" aria-label="Close">✕</button>
+
+    <!-- Step 1: Choose new member or existing -->
+    <div id="memberStep1">
+      <div class="notify-eyebrow">Second Journey™ Membership</div>
+      <h2 class="notify-title" id="memberTitle">Verify or <em>sign up.</em></h2>
+      <p class="notify-sub" id="memberTierDesc">This bundle requires an active membership. Already a member? Enter your email to verify. New here? Sign up and get started.</p>
+
+      <div style="display:flex;flex-direction:column;gap:0.8rem;margin-top:1.2rem">
+        <button class="sj-member-opt" onclick="showMemberLogin()">
+          <span class="sj-member-opt-icon">→</span>
+          <span>
+            <strong style="color:var(--white);font-weight:500">I'm already a member</strong>
+            <span style="display:block;font-size:0.75rem;color:rgba(var(--text-rgb),0.5);margin-top:2px">Verify with your email</span>
+          </span>
+        </button>
+        <button class="sj-member-opt" onclick="showMemberSignup()">
+          <span class="sj-member-opt-icon">+</span>
+          <span>
+            <strong style="color:var(--white);font-weight:500">I'm new — sign me up</strong>
+            <span style="display:block;font-size:0.75rem;color:rgba(var(--text-rgb),0.5);margin-top:2px">Choose a plan and start today</span>
+          </span>
+        </button>
+      </div>
+    </div>
+
+    <!-- Step 2A: Existing member login -->
+    <div id="memberStep2Login" style="display:none">
+      <div class="notify-eyebrow">Verify Membership</div>
+      <h2 class="notify-title">Welcome back.</h2>
+      <p class="notify-sub">Enter the email associated with your Second Journey™ membership.</p>
+      <form onsubmit="return verifyMembership(event)">
+        <input type="email" class="notify-input" id="memberEmail" placeholder="you@example.com" required>
+        <button type="submit" class="notify-cta" id="memberVerifyBtn" style="background:linear-gradient(135deg,#5DCAA5,#3da882)">Verify membership</button>
+      </form>
+      <div class="sj-member-err" id="memberErr" style="display:none"></div>
+      <button style="display:block;margin:1rem auto 0;font-size:0.65rem;letter-spacing:2px;text-transform:uppercase;color:rgba(var(--text-rgb),0.45);background:none;border:none;cursor:pointer" onclick="showMemberStep1()">← Back</button>
+    </div>
+
+    <!-- Step 2B: New member signup -->
+    <div id="memberStep2Signup" style="display:none">
+      <div class="notify-eyebrow">New Membership</div>
+      <h2 class="notify-title">Join <em>Second Journey™</em></h2>
+      <p class="notify-sub">Enter your email to create your membership. You'll be directed to Stripe to complete payment.</p>
+      <form onsubmit="return startMemberSignup(event)">
+        <input type="email" class="notify-input" id="memberSignupEmail" placeholder="you@example.com" required>
+        <div id="memberTierBadge" style="display:flex;align-items:center;gap:0.6rem;padding:0.75rem 0.85rem;background:rgba(93,202,165,0.06);border:1px solid rgba(93,202,165,0.25);margin-bottom:1rem">
+          <span style="font-size:0.6rem;letter-spacing:2.5px;text-transform:uppercase;color:#5DCAA5;font-weight:600" id="memberTierName"></span>
+          <span style="margin-left:auto;font-family:var(--ff-display);font-size:1.15rem;color:var(--white)" id="memberTierPrice"></span>
+        </div>
+        <button type="submit" class="notify-cta" id="memberSignupBtn" style="background:linear-gradient(135deg,#5DCAA5,#3da882)">Sign up &amp; pay via Stripe</button>
+      </form>
+      <button style="display:block;margin:1rem auto 0;font-size:0.65rem;letter-spacing:2px;text-transform:uppercase;color:rgba(var(--text-rgb),0.45);background:none;border:none;cursor:pointer" onclick="showMemberStep1()">← Back</button>
+    </div>
+
+    <!-- Success state -->
+    <div class="notify-success" id="memberSuccess">
+      <div class="notify-success-icon" style="color:#5DCAA5">✦</div>
+      <div class="notify-success-text">Membership verified.</div>
+      <div class="notify-success-sub" id="memberSuccessSub">You're all set. Your bundle has been added to your order.</div>
+      <button class="notify-success-btn" onclick="closeMemberModal()">Continue shopping</button>
+    </div>
+  </div>
+</div>
+
 <script>
 const state = {
   step: 0,
@@ -1216,6 +1344,9 @@ const state = {
   filter: 'all',
   hotel: null,
   email: null,
+  sjMemberVerified: null, // tracks which tier was verified
+  sjPendingTier: null,
+  sjPendingBundleId: null,
 };
 
 // ─── HOTELS ───
@@ -1272,6 +1403,13 @@ const VENDORS = [
     id: 'nuor-edit',
     name: 'The Nuor Edit',
     tagline: 'Curated rental wardrobes. Wear, return to hotel laundry, we collect.',
+    bookable: true,
+    coming_soon: false
+  },
+  {
+    id: 'second-journey',
+    name: 'Second Journey™',
+    tagline: 'Travel clothing bundles delivered to your hotel. Choose your trip length — start with a free 2-day trial.',
     bookable: true,
     coming_soon: false
   }
@@ -1411,6 +1549,63 @@ const BUNDLES = [
     "rental": true,
     "rental_label": "7-Day Rental",
     "badge": "New"
+  },
+
+  // ── SECOND JOURNEY™ ──
+  // Clothing bundles by trip length. 2-day is free (delivery only $5).
+  // Paid tiers require membership — handled by membership check flow.
+  {
+    "id": "sj-2day", "vendor": "second-journey",
+    "title": "2-Day Explorer Bundle",
+    "category": "unisex",
+    "tagline": "Try it free — just cover delivery. A curated 2-day clothing bundle delivered to your hotel. Perfect for an overnight or quick weekend trip.",
+    "price": 0,
+    "delivery_fee": 5,
+    "image": "https://valetbynuor.com/cdn/shop/files/ChatGPT_Image_Aug_22_2025_07_23_24_PM.png?v=1755905084&width=800",
+    "units": 50,
+    "sj_tier": "trial",
+    "sj_days": 2,
+    "badge": "Free Trial"
+  },
+  {
+    "id": "sj-3day", "vendor": "second-journey",
+    "title": "3-Day Second Journey Bundle",
+    "category": "unisex",
+    "tagline": "Travel light for a long weekend. Curated clothing for 3 days — delivered before you arrive, picked up after your stay. Requires Second Journey membership ($9.99/mo).",
+    "price": 9.99,
+    "image": "https://valetbynuor.com/cdn/shop/files/ChatGPTImageJan11_2026_02_58_17PM.png?v=1768161528&width=800",
+    "units": 50,
+    "sj_tier": "3day",
+    "sj_days": 3,
+    "sj_membership": true,
+    "sj_annual": "$105/yr (save $24)"
+  },
+  {
+    "id": "sj-5day", "vendor": "second-journey",
+    "title": "5-Day Emerald Bundle",
+    "category": "unisex",
+    "tagline": "Extended getaway — a complete 5-day travel wardrobe. Everything in Second Journey plus Voyager perks. Requires Emerald membership ($39/mo).",
+    "price": 39,
+    "image": "https://valetbynuor.com/cdn/shop/files/ChatGPTImageJan11_2026_02_55_15PM.png?v=1768161350&width=800",
+    "units": 50,
+    "sj_tier": "5day",
+    "sj_days": 5,
+    "sj_membership": true,
+    "sj_annual": "$372/yr (save $96)",
+    "badge": "Most Popular"
+  },
+  {
+    "id": "sj-7day", "vendor": "second-journey",
+    "title": "7-Day Gold Bundle",
+    "category": "unisex",
+    "tagline": "The full week, fully curated. A 7-day wardrobe with dedicated concierge and priority delivery. Requires Gold membership ($69/mo).",
+    "price": 69,
+    "image": "https://valetbynuor.com/cdn/shop/files/ChatGPTImageAug23_2025_02_11_28PM.png?v=1755972741&width=800",
+    "units": 50,
+    "sj_tier": "7day",
+    "sj_days": 7,
+    "sj_membership": true,
+    "sj_annual": "$650/yr (save $168)"
   }
 ];
 
@@ -1549,6 +1744,9 @@ function renderBundles() {
 }
 
 function renderBundleCard(b) {
+  // Second Journey bundles get a special tier-card layout
+  if (b.vendor === 'second-journey') return renderSJBundleCard(b);
+
   const qty = state.selectedBundles[b.id] || 0;
   const isSelected = qty > 0;
   const unavailable = (b.units || 0) <= 0;
@@ -1582,6 +1780,54 @@ function renderBundleCard(b) {
                 </div>`
               : `<button class="bundle-action" onclick="addBundle('${b.id}')">+ Add</button>`
           }
+        </div>
+      </div>
+    </div>
+  `;
+}
+
+function renderSJBundleCard(b) {
+  const isTrial = b.sj_tier === 'trial';
+  const isMember = state.sjMemberVerified === b.sj_tier;
+  const isPopular = b.badge === 'Most Popular';
+  const priceDisplay = isTrial
+    ? '<span class="sj-bp-main">Free</span>'
+    : '<span class="sj-bp-main">$' + (b.price % 1 === 0 ? b.price : b.price.toFixed(2)) + '</span><span class="sj-bp-period">/mo</span>';
+  const deliveryNote = isTrial ? '<div class="sj-bp-delivery">+ $5 hotel delivery</div>' : '';
+  const annualNote = b.sj_annual ? '<div class="sj-bp-annual">or ' + b.sj_annual + '</div>' : '';
+  const dayLabel = b.sj_days + '-Day Clothing Bundle';
+
+  // Action button logic
+  let actionBtn;
+  if (isTrial) {
+    actionBtn = `<button class="sj-bp-cta sj-bp-cta-trial" onclick="selectSJTier('trial')">Start free trial — $5 delivery</button>`;
+  } else if (isMember) {
+    actionBtn = `<button class="sj-bp-cta sj-bp-cta-member" onclick="addBundle('${b.id}')">✓ Member — Add to order</button>`;
+  } else {
+    actionBtn = `<button class="sj-bp-cta${isPopular ? ' sj-bp-cta-popular' : ''}" onclick="openMembershipCheck('${b.sj_tier}', '${b.id}')">
+      ${b.sj_membership ? 'Sign up or verify membership' : 'Choose ' + b.title}
+    </button>`;
+  }
+
+  return `
+    <div class="bundle-card sj-bundle-card${isPopular ? ' sj-popular' : ''}${isMember ? ' selected' : ''}" data-bundle-id="${b.id}">
+      ${isPopular ? '<div class="sj-popular-ribbon">Most Popular</div>' : ''}
+      <div class="bundle-img-wrap">
+        <img class="bundle-img" src="${b.image}" alt="${b.title}" loading="lazy">
+        ${b.badge && b.badge !== 'Most Popular' ? '<div class="bundle-badge" style="background:#5DCAA5">' + b.badge + '</div>' : ''}
+        <div class="sj-day-tag">${dayLabel}</div>
+        <div class="bundle-selected-check">✓</div>
+      </div>
+      <div class="bundle-body">
+        <div class="bundle-title">${b.title}</div>
+        <div class="sj-bp-price-row">
+          ${priceDisplay}
+        </div>
+        ${deliveryNote}
+        ${annualNote}
+        <div class="bundle-tagline" style="margin-top:0.6rem">${b.tagline}</div>
+        <div style="margin-top:auto;padding-top:0.8rem">
+          ${actionBtn}
         </div>
       </div>
     </div>
@@ -2171,6 +2417,164 @@ async function submitNotify(e) {
 document.addEventListener('keydown', function(e) {
   if (e.key === 'Escape' && document.getElementById('notifyModal').classList.contains('show')) {
     closeNotifyModal();
+  }
+});
+
+// ─── MEMBERSHIP CHECK MODAL ───
+function openMembershipCheck(tier, bundleId) {
+  state.sjPendingTier = tier;
+  state.sjPendingBundleId = bundleId;
+
+  const tierNames = { '3day': 'Second Journey', '5day': 'Emerald', '7day': 'Gold' };
+  const tierPrices = { '3day': '$9.99/mo', '5day': '$39/mo', '7day': '$69/mo' };
+
+  document.getElementById('memberTierDesc').textContent =
+    'The ' + (tierNames[tier] || tier) + ' bundle requires an active ' + (tierNames[tier] || '') + ' membership (' + (tierPrices[tier] || '') + ').';
+  document.getElementById('memberTierName').textContent = (tierNames[tier] || tier) + ' membership';
+  document.getElementById('memberTierPrice').textContent = tierPrices[tier] || '';
+
+  // Reset to step 1
+  showMemberStep1();
+  document.getElementById('memberSuccess').classList.remove('show');
+  document.getElementById('memberModal').classList.add('show');
+  document.body.style.overflow = 'hidden';
+}
+
+function closeMemberModal() {
+  document.getElementById('memberModal').classList.remove('show');
+  document.body.style.overflow = '';
+}
+
+function showMemberStep1() {
+  document.getElementById('memberStep1').style.display = 'block';
+  document.getElementById('memberStep2Login').style.display = 'none';
+  document.getElementById('memberStep2Signup').style.display = 'none';
+}
+
+function showMemberLogin() {
+  document.getElementById('memberStep1').style.display = 'none';
+  document.getElementById('memberStep2Login').style.display = 'block';
+  document.getElementById('memberErr').style.display = 'none';
+  setTimeout(() => document.getElementById('memberEmail').focus(), 100);
+}
+
+function showMemberSignup() {
+  document.getElementById('memberStep1').style.display = 'none';
+  document.getElementById('memberStep2Signup').style.display = 'block';
+  setTimeout(() => document.getElementById('memberSignupEmail').focus(), 100);
+}
+
+async function verifyMembership(e) {
+  e.preventDefault();
+  const email = document.getElementById('memberEmail').value.trim();
+  const btn = document.getElementById('memberVerifyBtn');
+  const errEl = document.getElementById('memberErr');
+  if (!email) return false;
+
+  btn.disabled = true;
+  btn.textContent = 'Checking...';
+  errEl.style.display = 'none';
+
+  // TODO: Replace with real membership API check
+  // For now, simulate a lookup — any valid email "passes"
+  // In production, this calls your backend to verify Stripe subscription status
+  try {
+    // Simulated API call — replace with real endpoint
+    await new Promise(resolve => setTimeout(resolve, 1200));
+
+    // For now, accept any email as a valid member (for testing)
+    // In production: const res = await fetch('/.netlify/functions/check-membership', { ... })
+    state.sjMemberVerified = state.sjPendingTier;
+    state.email = email;
+
+    // Auto-add the bundle
+    if (state.sjPendingBundleId) {
+      state.selectedBundles[state.sjPendingBundleId] = 1;
+      updateCartBar();
+    }
+
+    // Show success
+    document.getElementById('memberStep2Login').style.display = 'none';
+    document.getElementById('memberSuccess').classList.add('show');
+    document.getElementById('memberSuccessSub').innerHTML =
+      'Verified as <em style="color:#5DCAA5">' + email + '</em>. Your bundle has been added to your order.';
+
+    // Re-render bundles to show verified state
+    setTimeout(() => renderBundles(), 300);
+
+  } catch (err) {
+    errEl.textContent = 'Could not verify membership. Please try again or contact hello@bagfree.app.';
+    errEl.style.display = 'block';
+  }
+
+  btn.disabled = false;
+  btn.textContent = 'Verify membership';
+  return false;
+}
+
+async function startMemberSignup(e) {
+  e.preventDefault();
+  const email = document.getElementById('memberSignupEmail').value.trim();
+  const btn = document.getElementById('memberSignupBtn');
+  if (!email) return false;
+
+  btn.disabled = true;
+  btn.textContent = 'Connecting to Stripe...';
+
+  const tier = state.sjPendingTier;
+  const tierInfo = SJ_TIERS[tier];
+
+  // Lead capture
+  try {
+    fetch(FORMSPREE_ENDPOINT, {
+      method: 'POST',
+      headers: { 'Content-Type': 'application/json', 'Accept': 'application/json' },
+      body: JSON.stringify({
+        _subject: '🎫 New SJ Membership Signup: ' + (tierInfo ? tierInfo.name : tier),
+        type: 'sj_membership_signup',
+        tier: tier,
+        email: email,
+        submitted_at: new Date().toISOString()
+      })
+    });
+  } catch (e) { /* non-blocking */ }
+
+  // Redirect to Stripe checkout for membership
+  try {
+    const res = await fetch('/.netlify/functions/create-checkout', {
+      method: 'POST',
+      headers: { 'Content-Type': 'application/json' },
+      body: JSON.stringify({
+        city: state.city || 'Savannah',
+        arrival: state.dateArrive || new Date().toISOString().split('T')[0],
+        departure: state.dateDepart || '',
+        hotel: state.hotel || 'TBD',
+        email: email,
+        bundles: [{
+          id: 'sj-membership-' + tier,
+          title: (tierInfo ? tierInfo.name : tier) + ' Membership',
+          price: tierInfo ? tierInfo.price : 0,
+          image: '',
+          qty: 1
+        }]
+      })
+    });
+    const data = await res.json();
+    if (!res.ok || !data.url) throw new Error(data.error || 'HTTP ' + res.status);
+    window.location.href = data.url;
+  } catch (err) {
+    console.error('Membership checkout error:', err);
+    btn.disabled = false;
+    btn.textContent = 'Sign up & pay via Stripe';
+    alert("Couldn't open checkout. Please try again or email hello@bagfree.app.\n\n(" + (err.message || 'unknown') + ")");
+  }
+  return false;
+}
+
+// Close membership modal on Escape
+document.addEventListener('keydown', function(e) {
+  if (e.key === 'Escape' && document.getElementById('memberModal').classList.contains('show')) {
+    closeMemberModal();
   }
 });
 
