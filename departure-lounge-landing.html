@@ -824,7 +824,7 @@ input,select,textarea{outline:none}
           <div class="reserve-label">Your email</div>
           <input type="email" class="email-input" id="reserveEmail" placeholder="you@example.com" required oninput="checkReserveReady()">
         </div>
-        <button class="reserve-cta" id="reserveBtn" onclick="submitReserve()" disabled>Reserve & pay securely</button>
+        <button class="reserve-cta" id="reserveBtn" onclick="submitReserve()">Reserve & pay securely</button>
         <div class="reserve-trust">Secure checkout via Stripe · Same-day delivery · Receipt emailed instantly</div>
       </div>
     </div>
@@ -1641,6 +1641,20 @@ async function submitReserve() {
   const btn = document.getElementById('reserveBtn');
   btn.disabled = true;
   btn.textContent = 'Connecting to checkout...';
+
+  // Sync state from checkout form fields (fallback if user skipped steps)
+  var cityEl = document.getElementById('citySelectCheckout');
+  if (cityEl && cityEl.value) state.city = cityEl.value;
+  var arrEl = document.getElementById('arriveDate');
+  if (arrEl && arrEl.value) state.dateArrive = arrEl.value;
+  var depEl = document.getElementById('departDate');
+  if (depEl && depEl.value) state.dateDepart = depEl.value;
+  var hotelEl = document.getElementById('hotelSelect');
+  if (hotelEl && hotelEl.value && hotelEl.value !== '__other__') state.hotel = hotelEl.value;
+  var otherEl = document.getElementById('hotelOther');
+  if (hotelEl && hotelEl.value === '__other__' && otherEl) state.hotel = otherEl.value;
+  var emailEl = document.getElementById('reserveEmail');
+  if (emailEl && emailEl.value) state.email = emailEl.value;
 
   const ids = Object.keys(state.selectedBundles);
   if (ids.length === 0) {
