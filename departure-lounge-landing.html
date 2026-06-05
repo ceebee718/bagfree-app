@@ -611,6 +611,33 @@ input,select,textarea{outline:none}
 }
 
 /* ── SJ BUNDLE CARDS IN PICKER ── */
+.sj-recycled-notice{
+  display:flex;align-items:flex-start;gap:0.5rem;
+  padding:0.65rem 0.75rem;margin-top:0.7rem;
+  background:rgba(93,202,165,0.06);
+  border:1px solid rgba(93,202,165,0.2);
+  font-size:0.7rem;color:rgba(var(--text-rgb),0.6);line-height:1.5;
+}
+.sj-recycled-notice-icon{
+  flex-shrink:0;color:#5DCAA5;font-size:0.8rem;margin-top:1px;
+}
+.sj-recycled-notice em{color:#5DCAA5;font-style:normal;font-weight:500;}
+/* Checkout recycled warning banner */
+.sj-checkout-notice{
+  display:flex;align-items:flex-start;gap:0.7rem;
+  padding:1rem 1.1rem;margin-bottom:1.5rem;
+  background:rgba(93,202,165,0.06);
+  border:1px solid rgba(93,202,165,0.3);
+}
+.sj-checkout-notice-icon{
+  flex-shrink:0;width:28px;height:28px;
+  display:flex;align-items:center;justify-content:center;
+  background:rgba(93,202,165,0.12);color:#5DCAA5;
+  font-size:1rem;font-weight:700;
+}
+.sj-checkout-notice-text{font-size:0.82rem;color:rgba(var(--text-rgb),0.7);line-height:1.65;}
+.sj-checkout-notice-text strong{color:var(--white);font-weight:500;}
+.sj-checkout-notice-text em{color:#5DCAA5;font-style:normal;font-weight:500;}
 .sj-bundle-card .bundle-body{padding:1.25rem 1.25rem 1rem;}
 .sj-bundle-card .bundle-img-wrap{aspect-ratio:3/2;}
 .sj-day-tag{
@@ -1211,7 +1238,7 @@ input,select,textarea{outline:none}
 
       </div><!-- /sj-grid -->
 
-      <p class="sj-footer-note">All memberships include free hotel delivery, curated clothing bundles, and flexible cancellation. <em>Savannah pilot — expanding city by city.</em></p>
+      <p class="sj-footer-note">All memberships include free hotel delivery, curated clothing bundles, and flexible cancellation. Second Journey™ bundles contain <em>professionally cleaned, recycled clothing</em> — pre-loved items given a second life. <em>Savannah pilot — expanding city by city.</em></p>
 
     </div>
   </section>
@@ -1848,6 +1875,10 @@ function renderSJBundleCard(b) {
         ${trialNote}
         ${annualNote}
         <div class="bundle-tagline" style="margin-top:0.6rem">${b.tagline}</div>
+        <div class="sj-recycled-notice">
+          <span class="sj-recycled-notice-icon">♻</span>
+          <span><em>Second Journey™</em> bundles contain professionally cleaned, recycled clothing — pre-loved items given a second life.</span>
+        </div>
         <div style="margin-top:auto;padding-top:0.8rem">
           ${actionBtn}
         </div>
@@ -2061,7 +2092,24 @@ function renderConfirmSummary() {
 
   const ids = Object.keys(state.selectedBundles);
   const c = document.getElementById('confirmBundles');
-  c.innerHTML = ids.map(id => {
+
+  // Check if any Second Journey bundles are in the cart
+  const hasSJ = ids.some(id => {
+    const b = BUNDLES.find(x => x.id === id);
+    return b && b.vendor === 'second-journey';
+  });
+
+  const sjNotice = hasSJ ? `
+    <div class="sj-checkout-notice">
+      <div class="sj-checkout-notice-icon">♻</div>
+      <div class="sj-checkout-notice-text">
+        <strong>Second Journey™ — Recycled clothing</strong><br>
+        Your order includes Second Journey™ items. These bundles contain <em>professionally cleaned, recycled clothing</em> — quality pre-loved items inspected, sanitized, and given a second life. Not brand-new apparel.
+      </div>
+    </div>
+  ` : '';
+
+  c.innerHTML = sjNotice + ids.map(id => {
     const b = BUNDLES.find(x => x.id === id);
     const qty = state.selectedBundles[id];
     return `
