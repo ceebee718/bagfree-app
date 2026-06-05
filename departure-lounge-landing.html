@@ -791,6 +791,17 @@ input,select,textarea{outline:none}
           <div class="reserve-summary" id="reserveSummary"></div>
         </div>
         <div class="reserve-section">
+          <div class="reserve-label">Your city</div>
+          <select class="hotel-select" id="citySelectCheckout" onchange="updateCityFromCheckout()">
+            <option value="">Select your city...</option>
+            <option value="Savannah">Savannah, GA</option>
+            <option value="Tampa">Tampa, FL</option>
+            <option value="Orlando">Orlando, FL</option>
+            <option value="Miami">Miami, FL</option>
+            <option value="Atlanta">Atlanta, GA</option>
+          </select>
+        </div>
+        <div class="reserve-section">
           <div class="reserve-label">Your hotel</div>
           <select class="hotel-select" id="hotelSelect" onchange="updateHotelChoice()">
             <option value="">Select your hotel...</option>
@@ -1496,7 +1507,25 @@ function renderConfirmSummary() {
 }
 
 // ─── HOTEL + EMAIL ───
+
+function updateCityFromCheckout() {
+  var cityVal = document.getElementById('citySelectCheckout').value;
+  if (cityVal) {
+    state.city = cityVal;
+    populateHotels();
+  } else {
+    document.getElementById('hotelSelect').innerHTML = '<option value="">Select your hotel...</option>';
+  }
+}
+
 function populateHotels() {
+  // Sync city dropdown if it exists
+  var citySel = document.getElementById('citySelectCheckout');
+  if (citySel && state.city) {
+    for (var i = 0; i < citySel.options.length; i++) {
+      if (citySel.options[i].value === state.city) { citySel.selectedIndex = i; break; }
+    }
+  }
   const sel = document.getElementById('hotelSelect');
   sel.innerHTML = '<option value="">Select your hotel...</option>';
   (HOTELS[state.city] || []).forEach(h => {
