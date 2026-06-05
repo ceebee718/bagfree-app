@@ -1089,6 +1089,10 @@ input,select,textarea{outline:none}
           <input type="text" class="hotel-input" id="hotelOther" placeholder="Enter your hotel name">
         </div>
         <div class="reserve-section">
+          <div class="reserve-label">Guest name <span style="font-weight:300;letter-spacing:1px;opacity:0.6">(for hotel front desk)</span></div>
+          <input type="text" class="email-input" id="reserveGuestName" placeholder="Name on the hotel reservation" required oninput="checkReserveReady()">
+        </div>
+        <div class="reserve-section">
           <div class="reserve-label">Your email</div>
           <input type="email" class="email-input" id="reserveEmail" placeholder="you@example.com" required oninput="checkReserveReady()">
         </div>
@@ -1369,6 +1373,7 @@ const state = {
   filter: 'all',
   hotel: null,
   email: null,
+  guestName: null,
   sjMemberVerified: null, // tracks which tier was verified
   sjPendingTier: null,
   sjPendingBundleId: null,
@@ -2182,10 +2187,12 @@ function updateHotelChoice() {
 document.addEventListener('input', function(e) {
   if (e.target.id === 'hotelOther') { state.hotel = e.target.value; checkReserveReady(); }
   if (e.target.id === 'reserveEmail') { state.email = e.target.value; checkReserveReady(); }
+  if (e.target.id === 'reserveGuestName') { state.guestName = e.target.value; checkReserveReady(); }
 });
 
 function checkReserveReady() {
-  const ready = state.hotel && state.email && /^[^@]+@[^@]+\.[^@]+$/.test(state.email);
+  const guestName = (state.guestName || '').trim();
+  const ready = state.hotel && state.email && guestName.length >= 2 && /^[^@]+@[^@]+\.[^@]+$/.test(state.email);
   document.getElementById('reserveBtn').disabled = !ready;
 }
 
@@ -2210,6 +2217,8 @@ async function submitReserve() {
   if (hotelEl && hotelEl.value === '__other__' && otherEl) state.hotel = otherEl.value;
   var emailEl = document.getElementById('reserveEmail');
   if (emailEl && emailEl.value) state.email = emailEl.value;
+  var guestEl = document.getElementById('reserveGuestName');
+  if (guestEl && guestEl.value) state.guestName = guestEl.value.trim();
 
   // Debug: log state before validation
   console.log('submitReserve state:', JSON.stringify({
@@ -2246,7 +2255,7 @@ async function submitReserve() {
   try {
     localStorage.setItem('bf-reservation', JSON.stringify({
       city: state.city, arrival: state.dateArrive, departure: state.dateDepart,
-      hotel: state.hotel, email: state.email,
+      hotel: state.hotel, guest_name: state.guestName || '', email: state.email,
       bundles: bundleCart.map(b => ({id: b.id, name: b.title, price: b.price, qty: b.qty})),
       total: total,
       reserved_at: new Date().toISOString()
@@ -2267,6 +2276,7 @@ async function submitReserve() {
         arrival: state.dateArrive,
         departure: state.dateDepart,
         hotel: state.hotel,
+        guest_name: state.guestName || '',
         email: state.email,
         bundles: bundleCart.map(b => `${b.qty}× ${b.title} ($${b.price.toFixed(2)})`).join(' | '),
         bundle_total: '$' + total.toFixed(2),
@@ -2285,6 +2295,7 @@ async function submitReserve() {
         arrival: state.dateArrive,
         departure: state.dateDepart,
         hotel: state.hotel,
+        guest_name: state.guestName || '',
         email: state.email,
         bundles: bundleCart
       })
