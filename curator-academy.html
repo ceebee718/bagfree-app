@@ -624,6 +624,34 @@ async function submitItinerary() {
     var text = data.content && data.content[0] ? data.content[0].text : '';
     var scores = JSON.parse(text.replace(/```json|```/g, '').trim());
     showScores(scores);
+
+    // ── Email the submission + score to admin ──
+    var totalScore = Math.round(scores.total_score || 0);
+    var level = totalScore >= 95 ? 'City Ambassador' : totalScore >= 90 ? 'Elite Curator' : totalScore >= 82 ? 'Verified Curator' : totalScore >= 75 ? 'Curator Candidate' : totalScore >= 65 ? 'Insider' : totalScore >= 50 ? 'Explorer' : 'Traveler';
+    try {
+      fetch('https://formspree.io/f/mvzvwrkp', {
+        method: 'POST',
+        headers: { 'Content-Type': 'application/json', 'Accept': 'application/json' },
+        body: JSON.stringify({
+          _subject: '🗺️ Curator Academy: ' + title + ' (' + city + ') — Score ' + totalScore,
+          _replyto: 'hello@bagfree.app',
+          type: 'curator_itinerary',
+          city: city,
+          title: title,
+          budget: '$' + (budget || 'N/A'),
+          stops: stops.map(function(s, i) {
+            return (i+1) + '. ' + s.name + (s.time ? ' (' + s.time + ' min)' : '') + (s.type ? ' [' + s.type + ']' : '') + (s.cost ? ' — $' + s.cost : '');
+          }).join(' | '),
+          notes: notes || '(none)',
+          ai_score: totalScore + '/100',
+          ai_level: level,
+          ai_breakdown: 'Authenticity: ' + Math.round(scores.authenticity||0) + ' | Uniqueness: ' + Math.round(scores.uniqueness||0) + ' | Variety: ' + Math.round(scores.experience_variety||0) + ' | Food: ' + Math.round(scores.food_diversity||0) + ' | Time: ' + Math.round(scores.time_efficiency||0) + ' | Budget: ' + Math.round(scores.budget_fit||0) + ' | Walkability: ' + Math.round(scores.walkability||0),
+          ai_feedback: scores.feedback || '',
+          high_score: totalScore >= 80 ? '⭐ HIGH SCORE — consider adding to site' : '',
+          submitted_at: new Date().toISOString()
+        })
+      });
+    } catch (e) { /* non-blocking */ }
   } catch (err) {
     alert('Scoring failed: ' + (err.message || 'Please try again.'));
   }
