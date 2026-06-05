@@ -428,6 +428,188 @@ input,select,textarea{outline:none}
   background:var(--gold);color:var(--noir);border-color:var(--gold);
 }
 
+/* ── SECOND JOURNEY SECTION ── */
+.sj-section{
+  position:relative;padding:5rem 1.5rem 4rem;overflow:hidden;
+  border-top:1px solid rgba(var(--gold-rgb),0.08);
+  border-bottom:1px solid rgba(var(--gold-rgb),0.08);
+}
+.sj-glow{
+  position:absolute;top:-200px;left:50%;transform:translateX(-50%);
+  width:900px;height:500px;pointer-events:none;
+  background:radial-gradient(ellipse 100% 100% at 50% 20%, rgba(93,202,165,0.07), transparent 70%);
+}
+.sj-inner{max-width:1120px;margin:0 auto;position:relative;z-index:1;}
+.sj-header{text-align:center;margin-bottom:3.5rem;}
+.sj-eyebrow{
+  display:flex;align-items:center;justify-content:center;gap:0.6rem;
+  font-size:0.62rem;letter-spacing:4px;text-transform:uppercase;
+  color:#5DCAA5;margin-bottom:1.4rem;
+}
+.sj-eyebrow-leaf{font-size:0.5rem;color:#5DCAA5;opacity:0.7}
+.sj-eyebrow-line{width:32px;height:1px;background:linear-gradient(to right,rgba(93,202,165,0.5),transparent);}
+.sj-title{
+  font-family:var(--ff-display);font-size:clamp(2.2rem,4.5vw,3.5rem);
+  font-weight:300;line-height:1.1;letter-spacing:-1.2px;color:var(--white);
+  margin-bottom:1rem;
+}
+.sj-title em{font-style:italic;color:#5DCAA5;}
+.sj-sub{
+  font-size:1rem;color:rgba(var(--text-rgb),0.6);line-height:1.8;
+  max-width:560px;margin:0 auto;font-weight:300;
+}
+.sj-grid{
+  display:grid;
+  grid-template-columns:repeat(4,1fr);
+  gap:1.25rem;
+  margin-bottom:2.5rem;
+}
+@media(max-width:960px){.sj-grid{grid-template-columns:repeat(2,1fr);}}
+@media(max-width:560px){.sj-grid{grid-template-columns:1fr;max-width:380px;margin-left:auto;margin-right:auto;}}
+
+/* Card base */
+.sj-card{
+  background:rgba(var(--gold-rgb),0.02);
+  border:1px solid rgba(var(--gold-rgb),0.15);
+  padding:2rem 1.5rem 1.5rem;
+  display:flex;flex-direction:column;
+  transition:all 0.35s cubic-bezier(.4,0,.2,1);
+  position:relative;
+}
+.sj-card:hover{
+  border-color:rgba(var(--gold-rgb),0.4);
+  background:rgba(var(--gold-rgb),0.05);
+  transform:translateY(-4px);
+  box-shadow:0 20px 50px rgba(0,0,0,0.2);
+}
+.sj-card-popular{
+  border-color:rgba(93,202,165,0.45);
+  background:rgba(93,202,165,0.04);
+  box-shadow:0 0 0 1px rgba(93,202,165,0.15);
+}
+.sj-card-popular:hover{
+  border-color:rgba(93,202,165,0.7);
+  background:rgba(93,202,165,0.07);
+  box-shadow:0 20px 50px rgba(0,0,0,0.25), 0 0 0 1px rgba(93,202,165,0.3);
+}
+.sj-popular-tag{
+  position:absolute;top:-1px;right:1.25rem;
+  background:linear-gradient(135deg,#5DCAA5,#3da882);
+  color:var(--noir);
+  font-size:0.55rem;letter-spacing:2.5px;text-transform:uppercase;
+  font-weight:700;padding:5px 12px 4px;
+  transform:translateY(-50%) rotate(-2deg);
+  box-shadow:0 4px 14px rgba(93,202,165,0.4);
+}
+.sj-card-label{
+  font-size:0.58rem;letter-spacing:3px;text-transform:uppercase;
+  color:rgba(var(--text-rgb),0.45);margin-bottom:0.55rem;font-weight:500;
+}
+.sj-card-name{
+  font-family:var(--ff-display);font-size:1.65rem;font-weight:400;
+  color:var(--white);letter-spacing:-0.5px;line-height:1.15;margin-bottom:0.5rem;
+}
+.sj-card-desc{
+  font-size:0.78rem;color:rgba(var(--text-rgb),0.55);line-height:1.65;
+  margin-bottom:1.4rem;flex:0;
+}
+.sj-card-price{
+  display:flex;align-items:baseline;gap:0.15rem;
+  margin-bottom:0.3rem;
+}
+.sj-price-main{
+  font-family:var(--ff-display);font-size:2.4rem;font-weight:400;
+  color:var(--white);line-height:1;letter-spacing:-0.5px;
+}
+.sj-price-cents{font-size:1.2rem;font-weight:300;}
+.sj-price-period{
+  font-size:0.82rem;color:rgba(var(--text-rgb),0.5);font-weight:300;
+}
+.sj-card-delivery{
+  font-size:0.72rem;color:#5DCAA5;font-weight:500;
+  letter-spacing:1px;margin-bottom:1.2rem;
+}
+.sj-card-annual{
+  font-size:0.72rem;color:rgba(var(--text-rgb),0.42);
+  margin-bottom:1.2rem;line-height:1.5;
+}
+.sj-card-annual em{color:#5DCAA5;font-style:normal;font-weight:500;}
+.sj-card-features{
+  list-style:none;padding:0;margin:0 0 1.5rem;flex:1;
+  display:flex;flex-direction:column;gap:0.55rem;
+  border-top:1px solid rgba(var(--gold-rgb),0.1);
+  padding-top:1.2rem;
+}
+.sj-card-features li{
+  font-size:0.78rem;color:rgba(var(--text-rgb),0.65);
+  line-height:1.5;display:flex;align-items:flex-start;gap:0.5rem;
+}
+.sj-check{color:#5DCAA5;font-weight:700;font-size:0.72rem;flex-shrink:0;margin-top:1px;}
+.sj-muted{color:rgba(var(--text-rgb),0.35) !important;font-style:italic;}
+.sj-card-cta{
+  width:100%;
+  background:transparent;
+  border:1px solid rgba(var(--gold-rgb),0.4);
+  color:var(--gold);
+  padding:0.9rem 1rem;
+  font-size:0.68rem;font-weight:600;letter-spacing:3px;
+  text-transform:uppercase;font-family:var(--ff-body);
+  transition:all 0.3s cubic-bezier(.4,0,.2,1);
+  margin-top:auto;
+}
+.sj-card-cta:hover{
+  background:var(--gold);color:var(--noir);
+  border-color:var(--gold);
+  transform:translateY(-2px);
+  box-shadow:0 10px 28px rgba(var(--gold-rgb),0.3);
+  letter-spacing:4px;
+}
+.sj-cta-trial{
+  border-color:rgba(93,202,165,0.5);
+  color:#5DCAA5;
+}
+.sj-cta-trial:hover{
+  background:#5DCAA5;color:var(--noir);
+  border-color:#5DCAA5;
+  box-shadow:0 10px 28px rgba(93,202,165,0.35);
+}
+.sj-cta-popular{
+  background:linear-gradient(135deg,#5DCAA5,#3da882);
+  color:var(--noir);border:none;
+  box-shadow:0 6px 22px rgba(93,202,165,0.3);
+  letter-spacing:3.5px;
+}
+.sj-cta-popular:hover{
+  background:linear-gradient(135deg,#6ed8b3,#4dbf95);
+  box-shadow:0 14px 36px rgba(93,202,165,0.45);
+}
+.sj-card-note{
+  font-size:0.62rem;color:rgba(var(--text-rgb),0.35);
+  text-align:center;margin-top:0.75rem;letter-spacing:1px;
+}
+.sj-footer-note{
+  text-align:center;
+  font-size:0.82rem;color:rgba(var(--text-rgb),0.45);
+  line-height:1.7;max-width:600px;margin:0 auto;
+}
+.sj-footer-note em{color:#5DCAA5;font-style:normal;font-weight:400;}
+
+/* Selected state */
+.sj-card.sj-selected{
+  border-color:var(--gold);
+  background:rgba(var(--gold-rgb),0.1);
+  box-shadow:0 0 0 2px var(--gold), 0 16px 40px rgba(var(--gold-rgb),0.2);
+  transform:translateY(-4px);
+}
+.sj-card.sj-selected .sj-card-cta{
+  background:var(--gold);color:var(--noir);border-color:var(--gold);
+}
+.sj-card-popular.sj-selected{
+  border-color:#5DCAA5;
+  background:rgba(93,202,165,0.1);
+  box-shadow:0 0 0 2px #5DCAA5, 0 16px 40px rgba(93,202,165,0.25);
+}
+
 /* ── NOTIFY-ME MODAL ── */
 .notify-modal{
   display:none;position:fixed;inset:0;z-index:200;
@@ -671,6 +853,7 @@ input,select,textarea{outline:none}
   </a>
   <div class="nav-right">
     <a href="#" class="nav-link hide-mobile" onclick="goToStep(3); return false;" title="Browse bundles and shop now">Shop Now ↗</a>
+    <a href="#secondJourney" class="nav-link hide-mobile" title="Second Journey™ membership">Second Journey™</a>
     <button class="theme-toggle" id="themeBtn" onclick="toggleTheme()" aria-label="Toggle theme" title="Toggle theme">
       <svg id="iconDark" viewBox="0 0 24 24" style="display:none"><circle cx="12" cy="12" r="4"/><path d="M12 2v2M12 20v2M4.93 4.93l1.41 1.41M17.66 17.66l1.41 1.41M2 12h2M20 12h2M4.93 19.07l1.41-1.41M17.66 6.34l1.41-1.41"/></svg>
       <svg id="iconLight" viewBox="0 0 24 24" style="display:none"><path d="M21 12.79A9 9 0 1 1 11.21 3 7 7 0 0 0 21 12.79z"/></svg>
@@ -866,13 +1049,112 @@ input,select,textarea{outline:none}
   </div>
 
   
-  <div style="text-align:center;padding:2.5rem 1.5rem">
-    <a href="/second-journey.html" style="display:inline-flex;align-items:center;gap:0.6rem;background:rgba(127,183,126,0.06);border:1.5px solid rgba(127,183,126,0.35);color:#7fb77e;padding:0.85rem 2.2rem;border-radius:30px;font-size:0.74rem;font-weight:600;letter-spacing:1.5px;text-transform:uppercase;transition:all 0.3s;text-decoration:none" onmouseover="this.style.background='rgba(127,183,126,0.12)';this.style.borderColor='rgba(127,183,126,0.6)';this.style.transform='translateY(-2px)'" onmouseout="this.style.background='rgba(127,183,126,0.06)';this.style.borderColor='rgba(127,183,126,0.35)';this.style.transform='none'">
-      <svg viewBox="0 0 24 24" width="18" height="18" fill="none" stroke="currentColor" stroke-width="1.5"><path d="M12 22c-4-4-8-7.5-8-12a8 8 0 0116 0c0 4.5-4 8-8 12z"/></svg>
-      Browse Second Journey™
-    </a>
-    <p style="font-size:0.7rem;color:rgba(var(--text-rgb),0.4);margin-top:0.7rem">Sustainable travel essentials · Redeem with BAG Points · Savannah pilot</p>
-  </div>
+  <!-- ═══════════════════════════════════════════════
+       SECOND JOURNEY™ — MEMBERSHIP & BUNDLE TIERS
+       ═══════════════════════════════════════════════ -->
+  <section class="sj-section" id="secondJourney">
+    <div class="sj-glow"></div>
+    <div class="sj-inner">
+
+      <!-- Header -->
+      <div class="sj-header">
+        <div class="sj-eyebrow">
+          <span class="sj-eyebrow-leaf">♦</span>
+          <span class="sj-eyebrow-line"></span>
+          <span>Second Journey™</span>
+          <span class="sj-eyebrow-line"></span>
+          <span class="sj-eyebrow-leaf">♦</span>
+        </div>
+        <h2 class="sj-title">Choose your <em>clothing bundle.</em></h2>
+        <p class="sj-sub">Curated travel clothing delivered to your hotel. Pick the bundle that matches your trip length. Start with a free 2-day trial — just cover delivery.</p>
+      </div>
+
+      <!-- Tier Cards -->
+      <div class="sj-grid">
+
+        <!-- 2-DAY · FREE TRIAL -->
+        <div class="sj-card" data-tier="trial">
+          <div class="sj-card-label">Try it free</div>
+          <h3 class="sj-card-name">Explorer</h3>
+          <p class="sj-card-desc">Perfect for a quick overnight or weekend test run. See the quality firsthand.</p>
+          <div class="sj-card-price">
+            <span class="sj-price-main">Free</span>
+          </div>
+          <div class="sj-card-delivery">+ $5 hotel delivery</div>
+          <ul class="sj-card-features">
+            <li><span class="sj-check">✓</span> Second Journey™ included</li>
+            <li><span class="sj-check">✓</span> 2-day clothing bundle</li>
+            <li><span class="sj-check">✓</span> Hotel delivery &amp; pickup</li>
+            <li class="sj-muted">No membership required</li>
+          </ul>
+          <button class="sj-card-cta sj-cta-trial" onclick="selectSJTier('trial')">Start free trial</button>
+          <div class="sj-card-note">$5 delivery · Stripe test checkout</div>
+        </div>
+
+        <!-- 3-DAY · SECOND JOURNEY -->
+        <div class="sj-card" data-tier="3day">
+          <div class="sj-card-label">Travel Light</div>
+          <h3 class="sj-card-name">Second Journey</h3>
+          <p class="sj-card-desc">For travelers who simply want to travel lighter. Perfect for weekend trips.</p>
+          <div class="sj-card-price">
+            <span class="sj-price-main">$9<span class="sj-price-cents">.99</span></span>
+            <span class="sj-price-period">/month</span>
+          </div>
+          <div class="sj-card-annual">or $105/year <em>(save $24)</em></div>
+          <ul class="sj-card-features">
+            <li><span class="sj-check">✓</span> Second Journey™ included</li>
+            <li><span class="sj-check">✓</span> Explorer — up to 3 days</li>
+            <li><span class="sj-check">✓</span> Free hotel delivery</li>
+            <li><span class="sj-check">✓</span> Cancel anytime</li>
+          </ul>
+          <button class="sj-card-cta" onclick="selectSJTier('3day')">Choose Second Journey</button>
+        </div>
+
+        <!-- 5-DAY · EMERALD -->
+        <div class="sj-card sj-card-popular" data-tier="5day">
+          <div class="sj-popular-tag">Most Popular</div>
+          <div class="sj-card-label">Experience More</div>
+          <h3 class="sj-card-name">Emerald</h3>
+          <p class="sj-card-desc">For travelers who want Second Journey™ and local experiences. Extended getaways.</p>
+          <div class="sj-card-price">
+            <span class="sj-price-main">$39</span>
+            <span class="sj-price-period">/month</span>
+          </div>
+          <div class="sj-card-annual">or $372/year <em>(save $96)</em></div>
+          <ul class="sj-card-features">
+            <li><span class="sj-check">✓</span> Everything in Second Journey</li>
+            <li><span class="sj-check">✓</span> Voyager — up to 5 days</li>
+            <li><span class="sj-check">✓</span> Free hotel delivery</li>
+            <li><span class="sj-check">✓</span> Priority support</li>
+          </ul>
+          <button class="sj-card-cta sj-cta-popular" onclick="selectSJTier('5day')">Choose Emerald</button>
+        </div>
+
+        <!-- 7-DAY · GOLD -->
+        <div class="sj-card" data-tier="7day">
+          <div class="sj-card-label">Concierge</div>
+          <h3 class="sj-card-name">Gold</h3>
+          <p class="sj-card-desc">For travelers seeking a fully curated experience. Perfect for week-long stays.</p>
+          <div class="sj-card-price">
+            <span class="sj-price-main">$69</span>
+            <span class="sj-price-period">/month</span>
+          </div>
+          <div class="sj-card-annual">or $650/year <em>(save $168)</em></div>
+          <ul class="sj-card-features">
+            <li><span class="sj-check">✓</span> Everything in Emerald</li>
+            <li><span class="sj-check">✓</span> Adventurer — up to 7 days</li>
+            <li><span class="sj-check">✓</span> Free hotel delivery</li>
+            <li><span class="sj-check">✓</span> Dedicated concierge</li>
+          </ul>
+          <button class="sj-card-cta" onclick="selectSJTier('7day')">Choose Gold</button>
+        </div>
+
+      </div><!-- /sj-grid -->
+
+      <p class="sj-footer-note">All memberships include free hotel delivery, curated clothing bundles, and flexible cancellation. <em>Savannah pilot — expanding city by city.</em></p>
+
+    </div>
+  </section>
 
   <footer class="footer">
     <a href="/" class="footer-link">BagFree.app</a>&nbsp;·&nbsp;<a href="https://valetbynuor.com" class="footer-link" target="_blank" rel="noopener">Valet By Nuor</a>&nbsp;·&nbsp;<a href="/departure-lounge.html" class="footer-link">Full Lounge ↗</a>
@@ -1891,6 +2173,110 @@ document.addEventListener('keydown', function(e) {
     closeNotifyModal();
   }
 });
+
+// ─── SECOND JOURNEY TIER SELECTION ───
+const SJ_TIERS = {
+  trial: { name: 'Explorer (2-Day Trial)', days: 2, price: 0, delivery: 5, membership: false },
+  '3day': { name: 'Second Journey (3-Day)', days: 3, price: 9.99, delivery: 0, membership: true },
+  '5day': { name: 'Emerald (5-Day)', days: 5, price: 39, delivery: 0, membership: true },
+  '7day': { name: 'Gold (7-Day)', days: 7, price: 69, delivery: 0, membership: true },
+};
+
+function selectSJTier(tier) {
+  const info = SJ_TIERS[tier];
+  if (!info) return;
+
+  // Visual selection
+  document.querySelectorAll('.sj-card').forEach(c => c.classList.remove('sj-selected'));
+  const card = document.querySelector('.sj-card[data-tier="' + tier + '"]');
+  if (card) card.classList.add('sj-selected');
+
+  // Store in state
+  state.sjTier = tier;
+  state.sjTierInfo = info;
+
+  // For the trial ($5 delivery), go straight to Stripe checkout
+  // For paid memberships, add to cart and go to confirm step
+  const chargeAmount = info.membership ? info.price : info.delivery;
+  const description = info.membership
+    ? info.name + ' Membership — ' + info.days + '-day clothing bundle'
+    : info.name + ' — ' + info.days + '-day clothing bundle (delivery only)';
+
+  // Scroll to confirm section or trigger checkout
+  if (tier === 'trial') {
+    // Trial: go directly to Stripe for $5 delivery charge
+    initSJCheckout(tier, chargeAmount, description);
+  } else {
+    // Membership: scroll to existing confirm flow, pre-select tier
+    initSJCheckout(tier, chargeAmount, description);
+  }
+}
+
+async function initSJCheckout(tier, amount, description) {
+  const info = SJ_TIERS[tier];
+  const card = document.querySelector('.sj-card[data-tier="' + tier + '"] .sj-card-cta');
+  if (card) {
+    card.disabled = true;
+    card.textContent = 'Connecting...';
+  }
+
+  // Lead capture via Formspree (non-blocking)
+  try {
+    fetch(FORMSPREE_ENDPOINT, {
+      method: 'POST',
+      headers: { 'Content-Type': 'application/json', 'Accept': 'application/json' },
+      body: JSON.stringify({
+        _subject: '🎫 Second Journey™ signup: ' + info.name,
+        type: 'sj_membership',
+        tier: tier,
+        tier_name: info.name,
+        days: info.days,
+        price: '$' + amount.toFixed(2),
+        membership: info.membership,
+        city: state.city || 'Not selected yet',
+        email: state.email || 'Not provided yet',
+        submitted_at: new Date().toISOString()
+      })
+    });
+  } catch (e) { /* non-blocking */ }
+
+  // Call Stripe checkout via Netlify function
+  try {
+    const res = await fetch('/.netlify/functions/create-checkout', {
+      method: 'POST',
+      headers: { 'Content-Type': 'application/json' },
+      body: JSON.stringify({
+        city: state.city || 'Savannah',
+        arrival: state.dateArrive || new Date().toISOString().split('T')[0],
+        departure: state.dateDepart || new Date(Date.now() + info.days * 86400000).toISOString().split('T')[0],
+        hotel: state.hotel || 'TBD',
+        email: state.email || '',
+        bundles: [{
+          id: 'sj-' + tier,
+          title: description,
+          price: amount,
+          image: '',
+          qty: 1
+        }]
+      })
+    });
+    const data = await res.json();
+    if (!res.ok || !data.url) throw new Error(data.error || 'HTTP ' + res.status);
+    window.location.href = data.url;
+  } catch (err) {
+    console.error('SJ Checkout error:', err);
+    if (card) {
+      card.disabled = false;
+      card.textContent = tier === 'trial' ? 'Start free trial' :
+        tier === '3day' ? 'Choose Second Journey' :
+        tier === '5day' ? 'Choose Emerald' : 'Choose Gold';
+    }
+    alert(
+      "Couldn't open checkout. Please try again, or email hello@bagfree.app.\n\n" +
+      "(Detail: " + (err.message || 'unknown') + ")"
+    );
+  }
+}
 
 // ─── THEME ───
 function toggleTheme() {
