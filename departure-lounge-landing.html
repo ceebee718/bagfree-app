@@ -1022,8 +1022,6 @@ input,select,textarea{outline:none}
       <div class="bundle-filter" id="bundleFilter">
         <button class="bundle-filter-btn active" data-filter="all" onclick="setBundleFilter('all', this)">All Vendors</button>
         <button class="bundle-filter-btn" data-filter="valet" onclick="setBundleFilter('valet', this)">Valet By Nuor</button>
-        <button class="bundle-filter-btn" data-filter="snugl" onclick="setBundleFilter('snugl', this)">SNUGL</button>
-        <button class="bundle-filter-btn" data-filter="nuor-edit" onclick="setBundleFilter('nuor-edit', this)">The Nuor Edit</button>
         <button class="bundle-filter-btn sj-filter-btn" data-filter="second-journey" onclick="setBundleFilter('second-journey', this)">Second Journey™</button>
       </div>
       <!-- Discrete action button — not a filter. Scrolls to the custom-request
@@ -1419,21 +1417,6 @@ const VENDORS = [
     bookable: true
   },
   {
-    id: 'snugl',
-    name: 'SNUGL',
-    tagline: 'Travel comfort: memory-foam pillows, pods, and travel comfort essentials.',
-    bookable: false,
-    coming_soon: true,
-    coming_soon_blurb: "SNUGL's full collection arrives soon. Join the early-access list and we'll email you the moment it goes live."
-  },
-  {
-    id: 'nuor-edit',
-    name: 'The Nuor Edit',
-    tagline: 'Curated rental wardrobes. Wear, return to hotel laundry, we collect.',
-    bookable: true,
-    coming_soon: false
-  },
-  {
     id: 'second-journey',
     name: 'Second Journey™',
     tagline: 'Travel clothing bundles delivered to your hotel. Choose your trip length — start with a free 2-day trial.',
@@ -1547,35 +1530,6 @@ const BUNDLES = [
     "image": "https://valetbynuor.com/cdn/shop/files/ChatGPTImageMar16_2026_08_56_10PM.png?v=1773708994&width=800",
     "units": 25,
     "url": "https://valetbynuor.com/products/sleep-recovery-travel-kit"
-  },
-
-  // ── THE NUOR EDIT (rentals — wear, return, we collect) ──
-  // These bundles are flat-rate rentals (not per-day). Pricing already
-  // factors in the rental period shown in the tagline. To add more later,
-  // copy one of these entries and update id/title/tagline/price/image.
-  {
-    "id": "nuor-weekend-edit", "vendor": "nuor-edit",
-    "title": "The Weekend Edit",
-    "category": "unisex",
-    "tagline": "Curated essentials for a seamless 3-day escape. 6 pieces, endlessly mixable. Cleaned, sanitized, delivered before you arrive. Easy pickup from your hotel after your stay.",
-    "price": 49.0,
-    "image": "/images/bundles/the-weekend-edit.png",
-    "units": 25,
-    "rental": true,
-    "rental_label": "3-Day Rental",
-    "badge": "New"
-  },
-  {
-    "id": "nuor-voyager-collection", "vendor": "nuor-edit",
-    "title": "The Voyager Collection",
-    "category": "unisex",
-    "tagline": "A complete 7-day destination wardrobe — 15+ premium pieces spanning day looks, night out, resort, and essentials. Delivered to your hotel, picked up after your stay.",
-    "price": 99.0,
-    "image": "/images/bundles/the-voyager-collection.png",
-    "units": 25,
-    "rental": true,
-    "rental_label": "7-Day Rental",
-    "badge": "New"
   },
 
   // ── SECOND JOURNEY™ ──
