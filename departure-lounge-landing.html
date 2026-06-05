@@ -789,6 +789,18 @@ input,select,textarea{outline:none}
         <div class="reserve-section">
           <div class="reserve-label">Your arrival</div>
           <div class="reserve-summary" id="reserveSummary"></div>
+          <div id="datePickerFallback" style="display:none;margin-top:0.5rem">
+            <div style="display:grid;grid-template-columns:1fr 1fr;gap:0.6rem">
+              <div>
+                <div style="font-size:0.58rem;letter-spacing:1.5px;text-transform:uppercase;color:rgba(var(--gold-rgb),0.6);margin-bottom:0.3rem">Arrive</div>
+                <input type="date" class="hotel-select" id="arriveDate" onchange="updateDatesFromCheckout()" style="width:100%">
+              </div>
+              <div>
+                <div style="font-size:0.58rem;letter-spacing:1.5px;text-transform:uppercase;color:rgba(var(--gold-rgb),0.6);margin-bottom:0.3rem">Depart</div>
+                <input type="date" class="hotel-select" id="departDate" onchange="updateDatesFromCheckout()" style="width:100%">
+              </div>
+            </div>
+          </div>
         </div>
         <div class="reserve-section">
           <div class="reserve-label">Your city</div>
@@ -803,14 +815,14 @@ input,select,textarea{outline:none}
         </div>
         <div class="reserve-section">
           <div class="reserve-label">Your hotel</div>
-          <select class="hotel-select" id="hotelSelect" onchange="updateHotelChoice()">
+          <select class="hotel-select" id="hotelSelect" onchange="updateHotelChoice();checkReserveReady()">
             <option value="">Select your hotel...</option>
           </select>
           <input type="text" class="hotel-input" id="hotelOther" placeholder="Enter your hotel name">
         </div>
         <div class="reserve-section">
           <div class="reserve-label">Your email</div>
-          <input type="email" class="email-input" id="reserveEmail" placeholder="you@example.com" required>
+          <input type="email" class="email-input" id="reserveEmail" placeholder="you@example.com" required oninput="checkReserveReady()">
         </div>
         <button class="reserve-cta" id="reserveBtn" onclick="submitReserve()" disabled>Reserve & pay securely</button>
         <div class="reserve-trust">Secure checkout via Stripe · Same-day delivery · Receipt emailed instantly</div>
@@ -1507,6 +1519,66 @@ function renderConfirmSummary() {
 }
 
 // ─── HOTEL + EMAIL ───
+
+
+
+function checkReserveReady() {
+  var btn = document.getElementById('reserveBtn');
+  var email = document.getElementById('reserveEmail').value.trim();
+  var hotel = document.getElementById('hotelSelect').value;
+  var city = state.city;
+  var arrive = state.dateArrive;
+  var depart = state.dateDepart;
+  var hasBundles = Object.keys(state.selectedBundles || {}).length > 0;
+  
+  if (email && hotel && hotel !== '' && hotel !== '__other__' && city && arrive && depart && hasBundles) {
+    btn.disabled = false;
+  }
+}
+
+function updateDatesFromCheckout() {
+  var a = document.getElementById('arriveDate').value;
+  var d = document.getElementById('departDate').value;
+  if (a) state.dateArrive = a;
+  if (d) state.dateDepart = d;
+  if (a && d) {
+    var summary = document.getElementById('reserveSummary');
+    var arrive = new Date(a + 'T12:00:00');
+    var depart = new Date(d + 'T12:00:00');
+    var opts = { month: 'short', day: 'numeric' };
+    summary.textContent = arrive.toLocaleDateString('en-US', opts) + ' \u2192 ' + depart.toLocaleDateString('en-US', opts);
+  }
+  checkReserveReady();
+}
+
+// Show date picker fallback if dates aren't set when reaching Step 4
+var origGoToStep = typeof goToStep === 'function' ? goToStep : null;
+document.addEventListener('DOMContentLoaded', function() {
+  // Check periodically if we're on step 4 without dates
+  var observer = new MutationObserver(function() {
+    var step4 = document.getElementById('step4');
+    if (step4 && step4.classList.contains('active')) {
+      var fb = document.getElementById('datePickerFallback');
+      if (fb && (!state.dateArrive || !state.dateDepart)) {
+        fb.style.display = 'block';
+        // Set default dates to today + 3 days
+        var today = new Date();
+        var arrive = today.toISOString().split('T')[0];
+        var depart = new Date(today.getTime() + 3*86400000).toISOString().split('T')[0];
+        document.getElementById('arriveDate').min = arrive;
+        document.getElementById('departDate').min = arrive;
+        if (!document.getElementById('arriveDate').value) {
+          document.getElementById('arriveDate').value = arrive;
+          document.getElementById('departDate').value = depart;
+          updateDatesFromCheckout();
+        }
+      } else if (fb && state.dateArrive && state.dateDepart) {
+        fb.style.display = 'none';
+      }
+    }
+  });
+  observer.observe(document.body, { attributes: true, subtree: true, attributeFilter: ['class'] });
+});
 
 function updateCityFromCheckout() {
   var cityVal = document.getElementById('citySelectCheckout').value;
