@@ -1560,11 +1560,11 @@ const BUNDLES = [
     "category": "unisex",
     "tagline": "Try it free — the bundle is on us, just cover $5 hotel delivery. Perfect for an overnight or quick weekend trip.",
     "price": 5,
-    "image": "https://valetbynuor.com/cdn/shop/files/ChatGPT_Image_Aug_22_2025_07_23_24_PM.png?v=1755905084&width=800",
+    "image": "/images/bundles/2-day-explorer-bundle.png",
     "units": 50,
     "sj_tier": "trial",
     "sj_days": 2,
-    "badge": "Free Trial"
+    "badge": ""
   },
   {
     "id": "sj-3day", "vendor": "second-journey",
@@ -1572,7 +1572,7 @@ const BUNDLES = [
     "category": "unisex",
     "tagline": "Travel light for a long weekend. Curated clothing for 3 days — delivered before you arrive, picked up after your stay. Requires Second Journey membership ($9.99/mo).",
     "price": 9.99,
-    "image": "https://valetbynuor.com/cdn/shop/files/ChatGPTImageJan11_2026_02_58_17PM.png?v=1768161528&width=800",
+    "image": "/images/bundles/3-day-second-journey-bundle.png",
     "units": 50,
     "sj_tier": "3day",
     "sj_days": 3,
@@ -1585,7 +1585,7 @@ const BUNDLES = [
     "category": "unisex",
     "tagline": "Extended getaway — a complete 5-day travel wardrobe. Everything in Second Journey plus Voyager perks. Requires Emerald membership ($39/mo).",
     "price": 39,
-    "image": "https://valetbynuor.com/cdn/shop/files/ChatGPTImageJan11_2026_02_55_15PM.png?v=1768161350&width=800",
+    "image": "/images/bundles/5-day-emerald-bundle.png",
     "units": 50,
     "sj_tier": "5day",
     "sj_days": 5,
@@ -1838,8 +1838,6 @@ function renderSJBundleCard(b) {
       ${isPopular ? '<div class="sj-popular-ribbon">Most Popular</div>' : ''}
       <div class="bundle-img-wrap">
         <img class="bundle-img" src="${b.image}" alt="${b.title}" loading="lazy">
-        ${b.badge && b.badge !== 'Most Popular' ? '<div class="bundle-badge" style="background:#5DCAA5">' + b.badge + '</div>' : ''}
-        <div class="sj-day-tag">${dayLabel}</div>
         <div class="bundle-selected-check">✓</div>
       </div>
       <div class="bundle-body">
