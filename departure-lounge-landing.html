@@ -1084,7 +1084,7 @@ input,select,textarea{outline:none}
         <span class="sj-sustain-pill"><svg class="sj-sustain-pill-svg" viewBox="0 0 20 20" fill="none" stroke="currentColor" stroke-width="1.3"><path d="M10 18c-3.5 0-7-1.5-7-5 0-2.5 1.5-4 3.5-5.5L10 3l3.5 4.5C15.5 9 17 10.5 17 13c0 3.5-3.5 5-7 5z"/><path d="M10 18v-5"/><path d="M7.5 15c0-1.5 1-2.5 2.5-2.5s2.5 1 2.5 2.5"/></svg> Reduce Waste</span>
         <span class="sj-sustain-pill"><svg class="sj-sustain-pill-svg" viewBox="0 0 20 20" fill="none" stroke="currentColor" stroke-width="1.3"><path d="M3 18h14"/><path d="M5 18V7l5-3 5 3v11"/><path d="M8 18v-4h4v4"/><path d="M8 10h1"/><path d="M11 10h1"/></svg> Delivered to Your Hotel</span>
       </div>
-      <p class="sj-sustain-impact">Every Second Journey™ bundle helps keep quality clothing in circulation and reduces the need for single-use travel purchases.</p>
+      <p class="sj-sustain-impact">Every Second Journey™ bundle helps keep quality clothing in circulation and reduces the need for single-use travel purchases. Currently available in Savannah, Atlanta, Tampa &amp; Orlando — expanding city by city.</p>
     </div>
 
     <div class="bundle-filter-row">
@@ -1374,6 +1374,10 @@ input,select,textarea{outline:none}
       <div class="notify-eyebrow">Second Journey™ Membership</div>
       <h2 class="notify-title" id="memberTitle">Verify or <em>sign up.</em></h2>
       <p class="notify-sub" id="memberTierDesc">This bundle requires an active membership. Already a member? Enter your email to verify. New here? Sign up and get started.</p>
+      <div style="display:flex;align-items:flex-start;gap:0.5rem;padding:0.6rem 0.8rem;background:rgba(var(--gold-rgb),0.05);border:1px solid rgba(var(--gold-rgb),0.2);margin-bottom:1.2rem">
+        <span style="color:var(--gold);font-size:0.8rem;flex-shrink:0;margin-top:1px">◆</span>
+        <span style="font-size:0.72rem;color:rgba(var(--text-rgb),0.6);line-height:1.5">Currently available in <em style="color:var(--gold);font-style:normal;font-weight:500">Savannah</em>, <em style="color:var(--gold);font-style:normal;font-weight:500">Atlanta</em>, <em style="color:var(--gold);font-style:normal;font-weight:500">Tampa</em>, and <em style="color:var(--gold);font-style:normal;font-weight:500">Orlando</em>. Expanding city by city.</span>
+      </div>
 
       <div style="display:flex;flex-direction:column;gap:0.8rem;margin-top:1.2rem">
         <button class="sj-member-opt" onclick="showMemberLogin()">
@@ -1410,7 +1414,11 @@ input,select,textarea{outline:none}
     <div id="memberStep2Signup" style="display:none">
       <div class="notify-eyebrow">New Membership</div>
       <h2 class="notify-title">Join <em>Second Journey™</em></h2>
-      <p class="notify-sub">Enter your email to create your membership. You'll be directed to Stripe to complete payment.</p>
+      <p class="notify-sub">Enter your email to create your membership. Your bundle will be added to your cart for checkout.</p>
+      <div style="display:flex;align-items:center;gap:0.45rem;padding:0.5rem 0.7rem;background:rgba(93,202,165,0.06);border:1px solid rgba(93,202,165,0.2);margin-bottom:1rem;font-size:0.68rem;color:rgba(var(--text-rgb),0.55);line-height:1.5">
+        <span style="color:#5DCAA5;font-size:0.7rem;flex-shrink:0">♻</span>
+        Available in Savannah, Atlanta, Tampa &amp; Orlando only.
+      </div>
       <form onsubmit="return startMemberSignup(event)">
         <input type="email" class="notify-input" id="memberSignupEmail" placeholder="you@example.com" required>
         <div id="memberTierBadge" style="display:flex;align-items:center;gap:0.6rem;padding:0.75rem 0.85rem;background:rgba(93,202,165,0.06);border:1px solid rgba(93,202,165,0.25);margin-bottom:1rem">
@@ -2143,7 +2151,7 @@ function renderConfirmSummary() {
       <div class="sj-checkout-notice-icon">♻</div>
       <div class="sj-checkout-notice-text">
         <strong>Second Journey™ — Recycled clothing</strong><br>
-        Your order includes Second Journey™ items. These bundles contain <em>professionally cleaned, quality-checked garments</em> — each item is reused by future travelers to help reduce waste. Not brand-new apparel.
+        Your order includes Second Journey™ items. These bundles contain <em>professionally cleaned, quality-checked garments</em> — each item is reused by future travelers to help reduce waste. Not brand-new apparel. Currently available in <em>Savannah, Atlanta, Tampa &amp; Orlando</em>.
       </div>
     </div>
   ` : '';
@@ -2634,12 +2642,15 @@ async function startMemberSignup(e) {
   if (!email) return false;
 
   btn.disabled = true;
-  btn.textContent = 'Connecting to Stripe...';
+  btn.textContent = 'Setting up...';
 
   const tier = state.sjPendingTier;
   const tierInfo = SJ_TIERS[tier];
 
-  // Lead capture
+  // Save email to state
+  state.email = email;
+
+  // Lead capture via Formspree (non-blocking)
   try {
     fetch(FORMSPREE_ENDPOINT, {
       method: 'POST',
@@ -2654,35 +2665,27 @@ async function startMemberSignup(e) {
     });
   } catch (e) { /* non-blocking */ }
 
-  // Redirect to Stripe checkout for membership
-  try {
-    const res = await fetch('/.netlify/functions/create-checkout', {
-      method: 'POST',
-      headers: { 'Content-Type': 'application/json' },
-      body: JSON.stringify({
-        city: state.city || 'Savannah',
-        arrival: state.dateArrive || new Date().toISOString().split('T')[0],
-        departure: state.dateDepart || '',
-        hotel: state.hotel || 'TBD',
-        email: email,
-        bundles: [{
-          id: 'sj-membership-' + tier,
-          title: (tierInfo ? tierInfo.name : tier) + ' Membership',
-          price: tierInfo ? tierInfo.price : 0,
-          image: '',
-          qty: 1
-        }]
-      })
-    });
-    const data = await res.json();
-    if (!res.ok || !data.url) throw new Error(data.error || 'HTTP ' + res.status);
-    window.location.href = data.url;
-  } catch (err) {
-    console.error('Membership checkout error:', err);
-    btn.disabled = false;
-    btn.textContent = 'Sign up & pay via Stripe';
-    alert("Couldn't open checkout. Please try again or email hello@bagfree.app.\n\n(" + (err.message || 'unknown') + ")");
+  // Mark as verified and add bundle to cart
+  state.sjMemberVerified = tier;
+
+  if (state.sjPendingBundleId) {
+    state.selectedBundles[state.sjPendingBundleId] = 1;
   }
+
+  // Show success in modal
+  document.getElementById('memberStep2Signup').style.display = 'none';
+  document.getElementById('memberSuccess').classList.add('show');
+  document.getElementById('memberSuccessSub').innerHTML =
+    'Signed up as <em style="color:#5DCAA5">' + email + '</em>. Your bundle has been added — proceed to checkout to complete payment.';
+
+  // Re-render bundles and cart
+  setTimeout(function() {
+    renderBundles();
+    updateCartBar();
+  }, 300);
+
+  btn.disabled = false;
+  btn.textContent = 'Sign up & pay via Stripe';
   return false;
 }
 
