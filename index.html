@@ -477,6 +477,18 @@ a{text-decoration:none}
 .quote-attr{font-size:0.78rem;color:var(--muted);letter-spacing:1.2px;font-weight:400}
 
 /* ── WHY BAGFREE ── */
+/* Social footer */
+.social-footer{display:flex;align-items:center;justify-content:space-between;gap:1.5rem;margin-top:1.2rem;padding:1.3rem 1.6rem;border:1px solid var(--border-soft);border-radius:12px;background:rgba(var(--gold-rgb,201,169,110),0.02)}
+@media(max-width:640px){.social-footer{flex-direction:column;text-align:center;gap:1rem}}
+.social-footer-left{display:flex;align-items:center;gap:1rem}
+@media(max-width:640px){.social-footer-left{flex-direction:column;gap:0.3rem}}
+.social-footer-brand{font-family:var(--ff-display);font-size:1.2rem;color:var(--gold);font-weight:400}
+.social-footer-tagline{font-size:0.72rem;color:var(--muted);letter-spacing:1px;font-weight:300}
+.social-footer-right{display:flex;align-items:center;gap:0.9rem}
+.social-footer-label{font-size:0.55rem;letter-spacing:2.5px;text-transform:uppercase;color:var(--muted);font-weight:500;white-space:nowrap}
+.social-footer-icons{display:flex;gap:0.45rem}
+.social-icon{width:36px;height:36px;border-radius:50%;border:1px solid rgba(var(--gold-rgb,201,169,110),0.25);display:flex;align-items:center;justify-content:center;color:var(--muted);transition:all 0.25s;text-decoration:none}
+.social-icon:hover{border-color:var(--gold);color:var(--gold);background:rgba(var(--gold-rgb,201,169,110),0.08);transform:translateY(-2px);box-shadow:0 4px 12px rgba(var(--gold-rgb,201,169,110),0.15)}
 .why-bf-img-wrap{margin-top:0.4rem;display:flex;justify-content:center;align-items:center}
 .why-bf-img{width:100%;max-width:1100px;display:block;border-radius:14px;border:1px solid var(--border-soft)}
 
