@@ -1523,6 +1523,21 @@ function RightRail(props) {
           </div>
         </div>
       </div>
+
+      <div className="widget widget-network">
+        <div className="widget-label" style={{color:'var(--gold)'}}>Join the Network</div>
+        <div className="network-title">Help shape the future of travel.</div>
+        <div className="network-desc">BagFree is building a network of curators, hotels, restaurants, delivery partners, and local businesses — all working together to help travelers arrive prepared, experience more, and leave less behind.</div>
+        <div className="network-roles">
+          <span className="network-role">Curator</span>
+          <span className="network-role">Hotel</span>
+          <span className="network-role">Delivery</span>
+          <span className="network-role">Restaurant</span>
+          <span className="network-role">Business</span>
+          <span className="network-role">Sustainability</span>
+        </div>
+        <a href="/join-network.html" className="btn-network">Apply Now →</a>
+      </div>
     </aside>
   );
 }
