@@ -458,8 +458,8 @@ a{text-decoration:none}
 
 /* ── WHY BAGFREE ── */
 .why-bf{margin-top:0.4rem;border-radius:14px;overflow:hidden;border:1px solid var(--border-soft);background:linear-gradient(160deg,rgba(28,42,72,0.6),rgba(17,31,58,0.8))}
-.why-bf-inner{display:grid;grid-template-columns:1fr 1fr;gap:3rem;padding:3rem 3rem 2.8rem;align-items:start}
-@media(max-width:860px){.why-bf-inner{grid-template-columns:1fr;gap:2rem;padding:2rem 1.8rem}}
+.why-bf-inner{display:grid;grid-template-columns:1fr auto 1fr;gap:1rem;padding:3rem 3rem 2.8rem;align-items:start}
+@media(max-width:860px){.why-bf-inner{grid-template-columns:1fr;gap:2rem;padding:2rem 1.8rem}.why-bf-center{display:none}}
 .why-bf-eyebrow{display:flex;align-items:center;gap:0.55rem;font-size:0.58rem;letter-spacing:4px;text-transform:uppercase;color:var(--gold);margin-bottom:1.2rem;font-weight:600}
 .why-bf-diamond{width:6px;height:6px;background:var(--gold);transform:rotate(45deg);box-shadow:0 0 10px rgba(201,169,110,0.5)}
 .why-bf-title{font-family:var(--ff-display);font-size:clamp(1.8rem,3.5vw,2.6rem);font-weight:300;letter-spacing:-0.8px;color:var(--white);line-height:1.12;margin-bottom:1.8rem}
@@ -467,8 +467,11 @@ a{text-decoration:none}
 .why-bf-values{list-style:none;padding:0;margin:0;display:flex;flex-direction:column;gap:0.9rem}
 .why-bf-value{display:flex;align-items:center;gap:0.75rem;font-size:0.95rem;color:rgba(var(--text-rgb,253,252,248),0.72);font-weight:300;line-height:1.4}
 .why-bf-check{color:var(--gold);font-size:0.82rem;flex-shrink:0}
-.why-bf-right{display:flex;flex-direction:column;gap:1.4rem;position:relative;padding-left:1.5rem}
-.why-bf-connector{position:absolute;left:17px;top:20px;bottom:20px;width:1px;background:linear-gradient(to bottom,rgba(201,169,110,0.05),rgba(201,169,110,0.32),rgba(201,169,110,0.05))}
+.why-bf-center{display:flex;align-items:flex-start;justify-content:center;padding-top:0.5rem}
+.why-bf-bird-svg{width:130px;height:auto;filter:drop-shadow(0 0 20px rgba(201,169,110,0.15))}
+.why-bf-trail{animation:trailPulse 3s ease-in-out infinite}
+@keyframes trailPulse{0%,100%{opacity:0.5}50%{opacity:1}}
+.why-bf-right{display:flex;flex-direction:column;gap:1.4rem;position:relative;padding-left:0.5rem;padding-top:0.5rem}
 .why-bf-pillar{display:flex;align-items:flex-start;gap:1rem;position:relative;z-index:1}
 .why-bf-pillar-icon{width:36px;height:36px;flex-shrink:0;display:flex;align-items:center;justify-content:center;border:1px solid rgba(201,169,110,0.35);background:rgba(201,169,110,0.06);color:var(--gold);transition:all 0.3s}
 .why-bf-pillar:hover .why-bf-pillar-icon{background:rgba(201,169,110,0.14);border-color:var(--gold);box-shadow:0 0 16px rgba(201,169,110,0.3);transform:scale(1.06)}
