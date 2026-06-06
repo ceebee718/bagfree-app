@@ -1391,6 +1391,7 @@ function TopBar(props) {
         <SearchBar city={props.city} onSearch={props.onSearch} onItemClick={props.onItemClick} onClearResults={props.onClearResults}/>
       </div>
       <div className="topbar-actions">
+        <a href="/join-network.html" className="join-network-btn">Join Network</a>
         <ThemeToggle/>
         <button className="icon-btn" title="Search"><Icon.Search/></button>
         <button className="icon-btn" title="Notifications">
