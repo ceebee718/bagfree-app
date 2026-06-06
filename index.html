@@ -457,26 +457,8 @@ a{text-decoration:none}
 .quote-attr{font-size:0.78rem;color:var(--muted);letter-spacing:1.2px;font-weight:400}
 
 /* ── WHY BAGFREE ── */
-.why-bf{margin-top:0.4rem;border-radius:14px;overflow:hidden;border:1px solid var(--border-soft);background:linear-gradient(160deg,rgba(28,42,72,0.6),rgba(17,31,58,0.8))}
-.why-bf-inner{display:grid;grid-template-columns:1fr auto 1fr;gap:1rem;padding:3rem 3rem 2.8rem;align-items:start}
-@media(max-width:860px){.why-bf-inner{grid-template-columns:1fr;gap:2rem;padding:2rem 1.8rem}.why-bf-center{display:none}}
-.why-bf-eyebrow{display:flex;align-items:center;gap:0.55rem;font-size:0.58rem;letter-spacing:4px;text-transform:uppercase;color:var(--gold);margin-bottom:1.2rem;font-weight:600}
-.why-bf-diamond{width:6px;height:6px;background:var(--gold);transform:rotate(45deg);box-shadow:0 0 10px rgba(201,169,110,0.5)}
-.why-bf-title{font-family:var(--ff-display);font-size:clamp(1.8rem,3.5vw,2.6rem);font-weight:300;letter-spacing:-0.8px;color:var(--white);line-height:1.12;margin-bottom:1.8rem}
-.why-bf-title em{font-style:italic;color:var(--gold)}
-.why-bf-values{list-style:none;padding:0;margin:0;display:flex;flex-direction:column;gap:0.9rem}
-.why-bf-value{display:flex;align-items:center;gap:0.75rem;font-size:0.95rem;color:rgba(var(--text-rgb,253,252,248),0.72);font-weight:300;line-height:1.4}
-.why-bf-check{color:var(--gold);font-size:0.82rem;flex-shrink:0}
-.why-bf-center{display:flex;align-items:flex-start;justify-content:center;padding-top:0.5rem}
-.why-bf-bird-svg{width:130px;height:auto;filter:drop-shadow(0 0 20px rgba(201,169,110,0.15))}
-.why-bf-trail{animation:trailPulse 3s ease-in-out infinite}
-@keyframes trailPulse{0%,100%{opacity:0.5}50%{opacity:1}}
-.why-bf-right{display:flex;flex-direction:column;gap:1.4rem;position:relative;padding-left:0.5rem;padding-top:0.5rem}
-.why-bf-pillar{display:flex;align-items:flex-start;gap:1rem;position:relative;z-index:1}
-.why-bf-pillar-icon{width:36px;height:36px;flex-shrink:0;display:flex;align-items:center;justify-content:center;border:1px solid rgba(201,169,110,0.35);background:rgba(201,169,110,0.06);color:var(--gold);transition:all 0.3s}
-.why-bf-pillar:hover .why-bf-pillar-icon{background:rgba(201,169,110,0.14);border-color:var(--gold);box-shadow:0 0 16px rgba(201,169,110,0.3);transform:scale(1.06)}
-.why-bf-pillar-name{font-family:var(--ff-display);font-size:1.2rem;font-weight:400;color:var(--white);letter-spacing:-0.2px;margin-bottom:0.2rem}
-.why-bf-pillar-desc{font-size:0.78rem;color:var(--muted);line-height:1.6;max-width:300px}
+.why-bf-img-wrap{margin-top:0.4rem;display:flex;justify-content:center;align-items:center}
+.why-bf-img{width:100%;max-width:1100px;display:block;border-radius:14px;border:1px solid var(--border-soft)}
 
 .right-rail{background:var(--bg-2);border-left:1px solid var(--border-soft);padding:2rem 1.4rem 7rem;display:flex;flex-direction:column;gap:1rem;position:sticky;top:0;max-height:100vh;overflow-y:auto}
 .widget{background:var(--card);border:1px solid var(--border-soft);border-radius:12px;padding:1.2rem 1.2rem;display:flex;flex-direction:column;gap:0.7rem;transition:border-color 0.25s}
@@ -615,10 +597,7 @@ html.light .search-wrap{background:var(--card);border-color:rgba(0,0,0,0.1)}
 html.light .search-wrap input{color:var(--white)}
 html.light .rewards-card{background:rgba(0,0,0,0.03);border-color:rgba(0,0,0,0.06)}
 html.light .quote-section{background:var(--card);box-shadow:0 2px 10px rgba(0,0,0,0.05)}
-html.light .why-bf{background:linear-gradient(160deg,rgba(240,235,225,0.8),rgba(230,222,210,0.6));border-color:rgba(0,0,0,0.08)}
-html.light .why-bf-value{color:rgba(0,0,0,0.65)}
-html.light .why-bf-pillar-icon{border-color:rgba(166,134,74,0.35);background:rgba(166,134,74,0.08)}
-html.light .why-bf-connector{background:linear-gradient(to bottom,rgba(166,134,74,0.05),rgba(166,134,74,0.25),rgba(166,134,74,0.05))}
+html.light .why-bf-img-wrap{opacity:0.92}
 html.light .sidebar-city{background:rgba(0,0,0,0.03);border-color:rgba(0,0,0,0.06)}
 html.light .chat-panel{background:var(--bg);border-color:rgba(0,0,0,0.08)}
 html.light .chat-input{background:rgba(0,0,0,0.03);color:var(--white);border-color:rgba(0,0,0,0.1)}
