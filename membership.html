@@ -340,30 +340,148 @@ html.light .tp .kn svg{stroke:#f8f7f4;fill:none}
 
 <footer class="ft"><a href="/">BagFree.app</a> · Membership<br><span style="margin-top:0.4rem;display:inline-block">© 2026 BagFree. All rights reserved.</span></footer>
 
+<!-- Quick Checkout Modal -->
+<div id="checkoutModal" style="display:none;position:fixed;inset:0;z-index:9999;background:rgba(0,0,0,0.6);backdrop-filter:blur(6px);align-items:center;justify-content:center" onclick="if(event.target===this)closeCheckout()">
+  <div style="background:linear-gradient(160deg,#1c2a48,#111f3a);border:1px solid rgba(201,169,110,0.2);max-width:440px;width:90%;padding:2.2rem;position:relative;animation:fadeUp 0.3s ease">
+    <button onclick="closeCheckout()" style="position:absolute;top:1rem;right:1rem;background:none;border:none;color:rgba(253,252,248,0.4);font-size:1.2rem;cursor:pointer">✕</button>
+    <div style="font-size:0.55rem;letter-spacing:3.5px;text-transform:uppercase;color:#5DCAA5;margin-bottom:0.6rem;font-weight:600">Second Journey™ Membership</div>
+    <div style="font-family:'Cormorant Garamond',serif;font-size:1.6rem;font-weight:300;color:#fdfcf8;margin-bottom:0.3rem" id="modalTierName"></div>
+    <div style="font-family:'Cormorant Garamond',serif;font-size:2rem;color:#c9a96e;margin-bottom:0.3rem" id="modalTierPrice"></div>
+    <div style="font-size:0.72rem;color:rgba(253,252,248,0.4);margin-bottom:1.4rem" id="modalTierAnnual"></div>
+    <div style="display:flex;align-items:center;gap:0.4rem;padding:0.5rem 0.7rem;background:rgba(93,202,165,0.06);border:1px solid rgba(93,202,165,0.2);margin-bottom:1.2rem;font-size:0.65rem;color:rgba(253,252,248,0.5)">
+      <span style="color:#5DCAA5">♻</span> Available in Savannah, Atlanta, Tampa &amp; Orlando.
+    </div>
+    <div style="margin-bottom:0.8rem">
+      <label style="display:block;font-size:0.55rem;letter-spacing:2.5px;text-transform:uppercase;color:rgba(253,252,248,0.4);margin-bottom:0.35rem;font-weight:600">Email *</label>
+      <input id="modalEmail" type="email" placeholder="you@example.com" required style="width:100%;padding:0.75rem 0.9rem;font-size:0.88rem;background:rgba(201,169,110,0.03);border:1px solid rgba(201,169,110,0.12);color:#fdfcf8;font-family:'DM Sans',sans-serif">
+    </div>
+    <div style="display:grid;grid-template-columns:1fr 1fr;gap:0.8rem;margin-bottom:0.8rem">
+      <div>
+        <label style="display:block;font-size:0.55rem;letter-spacing:2.5px;text-transform:uppercase;color:rgba(253,252,248,0.4);margin-bottom:0.35rem;font-weight:600">City *</label>
+        <select id="modalCity" style="width:100%;padding:0.75rem 0.9rem;font-size:0.88rem;background:rgba(201,169,110,0.03);border:1px solid rgba(201,169,110,0.12);color:#fdfcf8;font-family:'DM Sans',sans-serif;appearance:none">
+          <option value="Savannah, GA">Savannah, GA</option>
+          <option value="Atlanta, GA">Atlanta, GA</option>
+          <option value="Tampa, FL">Tampa, FL</option>
+          <option value="Orlando, FL">Orlando, FL</option>
+        </select>
+      </div>
+      <div>
+        <label style="display:block;font-size:0.55rem;letter-spacing:2.5px;text-transform:uppercase;color:rgba(253,252,248,0.4);margin-bottom:0.35rem;font-weight:600">Guest Name *</label>
+        <input id="modalName" type="text" placeholder="Name for hotel" required style="width:100%;padding:0.75rem 0.9rem;font-size:0.88rem;background:rgba(201,169,110,0.03);border:1px solid rgba(201,169,110,0.12);color:#fdfcf8;font-family:'DM Sans',sans-serif">
+      </div>
+    </div>
+    <button id="modalSubmitBtn" onclick="submitMemberCheckout()" style="width:100%;padding:0.9rem;font-size:0.62rem;letter-spacing:3px;text-transform:uppercase;font-weight:600;color:#0d1a32;background:#c9a96e;border:none;cursor:pointer;font-family:'DM Sans',sans-serif;box-shadow:0 6px 20px rgba(201,169,110,0.3);transition:all 0.3s">Reserve &amp; Pay via Stripe</button>
+    <div style="text-align:center;margin-top:0.7rem;font-size:0.65rem;color:rgba(253,252,248,0.3)">Secure checkout via Stripe · Cancel anytime</div>
+  </div>
+</div>
+<style>@keyframes fadeUp{from{opacity:0;transform:translateY(12px)}to{opacity:1;transform:translateY(0)}}</style>
+
 <script>
 var SU='https://vkctidpaghpdlmleezvq.supabase.co',SK='eyJhbGciOiJIUzI1NiIsInR5cCI6IkpXVCJ9.eyJpc3MiOiJzdXBhYmFzZSIsInJlZiI6InZrY3RpZHBhZ2hwZGxtbGVlenZxIiwicm9sZSI6ImFub24iLCJpYXQiOjE3NzUzMjI5MjgsImV4cCI6MjA5MDg5ODkyOH0.wKtG6XD6CwLy3rJDZc4S10-NqNr3fcCXHYOWJt_C628';
 var bc='m',P={s:{m:'$9.99',a:'$8'},e:{m:'$39',a:'$31'},g:{m:'$69',a:'$55'}};
+var pendingTier = null;
+
+var TIER_INFO = {
+  secondjourney: { name:'Second Journey', bundle:'sj-3day', price:9.99, annual:'or $105/year (save $24)', days:3 },
+  emerald: { name:'Emerald', bundle:'sj-5day', price:39, annual:'or $372/year (save $96)', days:5 },
+  gold: { name:'Gold', bundle:'sj-7day', price:69, annual:'or $650/year (save $168)', days:7 }
+};
+
 function setB(c){bc=c;var t=document.getElementById('trk'),lm=document.getElementById('lm'),la=document.getElementById('la'),sv=document.getElementById('sv');if(c==='a'){t.classList.add('an');lm.classList.remove('on');la.classList.add('on');sv.style.opacity='1';}else{t.classList.remove('an');lm.classList.add('on');la.classList.remove('on');sv.style.opacity='0.4';}document.querySelectorAll('.tc-price').forEach(function(el){var k=el.getAttribute('data-t');if(k&&P[k]){el.innerHTML=P[k][c]+'<span>/'+(c==='a'?'mo (billed yearly)':'month')+'</span>';}});}
 function togB(){setB(bc==='m'?'a':'m');}
-async function go(tier){
-  var btn=event.target,ot=btn.textContent;
-  btn.disabled=true;btn.textContent='Redirecting\u2026';
-  // Map membership tiers to landing page bundle IDs
-  var bundleMap = { secondjourney:'sj-3day', emerald:'sj-5day', gold:'sj-7day' };
-  var bundleId = bundleMap[tier];
-  if (!bundleId) { btn.disabled=false; btn.textContent=ot; alert('Unknown tier.'); return; }
-  // Store the selected bundle so the landing page can pick it up
-  try {
-    localStorage.setItem('bf-sj-preselect', JSON.stringify({
-      bundleId: bundleId,
-      tier: tier,
-      billing: bc === 'a' ? 'annual' : 'monthly',
-      ts: Date.now()
-    }));
-  } catch(e){}
-  // Redirect to landing page with SJ tab active
-  window.location.href = '/departure-lounge-landing.html?vendor=second-journey&bundle=' + bundleId;
+
+function go(tier) {
+  var info = TIER_INFO[tier];
+  if (!info) { alert('Unknown tier.'); return; }
+  pendingTier = tier;
+
+  // Populate modal
+  document.getElementById('modalTierName').textContent = info.name + ' Membership';
+  var priceStr = bc === 'a' ? P[tier.charAt(0)] ? P[tier.charAt(0)].a : '$' + info.price : '$' + info.price;
+  document.getElementById('modalTierPrice').textContent = priceStr + (bc === 'a' ? '/mo (billed yearly)' : '/month');
+  document.getElementById('modalTierAnnual').textContent = bc === 'a' ? '' : info.annual;
+
+  // Show modal
+  var modal = document.getElementById('checkoutModal');
+  modal.style.display = 'flex';
+  document.body.style.overflow = 'hidden';
+  setTimeout(function(){ document.getElementById('modalEmail').focus(); }, 100);
 }
+
+function closeCheckout() {
+  document.getElementById('checkoutModal').style.display = 'none';
+  document.body.style.overflow = '';
+}
+
+async function submitMemberCheckout() {
+  var email = document.getElementById('modalEmail').value.trim();
+  var city = document.getElementById('modalCity').value;
+  var name = document.getElementById('modalName').value.trim();
+  if (!email || !name) { alert('Please fill in email and guest name.'); return; }
+
+  var btn = document.getElementById('modalSubmitBtn');
+  btn.disabled = true;
+  btn.textContent = 'Connecting to Stripe...';
+
+  var info = TIER_INFO[pendingTier];
+  var price = bc === 'a' ? parseFloat((P[pendingTier.charAt(0)] || {}).a || info.price) : info.price;
+
+  // Lead capture (non-blocking)
+  try {
+    fetch('https://formspree.io/f/mvzvwrkp', {
+      method:'POST',
+      headers:{'Content-Type':'application/json','Accept':'application/json'},
+      body:JSON.stringify({
+        _subject:'🎫 Membership signup: ' + info.name + ' — ' + name,
+        type:'membership_checkout',
+        tier: pendingTier,
+        tier_name: info.name,
+        billing: bc === 'a' ? 'annual' : 'monthly',
+        email: email,
+        guest_name: name,
+        city: city,
+        submitted_at: new Date().toISOString()
+      })
+    });
+  } catch(e){}
+
+  // Call Netlify create-checkout
+  try {
+    var today = new Date().toISOString().split('T')[0];
+    var depart = new Date(Date.now() + info.days * 86400000).toISOString().split('T')[0];
+    var res = await fetch('/.netlify/functions/create-checkout', {
+      method:'POST',
+      headers:{'Content-Type':'application/json'},
+      body:JSON.stringify({
+        city: city,
+        arrival: today,
+        departure: depart,
+        hotel: 'TBD',
+        guest_name: name,
+        email: email,
+        bundles:[{
+          id: info.bundle,
+          title: info.name + ' Membership — ' + info.days + '-day clothing bundle',
+          price: price,
+          image: '',
+          qty: 1
+        }]
+      })
+    });
+    var data = await res.json();
+    if (!res.ok || !data.url) throw new Error(data.error || 'HTTP ' + res.status);
+    window.location.href = data.url;
+  } catch(err) {
+    console.error('Checkout error:', err);
+    btn.disabled = false;
+    btn.textContent = 'Reserve & Pay via Stripe';
+    alert("Couldn't open checkout. Please try again or email hello@bagfree.app.\n\n(" + (err.message || 'unknown') + ")");
+  }
+}
+
+document.addEventListener('keydown', function(e) {
+  if (e.key === 'Escape') closeCheckout();
+});
 function togT(){var l=document.documentElement.classList.toggle('light');var k=document.querySelector('.tp .kn');k.innerHTML=l?'<svg viewBox="0 0 24 24" stroke-width="2"><path d="M21 12.79A9 9 0 1111.21 3 7 7 0 0021 12.79z"/></svg>':'<svg viewBox="0 0 24 24" stroke-width="2"><circle cx="12" cy="12" r="5"/><path d="M12 1v2m0 18v2M4.22 4.22l1.42 1.42m12.72 12.72l1.42 1.42M1 12h2m18 0h2M4.22 19.78l1.42-1.42M18.36 5.64l1.42-1.42"/></svg>';try{localStorage.setItem('bf_mem_theme',l?'light':'dark');}catch(e){}}
 (function(){try{if(localStorage.getItem('bf_mem_theme')==='light'){document.documentElement.classList.add('light');var k=document.querySelector('.tp .kn');if(k)k.innerHTML='<svg viewBox="0 0 24 24" stroke-width="2"><path d="M21 12.79A9 9 0 1111.21 3 7 7 0 0021 12.79z"/></svg>';}}catch(e){}})();
 document.querySelectorAll('a[href^="#"]').forEach(function(a){a.addEventListener('click',function(e){var t=document.querySelector(this.getAttribute('href'));if(t){e.preventDefault();t.scrollIntoView({behavior:'smooth'});}});});
