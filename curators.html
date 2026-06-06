@@ -106,6 +106,35 @@ a{color:inherit}
 .role-title{font-family:var(--ff-display);font-size:1.4rem;font-weight:400;margin-bottom:0.5rem;letter-spacing:-0.3px}
 .role-desc{font-size:0.85rem;color:rgba(var(--text-rgb),0.62);line-height:1.7;font-weight:300}
 
+/* ─── CURATOR DIRECTORY ─── */
+.dir-filters{display:flex;align-items:center;justify-content:center;gap:0.5rem;flex-wrap:wrap;margin-bottom:2rem}
+.dir-filter{padding:0.5rem 1.2rem;font-size:0.58rem;letter-spacing:2.5px;text-transform:uppercase;color:rgba(var(--text-rgb),0.5);background:none;border:1px solid rgba(var(--gold-rgb),0.12);font-family:var(--ff-body);font-weight:500;transition:all 0.25s;cursor:pointer}
+.dir-filter.active{background:var(--gold);color:var(--bg);border-color:var(--gold);font-weight:600}
+.dir-filter:hover:not(.active){border-color:rgba(var(--gold-rgb),0.4);color:var(--gold)}
+.dir-count{text-align:center;font-size:0.78rem;color:rgba(var(--text-rgb),0.4);margin-bottom:2rem}
+.dir-count em{color:var(--gold);font-style:normal;font-weight:500}
+.dir-grid{display:grid;grid-template-columns:repeat(auto-fill,minmax(260px,1fr));gap:1.2rem}
+@media(max-width:600px){.dir-grid{grid-template-columns:1fr;max-width:340px;margin:0 auto}}
+.cur-card{border:1px solid rgba(var(--gold-rgb),0.15);background:rgba(var(--gold-rgb),0.02);padding:1.8rem 1.5rem;text-align:center;transition:all 0.35s cubic-bezier(.4,0,.2,1);position:relative}
+.cur-card:hover{border-color:rgba(var(--gold-rgb),0.4);transform:translateY(-4px);box-shadow:0 18px 45px rgba(0,0,0,0.18)}
+.cur-rank{position:absolute;top:0.8rem;left:0.8rem;font-family:var(--ff-display);font-size:1.1rem;color:rgba(var(--text-rgb),0.25);font-weight:400}
+.cur-rank.r1{color:var(--gold);font-size:1.3rem}
+.cur-avatar{width:72px;height:72px;border-radius:50%;border:2px solid rgba(var(--gold-rgb),0.3);margin:0 auto 0.8rem;overflow:hidden;background:rgba(var(--gold-rgb),0.08)}
+.cur-avatar img{width:100%;height:100%;object-fit:cover}
+.cur-name{font-family:var(--ff-display);font-size:1.35rem;font-weight:400;color:var(--text);letter-spacing:-0.3px;margin-bottom:0.15rem}
+.cur-city{font-size:0.68rem;color:rgba(var(--text-rgb),0.45);margin-bottom:0.6rem}
+.cur-level{display:inline-block;font-size:0.5rem;letter-spacing:2.5px;text-transform:uppercase;font-weight:700;padding:0.3rem 0.7rem;margin-bottom:1rem}
+.cur-level.elite{background:rgba(var(--gold-rgb),0.12);border:1px solid rgba(var(--gold-rgb),0.4);color:var(--gold)}
+.cur-level.verified{background:rgba(93,202,165,0.1);border:1px solid rgba(93,202,165,0.35);color:var(--green)}
+.cur-level.insider{background:rgba(var(--text-rgb),0.04);border:1px solid rgba(var(--text-rgb),0.12);color:rgba(var(--text-rgb),0.5)}
+.cur-stats{display:grid;grid-template-columns:repeat(3,1fr);gap:0.5rem;padding:0.8rem 0;border-top:1px solid rgba(var(--gold-rgb),0.1);border-bottom:1px solid rgba(var(--gold-rgb),0.1);margin-bottom:0.8rem}
+.cur-stat-val{font-family:var(--ff-display);font-size:1.15rem;color:var(--gold);font-weight:400}
+.cur-stat-lbl{font-size:0.52rem;letter-spacing:1.5px;text-transform:uppercase;color:rgba(var(--text-rgb),0.35);margin-top:0.1rem}
+.cur-awards{display:flex;flex-wrap:wrap;gap:0.3rem;justify-content:center;margin-bottom:0.8rem}
+.cur-award{font-size:0.55rem;padding:0.2rem 0.45rem;border:1px solid rgba(var(--gold-rgb),0.1);color:rgba(var(--text-rgb),0.4)}
+.cur-link{display:inline-block;font-size:0.6rem;letter-spacing:2px;text-transform:uppercase;color:var(--gold);font-weight:600;transition:all 0.2s}
+.cur-link:hover{color:var(--text)}
+
 /* ─── CITIES ─── */
 .city-grid{display:grid;grid-template-columns:repeat(auto-fit,minmax(220px,1fr));gap:1rem;margin-top:2rem;max-width:880px;margin-left:auto;margin-right:auto}
 .city-tile{background:transparent;border:1px solid rgba(var(--gold-rgb),0.18);padding:1.5rem 1.4rem;transition:all .3s;position:relative}
@@ -188,6 +217,8 @@ a{color:inherit}
 <nav class="nav">
   <a href="/" class="nav-logo">Bag<span>Free</span></a>
   <div class="nav-right">
+    <a href="#directory" style="font-size:0.65rem;letter-spacing:2px;text-transform:uppercase;color:rgba(var(--text-rgb),0.6);transition:color 0.25s;font-weight:500">Leaderboard</a>
+    <a href="/experiences.html" style="font-size:0.65rem;letter-spacing:2px;text-transform:uppercase;color:rgba(var(--text-rgb),0.6);transition:color 0.25s;font-weight:500">Experiences</a>
     <a href="/" class="nav-back">← Home</a>
     <button class="theme-toggle" id="themeBtn" onclick="toggleTheme()" aria-label="Toggle theme" title="Toggle theme">
       <svg class="theme-icon theme-icon-dark" viewBox="0 0 24 24" width="15" height="15" fill="none" stroke="currentColor" stroke-width="1.8" stroke-linecap="round" stroke-linejoin="round"><circle cx="12" cy="12" r="4"/><path d="M12 2v2M12 20v2M4.93 4.93l1.41 1.41M17.66 17.66l1.41 1.41M2 12h2M20 12h2M4.93 19.07l1.41-1.41M17.66 6.34l1.41-1.41"/></svg>
@@ -240,6 +271,25 @@ a{color:inherit}
       <div class="role-desc">Curators choose pieces and recommendations that fit you — your style, your plans, your trip. Not a one-size-fits-all package.</div>
     </div>
   </div>
+</section>
+
+<!-- ─── CURATOR DIRECTORY & LEADERBOARD ─── -->
+<section class="section" id="directory">
+  <div class="section-header">
+    <div class="section-eyebrow">Leaderboard</div>
+    <h2 class="section-title">Top-ranked <em>curators</em>.</h2>
+    <p class="section-sub">Every curator is scored by ExperienceRank™ — combining AI evaluation, traveler reviews, and booking data. These are the best.</p>
+  </div>
+
+  <div class="dir-filters" id="dirFilters">
+    <button class="dir-filter active" onclick="filterCurators('all', this)">All Cities</button>
+    <button class="dir-filter" onclick="filterCurators('savannah', this)">Savannah</button>
+    <button class="dir-filter" onclick="filterCurators('atlanta', this)">Atlanta</button>
+    <button class="dir-filter" onclick="filterCurators('tampa', this)">Tampa</button>
+    <button class="dir-filter" onclick="filterCurators('orlando', this)">Orlando</button>
+  </div>
+  <div class="dir-count" id="dirCount"></div>
+  <div class="dir-grid" id="dirGrid"></div>
 </section>
 
 <!-- ─── CITIES ─── -->
@@ -547,6 +597,57 @@ function toggleTheme() {
   const btn = document.getElementById('themeBtn');
   if (btn) btn.setAttribute('aria-label', next === 'dark' ? 'Switch to light mode' : 'Switch to dark mode');
 }
+
+// ─── CURATOR DIRECTORY ───
+var CURATORS = [
+  { rank:1, name:'Jasmine L.', city:'savannah', cityLabel:'Savannah, GA', level:'elite', score:96.4, experiences:34, rating:'4.9', reviews:128, followers:'1.2k', avatar:'https://images.unsplash.com/photo-1494790108377-be9c29b29330?w=120&h=120&fit=crop&crop=faces', awards:['🏆 Best Savannah','⭐ Top Rated','🍽️ Best Food'], specialty:'Lowcountry cuisine, historic tours, coastal adventures' },
+  { rank:2, name:'Marcus D.', city:'atlanta', cityLabel:'Atlanta, GA', level:'verified', score:93.1, experiences:22, rating:'4.8', reviews:94, followers:'890', avatar:'https://images.unsplash.com/photo-1507003211169-0a1dd7228f2d?w=120&h=120&fit=crop&crop=faces', awards:['🎵 Best Nightlife','🏆 Best Atlanta'], specialty:'Nightlife, music scenes, soul food heritage' },
+  { rank:3, name:'Sofia R.', city:'tampa', cityLabel:'Tampa, FL', level:'verified', score:91.8, experiences:19, rating:'4.9', reviews:112, followers:'760', avatar:'https://images.unsplash.com/photo-1438761681033-6461ffad8d80?w=120&h=120&fit=crop&crop=faces', awards:['🍽️ Best Food Tampa','🌅 Best Adventure'], specialty:'Cuban culture, waterfront dining, boat tours' },
+  { rank:4, name:'Elena V.', city:'orlando', cityLabel:'Orlando, FL', level:'insider', score:88.5, experiences:15, rating:'4.8', reviews:87, followers:'540', avatar:'https://images.unsplash.com/photo-1573496359142-b8d87734a5a2?w=120&h=120&fit=crop&crop=faces', awards:['🌿 Best Nature','✨ Rising Star'], specialty:'Off-park Orlando, nature springs, wine culture' },
+  { rank:5, name:'Darius W.', city:'savannah', cityLabel:'Savannah, GA', level:'insider', score:85.2, experiences:11, rating:'4.7', reviews:52, followers:'380', avatar:'https://images.unsplash.com/photo-1500648767791-00dcc994a43e?w=120&h=120&fit=crop&crop=faces', awards:['🎨 Best Culture'], specialty:'Art walks, SCAD galleries, live music' },
+  { rank:6, name:'Camila P.', city:'atlanta', cityLabel:'Atlanta, GA', level:'insider', score:83.7, experiences:9, rating:'4.8', reviews:41, followers:'310', avatar:'https://images.unsplash.com/photo-1580489944761-15a19d654956?w=120&h=120&fit=crop&crop=faces', awards:['🛍️ Best Shopping'], specialty:'Buckhead shopping, brunch culture, BeltLine art' },
+  { rank:7, name:'Andre M.', city:'tampa', cityLabel:'Tampa, FL', level:'insider', score:81.4, experiences:8, rating:'4.7', reviews:38, followers:'270', avatar:'https://images.unsplash.com/photo-1472099645785-5658abf4ff4e?w=120&h=120&fit=crop&crop=faces', awards:[], specialty:'Ybor City history, craft breweries, fishing' },
+  { rank:8, name:'Maya K.', city:'orlando', cityLabel:'Orlando, FL', level:'insider', score:79.6, experiences:7, rating:'4.7', reviews:29, followers:'210', avatar:'https://images.unsplash.com/photo-1534528741775-53994a69daeb?w=120&h=120&fit=crop&crop=faces', awards:[], specialty:'Family adventures, Winter Park, nature trails' },
+];
+
+var curFilter = 'all';
+
+function filterCurators(city, btn) {
+  curFilter = city;
+  document.querySelectorAll('.dir-filter').forEach(function(b){ b.classList.remove('active'); });
+  btn.classList.add('active');
+  renderCurators();
+}
+
+function renderCurators() {
+  var filtered = curFilter === 'all' ? CURATORS : CURATORS.filter(function(c){ return c.city === curFilter; });
+  var cityLabel = curFilter === 'all' ? 'all cities' : curFilter.charAt(0).toUpperCase() + curFilter.slice(1);
+  document.getElementById('dirCount').innerHTML = '<em>' + filtered.length + '</em> curator' + (filtered.length !== 1 ? 's' : '') + ' in ' + cityLabel;
+
+  document.getElementById('dirGrid').innerHTML = filtered.map(function(c, i) {
+    var levelLabel = c.level === 'elite' ? '✦ Elite Curator' : c.level === 'verified' ? '✓ Verified Curator' : '◇ Insider';
+    var awardsHtml = c.awards.length ? c.awards.map(function(a){ return '<span class="cur-award">' + a + '</span>'; }).join('') : '';
+    var rankClass = c.rank === 1 ? ' r1' : '';
+
+    return '<div class="cur-card">' +
+      '<div class="cur-rank' + rankClass + '">#' + c.rank + '</div>' +
+      '<div class="cur-avatar"><img src="' + c.avatar + '" alt="' + c.name + '"></div>' +
+      '<div class="cur-name">' + c.name + '</div>' +
+      '<div class="cur-city">' + c.cityLabel + '</div>' +
+      '<span class="cur-level ' + c.level + '">' + levelLabel + '</span>' +
+      '<div class="cur-stats">' +
+        '<div><div class="cur-stat-val">' + c.score + '</div><div class="cur-stat-lbl">Score</div></div>' +
+        '<div><div class="cur-stat-val">' + c.experiences + '</div><div class="cur-stat-lbl">Experiences</div></div>' +
+        '<div><div class="cur-stat-val">' + c.followers + '</div><div class="cur-stat-lbl">Followers</div></div>' +
+      '</div>' +
+      (awardsHtml ? '<div class="cur-awards">' + awardsHtml + '</div>' : '') +
+      '<div style="font-size:0.7rem;color:rgba(var(--text-rgb),0.4);margin-bottom:0.8rem;line-height:1.5;font-style:italic">' + c.specialty + '</div>' +
+      '<a href="/experiences.html?city=' + c.city + '" class="cur-link">View Experiences →</a>' +
+    '</div>';
+  }).join('');
+}
+
+renderCurators();
 
 // ─── TRAVELER WAITLIST FORM ───
 async function submitTravelerForm(ev) {
