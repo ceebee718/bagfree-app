@@ -2768,6 +2768,21 @@ updateProgress(0);
       }, 50);
       goToStep(1);
     }
+
+    // Handle ?bundle=sj-3day (from membership page redirect)
+    var bundleParam = params.get('bundle');
+    if (bundleParam && BUNDLES.find(function(b){ return b.id === bundleParam; })) {
+      state.filter = 'second-journey';
+      state.selectedBundles[bundleParam] = 1;
+      setTimeout(function() {
+        document.querySelectorAll('.bundle-filter-btn').forEach(function(b){ b.classList.remove('active'); });
+        var sjBtn = document.querySelector('.bundle-filter-btn[data-filter="second-journey"]');
+        if (sjBtn) sjBtn.classList.add('active');
+        goToStep(3);
+        renderBundles();
+        updateCartBar();
+      }, 100);
+    }
   } catch(e) {}
 })();
 </script>
