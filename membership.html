@@ -348,27 +348,24 @@ html.light .tp .kn svg{stroke:#f8f7f4;fill:none}
     <div style="font-family:'Cormorant Garamond',serif;font-size:1.6rem;font-weight:300;color:#fdfcf8;margin-bottom:0.3rem" id="modalTierName"></div>
     <div style="font-family:'Cormorant Garamond',serif;font-size:2rem;color:#c9a96e;margin-bottom:0.3rem" id="modalTierPrice"></div>
     <div style="font-size:0.72rem;color:rgba(253,252,248,0.4);margin-bottom:1.4rem" id="modalTierAnnual"></div>
-    <div style="display:flex;align-items:center;gap:0.4rem;padding:0.5rem 0.7rem;background:rgba(93,202,165,0.06);border:1px solid rgba(93,202,165,0.2);margin-bottom:1.2rem;font-size:0.65rem;color:rgba(253,252,248,0.5)">
+    <div style="display:flex;align-items:center;gap:0.4rem;padding:0.5rem 0.7rem;background:rgba(93,202,165,0.06);border:1px solid rgba(93,202,165,0.2);margin-bottom:0.8rem;font-size:0.65rem;color:rgba(253,252,248,0.5)">
       <span style="color:#5DCAA5">♻</span> Available in Savannah, Atlanta, Tampa &amp; Orlando.
+    </div>
+    <div style="display:flex;align-items:flex-start;gap:0.4rem;padding:0.5rem 0.7rem;background:rgba(201,169,110,0.05);border:1px solid rgba(201,169,110,0.15);margin-bottom:1.2rem;font-size:0.65rem;color:rgba(253,252,248,0.5);line-height:1.5">
+      <span style="color:#c9a96e;flex-shrink:0">◆</span> Membership is tied to the registered email and is <strong style="color:#fdfcf8;font-weight:500">non-transferable</strong>. Clothing deliveries must be to the registered member only.
     </div>
     <div style="margin-bottom:0.8rem">
       <label style="display:block;font-size:0.55rem;letter-spacing:2.5px;text-transform:uppercase;color:rgba(253,252,248,0.4);margin-bottom:0.35rem;font-weight:600">Email *</label>
       <input id="modalEmail" type="email" placeholder="you@example.com" required style="width:100%;padding:0.75rem 0.9rem;font-size:0.88rem;background:rgba(201,169,110,0.03);border:1px solid rgba(201,169,110,0.12);color:#fdfcf8;font-family:'DM Sans',sans-serif">
     </div>
-    <div style="display:grid;grid-template-columns:1fr 1fr;gap:0.8rem;margin-bottom:0.8rem">
-      <div>
-        <label style="display:block;font-size:0.55rem;letter-spacing:2.5px;text-transform:uppercase;color:rgba(253,252,248,0.4);margin-bottom:0.35rem;font-weight:600">City *</label>
-        <select id="modalCity" style="width:100%;padding:0.75rem 0.9rem;font-size:0.88rem;background:rgba(201,169,110,0.03);border:1px solid rgba(201,169,110,0.12);color:#fdfcf8;font-family:'DM Sans',sans-serif;appearance:none">
-          <option value="Savannah, GA">Savannah, GA</option>
-          <option value="Atlanta, GA">Atlanta, GA</option>
-          <option value="Tampa, FL">Tampa, FL</option>
-          <option value="Orlando, FL">Orlando, FL</option>
-        </select>
-      </div>
-      <div>
-        <label style="display:block;font-size:0.55rem;letter-spacing:2.5px;text-transform:uppercase;color:rgba(253,252,248,0.4);margin-bottom:0.35rem;font-weight:600">Guest Name *</label>
-        <input id="modalName" type="text" placeholder="Name for hotel" required style="width:100%;padding:0.75rem 0.9rem;font-size:0.88rem;background:rgba(201,169,110,0.03);border:1px solid rgba(201,169,110,0.12);color:#fdfcf8;font-family:'DM Sans',sans-serif">
-      </div>
+    <div style="margin-bottom:0.8rem">
+      <label style="display:block;font-size:0.55rem;letter-spacing:2.5px;text-transform:uppercase;color:rgba(253,252,248,0.4);margin-bottom:0.35rem;font-weight:600">City *</label>
+      <select id="modalCity" style="width:100%;padding:0.75rem 0.9rem;font-size:0.88rem;background:#1c2a48;border:1px solid rgba(201,169,110,0.12);color:#fdfcf8;font-family:'DM Sans',sans-serif;appearance:none">
+        <option value="Savannah, GA" style="background:#1c2a48;color:#fdfcf8">Savannah, GA</option>
+        <option value="Atlanta, GA" style="background:#1c2a48;color:#fdfcf8">Atlanta, GA</option>
+        <option value="Tampa, FL" style="background:#1c2a48;color:#fdfcf8">Tampa, FL</option>
+        <option value="Orlando, FL" style="background:#1c2a48;color:#fdfcf8">Orlando, FL</option>
+      </select>
     </div>
     <button id="modalSubmitBtn" onclick="submitMemberCheckout()" style="width:100%;padding:0.9rem;font-size:0.62rem;letter-spacing:3px;text-transform:uppercase;font-weight:600;color:#0d1a32;background:#c9a96e;border:none;cursor:pointer;font-family:'DM Sans',sans-serif;box-shadow:0 6px 20px rgba(201,169,110,0.3);transition:all 0.3s">Reserve &amp; Pay via Stripe</button>
     <div style="text-align:center;margin-top:0.7rem;font-size:0.65rem;color:rgba(253,252,248,0.3)">Secure checkout via Stripe · Cancel anytime</div>
@@ -416,8 +413,7 @@ function closeCheckout() {
 async function submitMemberCheckout() {
   var email = document.getElementById('modalEmail').value.trim();
   var city = document.getElementById('modalCity').value;
-  var name = document.getElementById('modalName').value.trim();
-  if (!email || !name) { alert('Please fill in email and guest name.'); return; }
+  if (!email) { alert('Please enter your email.'); return; }
 
   var btn = document.getElementById('modalSubmitBtn');
   btn.disabled = true;
@@ -432,14 +428,14 @@ async function submitMemberCheckout() {
       method:'POST',
       headers:{'Content-Type':'application/json','Accept':'application/json'},
       body:JSON.stringify({
-        _subject:'🎫 Membership signup: ' + info.name + ' — ' + name,
+        _subject:'🎫 Membership signup: ' + info.name + ' — ' + email,
         type:'membership_checkout',
         tier: pendingTier,
         tier_name: info.name,
         billing: bc === 'a' ? 'annual' : 'monthly',
         email: email,
-        guest_name: name,
         city: city,
+        note: 'Non-transferable membership — registered to this email only',
         submitted_at: new Date().toISOString()
       })
     });
@@ -456,8 +452,8 @@ async function submitMemberCheckout() {
         city: city,
         arrival: today,
         departure: depart,
-        hotel: 'TBD',
-        guest_name: name,
+        hotel: 'TBD — membership signup',
+        guest_name: email,
         email: email,
         bundles:[{
           id: info.bundle,
