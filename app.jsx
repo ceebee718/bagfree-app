@@ -1463,8 +1463,76 @@ function QuoteSection() {
           </ul>
         </div>
 
+        {/* Center — Hummingbird + golden trail */}
+        <div className="why-bf-center">
+          <svg className="why-bf-bird-svg" viewBox="0 0 200 420" fill="none" xmlns="http://www.w3.org/2000/svg">
+            {/* Hummingbird */}
+            <g transform="translate(40, 0)">
+              {/* Body */}
+              <ellipse cx="60" cy="55" rx="22" ry="30" fill="url(#birdGold)" transform="rotate(-15 60 55)"/>
+              {/* Head */}
+              <circle cx="80" cy="28" r="12" fill="url(#birdGold)"/>
+              {/* Eye */}
+              <circle cx="84" cy="25" r="2" fill="#1a2740"/>
+              {/* Beak */}
+              <path d="M92 24 L115 20 L92 28Z" fill="var(--gold)" opacity="0.9"/>
+              {/* Wing top */}
+              <path d="M45 40 Q20 15 5 35 Q15 25 35 45Z" fill="url(#birdGold)" opacity="0.8"/>
+              <path d="M42 45 Q10 30 0 55 Q12 40 38 52Z" fill="url(#birdGold)" opacity="0.6"/>
+              {/* Wing bottom */}
+              <path d="M48 55 Q15 50 2 70 Q18 55 45 60Z" fill="url(#birdGold)" opacity="0.5"/>
+              {/* Tail feathers */}
+              <path d="M40 75 Q25 95 15 110 Q30 90 42 80Z" fill="url(#birdGold)" opacity="0.7"/>
+              <path d="M45 78 Q35 100 28 115 Q38 95 48 82Z" fill="url(#birdGold)" opacity="0.5"/>
+              <path d="M50 76 Q42 98 38 112 Q45 92 52 80Z" fill="url(#birdGold)" opacity="0.4"/>
+            </g>
+
+            {/* Golden sparkle trail — curves from bird down to each pillar */}
+            <path className="why-bf-trail" d="M100 95 Q110 130 130 155 Q155 185 150 200" stroke="url(#trailGrad)" strokeWidth="1.5" strokeDasharray="4 4" fill="none"/>
+            <path className="why-bf-trail" d="M150 200 Q145 230 150 260 Q155 280 155 295" stroke="url(#trailGrad)" strokeWidth="1.5" strokeDasharray="4 4" fill="none"/>
+            <path className="why-bf-trail" d="M155 295 Q150 330 145 355 Q140 375 145 395" stroke="url(#trailGrad)" strokeWidth="1.5" strokeDasharray="4 4" fill="none"/>
+
+            {/* Sparkle particles along trail */}
+            <circle cx="110" cy="125" r="1.5" fill="var(--gold)" opacity="0.9">
+              <animate attributeName="opacity" values="0.3;1;0.3" dur="2s" repeatCount="indefinite"/>
+            </circle>
+            <circle cx="135" cy="165" r="2" fill="var(--gold)" opacity="0.7">
+              <animate attributeName="opacity" values="0.5;1;0.5" dur="2.5s" repeatCount="indefinite"/>
+            </circle>
+            <circle cx="148" cy="210" r="1.5" fill="var(--gold)" opacity="0.8">
+              <animate attributeName="opacity" values="0.4;1;0.4" dur="1.8s" repeatCount="indefinite"/>
+            </circle>
+            <circle cx="152" cy="255" r="2" fill="var(--gold)" opacity="0.6">
+              <animate attributeName="opacity" values="0.3;0.9;0.3" dur="2.2s" repeatCount="indefinite"/>
+            </circle>
+            <circle cx="150" cy="310" r="1.5" fill="var(--gold)" opacity="0.7">
+              <animate attributeName="opacity" values="0.5;1;0.5" dur="1.6s" repeatCount="indefinite"/>
+            </circle>
+            <circle cx="143" cy="365" r="2" fill="var(--gold)" opacity="0.8">
+              <animate attributeName="opacity" values="0.3;1;0.3" dur="2.8s" repeatCount="indefinite"/>
+            </circle>
+
+            {/* Pillar connection dots */}
+            <circle cx="150" cy="200" r="4" fill="var(--gold)" opacity="0.25"/>
+            <circle cx="155" cy="295" r="4" fill="var(--gold)" opacity="0.25"/>
+            <circle cx="145" cy="395" r="4" fill="var(--gold)" opacity="0.25"/>
+
+            {/* Gradients */}
+            <defs>
+              <linearGradient id="birdGold" x1="0" y1="0" x2="1" y2="1">
+                <stop offset="0%" stopColor="#dac07a"/>
+                <stop offset="50%" stopColor="#c9a96e"/>
+                <stop offset="100%" stopColor="#a6864a"/>
+              </linearGradient>
+              <linearGradient id="trailGrad" x1="0" y1="0" x2="0" y2="1">
+                <stop offset="0%" stopColor="#dac07a" stopOpacity="0.8"/>
+                <stop offset="100%" stopColor="#a6864a" stopOpacity="0.3"/>
+              </linearGradient>
+            </defs>
+          </svg>
+        </div>
+
         <div className="why-bf-right">
-          <div className="why-bf-connector"></div>
 
           <div className="why-bf-pillar">
             <div className="why-bf-pillar-icon">
