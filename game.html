@@ -311,30 +311,6 @@ html.light .rp{background:var(--n2)}
   </div>
 </div>
 
-<!-- Main -->
-<div class="main">
-  <div class="tabs">
-    <button class="tab active" onclick="showView('city',this)">🏙 City</button>
-    <button class="tab" onclick="showView('map',this)">🗺 Map</button>
-    <button class="tab" onclick="showView('badges',this)">🏆 Badges</button>
-    <button class="tab" onclick="showView('lb',this)">📊 Ranks</button>
-  </div>
-
-  <div class="view active" id="vCity"><div class="panel"><div id="mapPanel" style="margin-bottom:1.5rem"><div id="gameMap"></div></div><div id="cityPanel"></div></div></div>
-  
-  <div class="view" id="vBadges"><div class="panel" id="badgesPanel"></div></div>
-  <div class="view" id="vLb"><div class="panel" id="lbPanel"></div></div>
-</div>
-
-<!-- Right panel: Inventory -->
-<div class="rp">
-  <div class="rp-label">Inventory</div>
-  <div id="rpClothing"></div>
-  <div class="rp-label" style="margin-top:1rem">Trip Log</div>
-  <div id="rpLog"></div>
-</div>
-
-</div>
 
 <script>
 var SB_URL='https://vkctidpaghpdlmleezvq.supabase.co';
@@ -688,11 +664,20 @@ html.light .rp{background:var(--n2)}
 
 <!-- Main -->
 <div class="main">
-  <div class="tabs">
-    <button class="tab active" onclick="showView('city',this)">🏙 City</button>
-    <button class="tab" onclick="showView('map',this)">🗺 Map</button>
-    <button class="tab" onclick="showView('badges',this)">🏆 Badges</button>
-    <button class="tab" onclick="showView('lb',this)">📊 Ranks</button>
+  <!-- Top Bar -->
+  <div style="display:flex;align-items:center;justify-content:space-between;padding:0.7rem 1.5rem;border-bottom:1px solid var(--bs);background:rgba(15,29,53,0.95);backdrop-filter:blur(8px);position:sticky;top:0;z-index:20">
+    <div>
+      <div style="font-family:var(--fd);font-size:1.15rem;color:var(--gold)">BagFree World™ <span style="font-size:0.55rem;color:var(--em);letter-spacing:2px;vertical-align:middle">JAPAN</span></div>
+      <div style="font-size:0.55rem;color:rgba(var(--tr),0.25);letter-spacing:0.8px;margin-top:0.1rem">Explore cities · Book hotels · Choose Second Journey™ · Earn reputation</div>
+    </div>
+    <div style="display:flex;align-items:center;gap:1rem">
+      <div class="g-toggle" onclick="toggleGameTheme()"><div class="g-toggle-track"><div class="g-toggle-thumb"></div></div></div>
+      <div style="display:flex">
+        <button class="tab active" onclick="showView('city',this)" style="padding:0.45rem 1rem;border:1px solid var(--bs);border-right:none;background:rgba(var(--gr),0.06);font-size:0.5rem">Explore</button>
+        <button class="tab" onclick="showView('badges',this)" style="padding:0.45rem 1rem;border:1px solid var(--bs);border-right:none;font-size:0.5rem">Badges</button>
+        <button class="tab" onclick="showView('lb',this)" style="padding:0.45rem 1rem;border:1px solid var(--bs);font-size:0.5rem">Ranks</button>
+      </div>
+    </div>
   </div>
 
   <div class="view active" id="vCity"><div class="panel"><div id="mapPanel" style="margin-bottom:1.5rem"><div id="gameMap"></div></div><div id="cityPanel"></div></div></div>
