@@ -1391,7 +1391,7 @@ function TopBar(props) {
         <SearchBar city={props.city} onSearch={props.onSearch} onItemClick={props.onItemClick} onClearResults={props.onClearResults}/>
       </div>
       <div className="topbar-actions">
-        <a href="/account-login.html" className="sign-in-btn" id="signInBtn" style={{display:'none'}}>Sign In</a>
+        <a href="/account-login.html" className="sign-in-btn" id="signInBtn">Sign In</a>
         <a href="/join-network.html" className="join-network-btn">Join Network</a>
         <ThemeToggle/>
         <button className="icon-btn" title="Search"><Icon.Search/></button>
@@ -1740,24 +1740,18 @@ var sbClient = null;
 try { sbClient = window.supabase ? window.supabase.createClient(SB_URL, SB_KEY) : null; } catch(e) {}
 
 function initAuth() {
-  if (!sbClient) {
-    document.getElementById('signInBtn').style.display = '';
-    return;
-  }
+  if (!sbClient) return;
   sbClient.auth.getSession().then(function(res) {
     if (res.data && res.data.session) {
+      // User is logged in — hide sign-in button, load profile
+      var signInBtn = document.getElementById('signInBtn');
+      if (signInBtn) signInBtn.style.display = 'none';
       loadUserProfile(res.data.session.user);
-    } else {
-      document.getElementById('signInBtn').style.display = '';
     }
   });
 }
 
 function loadUserProfile(user) {
-  // Hide sign in, show profile
-  var signInBtn = document.getElementById('signInBtn');
-  if (signInBtn) signInBtn.style.display = 'none';
-
   sbClient.from('profiles').select('*').eq('id', user.id).single().then(function(res) {
     var p = res.data || {};
     var name = (p.first_name || user.email.split('@')[0]);
