@@ -644,6 +644,7 @@ const NAV = [
   { type:'header', label:'Discover' },
   { id:'curators', label:'Curators', icon:Icon.Map, href:'/curators.html' },
   { id:'experiences', label:'Experiences', icon:Icon.Compass, href:'/experiences.html' },
+  { id:'stylepartners', label:'Style Partners', icon:Icon.Sparkles, href:'/local-style-partners.html' },
   { type:'header', label:'Reward' },
   { id:'membership', label:'Membership', icon:Icon.Crown, href:'/membership.html' },
   { id:'rewards', label:'BAG Rewards', icon:Icon.Star, href:'/legacy.html#rewards' },
