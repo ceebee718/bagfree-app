@@ -27,6 +27,7 @@ const Icon = {
   Check: () => <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" strokeWidth="1.8"><polyline points="20 6 9 17 4 12"/></svg>,
   Hanger: () => <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" strokeWidth="1.3"><path d="M12 6 a2 2 0 102 -2"/><path d="M3 18 l9 -6 l9 6"/><path d="M3 18 h18"/></svg>,
   Dome: () => <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" strokeWidth="1.3"><path d="M3 18 h18"/><path d="M4 18 a8 8 0 0116 0"/><circle cx="12" cy="6" r="1"/><line x1="12" y1="7" x2="12" y2="10"/></svg>,
+  Leaf: () => <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" strokeWidth="1.3"><path d="M12 22V8"/><path d="M12 8c-2-6 4-7 8-6-1 6-5 9-8 6z"/><path d="M12 14c1-4-3-5-6-4 1 4 4 6 6 4z"/></svg>,
   Cup: () => <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" strokeWidth="1.3"><path d="M4 8 h13 v6 a5 5 0 01-5 5 h-3 a5 5 0 01-5 -5 z"/><path d="M17 9 h2 a3 3 0 010 6 h-2"/><path d="M7 2 c0 1.5 1 2 1 3.5"/><path d="M11 2 c0 1.5 1 2 1 3.5"/></svg>,
   Bottle: () => <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" strokeWidth="1.3"><path d="M9 3 h6 v3 l1 2 v11 a2 2 0 01-2 2 h-4 a2 2 0 01-2 -2 V8 l1 -2 z"/><line x1="9" y1="12" x2="15" y2="12"/></svg>,
   Person: () => <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" strokeWidth="1.3"><circle cx="12" cy="8" r="4"/><path d="M4 21 v-1 a7 7 0 0114 0 v1"/></svg>,
@@ -656,7 +657,7 @@ const NAV = [
 const TILES = [
   { id:'clothing', title:'Clothing', desc:'Shop or rent for any occasion.', icon:Icon.Hanger, link:'/departure-lounge-landing.html', img:'https://images.unsplash.com/photo-1490481651871-ab68de25d43d?w=600&h=400&fit=crop' },
   { id:'meals', title:'Arrival Meals', desc:'Chef-prepared meals delivered to your hotel.', icon:Icon.Dome, link:'/legacy.html#essentials', img:'https://images.unsplash.com/photo-1546069901-ba9599a7e63c?w=600&h=400&fit=crop' },
-  { id:'snacks', title:'Snacks & Drinks', desc:'Handpicked favorites for your stay.', icon:Icon.Cup, link:'/legacy.html#essentials', img:'/snacks-card.jpg' },
+  { id:'secondjourney', title:'Second Journey™', desc:'Sustainable clothing. Wear. Return. Reuse.', icon:Icon.Leaf, link:'/departure-lounge-landing.html?vendor=second-journey', img:'https://images.unsplash.com/photo-1532453288672-3a27e9be9efd?w=600&h=400&fit=crop', badge:'♻' },
   { id:'essentials', title:'Hotel Essentials', desc:'Premium comforts for a seamless stay.', icon:Icon.Bottle, link:'/legacy.html#essentials', img:ESSENTIALS_IMG },
   { id:'curators', title:'Travel Curators', desc:'Local experts. Personalized experiences.', icon:Icon.Person, link:'/curators.html', img:'https://images.unsplash.com/photo-1529156069898-49953e39b3ac?w=600&h=400&fit=crop', badge:'NEW' },
   { id:'experiences', title:'Local Experiences', desc:'Tours, activities and hidden gems.', icon:Icon.Compass, link:'/legacy.html#essentials', img:'https://images.unsplash.com/photo-1571893544028-06b07af6dade?w=600&h=400&fit=crop' },
