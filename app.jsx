@@ -660,7 +660,7 @@ const TILES = [
   { id:'essentials', title:'Hotel Essentials', desc:'Premium comforts for a seamless stay.', icon:Icon.Bottle, link:'/legacy.html#essentials', img:ESSENTIALS_IMG },
   { id:'curators', title:'Travel Curators', desc:'Local experts. Personalized experiences.', icon:Icon.Person, link:'/curators.html', img:'https://images.unsplash.com/photo-1529156069898-49953e39b3ac?w=600&h=400&fit=crop', badge:'NEW' },
   { id:'experiences', title:'Local Experiences', desc:'Tours, activities and hidden gems.', icon:Icon.Compass, link:'/legacy.html#essentials', img:'https://images.unsplash.com/photo-1571893544028-06b07af6dade?w=600&h=400&fit=crop' },
-  { id:'hotels', title:'Hotel Partners', desc:'Preferred hotels and exclusive perks.', icon:Icon.Building, link:'/concierge.html', img:'https://images.unsplash.com/photo-1564501049412-61c2a3083791?w=600&h=400&fit=crop' },
+  { id:'stylepartners', title:'Style Partners', desc:'Local fashion experts. Destination styling.', icon:Icon.Sparkles, link:'/local-style-partners.html', img:'https://images.unsplash.com/photo-1441984904996-e0b6ba687e04?w=600&h=400&fit=crop' },
   { id:'rewards', title:'BAG Rewards', desc:'Earn points. Unlock exclusive benefits.', icon:Icon.GiftBox, link:'/legacy.html#rewards', img:'https://images.unsplash.com/photo-1549465220-1a8b9238cd48?w=600&h=400&fit=crop' }
 ];
 
