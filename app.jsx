@@ -636,6 +636,7 @@ function highlight(text, q){
 
 const NAV = [
   { id:'home', label:'Home', icon:Icon.Grid, href:'/' },
+  { id:'dashboard', label:'Dashboard', icon:Icon.Person, href:'/account.html', authRequired:true },
   { type:'header', label:'Arrive' },
   { id:'clothing', label:'Clothing', icon:Icon.Hanger, href:'/departure-lounge-landing.html' },
   { id:'meals', label:'Meals', icon:Icon.Cup, href:'/legacy.html#essentials' },
@@ -724,8 +725,18 @@ function Sidebar(props) {
           }
           const I = n.icon;
           const cls = 'nav-item' + (props.active === n.id ? ' active' : '');
+          var navHref = n.href;
+          if (n.authRequired) {
+            navHref = sbClient ? n.href : '/account-login.html';
+          }
           return (
-            <a key={n.id} href={n.href} className={cls}>
+            <a key={n.id} href={navHref} className={cls} onClick={n.authRequired ? function(e) {
+              if (!sbClient) return;
+              e.preventDefault();
+              sbClient.auth.getSession().then(function(res) {
+                window.location.href = (res.data && res.data.session) ? n.href : '/account-login.html';
+              });
+            } : undefined}>
               <I/><span>{n.label}</span>
             </a>
           );
