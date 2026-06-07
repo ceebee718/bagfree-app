@@ -6,6 +6,8 @@
 <title>BagFree World™</title>
 <link href="https://fonts.googleapis.com/css2?family=Cormorant+Garamond:ital,wght@0,300;0,400;0,500;1,400&family=DM+Sans:wght@300;400;500;600;700&display=swap" rel="stylesheet">
 <script src="https://cdn.jsdelivr.net/npm/@supabase/supabase-js@2"></script>
+<link rel="stylesheet" href="https://unpkg.com/leaflet@1.9.4/dist/leaflet.css"/>
+<script src="https://unpkg.com/leaflet@1.9.4/dist/leaflet.js"></script>
 <style>
 :root{--noir:#0a1628;--n2:#0f1d35;--n3:#162240;--gold:#c9a96e;--gr:201,169,110;--em:#5DCAA5;--wh:#fdfcf8;--tr:253,252,248;--fd:'Cormorant Garamond',Georgia,serif;--fb:'DM Sans',sans-serif;--bs:rgba(201,169,110,0.1)}
 *{box-sizing:border-box;margin:0;padding:0}
@@ -89,6 +91,23 @@ a{color:var(--gold);text-decoration:none}
 .map-container{position:relative;margin-bottom:1.5rem}
 .map-svg{width:100%;height:auto;display:block}
 .map-city-btn{cursor:pointer;transition:all 0.3s}
+#gameMap{width:100%;height:420px;border:1px solid rgba(var(--gr),0.15);border-radius:6px;z-index:1}
+.leaflet-container{background:var(--noir)!important;font-family:var(--fb)!important}
+.city-marker{display:flex;flex-direction:column;align-items:center;cursor:pointer;transition:transform 0.2s}
+.city-marker:hover{transform:scale(1.15)}
+.city-marker-dot{width:40px;height:40px;border-radius:50%;display:flex;align-items:center;justify-content:center;font-size:18px;border:2px solid rgba(201,169,110,0.4);background:rgba(10,22,40,0.85);box-shadow:0 4px 15px rgba(0,0,0,0.4)}
+.city-marker-dot.current{border-color:#c9a96e;box-shadow:0 0 20px rgba(201,169,110,0.3),0 4px 15px rgba(0,0,0,0.4);animation:markerPulse 2s ease-in-out infinite}
+.city-marker-dot.locked{opacity:0.3;border-color:rgba(253,252,248,0.1)}
+.city-marker-dot.visited{border-color:rgba(201,169,110,0.6);background:rgba(201,169,110,0.1)}
+@keyframes markerPulse{0%,100%{box-shadow:0 0 20px rgba(201,169,110,0.3),0 4px 15px rgba(0,0,0,0.4)}50%{box-shadow:0 0 35px rgba(201,169,110,0.5),0 4px 15px rgba(0,0,0,0.4)}}
+.city-marker-label{margin-top:4px;font-family:var(--fd);font-size:12px;color:#c9a96e;text-shadow:0 1px 4px rgba(0,0,0,0.8);white-space:nowrap;font-weight:400}
+.city-marker-sub{font-size:8px;color:rgba(253,252,248,0.4);font-family:var(--fb);letter-spacing:1.5px;text-transform:uppercase;text-shadow:0 1px 3px rgba(0,0,0,0.8)}
+html.light .city-marker-dot{background:rgba(228,223,213,0.9);border-color:rgba(122,101,53,0.4)}
+html.light .city-marker-dot.current{border-color:#7a6535;box-shadow:0 0 20px rgba(122,101,53,0.3)}
+html.light .city-marker-label{color:#7a6535;text-shadow:0 1px 3px rgba(255,255,255,0.8)}
+html.light .city-marker-sub{color:rgba(26,26,46,0.4);text-shadow:none}
+.leaflet-tile-pane{filter:saturate(0.3) brightness(0.35) contrast(1.2)}
+html.light .leaflet-tile-pane{filter:saturate(0.5) brightness(1.0) contrast(1.0) sepia(0.15)}
 .map-city-btn:hover{filter:brightness(1.3);transform:scale(1.05)}
 
 /* ── CARDS ── */
@@ -301,7 +320,7 @@ html.light .rp{background:var(--n2)}
     <button class="tab" onclick="showView('lb',this)">📊 Ranks</button>
   </div>
 
-  <div class="view active" id="vCity"><div class="panel"><div id="mapPanel" style="margin-bottom:1.5rem"></div><div id="cityPanel"></div></div></div>
+  <div class="view active" id="vCity"><div class="panel"><div id="mapPanel" style="margin-bottom:1.5rem"><div id="gameMap"></div></div><div id="cityPanel"></div></div></div>
   
   <div class="view" id="vBadges"><div class="panel" id="badgesPanel"></div></div>
   <div class="view" id="vLb"><div class="panel" id="lbPanel"></div></div>
@@ -362,6 +381,8 @@ var EX={'tokyo':[{n:'Tsukiji Market Food Tour',c:45,xp:30,rep:10,story:'Vendors 
 <title>BagFree World™</title>
 <link href="https://fonts.googleapis.com/css2?family=Cormorant+Garamond:ital,wght@0,300;0,400;0,500;1,400&family=DM+Sans:wght@300;400;500;600;700&display=swap" rel="stylesheet">
 <script src="https://cdn.jsdelivr.net/npm/@supabase/supabase-js@2"></script>
+<link rel="stylesheet" href="https://unpkg.com/leaflet@1.9.4/dist/leaflet.css"/>
+<script src="https://unpkg.com/leaflet@1.9.4/dist/leaflet.js"></script>
 <style>
 :root{--noir:#0a1628;--n2:#0f1d35;--n3:#162240;--gold:#c9a96e;--gr:201,169,110;--em:#5DCAA5;--wh:#fdfcf8;--tr:253,252,248;--fd:'Cormorant Garamond',Georgia,serif;--fb:'DM Sans',sans-serif;--bs:rgba(201,169,110,0.1)}
 *{box-sizing:border-box;margin:0;padding:0}
@@ -445,6 +466,23 @@ a{color:var(--gold);text-decoration:none}
 .map-container{position:relative;margin-bottom:1.5rem}
 .map-svg{width:100%;height:auto;display:block}
 .map-city-btn{cursor:pointer;transition:all 0.3s}
+#gameMap{width:100%;height:420px;border:1px solid rgba(var(--gr),0.15);border-radius:6px;z-index:1}
+.leaflet-container{background:var(--noir)!important;font-family:var(--fb)!important}
+.city-marker{display:flex;flex-direction:column;align-items:center;cursor:pointer;transition:transform 0.2s}
+.city-marker:hover{transform:scale(1.15)}
+.city-marker-dot{width:40px;height:40px;border-radius:50%;display:flex;align-items:center;justify-content:center;font-size:18px;border:2px solid rgba(201,169,110,0.4);background:rgba(10,22,40,0.85);box-shadow:0 4px 15px rgba(0,0,0,0.4)}
+.city-marker-dot.current{border-color:#c9a96e;box-shadow:0 0 20px rgba(201,169,110,0.3),0 4px 15px rgba(0,0,0,0.4);animation:markerPulse 2s ease-in-out infinite}
+.city-marker-dot.locked{opacity:0.3;border-color:rgba(253,252,248,0.1)}
+.city-marker-dot.visited{border-color:rgba(201,169,110,0.6);background:rgba(201,169,110,0.1)}
+@keyframes markerPulse{0%,100%{box-shadow:0 0 20px rgba(201,169,110,0.3),0 4px 15px rgba(0,0,0,0.4)}50%{box-shadow:0 0 35px rgba(201,169,110,0.5),0 4px 15px rgba(0,0,0,0.4)}}
+.city-marker-label{margin-top:4px;font-family:var(--fd);font-size:12px;color:#c9a96e;text-shadow:0 1px 4px rgba(0,0,0,0.8);white-space:nowrap;font-weight:400}
+.city-marker-sub{font-size:8px;color:rgba(253,252,248,0.4);font-family:var(--fb);letter-spacing:1.5px;text-transform:uppercase;text-shadow:0 1px 3px rgba(0,0,0,0.8)}
+html.light .city-marker-dot{background:rgba(228,223,213,0.9);border-color:rgba(122,101,53,0.4)}
+html.light .city-marker-dot.current{border-color:#7a6535;box-shadow:0 0 20px rgba(122,101,53,0.3)}
+html.light .city-marker-label{color:#7a6535;text-shadow:0 1px 3px rgba(255,255,255,0.8)}
+html.light .city-marker-sub{color:rgba(26,26,46,0.4);text-shadow:none}
+.leaflet-tile-pane{filter:saturate(0.3) brightness(0.35) contrast(1.2)}
+html.light .leaflet-tile-pane{filter:saturate(0.5) brightness(1.0) contrast(1.0) sepia(0.15)}
 .map-city-btn:hover{filter:brightness(1.3);transform:scale(1.05)}
 
 /* ── CARDS ── */
@@ -657,7 +695,7 @@ html.light .rp{background:var(--n2)}
     <button class="tab" onclick="showView('lb',this)">📊 Ranks</button>
   </div>
 
-  <div class="view active" id="vCity"><div class="panel"><div id="mapPanel" style="margin-bottom:1.5rem"></div><div id="cityPanel"></div></div></div>
+  <div class="view active" id="vCity"><div class="panel"><div id="mapPanel" style="margin-bottom:1.5rem"><div id="gameMap"></div></div><div id="cityPanel"></div></div></div>
   
   <div class="view" id="vBadges"><div class="panel" id="badgesPanel"></div></div>
   <div class="view" id="vLb"><div class="panel" id="lbPanel"></div></div>
@@ -875,68 +913,74 @@ async function save(){await sb.from('game_profiles').update({game_bag_points:gp.
 
 // ── MAP ──
 function renderMap(){
-  var isLight=document.documentElement.classList.contains('light');
-  var bg=isLight?'#e4dfd5':'#0a1628';
-  var sea=isLight?'#d5dde8':'#0e1f38';
-  var land=isLight?'#d8d2c4':'#132240';
-  var landS=isLight?'rgba(122,101,53,0.3)':'rgba(201,169,110,0.2)';
-  var goldC=isLight?'#7a6535':'#c9a96e';
-  var gA=isLight?'rgba(122,101,53,':'rgba(201,169,110,';
-  var tC=isLight?'rgba(26,26,46,':'rgba(253,252,248,';
+  var mapEl=document.getElementById('gameMap');
+  if(!mapEl)return;
 
-  var h='<svg viewBox="0 0 500 700" style="width:100%;max-width:500px;margin:0 auto;display:block;border:1px solid '+gA+'0.1);border-radius:6px" xmlns="http://www.w3.org/2000/svg">';
-  h+='<defs><radialGradient id="cg" cx="50%" cy="50%"><stop offset="0%" stop-color="'+gA+'0.15)"/><stop offset="100%" stop-color="transparent"/></radialGradient>';
-  h+='<filter id="glow"><feGaussianBlur stdDeviation="4" result="blur"/><feMerge><feMergeNode in="blur"/><feMergeNode in="SourceGraphic"/></feMerge></filter></defs>';
-  // Sea
-  h+='<rect width="500" height="700" fill="'+sea+'"/>';
-  // Grid lines
-  for(var g=0;g<8;g++){h+='<line x1="0" y1="'+(g*100)+'" x2="500" y2="'+(g*100)+'" stroke="'+tC+'0.03)" stroke-width="0.5"/>';h+='<line x1="'+(g*70)+'" y1="0" x2="'+(g*70)+'" y2="700" stroke="'+tC+'0.03)" stroke-width="0.5"/>';}
-  // Japan landmass (simplified)
-  // Hokkaido
-  h+='<path d="M280 60 Q320 50 340 70 Q360 90 350 120 Q340 140 310 145 Q290 140 270 130 Q250 110 260 80 Z" fill="'+land+'" stroke="'+landS+'" stroke-width="1"/>';
-  // Honshu (main island)
-  h+='<path d="M310 160 Q330 155 340 170 Q350 190 355 220 Q360 250 350 280 Q340 300 320 320 Q300 340 280 360 Q260 380 240 400 Q220 420 210 440 Q200 450 190 445 Q180 440 175 420 Q170 400 180 380 Q190 350 200 330 Q215 310 230 290 Q245 270 260 250 Q270 230 275 210 Q280 190 285 170 Z" fill="'+land+'" stroke="'+landS+'" stroke-width="1"/>';
-  // Shikoku
-  h+='<path d="M215 450 Q235 445 245 455 Q250 465 240 475 Q230 480 215 478 Q205 470 210 460 Z" fill="'+land+'" stroke="'+landS+'" stroke-width="0.8"/>';
-  // Kyushu
-  h+='<path d="M170 450 Q185 440 195 450 Q200 465 195 480 Q185 495 170 490 Q158 480 160 465 Z" fill="'+land+'" stroke="'+landS+'" stroke-width="0.8"/>';
+  // Destroy previous map instance
+  if(window._leafletMap){window._leafletMap.remove();window._leafletMap=null}
 
-  // City positions on Japan map
-  var pts={tokyo:{x:320,y:280},kyoto:{x:250,y:350},osaka:{x:240,y:380},hiroshima:{x:185,y:430},sapporo:{x:300,y:90}};
-  // Travel paths
-  var route=['tokyo','kyoto','osaka','hiroshima','sapporo'];
+  // Create map centered on Japan
+  var map=L.map('gameMap',{
+    center:[36.5,137],zoom:5,zoomControl:false,attributionControl:false,
+    minZoom:4,maxZoom:8
+  });
+  window._leafletMap=map;
+
+  // Dark styled tiles
+  L.tileLayer('https://{s}.basemaps.cartocdn.com/dark_all/{z}/{x}/{y}{r}.png',{
+    subdomains:'abcd',maxZoom:19
+  }).addTo(map);
+
+  // Add zoom control to top right
+  L.control.zoom({position:'topright'}).addTo(map);
+
+  // City coordinates
+  var cityCoords={
+    tokyo:{lat:35.68,lng:139.69},
+    kyoto:{lat:35.01,lng:135.77},
+    osaka:{lat:34.69,lng:135.50},
+    hiroshima:{lat:34.39,lng:132.46},
+    sapporo:{lat:43.06,lng:141.35}
+  };
+
+  // Draw travel paths
   var pathPairs=[['tokyo','kyoto'],['kyoto','osaka'],['osaka','hiroshima'],['tokyo','sapporo']];
   pathPairs.forEach(function(pair){
-    var a=pts[pair[0]],b=pts[pair[1]];
+    var a=cityCoords[pair[0]],b=cityCoords[pair[1]];
     var vis=(gp.cities_visited||[]).indexOf(pair[1])>=0;
-    // Curved path
-    var mx=(a.x+b.x)/2+((pair[0]==='tokyo'&&pair[1]==='sapporo')?30:15);
-    var my=(a.y+b.y)/2;
-    h+='<path d="M'+a.x+' '+a.y+' Q'+mx+' '+my+' '+b.x+' '+b.y+'" fill="none" stroke="'+(vis?gA+'0.4)':tC+'0.06)')+'" stroke-width="'+(vis?'1.5':'1')+'" stroke-dasharray="'+(vis?'6 3':'3 5')+'"/>';
-    if(vis){h+='<circle cx="'+mx+'" cy="'+my+'" r="2" fill="'+goldC+'" opacity="0.3"/>';}
+    L.polyline([[a.lat,a.lng],[b.lat,b.lng]],{
+      color:vis?'#c9a96e':'rgba(253,252,248,0.12)',
+      weight:vis?2.5:1.5,
+      dashArray:vis?'8 5':'4 8',
+      opacity:vis?0.7:0.4
+    }).addTo(map);
   });
-  // City markers
+
+  // Add city markers
   C.forEach(function(c){
-    var p=pts[c.id];if(!p)return;
-    var cur=gp.current_city===c.id;var vis=(gp.cities_visited||[]).indexOf(c.id)>=0;var locked=gp.level<c.lvl;
-    if(cur){h+='<circle cx="'+p.x+'" cy="'+p.y+'" r="35" fill="url(#cg)"/>';h+='<circle cx="'+p.x+'" cy="'+p.y+'" r="28" fill="none" stroke="'+gA+'0.15)" stroke-width="0.5"><animate attributeName="r" values="28;34;28" dur="3s" repeatCount="indefinite"/><animate attributeName="opacity" values="0.5;0;0.5" dur="3s" repeatCount="indefinite"/></circle>';}
-    var fill=cur?gA+'0.25)':vis?gA+'0.12)':tC+'0.03)';
-    var stroke=cur?goldC:vis?gA+'0.5)':tC+'0.1)';
-    h+='<g class="map-city-btn" onclick="travelTo(\''+c.id+'\')" style="'+(locked?'opacity:0.2;cursor:not-allowed;pointer-events:none':'')+'">';
-    h+='<circle cx="'+p.x+'" cy="'+p.y+'" r="22" fill="'+fill+'" stroke="'+stroke+'" stroke-width="'+(cur?'2':'1')+'"/>';
-    h+='<text x="'+p.x+'" y="'+(p.y+5)+'" text-anchor="middle" font-size="16">'+c.i+'</text>';
-    h+='<text x="'+(p.x+(c.id==='sapporo'?0:c.id==='hiroshima'?-35:30))+'" y="'+(p.y+(c.id==='sapporo'?38:c.id==='hiroshima'?-5:5))+'" text-anchor="'+(c.id==='hiroshima'?'end':'start')+'" font-family="\'Cormorant Garamond\',serif" font-size="13" font-weight="400" fill="'+(cur?goldC:vis?tC+'0.7)':tC+'0.25)')+'">'+c.n+'</text>';
-    if(cur)h+='<text x="'+(p.x+(c.id==='sapporo'?0:c.id==='hiroshima'?-35:30))+'" y="'+(p.y+(c.id==='sapporo'?50:c.id==='hiroshima'?8:18))+'" text-anchor="'+(c.id==='hiroshima'?'end':'start')+'" font-size="6" fill="'+goldC+'" font-family="\'DM Sans\',sans-serif" font-weight="700" letter-spacing="2.5">YOU ARE HERE</text>';
-    else if(locked)h+='<text x="'+(p.x+(c.id==='sapporo'?0:c.id==='hiroshima'?-35:30))+'" y="'+(p.y+(c.id==='sapporo'?50:c.id==='hiroshima'?8:18))+'" text-anchor="'+(c.id==='hiroshima'?'end':'start')+'" font-size="7" fill="'+tC+'0.2)" font-family="\'DM Sans\',sans-serif">🔒 Level '+c.lvl+'</text>';
-    else if(c.cost>0)h+='<text x="'+(p.x+(c.id==='sapporo'?0:c.id==='hiroshima'?-35:30))+'" y="'+(p.y+(c.id==='sapporo'?50:c.id==='hiroshima'?8:18))+'" text-anchor="'+(c.id==='hiroshima'?'end':'start')+'" font-size="7" fill="'+gA+'0.5)" font-family="\'DM Sans\',sans-serif">'+c.cost+' pts</text>';
-    h+='</g>';
+    var coords=cityCoords[c.id];
+    if(!coords)return;
+    var cur=gp.current_city===c.id;
+    var vis=(gp.cities_visited||[]).indexOf(c.id)>=0;
+    var locked=gp.level<c.lvl;
+    var dotClass='city-marker-dot'+(cur?' current':vis?' visited':locked?' locked':'');
+    var subText=cur?'YOU ARE HERE':locked?'🔒 Level '+c.lvl:c.cost>0?c.cost+' pts':'';
+
+    var icon=L.divIcon({
+      className:'city-marker',
+      html:'<div class="'+dotClass+'">'+c.i+'</div><div class="city-marker-label">'+c.n+'</div>'+(subText?'<div class="city-marker-sub">'+subText+'</div>':''),
+      iconSize:[80,70],
+      iconAnchor:[40,35]
+    });
+
+    var marker=L.marker([coords.lat,coords.lng],{icon:icon}).addTo(map);
+    if(!locked){
+      marker.on('click',function(){travelTo(c.id)});
+    }
   });
-  // Compass
-  h+='<g transform="translate(60,640)" opacity="0.25"><circle cx="0" cy="0" r="18" fill="none" stroke="'+gA+'0.4)" stroke-width="0.5"/><path d="M0-16L1.5-3 0-5-1.5-3z" fill="'+goldC+'"/><text x="0" y="-20" text-anchor="middle" font-size="6" fill="'+goldC+'" font-family="\'DM Sans\',sans-serif" letter-spacing="1">N</text></g>';
-  // Title
-  h+='<text x="30" y="670" font-family="\'Cormorant Garamond\',serif" font-size="14" fill="'+gA+'0.2)" letter-spacing="1">日本 — Japan</text>';
-  h+='</svg>';
-  document.getElementById('mapPanel').innerHTML=h;
+
+  // Fit bounds to show all of Japan nicely
+  map.fitBounds([[31,129],[45,146]],{padding:[30,30]});
 }
 
 // ── QUESTS ──
@@ -972,7 +1016,7 @@ function toggleGameTheme(){
   if(isLight)document.documentElement.classList.remove('light');
   else document.documentElement.classList.add('light');
   try{localStorage.setItem('bf-game-theme',isLight?'dark':'light')}catch(e){}
-  if(document.getElementById('vMap').classList.contains('active'))renderMap();
+  renderMap();
 }
 try{if(localStorage.getItem('bf-game-theme')==='light')document.documentElement.classList.add('light')}catch(e){}
 function confetti(){var c=document.getElementById('confetti');var colors=['#c9a96e','#5DCAA5','#d4b87a','#fdfcf8','#a8884a'];for(var i=0;i<40;i++){var d=document.createElement('div');d.className='confetti';d.style.left=Math.random()*100+'%';d.style.background=colors[Math.floor(Math.random()*colors.length)];d.style.animationDelay=Math.random()*0.8+'s';d.style.width=(4+Math.random()*8)+'px';d.style.height=d.style.width;c.appendChild(d)}setTimeout(function(){c.innerHTML=''},3000)}
