@@ -18,6 +18,7 @@
 <link rel="apple-touch-icon" sizes="180x180" href="/apple-touch-icon.png">
 
 <link href="https://fonts.googleapis.com/css2?family=Cormorant+Garamond:ital,wght@0,300;0,400;0,500;0,600;1,300;1,400&family=Jost:wght@200;300;400;500;600&display=swap" rel="stylesheet">
+<script src="https://cdn.jsdelivr.net/npm/@supabase/supabase-js@2"></script>
 
 <script>
 (function(){
@@ -1048,6 +1049,7 @@ input,select,textarea{outline:none}
   <div class="nav-right">
     <a href="#" class="nav-link hide-mobile" onclick="goToStep(3); return false;" title="Browse bundles and shop now">Shop Now ↗</a>
     <a href="#secondJourney" class="nav-link hide-mobile" title="Second Journey™ membership">Second Journey™</a>
+    <a href="/account.html" class="nav-link hide-mobile" title="My Account" style="color:var(--gold)">My Account</a>
     <button class="theme-toggle" id="themeBtn" onclick="toggleTheme()" aria-label="Toggle theme" title="Toggle theme">
       <svg id="iconDark" viewBox="0 0 24 24" style="display:none"><circle cx="12" cy="12" r="4"/><path d="M12 2v2M12 20v2M4.93 4.93l1.41 1.41M17.66 17.66l1.41 1.41M2 12h2M20 12h2M4.93 19.07l1.41-1.41M17.66 6.34l1.41-1.41"/></svg>
       <svg id="iconLight" viewBox="0 0 24 24" style="display:none"><path d="M21 12.79A9 9 0 1 1 11.21 3 7 7 0 0 0 21 12.79z"/></svg>
@@ -2401,6 +2403,64 @@ function checkReserveReady() {
 // ─── SUBMIT ───
 const FORMSPREE_ENDPOINT = 'https://formspree.io/f/mvzvwrkp';
 
+// ─── SUPABASE (account integration) ───
+var SB_URL = 'https://vkctidpaghpdlmleezvq.supabase.co';
+var SB_KEY = 'eyJhbGciOiJIUzI1NiIsInR5cCI6IkpXVCJ9.eyJpc3MiOiJzdXBhYmFzZSIsInJlZiI6InZrY3RpZHBhZ2hwZGxtbGVlenZxIiwicm9sZSI6ImFub24iLCJpYXQiOjE3NzUzMjI5MjgsImV4cCI6MjA5MDg5ODkyOH0.wKtG6XD6CwLy3rJDZc4S10-NqNr3fcCXHYOWJt_C628';
+var sb = null;
+var sbUser = null;
+try {
+  sb = window.supabase ? window.supabase.createClient(SB_URL, SB_KEY) : null;
+  if (sb) {
+    sb.auth.getSession().then(function(res) {
+      if (res.data && res.data.session) {
+        sbUser = res.data.session.user;
+        // Pre-fill email if logged in
+        if (sbUser.email && document.getElementById('reserveEmail')) {
+          document.getElementById('reserveEmail').value = sbUser.email;
+          state.email = sbUser.email;
+        }
+      }
+    });
+  }
+} catch(e) { sb = null; }
+
+// Save order to Supabase (non-blocking, best-effort)
+async function saveOrderToSupabase(bundleCart, total, stripeSessionId) {
+  if (!sb || !sbUser) return;
+  try {
+    // Save order
+    var { data: order } = await sb.from('orders').insert({
+      user_id: sbUser.id,
+      items: bundleCart,
+      subtotal: total,
+      total: total,
+      city: state.city,
+      hotel: state.hotel,
+      guest_name: state.guestName || '',
+      email: state.email,
+      arrival_date: state.dateArrive,
+      departure_date: state.dateDepart,
+      stripe_session_id: stripeSessionId || '',
+      status: 'pending'
+    }).select().single();
+
+    // Award BAG points (5% of purchase value, rounded to 2 decimals)
+    if (order && total > 0) {
+      var points = Math.round(total * 0.05 * 100) / 100;
+      if (points > 0) {
+        await sb.from('bag_rewards').insert({
+          user_id: sbUser.id,
+          amount: points,
+          type: 'earned',
+          source: 'purchase',
+          description: 'Earned from order ' + (order.order_number || ''),
+          order_id: order.id
+        });
+      }
+    }
+  } catch(e) { console.log('Supabase order save:', e); }
+}
+
 async function submitReserve() {
   const btn = document.getElementById('reserveBtn');
   btn.disabled = true;
@@ -2508,8 +2568,10 @@ async function submitReserve() {
       throw new Error(data.error || ('HTTP ' + res.status));
     }
 
-    // 4) Redirect to Stripe-hosted Checkout. After payment, Stripe will send the
-    //    customer to /thank-you.html and fire a webhook to our server function.
+    // 4) Save order to Supabase (if user is logged in)
+    saveOrderToSupabase(bundleCart, total, data.id || '');
+
+    // 5) Redirect to Stripe-hosted Checkout
     window.location.href = data.url;
   } catch (err) {
     console.error('Checkout error:', err);
