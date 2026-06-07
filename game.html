@@ -165,31 +165,20 @@ a{color:var(--gold);text-decoration:none}
 .leaflet-container{background:var(--noir)!important}
 .leaflet-tile-pane{filter:saturate(0.3) brightness(0.35) contrast(1.2)}
 html.light .leaflet-tile-pane{filter:saturate(0.5) brightness(1.0) sepia(0.15)}
-.cm{text-align:center;cursor:pointer;transition:transform 0.2s}
-.cm:hover{transform:scale(1.12)}
+.cm{text-align:center;cursor:pointer;transition:transform 0.2s}.cm:hover{transform:scale(1.12)}
 .cm-dot{width:38px;height:38px;border-radius:50%;display:flex;align-items:center;justify-content:center;font-size:16px;border:2px solid rgba(201,169,110,0.35);background:rgba(10,22,40,0.85);box-shadow:0 3px 12px rgba(0,0,0,0.4);margin:0 auto}
-.cm-dot.cur{border-color:#c9a96e;box-shadow:0 0 18px rgba(201,169,110,0.3);animation:mp 2s ease-in-out infinite}
-.cm-dot.vis{border-color:rgba(201,169,110,0.6);background:rgba(201,169,110,0.1)}
-.cm-dot.lk{opacity:0.25}
+.cm-dot.cur{border-color:#c9a96e;box-shadow:0 0 18px rgba(201,169,110,0.3);animation:mp 2s infinite}.cm-dot.vis{border-color:rgba(201,169,110,0.6);background:rgba(201,169,110,0.1)}.cm-dot.lk{opacity:0.25}
 @keyframes mp{0%,100%{box-shadow:0 0 18px rgba(201,169,110,0.3)}50%{box-shadow:0 0 30px rgba(201,169,110,0.5)}}
 .cm-name{font-family:var(--fd);font-size:11px;color:#c9a96e;text-shadow:0 1px 4px rgba(0,0,0,0.8);margin-top:3px;white-space:nowrap}
-.cm-sub{font-size:7px;color:rgba(253,252,248,0.35);font-family:var(--fb);letter-spacing:1.5px;text-transform:uppercase;text-shadow:0 1px 3px rgba(0,0,0,0.8)}
+.cm-sub{font-size:7px;color:rgba(253,252,248,0.35);font-family:var(--fb);letter-spacing:1.5px;text-transform:uppercase}
 html.light .cm-dot{background:rgba(228,223,213,0.9)}
 html.light .cm-name{color:#7a6535;text-shadow:none}
-html.light .cm-sub{color:rgba(26,26,46,0.35);text-shadow:none}
-/* Toggle */
-.gt{cursor:pointer;display:flex;align-items:center}
-.gt-track{width:36px;height:20px;border-radius:10px;background:rgba(var(--gr),0.12);border:1px solid rgba(var(--gr),0.2);position:relative;transition:all 0.3s}
+.gt{cursor:pointer}.gt-track{width:36px;height:20px;border-radius:10px;background:rgba(var(--gr),0.12);border:1px solid rgba(var(--gr),0.2);position:relative;transition:all 0.3s}
 .gt-thumb{width:14px;height:14px;border-radius:50%;background:var(--gold);position:absolute;top:2px;left:2px;transition:all 0.3s cubic-bezier(.4,0,.2,1);box-shadow:0 1px 4px rgba(0,0,0,0.2)}
-html.light .gt-track{background:rgba(var(--gr),0.25)}
 html.light .gt-thumb{left:18px;background:#e8c44a}
-/* Light mode */
 html.light{--noir:#f5f2eb;--n2:#ece8df;--n3:#e4dfd5;--gold:#7a6535;--gr:122,101,53;--em:#1d7a5a;--wh:#1a1a2e;--tr:26,26,46;--bs:rgba(122,101,53,0.15)}
 html.light .sb{background:linear-gradient(180deg,#ece8df,#e4dfd5)}
-html.light .gc,html.light .narrative,html.light .decision{background:linear-gradient(160deg,rgba(var(--gr),0.04),transparent)}
-html.light .ob{background:var(--noir)}
-html.light .rp{background:var(--n2)}
-
+html.light .ob{background:var(--noir)}.light .rp{background:var(--n2)}
 .toast{position:fixed;bottom:1.5rem;left:50%;transform:translateX(-50%) translateY(100px);z-index:999;padding:0.9rem 1.5rem;background:var(--n2);border:1px solid rgba(var(--gr),0.25);color:var(--wh);font-size:0.82rem;box-shadow:0 12px 35px rgba(0,0,0,0.4);transition:transform 0.4s cubic-bezier(.34,1.56,.64,1);max-width:400px;text-align:center}
 .toast.show{transform:translateX(-50%) translateY(0)}
 .toast em{color:var(--gold);font-style:normal;font-weight:600}
@@ -336,8 +325,7 @@ html.light .rp{background:var(--n2)}
     <button class="tab" onclick="showView('lb',this)">📊 Ranks</button>
   </div>
 
-  <div class="view active" id="vCity"><div class="panel"><div id="mapPanel" style="margin-bottom:1.5rem"><div id="gameMap"></div></div><div id="cityPanel"></div></div></div>
-  
+  <div class="view active" id="vCity"><div class="panel"><div id="gameMap" style="margin-bottom:1.5rem"></div><div id="cityPanel"></div></div></div>
   <div class="view" id="vBadges"><div class="panel" id="badgesPanel"></div></div>
   <div class="view" id="vLb"><div class="panel" id="lbPanel"></div></div>
 </div>
@@ -369,23 +357,254 @@ var P=[
 ];
 
 var C=[
-  {id:'tokyo',n:'Tokyo',i:'🗼',d:'Neon streets, ancient temples, world\'s best ramen.',lvl:1,cost:0,lat:35.68,lng:139.69,narrative:'Shibuya Crossing pulses beneath you — thousands of people, neon towers, rain-slicked streets. A ramen master ladles broth he\'s perfected for 30 years. Tokyo doesn\'t sleep, and neither will you.'},
-  {id:'kyoto',n:'Kyoto',i:'⛩',d:'Thousand-year temples, bamboo forests, kaiseki cuisine.',lvl:2,cost:200,lat:35.01,lng:135.77,narrative:'The bamboo grove in Arashiyama sways overhead. Kyoto moves at the speed of a tea ceremony — deliberate, beautiful, unhurried. Geisha disappear around corners in Gion.'},
-  {id:'osaka',n:'Osaka',i:'🏯',d:'Street food capital, nightlife, Osaka Castle.',lvl:3,cost:350,lat:34.69,lng:135.50,narrative:'Dotonbori explodes with color — giant crabs, takoyaki on every corner. Osaka is Japan\'s kitchen. The castle rises above it all, gold-tipped and glowing at sunset.'},
-  {id:'hiroshima',n:'Hiroshima',i:'🕊',d:'Peace memorials, island shrines, okonomiyaki.',lvl:4,cost:500,lat:34.39,lng:132.46,narrative:'The Peace Memorial Park is quiet in a way that changes you. Then the ferry to Miyajima — the floating torii gate, deer wandering shrine grounds. Hiroshima rebuilt itself into something extraordinary.'},
-  {id:'sapporo',n:'Sapporo',i:'❄',d:'Snow festivals, hot springs, Hokkaido seafood.',lvl:5,cost:750,lat:43.06,lng:141.35,narrative:'Steam rises from the outdoor onsen as snow falls. Hokkaido stretches endlessly. Sapporo\'s ramen is richer, the crab sweeter, the beer colder. Japan\'s wild frontier.'}
+  {id:'tokyo',n:'Tokyo',i:'\U0001f5fc',d:'Neon streets, temples, ramen.',lvl:1,cost:0,narrative:'Shibuya Crossing pulses \u2014 neon, rain, ramen perfected over 30 years. Tokyo never sleeps.'},
+  {id:'kyoto',n:'Kyoto',i:'\u26e9',d:'Temples, bamboo, kaiseki.',lvl:2,cost:200,narrative:'Bamboo sways in Arashiyama. Kyoto moves at tea-ceremony speed. Geisha vanish in Gion.'},
+  {id:'osaka',n:'Osaka',i:'\U0001f3ef',d:'Street food, nightlife, castle.',lvl:3,cost:350,narrative:'Dotonbori explodes \u2014 giant crabs, takoyaki everywhere. The castle glows gold at sunset.'},
+  {id:'hiroshima',n:'Hiroshima',i:'\U0001f54a',d:'Peace, shrines, okonomiyaki.',lvl:4,cost:500,narrative:'Peace Park changes you. Miyajima \u2014 the floating torii, wandering deer. Rebuilt extraordinarily.'},
+  {id:'sapporo',n:'Sapporo',i:'\u2744',d:'Snow, onsen, seafood.',lvl:5,cost:750,narrative:'Onsen steam in falling snow. Richer ramen, sweeter crab, colder beer. Japan\u2019s frontier.'}
 ];
 
-var H={'tokyo':[{n:'Shinjuku Capsule Hotel',c:60,s:2,xp:8},{n:'Shibuya Stream Hotel',c:160,s:4,xp:25},{n:'Aman Tokyo',c:350,s:5,xp:60}],'kyoto':[{n:'Machiya Guesthouse',c:80,s:3,xp:12},{n:'Kyoto Granbell',c:200,s:4,xp:30},{n:'Ritz-Carlton Kyoto',c:400,s:5,xp:70}],'osaka':[{n:'Namba Hostel',c:50,s:2,xp:8},{n:'Cross Hotel Osaka',c:180,s:4,xp:28},{n:'St. Regis Osaka',c:380,s:5,xp:65}],'hiroshima':[{n:'Hiroshima Guesthouse',c:70,s:3,xp:10},{n:'Sheraton Hiroshima',c:200,s:4,xp:32},{n:'Iwaso Ryokan',c:420,s:5,xp:75}],'sapporo':[{n:'Sapporo Inn',c:90,s:3,xp:12},{n:'JR Tower Nikko',c:220,s:4,xp:35},{n:'Zaborin Ryokan',c:500,s:5,xp:90}]};
+var H={'tokyo':[{n:'Shinjuku Capsule',c:60,s:2,xp:8},{n:'Shibuya Stream',c:160,s:4,xp:25},{n:'Aman Tokyo',c:350,s:5,xp:60}],'kyoto':[{n:'Machiya Guesthouse',c:80,s:3,xp:12},{n:'Kyoto Granbell',c:200,s:4,xp:30},{n:'Ritz-Carlton Kyoto',c:400,s:5,xp:70}],'osaka':[{n:'Namba Hostel',c:50,s:2,xp:8},{n:'Cross Hotel',c:180,s:4,xp:28},{n:'St. Regis Osaka',c:380,s:5,xp:65}],'hiroshima':[{n:'Hiroshima Guest',c:70,s:3,xp:10},{n:'Sheraton Grand',c:200,s:4,xp:32},{n:'Iwaso Ryokan',c:420,s:5,xp:75}],'sapporo':[{n:'Sapporo Inn',c:90,s:3,xp:12},{n:'JR Tower Nikko',c:220,s:4,xp:35},{n:'Zaborin Ryokan',c:500,s:5,xp:90}]};
 
 var CL={sj:[{n:'2-Day Explorer',c:30,xp:10,sus:15},{n:'3-Day Second Journey',c:50,xp:15,sus:25},{n:'5-Day Emerald Bundle',c:80,xp:20,sus:40}],nw:[{n:'Premium Travel Set',c:120,xp:15,sus:0},{n:'Resort Collection',c:200,xp:25,sus:0},{n:'Luxury Wardrobe',c:350,xp:40,sus:0}]};
 
-var EX={'tokyo':[{n:'Tsukiji Market Food Tour',c:45,xp:30,rep:10,story:'Vendors have sold the freshest fish here since 1935. Uni so fresh it melts, tamagoyaki warm from the grill.',choices:['Try legendary tuna sushi (+20 XP)','Explore hidden vendors (+15 rep)']},{n:'Akihabara to Harajuku Walk',c:35,xp:25,rep:8,story:'From anime chaos to cotton-candy Takeshita Street — Tokyo\'s subcultures unfold block by block.',choices:['Visit a themed café (+10 XP)','People-watch in Yoyogi Park (+10 rep)']},{n:'Golden Gai Night',c:75,xp:45,rep:15,story:'Six alleys. 200 bars. Each seats six people. The bartender remembers everyone. This is Tokyo after midnight.',choices:['Find the jazz bar with no sign (+20 rep)','Sake tasting challenge (+20 XP)']}],
-'kyoto':[{n:'Fushimi Inari at Dawn',c:30,xp:35,rep:12,story:'Ten thousand vermillion torii gates climb the mountainside. At dawn, just you, the foxes, and the light.',choices:['Hike to the summit (+25 XP)','Photograph the gates (+15 rep)']},{n:'Kaiseki Dinner in Gion',c:80,xp:50,rep:18,story:'Fourteen courses, each a miniature landscape. A geisha plays shamisen in the next room.',choices:['Ask the chef his story (+20 rep)','Savor in silence (+25 XP)']},{n:'Arashiyama Bamboo Grove',c:40,xp:30,rep:10,story:'The bamboo towers above, creaking in wind. Wild monkeys look out over all of Kyoto.',choices:['Feed the monkeys (+15 XP)','Sketch the grove (+15 eco)']}],
-'osaka':[{n:'Dotonbori Food Crawl',c:40,xp:35,rep:12,story:'Takoyaki, okonomiyaki, kushikatsu, gyoza — Osaka invented eating while walking.',choices:['Takoyaki eating challenge (+20 XP)','Learn to flip okonomiyaki (+15 rep)']},{n:'Osaka Castle Sunset',c:50,xp:40,rep:14,story:'Gold ornaments catch fire as the sun drops. Inside, samurai armor. Cherry trees frame 400 years.',choices:['Explore secret tunnels (+20 XP)','Sunset from the top floor (+15 rep)']},{n:'Shinsekai Night Market',c:55,xp:38,rep:12,story:'Tsutenkaku Tower glows above retro Shinsekai — 1950s Japan preserved in neon and fried food.',choices:['Climb the tower at night (+20 XP)','Join a street card game (+20 rep)']}],
-'hiroshima':[{n:'Peace Memorial & Museum',c:35,xp:45,rep:20,story:'The paper cranes catch light. The museum tells a story that needs no embellishment. You emerge changed.',choices:['Fold a crane at the memorial (+20 eco)','Write in the visitors\' book (+20 rep)']},{n:'Miyajima Island & Torii',c:60,xp:50,rep:18,story:'The great torii gate has stood in the water for 800 years. Deer wander shrine grounds. Time feels different.',choices:['Walk to the gate at low tide (+25 XP)','Ropeway to Mt. Misen (+20 rep)']},{n:'Hiroshima Okonomiyaki Class',c:45,xp:35,rep:12,story:'Hiroshima-style: layered, not mixed. Your instructor has 50 years of grandmother\'s technique.',choices:['Master the flip (+20 XP)','Share with fellow travelers (+15 rep)']}],
-'sapporo':[{n:'Noboribetsu Hot Springs',c:70,xp:45,rep:15,story:'Volcanic steam from Hell Valley. Mineral water. Snow-covered mountains. Your muscles forget they exist.',choices:['Cold plunge ritual (+25 XP)','Mountain meditation soak (+20 eco)']},{n:'Sapporo Beer & Ramen',c:55,xp:40,rep:12,story:'Sapporo invented miso ramen. Ramen Alley has eight shops proving why. Pair with the namesake beer.',choices:['Try all three styles (+20 XP)','Learn brewing process (+15 rep)']},{n:'Otaru Canal & Whisky',c:80,xp:55,rep:18,story:'The canal reflects gas lamps as snow falls. Nearby, Nikka Whisky reveals Japan\'s best spirit secret.',choices:['Whisky tasting flight (+25 XP)','Canal night photography (+20 rep)']}]};
-OCTYPE html>
+var EX={'tokyo':[{n:'Tsukiji Market',c:45,xp:30,rep:10,story:'Freshest fish since 1935. Uni that melts, warm tamagoyaki.',choices:['Legendary tuna (+20 XP)','Hidden vendors (+15 rep)']},{n:'Akihabara to Harajuku',c:35,xp:25,rep:8,story:'Anime chaos to cotton-candy streets. Subcultures block by block.',choices:['Themed cafe (+10 XP)','Yoyogi Park (+10 rep)']},{n:'Golden Gai Night',c:75,xp:45,rep:15,story:'Six alleys, 200 tiny bars. Bartender remembers everyone.',choices:['Secret jazz bar (+20 rep)','Sake challenge (+20 XP)']}],
+'kyoto':[{n:'Fushimi Inari Dawn',c:30,xp:35,rep:12,story:'10,000 vermillion torii gates. At dawn: you, foxes, light.',choices:['Summit shrine (+25 XP)','Photograph gates (+15 rep)']},{n:'Kaiseki in Gion',c:80,xp:50,rep:18,story:'14 courses, each a landscape. Geisha plays shamisen.',choices:['Chef story (+20 rep)','Savor silence (+25 XP)']},{n:'Arashiyama Bamboo',c:40,xp:30,rep:10,story:'Bamboo towers, monkeys overlook Kyoto.',choices:['Feed monkeys (+15 XP)','Sketch grove (+15 eco)']}],
+'osaka':[{n:'Dotonbori Crawl',c:40,xp:35,rep:12,story:'Takoyaki, okonomiyaki, gyoza. Eating while walking.',choices:['Eating challenge (+20 XP)','Learn cooking (+15 rep)']},{n:'Castle Sunset',c:50,xp:40,rep:14,story:'Gold catches sunset fire. Samurai armor. Cherry trees.',choices:['Secret tunnels (+20 XP)','Top floor view (+15 rep)']},{n:'Shinsekai Night',c:55,xp:38,rep:12,story:'Tsutenkaku Tower over 1950s neon Japan.',choices:['Tower at night (+20 XP)','Card game (+20 rep)']}],
+'hiroshima':[{n:'Peace Memorial',c:35,xp:45,rep:20,story:'Paper cranes catch light. Emerge changed.',choices:['Fold crane (+20 eco)','Write in book (+20 rep)']},{n:'Miyajima Island',c:60,xp:50,rep:18,story:'Floating torii, 800 years. Deer in shrine grounds.',choices:['Low tide walk (+25 XP)','Mt. Misen ropeway (+20 rep)']},{n:'Okonomiyaki Class',c:45,xp:35,rep:12,story:'Layered, not mixed. Grandmother technique.',choices:['Master flip (+20 XP)','Share with travelers (+15 rep)']}],
+'sapporo':[{n:'Noboribetsu Onsen',c:70,xp:45,rep:15,story:'Hell Valley steam. Mineral water. Snow mountains.',choices:['Cold plunge (+25 XP)','Meditation soak (+20 eco)']},{n:'Beer and Ramen',c:55,xp:40,rep:12,story:'Miso ramen birthplace. Eight shops in Ramen Alley.',choices:['Three styles (+20 XP)','Brewing tour (+15 rep)']},{n:'Otaru Whisky',c:80,xp:55,rep:18,story:'Gas lamps on canal. Nikka distillery secret.',choices:['Whisky flight (+25 XP)','Canal photos (+20 rep)']}]};
+
+var QUESTS=[
+  {id:'q-hotel',name:'Find Shelter',desc:'Book a hotel in your current city',check:function(g){return!!g.hotel_booked},reward:50,icon:'🏨'},
+  {id:'q-sj',name:'Travel Light',desc:'Equip a Second Journey™ outfit',check:function(g){return(g.sj_items_used||0)>=1},reward:75,icon:'♻'},
+  {id:'q-exp',name:'Experience Seeker',desc:'Complete 3 experiences',check:function(g){return(g.total_trips||0)>=1&&(g.travel_reputation||0)>=20},reward:100,icon:'✦'},
+  {id:'q-city2',name:'New Horizons',desc:'Travel to a second city',check:function(g){return(g.cities_visited||[]).length>=2},reward:150,icon:'🗺'},
+  {id:'q-eco50',name:'Eco Conscious',desc:'Reach 50 sustainability score',check:function(g){return(g.sustainability_score||0)>=50},reward:100,icon:'🌱'}
+];
+
+var BADGES=[
+  {id:'first-trip',n:'First Trip',i:'🎒',d:'Visit your first city',ck:function(g){return g.total_trips>=1}},
+  {id:'pack-light',n:'Pack Light',i:'🧳',d:'Use Second Journey™ 3 times',ck:function(g){return(g.sj_items_used||0)>=3}},
+  {id:'sj-champion',n:'SJ Champion',i:'♻',d:'Eco score over 100',ck:function(g){return g.sustainability_score>=100}},
+  {id:'explorer3',n:'Explorer',i:'🗺',d:'Visit 3 cities',ck:function(g){return(g.cities_visited||[]).length>=3}},
+  {id:'world',n:'World Traveler',i:'🌍',d:'Visit all 5 cities',ck:function(g){return(g.cities_visited||[]).length>=5}},
+  {id:'lvl5',n:'Rising Star',i:'⭐',d:'Reach level 5',ck:function(g){return g.level>=5}},
+  {id:'lvl10',n:'Master',i:'👑',d:'Reach level 10',ck:function(g){return g.level>=10}},
+  {id:'rep100',n:'Renowned',i:'🏆',d:'Travel rep over 100',ck:function(g){return g.travel_reputation>=100}},
+  {id:'eco200',n:'Eco Warrior',i:'🌱',d:'Eco score over 200',ck:function(g){return g.sustainability_score>=200}},
+  {id:'ambassador',n:'Ambassador',i:'💎',d:'Travel rep over 200',ck:function(g){return g.travel_reputation>=200}}
+];
+
+// ── INIT ──
+(async function(){
+  var r=await sb.auth.getSession();
+  if(!r.data||!r.data.session){window.location.href='/account-login.html';return}
+  user=r.data.session.user;
+  var pr=await sb.from('profiles').select('first_name').eq('id',user.id).single();
+  playerName=(pr.data&&pr.data.first_name)||user.email.split('@')[0];
+  var{data}=await sb.from('game_profiles').select('*').eq('user_id',user.id).single();
+  if(data){gp=data;showGame()}else{showOnboarding()}
+})();
+
+// ── ONBOARDING ──
+var selP=null;
+function showOnboarding(){
+  document.getElementById('onboarding').style.display='flex';
+  document.getElementById('pGrid').innerHTML=P.map(function(p){
+    return '<div class="ob-opt" onclick="pickP(this,\''+p.id+'\')"><div class="ob-opt-emoji" style="color:var(--gold)">'+p.svg+'</div><div class="ob-opt-name">'+p.l+'</div><div class="ob-opt-bonus">'+p.b+'</div></div>';
+  }).join('');
+}
+function pickP(el,id){document.querySelectorAll('#pGrid .ob-opt').forEach(function(o){o.classList.remove('sel')});el.classList.add('sel');selP=id;document.getElementById('obBtn1').disabled=false}
+function obNext(){document.getElementById('obStep1').style.display='none';document.getElementById('obStep2').style.display='block'}
+async function beginGame(){
+  var p=P.find(function(x){return x.id===selP});
+  var{data,error}=await sb.from('game_profiles').insert({user_id:user.id,travel_personality:selP,avatar:{type:selP},game_bag_points:1000,level:1,experience_points:0,cities_visited:['tokyo'],current_city:'tokyo'}).select().single();
+  if(error){alert(error.message);return}
+  gp=data;document.getElementById('onboarding').style.display='none';showGame();
+  toast('Welcome to BagFree World™! You start with <em>1,000 BAG Points</em> in Harbor City.');
+}
+
+// ── GAME ──
+function showGame(){document.getElementById('gameUI').style.display='grid';updateAll()}
+function updateAll(){updateSB();renderMap();renderCity();renderQuests()}
+
+function updateSB(){
+  document.getElementById('sbAv').innerHTML=(P.find(function(x){return x.id===gp.travel_personality})||P[0]).svg;
+  document.getElementById('sbName').textContent=playerName;
+  document.getElementById('sbPers').textContent=(P.find(function(x){return x.id===gp.travel_personality})||{}).l||'Traveler';
+  document.getElementById('sbLvl').textContent='Level '+gp.level;
+  document.getElementById('sbPts').textContent=gp.game_bag_points.toLocaleString();
+  var xpNext=gp.level*500;var xpCur=gp.experience_points%xpNext;
+  document.getElementById('sbXpLbl').textContent=xpCur+' / '+xpNext+' XP';
+  document.getElementById('sbLvlLbl').textContent='Lvl '+gp.level;
+  document.getElementById('sbXpFill').style.width=Math.min(100,xpCur/xpNext*100)+'%';
+  document.getElementById('rTravel').textContent=gp.travel_reputation||0;
+  document.getElementById('rSustain').textContent=gp.sustainability_score||0;
+  document.getElementById('rCurator').textContent=gp.curator_score||0;
+  document.getElementById('rComm').textContent=gp.community_score||0;
+  var city=C.find(function(c){return c.id===gp.current_city});
+  document.getElementById('sbCityIcon').textContent=city?city.i:'🏙';
+  document.getElementById('sbCityName').textContent=city?city.n:'Unknown';
+  document.getElementById('sbHotel').textContent=gp.hotel_booked||'No hotel booked';
+  // Badges
+  document.getElementById('sbBadges').innerHTML=(gp.badges||[]).map(function(bid){var b=BADGES.find(function(x){return x.id===bid});return b?'<div class="sb-badge" title="'+b.n+'">'+b.i+'</div>':'';}).join('')||'<span style="font-size:0.6rem;color:rgba(var(--tr),0.2)">None yet</span>';
+  // Inventory
+  var cl=(gp.clothing_equipped||[]);
+  document.getElementById('rpClothing').innerHTML=cl.length?cl.map(function(c){return '<div class="rp-item"><div class="rp-item-icon">'+(c.sj?'♻':'👔')+'</div><div><div class="rp-item-name">'+c.name+'</div><div class="rp-item-detail">'+(c.sj?'Second Journey™':'New clothing')+'</div></div></div>';}).join(''):'<div class="rp-empty">No clothing equipped</div>';
+  document.getElementById('rpLog').innerHTML=tripLog.length?tripLog.slice(-8).reverse().map(function(l){return '<div class="rp-item"><div class="rp-item-icon">📝</div><div><div class="rp-item-detail">'+l+'</div></div></div>';}).join(''):'<div class="rp-empty">Your journey begins...</div>';
+}
+
+// ── CITY ──
+function renderCity(){
+  var city=C.find(function(c){return c.id===gp.current_city});
+  var hotels=H[gp.current_city]||[];var exps=EX[gp.current_city]||[];
+  var h='<div class="narrative"><div class="narrative-text">'+city.narrative+'</div></div>';
+  // Hotels
+  h+='<div class="section-label">Hotels</div><div class="cards-grid">';
+  hotels.forEach(function(ht){var booked=gp.hotel_booked===ht.n;h+='<div class="gc'+(booked?' booked':'')+'"><div class="gc-header"><div class="gc-title">'+ht.n+'</div><div class="gc-price">'+ht.c+' pts</div></div><div class="gc-tags"><span class="gc-tag-stars">'+'★'.repeat(ht.s)+'☆'.repeat(5-ht.s)+'</span><span class="gc-tag gc-tag-xp">+'+ht.xp+' XP</span></div>'+(booked?'':'<button class="gc-btn gc-btn-gold" onclick="bookHotel(\''+ht.n.replace(/'/g,"\\'")+'\','+ht.c+','+ht.xp+')"'+(gp.game_bag_points<ht.c?' disabled':'')+'>Book Hotel</button>')+'</div>';});
+  h+='</div>';
+  // Second Journey
+  h+='<div class="section-label">♻ Second Journey™ Clothing</div><div class="cards-grid">';
+  CL.sj.forEach(function(c){h+='<div class="gc"><div class="gc-header"><div class="gc-title">'+c.n+'</div><div class="gc-price">'+c.c+' pts</div></div><div class="gc-tags"><span class="gc-tag gc-tag-sj">♻ Sustainable</span><span class="gc-tag gc-tag-xp">+'+c.xp+' XP</span><span class="gc-tag gc-tag-sj">+'+c.sus+' eco</span></div><div class="gc-desc">Professionally cleaned, quality-checked. Each item reused by future travelers.</div><button class="gc-btn gc-btn-em" onclick="equipClothing(1,\''+c.n.replace(/'/g,"\\'")+'\','+c.c+','+c.xp+','+c.sus+')"'+(gp.game_bag_points<c.c?' disabled':'')+'>Wear Second Journey</button></div>';});
+  h+='</div>';
+  // New Clothing
+  h+='<div class="section-label">New Clothing</div><div class="cards-grid">';
+  CL.nw.forEach(function(c){h+='<div class="gc"><div class="gc-header"><div class="gc-title">'+c.n+'</div><div class="gc-price">'+c.c+' pts</div></div><div class="gc-tags"><span class="gc-tag gc-tag-xp">+'+c.xp+' XP</span></div><div class="gc-desc">Brand new designer travel clothing. Premium quality.</div><button class="gc-btn gc-btn-gold" onclick="equipClothing(0,\''+c.n.replace(/'/g,"\\'")+'\','+c.c+','+c.xp+',0)"'+(gp.game_bag_points<c.c?' disabled':'')+'>Buy &amp; Wear</button></div>';});
+  h+='</div>';
+  // Experiences (interactive decisions)
+  h+='<div class="section-label">Experiences</div>';
+  exps.forEach(function(e){
+    h+='<div class="decision"><div class="decision-title">'+e.n+'</div><div style="display:flex;gap:0.4rem;margin-bottom:0.6rem"><span class="gc-tag gc-tag-xp">'+e.c+' pts</span><span class="gc-tag gc-tag-xp">+'+e.xp+' XP</span><span class="gc-tag gc-tag-rep">+'+e.rep+' rep</span></div><div class="decision-story">'+e.story+'</div><div class="decision-opts">';
+    e.choices.forEach(function(ch,i){
+      h+='<div class="decision-opt" onclick="doExp(\''+e.n.replace(/'/g,"\\'")+'\','+e.c+','+e.xp+','+e.rep+','+i+')"'+(gp.game_bag_points<e.c?' style="opacity:0.3;pointer-events:none"':'')+'><div class="decision-opt-label">'+ch+'</div></div>';
+    });
+    h+='</div></div>';
+  });
+  document.getElementById('cityPanel').innerHTML=h;
+}
+
+// ── ACTIONS ──
+async function bookHotel(n,c,xp){
+  if(gp.game_bag_points<c)return;
+  gp.game_bag_points-=c;gp.experience_points+=xp;gp.hotel_booked=n;gp.travel_reputation+=5;
+  tripLog.push('Checked into '+n);
+  checkLevel();checkBadges();await save();updateAll();
+  toast('Checked into <em>'+n+'</em>! −'+c+' pts, +'+xp+' XP');
+}
+
+async function equipClothing(isSJ,n,c,xp,sus){
+  if(gp.game_bag_points<c)return;
+  gp.game_bag_points-=c;gp.experience_points+=xp;
+  if(isSJ){gp.sustainability_score=(gp.sustainability_score||0)+sus;gp.sj_items_used=(gp.sj_items_used||0)+1}
+  gp.clothing_equipped=(gp.clothing_equipped||[]).concat([{name:n,sj:!!isSJ}]);
+  tripLog.push((isSJ?'♻ ':'')+'Equipped '+n);
+  checkLevel();checkBadges();await save();updateAll();
+  toast((isSJ?'♻ ':'')+'Wearing <em>'+n+'</em>! −'+c+' pts, +'+xp+' XP'+(sus?' <span class="em-text">+'+sus+' eco</span>':''));
+  if(isSJ&&gp.sj_items_used===1)setTimeout(function(){toast('🌱 <span class="em-text">Second Journey™ — every garment reused helps reduce waste.</span>')},2000);
+}
+
+async function doExp(n,c,xp,rep,choice){
+  if(gp.game_bag_points<c)return;
+  gp.game_bag_points-=c;
+  // Choice bonuses
+  var bonusXP=choice===1?10:5;var bonusRep=choice===0?5:0;var bonusSus=0;
+  var choiceText=choice===0?'bold choice':'thoughtful choice';
+  gp.experience_points+=xp+bonusXP;gp.travel_reputation+=rep+bonusRep;
+  if(choice===1)gp.sustainability_score=(gp.sustainability_score||0)+5;
+  tripLog.push('Experienced: '+n+' ('+choiceText+')');
+  checkLevel();checkBadges();await save();updateAll();
+  toast('Completed <em>'+n+'</em>! −'+c+' pts, +'+(xp+bonusXP)+' XP, +'+(rep+bonusRep)+' rep');
+}
+
+async function travelTo(cityId){
+  var city=C.find(function(c){return c.id===cityId});
+  if(!city)return;
+  if(gp.level<city.lvl){toast('🔒 You need <em>Level '+city.lvl+'</em> to visit '+city.n);return}
+  if(gp.game_bag_points<city.cost){toast('Not enough points! Need <em>'+city.cost+'</em>');return}
+  if(gp.current_city===cityId){showView('city',document.querySelector('.tab'));return}
+  gp.game_bag_points-=city.cost;gp.current_city=cityId;gp.hotel_booked=null;
+  gp.total_trips=(gp.total_trips||0)+1;gp.experience_points+=50;gp.travel_reputation+=10;
+  if((gp.cities_visited||[]).indexOf(cityId)<0)gp.cities_visited=(gp.cities_visited||[]).concat([cityId]);
+  tripLog.push('✈ Traveled to '+city.n);
+  checkLevel();checkBadges();await save();updateAll();renderMap();
+  showView('city',document.querySelector('.tab'));
+  toast('✈ Arrived in <em>'+city.n+'</em>! +50 XP, +10 rep');
+}
+
+function checkLevel(){var nl=Math.floor(gp.experience_points/500)+1;if(nl>gp.level){gp.level=nl;confetti();setTimeout(function(){toast('🎉 <em>Level '+nl+'!</em> New abilities unlocked!')},500)}}
+function checkBadges(){BADGES.forEach(function(b){if((gp.badges||[]).indexOf(b.id)<0&&b.ck(gp)){gp.badges=(gp.badges||[]).concat([b.id]);confetti();setTimeout(function(){toast('🏆 Badge: <em>'+b.n+'</em> '+b.i)},800)}})}
+async function save(){await sb.from('game_profiles').update({game_bag_points:gp.game_bag_points,level:gp.level,experience_points:gp.experience_points,travel_reputation:gp.travel_reputation,sustainability_score:gp.sustainability_score,curator_score:gp.curator_score,community_score:gp.community_score,current_city:gp.current_city,hotel_booked:gp.hotel_booked,cities_visited:gp.cities_visited,badges:gp.badges,total_trips:gp.total_trips,sj_items_used:gp.sj_items_used,clothing_equipped:gp.clothing_equipped,avatar:gp.avatar,updated_at:new Date().toISOString()}).eq('user_id',user.id)}
+
+// ── MAP ──
+function renderMap(){
+  var el=document.getElementById('gameMap');if(!el)return;
+  if(window._lm){window._lm.remove();window._lm=null}
+  var map=L.map('gameMap',{center:[36.5,137],zoom:5,zoomControl:false,attributionControl:false,minZoom:4,maxZoom:8});
+  window._lm=map;
+  L.tileLayer('https://{s}.basemaps.cartocdn.com/dark_all/{z}/{x}/{y}{r}.png',{subdomains:'abcd'}).addTo(map);
+  L.control.zoom({position:'topright'}).addTo(map);
+  var cc={tokyo:[35.68,139.69],kyoto:[35.01,135.77],osaka:[34.69,135.50],hiroshima:[34.39,132.46],sapporo:[43.06,141.35]};
+  [['tokyo','kyoto'],['kyoto','osaka'],['osaka','hiroshima'],['tokyo','sapporo']].forEach(function(p){
+    var a=cc[p[0]],b=cc[p[1]],vis=(gp.cities_visited||[]).indexOf(p[1])>=0;
+    L.polyline([a,b],{color:vis?'#c9a96e':'rgba(253,252,248,0.1)',weight:vis?2.5:1,dashArray:vis?'8 4':'3 6',opacity:vis?0.7:0.3}).addTo(map);
+  });
+  C.forEach(function(c){var co=cc[c.id];if(!co)return;var cur=gp.current_city===c.id,vis=(gp.cities_visited||[]).indexOf(c.id)>=0,lk=gp.level<c.lvl;
+    var dc='cm-dot'+(cur?' cur':vis?' vis':lk?' lk':'');var sub=cur?'YOU ARE HERE':lk?'\ud83d\udd12 Lvl '+c.lvl:c.cost>0?c.cost+' pts':'';
+    var icon=L.divIcon({className:'cm',html:'<div class="'+dc+'">'+c.i+'</div><div class="cm-name">'+c.n+'</div>'+(sub?'<div class="cm-sub">'+sub+'</div>':''),iconSize:[80,60],iconAnchor:[40,30]});
+    var m=L.marker(co,{icon:icon}).addTo(map);if(!lk)m.on('click',function(){travelTo(c.id)});
+  });
+  map.fitBounds([[31,129],[45,146]],{padding:[20,20]});
+}
+
+// ── QUESTS ──
+function renderQuests(){
+  document.getElementById('sbQuests').innerHTML=QUESTS.map(function(q){
+    var done=q.check(gp);
+    return '<div class="sb-quest'+(done?' complete':'')+'"><div class="sb-quest-name">'+q.icon+' '+q.name+'</div><div class="sb-quest-desc">'+q.desc+'</div><div class="sb-quest-prog"><div class="sb-quest-prog-fill" style="width:'+(done?'100':'40')+'%"></div></div><div class="sb-quest-reward">'+(done?'✓ Complete':'Reward: +'+q.reward+' pts')+'</div></div>';
+  }).join('');
+}
+
+// ── BADGES ──
+function showView(id,btn){
+  document.querySelectorAll('.view').forEach(function(v){v.classList.remove('active')});
+  document.querySelectorAll('.tab').forEach(function(t){t.classList.remove('active')});
+  document.getElementById('v'+id.charAt(0).toUpperCase()+id.slice(1)).classList.add('active');
+  btn.classList.add('active');
+    if(id==='badges')renderBadgesView();
+  if(id==='lb')renderLB();
+}
+function renderBadgesView(){
+  document.getElementById('badgesPanel').innerHTML='<div style="font-family:var(--fd);font-size:1.8rem;color:var(--wh);margin-bottom:1.5rem">Badges & Achievements</div><div class="badge-grid">'+BADGES.map(function(b){var earned=(gp.badges||[]).indexOf(b.id)>=0;return '<div class="bg-card'+(earned?' earned':' locked')+'"><div class="bg-icon">'+b.i+'</div><div class="bg-name">'+b.n+'</div><div class="bg-desc">'+b.d+'</div></div>';}).join('')+'</div>';
+}
+function renderLB(){
+  document.getElementById('lbPanel').innerHTML='<div style="font-family:var(--fd);font-size:1.8rem;color:var(--wh);margin-bottom:1.5rem">Leaderboard</div><div class="lb-row me"><div class="lb-rank r1">#1</div><div class="lb-info"><div class="lb-name">'+playerName+'</div><div class="lb-detail">Level '+gp.level+' · '+(gp.cities_visited||[]).length+' cities · '+((gp.badges||[]).length)+' badges</div></div><div class="lb-val">'+(gp.travel_reputation||0)+' rep</div></div><div style="text-align:center;padding:2rem;color:rgba(var(--tr),0.2);font-size:0.82rem">Invite friends to compete on the leaderboard!</div>';
+}
+
+// ── EFFECTS ──
+function toggleGameTheme(){
+  var l=document.documentElement.classList.contains('light');
+  if(l)document.documentElement.classList.remove('light');else document.documentElement.classList.add('light');
+  try{localStorage.setItem('bf-gt',l?'dark':'light')}catch(e){}renderMap();
+}
+try{if(localStorage.getItem('bf-gt')==='light')document.documentElement.classList.add('light')}catch(e){}
+
+function toast(html){var t=document.getElementById('toast');t.innerHTML=html;t.classList.add('show');clearTimeout(t._t);t._t=setTimeout(function(){t.classList.remove('show')},3500)}
+
+function toggleGameTheme(){
+  var isLight=document.documentElement.classList.contains('light');
+  if(isLight)document.documentElement.classList.remove('light');
+  else document.documentElement.classList.add('light');
+  try{localStorage.setItem('bf-game-theme',isLight?'dark':'light')}catch(e){}
+}
+try{if(localStorage.getItem('bf-game-theme')==='light')document.documentElement.classList.add('light')}catch(e){}
+function confetti(){var c=document.getElementById('confetti');var colors=['#c9a96e','#5DCAA5','#d4b87a','#fdfcf8','#a8884a'];for(var i=0;i<40;i++){var d=document.createElement('div');d.className='confetti';d.style.left=Math.random()*100+'%';d.style.background=colors[Math.floor(Math.random()*colors.length)];d.style.animationDelay=Math.random()*0.8+'s';d.style.width=(4+Math.random()*8)+'px';d.style.height=d.style.width;c.appendChild(d)}setTimeout(function(){c.innerHTML=''},3000)}
+</script>
+</body>
+</html>    <div style="display:flex;align-items:center;justify-content:space-between;padding:0.7rem 1.5rem;border-bottom:1px solid var(--bs);background:rgba(15,29,53,0.95);backdrop-filter:blur(8px);position:sticky;top:0;z-index:20">
+      <div><div style="font-family:var(--fd);font-size:1.15rem;color:var(--gold)">BagFree World™ <span style="font-size:0.55rem;color:var(--em);letter-spacing:2px">JAPAN</span></div><div style="font-size:0.55rem;color:rgba(var(--tr),0.25);margin-top:0.1rem">Explore · Book hotels · Second Journey™ · Earn reputation</div></div>
+      <div style="display:flex;align-items:center;gap:1rem"><div class="gt" onclick="toggleGameTheme()"><div class="gt-track"><div class="gt-thumb"></div></div></div><div style="display:flex"><button class="tab active" onclick="showView('city',this)" style="padding:0.45rem 0.9rem;border:1px solid var(--bs);border-right:none;background:rgba(var(--gr),0.06);font-size:0.5rem">Explore</button><button class="tab" onclick="showView('badges',this)" style="padding:0.45rem 0.9rem;border:1px solid var(--bs);border-right:none;font-size:0.5rem">Badges</button><button class="tab" onclick="showView('lb',this)" style="padding:0.45rem 0.9rem;border:1px solid var(--bs);font-size:0.5rem">Ranks</button></div></div>
+    </div>
+TYPE html>
 <html lang="en">
 <head>
 <meta charset="UTF-8">
@@ -552,31 +771,20 @@ a{color:var(--gold);text-decoration:none}
 .leaflet-container{background:var(--noir)!important}
 .leaflet-tile-pane{filter:saturate(0.3) brightness(0.35) contrast(1.2)}
 html.light .leaflet-tile-pane{filter:saturate(0.5) brightness(1.0) sepia(0.15)}
-.cm{text-align:center;cursor:pointer;transition:transform 0.2s}
-.cm:hover{transform:scale(1.12)}
+.cm{text-align:center;cursor:pointer;transition:transform 0.2s}.cm:hover{transform:scale(1.12)}
 .cm-dot{width:38px;height:38px;border-radius:50%;display:flex;align-items:center;justify-content:center;font-size:16px;border:2px solid rgba(201,169,110,0.35);background:rgba(10,22,40,0.85);box-shadow:0 3px 12px rgba(0,0,0,0.4);margin:0 auto}
-.cm-dot.cur{border-color:#c9a96e;box-shadow:0 0 18px rgba(201,169,110,0.3);animation:mp 2s ease-in-out infinite}
-.cm-dot.vis{border-color:rgba(201,169,110,0.6);background:rgba(201,169,110,0.1)}
-.cm-dot.lk{opacity:0.25}
+.cm-dot.cur{border-color:#c9a96e;box-shadow:0 0 18px rgba(201,169,110,0.3);animation:mp 2s infinite}.cm-dot.vis{border-color:rgba(201,169,110,0.6);background:rgba(201,169,110,0.1)}.cm-dot.lk{opacity:0.25}
 @keyframes mp{0%,100%{box-shadow:0 0 18px rgba(201,169,110,0.3)}50%{box-shadow:0 0 30px rgba(201,169,110,0.5)}}
 .cm-name{font-family:var(--fd);font-size:11px;color:#c9a96e;text-shadow:0 1px 4px rgba(0,0,0,0.8);margin-top:3px;white-space:nowrap}
-.cm-sub{font-size:7px;color:rgba(253,252,248,0.35);font-family:var(--fb);letter-spacing:1.5px;text-transform:uppercase;text-shadow:0 1px 3px rgba(0,0,0,0.8)}
+.cm-sub{font-size:7px;color:rgba(253,252,248,0.35);font-family:var(--fb);letter-spacing:1.5px;text-transform:uppercase}
 html.light .cm-dot{background:rgba(228,223,213,0.9)}
 html.light .cm-name{color:#7a6535;text-shadow:none}
-html.light .cm-sub{color:rgba(26,26,46,0.35);text-shadow:none}
-/* Toggle */
-.gt{cursor:pointer;display:flex;align-items:center}
-.gt-track{width:36px;height:20px;border-radius:10px;background:rgba(var(--gr),0.12);border:1px solid rgba(var(--gr),0.2);position:relative;transition:all 0.3s}
+.gt{cursor:pointer}.gt-track{width:36px;height:20px;border-radius:10px;background:rgba(var(--gr),0.12);border:1px solid rgba(var(--gr),0.2);position:relative;transition:all 0.3s}
 .gt-thumb{width:14px;height:14px;border-radius:50%;background:var(--gold);position:absolute;top:2px;left:2px;transition:all 0.3s cubic-bezier(.4,0,.2,1);box-shadow:0 1px 4px rgba(0,0,0,0.2)}
-html.light .gt-track{background:rgba(var(--gr),0.25)}
 html.light .gt-thumb{left:18px;background:#e8c44a}
-/* Light mode */
 html.light{--noir:#f5f2eb;--n2:#ece8df;--n3:#e4dfd5;--gold:#7a6535;--gr:122,101,53;--em:#1d7a5a;--wh:#1a1a2e;--tr:26,26,46;--bs:rgba(122,101,53,0.15)}
 html.light .sb{background:linear-gradient(180deg,#ece8df,#e4dfd5)}
-html.light .gc,html.light .narrative,html.light .decision{background:linear-gradient(160deg,rgba(var(--gr),0.04),transparent)}
-html.light .ob{background:var(--noir)}
-html.light .rp{background:var(--n2)}
-
+html.light .ob{background:var(--noir)}.light .rp{background:var(--n2)}
 .toast{position:fixed;bottom:1.5rem;left:50%;transform:translateX(-50%) translateY(100px);z-index:999;padding:0.9rem 1.5rem;background:var(--n2);border:1px solid rgba(var(--gr),0.25);color:var(--wh);font-size:0.82rem;box-shadow:0 12px 35px rgba(0,0,0,0.4);transition:transform 0.4s cubic-bezier(.34,1.56,.64,1);max-width:400px;text-align:center}
 .toast.show{transform:translateX(-50%) translateY(0)}
 .toast em{color:var(--gold);font-style:normal;font-weight:600}
@@ -723,8 +931,7 @@ html.light .rp{background:var(--n2)}
     <button class="tab" onclick="showView('lb',this)">📊 Ranks</button>
   </div>
 
-  <div class="view active" id="vCity"><div class="panel"><div id="mapPanel" style="margin-bottom:1.5rem"><div id="gameMap"></div></div><div id="cityPanel"></div></div></div>
-  
+  <div class="view active" id="vCity"><div class="panel"><div id="gameMap" style="margin-bottom:1.5rem"></div><div id="cityPanel"></div></div></div>
   <div class="view" id="vBadges"><div class="panel" id="badgesPanel"></div></div>
   <div class="view" id="vLb"><div class="panel" id="lbPanel"></div></div>
 </div>
@@ -756,22 +963,22 @@ var P=[
 ];
 
 var C=[
-  {id:'tokyo',n:'Tokyo',i:'🗼',d:'Neon streets, ancient temples, world\'s best ramen.',lvl:1,cost:0,lat:35.68,lng:139.69,narrative:'Shibuya Crossing pulses beneath you — thousands of people, neon towers, rain-slicked streets. A ramen master ladles broth he\'s perfected for 30 years. Tokyo doesn\'t sleep, and neither will you.'},
-  {id:'kyoto',n:'Kyoto',i:'⛩',d:'Thousand-year temples, bamboo forests, kaiseki cuisine.',lvl:2,cost:200,lat:35.01,lng:135.77,narrative:'The bamboo grove in Arashiyama sways overhead. Kyoto moves at the speed of a tea ceremony — deliberate, beautiful, unhurried. Geisha disappear around corners in Gion.'},
-  {id:'osaka',n:'Osaka',i:'🏯',d:'Street food capital, nightlife, Osaka Castle.',lvl:3,cost:350,lat:34.69,lng:135.50,narrative:'Dotonbori explodes with color — giant crabs, takoyaki on every corner. Osaka is Japan\'s kitchen. The castle rises above it all, gold-tipped and glowing at sunset.'},
-  {id:'hiroshima',n:'Hiroshima',i:'🕊',d:'Peace memorials, island shrines, okonomiyaki.',lvl:4,cost:500,lat:34.39,lng:132.46,narrative:'The Peace Memorial Park is quiet in a way that changes you. Then the ferry to Miyajima — the floating torii gate, deer wandering shrine grounds. Hiroshima rebuilt itself into something extraordinary.'},
-  {id:'sapporo',n:'Sapporo',i:'❄',d:'Snow festivals, hot springs, Hokkaido seafood.',lvl:5,cost:750,lat:43.06,lng:141.35,narrative:'Steam rises from the outdoor onsen as snow falls. Hokkaido stretches endlessly. Sapporo\'s ramen is richer, the crab sweeter, the beer colder. Japan\'s wild frontier.'}
+  {id:'tokyo',n:'Tokyo',i:'\U0001f5fc',d:'Neon streets, temples, ramen.',lvl:1,cost:0,narrative:'Shibuya Crossing pulses \u2014 neon, rain, ramen perfected over 30 years. Tokyo never sleeps.'},
+  {id:'kyoto',n:'Kyoto',i:'\u26e9',d:'Temples, bamboo, kaiseki.',lvl:2,cost:200,narrative:'Bamboo sways in Arashiyama. Kyoto moves at tea-ceremony speed. Geisha vanish in Gion.'},
+  {id:'osaka',n:'Osaka',i:'\U0001f3ef',d:'Street food, nightlife, castle.',lvl:3,cost:350,narrative:'Dotonbori explodes \u2014 giant crabs, takoyaki everywhere. The castle glows gold at sunset.'},
+  {id:'hiroshima',n:'Hiroshima',i:'\U0001f54a',d:'Peace, shrines, okonomiyaki.',lvl:4,cost:500,narrative:'Peace Park changes you. Miyajima \u2014 the floating torii, wandering deer. Rebuilt extraordinarily.'},
+  {id:'sapporo',n:'Sapporo',i:'\u2744',d:'Snow, onsen, seafood.',lvl:5,cost:750,narrative:'Onsen steam in falling snow. Richer ramen, sweeter crab, colder beer. Japan\u2019s frontier.'}
 ];
 
-var H={'tokyo':[{n:'Shinjuku Capsule Hotel',c:60,s:2,xp:8},{n:'Shibuya Stream Hotel',c:160,s:4,xp:25},{n:'Aman Tokyo',c:350,s:5,xp:60}],'kyoto':[{n:'Machiya Guesthouse',c:80,s:3,xp:12},{n:'Kyoto Granbell',c:200,s:4,xp:30},{n:'Ritz-Carlton Kyoto',c:400,s:5,xp:70}],'osaka':[{n:'Namba Hostel',c:50,s:2,xp:8},{n:'Cross Hotel Osaka',c:180,s:4,xp:28},{n:'St. Regis Osaka',c:380,s:5,xp:65}],'hiroshima':[{n:'Hiroshima Guesthouse',c:70,s:3,xp:10},{n:'Sheraton Hiroshima',c:200,s:4,xp:32},{n:'Iwaso Ryokan',c:420,s:5,xp:75}],'sapporo':[{n:'Sapporo Inn',c:90,s:3,xp:12},{n:'JR Tower Nikko',c:220,s:4,xp:35},{n:'Zaborin Ryokan',c:500,s:5,xp:90}]};
+var H={'tokyo':[{n:'Shinjuku Capsule',c:60,s:2,xp:8},{n:'Shibuya Stream',c:160,s:4,xp:25},{n:'Aman Tokyo',c:350,s:5,xp:60}],'kyoto':[{n:'Machiya Guesthouse',c:80,s:3,xp:12},{n:'Kyoto Granbell',c:200,s:4,xp:30},{n:'Ritz-Carlton Kyoto',c:400,s:5,xp:70}],'osaka':[{n:'Namba Hostel',c:50,s:2,xp:8},{n:'Cross Hotel',c:180,s:4,xp:28},{n:'St. Regis Osaka',c:380,s:5,xp:65}],'hiroshima':[{n:'Hiroshima Guest',c:70,s:3,xp:10},{n:'Sheraton Grand',c:200,s:4,xp:32},{n:'Iwaso Ryokan',c:420,s:5,xp:75}],'sapporo':[{n:'Sapporo Inn',c:90,s:3,xp:12},{n:'JR Tower Nikko',c:220,s:4,xp:35},{n:'Zaborin Ryokan',c:500,s:5,xp:90}]};
 
 var CL={sj:[{n:'2-Day Explorer',c:30,xp:10,sus:15},{n:'3-Day Second Journey',c:50,xp:15,sus:25},{n:'5-Day Emerald Bundle',c:80,xp:20,sus:40}],nw:[{n:'Premium Travel Set',c:120,xp:15,sus:0},{n:'Resort Collection',c:200,xp:25,sus:0},{n:'Luxury Wardrobe',c:350,xp:40,sus:0}]};
 
-var EX={'tokyo':[{n:'Waterfront Food Crawl',c:45,xp:30,rep:10,story:'Your guide leads you through three hidden kitchens behind the harbor. The shrimp is so fresh it was swimming an hour ago.',choices:['Try the chef\'s secret dish (+15 XP)','Play it safe with the menu (+5 pts)']},{n:'Night Market Tour',c:35,xp:25,rep:8,story:'Lanterns sway above narrow alleys as vendors call out in three languages. The night market is where Harbor City truly comes alive.',choices:['Haggle for a rare souvenir (+10 rep)','Browse and observe (+10 XP)']},{n:'Harbor Sunset Cruise',c:75,xp:45,rep:15,story:'The yacht cuts through golden water as the sun drops behind the harbor skyline. The captain pours something local.',choices:['Ask the captain for hidden spots (+20 rep)','Relax and enjoy the view (+20 XP)']}],
-'emerald-coast':[{n:'Snorkeling Adventure',c:60,xp:40,rep:12,story:'The water is impossibly clear. Below you, coral cities teem with life in colors that don\'t exist on land.',choices:['Dive deeper to the reef (+20 XP)','Photograph the coral (+15 eco)']},{n:'Eco-Village Tour',c:40,xp:30,rep:15,story:'Solar panels glint on bamboo rooftops. This village runs entirely on renewable energy and feeds itself from community gardens.',choices:['Volunteer for the afternoon (+25 eco)','Learn the building techniques (+20 XP)']},{n:'Beach Bonfire Dinner',c:50,xp:35,rep:10,story:'Embers drift upward like fireflies as a local chef grills the day\'s catch over driftwood. Someone brings out a guitar.',choices:['Join the music circle (+15 rep)','Help the chef plate (+15 XP)']}],
-'golden-savannah':[{n:'Historic Squares Walk',c:40,xp:35,rep:12,story:'Twenty-two squares, each with its own story. Your guide pauses beneath a 300-year-old oak and begins a tale that changes how you see the city.',choices:['Explore the hidden garden (+15 XP)','Sketch the architecture (+10 rep)']},{n:'Lowcountry Feast',c:65,xp:45,rep:15,story:'She crab soup, shrimp and grits, pecan pie. The chef comes to your table and says: "This is my grandmother\'s recipe. She\'d want you to have seconds."',choices:['Request the recipe (+20 rep)','Order a second round (+10 pts)']},{n:'Jazz Club Evening',c:55,xp:40,rep:12,story:'The saxophone player closes his eyes and plays something that makes the whole room hold its breath. This is why people come to Golden Savannah.',choices:['Request a song (+15 rep)','Buy the musician a drink (+10 XP)']}],
-'mountain-ridge':[{n:'Summit Hike',c:50,xp:50,rep:15,story:'The trail switchbacks through ancient pines. At the top, you can see four cities below — everything you\'ve built, laid out like a map.',choices:['Meditate at the peak (+20 eco)','Sprint to the top (+25 XP)']},{n:'Hot Springs Retreat',c:70,xp:40,rep:12,story:'Natural mineral water steams in stone pools carved by centuries of flow. The mountains are silent except for birdsong.',choices:['Extended soak (+15 eco, +10 rep)','Cold plunge challenge (+25 XP)']},{n:'Mountain Cooking Class',c:45,xp:35,rep:10,story:'The chef forages ingredients from the mountainside. You learn to make dishes from things you walked past without noticing.',choices:['Master the dish (+20 XP)','Share with other travelers (+15 rep)']}],
-'capital-bay':[{n:'Gallery Opening',c:80,xp:55,rep:18,story:'The artist recognizes you from your travels. "I heard about you in Harbor City," she says. "Your reputation precedes you."',choices:['Commission a piece (+25 rep)','Discuss her process (+20 XP)']},{n:'Chef\'s Table Dinner',c:120,xp:70,rep:25,story:'Seven courses, each one a small masterpiece. The chef presents the final dish personally: "This course is inspired by Second Journey — everything here had a previous life."',choices:['Share the philosophy (+30 eco)','Savor every bite (+30 XP)']},{n:'Private Yacht Tour',c:200,xp:100,rep:35,story:'The captain knows your name. The sunset is private. The champagne is cold. You\'ve come a long way from Harbor City.',choices:['Reflect on your journey (+30 rep)','Plan your next adventure (+30 XP)']}]};
+var EX={'tokyo':[{n:'Tsukiji Market',c:45,xp:30,rep:10,story:'Freshest fish since 1935. Uni that melts, warm tamagoyaki.',choices:['Legendary tuna (+20 XP)','Hidden vendors (+15 rep)']},{n:'Akihabara to Harajuku',c:35,xp:25,rep:8,story:'Anime chaos to cotton-candy streets. Subcultures block by block.',choices:['Themed cafe (+10 XP)','Yoyogi Park (+10 rep)']},{n:'Golden Gai Night',c:75,xp:45,rep:15,story:'Six alleys, 200 tiny bars. Bartender remembers everyone.',choices:['Secret jazz bar (+20 rep)','Sake challenge (+20 XP)']}],
+'kyoto':[{n:'Fushimi Inari Dawn',c:30,xp:35,rep:12,story:'10,000 vermillion torii gates. At dawn: you, foxes, light.',choices:['Summit shrine (+25 XP)','Photograph gates (+15 rep)']},{n:'Kaiseki in Gion',c:80,xp:50,rep:18,story:'14 courses, each a landscape. Geisha plays shamisen.',choices:['Chef story (+20 rep)','Savor silence (+25 XP)']},{n:'Arashiyama Bamboo',c:40,xp:30,rep:10,story:'Bamboo towers, monkeys overlook Kyoto.',choices:['Feed monkeys (+15 XP)','Sketch grove (+15 eco)']}],
+'osaka':[{n:'Dotonbori Crawl',c:40,xp:35,rep:12,story:'Takoyaki, okonomiyaki, gyoza. Eating while walking.',choices:['Eating challenge (+20 XP)','Learn cooking (+15 rep)']},{n:'Castle Sunset',c:50,xp:40,rep:14,story:'Gold catches sunset fire. Samurai armor. Cherry trees.',choices:['Secret tunnels (+20 XP)','Top floor view (+15 rep)']},{n:'Shinsekai Night',c:55,xp:38,rep:12,story:'Tsutenkaku Tower over 1950s neon Japan.',choices:['Tower at night (+20 XP)','Card game (+20 rep)']}],
+'hiroshima':[{n:'Peace Memorial',c:35,xp:45,rep:20,story:'Paper cranes catch light. Emerge changed.',choices:['Fold crane (+20 eco)','Write in book (+20 rep)']},{n:'Miyajima Island',c:60,xp:50,rep:18,story:'Floating torii, 800 years. Deer in shrine grounds.',choices:['Low tide walk (+25 XP)','Mt. Misen ropeway (+20 rep)']},{n:'Okonomiyaki Class',c:45,xp:35,rep:12,story:'Layered, not mixed. Grandmother technique.',choices:['Master flip (+20 XP)','Share with travelers (+15 rep)']}],
+'sapporo':[{n:'Noboribetsu Onsen',c:70,xp:45,rep:15,story:'Hell Valley steam. Mineral water. Snow mountains.',choices:['Cold plunge (+25 XP)','Meditation soak (+20 eco)']},{n:'Beer and Ramen',c:55,xp:40,rep:12,story:'Miso ramen birthplace. Eight shops in Ramen Alley.',choices:['Three styles (+20 XP)','Brewing tour (+15 rep)']},{n:'Otaru Whisky',c:80,xp:55,rep:18,story:'Gas lamps on canal. Nikka distillery secret.',choices:['Whisky flight (+25 XP)','Canal photos (+20 rep)']}]};
 
 var QUESTS=[
   {id:'q-hotel',name:'Find Shelter',desc:'Book a hotel in your current city',check:function(g){return!!g.hotel_booked},reward:50,icon:'🏨'},
@@ -920,13 +1127,13 @@ async function travelTo(cityId){
   if(!city)return;
   if(gp.level<city.lvl){toast('🔒 You need <em>Level '+city.lvl+'</em> to visit '+city.n);return}
   if(gp.game_bag_points<city.cost){toast('Not enough points! Need <em>'+city.cost+'</em>');return}
-  if(gp.current_city===cityId){showView('city',document.querySelector('.tab.active')||document.querySelector('.tab'));return}
+  if(gp.current_city===cityId){showView('city',document.querySelector('.tab'));return}
   gp.game_bag_points-=city.cost;gp.current_city=cityId;gp.hotel_booked=null;
   gp.total_trips=(gp.total_trips||0)+1;gp.experience_points+=50;gp.travel_reputation+=10;
   if((gp.cities_visited||[]).indexOf(cityId)<0)gp.cities_visited=(gp.cities_visited||[]).concat([cityId]);
   tripLog.push('✈ Traveled to '+city.n);
   checkLevel();checkBadges();await save();updateAll();renderMap();
-  showView('city',document.querySelector('.tab.active')||document.querySelector('.tab'));
+  showView('city',document.querySelector('.tab'));
   toast('✈ Arrived in <em>'+city.n+'</em>! +50 XP, +10 rep');
 }
 
@@ -936,27 +1143,84 @@ async function save(){await sb.from('game_profiles').update({game_bag_points:gp.
 
 // ── MAP ──
 function renderMap(){
-  var el=document.getElementById('gameMap');if(!el)return;
-  if(window._lm){window._lm.remove();window._lm=null}
-  var map=L.map('gameMap',{center:[36.5,137],zoom:5,zoomControl:false,attributionControl:false,minZoom:4,maxZoom:8});
-  window._lm=map;
-  L.tileLayer('https://{s}.basemaps.cartocdn.com/dark_all/{z}/{x}/{y}{r}.png',{subdomains:'abcd'}).addTo(map);
-  L.control.zoom({position:'topright'}).addTo(map);
-  var cc={tokyo:{lat:35.68,lng:139.69},kyoto:{lat:35.01,lng:135.77},osaka:{lat:34.69,lng:135.50},hiroshima:{lat:34.39,lng:132.46},sapporo:{lat:43.06,lng:141.35}};
-  [['tokyo','kyoto'],['kyoto','osaka'],['osaka','hiroshima'],['tokyo','sapporo']].forEach(function(p){
-    var a=cc[p[0]],b=cc[p[1]],vis=(gp.cities_visited||[]).indexOf(p[1])>=0;
-    L.polyline([[a.lat,a.lng],[b.lat,b.lng]],{color:vis?'#c9a96e':'rgba(253,252,248,0.1)',weight:vis?2.5:1,dashArray:vis?'8 4':'3 6',opacity:vis?0.7:0.3}).addTo(map);
+  var isLight=document.documentElement.classList.contains('light');
+  var bg=isLight?'#e4dfd5':'#0a1628';
+  var water=isLight?'rgba(29,122,90,0.08)':'rgba(93,202,165,0.04)';
+  var waterS=isLight?'rgba(29,122,90,0.15)':'rgba(93,202,165,0.08)';
+  var land=isLight?'rgba(122,101,53,0.06)':'rgba(201,169,110,0.04)';
+  var goldC=isLight?'#7a6535':'#c9a96e';
+  var goldA=isLight?'rgba(122,101,53,':'rgba(201,169,110,';
+  var txtC=isLight?'rgba(26,26,46,':'rgba(253,252,248,';
+  var h='<div style="font-family:var(--fd);font-size:1.8rem;color:var(--wh);margin-bottom:0.4rem">BagFree World™</div><div style="font-size:0.82rem;color:'+txtC+'0.4);margin-bottom:1.5rem">Click a city to travel. Unlock new destinations by leveling up.</div>';
+  h+='<svg viewBox="0 0 900 500" style="width:100%;margin-bottom:1.5rem;border:1px solid '+goldA+'0.1);border-radius:4px" xmlns="http://www.w3.org/2000/svg">';
+  // Background
+  h+='<defs>';
+  h+='<radialGradient id="glow1" cx="50%" cy="50%"><stop offset="0%" stop-color="'+goldA+'0.08)"/><stop offset="100%" stop-color="transparent"/></radialGradient>';
+  h+='<filter id="blur1"><feGaussianBlur stdDeviation="3"/></filter>';
+  h+='</defs>';
+  h+='<rect width="900" height="500" fill="'+bg+'"/>';
+  // Ocean
+  h+='<ellipse cx="450" cy="480" rx="420" ry="80" fill="'+water+'"/>';
+  h+='<ellipse cx="450" cy="460" rx="380" ry="50" fill="'+water+'"/>';
+  h+='<ellipse cx="450" cy="445" rx="340" ry="35" fill="'+water+'" opacity="0.5"/>';
+  // Waves
+  for(var w=0;w<5;w++){h+='<path d="M'+(50+w*180)+' '+(430+w*8)+'q30-8 60 0t60 0t60 0" fill="none" stroke="'+waterS+'" stroke-width="0.8" opacity="0.5"><animate attributeName="d" values="M'+(50+w*180)+' '+(430+w*8)+'q30-8 60 0t60 0t60 0;M'+(50+w*180)+' '+(430+w*8)+'q30 8 60 0t60 0t60 0;M'+(50+w*180)+' '+(430+w*8)+'q30-8 60 0t60 0t60 0" dur="'+(3+w*0.5)+'s" repeatCount="indefinite"/></path>';}
+  // Land masses
+  h+='<path d="M40 350 Q100 280 200 300 Q300 250 400 240 Q500 200 600 180 Q700 140 800 120 L860 160 Q780 200 700 250 Q600 300 500 340 Q400 370 300 380 Q200 390 100 380 Z" fill="'+land+'" stroke="'+goldA+'0.08)" stroke-width="0.5"/>';
+  // Mountains (behind Mountain Ridge)
+  h+='<path d="M540 170 L560 120 L580 170" fill="none" stroke="'+goldA+'0.2)" stroke-width="1.2" stroke-linejoin="round"/>';
+  h+='<path d="M555 155 L570 115 L585 155" fill="none" stroke="'+goldA+'0.15)" stroke-width="1" stroke-linejoin="round"/>';
+  h+='<path d="M565 165 L575 130 L590 165" fill="none" stroke="'+goldA+'0.1)" stroke-width="0.8" stroke-linejoin="round"/>';
+  // Trees (near Golden Savannah)
+  for(var t=0;t<6;t++){var tx=350+t*18,ty=240+Math.sin(t)*10;h+='<line x1="'+tx+'" y1="'+ty+'" x2="'+tx+'" y2="'+(ty-8)+'" stroke="'+goldA+'0.15)" stroke-width="1"/><circle cx="'+tx+'" cy="'+(ty-11)+'" r="4" fill="'+goldA+'0.06)" stroke="'+goldA+'0.12)" stroke-width="0.5"/>';}
+  // Palm trees (Emerald Coast)
+  for(var p=0;p<4;p++){var px=200+p*22,py=310+p*5;h+='<line x1="'+px+'" y1="'+py+'" x2="'+(px-3)+'" y2="'+(py-12)+'" stroke="rgba(93,202,165,0.2)" stroke-width="1"/><path d="M'+(px-3)+' '+(py-12)+' q-8-4-12 2 q8-2 12-2 q-4-8-1-12 q4 6 5 10 q4-6 10-4 q-6 3-7 6" fill="rgba(93,202,165,0.1)" stroke="rgba(93,202,165,0.15)" stroke-width="0.5"/>';}
+  // City positions
+  var pts=[{x:120,y:340},{x:260,y:300},{x:430,y:240},{x:600,y:170},{x:760,y:120}];
+  // Travel paths
+  for(var i=0;i<pts.length-1;i++){
+    var vis=(gp.cities_visited||[]).indexOf(C[i+1].id)>=0;
+    h+='<line x1="'+pts[i].x+'" y1="'+pts[i].y+'" x2="'+pts[i+1].x+'" y2="'+pts[i+1].y+'" stroke="'+(vis?goldA+'0.35)':txtC+'0.06)')+'" stroke-width="'+(vis?'1.5':'1')+'" stroke-dasharray="'+(vis?'8 4':'4 6')+'"/>';
+    if(vis){
+      var mx=(pts[i].x+pts[i+1].x)/2,my=(pts[i].y+pts[i+1].y)/2;
+      h+='<circle cx="'+mx+'" cy="'+my+'" r="2" fill="'+goldC+'" opacity="0.4"/>';
+    }
+  }
+  // City nodes
+  C.forEach(function(c,i){
+    var p=pts[i];var cur=gp.current_city===c.id;var vis=(gp.cities_visited||[]).indexOf(c.id)>=0;var locked=gp.level<c.lvl;
+    // Glow for current city
+    if(cur)h+='<circle cx="'+p.x+'" cy="'+p.y+'" r="45" fill="url(#glow1)"/>';
+    // Outer ring animation for current
+    if(cur)h+='<circle cx="'+p.x+'" cy="'+p.y+'" r="36" fill="none" stroke="'+goldA+'0.15)" stroke-width="0.5"><animate attributeName="r" values="36;42;36" dur="3s" repeatCount="indefinite"/><animate attributeName="opacity" values="0.6;0;0.6" dur="3s" repeatCount="indefinite"/></circle>';
+    // Main circle
+    var fill=cur?goldA+'0.2)':vis?goldA+'0.08)':txtC+'0.02)';
+    var stroke=cur?goldC:vis?goldA+'0.4)':txtC+'0.08)';
+    h+='<g class="map-city-btn" onclick="travelTo(\''+c.id+'\')" style="'+(locked?'opacity:0.25;cursor:not-allowed;pointer-events:none':'')+'">';
+    h+='<circle cx="'+p.x+'" cy="'+p.y+'" r="30" fill="'+fill+'" stroke="'+stroke+'" stroke-width="'+(cur?'2':'1')+'"/>';
+    // City icon
+    h+='<text x="'+p.x+'" y="'+(p.y+6)+'" text-anchor="middle" font-size="22">'+c.i+'</text>';
+    // City name
+    h+='<text x="'+p.x+'" y="'+(p.y+52)+'" text-anchor="middle" font-family="\'Cormorant Garamond\',serif" font-size="14" font-weight="400" fill="'+(cur?goldC:vis?txtC+'0.75)':txtC+'0.3)')+'" letter-spacing="0.5">'+c.n+'</text>';
+    // Status labels
+    if(cur)h+='<text x="'+p.x+'" y="'+(p.y+66)+'" text-anchor="middle" font-size="7" fill="'+goldC+'" font-family="\'DM Sans\',sans-serif" font-weight="600" letter-spacing="2" text-transform="uppercase">YOU ARE HERE</text>';
+    else if(locked)h+='<text x="'+p.x+'" y="'+(p.y+66)+'" text-anchor="middle" font-size="8" fill="'+txtC+'0.2)" font-family="\'DM Sans\',sans-serif">🔒 Level '+c.lvl+'</text>';
+    else if(c.cost>0)h+='<text x="'+p.x+'" y="'+(p.y+66)+'" text-anchor="middle" font-size="8" fill="'+goldA+'0.5)" font-family="\'DM Sans\',sans-serif">'+c.cost+' pts</text>';
+    h+='</g>';
   });
-  C.forEach(function(c){
-    var co=cc[c.id];if(!co)return;
-    var cur=gp.current_city===c.id,vis=(gp.cities_visited||[]).indexOf(c.id)>=0,lk=gp.level<c.lvl;
-    var dc='cm-dot'+(cur?' cur':vis?' vis':lk?' lk':'');
-    var sub=cur?'YOU ARE HERE':lk?'🔒 Level '+c.lvl:c.cost>0?c.cost+' pts':'';
-    var icon=L.divIcon({className:'cm',html:'<div class="'+dc+'">'+c.i+'</div><div class="cm-name">'+c.n+'</div>'+(sub?'<div class="cm-sub">'+sub+'</div>':''),iconSize:[80,60],iconAnchor:[40,30]});
-    var m=L.marker([co.lat,co.lng],{icon:icon}).addTo(map);
-    if(!lk)m.on('click',function(){travelTo(c.id)});
-  });
-  map.fitBounds([[31,129],[45,146]],{padding:[20,20]});
+  // Compass rose
+  h+='<g transform="translate(820,440)" opacity="0.3">';
+  h+='<circle cx="0" cy="0" r="20" fill="none" stroke="'+goldA+'0.3)" stroke-width="0.5"/>';
+  h+='<path d="M0-18L2-4 0-6-2-4z" fill="'+goldC+'"/>';
+  h+='<path d="M0 18L2 4 0 6-2 4z" fill="'+goldA+'0.3)"/>';
+  h+='<path d="M-18 0L-4-2-6 0-4 2z" fill="'+goldA+'0.3)"/>';
+  h+='<path d="M18 0L4-2 6 0 4 2z" fill="'+goldA+'0.3)"/>';
+  h+='<text x="0" y="-23" text-anchor="middle" font-size="6" fill="'+goldC+'" font-family="\'DM Sans\',sans-serif" letter-spacing="1">N</text>';
+  h+='</g>';
+  // Title
+  h+='<text x="50" y="40" font-family="\'Cormorant Garamond\',serif" font-size="18" fill="'+goldA+'0.25)" letter-spacing="1">BagFree World™</text>';
+  h+='</svg>';
+  document.getElementById('mapPanel').innerHTML=h;
 }
 
 // ── QUESTS ──
@@ -987,8 +1251,7 @@ function renderLB(){
 function toggleGameTheme(){
   var l=document.documentElement.classList.contains('light');
   if(l)document.documentElement.classList.remove('light');else document.documentElement.classList.add('light');
-  try{localStorage.setItem('bf-gt',l?'dark':'light')}catch(e){}
-  renderMap();
+  try{localStorage.setItem('bf-gt',l?'dark':'light')}catch(e){}renderMap();
 }
 try{if(localStorage.getItem('bf-gt')==='light')document.documentElement.classList.add('light')}catch(e){}
 
@@ -999,7 +1262,6 @@ function toggleGameTheme(){
   if(isLight)document.documentElement.classList.remove('light');
   else document.documentElement.classList.add('light');
   try{localStorage.setItem('bf-game-theme',isLight?'dark':'light')}catch(e){}
-  if(document.getElementById('vMap').classList.contains('active'))renderMap();
 }
 try{if(localStorage.getItem('bf-game-theme')==='light')document.documentElement.classList.add('light')}catch(e){}
 function confetti(){var c=document.getElementById('confetti');var colors=['#c9a96e','#5DCAA5','#d4b87a','#fdfcf8','#a8884a'];for(var i=0;i<40;i++){var d=document.createElement('div');d.className='confetti';d.style.left=Math.random()*100+'%';d.style.background=colors[Math.floor(Math.random()*colors.length)];d.style.animationDelay=Math.random()*0.8+'s';d.style.width=(4+Math.random()*8)+'px';d.style.height=d.style.width;c.appendChild(d)}setTimeout(function(){c.innerHTML=''},3000)}
