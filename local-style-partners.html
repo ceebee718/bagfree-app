@@ -49,7 +49,7 @@ img{display:block;max-width:100%}
 /* Featured Partner Card */
 .featured{border:1px solid rgba(var(--gr),0.2);background:linear-gradient(160deg,rgba(var(--gr),0.05),rgba(var(--gr),0.01));overflow:hidden;position:relative}
 .featured::before{content:'';position:absolute;top:0;right:0;width:300px;height:300px;background:radial-gradient(circle at 100% 0%,rgba(var(--gr),0.06),transparent);pointer-events:none}
-.featured-grid{display:grid;grid-template-columns:1fr 1fr;min-height:520px}
+.featured-grid{display:grid;grid-template-columns:1fr 1fr}
 @media(max-width:768px){.featured-grid{grid-template-columns:1fr}}
 .featured-img{background:linear-gradient(135deg,rgba(var(--gr),0.08),rgba(var(--gr),0.02));display:flex;align-items:center;justify-content:center;min-height:300px;position:relative;overflow:hidden}
 .featured-img::after{content:'';position:absolute;inset:0;background:radial-gradient(circle at 30% 70%,rgba(var(--gr),0.1),transparent);pointer-events:none}
@@ -185,7 +185,7 @@ img{display:block;max-width:100%}
 
     <div class="featured">
       <div class="featured-grid">
-        <div class="featured-img" style="background:url('/images/lynda-miami-hero.png') 5% 25%/110% auto no-repeat;min-height:520px;background-color:rgba(var(--gr),0.03)">
+        <div class="featured-img" style="background:url('/images/lynda-miami-hero.png') 5% 20%/cover no-repeat;min-height:0">
         </div>
         <div class="featured-body">
           <div class="featured-badge">
