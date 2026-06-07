@@ -1,0 +1,565 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+<meta charset="UTF-8">
+<meta name="viewport" content="width=device-width,initial-scale=1">
+<title>BagFree World™</title>
+<link href="https://fonts.googleapis.com/css2?family=Cormorant+Garamond:ital,wght@0,300;0,400;0,500;1,400&family=DM+Sans:wght@300;400;500;600;700&display=swap" rel="stylesheet">
+<script src="https://cdn.jsdelivr.net/npm/@supabase/supabase-js@2"></script>
+<style>
+:root{--noir:#0a1628;--n2:#0f1d35;--n3:#162240;--gold:#c9a96e;--gr:201,169,110;--em:#5DCAA5;--wh:#fdfcf8;--tr:253,252,248;--fd:'Cormorant Garamond',Georgia,serif;--fb:'DM Sans',sans-serif;--bs:rgba(201,169,110,0.1)}
+*{box-sizing:border-box;margin:0;padding:0}
+body{font-family:var(--fb);background:var(--noir);color:rgba(var(--tr),0.85);overflow:hidden;height:100vh}
+button{cursor:pointer;border:none;font-family:var(--fb)}
+a{color:var(--gold);text-decoration:none}
+
+/* ── LAYOUT ── */
+.game{display:grid;grid-template-columns:260px 1fr 280px;height:100vh}
+@media(max-width:1100px){.game{grid-template-columns:220px 1fr}}
+@media(max-width:768px){.game{grid-template-columns:1fr}}
+
+/* ── LEFT SIDEBAR ── */
+.sb{background:linear-gradient(180deg,#0c1a30,#091425);border-right:1px solid var(--bs);display:flex;flex-direction:column;overflow-y:auto;scrollbar-width:thin}
+.sb-top{padding:1.2rem 1rem;border-bottom:1px solid var(--bs)}
+.sb-logo{font-family:var(--fd);font-size:1.3rem;color:var(--gold)}
+.sb-logo span{font-size:0.6rem;color:var(--em);vertical-align:super;letter-spacing:1px}
+.sb-avatar{display:flex;align-items:center;gap:0.7rem;padding:1rem;border-bottom:1px solid var(--bs)}
+.sb-av-circle{width:48px;height:48px;border-radius:50%;border:2px solid rgba(var(--gr),0.4);display:flex;align-items:center;justify-content:center;font-size:1.6rem;background:radial-gradient(circle at 30% 30%,rgba(var(--gr),0.15),transparent);flex-shrink:0}
+.sb-av-name{font-size:0.88rem;color:var(--wh);font-weight:500}
+.sb-av-personality{font-size:0.62rem;color:rgba(var(--tr),0.4);letter-spacing:0.5px}
+.sb-av-level{font-size:0.58rem;color:var(--gold);margin-top:0.15rem}
+
+.sb-section{padding:0.8rem 1rem}
+.sb-label{font-size:0.48rem;letter-spacing:3px;text-transform:uppercase;color:rgba(var(--tr),0.25);font-weight:700;margin-bottom:0.5rem}
+.sb-pts-wrap{display:flex;align-items:baseline;gap:0.3rem}
+.sb-pts{font-family:var(--fd);font-size:2rem;color:var(--gold);line-height:1}
+.sb-pts-label{font-size:0.55rem;color:rgba(var(--tr),0.3);letter-spacing:1px}
+.sb-xp{margin-top:0.6rem}
+.sb-xp-info{display:flex;justify-content:space-between;font-size:0.6rem;color:rgba(var(--tr),0.35);margin-bottom:0.25rem}
+.sb-xp-bar{height:5px;background:rgba(var(--gr),0.08);border-radius:3px;overflow:hidden}
+.sb-xp-fill{height:100%;background:linear-gradient(90deg,var(--gold),#d4b87a);border-radius:3px;transition:width 0.6s cubic-bezier(.4,0,.2,1)}
+
+.sb-rep{display:grid;grid-template-columns:1fr 1fr;gap:0.4rem;margin-top:0.3rem}
+.sb-rep-item{padding:0.5rem;background:rgba(var(--gr),0.03);border:1px solid rgba(var(--gr),0.06);text-align:center}
+.sb-rep-val{font-family:var(--fd);font-size:1.1rem;color:var(--gold);line-height:1}
+.sb-rep-name{font-size:0.48rem;letter-spacing:1.5px;text-transform:uppercase;color:rgba(var(--tr),0.3);margin-top:0.15rem}
+
+.sb-city{padding:0.6rem 0.8rem;margin:0 0.6rem;background:rgba(var(--gr),0.04);border:1px solid rgba(var(--gr),0.1);display:flex;align-items:center;gap:0.6rem}
+.sb-city-icon{font-size:1.3rem}
+.sb-city-name{font-family:var(--fd);font-size:1rem;color:var(--wh)}
+.sb-city-hotel{font-size:0.65rem;color:rgba(var(--tr),0.35)}
+
+.sb-badges{display:flex;flex-wrap:wrap;gap:0.25rem;padding:0 1rem 0.8rem}
+.sb-badge{width:28px;height:28px;display:flex;align-items:center;justify-content:center;font-size:0.9rem;background:rgba(var(--gr),0.06);border:1px solid rgba(var(--gr),0.15);border-radius:50%;transition:transform 0.2s}
+.sb-badge:hover{transform:scale(1.3)}
+
+.sb-quests{padding:0 1rem 1rem}
+.sb-quest{padding:0.6rem;border:1px solid rgba(93,202,165,0.15);background:rgba(93,202,165,0.03);margin-bottom:0.4rem;transition:all 0.2s}
+.sb-quest:hover{border-color:rgba(93,202,165,0.3)}
+.sb-quest-name{font-size:0.72rem;color:var(--wh);font-weight:500;margin-bottom:0.2rem}
+.sb-quest-desc{font-size:0.6rem;color:rgba(var(--tr),0.4);line-height:1.4;margin-bottom:0.3rem}
+.sb-quest-prog{height:3px;background:rgba(93,202,165,0.1);border-radius:2px;overflow:hidden}
+.sb-quest-prog-fill{height:100%;background:var(--em);border-radius:2px;transition:width 0.4s}
+.sb-quest-reward{font-size:0.55rem;color:var(--em);margin-top:0.2rem}
+.sb-quest.complete{border-color:rgba(var(--gr),0.3);background:rgba(var(--gr),0.05)}
+.sb-quest.complete .sb-quest-name{color:var(--gold)}
+.sb-quest.complete .sb-quest-prog-fill{background:var(--gold)}
+
+.sb-footer{margin-top:auto;padding:0.8rem 1rem;border-top:1px solid var(--bs)}
+.sb-footer a{font-size:0.6rem;letter-spacing:1.5px;text-transform:uppercase;color:rgba(var(--tr),0.25);display:flex;align-items:center;gap:0.4rem;transition:color 0.2s}
+.sb-footer a:hover{color:var(--gold)}
+
+/* ── MAIN AREA ── */
+.main{overflow-y:auto;position:relative}
+.tabs{display:flex;background:rgba(15,29,53,0.95);backdrop-filter:blur(8px);border-bottom:1px solid var(--bs);position:sticky;top:0;z-index:10}
+.tab{flex:1;padding:0.7rem;text-align:center;font-size:0.52rem;letter-spacing:2.5px;text-transform:uppercase;color:rgba(var(--tr),0.35);font-weight:600;cursor:pointer;border-bottom:2px solid transparent;transition:all 0.2s;background:none;font-family:var(--fb)}
+.tab.active{color:var(--gold);border-bottom-color:var(--gold)}
+.tab:hover:not(.active){color:rgba(var(--tr),0.55)}
+.view{display:none;animation:fadeIn 0.4s ease}.view.active{display:block}
+@keyframes fadeIn{from{opacity:0;transform:translateY(8px)}to{opacity:1;transform:translateY(0)}}
+.panel{padding:1.5rem 1.5rem 3rem;max-width:840px;margin:0 auto}
+
+/* ── NARRATIVE ── */
+.narrative{background:linear-gradient(135deg,rgba(var(--gr),0.06),rgba(var(--gr),0.02));border:1px solid rgba(var(--gr),0.15);padding:1.5rem;margin-bottom:1.5rem;position:relative;overflow:hidden}
+.narrative::before{content:'';position:absolute;top:-30px;right:-30px;width:120px;height:120px;background:radial-gradient(circle,rgba(var(--gr),0.08),transparent);pointer-events:none}
+.narrative-text{font-family:var(--fd);font-size:1.15rem;font-style:italic;color:rgba(var(--tr),0.7);line-height:1.6}
+.narrative-text em{color:var(--gold);font-style:normal}
+
+/* ── MAP ── */
+.map-container{position:relative;margin-bottom:1.5rem}
+.map-svg{width:100%;height:auto;display:block}
+.map-city-btn{cursor:pointer;transition:all 0.3s}
+.map-city-btn:hover{filter:brightness(1.3);transform:scale(1.05)}
+
+/* ── CARDS ── */
+.section-label{font-size:0.52rem;letter-spacing:3.5px;text-transform:uppercase;color:var(--gold);font-weight:700;margin-bottom:0.8rem;display:flex;align-items:center;gap:0.5rem}
+.section-label::after{content:'';flex:1;height:1px;background:rgba(var(--gr),0.12)}
+.cards-grid{display:grid;grid-template-columns:repeat(auto-fill,minmax(240px,1fr));gap:0.8rem;margin-bottom:2rem}
+.gc{border:1px solid rgba(var(--gr),0.1);background:linear-gradient(160deg,rgba(var(--gr),0.03),transparent);padding:1.1rem;transition:all 0.3s cubic-bezier(.4,0,.2,1);position:relative;overflow:hidden}
+.gc:hover{border-color:rgba(var(--gr),0.3);transform:translateY(-3px);box-shadow:0 14px 35px rgba(0,0,0,0.2)}
+.gc::after{content:'';position:absolute;top:0;right:0;width:60px;height:60px;background:radial-gradient(circle at 100% 0%,rgba(var(--gr),0.05),transparent);pointer-events:none}
+.gc-header{display:flex;align-items:flex-start;justify-content:space-between;margin-bottom:0.5rem}
+.gc-title{font-family:var(--fd);font-size:1.15rem;color:var(--wh);line-height:1.2}
+.gc-price{font-family:var(--fd);font-size:1.2rem;color:var(--gold);white-space:nowrap}
+.gc-desc{font-size:0.72rem;color:rgba(var(--tr),0.45);line-height:1.5;margin-bottom:0.7rem}
+.gc-tags{display:flex;gap:0.3rem;flex-wrap:wrap;margin-bottom:0.6rem}
+.gc-tag{font-size:0.48rem;letter-spacing:1.5px;text-transform:uppercase;padding:0.2rem 0.5rem;font-weight:600}
+.gc-tag-sj{background:rgba(93,202,165,0.1);border:1px solid rgba(93,202,165,0.25);color:var(--em)}
+.gc-tag-xp{background:rgba(var(--gr),0.06);border:1px solid rgba(var(--gr),0.15);color:rgba(var(--tr),0.5)}
+.gc-tag-rep{background:rgba(147,112,219,0.08);border:1px solid rgba(147,112,219,0.2);color:rgba(147,112,219,0.7)}
+.gc-tag-stars{color:var(--gold);font-size:0.7rem;letter-spacing:1px}
+.gc-btn{width:100%;padding:0.6rem;font-size:0.55rem;letter-spacing:2.5px;text-transform:uppercase;font-weight:600;transition:all 0.25s;font-family:var(--fb)}
+.gc-btn-gold{color:var(--noir);background:var(--gold);box-shadow:0 4px 14px rgba(var(--gr),0.2)}
+.gc-btn-gold:hover{background:#d4b87a;transform:translateY(-1px);box-shadow:0 8px 22px rgba(var(--gr),0.3)}
+.gc-btn-em{color:var(--noir);background:var(--em);box-shadow:0 4px 14px rgba(93,202,165,0.2)}
+.gc-btn-em:hover{background:#4dbf95;transform:translateY(-1px)}
+.gc-btn:disabled{opacity:0.25;pointer-events:none}
+.gc.booked{border-color:var(--gold);background:rgba(var(--gr),0.06)}
+.gc.booked::before{content:'✓ CURRENT';position:absolute;top:0.6rem;right:0.6rem;font-size:0.45rem;letter-spacing:2px;color:var(--noir);background:var(--gold);padding:0.2rem 0.5rem;font-weight:700}
+
+/* Decision card for experiences */
+.decision{border:1px solid rgba(var(--gr),0.15);background:linear-gradient(160deg,rgba(var(--gr),0.04),transparent);padding:1.5rem;margin-bottom:1rem}
+.decision-title{font-family:var(--fd);font-size:1.3rem;color:var(--wh);margin-bottom:0.4rem}
+.decision-story{font-size:0.82rem;color:rgba(var(--tr),0.55);line-height:1.6;margin-bottom:1.2rem;font-style:italic}
+.decision-opts{display:grid;grid-template-columns:1fr 1fr;gap:0.6rem}
+@media(max-width:600px){.decision-opts{grid-template-columns:1fr}}
+.decision-opt{padding:1rem;border:1px solid var(--bs);cursor:pointer;transition:all 0.25s;text-align:center}
+.decision-opt:hover{border-color:rgba(var(--gr),0.4);background:rgba(var(--gr),0.04);transform:translateY(-2px)}
+.decision-opt-label{font-size:0.82rem;color:var(--wh);font-weight:500;margin-bottom:0.3rem}
+.decision-opt-detail{font-size:0.65rem;color:rgba(var(--tr),0.4);line-height:1.4}
+
+/* ── BADGES ── */
+.badge-grid{display:grid;grid-template-columns:repeat(auto-fill,minmax(130px,1fr));gap:0.7rem}
+.bg-card{border:1px solid rgba(var(--gr),0.08);padding:1rem;text-align:center;transition:all 0.3s;position:relative}
+.bg-card.earned{border-color:rgba(var(--gr),0.3);background:rgba(var(--gr),0.05)}
+.bg-card.earned::after{content:'';position:absolute;inset:0;background:radial-gradient(circle at 50% 30%,rgba(var(--gr),0.08),transparent);pointer-events:none}
+.bg-card.locked{opacity:0.25}
+.bg-icon{font-size:2rem;margin-bottom:0.4rem;transition:transform 0.3s}
+.bg-card.earned .bg-icon{animation:badgePulse 2s ease-in-out infinite}
+@keyframes badgePulse{0%,100%{transform:scale(1)}50%{transform:scale(1.1)}}
+.bg-name{font-size:0.72rem;font-weight:600;color:var(--wh);margin-bottom:0.2rem}
+.bg-desc{font-size:0.58rem;color:rgba(var(--tr),0.4);line-height:1.4}
+
+/* ── LEADERBOARD ── */
+.lb-row{display:flex;align-items:center;gap:1rem;padding:0.8rem 1rem;border:1px solid rgba(var(--gr),0.06);margin-bottom:0.4rem;transition:all 0.2s}
+.lb-row:hover{background:rgba(var(--gr),0.03);border-color:rgba(var(--gr),0.15)}
+.lb-row.me{border-color:rgba(var(--gr),0.3);background:rgba(var(--gr),0.06)}
+.lb-rank{font-family:var(--fd);font-size:1.3rem;color:rgba(var(--tr),0.2);width:36px;text-align:center;flex-shrink:0}
+.lb-rank.r1{color:var(--gold);text-shadow:0 0 12px rgba(var(--gr),0.4)}
+.lb-rank.r2{color:rgba(var(--tr),0.5)}
+.lb-rank.r3{color:rgba(180,130,80,0.7)}
+.lb-info{flex:1}
+.lb-name{font-size:0.88rem;color:var(--wh);font-weight:500}
+.lb-detail{font-size:0.62rem;color:rgba(var(--tr),0.35)}
+.lb-val{font-family:var(--fd);font-size:1.1rem;color:var(--gold)}
+
+/* ── CONFETTI ── */
+.confetti-container{position:fixed;top:0;left:0;width:100%;height:100%;pointer-events:none;z-index:9999}
+.confetti{position:absolute;width:8px;height:8px;opacity:0;animation:confettiFall 2.5s ease-in forwards}
+@keyframes confettiFall{0%{opacity:1;transform:translateY(-20px) rotate(0deg)}100%{opacity:0;transform:translateY(100vh) rotate(720deg)}}
+
+/* ── TOAST ── */
+.toast{position:fixed;bottom:1.5rem;left:50%;transform:translateX(-50%) translateY(100px);z-index:999;padding:0.9rem 1.5rem;background:var(--n2);border:1px solid rgba(var(--gr),0.25);color:var(--wh);font-size:0.82rem;box-shadow:0 12px 35px rgba(0,0,0,0.4);transition:transform 0.4s cubic-bezier(.34,1.56,.64,1);max-width:400px;text-align:center}
+.toast.show{transform:translateX(-50%) translateY(0)}
+.toast em{color:var(--gold);font-style:normal;font-weight:600}
+.toast .em-text{color:var(--em);font-weight:500}
+
+/* ── ONBOARDING ── */
+.ob{position:fixed;inset:0;z-index:100;background:var(--noir);display:flex;align-items:center;justify-content:center;padding:2rem}
+.ob-card{max-width:500px;width:100%;border:1px solid var(--bs);padding:2.5rem 2rem;background:linear-gradient(160deg,rgba(var(--gr),0.03),transparent);animation:fadeIn 0.5s ease}
+.ob-eyebrow{font-size:0.52rem;letter-spacing:4.5px;text-transform:uppercase;color:var(--em);text-align:center;margin-bottom:0.4rem}
+.ob-title{font-family:var(--fd);font-size:2.2rem;font-weight:300;color:var(--wh);text-align:center;margin-bottom:0.3rem}
+.ob-sub{font-size:0.82rem;color:rgba(var(--tr),0.4);text-align:center;margin-bottom:2rem;font-weight:300}
+.ob-label{font-size:0.5rem;letter-spacing:3px;text-transform:uppercase;color:rgba(var(--tr),0.35);font-weight:600;margin-bottom:0.5rem}
+.ob-grid{display:grid;grid-template-columns:repeat(auto-fill,minmax(115px,1fr));gap:0.5rem;margin-bottom:1.5rem}
+.ob-opt{padding:0.7rem 0.5rem;border:1px solid rgba(var(--gr),0.1);text-align:center;cursor:pointer;transition:all 0.2s}
+.ob-opt:hover{border-color:rgba(var(--gr),0.35);background:rgba(var(--gr),0.03)}
+.ob-opt.sel{border-color:var(--gold);background:rgba(var(--gr),0.1);box-shadow:0 0 0 1px var(--gold)}
+.ob-opt-emoji{font-size:1.5rem;margin-bottom:0.3rem}
+.ob-opt-name{font-size:0.72rem;color:var(--wh);font-weight:500;margin-bottom:0.15rem}
+.ob-opt-bonus{font-size:0.55rem;color:var(--em)}
+.ob-btn{width:100%;padding:0.85rem;font-size:0.6rem;letter-spacing:3px;text-transform:uppercase;font-weight:600;color:var(--noir);background:var(--gold);box-shadow:0 6px 20px rgba(var(--gr),0.3);transition:all 0.3s;font-family:var(--fb);margin-top:0.5rem}
+.ob-btn:hover{background:#d4b87a;transform:translateY(-2px)}
+.ob-btn:disabled{opacity:0.25;pointer-events:none}
+
+/* Right panel (inventory) */
+.rp{background:var(--n2);border-left:1px solid var(--bs);overflow-y:auto;padding:1rem}
+@media(max-width:1100px){.rp{display:none}}
+.rp-label{font-size:0.48rem;letter-spacing:3px;text-transform:uppercase;color:rgba(var(--tr),0.25);font-weight:700;margin-bottom:0.5rem}
+.rp-item{display:flex;align-items:center;gap:0.6rem;padding:0.6rem;border:1px solid rgba(var(--gr),0.06);margin-bottom:0.4rem;background:rgba(var(--gr),0.02);transition:all 0.2s}
+.rp-item:hover{border-color:rgba(var(--gr),0.2)}
+.rp-item-icon{font-size:1.2rem;flex-shrink:0}
+.rp-item-name{font-size:0.75rem;color:var(--wh);font-weight:500}
+.rp-item-detail{font-size:0.6rem;color:rgba(var(--tr),0.35)}
+.rp-empty{font-size:0.72rem;color:rgba(var(--tr),0.2);text-align:center;padding:1rem;font-style:italic}
+</style>
+</head>
+<body>
+
+<div class="toast" id="toast"></div>
+<div class="confetti-container" id="confetti"></div>
+
+<!-- ONBOARDING -->
+<div class="ob" id="onboarding" style="display:none">
+<div class="ob-card">
+  <div class="ob-eyebrow">✦ Welcome to</div>
+  <div class="ob-title">BagFree World™</div>
+  <div class="ob-sub">Travel Light. Experience More. Leave Less Behind.</div>
+  <div id="obStep1">
+    <div class="ob-label">Choose your travel personality</div>
+    <div class="ob-grid" id="pGrid"></div>
+    <button class="ob-btn" id="obBtn1" disabled onclick="obNext()">Choose &amp; Continue →</button>
+  </div>
+  <div id="obStep2" style="display:none">
+    <div class="ob-label">You start with</div>
+    <div style="text-align:center;margin-bottom:1.5rem">
+      <div style="font-family:var(--fd);font-size:3rem;color:var(--gold)">1,000</div>
+      <div style="font-size:0.65rem;letter-spacing:3px;text-transform:uppercase;color:rgba(var(--tr),0.4)">BAG Points</div>
+      <div style="font-size:0.78rem;color:rgba(var(--tr),0.45);margin-top:0.8rem;line-height:1.6">No baggage. No hotel. No clothing. No reputation.<br>Build your travel journey from scratch.</div>
+    </div>
+    <button class="ob-btn" onclick="beginGame()">Begin Your Journey →</button>
+  </div>
+</div>
+</div>
+
+<!-- GAME -->
+<div class="game" id="gameUI" style="display:none">
+
+<!-- Left Sidebar -->
+<div class="sb">
+  <div class="sb-top">
+    <div class="sb-logo">BagFree World <span>™</span></div>
+  </div>
+  <div class="sb-avatar">
+    <div class="sb-av-circle" id="sbAv"></div>
+    <div>
+      <div class="sb-av-name" id="sbName"></div>
+      <div class="sb-av-personality" id="sbPers"></div>
+      <div class="sb-av-level" id="sbLvl"></div>
+    </div>
+  </div>
+
+  <div class="sb-section">
+    <div class="sb-label">BAG Points</div>
+    <div class="sb-pts-wrap"><div class="sb-pts" id="sbPts">0</div><div class="sb-pts-label">pts</div></div>
+    <div class="sb-xp">
+      <div class="sb-xp-info"><span id="sbXpLbl">0 / 500 XP</span><span id="sbLvlLbl">Lvl 1</span></div>
+      <div class="sb-xp-bar"><div class="sb-xp-fill" id="sbXpFill" style="width:0%"></div></div>
+    </div>
+  </div>
+
+  <div class="sb-section" style="padding-bottom:0">
+    <div class="sb-label">Reputation</div>
+    <div class="sb-rep">
+      <div class="sb-rep-item"><div class="sb-rep-val" id="rTravel">0</div><div class="sb-rep-name">Travel</div></div>
+      <div class="sb-rep-item"><div class="sb-rep-val" id="rSustain">0</div><div class="sb-rep-name">Eco</div></div>
+      <div class="sb-rep-item"><div class="sb-rep-val" id="rCurator">0</div><div class="sb-rep-name">Curator</div></div>
+      <div class="sb-rep-item"><div class="sb-rep-val" id="rComm">0</div><div class="sb-rep-name">Social</div></div>
+    </div>
+  </div>
+
+  <div class="sb-section" style="padding-bottom:0.4rem">
+    <div class="sb-label">Current Location</div>
+    <div class="sb-city"><span class="sb-city-icon" id="sbCityIcon">🏙</span><div><div class="sb-city-name" id="sbCityName">Harbor City</div><div class="sb-city-hotel" id="sbHotel">No hotel</div></div></div>
+  </div>
+
+  <div class="sb-section" style="padding-bottom:0">
+    <div class="sb-label">Daily Quests</div>
+  </div>
+  <div class="sb-quests" id="sbQuests"></div>
+
+  <div class="sb-section" style="padding-bottom:0.2rem"><div class="sb-label">Badges</div></div>
+  <div class="sb-badges" id="sbBadges"></div>
+
+  <div class="sb-footer"><a href="/">← Back to BagFree</a></div>
+</div>
+
+<!-- Main -->
+<div class="main">
+  <div class="tabs">
+    <button class="tab active" onclick="showView('city',this)">🏙 City</button>
+    <button class="tab" onclick="showView('map',this)">🗺 Map</button>
+    <button class="tab" onclick="showView('badges',this)">🏆 Badges</button>
+    <button class="tab" onclick="showView('lb',this)">📊 Ranks</button>
+  </div>
+
+  <div class="view active" id="vCity"><div class="panel" id="cityPanel"></div></div>
+  <div class="view" id="vMap"><div class="panel" id="mapPanel"></div></div>
+  <div class="view" id="vBadges"><div class="panel" id="badgesPanel"></div></div>
+  <div class="view" id="vLb"><div class="panel" id="lbPanel"></div></div>
+</div>
+
+<!-- Right panel: Inventory -->
+<div class="rp">
+  <div class="rp-label">Inventory</div>
+  <div id="rpClothing"></div>
+  <div class="rp-label" style="margin-top:1rem">Trip Log</div>
+  <div id="rpLog"></div>
+</div>
+
+</div>
+
+<script>
+var SB_URL='https://vkctidpaghpdlmleezvq.supabase.co';
+var SB_KEY='eyJhbGciOiJIUzI1NiIsInR5cCI6IkpXVCJ9.eyJpc3MiOiJzdXBhYmFzZSIsInJlZiI6InZrY3RpZHBhZ2hwZGxtbGVlenZxIiwicm9sZSI6ImFub24iLCJpYXQiOjE3NzUzMjI5MjgsImV4cCI6MjA5MDg5ODkyOH0.wKtG6XD6CwLy3rJDZc4S10-NqNr3fcCXHYOWJt_C628';
+var sb=window.supabase.createClient(SB_URL,SB_KEY),user=null,gp=null,playerName='Traveler',tripLog=[];
+
+// ── DATA ──
+var P=[
+  {id:'explorer',l:'Explorer',e:'🧭',b:'Travel XP +20%',desc:'Born to wander. You find joy in every new destination.'},
+  {id:'luxury',l:'Luxury Traveler',e:'✨',b:'Hotel discounts',desc:'Only the finest. Five-star stays and private experiences.'},
+  {id:'budget',l:'Budget Traveler',e:'💰',b:'All prices -15%',desc:'Stretch every point. You know how to travel smart.'},
+  {id:'foodie',l:'Foodie',e:'🍽',b:'Restaurant XP +25%',desc:'You travel for the food. Every city is a new menu.'},
+  {id:'adventure',l:'Adventure Seeker',e:'🏔',b:'Experience XP +20%',desc:'Mountains, oceans, jungles — the wilder, the better.'},
+  {id:'nomad',l:'Digital Nomad',e:'💻',b:'Multi-city bonus',desc:'Work from anywhere. Every café is your office.'},
+  {id:'eco',l:'Eco Traveler',e:'🌱',b:'Sustainability +30%',desc:'Travel lightly on the earth. Every choice matters.'}
+];
+
+var C=[
+  {id:'harbor-city',n:'Harbor City',i:'🏙',d:'The starting port — bustling markets, street food, and waterfront energy.',lvl:1,cost:0,
+   narrative:'The salty air hits you as you step off the boat. Harbor City sprawls before you — neon signs reflect off rain-slicked streets, and the scent of grilled seafood drifts from the night market. You have no luggage, no hotel, and 1,000 BAG Points. Your journey starts here.'},
+  {id:'emerald-coast',n:'Emerald Coast',i:'🏖',d:'Crystal beaches, eco-resorts, and bioluminescent bays.',lvl:2,cost:200,
+   narrative:'The sand is warm beneath your feet. Emerald Coast stretches endlessly — turquoise water, swaying palms, and the faint sound of steel drums. Eco-resorts dot the coastline, each one designed to disappear into the landscape.'},
+  {id:'golden-savannah',n:'Golden Savannah',i:'🌅',d:'Historic squares, Lowcountry cuisine, and jazz under the oaks.',lvl:3,cost:350,
+   narrative:'Spanish moss hangs from ancient oaks as you walk through cobblestone squares. Golden Savannah is a city that moves slowly on purpose — every meal is a two-hour affair, every conversation leads to a story.'},
+  {id:'mountain-ridge',n:'Mountain Ridge',i:'⛰',d:'Alpine trails, hot springs, and mountain cooking.',lvl:4,cost:500,
+   narrative:'The air thins as you climb. Mountain Ridge sits above the clouds — log cabins with roaring fires, natural hot springs steaming in the morning cold, and trails that lead to views that make you forget your name.'},
+  {id:'capital-bay',n:'Capital Bay',i:'🏛',d:'The grand capital — galleries, fine dining, and exclusive events.',lvl:5,cost:750,
+   narrative:'The golden dome of the Parliament building catches the last light of day. Capital Bay is where power and culture intersect — Michelin-starred chefs, private gallery openings, and rooftop bars where deals are made over rare whiskey.'}
+];
+
+var H={'harbor-city':[{n:'The Dockside Inn',c:80,s:3,xp:10},{n:'Harbor Grand Hotel',c:150,s:4,xp:25},{n:'The Lighthouse Suite',c:280,s:5,xp:50}],'emerald-coast':[{n:'Seaside Bungalow',c:100,s:3,xp:15},{n:'Coral Reef Resort',c:200,s:4,xp:30},{n:'The Emerald Palace',c:350,s:5,xp:60}],'golden-savannah':[{n:'The Innkeeper',c:90,s:3,xp:12},{n:'The Alida',c:220,s:4,xp:35},{n:'Mansion on the Square',c:400,s:5,xp:70}],'mountain-ridge':[{n:'Trailhead Lodge',c:110,s:3,xp:15},{n:'Eagle Nest Resort',c:250,s:4,xp:40},{n:'Summit Penthouse',c:450,s:5,xp:80}],'capital-bay':[{n:'Bay View Inn',c:120,s:3,xp:18},{n:'The Capital Hotel',c:300,s:4,xp:50},{n:'Grand Presidential',c:600,s:5,xp:100}]};
+
+var CL={sj:[{n:'2-Day Explorer',c:30,xp:10,sus:15},{n:'3-Day Second Journey',c:50,xp:15,sus:25},{n:'5-Day Emerald Bundle',c:80,xp:20,sus:40}],nw:[{n:'Premium Travel Set',c:120,xp:15,sus:0},{n:'Resort Collection',c:200,xp:25,sus:0},{n:'Luxury Wardrobe',c:350,xp:40,sus:0}]};
+
+var EX={'harbor-city':[{n:'Waterfront Food Crawl',c:45,xp:30,rep:10,story:'Your guide leads you through three hidden kitchens behind the harbor. The shrimp is so fresh it was swimming an hour ago.',choices:['Try the chef\'s secret dish (+15 XP)','Play it safe with the menu (+5 pts)']},{n:'Night Market Tour',c:35,xp:25,rep:8,story:'Lanterns sway above narrow alleys as vendors call out in three languages. The night market is where Harbor City truly comes alive.',choices:['Haggle for a rare souvenir (+10 rep)','Browse and observe (+10 XP)']},{n:'Harbor Sunset Cruise',c:75,xp:45,rep:15,story:'The yacht cuts through golden water as the sun drops behind the harbor skyline. The captain pours something local.',choices:['Ask the captain for hidden spots (+20 rep)','Relax and enjoy the view (+20 XP)']}],
+'emerald-coast':[{n:'Snorkeling Adventure',c:60,xp:40,rep:12,story:'The water is impossibly clear. Below you, coral cities teem with life in colors that don\'t exist on land.',choices:['Dive deeper to the reef (+20 XP)','Photograph the coral (+15 eco)']},{n:'Eco-Village Tour',c:40,xp:30,rep:15,story:'Solar panels glint on bamboo rooftops. This village runs entirely on renewable energy and feeds itself from community gardens.',choices:['Volunteer for the afternoon (+25 eco)','Learn the building techniques (+20 XP)']},{n:'Beach Bonfire Dinner',c:50,xp:35,rep:10,story:'Embers drift upward like fireflies as a local chef grills the day\'s catch over driftwood. Someone brings out a guitar.',choices:['Join the music circle (+15 rep)','Help the chef plate (+15 XP)']}],
+'golden-savannah':[{n:'Historic Squares Walk',c:40,xp:35,rep:12,story:'Twenty-two squares, each with its own story. Your guide pauses beneath a 300-year-old oak and begins a tale that changes how you see the city.',choices:['Explore the hidden garden (+15 XP)','Sketch the architecture (+10 rep)']},{n:'Lowcountry Feast',c:65,xp:45,rep:15,story:'She crab soup, shrimp and grits, pecan pie. The chef comes to your table and says: "This is my grandmother\'s recipe. She\'d want you to have seconds."',choices:['Request the recipe (+20 rep)','Order a second round (+10 pts)']},{n:'Jazz Club Evening',c:55,xp:40,rep:12,story:'The saxophone player closes his eyes and plays something that makes the whole room hold its breath. This is why people come to Golden Savannah.',choices:['Request a song (+15 rep)','Buy the musician a drink (+10 XP)']}],
+'mountain-ridge':[{n:'Summit Hike',c:50,xp:50,rep:15,story:'The trail switchbacks through ancient pines. At the top, you can see four cities below — everything you\'ve built, laid out like a map.',choices:['Meditate at the peak (+20 eco)','Sprint to the top (+25 XP)']},{n:'Hot Springs Retreat',c:70,xp:40,rep:12,story:'Natural mineral water steams in stone pools carved by centuries of flow. The mountains are silent except for birdsong.',choices:['Extended soak (+15 eco, +10 rep)','Cold plunge challenge (+25 XP)']},{n:'Mountain Cooking Class',c:45,xp:35,rep:10,story:'The chef forages ingredients from the mountainside. You learn to make dishes from things you walked past without noticing.',choices:['Master the dish (+20 XP)','Share with other travelers (+15 rep)']}],
+'capital-bay':[{n:'Gallery Opening',c:80,xp:55,rep:18,story:'The artist recognizes you from your travels. "I heard about you in Harbor City," she says. "Your reputation precedes you."',choices:['Commission a piece (+25 rep)','Discuss her process (+20 XP)']},{n:'Chef\'s Table Dinner',c:120,xp:70,rep:25,story:'Seven courses, each one a small masterpiece. The chef presents the final dish personally: "This course is inspired by Second Journey — everything here had a previous life."',choices:['Share the philosophy (+30 eco)','Savor every bite (+30 XP)']},{n:'Private Yacht Tour',c:200,xp:100,rep:35,story:'The captain knows your name. The sunset is private. The champagne is cold. You\'ve come a long way from Harbor City.',choices:['Reflect on your journey (+30 rep)','Plan your next adventure (+30 XP)']}]};
+
+var QUESTS=[
+  {id:'q-hotel',name:'Find Shelter',desc:'Book a hotel in your current city',check:function(g){return!!g.hotel_booked},reward:50,icon:'🏨'},
+  {id:'q-sj',name:'Travel Light',desc:'Equip a Second Journey™ outfit',check:function(g){return(g.sj_items_used||0)>=1},reward:75,icon:'♻'},
+  {id:'q-exp',name:'Experience Seeker',desc:'Complete 3 experiences',check:function(g){return(g.total_trips||0)>=1&&(g.travel_reputation||0)>=20},reward:100,icon:'✦'},
+  {id:'q-city2',name:'New Horizons',desc:'Travel to a second city',check:function(g){return(g.cities_visited||[]).length>=2},reward:150,icon:'🗺'},
+  {id:'q-eco50',name:'Eco Conscious',desc:'Reach 50 sustainability score',check:function(g){return(g.sustainability_score||0)>=50},reward:100,icon:'🌱'}
+];
+
+var BADGES=[
+  {id:'first-trip',n:'First Trip',i:'🎒',d:'Visit your first city',ck:function(g){return g.total_trips>=1}},
+  {id:'pack-light',n:'Pack Light',i:'🧳',d:'Use Second Journey™ 3 times',ck:function(g){return(g.sj_items_used||0)>=3}},
+  {id:'sj-champion',n:'SJ Champion',i:'♻',d:'Eco score over 100',ck:function(g){return g.sustainability_score>=100}},
+  {id:'explorer3',n:'Explorer',i:'🗺',d:'Visit 3 cities',ck:function(g){return(g.cities_visited||[]).length>=3}},
+  {id:'world',n:'World Traveler',i:'🌍',d:'Visit all 5 cities',ck:function(g){return(g.cities_visited||[]).length>=5}},
+  {id:'lvl5',n:'Rising Star',i:'⭐',d:'Reach level 5',ck:function(g){return g.level>=5}},
+  {id:'lvl10',n:'Master',i:'👑',d:'Reach level 10',ck:function(g){return g.level>=10}},
+  {id:'rep100',n:'Renowned',i:'🏆',d:'Travel rep over 100',ck:function(g){return g.travel_reputation>=100}},
+  {id:'eco200',n:'Eco Warrior',i:'🌱',d:'Eco score over 200',ck:function(g){return g.sustainability_score>=200}},
+  {id:'ambassador',n:'Ambassador',i:'💎',d:'Travel rep over 200',ck:function(g){return g.travel_reputation>=200}}
+];
+
+// ── INIT ──
+(async function(){
+  var r=await sb.auth.getSession();
+  if(!r.data||!r.data.session){window.location.href='/account-login.html';return}
+  user=r.data.session.user;
+  var pr=await sb.from('profiles').select('first_name').eq('id',user.id).single();
+  playerName=(pr.data&&pr.data.first_name)||user.email.split('@')[0];
+  var{data}=await sb.from('game_profiles').select('*').eq('user_id',user.id).single();
+  if(data){gp=data;showGame()}else{showOnboarding()}
+})();
+
+// ── ONBOARDING ──
+var selP=null;
+function showOnboarding(){
+  document.getElementById('onboarding').style.display='flex';
+  document.getElementById('pGrid').innerHTML=P.map(function(p){
+    return '<div class="ob-opt" onclick="pickP(this,\''+p.id+'\')"><div class="ob-opt-emoji">'+p.e+'</div><div class="ob-opt-name">'+p.l+'</div><div class="ob-opt-bonus">'+p.b+'</div></div>';
+  }).join('');
+}
+function pickP(el,id){document.querySelectorAll('#pGrid .ob-opt').forEach(function(o){o.classList.remove('sel')});el.classList.add('sel');selP=id;document.getElementById('obBtn1').disabled=false}
+function obNext(){document.getElementById('obStep1').style.display='none';document.getElementById('obStep2').style.display='block'}
+async function beginGame(){
+  var p=P.find(function(x){return x.id===selP});
+  var{data,error}=await sb.from('game_profiles').insert({user_id:user.id,travel_personality:selP,avatar:{emoji:p.e},game_bag_points:1000,level:1,experience_points:0,cities_visited:['harbor-city'],current_city:'harbor-city'}).select().single();
+  if(error){alert(error.message);return}
+  gp=data;document.getElementById('onboarding').style.display='none';showGame();
+  toast('Welcome to BagFree World™! You start with <em>1,000 BAG Points</em> in Harbor City.');
+}
+
+// ── GAME ──
+function showGame(){document.getElementById('gameUI').style.display='grid';updateAll()}
+function updateAll(){updateSB();renderCity();renderQuests()}
+
+function updateSB(){
+  document.getElementById('sbAv').textContent=(P.find(function(x){return x.id===gp.travel_personality})||{}).e||'🧭';
+  document.getElementById('sbName').textContent=playerName;
+  document.getElementById('sbPers').textContent=(P.find(function(x){return x.id===gp.travel_personality})||{}).l||'Traveler';
+  document.getElementById('sbLvl').textContent='Level '+gp.level;
+  document.getElementById('sbPts').textContent=gp.game_bag_points.toLocaleString();
+  var xpNext=gp.level*500;var xpCur=gp.experience_points%xpNext;
+  document.getElementById('sbXpLbl').textContent=xpCur+' / '+xpNext+' XP';
+  document.getElementById('sbLvlLbl').textContent='Lvl '+gp.level;
+  document.getElementById('sbXpFill').style.width=Math.min(100,xpCur/xpNext*100)+'%';
+  document.getElementById('rTravel').textContent=gp.travel_reputation||0;
+  document.getElementById('rSustain').textContent=gp.sustainability_score||0;
+  document.getElementById('rCurator').textContent=gp.curator_score||0;
+  document.getElementById('rComm').textContent=gp.community_score||0;
+  var city=C.find(function(c){return c.id===gp.current_city});
+  document.getElementById('sbCityIcon').textContent=city?city.i:'🏙';
+  document.getElementById('sbCityName').textContent=city?city.n:'Unknown';
+  document.getElementById('sbHotel').textContent=gp.hotel_booked||'No hotel booked';
+  // Badges
+  document.getElementById('sbBadges').innerHTML=(gp.badges||[]).map(function(bid){var b=BADGES.find(function(x){return x.id===bid});return b?'<div class="sb-badge" title="'+b.n+'">'+b.i+'</div>':'';}).join('')||'<span style="font-size:0.6rem;color:rgba(var(--tr),0.2)">None yet</span>';
+  // Inventory
+  var cl=(gp.clothing_equipped||[]);
+  document.getElementById('rpClothing').innerHTML=cl.length?cl.map(function(c){return '<div class="rp-item"><div class="rp-item-icon">'+(c.sj?'♻':'👔')+'</div><div><div class="rp-item-name">'+c.name+'</div><div class="rp-item-detail">'+(c.sj?'Second Journey™':'New clothing')+'</div></div></div>';}).join(''):'<div class="rp-empty">No clothing equipped</div>';
+  document.getElementById('rpLog').innerHTML=tripLog.length?tripLog.slice(-8).reverse().map(function(l){return '<div class="rp-item"><div class="rp-item-icon">📝</div><div><div class="rp-item-detail">'+l+'</div></div></div>';}).join(''):'<div class="rp-empty">Your journey begins...</div>';
+}
+
+// ── CITY ──
+function renderCity(){
+  var city=C.find(function(c){return c.id===gp.current_city});
+  var hotels=H[gp.current_city]||[];var exps=EX[gp.current_city]||[];
+  var h='<div class="narrative"><div class="narrative-text">'+city.narrative+'</div></div>';
+  // Hotels
+  h+='<div class="section-label">Hotels</div><div class="cards-grid">';
+  hotels.forEach(function(ht){var booked=gp.hotel_booked===ht.n;h+='<div class="gc'+(booked?' booked':'')+'"><div class="gc-header"><div class="gc-title">'+ht.n+'</div><div class="gc-price">'+ht.c+' pts</div></div><div class="gc-tags"><span class="gc-tag-stars">'+'★'.repeat(ht.s)+'☆'.repeat(5-ht.s)+'</span><span class="gc-tag gc-tag-xp">+'+ht.xp+' XP</span></div>'+(booked?'':'<button class="gc-btn gc-btn-gold" onclick="bookHotel(\''+ht.n.replace(/'/g,"\\'")+'\','+ht.c+','+ht.xp+')"'+(gp.game_bag_points<ht.c?' disabled':'')+'>Book Hotel</button>')+'</div>';});
+  h+='</div>';
+  // Second Journey
+  h+='<div class="section-label">♻ Second Journey™ Clothing</div><div class="cards-grid">';
+  CL.sj.forEach(function(c){h+='<div class="gc"><div class="gc-header"><div class="gc-title">'+c.n+'</div><div class="gc-price">'+c.c+' pts</div></div><div class="gc-tags"><span class="gc-tag gc-tag-sj">♻ Sustainable</span><span class="gc-tag gc-tag-xp">+'+c.xp+' XP</span><span class="gc-tag gc-tag-sj">+'+c.sus+' eco</span></div><div class="gc-desc">Professionally cleaned, quality-checked. Each item reused by future travelers.</div><button class="gc-btn gc-btn-em" onclick="equipClothing(1,\''+c.n.replace(/'/g,"\\'")+'\','+c.c+','+c.xp+','+c.sus+')"'+(gp.game_bag_points<c.c?' disabled':'')+'>Wear Second Journey</button></div>';});
+  h+='</div>';
+  // New Clothing
+  h+='<div class="section-label">New Clothing</div><div class="cards-grid">';
+  CL.nw.forEach(function(c){h+='<div class="gc"><div class="gc-header"><div class="gc-title">'+c.n+'</div><div class="gc-price">'+c.c+' pts</div></div><div class="gc-tags"><span class="gc-tag gc-tag-xp">+'+c.xp+' XP</span></div><div class="gc-desc">Brand new designer travel clothing. Premium quality.</div><button class="gc-btn gc-btn-gold" onclick="equipClothing(0,\''+c.n.replace(/'/g,"\\'")+'\','+c.c+','+c.xp+',0)"'+(gp.game_bag_points<c.c?' disabled':'')+'>Buy &amp; Wear</button></div>';});
+  h+='</div>';
+  // Experiences (interactive decisions)
+  h+='<div class="section-label">Experiences</div>';
+  exps.forEach(function(e){
+    h+='<div class="decision"><div class="decision-title">'+e.n+'</div><div style="display:flex;gap:0.4rem;margin-bottom:0.6rem"><span class="gc-tag gc-tag-xp">'+e.c+' pts</span><span class="gc-tag gc-tag-xp">+'+e.xp+' XP</span><span class="gc-tag gc-tag-rep">+'+e.rep+' rep</span></div><div class="decision-story">'+e.story+'</div><div class="decision-opts">';
+    e.choices.forEach(function(ch,i){
+      h+='<div class="decision-opt" onclick="doExp(\''+e.n.replace(/'/g,"\\'")+'\','+e.c+','+e.xp+','+e.rep+','+i+')"'+(gp.game_bag_points<e.c?' style="opacity:0.3;pointer-events:none"':'')+'><div class="decision-opt-label">'+ch+'</div></div>';
+    });
+    h+='</div></div>';
+  });
+  document.getElementById('cityPanel').innerHTML=h;
+}
+
+// ── ACTIONS ──
+async function bookHotel(n,c,xp){
+  if(gp.game_bag_points<c)return;
+  gp.game_bag_points-=c;gp.experience_points+=xp;gp.hotel_booked=n;gp.travel_reputation+=5;
+  tripLog.push('Checked into '+n);
+  checkLevel();checkBadges();await save();updateAll();
+  toast('Checked into <em>'+n+'</em>! −'+c+' pts, +'+xp+' XP');
+}
+
+async function equipClothing(isSJ,n,c,xp,sus){
+  if(gp.game_bag_points<c)return;
+  gp.game_bag_points-=c;gp.experience_points+=xp;
+  if(isSJ){gp.sustainability_score=(gp.sustainability_score||0)+sus;gp.sj_items_used=(gp.sj_items_used||0)+1}
+  gp.clothing_equipped=(gp.clothing_equipped||[]).concat([{name:n,sj:!!isSJ}]);
+  tripLog.push((isSJ?'♻ ':'')+'Equipped '+n);
+  checkLevel();checkBadges();await save();updateAll();
+  toast((isSJ?'♻ ':'')+'Wearing <em>'+n+'</em>! −'+c+' pts, +'+xp+' XP'+(sus?' <span class="em-text">+'+sus+' eco</span>':''));
+  if(isSJ&&gp.sj_items_used===1)setTimeout(function(){toast('🌱 <span class="em-text">Second Journey™ — every garment reused helps reduce waste.</span>')},2000);
+}
+
+async function doExp(n,c,xp,rep,choice){
+  if(gp.game_bag_points<c)return;
+  gp.game_bag_points-=c;
+  // Choice bonuses
+  var bonusXP=choice===1?10:5;var bonusRep=choice===0?5:0;var bonusSus=0;
+  var choiceText=choice===0?'bold choice':'thoughtful choice';
+  gp.experience_points+=xp+bonusXP;gp.travel_reputation+=rep+bonusRep;
+  if(choice===1)gp.sustainability_score=(gp.sustainability_score||0)+5;
+  tripLog.push('Experienced: '+n+' ('+choiceText+')');
+  checkLevel();checkBadges();await save();updateAll();
+  toast('Completed <em>'+n+'</em>! −'+c+' pts, +'+(xp+bonusXP)+' XP, +'+(rep+bonusRep)+' rep');
+}
+
+async function travelTo(cityId){
+  var city=C.find(function(c){return c.id===cityId});
+  if(!city)return;
+  if(gp.level<city.lvl){toast('🔒 You need <em>Level '+city.lvl+'</em> to visit '+city.n);return}
+  if(gp.game_bag_points<city.cost){toast('Not enough points! Need <em>'+city.cost+'</em>');return}
+  if(gp.current_city===cityId){showView('city',document.querySelector('.tab'));return}
+  gp.game_bag_points-=city.cost;gp.current_city=cityId;gp.hotel_booked=null;
+  gp.total_trips=(gp.total_trips||0)+1;gp.experience_points+=50;gp.travel_reputation+=10;
+  if((gp.cities_visited||[]).indexOf(cityId)<0)gp.cities_visited=(gp.cities_visited||[]).concat([cityId]);
+  tripLog.push('✈ Traveled to '+city.n);
+  checkLevel();checkBadges();await save();updateAll();renderMap();
+  showView('city',document.querySelector('.tab'));
+  toast('✈ Arrived in <em>'+city.n+'</em>! +50 XP, +10 rep');
+}
+
+function checkLevel(){var nl=Math.floor(gp.experience_points/500)+1;if(nl>gp.level){gp.level=nl;confetti();setTimeout(function(){toast('🎉 <em>Level '+nl+'!</em> New abilities unlocked!')},500)}}
+function checkBadges(){BADGES.forEach(function(b){if((gp.badges||[]).indexOf(b.id)<0&&b.ck(gp)){gp.badges=(gp.badges||[]).concat([b.id]);confetti();setTimeout(function(){toast('🏆 Badge: <em>'+b.n+'</em> '+b.i)},800)}})}
+async function save(){await sb.from('game_profiles').update({game_bag_points:gp.game_bag_points,level:gp.level,experience_points:gp.experience_points,travel_reputation:gp.travel_reputation,sustainability_score:gp.sustainability_score,curator_score:gp.curator_score,community_score:gp.community_score,current_city:gp.current_city,hotel_booked:gp.hotel_booked,cities_visited:gp.cities_visited,badges:gp.badges,total_trips:gp.total_trips,sj_items_used:gp.sj_items_used,clothing_equipped:gp.clothing_equipped,avatar:gp.avatar,updated_at:new Date().toISOString()}).eq('user_id',user.id)}
+
+// ── MAP ──
+function renderMap(){
+  var h='<div style="font-family:var(--fd);font-size:1.8rem;color:var(--wh);margin-bottom:0.4rem">BagFree World™ Map</div><div style="font-size:0.82rem;color:rgba(var(--tr),0.4);margin-bottom:1.5rem">Click a city to travel. Unlock new destinations by leveling up.</div>';
+  // SVG Map
+  h+='<svg viewBox="0 0 800 400" style="width:100%;margin-bottom:1.5rem" xmlns="http://www.w3.org/2000/svg">';
+  h+='<rect width="800" height="400" fill="#0a1628" rx="8"/>';
+  // Water
+  h+='<ellipse cx="400" cy="380" rx="380" ry="60" fill="rgba(93,202,165,0.04)" stroke="rgba(93,202,165,0.08)" stroke-width="0.5"/>';
+  h+='<ellipse cx="400" cy="360" rx="350" ry="40" fill="rgba(93,202,165,0.03)"/>';
+  // Travel paths
+  var pts=[{x:120,y:300},{x:280,y:260},{x:420,y:200},{x:580,y:140},{x:700,y:100}];
+  for(var i=0;i<pts.length-1;i++){
+    var visited=(gp.cities_visited||[]).indexOf(C[i+1].id)>=0;
+    h+='<line x1="'+pts[i].x+'" y1="'+pts[i].y+'" x2="'+pts[i+1].x+'" y2="'+pts[i+1].y+'" stroke="'+(visited?'rgba(201,169,110,0.3)':'rgba(253,252,248,0.06)')+'" stroke-width="1.5" stroke-dasharray="'+(visited?'':'6 4')+'"/>';
+  }
+  // City nodes
+  C.forEach(function(c,i){
+    var p=pts[i];var current=gp.current_city===c.id;var visited=(gp.cities_visited||[]).indexOf(c.id)>=0;var locked=gp.level<c.lvl;
+    var fill=current?'rgba(201,169,110,0.25)':visited?'rgba(201,169,110,0.1)':'rgba(253,252,248,0.03)';
+    var stroke=current?'#c9a96e':visited?'rgba(201,169,110,0.4)':'rgba(253,252,248,0.1)';
+    h+='<g class="map-city-btn" onclick="travelTo(\''+c.id+'\')" style="'+(locked?'opacity:0.3;cursor:not-allowed':'')+'">';
+    h+='<circle cx="'+p.x+'" cy="'+p.y+'" r="28" fill="'+fill+'" stroke="'+stroke+'" stroke-width="1.5"/>';
+    if(current)h+='<circle cx="'+p.x+'" cy="'+p.y+'" r="32" fill="none" stroke="rgba(201,169,110,0.2)" stroke-width="1"><animate attributeName="r" values="32;38;32" dur="2s" repeatCount="indefinite"/><animate attributeName="opacity" values="0.5;0;0.5" dur="2s" repeatCount="indefinite"/></circle>';
+    h+='<text x="'+p.x+'" y="'+(p.y+5)+'" text-anchor="middle" font-size="20">'+c.i+'</text>';
+    h+='<text x="'+p.x+'" y="'+(p.y+48)+'" text-anchor="middle" font-family="\'Cormorant Garamond\',serif" font-size="13" fill="'+(current?'#c9a96e':visited?'rgba(253,252,248,0.7)':'rgba(253,252,248,0.3)')+'">'+c.n+'</text>';
+    if(locked)h+='<text x="'+p.x+'" y="'+(p.y+62)+'" text-anchor="middle" font-size="8" fill="rgba(253,252,248,0.2)" font-family="\'DM Sans\',sans-serif">🔒 Lvl '+c.lvl+'</text>';
+    else if(c.cost>0&&!current)h+='<text x="'+p.x+'" y="'+(p.y+62)+'" text-anchor="middle" font-size="8" fill="rgba(201,169,110,0.5)" font-family="\'DM Sans\',sans-serif">'+c.cost+' pts</text>';
+    h+='</g>';
+  });
+  h+='</svg>';
+  document.getElementById('mapPanel').innerHTML=h;
+}
+
+// ── QUESTS ──
+function renderQuests(){
+  document.getElementById('sbQuests').innerHTML=QUESTS.map(function(q){
+    var done=q.check(gp);
+    return '<div class="sb-quest'+(done?' complete':'')+'"><div class="sb-quest-name">'+q.icon+' '+q.name+'</div><div class="sb-quest-desc">'+q.desc+'</div><div class="sb-quest-prog"><div class="sb-quest-prog-fill" style="width:'+(done?'100':'40')+'%"></div></div><div class="sb-quest-reward">'+(done?'✓ Complete':'Reward: +'+q.reward+' pts')+'</div></div>';
+  }).join('');
+}
+
+// ── BADGES ──
+function showView(id,btn){
+  document.querySelectorAll('.view').forEach(function(v){v.classList.remove('active')});
+  document.querySelectorAll('.tab').forEach(function(t){t.classList.remove('active')});
+  document.getElementById('v'+id.charAt(0).toUpperCase()+id.slice(1)).classList.add('active');
+  btn.classList.add('active');
+  if(id==='map')renderMap();
+  if(id==='badges')renderBadgesView();
+  if(id==='lb')renderLB();
+}
+function renderBadgesView(){
+  document.getElementById('badgesPanel').innerHTML='<div style="font-family:var(--fd);font-size:1.8rem;color:var(--wh);margin-bottom:1.5rem">Badges & Achievements</div><div class="badge-grid">'+BADGES.map(function(b){var earned=(gp.badges||[]).indexOf(b.id)>=0;return '<div class="bg-card'+(earned?' earned':' locked')+'"><div class="bg-icon">'+b.i+'</div><div class="bg-name">'+b.n+'</div><div class="bg-desc">'+b.d+'</div></div>';}).join('')+'</div>';
+}
+function renderLB(){
+  document.getElementById('lbPanel').innerHTML='<div style="font-family:var(--fd);font-size:1.8rem;color:var(--wh);margin-bottom:1.5rem">Leaderboard</div><div class="lb-row me"><div class="lb-rank r1">#1</div><div class="lb-info"><div class="lb-name">'+playerName+'</div><div class="lb-detail">Level '+gp.level+' · '+(gp.cities_visited||[]).length+' cities · '+((gp.badges||[]).length)+' badges</div></div><div class="lb-val">'+(gp.travel_reputation||0)+' rep</div></div><div style="text-align:center;padding:2rem;color:rgba(var(--tr),0.2);font-size:0.82rem">Invite friends to compete on the leaderboard!</div>';
+}
+
+// ── EFFECTS ──
+function toast(html){var t=document.getElementById('toast');t.innerHTML=html;t.classList.add('show');clearTimeout(t._t);t._t=setTimeout(function(){t.classList.remove('show')},3500)}
+function confetti(){var c=document.getElementById('confetti');var colors=['#c9a96e','#5DCAA5','#d4b87a','#fdfcf8','#a8884a'];for(var i=0;i<40;i++){var d=document.createElement('div');d.className='confetti';d.style.left=Math.random()*100+'%';d.style.background=colors[Math.floor(Math.random()*colors.length)];d.style.animationDelay=Math.random()*0.8+'s';d.style.width=(4+Math.random()*8)+'px';d.style.height=d.style.width;c.appendChild(d)}setTimeout(function(){c.innerHTML=''},3000)}
+</script>
+</body>
+</html>
