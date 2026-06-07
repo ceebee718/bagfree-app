@@ -449,7 +449,8 @@ a{text-decoration:none}
 /* Profile dropdown */
 .profile-chip{position:relative;cursor:pointer}
 .profile-avatar-img{width:100%;height:100%;border-radius:50%;object-fit:cover}
-.profile-initial{width:100%;height:100%;display:flex;align-items:center;justify-content:center;font-family:var(--ff-display);font-size:0.9rem;color:var(--gold);background:rgba(201,169,110,0.1)}
+.profile-initial{width:100%;height:100%;display:flex;align-items:center;justify-content:center;font-family:var(--ff-display);font-size:0.9rem;color:var(--gold);background:rgba(201,169,110,0.1);transition:all 0.25s}
+.profile-avatar:hover .profile-initial{background:rgba(201,169,110,0.2);color:var(--gold)}
 .profile-dropdown{position:absolute;top:calc(100% + 8px);right:0;width:220px;background:var(--card);border:1px solid var(--border-soft);box-shadow:0 16px 40px rgba(0,0,0,0.3);z-index:200;display:none;overflow:hidden}
 .profile-dropdown.show{display:block}
 .profile-dd-header{padding:1rem;border-bottom:1px solid var(--border-soft);text-align:center}
@@ -473,7 +474,7 @@ a{text-decoration:none}
 .badge{position:absolute;top:6px;right:6px;background:var(--gold);color:var(--bg);font-size:0.6rem;font-weight:700;width:16px;height:16px;border-radius:50%;display:flex;align-items:center;justify-content:center}
 .profile-chip{display:flex;align-items:center;gap:0.5rem;padding:0.3rem 0.6rem 0.3rem 0.3rem;border-radius:30px;transition:background 0.2s;cursor:pointer}
 .profile-chip:hover{background:rgba(255,255,255,0.04)}
-.profile-avatar{width:38px;height:38px;border-radius:50%;background:linear-gradient(135deg,#c9a96e,#a8884a);border:2px solid rgba(201,169,110,0.4);background-image:url('https://images.unsplash.com/photo-1531123897727-8f129e1688ce?w=80&h=80&fit=crop&crop=faces');background-size:cover;background-position:center}
+.profile-avatar{width:38px;height:38px;border-radius:50%;border:2px solid rgba(201,169,110,0.4);overflow:hidden;background:rgba(201,169,110,0.08)}
 .profile-chip svg{width:14px;height:14px;color:var(--muted)}
 
 .grid{display:grid;grid-template-columns:repeat(4,1fr);gap:1.1rem}
