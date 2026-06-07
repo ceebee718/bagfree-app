@@ -6,7 +6,8 @@
 <title>BagFree — Travel Light</title>
 <meta name="description" content="Everything you need. Delivered before you arrive.">
 <meta name="theme-color" content="#0d1a32">
-<meta http-equiv="Content-Security-Policy" content="default-src 'self'; script-src 'self' 'unsafe-inline' 'unsafe-eval' https://cdnjs.cloudflare.com https://player.vimeo.com; style-src 'self' 'unsafe-inline' https://fonts.googleapis.com; font-src 'self' https://fonts.gstatic.com; img-src 'self' data: https://images.unsplash.com; connect-src 'self' https://vkctidpaghpdlmleezvq.supabase.co; frame-src https://player.vimeo.com; object-src 'none'; base-uri 'self'; form-action 'self'">
+<meta http-equiv="Content-Security-Policy" content="default-src 'self'; script-src 'self' 'unsafe-inline' 'unsafe-eval' https://cdnjs.cloudflare.com https://cdn.jsdelivr.net https://player.vimeo.com; style-src 'self' 'unsafe-inline' https://fonts.googleapis.com; font-src 'self' https://fonts.gstatic.com; img-src 'self' data: https://images.unsplash.com https://vkctidpaghpdlmleezvq.supabase.co; connect-src 'self' https://vkctidpaghpdlmleezvq.supabase.co https://formspree.io; frame-src https://player.vimeo.com; object-src 'none'; base-uri 'self'; form-action 'self'">
+<script src="https://cdn.jsdelivr.net/npm/@supabase/supabase-js@2"></script>
 <link rel="icon" type="image/png" sizes="32x32" href="/favicon-32.png">
 <link rel="shortcut icon" type="image/png" href="/favicon-32.png">
 <link rel="apple-touch-icon" sizes="180x180" href="/apple-touch-icon.png">
@@ -444,6 +445,21 @@ a{text-decoration:none}
 }
 /* Network card in right rail */
 .widget-network{border:1px solid rgba(201,169,110,0.2);background:linear-gradient(160deg,rgba(201,169,110,0.04),rgba(201,169,110,0.01))}
+
+/* Profile dropdown */
+.profile-chip{position:relative;cursor:pointer}
+.profile-avatar-img{width:100%;height:100%;border-radius:50%;object-fit:cover}
+.profile-initial{width:100%;height:100%;display:flex;align-items:center;justify-content:center;font-family:var(--ff-display);font-size:0.9rem;color:var(--gold);background:rgba(201,169,110,0.1)}
+.profile-dropdown{position:absolute;top:calc(100% + 8px);right:0;width:220px;background:var(--card);border:1px solid var(--border-soft);box-shadow:0 16px 40px rgba(0,0,0,0.3);z-index:200;display:none;overflow:hidden}
+.profile-dropdown.show{display:block}
+.profile-dd-header{padding:1rem;border-bottom:1px solid var(--border-soft);text-align:center}
+.profile-dd-name{font-size:0.88rem;color:var(--white);font-weight:500;margin-bottom:0.15rem}
+.profile-dd-email{font-size:0.68rem;color:var(--muted)}
+.profile-dd-item{display:block;width:100%;padding:0.7rem 1rem;font-size:0.72rem;color:var(--muted);text-align:left;background:none;border:none;border-bottom:1px solid rgba(201,169,110,0.05);cursor:pointer;font-family:var(--ff-body);transition:all 0.15s;text-decoration:none}
+.profile-dd-item:hover{background:rgba(201,169,110,0.06);color:var(--gold)}
+.profile-dd-bag{display:flex;align-items:center;justify-content:space-between;padding:0.7rem 1rem;border-bottom:1px solid rgba(201,169,110,0.05)}
+.profile-dd-bag-label{font-size:0.55rem;letter-spacing:2px;text-transform:uppercase;color:var(--muted)}
+.profile-dd-bag-val{font-family:var(--ff-display);font-size:1rem;color:var(--gold)}
 .network-title{font-family:var(--ff-display);font-size:1.25rem;font-weight:400;color:var(--white);letter-spacing:-0.3px;margin-bottom:0.5rem}
 .network-desc{font-size:0.78rem;color:var(--muted);line-height:1.6;margin-bottom:0.9rem}
 .network-roles{display:flex;flex-wrap:wrap;gap:0.35rem;margin-bottom:1.1rem}
