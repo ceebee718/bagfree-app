@@ -1391,16 +1391,33 @@ function TopBar(props) {
         <SearchBar city={props.city} onSearch={props.onSearch} onItemClick={props.onItemClick} onClearResults={props.onClearResults}/>
       </div>
       <div className="topbar-actions">
-        <a href="/account-login.html" className="sign-in-btn">Sign In</a>
+        <a href="/account-login.html" className="sign-in-btn" id="signInBtn" style={{display:'none'}}>Sign In</a>
         <a href="/join-network.html" className="join-network-btn">Join Network</a>
         <ThemeToggle/>
         <button className="icon-btn" title="Search"><Icon.Search/></button>
-        <button className="icon-btn" title="Notifications">
-          <Icon.Bell/><span className="badge">2</span>
+        <button className="icon-btn" title="Notifications" id="notifBtn">
+          <Icon.Bell/><span className="badge" id="notifBadge" style={{display:'none'}}>0</span>
         </button>
-        <div className="profile-chip">
-          <div className="profile-avatar"></div>
+        <div className="profile-chip" id="profileChip" onClick={toggleProfileDropdown}>
+          <div className="profile-avatar" id="profileAvatar">
+            <div className="profile-initial" id="profileInitial">?</div>
+          </div>
           <Icon.Chevron/>
+          <div className="profile-dropdown" id="profileDropdown">
+            <div className="profile-dd-header">
+              <div className="profile-dd-name" id="ddName">Guest</div>
+              <div className="profile-dd-email" id="ddEmail"></div>
+            </div>
+            <div className="profile-dd-bag">
+              <span className="profile-dd-bag-label">BAG Balance</span>
+              <span className="profile-dd-bag-val" id="ddBag">$0</span>
+            </div>
+            <a href="/account.html" className="profile-dd-item">My Account</a>
+            <a href="/account.html#orders" className="profile-dd-item">Order History</a>
+            <a href="/donate.html" className="profile-dd-item">Donate &amp; Earn</a>
+            <a href="/membership.html" className="profile-dd-item">Membership</a>
+            <button className="profile-dd-item" id="ddSignOut" onClick={handleSignOut} style={{color:'rgba(224,114,96,0.7)'}}>Sign Out</button>
+          </div>
         </div>
       </div>
     </div>
@@ -1715,6 +1732,82 @@ function ConciergeChat(props) {
     </div>
   );
 }
+
+// ── AUTH & PROFILE ──
+var SB_URL = 'https://vkctidpaghpdlmleezvq.supabase.co';
+var SB_KEY = 'eyJhbGciOiJIUzI1NiIsInR5cCI6IkpXVCJ9.eyJpc3MiOiJzdXBhYmFzZSIsInJlZiI6InZrY3RpZHBhZ2hwZGxtbGVlenZxIiwicm9sZSI6ImFub24iLCJpYXQiOjE3NzUzMjI5MjgsImV4cCI6MjA5MDg5ODkyOH0.wKtG6XD6CwLy3rJDZc4S10-NqNr3fcCXHYOWJt_C628';
+var sbClient = null;
+try { sbClient = window.supabase ? window.supabase.createClient(SB_URL, SB_KEY) : null; } catch(e) {}
+
+function initAuth() {
+  if (!sbClient) {
+    document.getElementById('signInBtn').style.display = '';
+    return;
+  }
+  sbClient.auth.getSession().then(function(res) {
+    if (res.data && res.data.session) {
+      loadUserProfile(res.data.session.user);
+    } else {
+      document.getElementById('signInBtn').style.display = '';
+    }
+  });
+}
+
+function loadUserProfile(user) {
+  // Hide sign in, show profile
+  var signInBtn = document.getElementById('signInBtn');
+  if (signInBtn) signInBtn.style.display = 'none';
+
+  sbClient.from('profiles').select('*').eq('id', user.id).single().then(function(res) {
+    var p = res.data || {};
+    var name = (p.first_name || user.email.split('@')[0]);
+    var initial = name.charAt(0).toUpperCase();
+
+    // Update avatar
+    var avatarEl = document.getElementById('profileAvatar');
+    if (p.avatar_url) {
+      avatarEl.innerHTML = '<img class="profile-avatar-img" src="' + p.avatar_url + '" alt="">';
+    } else {
+      document.getElementById('profileInitial').textContent = initial;
+    }
+
+    // Update dropdown
+    document.getElementById('ddName').textContent = (p.first_name || '') + ' ' + (p.last_name || '');
+    document.getElementById('ddEmail').textContent = user.email;
+    document.getElementById('ddBag').textContent = '$' + (p.bag_balance || 0).toFixed(2);
+
+    // Load notifications (unread curator messages)
+    sbClient.from('curator_messages').select('id', { count: 'exact' }).eq('user_id', user.id).eq('read', false).eq('direction', 'curator_to_user').then(function(msgRes) {
+      var count = msgRes.count || 0;
+      var badge = document.getElementById('notifBadge');
+      if (count > 0) {
+        badge.textContent = count;
+        badge.style.display = '';
+      }
+    }).catch(function(){});
+  }).catch(function(){});
+}
+
+function toggleProfileDropdown(e) {
+  e.stopPropagation();
+  var dd = document.getElementById('profileDropdown');
+  dd.classList.toggle('show');
+}
+
+function handleSignOut() {
+  if (sbClient) {
+    sbClient.auth.signOut().then(function() { window.location.reload(); });
+  }
+}
+
+// Close dropdown on click outside
+document.addEventListener('click', function(e) {
+  var dd = document.getElementById('profileDropdown');
+  if (dd && !e.target.closest('.profile-chip')) dd.classList.remove('show');
+});
+
+// Init auth on load
+document.addEventListener('DOMContentLoaded', function() { setTimeout(initAuth, 100); });
 
 function App() {
   const stateActive = useState('home');
