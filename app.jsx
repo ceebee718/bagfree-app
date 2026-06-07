@@ -1399,10 +1399,13 @@ function TopBar(props) {
           <Icon.Bell/><span className="badge" id="notifBadge" style={{display:'none'}}>0</span>
         </button>
         <div className="profile-chip" id="profileChip" onClick={toggleProfileDropdown}>
-          <div className="profile-avatar" id="profileAvatar">
-            <div className="profile-initial" id="profileInitial">?</div>
+          <div className="profile-avatar" id="profileAvatar" title="Upload profile photo">
+            <div className="profile-initial" id="profileInitial">
+              <svg viewBox="0 0 24 24" width="16" height="16" fill="none" stroke="currentColor" strokeWidth="1.5"><path d="M21 15v4a2 2 0 01-2 2H5a2 2 0 01-2-2v-4"/><polyline points="17 8 12 3 7 8"/><line x1="12" y1="3" x2="12" y2="15"/></svg>
+            </div>
           </div>
           <Icon.Chevron/>
+          <input type="file" id="avatarFileInput" accept="image/*" style={{display:'none'}} onChange={handleAvatarUpload}/>
           <div className="profile-dropdown" id="profileDropdown">
             <div className="profile-dd-header">
               <div className="profile-dd-name" id="ddName">Guest</div>
@@ -1412,6 +1415,12 @@ function TopBar(props) {
               <span className="profile-dd-bag-label">BAG Balance</span>
               <span className="profile-dd-bag-val" id="ddBag">$0</span>
             </div>
+            <button className="profile-dd-item" onClick={triggerAvatarUpload} style={{color:'var(--gold)'}}>
+              <span style={{display:'flex',alignItems:'center',gap:'0.4rem'}}>
+                <svg viewBox="0 0 24 24" width="13" height="13" fill="none" stroke="currentColor" strokeWidth="1.5"><path d="M21 15v4a2 2 0 01-2 2H5a2 2 0 01-2-2v-4"/><polyline points="17 8 12 3 7 8"/><line x1="12" y1="3" x2="12" y2="15"/></svg>
+                Upload Profile Photo
+              </span>
+            </button>
             <a href="/account.html" className="profile-dd-item">My Account</a>
             <a href="/account.html#orders" className="profile-dd-item">Order History</a>
             <a href="/donate.html" className="profile-dd-item">Donate &amp; Earn</a>
@@ -1786,6 +1795,60 @@ function toggleProfileDropdown(e) {
   e.stopPropagation();
   var dd = document.getElementById('profileDropdown');
   dd.classList.toggle('show');
+}
+
+function triggerAvatarUpload(e) {
+  e.stopPropagation();
+  document.getElementById('avatarFileInput').click();
+  document.getElementById('profileDropdown').classList.remove('show');
+}
+
+function handleAvatarUpload(e) {
+  var file = e.target.files && e.target.files[0];
+  if (!file || !sbClient) return;
+
+  // Validate
+  if (!file.type.startsWith('image/')) { alert('Please select an image file.'); return; }
+  if (file.size > 5 * 1024 * 1024) { alert('Image must be under 5MB.'); return; }
+
+  // Show uploading state
+  var avatarEl = document.getElementById('profileAvatar');
+  avatarEl.innerHTML = '<div class="profile-initial" style="font-size:0.55rem;letter-spacing:1px">...</div>';
+
+  sbClient.auth.getSession().then(function(res) {
+    if (!res.data || !res.data.session) { alert('Please sign in first.'); return; }
+    var userId = res.data.session.user.id;
+    var ext = file.name.split('.').pop();
+    var path = 'avatars/' + userId + '.' + ext;
+
+    // Upload to Supabase Storage (bucket: avatars)
+    sbClient.storage.from('avatars').upload(path, file, { upsert: true, contentType: file.type }).then(function(uploadRes) {
+      if (uploadRes.error) {
+        console.error('Upload error:', uploadRes.error);
+        // If bucket doesn't exist, show helpful message
+        if (uploadRes.error.message && uploadRes.error.message.includes('not found')) {
+          alert('Storage bucket "avatars" not found. Create it in Supabase Dashboard → Storage → New Bucket → Name: avatars → Public: ON');
+        } else {
+          alert('Upload failed: ' + uploadRes.error.message);
+        }
+        restoreDefaultAvatar(avatarEl);
+        return;
+      }
+
+      // Get public URL
+      var urlRes = sbClient.storage.from('avatars').getPublicUrl(path);
+      var publicUrl = urlRes.data.publicUrl + '?t=' + Date.now(); // cache bust
+
+      // Update profile
+      sbClient.from('profiles').update({ avatar_url: publicUrl }).eq('id', userId).then(function() {
+        avatarEl.innerHTML = '<img class="profile-avatar-img" src="' + publicUrl + '" alt="Profile">';
+      });
+    });
+  });
+}
+
+function restoreDefaultAvatar(el) {
+  el.innerHTML = '<div class="profile-initial"><svg viewBox="0 0 24 24" width="16" height="16" fill="none" stroke="currentColor" stroke-width="1.5"><path d="M21 15v4a2 2 0 01-2 2H5a2 2 0 01-2-2v-4"/><polyline points="17 8 12 3 7 8"/><line x1="12" y1="3" x2="12" y2="15"/></svg></div>';
 }
 
 function handleSignOut() {
