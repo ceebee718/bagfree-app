@@ -119,6 +119,18 @@ img{display:block;max-width:100%}
 .mission-label{font-size:0.55rem;letter-spacing:2px;text-transform:uppercase;color:rgba(var(--tr),0.3)}
 
 @media(max-width:560px){.hero{padding:8rem 1.2rem 3.5rem}.section{padding:3rem 1.2rem}.cta{padding:3rem 1.2rem}}
+
+/* City filters */
+.cf{padding:0.55rem 1.3rem;font-size:0.58rem;letter-spacing:2.5px;text-transform:uppercase;color:rgba(var(--tr),0.5);background:none;border:1px solid var(--bs);font-family:var(--fb);font-weight:500;transition:all 0.25s;cursor:pointer}
+.cf.active{background:var(--gold);color:var(--noir);border-color:var(--gold);font-weight:600}
+.cf:hover:not(.active){border-color:rgba(var(--gr),0.4);color:var(--gold)}
+
+/* Coming soon partner placeholder */
+.cs-partner{text-align:center;padding:4rem 2rem;border:1px solid var(--bs);background:rgba(var(--gr),0.02)}
+.cs-icon{font-size:2.5rem;margin-bottom:1rem;opacity:0.5}
+.cs-city{font-family:var(--fd);font-size:2rem;color:var(--wh);margin-bottom:0.3rem}
+.cs-status{font-size:0.6rem;letter-spacing:3px;text-transform:uppercase;color:rgba(var(--tr),0.35);margin-bottom:1rem}
+.cs-desc{font-size:0.88rem;color:rgba(var(--tr),0.45);max-width:450px;margin:0 auto;line-height:1.7}
 </style>
 </head>
 <body>
@@ -152,43 +164,75 @@ img{display:block;max-width:100%}
   <div class="mission-item"><div class="mission-val">Leave Less Behind</div><div class="mission-label">The Impact</div></div>
 </div>
 
+<!-- City Filters -->
+<section style="padding:2rem 2rem 0;max-width:1100px;margin:0 auto">
+  <div style="display:flex;align-items:center;justify-content:center;gap:0.5rem;flex-wrap:wrap" id="cityFilters">
+    <button class="cf active" onclick="filterPartners('all',this)">All Cities</button>
+    <button class="cf" onclick="filterPartners('miami',this)">Miami</button>
+    <button class="cf" onclick="filterPartners('savannah',this)">Savannah</button>
+    <button class="cf" onclick="filterPartners('atlanta',this)">Atlanta</button>
+    <button class="cf" onclick="filterPartners('tampa',this)">Tampa</button>
+    <button class="cf" onclick="filterPartners('orlando',this)">Orlando</button>
+  </div>
+</section>
+
 <!-- Featured Partner -->
 <section class="section" id="featured">
-  <div class="sec-label">✦ Featured Partner</div>
-  <div class="sec-title">Meet Lynda <em>Osorio.</em></div>
-  <div class="sec-sub" style="margin-bottom:2.5rem">BagFree's first Local Style Partner brings luxury personal shopping and image consulting to travelers visiting Miami.</div>
+  <div class="partner-card" data-city="miami">
+    <div class="sec-label">✦ Featured Partner</div>
+    <div class="sec-title">Meet Lynda <em>Osorio.</em></div>
+    <div class="sec-sub" style="margin-bottom:2.5rem">BagFree's first Local Style Partner brings luxury personal shopping and image consulting to travelers visiting Miami.</div>
 
-  <div class="featured">
-    <div class="featured-grid">
-      <div class="featured-img">
-        <img src="https://storage.googleapis.com/gpt-engineer-file-uploads/muqfZNootNeVS0Y5pJBYGvjReRb2/social-images/social-1774911058182-Screenshot_2026-03-30_at_6.50.45_PM.webp" alt="Lynda Osorio — Miami Personal Shopper" style="width:100%;height:100%;object-fit:cover">
-      </div>
-      <div class="featured-body">
-        <div class="featured-badge">
-          <svg viewBox="0 0 24 24" width="12" height="12" fill="none" stroke="currentColor" stroke-width="1.5"><path d="M12 3 L13.5 9 L19.5 10.5 L13.5 12 L12 18 L10.5 12 L4.5 10.5 L10.5 9 Z"/></svg>
-          Featured Miami Style Partner
+    <div class="featured">
+      <div class="featured-grid">
+        <div class="featured-img" style="background:url('https://storage.googleapis.com/gpt-engineer-file-uploads/muqfZNootNeVS0Y5pJBYGvjReRb2/social-images/social-1774911058182-Screenshot_2026-03-30_at_6.50.45_PM.webp') center/cover no-repeat;position:relative">
+          <div style="position:absolute;inset:0;background:linear-gradient(to right,rgba(13,26,50,0.5),transparent)"></div>
+          <div style="position:absolute;bottom:1.5rem;left:1.5rem;z-index:2">
+            <div style="font-family:var(--fd);font-size:1.8rem;color:var(--wh);line-height:1.1;text-shadow:0 2px 8px rgba(0,0,0,0.5)">Power<br><em style="color:var(--gold);font-style:italic">Image</em></div>
+            <div style="font-size:0.55rem;letter-spacing:2.5px;text-transform:uppercase;color:rgba(var(--tr),0.7);margin-top:0.3rem;text-shadow:0 1px 4px rgba(0,0,0,0.5)">Miami, Florida</div>
+          </div>
         </div>
-        <div class="featured-title">Lynda Osorio</div>
-        <div style="font-size:0.78rem;color:rgba(var(--tr),0.5);margin-bottom:1rem;font-style:italic">Certified Image Consultant &amp; Personal Shopper · Miami, FL</div>
-        <p class="featured-desc">Experience luxury personal shopping in Miami with Lynda Osorio. From the Design District to Bal Harbour, Lynda curates destination-inspired looks for travelers who want to experience Miami's fashion culture without overpacking.</p>
-        <ul class="featured-features">
-          <li>Luxury Personal Shopping Experiences</li>
-          <li>Design District &amp; Bal Harbour Tours</li>
-          <li>Resort, Beach &amp; Nightlife Styling</li>
-          <li>Business Travel Fashion Consulting</li>
-          <li>Destination Outfit Recommendations</li>
-          <li>One-on-One Image Consulting</li>
-        </ul>
-        <div class="featured-actions">
-          <a href="https://lynda-miami-style.lovable.app/" target="_blank" rel="noopener" class="btn btn-gold">Visit Lynda's Website →</a>
-          <a href="https://lynda-miami-style.lovable.app/#services" target="_blank" rel="noopener" class="btn btn-outline">View Services</a>
-        </div>
-        <div class="featured-logo">
-          <div class="featured-logo-placeholder">L</div>
-          <div class="featured-logo-text">Lynda Osorio · Power Image · Miami, FL</div>
+        <div class="featured-body">
+          <div class="featured-badge">
+            <svg viewBox="0 0 24 24" width="12" height="12" fill="none" stroke="currentColor" stroke-width="1.5"><path d="M12 3 L13.5 9 L19.5 10.5 L13.5 12 L12 18 L10.5 12 L4.5 10.5 L10.5 9 Z"/></svg>
+            Featured Miami Style Partner
+          </div>
+          <div class="featured-title">Lynda Osorio</div>
+          <div style="font-size:0.78rem;color:rgba(var(--tr),0.5);margin-bottom:1rem;font-style:italic">Certified Image Consultant &amp; Personal Shopper · Miami, FL</div>
+          <p class="featured-desc">Elevate your style with a curated shopping experience designed to transform your image, confidence, and presence. From the Design District to Bal Harbour, Lynda helps travelers experience Miami's fashion culture without overpacking.</p>
+          <ul class="featured-features">
+            <li>Luxury Personal Shopping Experiences</li>
+            <li>Design District &amp; Bal Harbour Tours</li>
+            <li>Resort, Beach &amp; Nightlife Styling</li>
+            <li>Business Travel Fashion Consulting</li>
+            <li>Destination Outfit Recommendations</li>
+            <li>One-on-One Image Consulting</li>
+          </ul>
+          <div class="featured-actions">
+            <a href="https://lynda-miami-style.lovable.app/" target="_blank" rel="noopener" class="btn btn-gold">Visit Lynda's Website →</a>
+            <a href="https://lynda-miami-style.lovable.app/#services" target="_blank" rel="noopener" class="btn btn-outline">Explore Services</a>
+          </div>
+          <div class="featured-logo">
+            <div class="featured-logo-placeholder">L</div>
+            <div class="featured-logo-text">Lynda Osorio · Power Image · Miami, FL</div>
+          </div>
         </div>
       </div>
     </div>
+  </div>
+
+  <!-- Coming Soon Partner Placeholders (shown when filtering) -->
+  <div class="partner-card coming-soon-card" data-city="savannah" style="display:none">
+    <div class="cs-partner"><div class="cs-icon">✨</div><div class="cs-city">Savannah</div><div class="cs-status">Seeking Local Style Partner</div><div class="cs-desc">Know a stylist, boutique, or fashion professional in Savannah? We're looking for our next Local Style Partner to help travelers discover Southern style.</div><a href="/join-network.html" class="btn btn-outline" style="margin-top:1rem">Apply to Join →</a></div>
+  </div>
+  <div class="partner-card coming-soon-card" data-city="atlanta" style="display:none">
+    <div class="cs-partner"><div class="cs-icon">✨</div><div class="cs-city">Atlanta</div><div class="cs-status">Seeking Local Style Partner</div><div class="cs-desc">Atlanta's fashion scene is world-class. We're searching for the right partner to bring destination styling to BagFree travelers.</div><a href="/join-network.html" class="btn btn-outline" style="margin-top:1rem">Apply to Join →</a></div>
+  </div>
+  <div class="partner-card coming-soon-card" data-city="tampa" style="display:none">
+    <div class="cs-partner"><div class="cs-icon">✨</div><div class="cs-city">Tampa</div><div class="cs-status">Seeking Local Style Partner</div><div class="cs-desc">From Ybor City to Bayshore, Tampa travelers deserve local style guidance. Be our first Tampa Style Partner.</div><a href="/join-network.html" class="btn btn-outline" style="margin-top:1rem">Apply to Join →</a></div>
+  </div>
+  <div class="partner-card coming-soon-card" data-city="orlando" style="display:none">
+    <div class="cs-partner"><div class="cs-icon">✨</div><div class="cs-city">Orlando</div><div class="cs-status">Seeking Local Style Partner</div><div class="cs-desc">Beyond the theme parks, Orlando has a growing fashion scene. Help travelers discover it as our Local Style Partner.</div><a href="/join-network.html" class="btn btn-outline" style="margin-top:1rem">Apply to Join →</a></div>
   </div>
 </section>
 
@@ -257,6 +301,30 @@ img{display:block;max-width:100%}
   <a href="/">BagFree.app</a> · <a href="/experiences.html">Experiences</a> · <a href="/curators.html">Curators</a> · <a href="/membership.html">Membership</a><br>
   <span style="margin-top:0.4rem;display:inline-block">© 2026 BagFree. All rights reserved. · Travel Light. Experience More. Leave Less Behind.</span>
 </footer>
+
+<script>
+function filterPartners(city, btn) {
+  // Update active button
+  document.querySelectorAll('.cf').forEach(function(b) { b.classList.remove('active'); });
+  btn.classList.add('active');
+  
+  // Show/hide partner cards
+  document.querySelectorAll('.partner-card').forEach(function(card) {
+    var cardCity = card.getAttribute('data-city');
+    if (city === 'all') {
+      // Show Miami featured, hide coming-soon placeholders
+      card.style.display = card.classList.contains('coming-soon-card') ? 'none' : 'block';
+    } else if (cardCity === city) {
+      card.style.display = 'block';
+    } else {
+      card.style.display = 'none';
+    }
+  });
+  
+  // Scroll to featured section
+  document.getElementById('featured').scrollIntoView({ behavior: 'smooth', block: 'start' });
+}
+</script>
 
 </body>
 </html>
