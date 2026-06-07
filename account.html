@@ -1,0 +1,363 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+<meta charset="UTF-8">
+<meta name="viewport" content="width=device-width,initial-scale=1">
+<title>My Account — BagFree</title>
+<link rel="preconnect" href="https://fonts.googleapis.com">
+<link href="https://fonts.googleapis.com/css2?family=Cormorant+Garamond:ital,wght@0,300;0,400;1,400&family=DM+Sans:wght@300;400;500;600&display=swap" rel="stylesheet">
+<script src="https://cdn.jsdelivr.net/npm/@supabase/supabase-js@2"></script>
+<style>
+:root{--noir:#0d1a32;--noir-2:#111f3a;--gold:#c9a96e;--gold-rgb:201,169,110;--emerald:#5DCAA5;--white:#fdfcf8;--text-rgb:253,252,248;--ff-display:'Cormorant Garamond',Georgia,serif;--ff-body:'DM Sans','Helvetica Neue',sans-serif;--border-soft:rgba(201,169,110,0.12)}
+*,*::before,*::after{box-sizing:border-box;margin:0;padding:0}
+body{font-family:var(--ff-body);color:rgba(var(--text-rgb),0.85);background:var(--noir);-webkit-font-smoothing:antialiased}
+a{color:var(--gold);text-decoration:none}
+button{cursor:pointer;border:none;font-family:var(--ff-body)}
+
+/* Nav */
+.nav{display:flex;align-items:center;justify-content:space-between;padding:1rem 2.5rem;border-bottom:1px solid var(--border-soft);background:rgba(13,26,50,0.95);backdrop-filter:blur(12px);position:sticky;top:0;z-index:100}
+.nav-logo{font-family:var(--ff-display);font-size:1.5rem;color:var(--gold)}
+.nav-right{display:flex;align-items:center;gap:1.2rem}
+.nav-link{font-size:0.65rem;letter-spacing:2px;text-transform:uppercase;color:rgba(var(--text-rgb),0.5);font-weight:500;transition:color 0.2s}
+.nav-link:hover{color:var(--gold)}
+.nav-user{display:flex;align-items:center;gap:0.5rem;font-size:0.78rem;color:rgba(var(--text-rgb),0.7)}
+.nav-avatar{width:32px;height:32px;border-radius:50%;background:rgba(var(--gold-rgb),0.1);border:1px solid rgba(var(--gold-rgb),0.3);display:flex;align-items:center;justify-content:center;color:var(--gold);font-family:var(--ff-display);font-size:0.85rem}
+.btn-signout{font-size:0.58rem;letter-spacing:2px;text-transform:uppercase;color:rgba(var(--text-rgb),0.35);background:none;transition:color 0.2s;padding:0.3rem 0.6rem;border:1px solid rgba(var(--text-rgb),0.1)}
+.btn-signout:hover{color:var(--gold);border-color:rgba(var(--gold-rgb),0.3)}
+
+/* Layout */
+.page{max-width:1100px;margin:0 auto;padding:2.5rem 2rem 4rem}
+@media(max-width:600px){.page{padding:1.5rem 1.2rem 3rem}}
+.page-title{font-family:var(--ff-display);font-size:clamp(1.8rem,3.5vw,2.5rem);font-weight:300;color:var(--white);margin-bottom:0.3rem}
+.page-title em{font-style:italic;color:var(--gold)}
+.page-sub{font-size:0.88rem;color:rgba(var(--text-rgb),0.45);margin-bottom:2.5rem;font-weight:300}
+
+/* Stat cards row */
+.stats-row{display:grid;grid-template-columns:repeat(auto-fit,minmax(220px,1fr));gap:1rem;margin-bottom:2.5rem}
+.stat-card{padding:1.5rem;border:1px solid var(--border-soft);background:rgba(var(--gold-rgb),0.02);transition:all 0.25s}
+.stat-card:hover{border-color:rgba(var(--gold-rgb),0.3)}
+.stat-label{font-size:0.55rem;letter-spacing:3px;text-transform:uppercase;color:rgba(var(--text-rgb),0.4);font-weight:600;margin-bottom:0.4rem}
+.stat-value{font-family:var(--ff-display);font-size:2rem;color:var(--gold);font-weight:400;line-height:1}
+.stat-note{font-size:0.72rem;color:rgba(var(--text-rgb),0.4);margin-top:0.3rem}
+
+/* Section headers */
+.sec-header{display:flex;align-items:center;justify-content:space-between;margin-bottom:1.2rem;padding-bottom:0.6rem;border-bottom:1px solid var(--border-soft)}
+.sec-title{font-family:var(--ff-display);font-size:1.4rem;font-weight:400;color:var(--white)}
+.sec-action{font-size:0.6rem;letter-spacing:2px;text-transform:uppercase;color:var(--gold);font-weight:500}
+
+/* Tables */
+.tbl{width:100%;border-collapse:collapse;margin-bottom:2.5rem}
+.tbl th{font-size:0.52rem;letter-spacing:2.5px;text-transform:uppercase;color:rgba(var(--text-rgb),0.35);font-weight:600;padding:0.65rem 0.8rem;text-align:left;border-bottom:1px solid var(--border-soft)}
+.tbl td{padding:0.7rem 0.8rem;font-size:0.82rem;color:rgba(var(--text-rgb),0.7);border-bottom:1px solid rgba(var(--gold-rgb),0.05)}
+.tbl tr:hover td{background:rgba(var(--gold-rgb),0.02)}
+.tbl-amt-pos{color:var(--emerald);font-weight:500}
+.tbl-amt-neg{color:#E07260;font-weight:500}
+.tbl-badge{display:inline-block;font-size:0.5rem;letter-spacing:1.5px;text-transform:uppercase;padding:0.2rem 0.5rem;font-weight:600}
+.tbl-badge.active{background:rgba(93,202,165,0.1);border:1px solid rgba(93,202,165,0.3);color:var(--emerald)}
+.tbl-badge.pending{background:rgba(var(--gold-rgb),0.08);border:1px solid rgba(var(--gold-rgb),0.25);color:var(--gold)}
+.tbl-badge.completed{background:rgba(var(--text-rgb),0.04);border:1px solid rgba(var(--text-rgb),0.1);color:rgba(var(--text-rgb),0.5)}
+
+/* Profile form */
+.profile-grid{display:grid;grid-template-columns:1fr 1fr;gap:1rem;margin-bottom:2.5rem}
+@media(max-width:600px){.profile-grid{grid-template-columns:1fr}}
+.pf{margin-bottom:0}
+.pf label{display:block;font-size:0.52rem;letter-spacing:2.5px;text-transform:uppercase;color:rgba(var(--text-rgb),0.4);font-weight:600;margin-bottom:0.3rem}
+.pf input,.pf select{width:100%;padding:0.7rem 0.9rem;font-size:0.85rem;background:rgba(var(--gold-rgb),0.03);border:1px solid var(--border-soft);color:var(--white);font-family:var(--ff-body);transition:border-color 0.25s}
+.pf input:focus,.pf select:focus{outline:none;border-color:rgba(var(--gold-rgb),0.5)}
+.pf select option{background:var(--noir-2);color:var(--white)}
+.btn-save{padding:0.7rem 2rem;font-size:0.6rem;letter-spacing:3px;text-transform:uppercase;font-weight:600;color:var(--noir);background:var(--gold);transition:all 0.3s;box-shadow:0 4px 14px rgba(var(--gold-rgb),0.2)}
+.btn-save:hover{background:#d4b87a;transform:translateY(-1px)}
+
+/* Membership card */
+.mem-card{padding:1.5rem;border:1px solid var(--border-soft);background:rgba(var(--gold-rgb),0.03);margin-bottom:2.5rem;display:flex;align-items:center;gap:1.5rem}
+@media(max-width:600px){.mem-card{flex-direction:column;text-align:center}}
+.mem-icon{width:56px;height:56px;border-radius:50%;border:1px solid rgba(var(--gold-rgb),0.4);display:flex;align-items:center;justify-content:center;color:var(--gold);font-family:var(--ff-display);font-size:1.5rem;flex-shrink:0}
+.mem-info{flex:1}
+.mem-tier{font-family:var(--ff-display);font-size:1.3rem;color:var(--white);font-weight:400}
+.mem-status{font-size:0.72rem;color:rgba(var(--text-rgb),0.5);margin-top:0.2rem}
+.mem-action{font-size:0.6rem;letter-spacing:2.5px;text-transform:uppercase;font-weight:600;padding:0.6rem 1.4rem;color:var(--noir);background:var(--gold);transition:all 0.3s;flex-shrink:0}
+.mem-action:hover{background:#d4b87a}
+
+/* Referral */
+.ref-card{padding:1.5rem;border:1px solid var(--border-soft);background:rgba(var(--gold-rgb),0.02);margin-bottom:2.5rem;display:flex;align-items:center;gap:1rem;flex-wrap:wrap}
+.ref-code{font-family:var(--ff-display);font-size:1.4rem;color:var(--gold);letter-spacing:2px;padding:0.5rem 1rem;border:1px dashed rgba(var(--gold-rgb),0.4);background:rgba(var(--gold-rgb),0.04)}
+.ref-desc{font-size:0.82rem;color:rgba(var(--text-rgb),0.5);flex:1;min-width:200px}
+.btn-copy{font-size:0.55rem;letter-spacing:2px;text-transform:uppercase;padding:0.5rem 1rem;color:var(--gold);background:none;border:1px solid rgba(var(--gold-rgb),0.3);transition:all 0.2s;font-weight:600}
+.btn-copy:hover{background:rgba(var(--gold-rgb),0.08)}
+
+/* Loading */
+.loading{text-align:center;padding:4rem 2rem;font-size:0.88rem;color:rgba(var(--text-rgb),0.4)}
+</style>
+</head>
+<body>
+
+<nav class="nav">
+  <a href="/" class="nav-logo">BagFree</a>
+  <div class="nav-right">
+    <a href="/departure-lounge-landing.html" class="nav-link">Shop</a>
+    <a href="/experiences.html" class="nav-link">Experiences</a>
+    <div class="nav-user" id="navUser">
+      <div class="nav-avatar" id="navAvatar">?</div>
+      <span id="navName"></span>
+    </div>
+    <button class="btn-signout" onclick="signOut()">Sign Out</button>
+  </div>
+</nav>
+
+<div class="page" id="pageContent" style="display:none">
+  <div class="page-title">Welcome back, <em id="greeting"></em></div>
+  <p class="page-sub">Manage your membership, rewards, orders, and preferences.</p>
+
+  <!-- Stats -->
+  <div class="stats-row">
+    <div class="stat-card">
+      <div class="stat-label">BAG Rewards Balance</div>
+      <div class="stat-value" id="bagBalance">$0.00</div>
+      <div class="stat-note">Use toward your next order</div>
+    </div>
+    <div class="stat-card">
+      <div class="stat-label">Total Orders</div>
+      <div class="stat-value" id="totalOrders">0</div>
+      <div class="stat-note" id="totalSpent"></div>
+    </div>
+    <div class="stat-card">
+      <div class="stat-label">Items Donated</div>
+      <div class="stat-value" id="totalDonations">0</div>
+      <div class="stat-note">to Second Journey™</div>
+    </div>
+    <div class="stat-card">
+      <div class="stat-label">Referral Code</div>
+      <div class="stat-value" style="font-size:1.2rem;letter-spacing:2px" id="refCodeDisplay">—</div>
+      <div class="stat-note">Give $25, Get $25</div>
+    </div>
+  </div>
+
+  <!-- Membership -->
+  <div class="sec-header">
+    <div class="sec-title">Membership</div>
+    <a href="/membership.html" class="sec-action">Upgrade →</a>
+  </div>
+  <div class="mem-card" id="memCard">
+    <div class="mem-icon">✦</div>
+    <div class="mem-info">
+      <div class="mem-tier" id="memTier">No active membership</div>
+      <div class="mem-status" id="memStatus">Browse membership tiers to get started.</div>
+    </div>
+    <a href="/membership.html" class="mem-action" id="memBtn">View Plans</a>
+  </div>
+
+  <!-- BAG Rewards History -->
+  <div class="sec-header">
+    <div class="sec-title">BAG Rewards History</div>
+  </div>
+  <table class="tbl" id="rewardsTable">
+    <thead><tr><th>Date</th><th>Description</th><th>Source</th><th style="text-align:right">Amount</th></tr></thead>
+    <tbody id="rewardsBody">
+      <tr><td colspan="4" style="text-align:center;color:rgba(var(--text-rgb),0.3);padding:1.5rem">No rewards yet. Earn BAG credits by ordering bundles, donating clothing, or referring friends.</td></tr>
+    </tbody>
+  </table>
+
+  <!-- Order History -->
+  <div class="sec-header">
+    <div class="sec-title">Order History</div>
+    <a href="/departure-lounge-landing.html" class="sec-action">Shop Bundles →</a>
+  </div>
+  <table class="tbl" id="ordersTable">
+    <thead><tr><th>Date</th><th>Order</th><th>Items</th><th>City</th><th>Status</th><th style="text-align:right">Total</th></tr></thead>
+    <tbody id="ordersBody">
+      <tr><td colspan="6" style="text-align:center;color:rgba(var(--text-rgb),0.3);padding:1.5rem">No orders yet. <a href="/departure-lounge-landing.html">Browse bundles</a> to get started.</td></tr>
+    </tbody>
+  </table>
+
+  <!-- Donations -->
+  <div class="sec-header">
+    <div class="sec-title">Donations</div>
+    <a href="/donate.html" class="sec-action">Donate Clothing →</a>
+  </div>
+  <table class="tbl" id="donationsTable">
+    <thead><tr><th>Date</th><th>Items</th><th>Hotel</th><th>Status</th><th style="text-align:right">Credits</th></tr></thead>
+    <tbody id="donationsBody">
+      <tr><td colspan="5" style="text-align:center;color:rgba(var(--text-rgb),0.3);padding:1.5rem">No donations yet. <a href="/donate.html">Donate clothing</a> to earn BAG credits.</td></tr>
+    </tbody>
+  </table>
+
+  <!-- Profile & Preferences -->
+  <div class="sec-header">
+    <div class="sec-title">Profile &amp; Preferences</div>
+  </div>
+  <div class="profile-grid">
+    <div class="pf"><label>First Name</label><input id="pfFirst"></div>
+    <div class="pf"><label>Last Name</label><input id="pfLast"></div>
+    <div class="pf"><label>Email</label><input id="pfEmail" disabled style="opacity:0.5"></div>
+    <div class="pf"><label>Phone</label><input id="pfPhone" placeholder="(555) 123-4567"></div>
+    <div class="pf"><label>Preferred City</label>
+      <select id="pfCity">
+        <option value="Savannah, GA" style="background:#111f3a;color:#fdfcf8">Savannah, GA</option>
+        <option value="Atlanta, GA" style="background:#111f3a;color:#fdfcf8">Atlanta, GA</option>
+        <option value="Tampa, FL" style="background:#111f3a;color:#fdfcf8">Tampa, FL</option>
+        <option value="Orlando, FL" style="background:#111f3a;color:#fdfcf8">Orlando, FL</option>
+      </select>
+    </div>
+    <div class="pf"><label>Clothing Size</label>
+      <select id="pfSize">
+        <option value="" style="background:#111f3a;color:#fdfcf8">Select...</option>
+        <option value="XS" style="background:#111f3a;color:#fdfcf8">XS</option>
+        <option value="S" style="background:#111f3a;color:#fdfcf8">S</option>
+        <option value="M" style="background:#111f3a;color:#fdfcf8">M</option>
+        <option value="L" style="background:#111f3a;color:#fdfcf8">L</option>
+        <option value="XL" style="background:#111f3a;color:#fdfcf8">XL</option>
+        <option value="XXL" style="background:#111f3a;color:#fdfcf8">XXL</option>
+      </select>
+    </div>
+    <div class="pf"><label>Gender Preference</label>
+      <select id="pfGender">
+        <option value="unisex" style="background:#111f3a;color:#fdfcf8">Unisex</option>
+        <option value="mens" style="background:#111f3a;color:#fdfcf8">Men's</option>
+        <option value="womens" style="background:#111f3a;color:#fdfcf8">Women's</option>
+      </select>
+    </div>
+    <div class="pf"><label>Dietary Restrictions</label><input id="pfDiet" placeholder="Vegetarian, gluten-free, etc."></div>
+  </div>
+  <button class="btn-save" id="saveBtn" onclick="saveProfile()">Save Preferences</button>
+</div>
+
+<div class="loading" id="loadingMsg">Loading your account...</div>
+
+<script>
+var SB_URL = 'https://vkctidpaghpdlmleezvq.supabase.co';
+var SB_KEY = 'eyJhbGciOiJIUzI1NiIsInR5cCI6IkpXVCJ9.eyJpc3MiOiJzdXBhYmFzZSIsInJlZiI6InZrY3RpZHBhZ2hwZGxtbGVlenZxIiwicm9sZSI6ImFub24iLCJpYXQiOjE3NzUzMjI5MjgsImV4cCI6MjA5MDg5ODkyOH0.wKtG6XD6CwLy3rJDZc4S10-NqNr3fcCXHYOWJt_C628';
+var sb = window.supabase.createClient(SB_URL, SB_KEY);
+var currentUser = null;
+var profile = null;
+
+// ── INIT ──
+(async function init() {
+  var { data } = await sb.auth.getSession();
+  if (!data.session) {
+    window.location.href = '/account-login.html';
+    return;
+  }
+  currentUser = data.session.user;
+  await loadAccount();
+})();
+
+async function loadAccount() {
+  try {
+    // Load profile
+    var { data: p } = await sb.from('profiles').select('*').eq('id', currentUser.id).single();
+    profile = p || {};
+
+    // Update nav
+    var name = (profile.first_name || currentUser.email.split('@')[0]);
+    document.getElementById('navName').textContent = name;
+    document.getElementById('navAvatar').textContent = name.charAt(0).toUpperCase();
+    document.getElementById('greeting').textContent = name + '.';
+
+    // Stats
+    document.getElementById('bagBalance').textContent = '$' + (profile.bag_balance || 0).toFixed(2);
+    document.getElementById('refCodeDisplay').textContent = profile.referral_code || '—';
+
+    // Fill profile form
+    document.getElementById('pfFirst').value = profile.first_name || '';
+    document.getElementById('pfLast').value = profile.last_name || '';
+    document.getElementById('pfEmail').value = profile.email || currentUser.email;
+    document.getElementById('pfPhone').value = profile.phone || '';
+    document.getElementById('pfCity').value = profile.preferred_city || 'Savannah, GA';
+    document.getElementById('pfSize').value = profile.clothing_size || '';
+    document.getElementById('pfGender').value = profile.gender_preference || 'unisex';
+    document.getElementById('pfDiet').value = profile.dietary_restrictions || '';
+
+    // Load membership
+    var { data: mems } = await sb.from('memberships').select('*').eq('user_id', currentUser.id).eq('status', 'active').order('created_at', { ascending: false }).limit(1);
+    if (mems && mems.length > 0) {
+      var m = mems[0];
+      var tierNames = { secondjourney: 'Second Journey', emerald: 'Emerald', gold: 'Gold' };
+      document.getElementById('memTier').textContent = (tierNames[m.tier] || m.tier) + ' Membership';
+      document.getElementById('memStatus').textContent = 'Active · ' + m.billing_cycle + ' billing';
+      document.getElementById('memBtn').textContent = 'Manage';
+    }
+
+    // Load orders
+    var { data: orders } = await sb.from('orders').select('*').eq('user_id', currentUser.id).order('created_at', { ascending: false }).limit(20);
+    if (orders && orders.length > 0) {
+      document.getElementById('totalOrders').textContent = orders.length;
+      var spent = orders.reduce(function(s, o) { return s + (o.total || 0); }, 0);
+      document.getElementById('totalSpent').textContent = '$' + spent.toFixed(2) + ' total';
+      document.getElementById('ordersBody').innerHTML = orders.map(function(o) {
+        var items = (o.items || []);
+        var itemNames = items.map(function(i) { return i.title || i.id; }).join(', ');
+        var status = o.status || 'confirmed';
+        var badgeClass = status === 'completed' ? 'completed' : status === 'delivered' ? 'active' : 'pending';
+        return '<tr><td>' + new Date(o.created_at).toLocaleDateString() + '</td><td style="color:var(--gold)">' + o.order_number + '</td><td>' + (itemNames || '—') + '</td><td>' + (o.city || '—') + '</td><td><span class="tbl-badge ' + badgeClass + '">' + status + '</span></td><td style="text-align:right;color:var(--white)">$' + (o.total || 0).toFixed(2) + '</td></tr>';
+      }).join('');
+    }
+
+    // Load rewards
+    var { data: rewards } = await sb.from('bag_rewards').select('*').eq('user_id', currentUser.id).order('created_at', { ascending: false }).limit(20);
+    if (rewards && rewards.length > 0) {
+      document.getElementById('rewardsBody').innerHTML = rewards.map(function(r) {
+        var amtClass = r.amount >= 0 ? 'tbl-amt-pos' : 'tbl-amt-neg';
+        var prefix = r.amount >= 0 ? '+' : '';
+        return '<tr><td>' + new Date(r.created_at).toLocaleDateString() + '</td><td>' + (r.description || '—') + '</td><td>' + r.source + '</td><td style="text-align:right" class="' + amtClass + '">' + prefix + '$' + Math.abs(r.amount).toFixed(2) + '</td></tr>';
+      }).join('');
+    }
+
+    // Load donations
+    var { data: donations } = await sb.from('donations').select('*').eq('user_id', currentUser.id).order('created_at', { ascending: false }).limit(10);
+    if (donations && donations.length > 0) {
+      document.getElementById('totalDonations').textContent = donations.length;
+      document.getElementById('donationsBody').innerHTML = donations.map(function(d) {
+        var status = d.status || 'pending';
+        var badgeClass = status === 'credited' ? 'active' : status === 'rejected' ? 'completed' : 'pending';
+        return '<tr><td>' + new Date(d.created_at).toLocaleDateString() + '</td><td>' + (d.items_description || '—') + '</td><td>' + (d.hotel || '—') + '</td><td><span class="tbl-badge ' + badgeClass + '">' + status + '</span></td><td style="text-align:right;color:var(--emerald)">$' + (d.bag_credits_awarded || 0).toFixed(2) + '</td></tr>';
+      }).join('');
+    }
+
+    // Show page
+    document.getElementById('loadingMsg').style.display = 'none';
+    document.getElementById('pageContent').style.display = 'block';
+
+  } catch (err) {
+    console.error('Load error:', err);
+    document.getElementById('loadingMsg').textContent = 'Could not load account data. Please try again.';
+  }
+}
+
+// ── SAVE PROFILE ──
+async function saveProfile() {
+  var btn = document.getElementById('saveBtn');
+  btn.disabled = true; btn.textContent = 'Saving...';
+
+  var updates = {
+    first_name: document.getElementById('pfFirst').value.trim(),
+    last_name: document.getElementById('pfLast').value.trim(),
+    phone: document.getElementById('pfPhone').value.trim(),
+    preferred_city: document.getElementById('pfCity').value,
+    clothing_size: document.getElementById('pfSize').value,
+    gender_preference: document.getElementById('pfGender').value,
+    dietary_restrictions: document.getElementById('pfDiet').value.trim()
+  };
+
+  var { error } = await sb.from('profiles').update(updates).eq('id', currentUser.id);
+
+  btn.disabled = false;
+  if (error) {
+    btn.textContent = 'Error — try again';
+    setTimeout(function() { btn.textContent = 'Save Preferences'; }, 2000);
+  } else {
+    btn.textContent = '✓ Saved';
+    // Update nav name
+    document.getElementById('navName').textContent = updates.first_name || '';
+    document.getElementById('greeting').textContent = (updates.first_name || 'traveler') + '.';
+    setTimeout(function() { btn.textContent = 'Save Preferences'; }, 2000);
+  }
+}
+
+// ── SIGN OUT ──
+async function signOut() {
+  await sb.auth.signOut();
+  window.location.href = '/';
+}
+</script>
+</body>
+</html>
