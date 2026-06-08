@@ -3,7 +3,7 @@
 <head>
 <meta charset="UTF-8">
 <meta name="viewport" content="width=device-width,initial-scale=1">
-<title>BagFree World™</title>
+<title>BagFree World\u2122</title>
 <link href="https://fonts.googleapis.com/css2?family=Cormorant+Garamond:ital,wght@0,300;0,400;0,500;0,600;1,300;1,400&family=DM+Sans:wght@300;400;500;600;700&display=swap" rel="stylesheet">
 <script src="https://cdn.jsdelivr.net/npm/@supabase/supabase-js@2"></script>
 <style>
@@ -21,7 +21,6 @@ a{color:var(--gold);text-decoration:none}
 ::-webkit-scrollbar{width:3px}::-webkit-scrollbar-track{background:transparent}
 ::-webkit-scrollbar-thumb{background:rgba(var(--gr),0.2);border-radius:2px}
 
-/* ── KEYFRAMES ── */
 @keyframes shimmer{0%{background-position:-200% center}100%{background-position:200% center}}
 @keyframes fadeUp{from{opacity:0;transform:translateY(18px)}to{opacity:1;transform:translateY(0)}}
 @keyframes fadeIn{from{opacity:0;transform:translateY(8px)}to{opacity:1;transform:translateY(0)}}
@@ -36,12 +35,9 @@ a{color:var(--gold);text-decoration:none}
 @keyframes svgFade{0%,100%{opacity:0.25}50%{opacity:0.55}}
 @keyframes tokenGlow{0%,100%{opacity:0.3}50%{opacity:0.7}}
 
-/* ── LAYOUT ── */
 .game{display:grid;grid-template-columns:258px 1fr 278px;height:100vh}
 @media(max-width:1100px){.game{grid-template-columns:220px 1fr}}
-@media(max-width:768px){.game{grid-template-columns:1fr}}
 
-/* ── LEFT SIDEBAR ── */
 .sb{background:linear-gradient(180deg,#090f1e,#060d19);border-right:1px solid rgba(201,169,110,0.07);display:flex;flex-direction:column;overflow-y:auto;scrollbar-width:thin}
 .sb-top{padding:1.15rem 1rem 1rem;border-bottom:1px solid rgba(201,169,110,0.06)}
 .sb-logo{font-family:var(--fd);font-size:1.38rem;letter-spacing:0.3px;background:linear-gradient(90deg,var(--gold) 0%,var(--gold3) 50%,var(--gold) 100%);background-size:200% auto;-webkit-background-clip:text;-webkit-text-fill-color:transparent;background-clip:text;animation:shimmer 5s linear infinite}
@@ -73,10 +69,9 @@ a{color:var(--gold);text-decoration:none}
 .sb-city-hotel{font-size:0.58rem;color:rgba(var(--tr),0.28);margin-top:0.12rem}
 .sb-badges{display:flex;flex-wrap:wrap;gap:0.28rem;padding:0 1rem 0.75rem}
 .sb-badge{width:29px;height:29px;display:flex;align-items:center;justify-content:center;font-size:0.92rem;background:rgba(var(--gr),0.04);border:1px solid rgba(var(--gr),0.1);border-radius:50%;transition:all 0.22s;cursor:default}
-.sb-badge:hover{transform:scale(1.38);box-shadow:0 4px 14px rgba(var(--gr),0.2);border-color:rgba(var(--gr),0.35)}
+.sb-badge:hover{transform:scale(1.38);box-shadow:0 4px 14px rgba(var(--gr),0.2)}
 .sb-quests{padding:0 0.75rem 0.9rem}
-.sb-quest{padding:0.6rem 0.7rem;border:1px solid rgba(93,202,165,0.09);background:rgba(93,202,165,0.018);margin-bottom:0.38rem;transition:all 0.22s;border-radius:1px}
-.sb-quest:hover{border-color:rgba(93,202,165,0.22)}
+.sb-quest{padding:0.6rem 0.7rem;border:1px solid rgba(93,202,165,0.09);background:rgba(93,202,165,0.018);margin-bottom:0.38rem;border-radius:1px}
 .sb-quest-name{font-size:0.68rem;color:var(--wh);font-weight:600;margin-bottom:0.18rem}
 .sb-quest-desc{font-size:0.57rem;color:rgba(var(--tr),0.32);line-height:1.4;margin-bottom:0.32rem}
 .sb-quest-prog{height:2px;background:rgba(93,202,165,0.07);border-radius:1px;overflow:hidden}
@@ -84,12 +79,10 @@ a{color:var(--gold);text-decoration:none}
 .sb-quest-reward{font-size:0.5rem;color:var(--em);margin-top:0.22rem}
 .sb-quest.complete{border-color:rgba(var(--gr),0.22);background:rgba(var(--gr),0.04)}
 .sb-quest.complete .sb-quest-name{color:var(--gold)}
-.sb-quest.complete .sb-quest-prog-fill{background:var(--gold)}
 .sb-footer{margin-top:auto;padding:0.8rem 1rem;border-top:1px solid rgba(201,169,110,0.05)}
 .sb-footer a{font-size:0.52rem;letter-spacing:2px;text-transform:uppercase;color:rgba(var(--tr),0.18);display:flex;align-items:center;gap:0.4rem;transition:color 0.2s}
 .sb-footer a:hover{color:var(--gold)}
 
-/* ── MAIN ── */
 .main{overflow-y:auto;position:relative;background:linear-gradient(180deg,#0b1525 0%,var(--noir) 100%)}
 .top-bar{display:flex;align-items:center;justify-content:space-between;padding:0.7rem 1.5rem;border-bottom:1px solid rgba(201,169,110,0.07);background:rgba(6,11,22,0.92);backdrop-filter:blur(16px);position:sticky;top:0;z-index:20}
 .top-bar-title{font-family:var(--fd);font-size:1.18rem;color:var(--gold)}
@@ -102,46 +95,38 @@ a{color:var(--gold);text-decoration:none}
 .view{display:none;animation:fadeIn 0.45s ease}.view.active{display:block}
 .panel{max-width:870px;margin:0 auto;padding-bottom:3rem}
 
-/* ── GAME BOARD ── */
 .board-wrap{padding:1.5rem 1.5rem 0;background:linear-gradient(180deg,rgba(var(--gr),0.025),transparent 80%)}
 .board-label{font-size:0.42rem;letter-spacing:4px;text-transform:uppercase;color:rgba(var(--tr),0.18);font-weight:600;margin-bottom:0.7rem;display:flex;align-items:center;gap:0.5rem}
 .board-label::after{content:'';flex:1;height:1px;background:linear-gradient(90deg,rgba(var(--gr),0.1),transparent)}
-.game-board{border:1px solid rgba(var(--gr),0.1);border-radius:2px;overflow:hidden;background:var(--n2);cursor:default}
+.game-board{border:1px solid rgba(var(--gr),0.1);border-radius:2px;overflow:hidden;background:var(--n2)}
 .game-board svg{display:block;width:100%;height:auto}
-
-/* SVG board element animations — classes applied inline to SVG elements */
 .city-outer-ring{animation:svgFade 3s ease-in-out infinite}
 .city-glow-ring{animation:svgPulse 2.2s ease-in-out infinite}
 .token-outer{animation:tokenGlow 2s ease-in-out infinite}
 .player-token{animation:svgFloat 3s ease-in-out infinite}
-.board-city{transition:opacity 0.2s}
 
-/* ── CITY HERO ── */
 .city-hero{position:relative;width:100%;height:220px;overflow:hidden;animation:heroReveal 0.7s ease}
 .city-hero-bg{position:absolute;inset:0;width:100%;height:100%}
 .city-hero-overlay{position:absolute;inset:0;background:linear-gradient(180deg,rgba(8,17,31,0.2) 0%,rgba(8,17,31,0.55) 50%,#0b1525 100%),linear-gradient(90deg,rgba(8,17,31,0.8) 0%,transparent 60%)}
 .city-hero-content{position:absolute;inset:0;display:flex;flex-direction:column;justify-content:flex-end;padding:1.6rem 2rem 1.4rem}
-/* Hero text always light — background is always dark-overlaid regardless of theme */
 .city-hero-eyebrow{font-size:0.45rem;letter-spacing:4.5px;text-transform:uppercase;color:#d4b87a;margin-bottom:0.38rem;font-weight:600;opacity:0;animation:fadeUp 0.55s 0.1s forwards}
 .city-hero-name{font-family:var(--fd);font-size:3rem;font-weight:300;color:rgba(253,252,248,0.95);line-height:1;margin-bottom:0.45rem;opacity:0;animation:fadeUp 0.55s 0.2s forwards;letter-spacing:0.5px}
 .city-hero-desc{font-family:var(--fd);font-size:0.95rem;font-style:italic;color:rgba(253,252,248,0.55);line-height:1.55;max-width:360px;opacity:0;animation:fadeUp 0.55s 0.32s forwards}
 .city-hero-lv{position:absolute;top:1.2rem;right:1.5rem;font-size:0.42rem;letter-spacing:2.5px;text-transform:uppercase;padding:0.3rem 0.75rem;border:1px solid rgba(253,252,248,0.15);color:rgba(253,252,248,0.38);background:rgba(8,17,31,0.5);backdrop-filter:blur(4px)}
 
-/* ── CONTENT ── */
 .content-inner{padding:1.4rem 2rem 0}
 .section-label{font-size:0.46rem;letter-spacing:4px;text-transform:uppercase;color:var(--gold);font-weight:700;margin-bottom:0.9rem;display:flex;align-items:center;gap:0.65rem;margin-top:0.2rem}
 .section-label::after{content:'';flex:1;height:1px;background:linear-gradient(90deg,rgba(var(--gr),0.18),transparent)}
 
-/* ── GAME CARDS ── */
 .cards-grid{display:grid;grid-template-columns:repeat(auto-fill,minmax(236px,1fr));gap:0.9rem;margin-bottom:2rem}
 .cards-grid .gc:nth-child(1){animation:cardSlide 0.45s 0.04s both}
 .cards-grid .gc:nth-child(2){animation:cardSlide 0.45s 0.11s both}
 .cards-grid .gc:nth-child(3){animation:cardSlide 0.45s 0.18s both}
-.gc{border:1px solid rgba(var(--gr),0.09);background:linear-gradient(168deg,rgba(14,24,42,0.97),rgba(8,17,31,0.99));transition:all 0.32s cubic-bezier(.4,0,.2,1);position:relative;overflow:hidden;border-radius:2px}
-.gc:hover{border-color:rgba(var(--gr),0.32);transform:translateY(-5px);box-shadow:0 22px 55px rgba(0,0,0,0.45),0 0 0 1px rgba(var(--gr),0.08)}
+.gc{border:1px solid rgba(var(--gr),0.09);background:linear-gradient(168deg,rgba(14,24,42,0.97),rgba(8,17,31,0.99));transition:all 0.32s;position:relative;overflow:hidden;border-radius:2px}
+.gc:hover{border-color:rgba(var(--gr),0.32);transform:translateY(-5px);box-shadow:0 22px 55px rgba(0,0,0,0.45)}
 .gc::before{content:'';position:absolute;inset:0;background:radial-gradient(circle at 100% 0%,rgba(var(--gr),0.06),transparent 55%);pointer-events:none;opacity:0;transition:opacity 0.3s}
 .gc:hover::before{opacity:1}
-.gc-visual{height:92px;position:relative;overflow:hidden;display:flex;align-items:center;justify-content:center;flex-shrink:0}
+.gc-visual{height:92px;position:relative;overflow:hidden;display:flex;align-items:center;justify-content:center}
 .gc-visual-hotel{background:linear-gradient(145deg,rgba(201,169,110,0.14),rgba(201,169,110,0.04) 60%,transparent)}
 .gc-visual-sj{background:linear-gradient(145deg,rgba(93,202,165,0.14),rgba(93,202,165,0.04) 60%,transparent)}
 .gc-visual-new{background:linear-gradient(145deg,rgba(147,112,219,0.14),rgba(147,112,219,0.04) 60%,transparent)}
@@ -150,7 +135,7 @@ a{color:var(--gold);text-decoration:none}
 .gc-visual-line{position:absolute;bottom:0;left:0;right:0;height:1px;background:linear-gradient(90deg,transparent,rgba(var(--gr),0.12),transparent)}
 .gc-body{padding:1rem 1.1rem 1.1rem}
 .gc-header{display:flex;align-items:flex-start;justify-content:space-between;gap:0.5rem;margin-bottom:0.38rem}
-.gc-title{font-family:var(--fd);font-size:1.18rem;color:var(--wh);line-height:1.2;font-weight:400}
+.gc-title{font-family:var(--fd);font-size:1.18rem;color:var(--wh);line-height:1.2}
 .gc-price{font-family:var(--fd);font-size:1.22rem;white-space:nowrap;background:linear-gradient(135deg,var(--gold),var(--gold3));-webkit-background-clip:text;-webkit-text-fill-color:transparent;background-clip:text;flex-shrink:0}
 .gc-desc{font-size:0.69rem;color:rgba(var(--tr),0.42);line-height:1.55;margin-bottom:0.7rem}
 .gc-tags{display:flex;gap:0.28rem;flex-wrap:wrap;margin-bottom:0.72rem}
@@ -165,22 +150,18 @@ a{color:var(--gold);text-decoration:none}
 .gc-btn-gold{color:var(--noir);background:linear-gradient(135deg,var(--gold),var(--gold2));box-shadow:0 4px 18px rgba(var(--gr),0.25)}
 .gc-btn-gold:hover{box-shadow:0 9px 28px rgba(var(--gr),0.4);transform:translateY(-1px)}
 .gc-btn-em{color:var(--noir);background:linear-gradient(135deg,var(--em),#4dbf95);box-shadow:0 4px 18px rgba(93,202,165,0.22)}
-.gc-btn-em:hover{box-shadow:0 9px 28px rgba(93,202,165,0.38);transform:translateY(-1px)}
 .gc-btn:disabled{opacity:0.18;pointer-events:none}
 .gc.booked{border-color:rgba(var(--gr),0.38)}
-.gc.booked .gc-visual-hotel{background:linear-gradient(145deg,rgba(201,169,110,0.2),rgba(201,169,110,0.06) 60%,transparent)}
 .gc-booked-badge{position:absolute;top:0.55rem;right:0.55rem;font-size:0.38rem;letter-spacing:2px;color:var(--noir);background:var(--gold);padding:0.22rem 0.55rem;font-weight:700;text-transform:uppercase;z-index:2}
 
-/* ── EXPERIENCE CARDS ── */
 .decision{border:1px solid rgba(var(--gr),0.1);background:linear-gradient(168deg,rgba(14,24,42,0.97),rgba(8,17,31,0.99));margin-bottom:1.1rem;overflow:hidden;transition:all 0.3s;border-radius:2px;animation:cardSlide 0.5s both}
 .decision:hover{border-color:rgba(var(--gr),0.24);box-shadow:0 14px 45px rgba(0,0,0,0.35)}
 .decision-header{padding:1.4rem 1.5rem 0}
-.decision-title{font-family:var(--fd);font-size:1.48rem;color:var(--wh);margin-bottom:0.4rem;line-height:1.2;font-weight:400}
+.decision-title{font-family:var(--fd);font-size:1.48rem;color:var(--wh);margin-bottom:0.4rem;line-height:1.2}
 .decision-meta{display:flex;gap:0.38rem;margin-bottom:0.9rem}
 .decision-story{font-family:var(--fd);font-size:0.98rem;color:rgba(var(--tr),0.48);line-height:1.72;font-style:italic;padding-bottom:1rem}
 .decision-divider{height:1px;background:linear-gradient(90deg,transparent,rgba(var(--gr),0.1) 20%,rgba(var(--gr),0.1) 80%,transparent)}
 .decision-opts{display:grid;grid-template-columns:1fr 1fr}
-@media(max-width:600px){.decision-opts{grid-template-columns:1fr}}
 .decision-opt{padding:1rem 1.5rem;cursor:pointer;transition:all 0.25s;position:relative}
 .decision-opt:first-child{border-right:1px solid rgba(var(--gr),0.07)}
 .decision-opt::after{content:'';position:absolute;inset:0;background:rgba(var(--gr),0);transition:background 0.28s}
@@ -191,22 +172,19 @@ a{color:var(--gold);text-decoration:none}
 .decision-opt-arrow{position:absolute;right:1.1rem;top:50%;transform:translateY(-50%);color:rgba(var(--tr),0.12);font-size:1rem;transition:all 0.25s}
 .decision-opt:hover .decision-opt-arrow{color:var(--gold);right:0.8rem}
 
-/* ── BADGES ── */
 .badge-grid{display:grid;grid-template-columns:repeat(auto-fill,minmax(136px,1fr));gap:0.75rem}
 .bg-card{border:1px solid rgba(var(--gr),0.07);padding:1.2rem;text-align:center;transition:all 0.32s;position:relative;overflow:hidden;background:linear-gradient(168deg,rgba(14,24,42,0.97),rgba(8,17,31,0.99));border-radius:2px}
-.bg-card.earned{border-color:rgba(var(--gr),0.25);background:linear-gradient(168deg,rgba(var(--gr),0.08),rgba(8,17,31,0.99))}
-.bg-card.earned::after{content:'';position:absolute;inset:0;background:radial-gradient(circle at 50% 20%,rgba(var(--gr),0.08),transparent 65%);pointer-events:none}
+.bg-card.earned{border-color:rgba(var(--gr),0.25)}
 .bg-card.earned:hover{transform:translateY(-5px);box-shadow:0 18px 45px rgba(0,0,0,0.35)}
 .bg-card.locked{opacity:0.18;filter:grayscale(1)}
 .bg-icon{font-size:2.1rem;margin-bottom:0.5rem;display:block}
 .bg-card.earned .bg-icon{animation:badgePulse 2.8s ease-in-out infinite}
-.bg-name{font-family:var(--fd);font-size:0.92rem;font-weight:400;color:var(--wh);margin-bottom:0.22rem}
+.bg-name{font-family:var(--fd);font-size:0.92rem;color:var(--wh);margin-bottom:0.22rem}
 .bg-desc{font-size:0.55rem;color:rgba(var(--tr),0.32);line-height:1.4}
 
-/* ── LEADERBOARD ── */
-.lb-row{display:flex;align-items:center;gap:1rem;padding:0.88rem 1.2rem;border:1px solid rgba(var(--gr),0.06);margin-bottom:0.42rem;transition:all 0.22s;background:linear-gradient(168deg,rgba(14,24,42,0.8),rgba(8,17,31,0.92));border-radius:2px}
+.lb-row{display:flex;align-items:center;gap:1rem;padding:0.88rem 1.2rem;border:1px solid rgba(var(--gr),0.06);margin-bottom:0.42rem;background:linear-gradient(168deg,rgba(14,24,42,0.8),rgba(8,17,31,0.92));border-radius:2px}
 .lb-row:hover{border-color:rgba(var(--gr),0.2)}
-.lb-row.me{border-color:rgba(var(--gr),0.28);background:linear-gradient(168deg,rgba(var(--gr),0.08),rgba(8,17,31,0.98));animation:glowPulse 3s ease-in-out infinite}
+.lb-row.me{border-color:rgba(var(--gr),0.28);animation:glowPulse 3s ease-in-out infinite}
 .lb-rank{font-family:var(--fd);font-size:1.45rem;color:rgba(var(--tr),0.13);width:40px;text-align:center;flex-shrink:0}
 .lb-rank.r1{color:var(--gold);text-shadow:0 0 22px rgba(var(--gr),0.5)}
 .lb-info{flex:1}
@@ -214,7 +192,6 @@ a{color:var(--gold);text-decoration:none}
 .lb-detail{font-size:0.59rem;color:rgba(var(--tr),0.28);margin-top:0.1rem}
 .lb-val{font-family:var(--fd);font-size:1.18rem;color:var(--gold)}
 
-/* ── CONFETTI + TOAST ── */
 .confetti-container{position:fixed;top:0;left:0;width:100%;height:100%;pointer-events:none;z-index:9999}
 .confetti{position:absolute;opacity:0;animation:confettiFall 2.5s ease-in forwards}
 .toast{position:fixed;bottom:1.8rem;left:50%;transform:translateX(-50%) translateY(130px);z-index:999;padding:1rem 1.9rem;background:linear-gradient(135deg,rgba(19,32,53,0.98),rgba(13,25,41,0.99));border:1px solid rgba(var(--gr),0.2);color:var(--wh);font-size:0.79rem;box-shadow:0 22px 55px rgba(0,0,0,0.55);transition:transform 0.45s cubic-bezier(.34,1.56,.64,1);max-width:420px;text-align:center;border-radius:2px;backdrop-filter:blur(10px)}
@@ -222,51 +199,41 @@ a{color:var(--gold);text-decoration:none}
 .toast em{color:var(--gold);font-style:normal;font-weight:600}
 .toast .em-text{color:var(--em);font-weight:500}
 
-/* ── THEME TOGGLE ── */
 .g-toggle{cursor:pointer;display:flex;align-items:center}
 .g-toggle-track{width:36px;height:20px;border-radius:10px;background:rgba(var(--gr),0.1);border:1px solid rgba(var(--gr),0.17);position:relative;transition:all 0.3s}
 .g-toggle-thumb{width:14px;height:14px;border-radius:50%;background:var(--gold);position:absolute;top:2px;left:2px;transition:all 0.3s cubic-bezier(.4,0,.2,1);box-shadow:0 1px 4px rgba(0,0,0,0.3)}
 html.light .g-toggle-thumb{left:18px}
 
-/* ── LIGHT MODE ── */
-html.light{--noir:#f5f2eb;--n2:#ece8df;--n3:#e4dfd5;--n4:#ddd8cc;--gold:#7a6535;--gr:122,101,53;--em:#1d7a5a;--wh:#1a1a2e;--tr:26,26,46;--bs:rgba(122,101,53,0.15)}
+html.light{--noir:#f5f2eb;--n2:#ece8df;--n3:#e4dfd5;--n4:#ddd8cc;--gold:#7a6535;--gr:122,101,53;--em:#1d7a5a;--wh:#1a1a2e;--tr:26,26,46}
 html.light .sb{background:linear-gradient(180deg,#ece8df,#e4dfd5)}
 html.light .main{background:linear-gradient(180deg,#ddd8cc,var(--noir))}
 html.light .top-bar{background:rgba(245,242,235,0.92)}
 html.light .rp{background:var(--n2)}
-/* Cards: lighter background in light mode with proper text contrast */
-html.light .gc{background:linear-gradient(168deg,rgba(255,255,255,0.85),rgba(236,232,223,0.95));border-color:rgba(var(--gr),0.15)}
+html.light .gc{background:linear-gradient(168deg,rgba(255,255,255,0.88),rgba(236,232,223,0.97));border-color:rgba(var(--gr),0.15)}
 html.light .gc-title{color:var(--wh)}
 html.light .gc-desc{color:rgba(var(--tr),0.6)}
-html.light .gc-visual-hotel{background:linear-gradient(145deg,rgba(122,101,53,0.12),rgba(122,101,53,0.04) 60%,transparent)}
-html.light .gc-visual-sj{background:linear-gradient(145deg,rgba(29,122,90,0.12),rgba(29,122,90,0.04) 60%,transparent)}
-html.light .gc-visual-new{background:linear-gradient(145deg,rgba(100,80,160,0.1),rgba(100,80,160,0.03) 60%,transparent)}
 html.light .gc-btn-gold{color:#fff}
-html.light .decision{background:linear-gradient(168deg,rgba(255,255,255,0.85),rgba(236,232,223,0.95));border-color:rgba(var(--gr),0.15)}
+html.light .decision{background:linear-gradient(168deg,rgba(255,255,255,0.88),rgba(236,232,223,0.97));border-color:rgba(var(--gr),0.15)}
 html.light .decision-title{color:var(--wh)}
 html.light .decision-story{color:rgba(var(--tr),0.6)}
 html.light .decision-opt-label{color:rgba(var(--tr),0.78)}
-html.light .decision-opt:hover .decision-opt-label{color:var(--gold)}
-html.light .bg-card{background:linear-gradient(168deg,rgba(255,255,255,0.85),rgba(236,232,223,0.95));border-color:rgba(var(--gr),0.12)}
-html.light .bg-card.earned{background:linear-gradient(168deg,rgba(var(--gr),0.1),rgba(236,232,223,0.95))}
+html.light .bg-card{background:linear-gradient(168deg,rgba(255,255,255,0.88),rgba(236,232,223,0.97))}
 html.light .bg-name{color:var(--wh)}
-html.light .lb-row{background:linear-gradient(168deg,rgba(255,255,255,0.7),rgba(236,232,223,0.9));border-color:rgba(var(--gr),0.1)}
+html.light .lb-row{background:linear-gradient(168deg,rgba(255,255,255,0.7),rgba(236,232,223,0.9))}
 html.light .lb-name{color:var(--wh)}
 html.light .sb-av-name{color:var(--wh)}
 html.light .sb-city-name{color:var(--wh)}
 
-/* ── ONBOARDING ── */
 .ob{position:fixed;inset:0;z-index:100;background:var(--noir);display:flex;align-items:center;justify-content:center;padding:2rem;background-image:radial-gradient(ellipse 80% 55% at 50% 0%,rgba(var(--gr),0.07) 0%,transparent 60%)}
-.ob-card{max-width:510px;width:100%;border:1px solid rgba(var(--gr),0.13);padding:2.6rem 2.1rem;background:linear-gradient(168deg,rgba(14,24,42,0.97),rgba(8,17,31,0.99));animation:fadeIn 0.55s ease;position:relative;overflow:hidden;border-radius:2px}
-.ob-card::before{content:'';position:absolute;top:-70px;left:50%;transform:translateX(-50%);width:220px;height:220px;background:radial-gradient(circle,rgba(var(--gr),0.07),transparent 70%);pointer-events:none}
+.ob-card{max-width:510px;width:100%;border:1px solid rgba(var(--gr),0.13);padding:2.6rem 2.1rem;background:linear-gradient(168deg,rgba(14,24,42,0.97),rgba(8,17,31,0.99));animation:fadeIn 0.55s ease;border-radius:2px}
 .ob-eyebrow{font-size:0.42rem;letter-spacing:5px;text-transform:uppercase;color:var(--em);text-align:center;margin-bottom:0.48rem;font-weight:600}
 .ob-title{font-family:var(--fd);font-size:2.6rem;font-weight:300;text-align:center;margin-bottom:0.3rem;background:linear-gradient(135deg,var(--gold) 0%,var(--gold3) 50%,var(--gold) 100%);background-size:200% auto;-webkit-background-clip:text;-webkit-text-fill-color:transparent;background-clip:text;animation:shimmer 4s linear infinite}
 .ob-sub{font-family:var(--fd);font-size:0.98rem;font-style:italic;color:rgba(var(--tr),0.32);text-align:center;margin-bottom:2.1rem}
 .ob-label{font-size:0.42rem;letter-spacing:3.5px;text-transform:uppercase;color:rgba(var(--tr),0.25);font-weight:600;margin-bottom:0.6rem}
 .ob-grid{display:grid;grid-template-columns:repeat(auto-fill,minmax(116px,1fr));gap:0.48rem;margin-bottom:1.5rem}
 .ob-opt{padding:0.78rem 0.55rem;border:1px solid rgba(var(--gr),0.09);text-align:center;cursor:pointer;transition:all 0.24s;background:rgba(var(--gr),0.018);border-radius:2px}
-.ob-opt:hover{border-color:rgba(var(--gr),0.28);background:rgba(var(--gr),0.04)}
-.ob-opt.sel{border-color:var(--gold);background:rgba(var(--gr),0.08);box-shadow:0 0 0 1px var(--gold),0 8px 26px rgba(var(--gr),0.15)}
+.ob-opt:hover{border-color:rgba(var(--gr),0.28)}
+.ob-opt.sel{border-color:var(--gold);background:rgba(var(--gr),0.08);box-shadow:0 0 0 1px var(--gold)}
 .ob-opt-emoji{font-size:1.55rem;margin-bottom:0.32rem;display:flex;align-items:center;justify-content:center;height:48px}
 .ob-opt-name{font-size:0.68rem;color:var(--wh);font-weight:500;margin-bottom:0.2rem}
 .ob-opt-bonus{font-size:0.5rem;color:var(--em);line-height:1.3}
@@ -274,53 +241,46 @@ html.light .sb-city-name{color:var(--wh)}
 .ob-btn:hover{box-shadow:0 14px 38px rgba(var(--gr),0.48);transform:translateY(-2px)}
 .ob-btn:disabled{opacity:0.18;pointer-events:none}
 
-/* Right panel */
 .rp{background:var(--n2);border-left:1px solid rgba(201,169,110,0.06);overflow-y:auto;padding:1.2rem}
 @media(max-width:1100px){.rp{display:none}}
 .rp-label{font-size:0.41rem;letter-spacing:3.5px;text-transform:uppercase;color:rgba(var(--tr),0.18);font-weight:700;margin-bottom:0.58rem;display:flex;align-items:center;gap:0.4rem}
 .rp-label::after{content:'';flex:1;height:1px;background:linear-gradient(90deg,rgba(var(--gr),0.1),transparent)}
-.rp-item{display:flex;align-items:center;gap:0.68rem;padding:0.62rem;border:1px solid rgba(var(--gr),0.055);margin-bottom:0.38rem;background:rgba(var(--gr),0.018);transition:all 0.2s;border-radius:1px}
-.rp-item:hover{border-color:rgba(var(--gr),0.18)}
-.rp-item-icon{font-size:1.12rem;flex-shrink:0}
+.rp-item{display:flex;align-items:center;gap:0.68rem;padding:0.62rem;border:1px solid rgba(var(--gr),0.055);margin-bottom:0.38rem;background:rgba(var(--gr),0.018);border-radius:1px}
 .rp-item-name{font-size:0.7rem;color:var(--wh);font-weight:500;line-height:1.2}
 .rp-item-detail{font-size:0.57rem;color:rgba(var(--tr),0.28);margin-top:0.08rem}
+.rp-item-icon{font-size:1.12rem;flex-shrink:0}
 .rp-empty{font-family:var(--fd);font-size:0.88rem;font-style:italic;color:rgba(var(--tr),0.16);text-align:center;padding:1.2rem 0.5rem}
 </style>
 </head>
 <body>
-
 <div class="toast" id="toast"></div>
 <div class="confetti-container" id="confetti"></div>
 
-<!-- ONBOARDING -->
 <div class="ob" id="onboarding" style="display:none">
 <div class="ob-card">
-  <div class="ob-eyebrow">✦ Welcome to</div>
-  <div class="ob-title">BagFree World™</div>
+  <div class="ob-eyebrow">\u2756 Welcome to</div>
+  <div class="ob-title">BagFree World\u2122</div>
   <div class="ob-sub">Travel Light. Experience More. Leave Less Behind.</div>
   <div id="obStep1">
     <div class="ob-label">Choose your travel personality</div>
     <div class="ob-grid" id="pGrid"></div>
-    <button class="ob-btn" id="obBtn1" disabled onclick="obNext()">Choose &amp; Continue →</button>
+    <button class="ob-btn" id="obBtn1" disabled onclick="obNext()">Choose &amp; Continue \u2192</button>
   </div>
   <div id="obStep2" style="display:none">
     <div style="text-align:center;margin-bottom:1.8rem">
       <div style="font-family:var(--fd);font-size:3.6rem;background:linear-gradient(135deg,var(--gold),var(--gold3));-webkit-background-clip:text;-webkit-text-fill-color:transparent;background-clip:text">1,000</div>
       <div style="font-size:0.5rem;letter-spacing:3.5px;text-transform:uppercase;color:rgba(var(--tr),0.28);margin-top:0.3rem">BAG Points</div>
-      <div style="font-family:var(--fd);font-style:italic;font-size:0.96rem;color:rgba(var(--tr),0.38);margin-top:1rem;line-height:1.7">No baggage. No hotel. No clothing. No reputation.<br>Build your travel journey from scratch.</div>
+      <div style="font-family:var(--fd);font-style:italic;font-size:0.96rem;color:rgba(var(--tr),0.38);margin-top:1rem;line-height:1.7">No baggage. No hotel. No clothing.<br>Build your travel journey from scratch.</div>
     </div>
-    <button class="ob-btn" onclick="beginGame()">Begin Your Journey →</button>
+    <button class="ob-btn" onclick="beginGame()">Begin Your Journey \u2192</button>
   </div>
 </div>
 </div>
 
-<!-- GAME -->
 <div class="game" id="gameUI" style="display:none">
-
-<!-- Sidebar -->
 <div class="sb">
   <div class="sb-top">
-    <div class="sb-logo">BagFree World <span>™</span></div>
+    <div class="sb-logo">BagFree World <span>\u2122</span></div>
     <div class="sb-edition">Japan Edition</div>
   </div>
   <div class="sb-avatar">
@@ -350,7 +310,7 @@ html.light .sb-city-name{color:var(--wh)}
   </div>
   <div class="sb-section" style="padding-bottom:0.5rem">
     <div class="sb-label">Location</div>
-    <div class="sb-city"><span class="sb-city-icon" id="sbCityIcon">🏙</span><div><div class="sb-city-name" id="sbCityName">Tokyo</div><div class="sb-city-hotel" id="sbHotel">No hotel</div></div></div>
+    <div class="sb-city"><span class="sb-city-icon" id="sbCityIcon">\U0001f3d9</span><div><div class="sb-city-name" id="sbCityName">Tokyo</div><div class="sb-city-hotel" id="sbHotel">No hotel</div></div></div>
   </div>
   <div class="sb-section" style="padding-bottom:0"><div class="sb-label">Daily Quests</div></div>
   <div class="sb-quests" id="sbQuests"></div>
@@ -361,16 +321,15 @@ html.light .sb-city-name{color:var(--wh)}
       <span style="font-size:0.42rem;letter-spacing:2.5px;text-transform:uppercase;color:rgba(var(--tr),0.18)">Theme</span>
       <div class="g-toggle" onclick="toggleGameTheme()"><div class="g-toggle-track"><div class="g-toggle-thumb"></div></div></div>
     </div>
-    <a href="/">← Back to BagFree</a>
+    <a href="/">\u2190 Back to BagFree</a>
   </div>
 </div>
 
-<!-- Main -->
 <div class="main">
   <div class="top-bar">
     <div>
-      <div style="line-height:1.2"><span class="top-bar-title">BagFree World™</span><span class="top-bar-edition">JAPAN</span></div>
-      <div class="top-bar-sub">Explore · Book hotels · Second Journey™ · Earn reputation</div>
+      <div style="line-height:1.2"><span class="top-bar-title">BagFree World\u2122</span><span class="top-bar-edition">JAPAN</span></div>
+      <div class="top-bar-sub">Explore \u00b7 Book hotels \u00b7 Second Journey\u2122 \u00b7 Earn reputation</div>
     </div>
     <div style="display:flex;align-items:center;gap:1rem">
       <div class="g-toggle" onclick="toggleGameTheme()"><div class="g-toggle-track"><div class="g-toggle-thumb"></div></div></div>
@@ -381,7 +340,6 @@ html.light .sb-city-name{color:var(--wh)}
       </div>
     </div>
   </div>
-
   <div class="view active" id="vCity">
     <div class="board-wrap">
       <div class="board-label">Japan Route</div>
@@ -393,14 +351,12 @@ html.light .sb-city-name{color:var(--wh)}
   <div class="view" id="vLb"><div class="panel" style="padding:2rem" id="lbPanel"></div></div>
 </div>
 
-<!-- Right panel -->
 <div class="rp">
   <div class="rp-label">Inventory</div>
   <div id="rpClothing"></div>
   <div class="rp-label" style="margin-top:1.2rem">Trip Log</div>
   <div id="rpLog"></div>
 </div>
-
 </div>
 
 <script>
@@ -408,71 +364,67 @@ var SB_URL='https://vkctidpaghpdlmleezvq.supabase.co';
 var SB_KEY='eyJhbGciOiJIUzI1NiIsInR5cCI6IkpXVCJ9.eyJpc3MiOiJzdXBhYmFzZSIsInJlZiI6InZrY3RpZHBhZ2hwZGxtbGVlenZxIiwicm9sZSI6ImFub24iLCJpYXQiOjE3NzUzMjI5MjgsImV4cCI6MjA5MDg5ODkyOH0.wKtG6XD6CwLy3rJDZc4S10-NqNr3fcCXHYOWJt_C628';
 var sb=window.supabase.createClient(SB_URL,SB_KEY),user=null,gp=null,playerName='Traveler',tripLog=[];
 
-// ── CITY HERO BANNERS ──
 var CITY_HEROES={
-  tokyo:{tag:'Neon Metropolis · Honshu',svg:'<svg viewBox="0 0 800 220" xmlns="http://www.w3.org/2000/svg" style="width:100%;height:100%"><defs><linearGradient id="sk-t" x1="0" y1="0" x2="0" y2="1"><stop offset="0%" stop-color="#0d0520"/><stop offset="100%" stop-color="#0a1628"/></linearGradient></defs><rect width="800" height="220" fill="url(#sk-t)"/><circle cx="660" cy="58" r="55" fill="rgba(201,169,110,0.06)"/><circle cx="660" cy="58" r="26" fill="none" stroke="#c9a96e" stroke-width="0.8" opacity="0.35"/><circle cx="180" cy="95" r="3" fill="#5DCAA5" opacity="0.5"/><circle cx="180" cy="95" r="9" fill="rgba(93,202,165,0.1)"/><circle cx="430" cy="75" r="3" fill="#c9a96e" opacity="0.6"/><circle cx="430" cy="75" r="11" fill="rgba(201,169,110,0.1)"/><path d="M0 220 L0 140 L20 140 L20 120 L35 120 L35 105 L42 105 L42 98 L49 98 L49 105 L56 105 L56 120 L75 120 L75 132 L90 132 L90 115 L100 115 L100 95 L108 95 L108 90 L112 50 L116 90 L116 95 L126 95 L126 115 L145 115 L145 128 L165 128 L165 108 L180 108 L180 92 L200 92 L200 108 L220 108 L220 118 L260 118 L260 100 L278 100 L278 88 L300 88 L300 95 L330 95 L330 110 L365 110 L365 92 L382 92 L382 76 L390 42 L398 76 L408 82 L425 82 L425 95 L445 95 L445 78 L460 78 L460 95 L490 95 L490 108 L510 108 L510 88 L542 88 L542 78 L555 78 L555 88 L588 88 L588 105 L615 105 L615 88 L650 88 L650 78 L668 88 L668 100 L690 100 L710 100 L730 115 L760 115 L800 100 L800 220 Z" fill="rgba(8,14,28,0.96)"/><line x1="390" y1="42" x2="390" y2="95" stroke="rgba(201,169,110,0.25)" stroke-width="1"/><rect x="92" y="118" width="3" height="3" fill="rgba(201,169,110,0.3)"/><rect x="270" y="104" width="3" height="3" fill="rgba(201,169,110,0.28)"/><rect x="618" y="92" width="3" height="3" fill="rgba(201,169,110,0.3)"/></svg>'},
-  kyoto:{tag:'Ancient Capital · Honshu',svg:'<svg viewBox="0 0 800 220" xmlns="http://www.w3.org/2000/svg" style="width:100%;height:100%"><defs><linearGradient id="sk-k" x1="0" y1="0" x2="0" y2="1"><stop offset="0%" stop-color="#1a0800"/><stop offset="60%" stop-color="#0d1a0a"/><stop offset="100%" stop-color="#071510"/></linearGradient></defs><rect width="800" height="220" fill="url(#sk-k)"/><ellipse cx="400" cy="220" rx="320" ry="80" fill="rgba(201,100,20,0.07)"/><circle cx="680" cy="55" r="22" fill="rgba(255,200,120,0.12)" stroke="rgba(255,185,80,0.25)" stroke-width="0.8"/><rect x="60" y="100" width="6" height="120" fill="rgba(180,40,10,0.55)"/><rect x="100" y="100" width="6" height="120" fill="rgba(180,40,10,0.55)"/><rect x="50" y="96" width="116" height="8" rx="2" fill="rgba(180,40,10,0.65)"/><rect x="55" y="86" width="106" height="6" rx="2" fill="rgba(180,40,10,0.55)"/><rect x="680" y="118" width="5" height="102" fill="rgba(180,40,10,0.4)"/><rect x="715" y="118" width="5" height="102" fill="rgba(180,40,10,0.4)"/><rect x="672" y="114" width="96" height="7" rx="1" fill="rgba(180,40,10,0.5)"/><path d="M320 220 L320 170 L308 170 L316 155 L306 155 L316 138 L308 138 L315 122 L310 122 L320 105 L330 122 L325 122 L332 138 L324 138 L334 155 L324 155 L332 170 L320 170" fill="rgba(8,14,22,0.95)"/><path d="M0 160 L80 110 L160 135 L240 95 L300 118 L400 80 L480 105 L560 85 L640 108 L720 90 L800 100 L800 220 L0 220 Z" fill="rgba(8,20,14,0.85)"/></svg>'},
-  osaka:{tag:'Kitchen of Japan · Honshu',svg:'<svg viewBox="0 0 800 220" xmlns="http://www.w3.org/2000/svg" style="width:100%;height:100%"><defs><linearGradient id="sk-o" x1="0" y1="0" x2="0" y2="1"><stop offset="0%" stop-color="#001020"/><stop offset="100%" stop-color="#00141a"/></linearGradient></defs><rect width="800" height="220" fill="url(#sk-o)"/><path d="M340 220 L340 168 L332 168 L332 158 L325 158 L325 148 L318 148 L318 140 L315 140 L315 134 L322 134 L318 128 L322 122 L318 116 L328 116 L328 108 L332 104 L336 100 L340 96 L344 100 L348 104 L352 108 L352 116 L362 116 L358 122 L362 128 L358 134 L365 134 L365 140 L362 140 L362 148 L355 158 L348 168 L340 168" fill="rgba(8,20,28,0.97)"/><rect x="332" y="158" width="16" height="2" fill="rgba(93,202,165,0.2)"/><rect x="0" y="185" width="800" height="35" fill="rgba(0,25,35,0.5)"/><rect x="80" y="124" width="10" height="2" fill="rgba(93,202,165,0.4)"/><rect x="570" y="127" width="8" height="2" fill="rgba(201,169,110,0.4)"/><path d="M0 220 L0 145 L25 145 L25 130 L50 130 L50 145 L75 145 L75 125 L95 125 L95 145 L120 145 L120 135 L160 125 L160 135 L185 145 L200 145 L200 130 L240 145 L240 155 L300 155 L300 165 L320 175 L340 220" fill="rgba(6,12,20,0.95)"/><path d="M340 220 L360 175 L380 165 L400 155 L420 148 L440 140 L460 150 L480 138 L500 148 L540 138 L555 128 L570 138 L590 148 L615 148 L635 135 L655 148 L680 135 L710 148 L740 135 L800 135 L800 220 Z" fill="rgba(6,12,20,0.95)"/></svg>'},
-  hiroshima:{tag:'City of Peace · Honshu',svg:'<svg viewBox="0 0 800 220" xmlns="http://www.w3.org/2000/svg" style="width:100%;height:100%"><defs><linearGradient id="sk-h" x1="0" y1="0" x2="0" y2="1"><stop offset="0%" stop-color="#000a16"/><stop offset="100%" stop-color="#02121e"/></linearGradient></defs><rect width="800" height="220" fill="url(#sk-h)"/><ellipse cx="400" cy="220" rx="400" ry="120" fill="rgba(80,160,200,0.04)"/><circle cx="640" cy="52" r="28" fill="rgba(200,220,255,0.07)" stroke="rgba(180,200,255,0.18)" stroke-width="0.7"/><path d="M370 220 L370 155 L363 155 L363 148 L356 148 L356 138 L350 128 L356 128 L358 120 L362 115 L366 110 L370 102 C372 95 378 84 380 82 C382 84 388 95 390 102 L392 110 L398 120 L404 128 L410 128 L410 138 L404 148 L397 155 L390 220" fill="rgba(6,14,24,0.97)"/><path d="M368 106 C368 106 366 98 372 88 C378 78 388 75 390 82" fill="none" stroke="rgba(93,202,165,0.2)" stroke-width="1"/><rect x="0" y="188" width="800" height="32" fill="rgba(0,20,35,0.45)"/><rect x="580" y="165" width="5" height="55" fill="rgba(150,30,10,0.5)"/><rect x="618" y="165" width="5" height="55" fill="rgba(150,30,10,0.5)"/><rect x="572" y="160" width="79" height="7" rx="2" fill="rgba(160,35,12,0.55)"/><path d="M200 80 L208 72 L218 80 L210 85 Z" fill="rgba(93,202,165,0.22)" transform="rotate(-10,208,80)"/><path d="M230 65 L238 57 L248 65 L240 70 Z" fill="rgba(93,202,165,0.18)" transform="rotate(5,238,65)"/><path d="M0 220 L0 150 L30 150 L30 138 L80 140 L105 150 L130 140 L200 150 L220 140 L260 155 L290 165 L320 175 L345 220" fill="rgba(5,12,22,0.95)"/><path d="M455 220 L480 172 L535 182 L560 168 L600 180 L645 168 L670 180 L700 155 L800 155 L800 220 Z" fill="rgba(5,12,22,0.95)"/></svg>'},
-  sapporo:{tag:'Northern Frontier · Hokkaido',svg:'<svg viewBox="0 0 800 220" xmlns="http://www.w3.org/2000/svg" style="width:100%;height:100%"><defs><linearGradient id="sk-s" x1="0" y1="0" x2="0" y2="1"><stop offset="0%" stop-color="#000410"/><stop offset="100%" stop-color="#010c1e"/></linearGradient><radialGradient id="aurora" cx="50%" cy="30%"><stop offset="0%" stop-color="#004030" stop-opacity="0.3"/><stop offset="100%" stop-color="transparent"/></radialGradient></defs><rect width="800" height="220" fill="url(#sk-s)"/><ellipse cx="400" cy="60" rx="500" ry="80" fill="url(#aurora)"/><path d="M0 40 Q200 10 400 50 Q600 90 800 30" fill="none" stroke="rgba(40,180,120,0.12)" stroke-width="20"/><circle cx="660" cy="50" r="34" fill="rgba(210,230,255,0.1)" stroke="rgba(200,220,255,0.22)" stroke-width="0.8"/><circle cx="100" cy="30" r="1.2" fill="rgba(220,235,255,0.55)"/><circle cx="250" cy="18" r="1" fill="rgba(220,235,255,0.45)"/><circle cx="380" cy="25" r="1.5" fill="rgba(220,235,255,0.5)"/><circle cx="520" cy="15" r="1" fill="rgba(220,235,255,0.45)"/><circle cx="730" cy="22" r="1.2" fill="rgba(220,235,255,0.5)"/><path d="M-20 220 L60 120 L110 150 L180 90 L250 130 L320 75 L390 110 L440 70 L500 105 L560 80 L620 110 L680 65 L740 100 L800 85 L820 220 Z" fill="rgba(8,18,35,0.92)"/><path d="M180 90 L200 105 L220 90 L205 85 L195 82 Z" fill="rgba(200,220,255,0.12)"/><path d="M320 75 L345 92 L368 76 L352 70 L338 68 Z" fill="rgba(200,220,255,0.12)"/><path d="M440 70 L462 88 L484 71 L468 64 L454 62 Z" fill="rgba(200,220,255,0.12)"/><path d="M50 175 Q55 160 50 145" fill="none" stroke="rgba(200,220,255,0.15)" stroke-width="3" stroke-linecap="round"/><path d="M65 178 Q70 160 65 142" fill="none" stroke="rgba(200,220,255,0.12)" stroke-width="2.5" stroke-linecap="round"/></svg>'}
+  tokyo:{tag:'Neon Metropolis \u00b7 Honshu',svg:'<svg viewBox="0 0 800 220" xmlns="http://www.w3.org/2000/svg" style="width:100%;height:100%"><defs><linearGradient id="sk-t" x1="0" y1="0" x2="0" y2="1"><stop offset="0%" stop-color="#0d0520"/><stop offset="100%" stop-color="#0a1628"/></linearGradient></defs><rect width="800" height="220" fill="url(#sk-t)"/><circle cx="660" cy="58" r="55" fill="rgba(201,169,110,0.06)"/><circle cx="660" cy="58" r="26" fill="none" stroke="#c9a96e" stroke-width="0.8" opacity="0.35"/><circle cx="180" cy="95" r="3" fill="#5DCAA5" opacity="0.5"/><circle cx="430" cy="75" r="3" fill="#c9a96e" opacity="0.6"/><path d="M0 220 L0 140 L20 140 L20 120 L35 120 L35 105 L42 105 L42 98 L49 98 L49 105 L56 105 L56 120 L75 120 L75 132 L90 132 L90 115 L100 115 L100 95 L108 95 L108 90 L112 50 L116 90 L116 95 L126 95 L126 115 L145 115 L145 128 L165 128 L165 108 L180 108 L180 92 L200 92 L200 108 L220 108 L220 118 L260 118 L260 100 L278 100 L278 88 L300 88 L300 95 L330 95 L330 110 L365 110 L365 92 L382 92 L382 76 L390 42 L398 76 L408 82 L425 82 L425 95 L445 95 L445 78 L460 78 L460 95 L490 95 L490 108 L510 108 L510 88 L542 88 L542 78 L555 78 L555 88 L588 88 L588 105 L615 105 L615 88 L650 88 L650 78 L668 88 L668 100 L710 100 L800 100 L800 220 Z" fill="rgba(8,14,28,0.96)"/><line x1="390" y1="42" x2="390" y2="95" stroke="rgba(201,169,110,0.25)" stroke-width="1"/></svg>'},
+  kyoto:{tag:'Ancient Capital \u00b7 Honshu',svg:'<svg viewBox="0 0 800 220" xmlns="http://www.w3.org/2000/svg" style="width:100%;height:100%"><defs><linearGradient id="sk-k" x1="0" y1="0" x2="0" y2="1"><stop offset="0%" stop-color="#1a0800"/><stop offset="60%" stop-color="#0d1a0a"/><stop offset="100%" stop-color="#071510"/></linearGradient></defs><rect width="800" height="220" fill="url(#sk-k)"/><circle cx="680" cy="55" r="22" fill="rgba(255,200,120,0.12)" stroke="rgba(255,185,80,0.25)" stroke-width="0.8"/><rect x="60" y="100" width="6" height="120" fill="rgba(180,40,10,0.55)"/><rect x="100" y="100" width="6" height="120" fill="rgba(180,40,10,0.55)"/><rect x="50" y="96" width="116" height="8" rx="2" fill="rgba(180,40,10,0.65)"/><rect x="55" y="86" width="106" height="6" rx="2" fill="rgba(180,40,10,0.55)"/><path d="M320 220 L320 170 L308 170 L316 155 L306 155 L316 138 L308 138 L315 122 L310 122 L320 105 L330 122 L325 122 L332 138 L324 138 L334 155 L324 155 L332 170 L320 170" fill="rgba(8,14,22,0.95)"/><path d="M0 160 L80 110 L160 135 L240 95 L300 118 L400 80 L480 105 L560 85 L640 108 L800 100 L800 220 L0 220 Z" fill="rgba(8,20,14,0.85)"/></svg>'},
+  osaka:{tag:'Kitchen of Japan \u00b7 Honshu',svg:'<svg viewBox="0 0 800 220" xmlns="http://www.w3.org/2000/svg" style="width:100%;height:100%"><defs><linearGradient id="sk-o" x1="0" y1="0" x2="0" y2="1"><stop offset="0%" stop-color="#001020"/><stop offset="100%" stop-color="#00141a"/></linearGradient></defs><rect width="800" height="220" fill="url(#sk-o)"/><path d="M340 220 L340 168 L332 168 L332 158 L325 158 L325 148 L318 148 L318 140 L315 140 L315 134 L322 134 L318 128 L322 122 L318 116 L328 116 L328 108 L332 104 L336 100 L340 96 L344 100 L348 104 L352 108 L352 116 L362 116 L358 122 L362 128 L358 134 L365 134 L365 140 L362 140 L362 148 L355 158 L348 168 L340 168" fill="rgba(8,20,28,0.97)"/><path d="M0 220 L0 145 L50 130 L95 125 L95 145 L120 145 L160 125 L185 145 L300 155 L320 175 L340 220" fill="rgba(6,12,20,0.95)"/><path d="M340 220 L360 175 L400 155 L460 150 L500 148 L555 128 L590 148 L655 148 L680 135 L800 135 L800 220 Z" fill="rgba(6,12,20,0.95)"/></svg>'},
+  hiroshima:{tag:'City of Peace \u00b7 Honshu',svg:'<svg viewBox="0 0 800 220" xmlns="http://www.w3.org/2000/svg" style="width:100%;height:100%"><defs><linearGradient id="sk-h" x1="0" y1="0" x2="0" y2="1"><stop offset="0%" stop-color="#000a16"/><stop offset="100%" stop-color="#02121e"/></linearGradient></defs><rect width="800" height="220" fill="url(#sk-h)"/><circle cx="640" cy="52" r="28" fill="rgba(200,220,255,0.07)" stroke="rgba(180,200,255,0.18)" stroke-width="0.7"/><path d="M370 220 L370 155 L363 155 L363 148 L356 148 L356 138 L350 128 L356 128 L358 120 L362 115 L366 110 L370 102 C372 95 378 84 380 82 C382 84 388 95 390 102 L392 110 L398 120 L404 128 L410 128 L410 138 L404 148 L397 155 L390 220" fill="rgba(6,14,24,0.97)"/><rect x="580" y="165" width="5" height="55" fill="rgba(150,30,10,0.5)"/><rect x="618" y="165" width="5" height="55" fill="rgba(150,30,10,0.5)"/><rect x="572" y="160" width="79" height="7" rx="2" fill="rgba(160,35,12,0.55)"/><path d="M0 220 L0 150 L80 140 L200 150 L260 155 L320 175 L345 220" fill="rgba(5,12,22,0.95)"/><path d="M455 220 L535 182 L600 180 L670 180 L800 155 L800 220 Z" fill="rgba(5,12,22,0.95)"/></svg>'},
+  sapporo:{tag:'Northern Frontier \u00b7 Hokkaido',svg:'<svg viewBox="0 0 800 220" xmlns="http://www.w3.org/2000/svg" style="width:100%;height:100%"><defs><linearGradient id="sk-s" x1="0" y1="0" x2="0" y2="1"><stop offset="0%" stop-color="#000410"/><stop offset="100%" stop-color="#010c1e"/></linearGradient><radialGradient id="aur" cx="50%" cy="30%"><stop offset="0%" stop-color="#004030" stop-opacity="0.3"/><stop offset="100%" stop-color="transparent"/></radialGradient></defs><rect width="800" height="220" fill="url(#sk-s)"/><ellipse cx="400" cy="60" rx="500" ry="80" fill="url(#aur)"/><path d="M0 40 Q200 10 400 50 Q600 90 800 30" fill="none" stroke="rgba(40,180,120,0.12)" stroke-width="20"/><circle cx="660" cy="50" r="34" fill="rgba(210,230,255,0.1)" stroke="rgba(200,220,255,0.22)" stroke-width="0.8"/><path d="M-20 220 L60 120 L180 90 L320 75 L440 70 L560 80 L680 65 L820 220 Z" fill="rgba(8,18,35,0.92)"/><path d="M180 90 L200 105 L220 90 L205 85 Z" fill="rgba(200,220,255,0.12)"/><path d="M320 75 L345 92 L368 76 L352 70 Z" fill="rgba(200,220,255,0.12)"/></svg>'}
 };
 
-// ── GAME DATA ── (emoji as literal characters — no \U escape)
 var P=[
   {id:'explorer',l:'Explorer',svg:'<svg viewBox="0 0 40 40" width="40" height="40" fill="none" stroke="currentColor" stroke-width="1.2"><circle cx="20" cy="20" r="16" stroke="rgba(201,169,110,0.3)"/><circle cx="20" cy="20" r="3" fill="currentColor" stroke="none"/><path d="M20 7v5M20 28v5M7 20h5M28 20h5" stroke-linecap="round"/></svg>',b:'Travel XP +20%'},
   {id:'luxury',l:'Luxury Traveler',svg:'<svg viewBox="0 0 40 40" width="40" height="40" fill="none" stroke="currentColor" stroke-width="1.2"><path d="M20 6l3 8h8l-6.5 5 2.5 8L20 22l-7 5 2.5-8L9 14h8z" stroke-linejoin="round"/><circle cx="20" cy="20" r="16" stroke="rgba(201,169,110,0.2)"/></svg>',b:'Hotel discounts'},
   {id:'budget',l:'Budget Traveler',svg:'<svg viewBox="0 0 40 40" width="40" height="40" fill="none" stroke="currentColor" stroke-width="1.2"><circle cx="20" cy="20" r="16" stroke="rgba(201,169,110,0.2)"/><circle cx="20" cy="20" r="10"/><path d="M20 14v12M17 16.5c0-1.4 1.3-2.5 3-2.5s3 1.1 3 2.5-1.3 2.5-3 2.5-3 1.1-3 2.5 1.3 2.5 3 2.5" stroke-linecap="round"/></svg>',b:'All prices -15%'},
   {id:'foodie',l:'Foodie',svg:'<svg viewBox="0 0 40 40" width="40" height="40" fill="none" stroke="currentColor" stroke-width="1.2"><circle cx="20" cy="20" r="16" stroke="rgba(201,169,110,0.2)"/><path d="M14 12v6c0 2.2 1.8 4 4 4h1v8" stroke-linecap="round"/><path d="M26 12v16" stroke-linecap="round"/></svg>',b:'Restaurant XP +25%'},
   {id:'adventure',l:'Adventure Seeker',svg:'<svg viewBox="0 0 40 40" width="40" height="40" fill="none" stroke="currentColor" stroke-width="1.2"><circle cx="20" cy="20" r="16" stroke="rgba(201,169,110,0.2)"/><path d="M20 10l-8 18h16z" stroke-linejoin="round"/></svg>',b:'Experience XP +20%'},
-  {id:'nomad',l:'Digital Nomad',svg:'<svg viewBox="0 0 40 40" width="40" height="40" fill="none" stroke="currentColor" stroke-width="1.2"><circle cx="20" cy="20" r="16" stroke="rgba(201,169,110,0.2)"/><rect x="12" y="14" width="16" height="11" rx="1.5"/><path d="M15 25v2M25 25v2M14 27h12"/></svg>',b:'Multi-city bonus'},
   {id:'eco',l:'Eco Traveler',svg:'<svg viewBox="0 0 40 40" width="40" height="40" fill="none" stroke="currentColor" stroke-width="1.2"><circle cx="20" cy="20" r="16" stroke="rgba(93,202,165,0.25)"/><path d="M20 30V18" stroke-linecap="round"/><path d="M20 18c-2-6 4-10 8-8-2 6-8 8-8 8z" stroke-linejoin="round"/></svg>',b:'Sustainability +30%'}
 ];
 
-// City emoji as literal characters (fixes the 0001f... rendering bug)
 var C=[
-  {id:'tokyo',   n:'Tokyo',     i:'🗼', d:'Neon streets, temples, ramen.',     lvl:1,cost:0,   narrative:'Shibuya Crossing pulses — neon, rain, ramen perfected over 30 years. Tokyo never sleeps.'},
-  {id:'kyoto',   n:'Kyoto',     i:'⛩',  d:'Temples, bamboo, kaiseki.',         lvl:2,cost:200, narrative:'Bamboo sways in Arashiyama. Kyoto moves at tea-ceremony speed. Geisha vanish in Gion.'},
-  {id:'osaka',   n:'Osaka',     i:'🏯', d:'Street food, nightlife, castle.',   lvl:3,cost:350, narrative:'Dotonbori explodes — giant crabs, takoyaki everywhere. The castle glows gold at sunset.'},
-  {id:'hiroshima',n:'Hiroshima',i:'🕊️', d:'Peace, shrines, okonomiyaki.',      lvl:4,cost:500, narrative:'Peace Park changes you. Miyajima — the floating torii, wandering deer. Rebuilt extraordinarily.'},
-  {id:'sapporo', n:'Sapporo',   i:'❄️', d:'Snow, onsen, seafood.',             lvl:5,cost:750, narrative:'Onsen steam in falling snow. Richer ramen, sweeter crab, colder beer. Japan\'s frontier.'}
+  {id:'tokyo',   n:'Tokyo',     i:'\uD83D\uDDFC', d:'Neon streets, temples, ramen.', lvl:1,cost:0,   narrative:'Shibuya Crossing pulses with neon light and rain. Tokyo never sleeps, and ramen perfected over 30 years waits around every corner.'},
+  {id:'kyoto',   n:'Kyoto',     i:'\u26E9',        d:'Temples, bamboo, kaiseki.',     lvl:2,cost:200, narrative:'Bamboo sways in Arashiyama. Kyoto moves at tea-ceremony speed. Geisha slip silently through cobblestone Gion alleyways at dusk.'},
+  {id:'osaka',   n:'Osaka',     i:'\uD83C\uDFEF', d:'Street food, nightlife, castle.',lvl:3,cost:350, narrative:'Dotonbori explodes with giant crabs and takoyaki. The castle burns gold at sunset. Osaka eats, drinks, and argues about food.'},
+  {id:'hiroshima',n:'Hiroshima',i:'\uD83D\uDD4A', d:'Peace, shrines, okonomiyaki.',   lvl:4,cost:500, narrative:'The Peace Park changes you. Miyajima offers a floating torii and wandering deer. A city rebuilt with extraordinary grace.'},
+  {id:'sapporo', n:'Sapporo',   i:'\u2744',        d:'Snow, onsen, seafood.',          lvl:5,cost:750, narrative:'Onsen steam rises in falling snow. Richer ramen, sweeter crab, colder beer. The frontier of Japan waits in silence.'}
 ];
 
 var H={
-  tokyo:[{n:'Shinjuku Capsule',c:60,s:2,xp:8},{n:'Shibuya Stream',c:160,s:4,xp:25},{n:'Aman Tokyo',c:350,s:5,xp:60}],
-  kyoto:[{n:'Machiya Guesthouse',c:80,s:3,xp:12},{n:'Kyoto Granbell',c:200,s:4,xp:30},{n:'Ritz-Carlton Kyoto',c:400,s:5,xp:70}],
-  osaka:[{n:'Namba Hostel',c:50,s:2,xp:8},{n:'Cross Hotel',c:180,s:4,xp:28},{n:'St. Regis Osaka',c:380,s:5,xp:65}],
-  hiroshima:[{n:'Hiroshima Guest',c:70,s:3,xp:10},{n:'Sheraton Grand',c:200,s:4,xp:32},{n:'Iwaso Ryokan',c:420,s:5,xp:75}],
-  sapporo:[{n:'Sapporo Inn',c:90,s:3,xp:12},{n:'JR Tower Nikko',c:220,s:4,xp:35},{n:'Zaborin Ryokan',c:500,s:5,xp:90}]
+  tokyo:   [{n:'Shinjuku Capsule',c:60,s:2,xp:8},{n:'Shibuya Stream Hotel',c:160,s:4,xp:25},{n:'Aman Tokyo',c:350,s:5,xp:60}],
+  kyoto:   [{n:'Machiya Guesthouse',c:80,s:3,xp:12},{n:'Kyoto Granbell Hotel',c:200,s:4,xp:30},{n:'Ritz-Carlton Kyoto',c:400,s:5,xp:70}],
+  osaka:   [{n:'Namba Hostel',c:50,s:2,xp:8},{n:'Cross Hotel Osaka',c:180,s:4,xp:28},{n:'St. Regis Osaka',c:380,s:5,xp:65}],
+  hiroshima:[{n:'Hiroshima Guesthouse',c:70,s:3,xp:10},{n:'Sheraton Grand Hiroshima',c:200,s:4,xp:32},{n:'Iwaso Ryokan',c:420,s:5,xp:75}],
+  sapporo: [{n:'Sapporo City Inn',c:90,s:3,xp:12},{n:'JR Tower Hotel Nikko',c:220,s:4,xp:35},{n:'Zaborin Ryokan',c:500,s:5,xp:90}]
 };
 var CL={
-  sj:[{n:'2-Day Explorer',c:30,xp:10,sus:15},{n:'3-Day Second Journey',c:50,xp:15,sus:25},{n:'5-Day Emerald Bundle',c:80,xp:20,sus:40}],
+  sj:[{n:'2-Day Explorer Bundle',c:30,xp:10,sus:15},{n:'3-Day Second Journey',c:50,xp:15,sus:25},{n:'5-Day Emerald Bundle',c:80,xp:20,sus:40}],
   nw:[{n:'Premium Travel Set',c:120,xp:15,sus:0},{n:'Resort Collection',c:200,xp:25,sus:0},{n:'Luxury Wardrobe',c:350,xp:40,sus:0}]
 };
 var EX={
-  tokyo:[{n:'Tsukiji Market',c:45,xp:30,rep:10,story:'Freshest fish since 1935. Uni that melts, warm tamagoyaki.',choices:['Legendary tuna (+20 XP)','Hidden vendors (+15 rep)']},{n:'Akihabara to Harajuku',c:35,xp:25,rep:8,story:'Anime chaos to cotton-candy streets. Subcultures block by block.',choices:['Themed cafe (+10 XP)','Yoyogi Park (+10 rep)']},{n:'Golden Gai Night',c:75,xp:45,rep:15,story:'Six alleys, 200 tiny bars. Bartender remembers everyone.',choices:['Secret jazz bar (+20 rep)','Sake challenge (+20 XP)']}],
-  kyoto:[{n:'Fushimi Inari Dawn',c:30,xp:35,rep:12,story:'10,000 vermillion torii gates. At dawn: you, foxes, light.',choices:['Summit shrine (+25 XP)','Photograph gates (+15 rep)']},{n:'Kaiseki in Gion',c:80,xp:50,rep:18,story:'14 courses, each a landscape. Geisha plays shamisen.',choices:['Chef story (+20 rep)','Savor silence (+25 XP)']},{n:'Arashiyama Bamboo',c:40,xp:30,rep:10,story:'Bamboo towers, monkeys overlook Kyoto.',choices:['Feed monkeys (+15 XP)','Sketch grove (+15 eco)']}],
-  osaka:[{n:'Dotonbori Crawl',c:40,xp:35,rep:12,story:'Takoyaki, okonomiyaki, gyoza. Eating while walking.',choices:['Eating challenge (+20 XP)','Learn cooking (+15 rep)']},{n:'Castle Sunset',c:50,xp:40,rep:14,story:'Gold catches sunset fire. Samurai armor. Cherry trees.',choices:['Secret tunnels (+20 XP)','Top floor view (+15 rep)']},{n:'Shinsekai Night',c:55,xp:38,rep:12,story:'Tsutenkaku Tower over 1950s neon Japan.',choices:['Tower at night (+20 XP)','Card game (+20 rep)']}],
-  hiroshima:[{n:'Peace Memorial',c:35,xp:45,rep:20,story:'Paper cranes catch light. Emerge changed.',choices:['Fold crane (+20 eco)','Write in book (+20 rep)']},{n:'Miyajima Island',c:60,xp:50,rep:18,story:'Floating torii, 800 years. Deer in shrine grounds.',choices:['Low tide walk (+25 XP)','Mt. Misen ropeway (+20 rep)']},{n:'Okonomiyaki Class',c:45,xp:35,rep:12,story:'Layered, not mixed. Grandmother technique.',choices:['Master flip (+20 XP)','Share with travelers (+15 rep)']}],
-  sapporo:[{n:'Noboribetsu Onsen',c:70,xp:45,rep:15,story:'Hell Valley steam. Mineral water. Snow mountains.',choices:['Cold plunge (+25 XP)','Meditation soak (+20 eco)']},{n:'Beer and Ramen',c:55,xp:40,rep:12,story:'Miso ramen birthplace. Eight shops in Ramen Alley.',choices:['Three styles (+20 XP)','Brewing tour (+15 rep)']},{n:'Otaru Whisky',c:80,xp:55,rep:18,story:'Gas lamps on canal. Nikka distillery secret.',choices:['Whisky flight (+25 XP)','Canal photos (+20 rep)']}]
+  tokyo:[{n:'Tsukiji Market Dawn',c:45,xp:30,rep:10,story:'The freshest fish market in the world since 1935. Uni that melts instantly, warm tamagoyaki, tuna auction echoes.',choices:['Bid at tuna auction (+20 XP)','Find hidden stalls (+15 rep)']},{n:'Akihabara to Harajuku',c:35,xp:25,rep:8,story:'From anime chaos to cotton-candy streets. Tokyo subcultures, block by block.',choices:['Visit themed cafe (+10 XP)','Explore Yoyogi Park (+10 rep)']},{n:'Golden Gai Night',c:75,xp:45,rep:15,story:'Six alleys, two hundred tiny bars. The bartender remembers every regular for decades.',choices:['Secret jazz bar (+20 rep)','Sake challenge (+20 XP)']}],
+  kyoto:[{n:'Fushimi Inari at Dawn',c:30,xp:35,rep:12,story:'Ten thousand vermillion torii gates stretching into the mountain. At dawn it is just you, the foxes, and light.',choices:['Climb to summit shrine (+25 XP)','Photograph the gates (+15 rep)']},{n:'Kaiseki Dinner in Gion',c:80,xp:50,rep:18,story:'Fourteen courses, each one a landscape. A geisha plays shamisen in an adjoining room.',choices:['Ask chef about techniques (+20 rep)','Savor every course in silence (+25 XP)']},{n:'Arashiyama Bamboo',c:40,xp:30,rep:10,story:'Bamboo towers overhead. Monkeys look down from the hillside overlooking all of Kyoto.',choices:['Feed the monkeys (+15 XP)','Sketch the grove (+15 eco)']}],
+  osaka:[{n:'Dotonbori Food Crawl',c:40,xp:35,rep:12,story:'Takoyaki, okonomiyaki, gyoza. Eating while walking is not just acceptable, it is celebrated.',choices:['Enter eating competition (+20 XP)','Learn to cook takoyaki (+15 rep)']},{n:'Osaka Castle Sunset',c:50,xp:40,rep:14,story:'The castle catches fire at sunset. Samurai armor inside. Cherry trees outside.',choices:['Explore secret tunnels (+20 XP)','Watch from top floor (+15 rep)']},{n:'Shinsekai at Night',c:55,xp:38,rep:12,story:'Tsutenkaku Tower looms over a neighborhood frozen in 1950s neon Japan.',choices:['Climb the tower at night (+20 XP)','Play cards with locals (+20 rep)']}],
+  hiroshima:[{n:'Peace Memorial Walk',c:35,xp:45,rep:20,story:'Paper cranes catch the afternoon light. You emerge from the museum changed.',choices:['Fold a thousand cranes (+20 eco)','Write in the visitors book (+20 rep)']},{n:'Miyajima Island',c:60,xp:50,rep:18,story:'The floating torii, eight hundred years old. Deer wander through the shrine grounds undisturbed.',choices:['Walk under torii at low tide (+25 XP)','Take Mt. Misen ropeway (+20 rep)']},{n:'Okonomiyaki Class',c:45,xp:35,rep:12,story:'Hiroshima style is layered, not mixed. A grandmother shows you her sixty-year technique.',choices:['Master the perfect flip (+20 XP)','Share your pancake with other travelers (+15 rep)']}],
+  sapporo:[{n:'Noboribetsu Onsen',c:70,xp:45,rep:15,story:'Hell Valley steams at the edge of the mineral baths. Snow falls on the mountain behind you.',choices:['Do the cold plunge (+25 XP)','Meditate in the steam (+20 eco)']},{n:'Ramen and Beer Tour',c:55,xp:40,rep:12,story:'Miso ramen was born here. Eight legendary shops crowd into one alley beneath the station.',choices:['Try all three ramen styles (+20 XP)','Tour the Sapporo brewery (+15 rep)']},{n:'Otaru Canal Whisky',c:80,xp:55,rep:18,story:'Gas lamps on the canal. Nikka distillery. A secret that serious whisky drinkers keep.',choices:['Do the full whisky flight (+25 XP)','Photograph at golden hour (+20 rep)']}]
 };
 var QUESTS=[
-  {id:'q-hotel',name:'Find Shelter',desc:'Book a hotel in your current city',check:function(g){return!!g.hotel_booked},reward:50,icon:'🏨'},
-  {id:'q-sj',name:'Travel Light',desc:'Equip a Second Journey™ outfit',check:function(g){return(g.sj_items_used||0)>=1},reward:75,icon:'♻'},
-  {id:'q-exp',name:'Experience Seeker',desc:'Complete 3 experiences',check:function(g){return(g.total_trips||0)>=1&&(g.travel_reputation||0)>=20},reward:100,icon:'✦'},
-  {id:'q-city2',name:'New Horizons',desc:'Travel to a second city',check:function(g){return(g.cities_visited||[]).length>=2},reward:150,icon:'🗺'},
-  {id:'q-eco50',name:'Eco Conscious',desc:'Reach 50 sustainability score',check:function(g){return(g.sustainability_score||0)>=50},reward:100,icon:'🌱'}
+  {id:'q-hotel',name:'Find Shelter',desc:'Book a hotel in your current city',check:function(g){return!!g.hotel_booked},reward:50,icon:'\uD83C\uDFE8'},
+  {id:'q-sj',name:'Travel Light',desc:'Equip a Second Journey\u2122 outfit',check:function(g){return(g.sj_items_used||0)>=1},reward:75,icon:'\u267B'},
+  {id:'q-exp',name:'Experience Seeker',desc:'Complete 3 experiences',check:function(g){return(g.total_trips||0)>=1&&(g.travel_reputation||0)>=20},reward:100,icon:'\u2756'},
+  {id:'q-city2',name:'New Horizons',desc:'Travel to a second city',check:function(g){return(g.cities_visited||[]).length>=2},reward:150,icon:'\uD83D\uDDFA'},
+  {id:'q-eco50',name:'Eco Conscious',desc:'Reach 50 sustainability score',check:function(g){return(g.sustainability_score||0)>=50},reward:100,icon:'\uD83C\uDF31'}
 ];
 var BADGES=[
-  {id:'first-trip',n:'First Trip',i:'🎒',d:'Visit your first city',ck:function(g){return g.total_trips>=1}},
-  {id:'pack-light',n:'Pack Light',i:'🧳',d:'Use Second Journey™ 3 times',ck:function(g){return(g.sj_items_used||0)>=3}},
-  {id:'sj-champion',n:'SJ Champion',i:'♻',d:'Eco score over 100',ck:function(g){return g.sustainability_score>=100}},
-  {id:'explorer3',n:'Explorer',i:'🗺',d:'Visit 3 cities',ck:function(g){return(g.cities_visited||[]).length>=3}},
-  {id:'world',n:'World Traveler',i:'🌍',d:'Visit all 5 cities',ck:function(g){return(g.cities_visited||[]).length>=5}},
-  {id:'lvl5',n:'Rising Star',i:'⭐',d:'Reach level 5',ck:function(g){return g.level>=5}},
-  {id:'lvl10',n:'Master',i:'👑',d:'Reach level 10',ck:function(g){return g.level>=10}},
-  {id:'rep100',n:'Renowned',i:'🏆',d:'Travel rep over 100',ck:function(g){return g.travel_reputation>=100}},
-  {id:'eco200',n:'Eco Warrior',i:'🌱',d:'Eco score over 200',ck:function(g){return g.sustainability_score>=200}},
-  {id:'ambassador',n:'Ambassador',i:'💎',d:'Travel rep over 200',ck:function(g){return g.travel_reputation>=200}}
+  {id:'first-trip',n:'First Trip',i:'\uD83C\uDF92',d:'Visit your first city',ck:function(g){return g.total_trips>=1}},
+  {id:'pack-light',n:'Pack Light',i:'\uD83E\uDDF3',d:'Use Second Journey\u2122 3 times',ck:function(g){return(g.sj_items_used||0)>=3}},
+  {id:'sj-champion',n:'SJ Champion',i:'\u267B',d:'Eco score over 100',ck:function(g){return g.sustainability_score>=100}},
+  {id:'explorer3',n:'Explorer',i:'\uD83D\uDDFA',d:'Visit 3 cities',ck:function(g){return(g.cities_visited||[]).length>=3}},
+  {id:'world',n:'World Traveler',i:'\uD83C\uDF0D',d:'Visit all 5 cities',ck:function(g){return(g.cities_visited||[]).length>=5}},
+  {id:'lvl5',n:'Rising Star',i:'\u2B50',d:'Reach level 5',ck:function(g){return g.level>=5}},
+  {id:'lvl10',n:'Master',i:'\uD83D\uDC51',d:'Reach level 10',ck:function(g){return g.level>=10}},
+  {id:'rep100',n:'Renowned',i:'\uD83C\uDFC6',d:'Travel rep over 100',ck:function(g){return g.travel_reputation>=100}},
+  {id:'eco200',n:'Eco Warrior',i:'\uD83C\uDF31',d:'Eco score over 200',ck:function(g){return g.sustainability_score>=200}},
+  {id:'ambassador',n:'Ambassador',i:'\uD83D\uDC8E',d:'Travel rep over 200',ck:function(g){return g.travel_reputation>=200}}
 ];
 
 // ── INIT ──
@@ -482,8 +434,8 @@ var BADGES=[
   user=r.data.session.user;
   var pr=await sb.from('profiles').select('first_name').eq('id',user.id).single();
   playerName=(pr.data&&pr.data.first_name)||user.email.split('@')[0];
-  var{data}=await sb.from('game_profiles').select('*').eq('user_id',user.id).single();
-  if(data){gp=data;showGame()}else{showOnboarding()}
+  var res=await sb.from('game_profiles').select('*').eq('user_id',user.id).single();
+  if(res.data){gp=res.data;showGame();}else{showOnboarding();}
 })();
 
 // ── ONBOARDING ──
@@ -494,26 +446,30 @@ function showOnboarding(){
     return '<div class="ob-opt" onclick="pickP(this,\''+p.id+'\')"><div class="ob-opt-emoji" style="color:var(--gold)">'+p.svg+'</div><div class="ob-opt-name">'+p.l+'</div><div class="ob-opt-bonus">'+p.b+'</div></div>';
   }).join('');
 }
-function pickP(el,id){document.querySelectorAll('#pGrid .ob-opt').forEach(function(o){o.classList.remove('sel')});el.classList.add('sel');selP=id;document.getElementById('obBtn1').disabled=false}
-function obNext(){document.getElementById('obStep1').style.display='none';document.getElementById('obStep2').style.display='block'}
+function pickP(el,id){
+  document.querySelectorAll('#pGrid .ob-opt').forEach(function(o){o.classList.remove('sel')});
+  el.classList.add('sel');selP=id;document.getElementById('obBtn1').disabled=false;
+}
+function obNext(){document.getElementById('obStep1').style.display='none';document.getElementById('obStep2').style.display='block';}
 async function beginGame(){
-  var{data,error}=await sb.from('game_profiles').insert({user_id:user.id,travel_personality:selP,avatar:{type:selP},game_bag_points:1000,level:1,experience_points:0,cities_visited:['tokyo'],current_city:'tokyo'}).select().single();
-  if(error){alert(error.message);return}
-  gp=data;document.getElementById('onboarding').style.display='none';showGame();
-  toast('Welcome to BagFree World™! You start with <em>1,000 BAG Points</em> in Tokyo.');
+  var res=await sb.from('game_profiles').insert({user_id:user.id,travel_personality:selP,avatar:{type:selP},game_bag_points:1000,level:1,experience_points:0,cities_visited:['tokyo'],current_city:'tokyo'}).select().single();
+  if(res.error){alert(res.error.message);return;}
+  gp=res.data;document.getElementById('onboarding').style.display='none';showGame();
+  toast('Welcome to BagFree World\u2122! You start with <em>1,000 BAG Points</em> in Tokyo.');
 }
 
-// ── GAME ──
-function showGame(){document.getElementById('gameUI').style.display='grid';updateAll()}
-function updateAll(){updateSB();renderBoard();renderCity();renderQuests()}
+// ── GAME BOOT ──
+function showGame(){document.getElementById('gameUI').style.display='grid';updateAll();}
+function updateAll(){updateSB();renderBoard();renderCity();renderQuests();}
 
 function updateSB(){
-  document.getElementById('sbAv').innerHTML=(P.find(function(x){return x.id===gp.travel_personality})||P[0]).svg;
+  var pers=P.find(function(x){return x.id===gp.travel_personality})||P[0];
+  document.getElementById('sbAv').innerHTML=pers.svg;
   document.getElementById('sbName').textContent=playerName;
-  document.getElementById('sbPers').textContent=(P.find(function(x){return x.id===gp.travel_personality})||{}).l||'Traveler';
+  document.getElementById('sbPers').textContent=pers.l;
   document.getElementById('sbLvl').textContent='Level '+gp.level;
   document.getElementById('sbPts').textContent=gp.game_bag_points.toLocaleString();
-  var xpNext=gp.level*500,xpCur=gp.experience_points%xpNext;
+  var xpNext=gp.level*500,xpCur=gp.experience_points%(gp.level*500);
   document.getElementById('sbXpLbl').textContent=xpCur+' / '+xpNext+' XP';
   document.getElementById('sbLvlLbl').textContent='Lvl '+gp.level;
   document.getElementById('sbXpFill').style.width=Math.min(100,xpCur/xpNext*100)+'%';
@@ -522,125 +478,89 @@ function updateSB(){
   document.getElementById('rCurator').textContent=gp.curator_score||0;
   document.getElementById('rComm').textContent=gp.community_score||0;
   var city=C.find(function(c){return c.id===gp.current_city});
-  document.getElementById('sbCityIcon').textContent=city?city.i:'🏙';
+  document.getElementById('sbCityIcon').textContent=city?city.i:'\uD83C\uDFD9';
   document.getElementById('sbCityName').textContent=city?city.n:'Unknown';
   document.getElementById('sbHotel').textContent=gp.hotel_booked||'No hotel booked';
-  document.getElementById('sbBadges').innerHTML=(gp.badges||[]).map(function(bid){var b=BADGES.find(function(x){return x.id===bid});return b?'<div class="sb-badge" title="'+b.n+'">'+b.i+'</div>':'';}).join('')||'<span style="font-size:0.6rem;color:rgba(var(--tr),0.15)">None yet</span>';
-  var cl=(gp.clothing_equipped||[]);
-  document.getElementById('rpClothing').innerHTML=cl.length?cl.map(function(c){return '<div class="rp-item"><div class="rp-item-icon">'+(c.sj?'♻':'👔')+'</div><div><div class="rp-item-name">'+c.name+'</div><div class="rp-item-detail">'+(c.sj?'Second Journey™':'New clothing')+'</div></div></div>';}).join(''):'<div class="rp-empty">No clothing yet</div>';
-  document.getElementById('rpLog').innerHTML=tripLog.length?tripLog.slice(-8).reverse().map(function(l){return '<div class="rp-item"><div class="rp-item-icon">📝</div><div><div class="rp-item-detail">'+l+'</div></div></div>';}).join(''):'<div class="rp-empty">Your journey begins...</div>';
+  document.getElementById('sbBadges').innerHTML=(gp.badges||[]).map(function(bid){
+    var b=BADGES.find(function(x){return x.id===bid});
+    return b?'<div class="sb-badge" title="'+b.n+'">'+b.i+'</div>':'';
+  }).join('')||'<span style="font-size:0.6rem;color:rgba(var(--tr),0.15)">None yet</span>';
+  var cl=gp.clothing_equipped||[];
+  document.getElementById('rpClothing').innerHTML=cl.length?cl.map(function(c){
+    return '<div class="rp-item"><div class="rp-item-icon">'+(c.sj?'\u267B':'\uD83D\uDC54')+'</div><div><div class="rp-item-name">'+c.name+'</div><div class="rp-item-detail">'+(c.sj?'Second Journey\u2122':'New clothing')+'</div></div></div>';
+  }).join(''):'<div class="rp-empty">No clothing yet</div>';
+  document.getElementById('rpLog').innerHTML=tripLog.length?tripLog.slice(-8).reverse().map(function(l){
+    return '<div class="rp-item"><div class="rp-item-icon">\uD83D\uDCDD</div><div><div class="rp-item-detail">'+l+'</div></div></div>';
+  }).join(''):'<div class="rp-empty">Your journey begins\u2026</div>';
 }
 
-// ── BOARD RENDERER (replaces Leaflet map) ──
+// ── BOARD (replaces Leaflet) ──
 function renderBoard(){
   var el=document.getElementById('gameBoard');if(!el)return;
   var vis=gp.cities_visited||[];var cur=gp.current_city;
-  var light=document.documentElement.classList.contains('light');
-
-  // City positions in the 800x270 SVG viewport
-  var POS={
-    hiroshima:{x:80, y:188},
-    osaka:    {x:220,y:168},
-    kyoto:    {x:368,y:150},
-    tokyo:    {x:535,y:130},
-    sapporo:  {x:708,y:65}
-  };
-  // Bezier path segments [from, to, ctrlX, ctrlY]
+  var POS={hiroshima:{x:80,y:188},osaka:{x:220,y:168},kyoto:{x:368,y:150},tokyo:{x:535,y:130},sapporo:{x:708,y:65}};
   var SEGS=[['hiroshima','osaka',150,175],['osaka','kyoto',294,157],['kyoto','tokyo',452,138],['tokyo','sapporo',622,93]];
-
   function isV(id){return vis.indexOf(id)>=0}
   function isC(id){return cur===id}
   function isL(id){var c=C.find(function(x){return x.id===id});return c&&gp.level<c.lvl}
   function bpt(ax,ay,cx,cy,bx,by,t){return{x:(1-t)*(1-t)*ax+2*(1-t)*t*cx+t*t*bx,y:(1-t)*(1-t)*ay+2*(1-t)*t*cy+t*t*by}}
-
   var s='<svg viewBox="0 0 800 270" xmlns="http://www.w3.org/2000/svg" style="width:100%;display:block">';
-
-  // ── Background ──
   s+='<rect width="800" height="270" fill="var(--n2)"/>';
-  // Dot grid (uses CSS vars — auto light/dark)
   for(var gx=40;gx<800;gx+=40){for(var gy=35;gy<270;gy+=40){s+='<circle cx="'+gx+'" cy="'+gy+'" r="0.8" fill="rgba(var(--gr),0.06)"/>';}}
-  // Board frame
   s+='<rect x="5" y="5" width="790" height="260" fill="none" stroke="rgba(var(--gr),0.15)" stroke-width="1"/>';
   s+='<rect x="9" y="9" width="782" height="252" fill="none" stroke="rgba(var(--gr),0.05)" stroke-width="0.5"/>';
-  // Corner ornaments
   ['5,22 5,5 22,5','778,5 795,5 795,22','5,248 5,265 22,265','778,265 795,265 795,248'].forEach(function(d){
     s+='<path d="M'+d+'" fill="none" stroke="rgba(var(--gr),0.28)" stroke-width="1.5"/>';
   });
-  // Board label
   s+='<text x="400" y="25" text-anchor="middle" font-family="Cormorant Garamond,serif" font-size="10" fill="rgba(var(--tr),0.18)" letter-spacing="5">JAPAN ROUTE</text>';
-  // Mount Fuji silhouette
   s+='<path d="M650,270 L686,196 L706,210 L724,178 L742,210 L762,196 L800,270 Z" fill="var(--n3)" opacity="0.8"/>';
   s+='<path d="M724,178 L730,186 L738,174 L746,186 Z" fill="rgba(var(--gr),0.07)"/>';
-  // Sakura motifs (top left)
   [[42,80],[105,52],[172,68]].forEach(function(p){
     s+='<circle cx="'+p[0]+'" cy="'+p[1]+'" r="1.8" fill="rgba(255,168,168,0.18)"/>';
-    s+='<circle cx="'+p[0]+'" cy="'+p[1]+'" r="4" fill="none" stroke="rgba(255,155,155,0.1)" stroke-width="0.8"/>';
   });
-
-  // ── Path segments ──
   SEGS.forEach(function(seg){
     var fp=POS[seg[0]],tp=POS[seg[1]],mx=seg[2],my=seg[3];
     var pv=isV(seg[0])&&isV(seg[1]);
-    // Track glow
     if(pv)s+='<path d="M'+fp.x+','+fp.y+' Q'+mx+','+my+' '+tp.x+','+tp.y+'" fill="none" stroke="rgba(var(--gr),0.06)" stroke-width="16"/>';
-    // Monopoly-style step squares along the path
     for(var i=1;i<8;i++){
       var pt=bpt(fp.x,fp.y,mx,my,tp.x,tp.y,i/8);
-      var sqFill=pv?'rgba(var(--gr),0.32)':'rgba(var(--gr),0.08)';
-      s+='<rect x="'+(pt.x-2.5)+'" y="'+(pt.y-2.5)+'" width="5" height="5" rx="1" fill="'+sqFill+'" transform="rotate(45 '+pt.x+' '+pt.y+')"/>';
+      var sq=pv?'rgba(var(--gr),0.32)':'rgba(var(--gr),0.08)';
+      s+='<rect x="'+(pt.x-2.5)+'" y="'+(pt.y-2.5)+'" width="5" height="5" rx="1" fill="'+sq+'" transform="rotate(45 '+pt.x+' '+pt.y+')"/>';
     }
-    // Dashed connector line
     var lc=pv?'rgba(var(--gr),0.42)':'rgba(var(--gr),0.1)';
     s+='<path d="M'+fp.x+','+fp.y+' Q'+mx+','+my+' '+tp.x+','+tp.y+'" fill="none" stroke="'+lc+'" stroke-width="1" stroke-dasharray="'+(pv?'6 3':'3 8')+'"/>';
   });
-
-  // ── City tiles ──
   C.forEach(function(city){
     var p=POS[city.id];if(!p)return;
-    var c=isC(city.id),v=isV(city.id),lk=isL(city.id);
-    var R=30;
-    // Outer glow rings for current city
+    var c=isC(city.id),v=isV(city.id),lk=isL(city.id);var R=30;
     if(c){
       s+='<circle cx="'+p.x+'" cy="'+p.y+'" r="'+(R+18)+'" fill="rgba(var(--gr),0.05)" class="city-outer-ring"/>';
       s+='<circle cx="'+p.x+'" cy="'+p.y+'" r="'+(R+10)+'" fill="rgba(var(--gr),0.09)" class="city-glow-ring"/>';
     }
-    // Drop shadow
-    s+='<circle cx="'+p.x+'" cy="'+(p.y+3)+'" r="'+(R+1)+'" fill="rgba(0,0,0,'+(light?0.08:0.25)+')" />';
-    // Tile fill & ring
+    s+='<circle cx="'+p.x+'" cy="'+(p.y+3)+'" r="'+(R+1)+'" fill="rgba(0,0,0,0.2)"/>';
     var tf=lk?'var(--n3)':c?'var(--n4)':v?'var(--n3)':'var(--n2)';
     var rc=lk?'rgba(var(--gr),0.18)':c?'rgba(var(--gr),1)':v?'rgba(var(--em2),0.75)':'rgba(var(--gr),0.28)';
-    var rw=c?2.5:1.8;
-    s+='<circle cx="'+p.x+'" cy="'+p.y+'" r="'+R+'" fill="'+tf+'" stroke="'+rc+'" stroke-width="'+rw+'"/>';
-    // Inner decoration ring
+    s+='<circle cx="'+p.x+'" cy="'+p.y+'" r="'+R+'" fill="'+tf+'" stroke="'+rc+'" stroke-width="'+(c?2.5:1.8)+'"/>';
     s+='<circle cx="'+p.x+'" cy="'+p.y+'" r="'+(R-7)+'" fill="none" stroke="'+rc+'" stroke-width="0.5" opacity="0.35"/>';
-    // City emoji
-    s+='<text x="'+p.x+'" y="'+(p.y+9)+'" text-anchor="middle" font-size="'+(lk?14:18)+'">'+( lk?'🔒':city.i )+'</text>';
-    // City name
+    s+='<text x="'+p.x+'" y="'+(p.y+9)+'" text-anchor="middle" font-size="'+(lk?14:18)+'">'+( lk?'\uD83D\uDD12':city.i )+'</text>';
     var nc=lk?'rgba(var(--tr),0.2)':c?'var(--gold)':'rgba(var(--tr),0.75)';
     s+='<text x="'+p.x+'" y="'+(p.y+R+17)+'" text-anchor="middle" font-family="Cormorant Garamond,serif" font-size="13" fill="'+nc+'" letter-spacing="0.5">'+city.n+'</text>';
-    // Badge
     var bt=c?'YOU ARE HERE':lk?'LVL '+city.lvl:city.cost>0?city.cost+' PTS':'START';
     var bw=c?76:44;
-    var bf=c?'rgba(var(--gr),0.14)':lk?'rgba(var(--tr),0.03)':'rgba(var(--gr),0.06)';
-    var btc=c?'var(--gold)':lk?'rgba(var(--tr),0.15)':'rgba(var(--tr),0.3)';
+    var bf=c?'rgba(var(--gr),0.14)':'rgba(var(--gr),0.06)';
+    var btc=c?'var(--gold)':'rgba(var(--tr),0.3)';
     s+='<rect x="'+(p.x-bw/2)+'" y="'+(p.y+R+21)+'" width="'+bw+'" height="13" rx="2" fill="'+bf+'"/>';
     s+='<text x="'+p.x+'" y="'+(p.y+R+30)+'" text-anchor="middle" font-family="DM Sans,sans-serif" font-size="7" font-weight="700" fill="'+btc+'" letter-spacing="1.5">'+bt+'</text>';
-    // Click overlay
     if(!lk)s+='<circle cx="'+p.x+'" cy="'+p.y+'" r="'+(R+8)+'" fill="transparent" style="cursor:pointer" onclick="travelTo(\''+city.id+'\')" />';
   });
-
-  // ── Player token (above current city tile) ──
-  var cp=POS[cur]||POS.tokyo;
-  var ty=cp.y-46;
+  var cp=POS[cur]||POS.tokyo;var ty=cp.y-46;
   s+='<g class="player-token">';
   s+='<circle cx="'+cp.x+'" cy="'+ty+'" r="13" fill="rgba(var(--gr),0.14)" class="token-outer"/>';
   s+='<circle cx="'+cp.x+'" cy="'+ty+'" r="8" fill="var(--gold)"/>';
   s+='<circle cx="'+cp.x+'" cy="'+ty+'" r="3.5" fill="rgba(var(--tr),0.9)"/>';
   s+='<circle cx="'+(cp.x-2)+'" cy="'+(ty-2)+'" r="1.5" fill="rgba(255,255,255,0.55)"/>';
-  // Connector
   s+='<line x1="'+cp.x+'" y1="'+(ty+13)+'" x2="'+cp.x+'" y2="'+(cp.y-33)+'" stroke="var(--gold)" stroke-width="1" stroke-dasharray="3 2" opacity="0.35"/>';
   s+='</g>';
-
   s+='</svg>';
   el.innerHTML=s;
 }
@@ -651,47 +571,43 @@ function renderCity(){
   if(!city){city=C[0];gp.current_city=city.id;save();}
   var hotels=H[gp.current_city]||[];var exps=EX[gp.current_city]||[];
   var hero=CITY_HEROES[gp.current_city]||CITY_HEROES.tokyo;
-  function stars(n){return '<span class="gc-tag-stars">'+'★'.repeat(n)+'<span style="opacity:0.22">'+'☆'.repeat(5-n)+'</span></span>'}
+  function stars(n){return '<span class="gc-tag-stars">'+'\u2605'.repeat(n)+'<span style="opacity:0.22">'+'\u2606'.repeat(5-n)+'</span></span>';}
   var h='';
-  // Hero banner
-  h+='<div class="city-hero"><div class="city-hero-bg">'+hero.svg+'</div><div class="city-hero-overlay"></div><div class="city-hero-content"><div class="city-hero-eyebrow">'+hero.tag+'</div><div class="city-hero-name">'+city.n+'</div><div class="city-hero-desc">'+city.narrative+'</div></div>';
-  if(gp.level<city.lvl)h+='<div class="city-hero-lv">🔒 Unlock at Level '+city.lvl+'</div>';
+  h+='<div class="city-hero"><div class="city-hero-bg">'+hero.svg+'</div><div class="city-hero-overlay"></div>';
+  h+='<div class="city-hero-content"><div class="city-hero-eyebrow">'+hero.tag+'</div><div class="city-hero-name">'+city.n+'</div><div class="city-hero-desc">'+city.narrative+'</div></div>';
+  if(gp.level<city.lvl)h+='<div class="city-hero-lv">\uD83D\uDD12 Unlock at Level '+city.lvl+'</div>';
   h+='</div>';
   h+='<div class="content-inner">';
-  // Hotels
   h+='<div class="section-label">Hotels</div><div class="cards-grid">';
   hotels.forEach(function(ht){
     var booked=gp.hotel_booked===ht.n;
-    h+='<div class="gc'+(booked?' booked':'')+'">';
-    if(booked)h+='<div class="gc-booked-badge">✓ Checked In</div>';
-    h+='<div class="gc-visual gc-visual-hotel"><div class="gc-visual-icon">🏨</div><div class="gc-visual-line"></div></div>';
+    h+='<div class="gc'+(booked?' booked':'') +'">';
+    if(booked)h+='<div class="gc-booked-badge">\u2713 Checked In</div>';
+    h+='<div class="gc-visual gc-visual-hotel"><div class="gc-visual-icon">\uD83C\uDFE8</div><div class="gc-visual-line"></div></div>';
     h+='<div class="gc-body"><div class="gc-header"><div class="gc-title">'+ht.n+'</div><div class="gc-price">'+ht.c+' pts</div></div>';
     h+='<div class="gc-tags">'+stars(ht.s)+'<span class="gc-tag gc-tag-xp">+'+ht.xp+' XP</span></div>';
-    if(!booked)h+='<button class="gc-btn gc-btn-gold" onclick="bookHotel(\''+ht.n.replace(/'/g,"\\'")+'\','+ht.c+','+ht.xp+')"'+(gp.game_bag_points<ht.c?' disabled':'')+'>Book Hotel</button>';
+    if(!booked)h+='<button class="gc-btn gc-btn-gold" onclick="bookHotel(\''+ht.n.replace(/'/g,"\\'")+'\',' +ht.c+','+ht.xp+')"'+(gp.game_bag_points<ht.c?' disabled':'')+'>Book Hotel</button>';
     h+='</div></div>';
   });
   h+='</div>';
-  // Second Journey
-  h+='<div class="section-label">♻ Second Journey™ Clothing</div><div class="cards-grid">';
+  h+='<div class="section-label">\u267B Second Journey\u2122 Clothing</div><div class="cards-grid">';
   CL.sj.forEach(function(c){
-    h+='<div class="gc"><div class="gc-visual gc-visual-sj"><div class="gc-visual-icon">♻</div><div class="gc-visual-line"></div></div>';
+    h+='<div class="gc"><div class="gc-visual gc-visual-sj"><div class="gc-visual-icon">\u267B</div><div class="gc-visual-line"></div></div>';
     h+='<div class="gc-body"><div class="gc-header"><div class="gc-title">'+c.n+'</div><div class="gc-price">'+c.c+' pts</div></div>';
     h+='<div class="gc-tags"><span class="gc-tag gc-tag-sj">Sustainable</span><span class="gc-tag gc-tag-xp">+'+c.xp+' XP</span><span class="gc-tag gc-tag-sj">+'+c.sus+' eco</span></div>';
     h+='<div class="gc-desc">Professionally cleaned, quality-checked. Each item reused by future travelers.</div>';
     h+='<button class="gc-btn gc-btn-em" onclick="equipClothing(1,\''+c.n.replace(/'/g,"\\'")+'\','+c.c+','+c.xp+','+c.sus+')"'+(gp.game_bag_points<c.c?' disabled':'')+'>Wear Second Journey</button></div></div>';
   });
   h+='</div>';
-  // New Clothing
   h+='<div class="section-label">New Clothing</div><div class="cards-grid">';
   CL.nw.forEach(function(c){
-    h+='<div class="gc"><div class="gc-visual gc-visual-new"><div class="gc-visual-icon">👔</div><div class="gc-visual-line"></div></div>';
+    h+='<div class="gc"><div class="gc-visual gc-visual-new"><div class="gc-visual-icon">\uD83D\uDC54</div><div class="gc-visual-line"></div></div>';
     h+='<div class="gc-body"><div class="gc-header"><div class="gc-title">'+c.n+'</div><div class="gc-price">'+c.c+' pts</div></div>';
     h+='<div class="gc-tags"><span class="gc-tag gc-tag-xp">+'+c.xp+' XP</span></div>';
     h+='<div class="gc-desc">Brand new designer travel clothing. Premium quality, curated for the journey.</div>';
     h+='<button class="gc-btn gc-btn-gold" onclick="equipClothing(0,\''+c.n.replace(/'/g,"\\'")+'\','+c.c+','+c.xp+',0)"'+(gp.game_bag_points<c.c?' disabled':'')+'>Buy &amp; Wear</button></div></div>';
   });
   h+='</div>';
-  // Experiences
   h+='<div class="section-label">Experiences</div>';
   exps.forEach(function(e,idx){
     var ca=gp.game_bag_points>=e.c;
@@ -704,7 +620,7 @@ function renderCity(){
       h+='<div class="decision-opt"'+(ca?'':' style="opacity:0.22;pointer-events:none"')+' onclick="doExp(\''+e.n.replace(/'/g,"\\'")+'\','+e.c+','+e.xp+','+e.rep+','+i+')">';
       h+='<div class="decision-opt-num">Option '+(i===0?'A':'B')+'</div>';
       h+='<div class="decision-opt-label">'+ch+'</div>';
-      h+='<div class="decision-opt-arrow">›</div></div>';
+      h+='<div class="decision-opt-arrow">\u203A</div></div>';
     });
     h+='</div></div>';
   });
@@ -713,4 +629,118 @@ function renderCity(){
 }
 
 // ── ACTIONS ──
-async function bookHotel(n,c,xp)
+async function bookHotel(n,c,xp){
+  if(gp.game_bag_points<c)return;
+  gp.game_bag_points-=c;gp.experience_points+=xp;gp.hotel_booked=n;gp.travel_reputation+=5;
+  tripLog.push('Checked into '+n);checkLevel();checkBadges();await save();updateAll();
+  toast('Checked into <em>'+n+'</em>! \u2212'+c+' pts, +'+xp+' XP');
+}
+async function equipClothing(isSJ,n,c,xp,sus){
+  if(gp.game_bag_points<c)return;
+  gp.game_bag_points-=c;gp.experience_points+=xp;
+  if(isSJ){gp.sustainability_score=(gp.sustainability_score||0)+sus;gp.sj_items_used=(gp.sj_items_used||0)+1;}
+  gp.clothing_equipped=(gp.clothing_equipped||[]).concat([{name:n,sj:!!isSJ}]);
+  tripLog.push((isSJ?'\u267B ':'')+'Equipped '+n);checkLevel();checkBadges();await save();updateAll();
+  toast((isSJ?'\u267B ':'')+'Wearing <em>'+n+'</em>! \u2212'+c+' pts, +'+xp+' XP'+(sus?' <span class="em-text">+'+sus+' eco</span>':''));
+}
+async function doExp(n,c,xp,rep,choice){
+  if(gp.game_bag_points<c)return;
+  gp.game_bag_points-=c;
+  var bXP=choice===1?10:5,bRep=choice===0?5:0;
+  gp.experience_points+=xp+bXP;gp.travel_reputation+=rep+bRep;
+  if(choice===1)gp.sustainability_score=(gp.sustainability_score||0)+5;
+  tripLog.push('Experienced: '+n);checkLevel();checkBadges();await save();updateAll();
+  toast('Completed <em>'+n+'</em>! \u2212'+c+' pts, +'+(xp+bXP)+' XP, +'+(rep+bRep)+' rep');
+}
+async function travelTo(cityId){
+  var city=C.find(function(c){return c.id===cityId});if(!city)return;
+  if(gp.level<city.lvl){toast('\uD83D\uDD12 Need <em>Level '+city.lvl+'</em> to visit '+city.n);return;}
+  if(gp.game_bag_points<city.cost){toast('Not enough points! Need <em>'+city.cost+'</em>');return;}
+  if(gp.current_city===cityId){return;}
+  gp.game_bag_points-=city.cost;gp.current_city=cityId;gp.hotel_booked=null;
+  gp.total_trips=(gp.total_trips||0)+1;gp.experience_points+=50;gp.travel_reputation+=10;
+  if((gp.cities_visited||[]).indexOf(cityId)<0)gp.cities_visited=(gp.cities_visited||[]).concat([cityId]);
+  tripLog.push('\u2708 Traveled to '+city.n);checkLevel();checkBadges();await save();updateAll();
+  showView('city',document.querySelector('.tab'));
+  toast('\u2708 Arrived in <em>'+city.n+'</em>! +50 XP, +10 rep');
+}
+function checkLevel(){
+  var nl=Math.floor(gp.experience_points/500)+1;
+  if(nl>gp.level){gp.level=nl;confetti();setTimeout(function(){toast('\uD83C\uDF89 <em>Level '+nl+'!</em> New cities unlocked!')},500);}
+}
+function checkBadges(){
+  BADGES.forEach(function(b){
+    if((gp.badges||[]).indexOf(b.id)<0&&b.ck(gp)){
+      gp.badges=(gp.badges||[]).concat([b.id]);confetti();
+      setTimeout(function(){toast('\uD83C\uDFC6 Badge: <em>'+b.n+'</em> '+b.i)},800);
+    }
+  });
+}
+async function save(){
+  await sb.from('game_profiles').update({
+    game_bag_points:gp.game_bag_points,level:gp.level,experience_points:gp.experience_points,
+    travel_reputation:gp.travel_reputation,sustainability_score:gp.sustainability_score,
+    curator_score:gp.curator_score,community_score:gp.community_score,
+    current_city:gp.current_city,hotel_booked:gp.hotel_booked,cities_visited:gp.cities_visited,
+    badges:gp.badges,total_trips:gp.total_trips,sj_items_used:gp.sj_items_used,
+    clothing_equipped:gp.clothing_equipped,avatar:gp.avatar,
+    updated_at:new Date().toISOString()
+  }).eq('user_id',user.id);
+}
+
+// ── QUESTS ──
+function renderQuests(){
+  document.getElementById('sbQuests').innerHTML=QUESTS.map(function(q){
+    var done=q.check(gp);
+    return '<div class="sb-quest'+(done?' complete':'')+'"><div class="sb-quest-name">'+q.icon+' '+q.name+'</div><div class="sb-quest-desc">'+q.desc+'</div><div class="sb-quest-prog"><div class="sb-quest-prog-fill" style="width:'+(done?100:40)+'%"></div></div><div class="sb-quest-reward">'+(done?'\u2713 Complete':'Reward: +'+q.reward+' pts')+'</div></div>';
+  }).join('');
+}
+
+// ── VIEWS ──
+function showView(id,btn){
+  document.querySelectorAll('.view').forEach(function(v){v.classList.remove('active')});
+  document.querySelectorAll('.tab').forEach(function(t){t.classList.remove('active')});
+  var vId='v'+id.charAt(0).toUpperCase()+id.slice(1);
+  var el=document.getElementById(vId);if(el)el.classList.add('active');
+  if(btn)btn.classList.add('active');
+  if(id==='badges')renderBadgesView();
+  if(id==='lb')renderLB();
+}
+function renderBadgesView(){
+  document.getElementById('badgesPanel').innerHTML='<div style="font-family:var(--fd);font-size:2rem;font-weight:300;color:var(--wh);margin-bottom:0.3rem">Badges &amp; Achievements</div><div style="font-size:0.55rem;letter-spacing:3px;text-transform:uppercase;color:rgba(var(--tr),0.2);margin-bottom:1.5rem">'+(gp.badges||[]).length+' of '+BADGES.length+' earned</div><div class="badge-grid">'+BADGES.map(function(b){var earned=(gp.badges||[]).indexOf(b.id)>=0;return '<div class="bg-card'+(earned?' earned':' locked')+'"><div class="bg-icon">'+b.i+'</div><div class="bg-name">'+b.n+'</div><div class="bg-desc">'+b.d+'</div></div>';}).join('')+'</div>';
+}
+function renderLB(){
+  document.getElementById('lbPanel').innerHTML='<div style="font-family:var(--fd);font-size:2rem;font-weight:300;color:var(--wh);margin-bottom:0.3rem">Leaderboard</div><div style="font-size:0.55rem;letter-spacing:3px;text-transform:uppercase;color:rgba(var(--tr),0.2);margin-bottom:1.5rem">Global Rankings</div><div class="lb-row me"><div class="lb-rank r1">#1</div><div class="lb-info"><div class="lb-name">'+playerName+'</div><div class="lb-detail">Level '+gp.level+' \u00b7 '+(gp.cities_visited||[]).length+' cities \u00b7 '+(gp.badges||[]).length+' badges</div></div><div class="lb-val">'+(gp.travel_reputation||0)+' rep</div></div><div style="text-align:center;padding:2.5rem;color:rgba(var(--tr),0.18);font-size:0.85rem;font-family:var(--fd);font-style:italic">Invite friends to compete on the leaderboard</div>';
+}
+
+// ── THEME ──
+function toggleGameTheme(){
+  var l=document.documentElement.classList.contains('light');
+  if(l)document.documentElement.classList.remove('light');else document.documentElement.classList.add('light');
+  try{localStorage.setItem('bf-game-theme',l?'dark':'light');}catch(e){}
+  if(gp)renderBoard();
+}
+try{if(localStorage.getItem('bf-game-theme')==='light')document.documentElement.classList.add('light');}catch(e){}
+
+// ── EFFECTS ──
+function toast(html){
+  var t=document.getElementById('toast');t.innerHTML=html;t.classList.add('show');
+  clearTimeout(t._t);t._t=setTimeout(function(){t.classList.remove('show')},3500);
+}
+function confetti(){
+  var c=document.getElementById('confetti');
+  var colors=['#c9a96e','#5DCAA5','#d4b87a','#fdfcf8','#a8884a'];
+  for(var i=0;i<45;i++){
+    var d=document.createElement('div');d.className='confetti';
+    d.style.left=Math.random()*100+'%';
+    d.style.background=colors[Math.floor(Math.random()*colors.length)];
+    d.style.animationDelay=Math.random()*0.9+'s';
+    d.style.width=(4+Math.random()*8)+'px';d.style.height=d.style.width;
+    d.style.borderRadius=Math.random()>0.5?'50%':'0';
+    c.appendChild(d);
+  }
+  setTimeout(function(){c.innerHTML='';},3000);
+}
+</script>
+</body>
+</html>
