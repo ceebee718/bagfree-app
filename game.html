@@ -466,6 +466,7 @@ function updateSB(){
 // ── CITY ──
 function renderCity(){
   var city=C.find(function(c){return c.id===gp.current_city});
+  if(!city){city=C[0];gp.current_city=city.id;save();}
   var hotels=H[gp.current_city]||[];var exps=EX[gp.current_city]||[];
   var h='<div class="narrative"><div class="narrative-text">'+city.narrative+'</div></div>';
   // Hotels
