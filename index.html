@@ -668,8 +668,8 @@ html.light .main{background:var(--bg)}
 /* network-role badges: hardcoded cream text (rgba 253 252 248 .5) is invisible on white */
 html.light .network-role{color:var(--muted);border-color:rgba(0,0,0,0.15)}
 html.light .network-role:hover{border-color:var(--gold);color:var(--gold)}
-/* widget-network: faint gold border needs more contrast on light bg */
-html.light .widget-network{border-color:rgba(0,0,0,0.1);background:rgba(201,169,110,0.04)}
+/* widget-network: use white card bg in light mode (overrides dark gradient) */
+html.light .widget-network{border-color:rgba(0,0,0,0.1);background:var(--card)}
 /* tile image dark overlay gradients look harsh on light-mode white cards */
 html.light .tile-image::before{background:linear-gradient(180deg,var(--card) 0%,rgba(0,0,0,0.07) 35%,transparent 70%)}
 html.light .tile-image::after{background:linear-gradient(180deg,transparent 55%,rgba(0,0,0,0.18) 100%)}
