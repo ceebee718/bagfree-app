@@ -1,0 +1,894 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+<meta charset="UTF-8">
+<meta name="viewport" content="width=device-width, initial-scale=1, maximum-scale=1, user-scalable=no, viewport-fit=cover">
+<title>Second Journey™ — BagFree</title>
+<meta name="description" content="Give travel essentials a second journey. A premium sustainability marketplace powered by the BagFree community.">
+<meta name="theme-color" content="#0d1a32">
+<link rel="preconnect" href="https://fonts.googleapis.com">
+<link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+<link href="https://fonts.googleapis.com/css2?family=Cormorant+Garamond:ital,wght@0,300;0,400;0,500;0,600;1,400&family=DM+Sans:wght@300;400;500;600&display=swap" rel="stylesheet">
+<style>
+*{margin:0;padding:0;box-sizing:border-box}
+:root{--bg:#0d1a32;--bg2:#111f3a;--card:#162240;--card-h:#1c2a48;--white:#f8f7f4;--muted:#8a8fa0;--faint:#555a6e;--gold:#c9a96e;--gold-b:#d4b87a;--gold-d:rgba(201,169,110,0.12);--emerald:#50C878;--em-d:rgba(80,200,120,0.1);--sage:#7fb77e;--sage-d:rgba(127,183,126,0.12);--border:rgba(255,255,255,0.06);--bs:rgba(255,255,255,0.04);--ff-d:'Cormorant Garamond',Georgia,serif;--ff-b:'DM Sans','Helvetica Neue',sans-serif;--r:14px}
+html{background:var(--bg);color:var(--white);font-family:var(--ff-b);font-weight:300;-webkit-font-smoothing:antialiased}
+a{color:var(--gold);text-decoration:none}
+
+.nav{position:sticky;top:0;z-index:50;backdrop-filter:blur(18px);background:rgba(13,26,50,0.88);border-bottom:1px solid var(--border);padding:0.9rem 2rem;display:flex;align-items:center;justify-content:space-between}
+.nav-logo{font-family:var(--ff-d);font-size:1.3rem;font-weight:500;letter-spacing:1px;color:var(--gold)}
+.nav-links{display:flex;gap:1.6rem;align-items:center}
+.nav-links a{font-size:0.72rem;letter-spacing:1.5px;text-transform:uppercase;color:var(--muted);font-weight:500;transition:color 0.2s}
+.nav-links a:hover,.nav-links a.active{color:var(--gold)}
+
+.sec{padding:3rem 2rem;max-width:1200px;margin:0 auto}
+.sec-label{font-size:0.56rem;letter-spacing:4.5px;text-transform:uppercase;color:var(--sage);font-weight:600;margin-bottom:0.5rem}
+.sec-title{font-family:var(--ff-d);font-size:2rem;font-weight:400;margin-bottom:0.35rem}
+.sec-sub{color:var(--muted);font-size:0.9rem;margin-bottom:2rem;max-width:650px;line-height:1.6}
+.sec-head{display:flex;justify-content:space-between;align-items:flex-end;margin-bottom:1.5rem;flex-wrap:wrap;gap:0.5rem}
+
+/* Hero */
+.hero{text-align:center;padding:5rem 2rem 3rem;position:relative;overflow:hidden}
+.hero::before{content:'';position:absolute;top:-40%;left:50%;transform:translateX(-50%);width:900px;height:900px;background:radial-gradient(ellipse,rgba(127,183,126,0.06) 0%,rgba(201,169,110,0.04) 30%,transparent 60%);pointer-events:none}
+.hero-ey{font-size:0.58rem;letter-spacing:5px;text-transform:uppercase;color:var(--sage);font-weight:600;margin-bottom:1.3rem;display:inline-flex;align-items:center;gap:0.6rem}
+.hero-ey::before,.hero-ey::after{content:'';width:28px;height:1px;background:var(--sage);opacity:0.5}
+.hero h1{font-family:var(--ff-d);font-size:clamp(2.4rem,5vw,3.6rem);font-weight:300;line-height:1.12;margin-bottom:1rem}
+.hero h1 em{font-style:italic;color:var(--sage)}
+.hero-p{color:var(--muted);font-size:1rem;max-width:620px;margin:0 auto 2rem;line-height:1.65}
+.hero-btns{display:flex;gap:0.8rem;justify-content:center;flex-wrap:wrap}
+.btn{padding:0.85rem 2rem;border-radius:30px;font-size:0.74rem;font-weight:600;letter-spacing:1.5px;text-transform:uppercase;cursor:pointer;transition:all 0.25s;border:0;font-family:var(--ff-b);text-decoration:none;display:inline-flex;align-items:center;gap:0.5rem}
+.btn-sage{background:var(--sage);color:var(--bg)}
+.btn-sage:hover{background:#6da66c;transform:translateY(-2px)}
+.btn-outline{background:transparent;border:1px solid var(--border);color:var(--muted)}
+.btn-outline:hover{border-color:rgba(127,183,126,0.3);color:var(--sage)}
+.btn-gold{background:var(--gold);color:var(--bg)}
+.btn-gold:hover{background:var(--gold-b);transform:translateY(-2px)}
+
+/* Stats */
+.stats{display:flex;justify-content:center;gap:2.5rem;margin:2.5rem 0;flex-wrap:wrap}
+.stat{text-align:center}
+.stat-v{font-size:1.8rem;font-weight:600;color:var(--white)}
+.stat-v span{color:var(--sage)}
+.stat-l{font-size:0.6rem;letter-spacing:1.5px;text-transform:uppercase;color:var(--faint);margin-top:0.1rem}
+
+/* Categories */
+.cats{display:flex;gap:0.7rem;overflow-x:auto;padding-bottom:0.5rem;-webkit-overflow-scrolling:touch}
+.cat{flex:0 0 auto;background:var(--card);border:1px solid var(--border);border-radius:12px;padding:1rem 1.2rem;text-align:center;cursor:pointer;transition:all 0.25s;min-width:120px}
+.cat:hover{border-color:rgba(127,183,126,0.25);transform:translateY(-2px)}
+.cat-icon{margin-bottom:0.35rem}
+.cat-name{font-family:var(--ff-d);font-size:0.9rem;font-weight:500}
+.cat-count{font-size:0.6rem;color:var(--faint);margin-top:0.1rem}
+
+/* Filters */
+.filters{display:flex;gap:0.5rem;flex-wrap:wrap;margin-bottom:1.5rem}
+.filter{font-size:0.68rem;letter-spacing:0.5px;padding:0.4rem 0.9rem;border-radius:20px;border:1px solid var(--border);background:transparent;color:var(--muted);cursor:pointer;transition:all 0.2s;font-family:var(--ff-b)}
+.filter:hover,.filter.active{border-color:rgba(127,183,126,0.3);color:var(--sage);background:var(--sage-d)}
+
+/* Item Cards */
+.items{display:grid;grid-template-columns:repeat(auto-fill,minmax(260px,1fr));gap:1.2rem}
+.item{background:var(--card);border:1px solid var(--border);border-radius:var(--r);overflow:hidden;transition:all 0.3s;display:flex;flex-direction:column}
+.item:hover{transform:translateY(-3px);box-shadow:0 16px 40px rgba(0,0,0,0.35)}
+.item-img{width:100%;height:200px;object-fit:cover;display:block;background:var(--bg2)}
+.item-img-wrap{position:relative}
+.item-badge{position:absolute;top:10px;left:10px;font-size:0.55rem;letter-spacing:1px;text-transform:uppercase;padding:0.25rem 0.55rem;border-radius:5px;font-weight:600;backdrop-filter:blur(6px)}
+.item-badge.verified{background:rgba(127,183,126,0.85);color:var(--bg)}
+.item-badge.hotel{background:rgba(201,169,110,0.85);color:var(--bg)}
+.item-badge.new{background:rgba(100,180,255,0.85);color:var(--bg)}
+.item-cond{position:absolute;bottom:10px;right:10px;font-size:0.6rem;background:rgba(0,0,0,0.6);color:var(--white);padding:0.2rem 0.5rem;border-radius:4px;backdrop-filter:blur(4px)}
+.item-body{padding:1.2rem;flex:1;display:flex;flex-direction:column}
+.item-cat{font-size:0.6rem;letter-spacing:1.5px;text-transform:uppercase;color:var(--sage);font-weight:600;margin-bottom:0.3rem}
+.item-title{font-family:var(--ff-d);font-size:1.1rem;font-weight:500;margin-bottom:0.3rem}
+.item-meta{font-size:0.72rem;color:var(--faint);margin-bottom:0.6rem;display:flex;gap:0.6rem;flex-wrap:wrap}
+.item-desc{font-size:0.8rem;color:var(--muted);line-height:1.45;margin-bottom:0.8rem;flex:1}
+.item-foot{display:flex;align-items:center;justify-content:space-between;padding-top:0.8rem;border-top:1px solid var(--bs)}
+.item-bag{display:flex;align-items:center;gap:0.35rem;font-size:1rem;font-weight:600;color:var(--gold)}
+.item-bag svg{width:16px;height:16px}
+.item-bag span{font-size:0.68rem;font-weight:300;color:var(--faint)}
+.item-retail{font-size:0.7rem;color:var(--faint);text-decoration:line-through}
+.item-claim{padding:0.5rem 1rem;border-radius:8px;font-size:0.65rem;font-weight:600;letter-spacing:1px;text-transform:uppercase;cursor:pointer;transition:all 0.2s;border:0;background:var(--sage);color:var(--bg);font-family:var(--ff-b)}
+.item-claim:hover{background:#6da66c}
+
+/* How it works */
+.how-grid{display:grid;grid-template-columns:repeat(auto-fit,minmax(220px,1fr));gap:1.2rem}
+.how-card{text-align:center;padding:1.5rem}
+.how-num{width:36px;height:36px;border-radius:50%;background:var(--sage-d);border:1px solid rgba(127,183,126,0.2);display:flex;align-items:center;justify-content:center;margin:0 auto 0.8rem;font-size:0.85rem;font-weight:600;color:var(--sage)}
+.how-title{font-family:var(--ff-d);font-size:1.05rem;font-weight:500;margin-bottom:0.3rem}
+.how-desc{font-size:0.78rem;color:var(--muted);line-height:1.5}
+
+/* Donate form */
+.donate-card{background:var(--card);border:1px solid var(--border);border-radius:var(--r);padding:2rem;max-width:700px}
+.form-row{margin-bottom:1rem}
+.form-label{font-size:0.68rem;letter-spacing:1px;text-transform:uppercase;color:var(--muted);font-weight:500;margin-bottom:0.35rem;display:block}
+.form-input,.form-select,.form-textarea{width:100%;background:rgba(255,255,255,0.03);border:1px solid var(--border);border-radius:8px;padding:0.65rem 0.85rem;color:var(--white);font-family:var(--ff-b);font-size:0.85rem;font-weight:300;outline:none;transition:border-color 0.2s}
+.form-input:focus,.form-select:focus,.form-textarea:focus{border-color:rgba(127,183,126,0.4)}
+.form-select{appearance:none}
+.form-select option{background:var(--bg)}
+.form-textarea{min-height:80px;resize:vertical}
+.form-grid{display:grid;grid-template-columns:1fr 1fr;gap:0.8rem}
+
+/* Partners */
+.partners{display:grid;grid-template-columns:repeat(auto-fill,minmax(220px,1fr));gap:1rem}
+.partner{background:var(--card);border:1px solid var(--border);border-radius:var(--r);padding:1.3rem;display:flex;align-items:center;gap:1rem;transition:all 0.2s}
+.partner:hover{border-color:rgba(127,183,126,0.2)}
+.partner-logo{width:48px;height:48px;border-radius:10px;background:var(--bg2);display:flex;align-items:center;justify-content:center;font-size:1.2rem;flex-shrink:0}
+.partner-name{font-family:var(--ff-d);font-size:1rem;font-weight:500}
+.partner-type{font-size:0.62rem;color:var(--sage);letter-spacing:1px;text-transform:uppercase;font-weight:500}
+.partner-items{font-size:0.68rem;color:var(--faint)}
+
+/* Badges */
+.badges{display:flex;gap:1rem;flex-wrap:wrap;justify-content:center}
+.badge-card{background:var(--card);border:1px solid var(--border);border-radius:var(--r);padding:1.3rem 1.5rem;text-align:center;min-width:180px;transition:all 0.2s}
+.badge-card:hover{transform:translateY(-2px)}
+.badge-icon{font-size:1.4rem;margin-bottom:0.5rem}
+.badge-name{font-family:var(--ff-d);font-size:0.95rem;font-weight:500;margin-bottom:0.15rem}
+.badge-req{font-size:0.65rem;color:var(--faint)}
+
+/* Leaderboard */
+.lb{width:100%;border-collapse:collapse;background:var(--card);border:1px solid var(--border);border-radius:var(--r);overflow:hidden}
+.lb th{padding:0.7rem 1rem;text-align:left;font-size:0.62rem;letter-spacing:1.5px;text-transform:uppercase;color:var(--muted);background:rgba(255,255,255,0.02);font-weight:600}
+.lb td{padding:0.7rem 1rem;border-top:1px solid var(--bs);font-size:0.85rem}
+.lb-rank{font-weight:600;width:40px}
+.lb-rank.g{color:var(--gold)}
+.lb-rank.s{color:#c0c0c0}
+.lb-rank.b{color:#cd7f32}
+.lb-name{font-weight:400}
+.lb-type{font-size:0.62rem;color:var(--sage);background:var(--sage-d);padding:0.15rem 0.4rem;border-radius:3px}
+.lb-val{font-weight:600;color:var(--sage)}
+
+/* Impact */
+.impact{position:relative;padding:3rem 2rem;text-align:center;overflow:hidden}
+.impact::before{content:'';position:absolute;inset:0;background:linear-gradient(135deg,rgba(127,183,126,0.06),rgba(201,169,110,0.03),transparent);border-radius:20px;pointer-events:none}
+.impact::after{content:'';position:absolute;inset:0;border:1px solid rgba(127,183,126,0.12);border-radius:20px;pointer-events:none}
+
+.ft{text-align:center;padding:2.5rem 2rem;border-top:1px solid var(--border);color:var(--faint);font-size:0.75rem}
+
+@keyframes fadeUp{from{opacity:0;transform:translateY(16px)}to{opacity:1;transform:none}}
+.item,.how-card,.partner,.badge-card{animation:fadeUp 0.5s ease both}
+
+@media(max-width:768px){
+  .hero{padding:3.5rem 1.2rem 2.5rem}
+  .sec{padding:2rem 1.2rem}
+  .items{grid-template-columns:1fr 1fr}
+  .how-grid{grid-template-columns:1fr 1fr}
+  .form-grid{grid-template-columns:1fr}
+  .partners{grid-template-columns:1fr}
+}
+@media(max-width:480px){.items{grid-template-columns:1fr}}
+
+/* Confirmation Modal */
+.modal-overlay{display:none;position:fixed;inset:0;background:rgba(0,0,0,0.7);z-index:100;align-items:center;justify-content:center;backdrop-filter:blur(4px)}
+.modal-overlay.show{display:flex}
+.modal{background:var(--card);border:1px solid var(--border);border-radius:var(--r);max-width:480px;width:90%;padding:2rem;animation:fadeUp 0.3s ease}
+.modal-icon{text-align:center;font-size:1.8rem;margin-bottom:1rem}
+.modal-title{font-family:var(--ff-d);font-size:1.3rem;font-weight:500;text-align:center;margin-bottom:0.8rem}
+.modal-text{font-size:0.82rem;color:var(--muted);line-height:1.55;margin-bottom:1.2rem;text-align:center}
+.modal-disclaimer{background:rgba(201,169,110,0.06);border:1px solid rgba(201,169,110,0.15);border-radius:8px;padding:0.9rem 1rem;margin-bottom:1.2rem;font-size:0.78rem;color:var(--white);line-height:1.5;display:flex;align-items:flex-start;gap:0.6rem}
+.modal-disclaimer svg{flex-shrink:0;margin-top:0.1rem}
+.modal-check{display:flex;align-items:flex-start;gap:0.5rem;margin-bottom:1.2rem;cursor:pointer}
+.modal-check input{margin-top:0.2rem;accent-color:var(--gold)}
+.modal-check label{font-size:0.78rem;color:var(--muted);cursor:pointer;line-height:1.4}
+.modal-btns{display:flex;gap:0.6rem}
+.modal-btns .btn{flex:1;justify-content:center;padding:0.75rem}
+.modal-btns .btn:disabled{opacity:0.3;cursor:not-allowed}
+
+/* Disclaimer Callout */
+.disclaimer-box{background:rgba(201,169,110,0.05);border:1px solid rgba(201,169,110,0.18);border-radius:8px;padding:0.75rem 1rem;margin:1rem 0 0.5rem;display:flex;align-items:flex-start;gap:0.6rem;font-size:0.78rem;color:var(--white);line-height:1.45}
+.disclaimer-box svg{flex-shrink:0;margin-top:0.1rem;color:var(--gold)}
+
+/* Light Mode */
+html.light{--bg:#f5f3ee;--bg2:#eceae4;--card:#ffffff;--card-h:#f8f7f4;--white:#1a1a2e;--muted:#555a6e;--faint:#8a8fa0;--border:rgba(0,0,0,0.08);--bs:rgba(0,0,0,0.04)}
+html.light .nav{background:rgba(245,243,238,0.92)}
+html.light .cat{background:var(--card);box-shadow:0 2px 8px rgba(0,0,0,0.05)}
+html.light .item{background:var(--card);box-shadow:0 2px 10px rgba(0,0,0,0.06)}
+html.light .how-card{background:rgba(0,0,0,0.02)}
+html.light .donate-card{background:var(--card);box-shadow:0 2px 10px rgba(0,0,0,0.05)}
+html.light .partner{background:var(--card);box-shadow:0 2px 8px rgba(0,0,0,0.05)}
+html.light .badge-card{background:var(--card);box-shadow:0 2px 8px rgba(0,0,0,0.05)}
+html.light .lb{background:var(--card);box-shadow:0 2px 10px rgba(0,0,0,0.05)}
+html.light .lb th{background:rgba(0,0,0,0.02)}
+html.light .form-input,html.light .form-select,html.light .form-textarea{background:rgba(0,0,0,0.02);color:var(--white)}
+html.light .filter{border-color:rgba(0,0,0,0.1)}
+html.light .ft{border-color:rgba(0,0,0,0.08)}
+html.light .modal{background:var(--card);box-shadow:0 20px 60px rgba(0,0,0,0.15)}
+
+/* Theme Toggle */
+.theme-toggle{width:56px;height:28px;border-radius:14px;border:1px solid rgba(201,169,110,0.2);background:var(--card);cursor:pointer;position:relative;transition:all 0.3s;padding:0;display:flex;align-items:center}
+.theme-toggle:hover{border-color:rgba(201,169,110,0.4)}
+.theme-toggle .knob{width:22px;height:22px;border-radius:50%;position:absolute;left:2px;transition:all 0.35s cubic-bezier(0.4,0,0.2,1);display:flex;align-items:center;justify-content:center}
+.theme-toggle .knob svg{width:14px;height:14px;transition:all 0.3s}
+html:not(.light) .theme-toggle .knob{background:linear-gradient(135deg,#c9a96e,#d4b87a);left:2px}
+html.light .theme-toggle .knob{background:linear-gradient(135deg,#1a1a2e,#2a2a4e);left:calc(100% - 24px)}
+html:not(.light) .theme-toggle .knob svg{stroke:#0d1a32;fill:none}
+html.light .theme-toggle .knob svg{stroke:#f8f7f4;fill:none}
+.theme-toggle .track-icons{display:flex;justify-content:space-between;width:100%;padding:0 6px;pointer-events:none}
+.theme-toggle .track-icons svg{width:12px;height:12px;opacity:0.3}
+</style>
+<link rel="stylesheet" href="/ios-viewport-lock.css">
+<link rel="stylesheet" href="/embr-concierge-button.css">
+</head>
+<body>
+
+<nav class="nav">
+  <a href="/" class="nav-logo">BAGFREE</a>
+  <div class="nav-links"><button class="theme-toggle" onclick="togT()" id="tb" aria-label="Toggle theme">
+              <span class="track-icons">
+                <svg viewBox="0 0 24 24" fill="none" stroke="var(--gold)" stroke-width="2"><circle cx="12" cy="12" r="5"/><path d="M12 1v2m0 18v2M4.22 4.22l1.42 1.42m12.72 12.72l1.42 1.42M1 12h2m18 0h2M4.22 19.78l1.42-1.42M18.36 5.64l1.42-1.42"/></svg>
+                <svg viewBox="0 0 24 24" fill="none" stroke="var(--muted)" stroke-width="2"><path d="M21 12.79A9 9 0 1111.21 3 7 7 0 0021 12.79z"/></svg>
+              </span>
+              <span class="knob"><svg viewBox="0 0 24 24" stroke-width="2"><circle cx="12" cy="12" r="5"/><path d="M12 1v2m0 18v2M4.22 4.22l1.42 1.42m12.72 12.72l1.42 1.42M1 12h2m18 0h2M4.22 19.78l1.42-1.42M18.36 5.64l1.42-1.42"/></svg></span>
+            </button>
+    <a href="#browse" class="active">Browse</a>
+    <a href="#donate">Donate</a>
+    <a href="#contribute">Contribute</a>
+    <a href="#business-partners">Partners</a>
+    <a href="#partners">Partners</a>
+    <a href="#impact">Impact</a>
+    <a href="/">Home</a>
+  </div>
+</nav>
+
+<header class="hero">
+  <div class="hero-ey">♻ Second Journey™ · Savannah Pilot ♻</div>
+  <h1>Give travel essentials<br>a <em>second journey.</em></h1>
+  <p class="hero-p">Heading home and don’t want to pack it all? Leave your quality items with BagFree and earn credit back or BAG Points. Another traveler gives them a second journey — delivered to their hotel, included in the price.</p>
+  <div class="hero-btns">
+    <a href="#browse" class="btn btn-sage">Browse Items</a>
+    <a href="#donate" class="btn btn-outline">Donate Items</a>
+  </div>
+
+  <div class="stats">
+    <div class="stat"><div class="stat-v"><span>380</span>+</div><div class="stat-l">Items Rehomed</div></div>
+    <div class="stat"><div class="stat-v"><span>420</span> lbs</div><div class="stat-l">Waste Diverted</div></div>
+    <div class="stat"><div class="stat-v"><span>1</span></div><div class="stat-l">Pilot City</div></div>
+    <div class="stat"><div class="stat-v"><span>85</span>+</div><div class="stat-l">Travelers Helped</div></div>
+  </div>
+</header>
+
+<!-- How It Works -->
+<section class="sec">
+  <div style="text-align:center;margin-bottom:2rem">
+    <div class="sec-label">How It Works</div>
+    <div class="sec-title">Three steps. Zero waste.</div>
+  </div>
+  <div class="how-grid">
+    <div class="how-card">
+      <div class="how-num">1</div>
+      <div class="how-title">Donate</div>
+      <div class="how-desc">Heading home? Leave quality items you don’t want to pack with BagFree. Earn credit back on your order or BAG Points as a reward.</div>
+    </div>
+    <div class="how-card">
+      <div class="how-num">2</div>
+      <div class="how-title">Curate</div>
+      <div class="how-desc">We verify condition, photograph each item, and list it in the Savannah marketplace with full transparency.</div>
+    </div>
+    <div class="how-card">
+      <div class="how-num">3</div>
+      <div class="how-title">Redeem</div>
+      <div class="how-desc">Another traveler redeems BAG Points to claim items. Delivered to their Savannah hotel — delivery included in the BAG price.</div>
+    </div>
+    <div class="how-card">
+      <div class="how-num">✦</div>
+      <div class="how-title">Earn BAG</div>
+      <div class="how-desc">Earn BAG through Curator Academy, memberships, referrals, and returning items. Spend them here.</div>
+    </div>
+  </div>
+</section>
+
+
+<!-- Browse -->
+<section class="sec" id="browse">
+  <div class="sec-head">
+    <div><div class="sec-label">Browse</div><div class="sec-title">Available Items</div></div>
+  </div>
+
+  <div class="cats" style="margin-bottom:1.2rem">
+    <div class="cat"><div class="cat-icon"><svg viewBox="0 0 24 24" width="24" height="24" fill="none" stroke="var(--sage)" stroke-width="1.3"><path d="M20.38 3.46L16 2 12 3.46 8 2 3.62 3.46a1 1 0 00-.62 1v16a1 1 0 001.22 1l3.78-1L12 22l4-1.54L19.78 22A1 1 0 0021 21V4.46a1 1 0 00-.62-1z"/></svg></div><div class="cat-name">All Items</div><div class="cat-count">38 available</div></div>
+    <div class="cat"><div class="cat-icon"><svg viewBox="0 0 24 24" width="24" height="24" fill="none" stroke="var(--sage)" stroke-width="1.3"><path d="M20 21v-2a4 4 0 00-4-4H8a4 4 0 00-4 4v2"/><path d="M16 3.13a4 4 0 010 7.75"/><circle cx="9" cy="7" r="4"/></svg></div><div class="cat-name">Clothing</div><div class="cat-count">4</div></div>
+    <div class="cat"><div class="cat-icon"><svg viewBox="0 0 24 24" width="24" height="24" fill="none" stroke="var(--sage)" stroke-width="1.3"><path d="M12 22s8-4 8-10V5l-8-3-8 3v7c0 6 8 10 8 10z"/></svg></div><div class="cat-name">Jackets</div><div class="cat-count">6</div></div>
+    <div class="cat"><div class="cat-icon"><svg viewBox="0 0 24 24" width="24" height="24" fill="none" stroke="var(--sage)" stroke-width="1.3"><rect x="2" y="7" width="20" height="14" rx="2"/><path d="M16 7V5a4 4 0 00-8 0v2"/></svg></div><div class="cat-name">Travel Gear</div><div class="cat-count">2</div></div>
+    <div class="cat"><div class="cat-icon"><svg viewBox="0 0 24 24" width="24" height="24" fill="none" stroke="var(--sage)" stroke-width="1.3"><path d="M5 12.55a11 11 0 0114.08 0"/><path d="M1.42 9a16 16 0 0121.16 0"/><path d="M8.53 16.11a6 6 0 016.95 0"/><circle cx="12" cy="20" r="1"/></svg></div><div class="cat-name">Chargers</div><div class="cat-count">5</div></div>
+    <div class="cat"><div class="cat-icon"><svg viewBox="0 0 24 24" width="24" height="24" fill="none" stroke="var(--sage)" stroke-width="1.3"><path d="M12 22c-4-4-8-7.5-8-12a8 8 0 0116 0c0 4.5-4 8-8 12z"/><path d="M12 10v4"/></svg></div><div class="cat-name">Toiletries</div><div class="cat-count">4</div></div>
+    <div class="cat"><div class="cat-icon"><svg viewBox="0 0 24 24" width="24" height="24" fill="none" stroke="var(--sage)" stroke-width="1.3"><circle cx="12" cy="12" r="3"/><path d="M12 2v2m0 16v2M4.93 4.93l1.41 1.41m11.32 11.32l1.41 1.41M2 12h2m16 0h2M4.93 19.07l1.41-1.41m11.32-11.32l1.41-1.41"/></svg></div><div class="cat-name">Kids</div><div class="cat-count">2</div></div>
+    <div class="cat"><div class="cat-icon"><svg viewBox="0 0 24 24" width="24" height="24" fill="none" stroke="var(--sage)" stroke-width="1.3"><path d="M4 15s1-1 4-1 5 2 8 2 4-1 4-1V3s-1 1-4 1-5-2-8-2-4 1-4 1z"/><line x1="4" y1="22" x2="4" y2="15"/></svg></div><div class="cat-name">Emergency</div><div class="cat-count">1</div></div>
+  </div>
+
+  <div class="filters">
+    <button class="filter active">All</button>
+    <button class="filter">Men</button>
+    <button class="filter">Women</button>
+    <button class="filter">Kids</button>
+    <button class="filter">Accessories</button>
+    <button class="filter active-city">Savannah</button>
+    <button class="filter">Excellent</button>
+    <button class="filter">Good</button>
+  </div>
+
+  <div class="items">
+    <div class="item">
+      <div class="item-img-wrap">
+        <img class="item-img" src="https://images.unsplash.com/photo-1556821840-3a63f95609a7?w=500&h=400&fit=crop" alt="Patagonia Fleece">
+        <span class="item-badge verified">Verified</span>
+        <span class="item-cond">Excellent</span>
+      </div>
+      <div class="item-body">
+        <div class="item-cat">Jackets</div>
+        <div class="item-title">Patagonia Better Sweater Fleece</div>
+        <div class="item-meta"><span>Size M</span><span>📍 Savannah</span><span>Men's</span></div>
+        <div class="item-desc">Barely worn. Left behind at The Alida after a fall trip. Perfect for cooler evenings.</div>
+        <div class="item-foot">
+          <div><div class="item-bag"><svg viewBox="0 0 24 24" fill="var(--gold)" stroke="none"><polygon points="12 2 15.09 8.26 22 9.27 17 14.14 18.18 21.02 12 17.77 5.82 21.02 7 14.14 2 9.27 8.91 8.26"/></svg> 500 <span>BAG</span></div><div class="item-retail">Retail $149</div></div>
+          <button class="item-claim">Claim</button>
+        </div>
+      </div>
+    </div>
+
+    <div class="item">
+      <div class="item-img-wrap">
+        <img class="item-img" src="https://images.unsplash.com/photo-1583863788434-e58a36330cf0?w=500&h=400&fit=crop" alt="Phone Charger Kit">
+        <span class="item-badge verified">Traveler</span>
+        <span class="item-cond">Like New</span>
+      </div>
+      <div class="item-body">
+        <div class="item-cat">Chargers</div>
+        <div class="item-title">USB-C + Lightning Cable Kit</div>
+        <div class="item-meta"><span>Universal</span><span>📍 Savannah</span></div>
+        <div class="item-desc">Sealed multi-cable pack left by a traveler checking out of The Alida. Never opened.</div>
+        <div class="item-foot">
+          <div><div class="item-bag"><svg viewBox="0 0 24 24" fill="var(--gold)" stroke="none"><polygon points="12 2 15.09 8.26 22 9.27 17 14.14 18.18 21.02 12 17.77 5.82 21.02 7 14.14 2 9.27 8.91 8.26"/></svg> 200 <span>BAG</span></div><div class="item-retail">Retail $25</div></div>
+          <button class="item-claim">Claim</button>
+        </div>
+      </div>
+    </div>
+
+    <div class="item">
+      <div class="item-img-wrap">
+        <img class="item-img" src="https://images.unsplash.com/photo-1490481651871-ab68de25d43d?w=500&h=400&fit=crop" alt="Summer Dress">
+        <span class="item-badge new">Just Added</span>
+        <span class="item-cond">Good</span>
+      </div>
+      <div class="item-body">
+        <div class="item-cat">Clothing</div>
+        <div class="item-title">Linen Midi Dress — Ivory</div>
+        <div class="item-meta"><span>Size S</span><span>📍 Savannah</span><span>Women's</span></div>
+        <div class="item-desc">Worn once during a Savannah wedding weekend. Clean, pressed, and travel-ready.</div>
+        <div class="item-foot">
+          <div><div class="item-bag"><svg viewBox="0 0 24 24" fill="var(--gold)" stroke="none"><polygon points="12 2 15.09 8.26 22 9.27 17 14.14 18.18 21.02 12 17.77 5.82 21.02 7 14.14 2 9.27 8.91 8.26"/></svg> 350 <span>BAG</span></div><div class="item-retail">Retail $85</div></div>
+          <button class="item-claim">Claim</button>
+        </div>
+      </div>
+    </div>
+
+    <div class="item">
+      <div class="item-img-wrap">
+        <img class="item-img" src="https://images.unsplash.com/photo-1556228720-195a672e8a03?w=500&h=400&fit=crop" alt="Toiletry Kit">
+        <span class="item-badge verified">Traveler</span>
+        <span class="item-cond">New</span>
+      </div>
+      <div class="item-body">
+        <div class="item-cat">Toiletries</div>
+        <div class="item-title">Premium Toiletry Restock Kit</div>
+        <div class="item-meta"><span>Unisex</span><span>📍 Savannah</span></div>
+        <div class="item-desc">Unopened toiletry kit from a traveler who overpacked. Full-size essentials, sealed.</div>
+        <div class="item-foot">
+          <div><div class="item-bag"><svg viewBox="0 0 24 24" fill="var(--gold)" stroke="none"><polygon points="12 2 15.09 8.26 22 9.27 17 14.14 18.18 21.02 12 17.77 5.82 21.02 7 14.14 2 9.27 8.91 8.26"/></svg> 150 <span>BAG</span></div><div class="item-retail">Retail $35</div></div>
+          <button class="item-claim">Claim</button>
+        </div>
+      </div>
+    </div>
+
+    <div class="item">
+      <div class="item-img-wrap">
+        <img class="item-img" src="https://images.unsplash.com/photo-1594938298603-c8148c4dae35?w=500&h=400&fit=crop" alt="Travel Blazer">
+        <span class="item-badge verified">Verified</span>
+        <span class="item-cond">Excellent</span>
+      </div>
+      <div class="item-body">
+        <div class="item-cat">Clothing</div>
+        <div class="item-title">Navy Wrinkle-Free Travel Blazer</div>
+        <div class="item-meta"><span>Size L</span><span>📍 Savannah</span><span>Men's</span></div>
+        <div class="item-desc">Perfect for unexpected meetings or a nice dinner. Machine washable, packs flat.</div>
+        <div class="item-foot">
+          <div><div class="item-bag"><svg viewBox="0 0 24 24" fill="var(--gold)" stroke="none"><polygon points="12 2 15.09 8.26 22 9.27 17 14.14 18.18 21.02 12 17.77 5.82 21.02 7 14.14 2 9.27 8.91 8.26"/></svg> 450 <span>BAG</span></div><div class="item-retail">Retail $120</div></div>
+          <button class="item-claim">Claim</button>
+        </div>
+      </div>
+    </div>
+
+    <div class="item">
+      <div class="item-img-wrap">
+        <img class="item-img" src="https://images.unsplash.com/photo-1469334031218-e382a71b716b?w=500&h=400&fit=crop" alt="Kids Outfit">
+        <span class="item-badge new">Just Added</span>
+        <span class="item-cond">Good</span>
+      </div>
+      <div class="item-body">
+        <div class="item-cat">Kids</div>
+        <div class="item-title">Kids Summer Outfit Set (2-Pack)</div>
+        <div class="item-meta"><span>Age 4-6</span><span>📍 Savannah</span></div>
+        <div class="item-desc">Shorts and tee combos. Clean, bright, perfect for a family beach trip.</div>
+        <div class="item-foot">
+          <div><div class="item-bag"><svg viewBox="0 0 24 24" fill="var(--gold)" stroke="none"><polygon points="12 2 15.09 8.26 22 9.27 17 14.14 18.18 21.02 12 17.77 5.82 21.02 7 14.14 2 9.27 8.91 8.26"/></svg> 250 <span>BAG</span></div><div class="item-retail">Retail $40</div></div>
+          <button class="item-claim">Claim</button>
+        </div>
+      </div>
+    </div>
+  </div>
+</section>
+
+<!-- Donate -->
+<section class="sec" id="donate">
+  <div class="sec-label">Contribute</div>
+  <div class="sec-title">Donate Items</div>
+  <div class="sec-sub">Heading home from Savannah? Leave quality items you don’t want to pack and earn credit back on your order or BAG Points.</div>
+
+  <div class="donate-card">
+    <div class="form-grid">
+      <div class="form-row"><label class="form-label">Item Name</label><input class="form-input" placeholder="e.g. Patagonia Fleece Jacket"></div>
+      <div class="form-row"><label class="form-label">Category</label><select class="form-select"><option>Clothing</option><option>Jackets</option><option>Travel Gear</option><option>Chargers</option><option>Toiletries</option><option>Kids</option><option>Emergency</option></select></div>
+      <div class="form-row"><label class="form-label">Size</label><input class="form-input" placeholder="S / M / L / XL / Universal"></div>
+      <div class="form-row"><label class="form-label">Condition</label><select class="form-select"><option>Like New</option><option>Excellent</option><option>Good</option></select></div>
+      <div class="form-row"><label class="form-label">City</label><select class="form-select"><option>Savannah</option></select></div>
+      <div class="form-row"><label class="form-label">Donor Type</label><select class="form-select"><option>BagFree Traveler</option><option>Curator</option></select></div>
+    </div>
+    <div class="form-row"><label class="form-label">Description</label><textarea class="form-textarea" placeholder="Brief description, brand, age, any notes on condition…"></textarea></div>
+    <button class="btn btn-sage" style="width:100%;justify-content:center;margin-top:0.5rem">Submit for Review</button>
+    <p style="font-size:0.72rem;color:var(--faint);margin-top:0.8rem;text-align:center">Items are reviewed within 24 hours. Approved items earn you credit back on your order or 100 BAG Points + a Contributor badge.</p>
+  </div>
+</section>
+
+
+<!-- Community Contributions -->
+<section class="sec" id="contribute">
+  <div class="sec-label">Community</div>
+  <div class="sec-title">Support Second Journey™</div>
+  <div class="sec-sub">You don’t have to be checking out of a hotel to contribute. Members, locals, and travelers can support Second Journey in many ways — and earn BAG Points for every approved contribution.</div>
+
+  <div style="display:grid;grid-template-columns:repeat(auto-fill,minmax(170px,1fr));gap:0.8rem;margin-bottom:2rem">
+    <div style="background:var(--card);border:1px solid var(--border);border-radius:12px;padding:1.1rem;text-align:center;cursor:pointer;transition:all 0.2s" onclick="setContribType('cash')">
+      <div style="margin-bottom:0.4rem"><svg viewBox="0 0 24 24" width="24" height="24" fill="none" stroke="var(--sage)" stroke-width="1.3"><circle cx="12" cy="12" r="10"/><path d="M12 6v12"/><path d="M15.5 9.5c-.8-1-2-1.5-3.5-1.5-2.5 0-3.5 1.5-3.5 2.5s1 2.5 3.5 2.5 3.5 1.5 3.5 2.5-1 2.5-3.5 2.5c-1.5 0-2.7-.5-3.5-1.5"/></svg></div>
+      <div style="font-family:var(--ff-d);font-size:0.9rem;font-weight:500">Cash Support</div>
+      <div style="font-size:0.6rem;color:var(--faint);margin-top:0.15rem">Fund operations</div>
+    </div>
+    <div style="background:var(--card);border:1px solid var(--border);border-radius:12px;padding:1.1rem;text-align:center;cursor:pointer;transition:all 0.2s" onclick="setContribType('essentials')">
+      <div style="margin-bottom:0.4rem"><svg viewBox="0 0 24 24" width="24" height="24" fill="none" stroke="var(--sage)" stroke-width="1.3"><rect x="2" y="7" width="20" height="14" rx="2"/><path d="M16 7V5a4 4 0 00-8 0v2"/></svg></div>
+      <div style="font-family:var(--ff-d);font-size:0.9rem;font-weight:500">Travel Essentials</div>
+      <div style="font-size:0.6rem;color:var(--faint);margin-top:0.15rem">Chargers, toiletries</div>
+    </div>
+    <div style="background:var(--card);border:1px solid var(--border);border-radius:12px;padding:1.1rem;text-align:center;cursor:pointer;transition:all 0.2s" onclick="setContribType('clothing')">
+      <div style="margin-bottom:0.4rem"><svg viewBox="0 0 24 24" width="24" height="24" fill="none" stroke="var(--sage)" stroke-width="1.3"><path d="M20.38 3.46L16 2 12 3.46 8 2 3.62 3.46a1 1 0 00-.62 1v16a1 1 0 001.22 1l3.78-1L12 22l4-1.54L19.78 22A1 1 0 0021 21V4.46a1 1 0 00-.62-1z"/></svg></div>
+      <div style="font-family:var(--ff-d);font-size:0.9rem;font-weight:500">Clothing</div>
+      <div style="font-size:0.6rem;color:var(--faint);margin-top:0.15rem">Quality apparel</div>
+    </div>
+    <div style="background:var(--card);border:1px solid var(--border);border-radius:12px;padding:1.1rem;text-align:center;cursor:pointer;transition:all 0.2s" onclick="setContribType('accessories')">
+      <div style="margin-bottom:0.4rem"><svg viewBox="0 0 24 24" width="24" height="24" fill="none" stroke="var(--sage)" stroke-width="1.3"><circle cx="12" cy="12" r="10"/><path d="M2 12h20"/><path d="M12 2a15.3 15.3 0 014 10 15.3 15.3 0 01-4 10 15.3 15.3 0 01-4-10 15.3 15.3 0 014-10z"/></svg></div>
+      <div style="font-family:var(--ff-d);font-size:0.9rem;font-weight:500">Travel Accessories</div>
+      <div style="font-size:0.6rem;color:var(--faint);margin-top:0.15rem">Bags, adapters, gear</div>
+    </div>
+    <div style="background:var(--card);border:1px solid var(--border);border-radius:12px;padding:1.1rem;text-align:center;cursor:pointer;transition:all 0.2s" onclick="setContribType('sponsor')">
+      <div style="margin-bottom:0.4rem"><svg viewBox="0 0 24 24" width="24" height="24" fill="rgba(201,169,110,0.1)" stroke="var(--gold)" stroke-width="1.3"><path d="M20.84 4.61a5.5 5.5 0 00-7.78 0L12 5.67l-1.06-1.06a5.5 5.5 0 00-7.78 7.78L12 21.23l8.84-8.84a5.5 5.5 0 000-7.78z"/></svg></div>
+      <div style="font-family:var(--ff-d);font-size:0.9rem;font-weight:500">Sponsor a Traveler</div>
+      <div style="font-size:0.6rem;color:var(--faint);margin-top:0.15rem">Gift BAG to someone</div>
+    </div>
+    <div style="background:var(--card);border:1px solid var(--border);border-radius:12px;padding:1.1rem;text-align:center;cursor:pointer;transition:all 0.2s" onclick="setContribType('storage')">
+      <div style="margin-bottom:0.4rem"><svg viewBox="0 0 24 24" width="24" height="24" fill="none" stroke="var(--sage)" stroke-width="1.3"><path d="M3 9l9-7 9 7v11a2 2 0 01-2 2H5a2 2 0 01-2-2z"/><path d="M9 22V12h6v10"/></svg></div>
+      <div style="font-family:var(--ff-d);font-size:0.9rem;font-weight:500">Volunteer Storage</div>
+      <div style="font-size:0.6rem;color:var(--faint);margin-top:0.15rem">Local space for items</div>
+    </div>
+  </div>
+
+  <!-- Contribution Form -->
+  <div class="donate-card">
+    <div style="font-family:var(--ff-d);font-size:1.2rem;font-weight:500;margin-bottom:1.2rem">Contribution Form</div>
+    <div class="form-grid">
+      <div class="form-row"><label class="form-label">Your Name</label><input class="form-input" id="contrib-name" placeholder="Full name"></div>
+      <div class="form-row"><label class="form-label">Email</label><input class="form-input" id="contrib-email" type="email" placeholder="you@email.com"></div>
+      <div class="form-row"><label class="form-label">City</label><select class="form-select" id="contrib-city"><option>Savannah (Pilot City)</option></select></div>
+      <div class="form-row"><label class="form-label">Contribution Type</label><select class="form-select" id="contrib-type"><option value="essentials">Travel Essentials</option><option value="clothing">Clothing</option><option value="accessories">Travel Accessories</option><option value="cash">Cash Support</option><option value="sponsor">Sponsor a Traveler</option><option value="storage">Volunteer Storage Space</option></select></div>
+    </div>
+    <div class="form-row"><label class="form-label">Description</label><textarea class="form-textarea" id="contrib-desc" placeholder="Describe what you’d like to contribute — item details, quantity, condition, or how you’d like to help…"></textarea></div>
+    <div class="form-row">
+      <label class="form-label">BAG Reward Preference</label>
+      <div style="display:flex;gap:0.6rem;flex-wrap:wrap">
+        <label style="display:flex;align-items:center;gap:0.4rem;font-size:0.82rem;color:var(--muted);cursor:pointer"><input type="radio" name="bag-pref" value="bag" checked style="accent-color:var(--sage)"> Earn BAG Points</label>
+        <label style="display:flex;align-items:center;gap:0.4rem;font-size:0.82rem;color:var(--muted);cursor:pointer"><input type="radio" name="bag-pref" value="credit" style="accent-color:var(--sage)"> Store Credit</label>
+        <label style="display:flex;align-items:center;gap:0.4rem;font-size:0.82rem;color:var(--muted);cursor:pointer"><input type="radio" name="bag-pref" value="donate" style="accent-color:var(--sage)"> Donate (No Reward)</label>
+      </div>
+    </div>
+    <button class="btn btn-sage" style="width:100%;justify-content:center;margin-top:0.5rem" onclick="openContribModal()">Submit Contribution</button>
+    <div class="disclaimer-box">
+      <svg viewBox="0 0 24 24" width="18" height="18" fill="none" stroke="currentColor" stroke-width="1.5"><circle cx="12" cy="12" r="10"/><line x1="12" y1="8" x2="12" y2="12"/><line x1="12" y1="16" x2="12.01" y2="16"/></svg>
+      <div>Contributions are reviewed within 24 hours. Approved items earn 50–200 BAG. <strong>BagFree is not a registered nonprofit. Contributions are not tax-deductible.</strong></div>
+    </div>
+  </div>
+
+  <!-- Contribution Rewards Table -->
+  <div style="margin-top:2rem;background:var(--card);border:1px solid var(--border);border-radius:var(--r);padding:1.5rem">
+    <div style="font-family:var(--ff-d);font-size:1.1rem;font-weight:500;margin-bottom:1rem">BAG Rewards by Contribution</div>
+    <table style="width:100%;border-collapse:collapse;font-size:0.82rem">
+      <tr style="border-bottom:1px solid var(--bs)"><td style="padding:0.5rem 0;color:var(--white)">Travel essentials (charger, toiletries)</td><td style="padding:0.5rem 0;text-align:right;color:var(--gold);font-weight:600">50–100 BAG</td></tr>
+      <tr style="border-bottom:1px solid var(--bs)"><td style="padding:0.5rem 0;color:var(--white)">Clothing item (good condition)</td><td style="padding:0.5rem 0;text-align:right;color:var(--gold);font-weight:600">75–150 BAG</td></tr>
+      <tr style="border-bottom:1px solid var(--bs)"><td style="padding:0.5rem 0;color:var(--white)">Jacket or outerwear</td><td style="padding:0.5rem 0;text-align:right;color:var(--gold);font-weight:600">100–200 BAG</td></tr>
+      <tr style="border-bottom:1px solid var(--bs)"><td style="padding:0.5rem 0;color:var(--white)">Travel gear (bag, adapter kit)</td><td style="padding:0.5rem 0;text-align:right;color:var(--gold);font-weight:600">75–175 BAG</td></tr>
+      <tr style="border-bottom:1px solid var(--bs)"><td style="padding:0.5rem 0;color:var(--white)">Cash contribution ($25+)</td><td style="padding:0.5rem 0;text-align:right;color:var(--gold);font-weight:600">100+ BAG</td></tr>
+      <tr style="border-bottom:1px solid var(--bs)"><td style="padding:0.5rem 0;color:var(--white)">Sponsor a traveler</td><td style="padding:0.5rem 0;text-align:right;color:var(--gold);font-weight:600">150 BAG + badge</td></tr>
+      <tr><td style="padding:0.5rem 0;color:var(--white)">Volunteer storage space (monthly)</td><td style="padding:0.5rem 0;text-align:right;color:var(--gold);font-weight:600">200 BAG/month</td></tr>
+    </table>
+  </div>
+</section>
+
+<!-- Community Impact -->
+<section class="sec">
+  <div style="text-align:center;margin-bottom:2rem">
+    <div class="sec-label">Community Impact</div>
+    <div class="sec-title">Together, We Travel Better</div>
+  </div>
+  <div class="stats" style="margin:0">
+    <div class="stat"><div class="stat-v"><span>85</span>+</div><div class="stat-l">Community Contributors</div></div>
+    <div class="stat"><div class="stat-v"><span>420</span> lbs</div><div class="stat-l">Waste Diverted</div></div>
+    <div class="stat"><div class="stat-v"><span>12,400</span></div><div class="stat-l">BAG Awarded</div></div>
+    <div class="stat"><div class="stat-v"><span>3</span></div><div class="stat-l">Storage Volunteers</div></div>
+  </div>
+</section>
+
+<!-- Partners -->
+<section class="sec" id="partners">
+  <div class="sec-head">
+    <div><div class="sec-label">Partners</div><div class="sec-title">Savannah Drop-Off Locations</div></div>
+  </div>
+  <div class="partners">
+    <div class="partner"><div class="partner-logo">🏨</div><div><div class="partner-name">The Alida</div><div class="partner-type">Partner Hotel</div><div class="partner-items">Leave items at front desk</div></div><div style="margin-left:auto;width:28px;height:28px;border-radius:50%;background:rgba(80,200,120,0.12);border:1px solid rgba(80,200,120,0.3);display:flex;align-items:center;justify-content:center;cursor:pointer;flex-shrink:0;transition:all 0.2s" onclick="document.getElementById('business-partners').scrollIntoView({behavior:'smooth'})" title="Register as a drop-off location"><svg viewBox="0 0 24 24" width="14" height="14" fill="none" stroke="#50C878" stroke-width="2.5"><line x1="12" y1="5" x2="12" y2="19"/><line x1="5" y1="12" x2="19" y2="12"/></svg></div></div>
+    <div class="partner"><div class="partner-logo">🏨</div><div><div class="partner-name">Perry Lane Hotel</div><div class="partner-type">Partner Hotel</div><div class="partner-items">Leave items at front desk</div></div><div style="margin-left:auto;width:28px;height:28px;border-radius:50%;background:rgba(80,200,120,0.12);border:1px solid rgba(80,200,120,0.3);display:flex;align-items:center;justify-content:center;cursor:pointer;flex-shrink:0;transition:all 0.2s" onclick="document.getElementById('business-partners').scrollIntoView({behavior:'smooth'})" title="Register as a drop-off location"><svg viewBox="0 0 24 24" width="14" height="14" fill="none" stroke="#50C878" stroke-width="2.5"><line x1="12" y1="5" x2="12" y2="19"/><line x1="5" y1="12" x2="19" y2="12"/></svg></div></div>
+    <div class="partner"><div class="partner-logo">🏨</div><div><div class="partner-name">The Brice</div><div class="partner-type">Partner Hotel</div><div class="partner-items">Leave items at front desk</div></div><div style="margin-left:auto;width:28px;height:28px;border-radius:50%;background:rgba(80,200,120,0.12);border:1px solid rgba(80,200,120,0.3);display:flex;align-items:center;justify-content:center;cursor:pointer;flex-shrink:0;transition:all 0.2s" onclick="document.getElementById('business-partners').scrollIntoView({behavior:'smooth'})" title="Register as a drop-off location"><svg viewBox="0 0 24 24" width="14" height="14" fill="none" stroke="#50C878" stroke-width="2.5"><line x1="12" y1="5" x2="12" y2="19"/><line x1="5" y1="12" x2="19" y2="12"/></svg></div></div>
+    <div class="partner"><div class="partner-logo">📦</div><div><div class="partner-name">BagFree Pickup</div><div class="partner-type">On-Demand</div><div class="partner-items">We pick up from your hotel room</div></div><div style="margin-left:auto;width:28px;height:28px;border-radius:50%;background:rgba(80,200,120,0.12);border:1px solid rgba(80,200,120,0.3);display:flex;align-items:center;justify-content:center;cursor:pointer;flex-shrink:0;transition:all 0.2s" onclick="document.getElementById('business-partners').scrollIntoView({behavior:'smooth'})" title="Register as a drop-off location"><svg viewBox="0 0 24 24" width="14" height="14" fill="none" stroke="#50C878" stroke-width="2.5"><line x1="12" y1="5" x2="12" y2="19"/><line x1="5" y1="12" x2="19" y2="12"/></svg></div></div>
+  </div>
+</section>
+
+<!-- Badges -->
+<section class="sec">
+  <div style="text-align:center;margin-bottom:2rem">
+    <div class="sec-label">Recognition</div>
+    <div class="sec-title">Sustainability Badges</div>
+  </div>
+  <div class="badges">
+    <div class="badge-card"><div class="badge-icon"><svg viewBox="0 0 24 24" width="32" height="32" fill="rgba(127,183,126,0.15)" stroke="var(--sage)" stroke-width="1.3"><path d="M12 22c-4-4-8-7.5-8-12a8 8 0 0116 0c0 4.5-4 8-8 12z"/></svg></div><div class="badge-name">Sustainable Traveler</div><div class="badge-req">Claim 3+ items</div></div>
+    <div class="badge-card"><div class="badge-icon"><svg viewBox="0 0 24 24" width="32" height="32" fill="rgba(201,169,110,0.12)" stroke="var(--gold)" stroke-width="1.3"><path d="M20.84 4.61a5.5 5.5 0 00-7.78 0L12 5.67l-1.06-1.06a5.5 5.5 0 00-7.78 7.78L12 21.23l8.84-8.84a5.5 5.5 0 000-7.78z"/></svg></div><div class="badge-name">Community Contributor</div><div class="badge-req">Donate 5+ items</div></div>
+    <div class="badge-card"><div class="badge-icon"><svg viewBox="0 0 24 24" width="32" height="32" fill="rgba(127,183,126,0.12)" stroke="var(--sage)" stroke-width="1.3"><circle cx="12" cy="12" r="10"/><path d="M8 12l3 3 5-6"/></svg></div><div class="badge-name">Hummingbird Steward</div><div class="badge-req">Donate 15+ items or 1,000 lbs diverted</div></div>
+    <div class="badge-card"><div class="badge-icon"><svg viewBox="0 0 24 24" width="32" height="32" fill="rgba(201,169,110,0.1)" stroke="var(--gold)" stroke-width="1.3"><polygon points="12 2 15.09 8.26 22 9.27 17 14.14 18.18 21.02 12 17.77 5.82 21.02 7 14.14 2 9.27 8.91 8.26"/></svg></div><div class="badge-name">Gold Steward</div><div class="badge-req">Top 10 contributor in any city</div></div>
+  </div>
+</section>
+
+<!-- Leaderboard -->
+<section class="sec">
+  <div class="sec-head">
+    <div><div class="sec-label">Leaderboard</div><div class="sec-title">Top Contributors</div></div>
+  </div>
+  <table class="lb">
+    <thead><tr><th>Rank</th><th>Contributor</th><th>Type</th><th>City</th><th>Items</th><th>Impact</th></tr></thead>
+    <tbody>
+      <tr><td class="lb-rank g">1</td><td class="lb-name">Sarah K.</td><td><span class="lb-type">Traveler</span></td><td>Savannah</td><td class="lb-val">12</td><td>28 lbs</td></tr>
+      <tr><td class="lb-rank s">2</td><td class="lb-name">James W.</td><td><span class="lb-type">Traveler</span></td><td>Savannah</td><td class="lb-val">9</td><td>22 lbs</td></tr>
+      <tr><td class="lb-rank b">3</td><td class="lb-name">Isabella Martinez</td><td><span class="lb-type">Curator</span></td><td>Savannah</td><td class="lb-val">8</td><td>18 lbs</td></tr>
+      <tr><td class="lb-rank">4</td><td class="lb-name">Michelle R.</td><td><span class="lb-type">Traveler</span></td><td>Savannah</td><td class="lb-val">7</td><td>15 lbs</td></tr>
+      <tr><td class="lb-rank">5</td><td class="lb-name">David L.</td><td><span class="lb-type">Traveler</span></td><td>Savannah</td><td class="lb-val">6</td><td>14 lbs</td></tr>
+    </tbody>
+  </table>
+</section>
+
+
+<!-- Business Partners -->
+<section class="sec" id="business-partners">
+  <div class="sec-label">Partner With Us</div>
+  <div class="sec-title">Businesses Can Help Travelers Leave Less Behind</div>
+  <div class="sec-sub">Hotels, restaurants, vendors, and local partners play a critical role in sustainable travel. Second Journey™ gives businesses a branded way to contribute — and be recognized for it.</div>
+
+  <div style="display:grid;grid-template-columns:repeat(auto-fit,minmax(250px,1fr));gap:1.2rem;margin-bottom:2.5rem">
+    <div style="background:var(--card);border:1px solid var(--border);border-radius:var(--r);padding:1.6rem;transition:all 0.2s">
+      <div style="margin-bottom:0.7rem"><svg viewBox="0 0 24 24" width="28" height="28" fill="none" stroke="var(--gold)" stroke-width="1.3"><circle cx="12" cy="12" r="10"/><path d="M12 6v12"/><path d="M15.5 9.5c-.8-1-2-1.5-3.5-1.5-2.5 0-3.5 1.5-3.5 2.5s1 2.5 3.5 2.5 3.5 1.5 3.5 2.5s-1 2.5-3.5 2.5c-1.5 0-2.7-.5-3.5-1.5"/></svg></div>
+      <div style="font-family:var(--ff-d);font-size:1.15rem;font-weight:500;margin-bottom:0.4rem">Cash Support</div>
+      <div style="font-size:0.82rem;color:var(--muted);line-height:1.5">Fund the logistics behind Second Journey — storage, cleaning, quality verification, and delivery of redistributed items to travelers who need them.</div>
+    </div>
+    <div style="background:var(--card);border:1px solid var(--border);border-radius:var(--r);padding:1.6rem;transition:all 0.2s">
+      <div style="margin-bottom:0.7rem"><svg viewBox="0 0 24 24" width="28" height="28" fill="none" stroke="var(--gold)" stroke-width="1.3"><path d="M20.38 3.46L16 2 12 3.46 8 2 3.62 3.46a1 1 0 00-.62 1v16a1 1 0 001.22 1l3.78-1L12 22l4-1.54L19.78 22A1 1 0 0021 21V4.46a1 1 0 00-.62-1z"/></svg></div>
+      <div style="font-family:var(--ff-d);font-size:1.15rem;font-weight:500;margin-bottom:0.4rem">Clothing Contributions</div>
+      <div style="font-size:0.82rem;color:var(--muted);line-height:1.5">Quality apparel from hotel lost-and-found, retail overstock, or event surplus gets a second life — helping travelers who arrive unprepared or face unexpected weather.</div>
+    </div>
+    <div style="background:var(--card);border:1px solid var(--border);border-radius:var(--r);padding:1.6rem;transition:all 0.2s">
+      <div style="margin-bottom:0.7rem"><svg viewBox="0 0 24 24" width="28" height="28" fill="none" stroke="var(--gold)" stroke-width="1.3"><rect x="2" y="7" width="20" height="14" rx="2"/><path d="M16 7V5a4 4 0 00-8 0v2"/></svg></div>
+      <div style="font-family:var(--ff-d);font-size:1.15rem;font-weight:500;margin-bottom:0.4rem">Travel Essentials</div>
+      <div style="font-size:0.82rem;color:var(--muted);line-height:1.5">Unopened toiletries, sealed chargers, and unused travel accessories reduce waste and keep travelers equipped — without producing new inventory.</div>
+    </div>
+    <div style="background:var(--card);border:1px solid var(--border);border-radius:var(--r);padding:1.6rem;transition:all 0.2s">
+      <div style="margin-bottom:0.7rem"><svg viewBox="0 0 24 24" width="28" height="28" fill="none" stroke="var(--gold)" stroke-width="1.3"><path d="M3 9l9-7 9 7v11a2 2 0 01-2 2H5a2 2 0 01-2-2z"/><path d="M9 22V12h6v10"/></svg></div>
+      <div style="font-family:var(--ff-d);font-size:1.15rem;font-weight:500;margin-bottom:0.4rem">Storage Space</div>
+      <div style="font-size:0.82rem;color:var(--muted);line-height:1.5">Businesses with available space can host a Second Journey collection point — expanding the network and making it easier for travelers to contribute items.</div>
+    </div>
+  </div>
+
+  <!-- Partner Benefits -->
+  <div style="background:var(--card);border:1px solid var(--border);border-radius:var(--r);padding:2rem;margin-bottom:2.5rem">
+    <div style="font-family:var(--ff-d);font-size:1.3rem;font-weight:500;margin-bottom:1.2rem">What Partners Receive</div>
+    <div style="display:grid;grid-template-columns:repeat(auto-fit,minmax(200px,1fr));gap:1rem">
+      <div style="display:flex;align-items:flex-start;gap:0.6rem">
+        <svg viewBox="0 0 24 24" width="18" height="18" fill="none" stroke="var(--gold)" stroke-width="1.5" style="flex-shrink:0;margin-top:0.15rem"><circle cx="12" cy="12" r="10"/><path d="M8 12l3 3 5-6"/></svg>
+        <div><div style="font-size:0.88rem;font-weight:400;margin-bottom:0.1rem">Second Journey Partner Badge</div><div style="font-size:0.72rem;color:var(--faint)">Display on your website and property</div></div>
+      </div>
+      <div style="display:flex;align-items:flex-start;gap:0.6rem">
+        <svg viewBox="0 0 24 24" width="18" height="18" fill="none" stroke="var(--gold)" stroke-width="1.5" style="flex-shrink:0;margin-top:0.15rem"><circle cx="12" cy="12" r="10"/><path d="M8 12l3 3 5-6"/></svg>
+        <div><div style="font-size:0.88rem;font-weight:400;margin-bottom:0.1rem">Sustainability Recognition</div><div style="font-size:0.72rem;color:var(--faint)">Featured as a sustainable travel ally</div></div>
+      </div>
+      <div style="display:flex;align-items:flex-start;gap:0.6rem">
+        <svg viewBox="0 0 24 24" width="18" height="18" fill="none" stroke="var(--gold)" stroke-width="1.5" style="flex-shrink:0;margin-top:0.15rem"><circle cx="12" cy="12" r="10"/><path d="M8 12l3 3 5-6"/></svg>
+        <div><div style="font-size:0.88rem;font-weight:400;margin-bottom:0.1rem">Featured Partner Placement</div><div style="font-size:0.72rem;color:var(--faint)">Logo and link on the Second Journey page</div></div>
+      </div>
+      <div style="display:flex;align-items:flex-start;gap:0.6rem">
+        <svg viewBox="0 0 24 24" width="18" height="18" fill="none" stroke="var(--gold)" stroke-width="1.5" style="flex-shrink:0;margin-top:0.15rem"><circle cx="12" cy="12" r="10"/><path d="M8 12l3 3 5-6"/></svg>
+        <div><div style="font-size:0.88rem;font-weight:400;margin-bottom:0.1rem">Impact Reporting</div><div style="font-size:0.72rem;color:var(--faint)">Quarterly metrics on your contribution</div></div>
+      </div>
+      <div style="display:flex;align-items:flex-start;gap:0.6rem">
+        <svg viewBox="0 0 24 24" width="18" height="18" fill="none" stroke="var(--gold)" stroke-width="1.5" style="flex-shrink:0;margin-top:0.15rem"><circle cx="12" cy="12" r="10"/><path d="M8 12l3 3 5-6"/></svg>
+        <div><div style="font-size:0.88rem;font-weight:400;margin-bottom:0.1rem">Community Visibility</div><div style="font-size:0.72rem;color:var(--faint)">Recognized across the BagFree traveler network</div></div>
+      </div>
+    </div>
+  </div>
+
+  <!-- Become a Partner Form -->
+  <div class="donate-card" style="max-width:100%">
+    <div style="font-family:var(--ff-d);font-size:1.3rem;font-weight:500;margin-bottom:0.4rem">Become a Second Journey™ Partner</div>
+    <div style="font-size:0.82rem;color:var(--muted);margin-bottom:1.5rem">Tell us about your business and how you’d like to contribute to sustainable travel.</div>
+
+    <div class="form-grid">
+      <div class="form-row"><label class="form-label">Business Name</label><input class="form-input" id="biz-name" placeholder="Your business name"></div>
+      <div class="form-row"><label class="form-label">Contact Name</label><input class="form-input" id="biz-contact" placeholder="Primary contact"></div>
+      <div class="form-row"><label class="form-label">Email</label><input class="form-input" id="biz-email" type="email" placeholder="contact@business.com"></div>
+      <div class="form-row"><label class="form-label">Phone</label><input class="form-input" id="biz-phone" type="tel" placeholder="(555) 000-0000"></div>
+      <div class="form-row"><label class="form-label">City</label><select class="form-select" id="biz-city"><option>Savannah, GA</option><option>Atlanta, GA (Coming Soon)</option><option>Tampa, FL (Coming Soon)</option><option>Orlando, FL (Coming Soon)</option><option>Miami, FL (Coming Soon)</option></select></div>
+      <div class="form-row"><label class="form-label">Contribution Type</label><select class="form-select" id="biz-contrib"><option>Cash Support</option><option>Clothing Contributions</option><option>Travel Essentials</option><option>Storage Space</option><option>Multiple / Other</option></select></div>
+    </div>
+
+    <div class="form-row">
+      <label class="form-label">Business Type</label>
+      <div style="display:flex;gap:0.8rem;flex-wrap:wrap;margin-top:0.3rem">
+        <label style="display:flex;align-items:center;gap:0.35rem;font-size:0.82rem;color:var(--muted);cursor:pointer"><input type="checkbox" style="accent-color:var(--gold)"> Hotel</label>
+        <label style="display:flex;align-items:center;gap:0.35rem;font-size:0.82rem;color:var(--muted);cursor:pointer"><input type="checkbox" style="accent-color:var(--gold)"> Restaurant</label>
+        <label style="display:flex;align-items:center;gap:0.35rem;font-size:0.82rem;color:var(--muted);cursor:pointer"><input type="checkbox" style="accent-color:var(--gold)"> Retail Vendor</label>
+        <label style="display:flex;align-items:center;gap:0.35rem;font-size:0.82rem;color:var(--muted);cursor:pointer"><input type="checkbox" style="accent-color:var(--gold)"> Local Business</label>
+        <label style="display:flex;align-items:center;gap:0.35rem;font-size:0.82rem;color:var(--muted);cursor:pointer"><input type="checkbox" style="accent-color:var(--gold)"> Community Partner</label>
+      </div>
+    </div>
+
+    <div class="form-row"><label class="form-label">Estimated Contribution / Item Description</label><textarea class="form-textarea" id="biz-desc" placeholder="Describe what your business can contribute — estimated quantities, item types, frequency, or available space…"></textarea></div>
+
+    <div class="form-row"><label class="form-label">Message (optional)</label><textarea class="form-textarea" id="biz-msg" placeholder="Anything else you’d like us to know…" style="min-height:60px"></textarea></div>
+
+    <div style="display:flex;gap:0.8rem;flex-wrap:wrap;margin-top:0.5rem">
+      <button class="btn btn-gold" style="flex:1;justify-content:center" onclick="openPartnerModal()">Request Partner Access</button>
+      <a href="mailto:partners@bagfree.app?subject=Second%20Journey%20Partnership%20Inquiry" class="btn btn-outline" style="flex:1;justify-content:center;text-align:center">Email Us About Contributing</a>
+    </div>
+    <div class="disclaimer-box" style="margin-top:1rem">
+      <svg viewBox="0 0 24 24" width="18" height="18" fill="none" stroke="currentColor" stroke-width="1.5"><circle cx="12" cy="12" r="10"/><line x1="12" y1="8" x2="12" y2="12"/><line x1="12" y1="16" x2="12.01" y2="16"/></svg>
+      <div>Our partnerships team responds within 2 business days. <strong>Second Journey™ is a sustainability initiative of BagFree, not a charitable organization. All contributions are voluntary and are not tax-deductible.</strong></div>
+    </div>
+  </div>
+</section>
+
+<!-- Partner Impact Metrics -->
+<section class="sec">
+  <div style="position:relative;padding:2.5rem 2rem;overflow:hidden;border-radius:20px">
+    <div style="position:absolute;inset:0;background:linear-gradient(135deg,rgba(201,169,110,0.05),rgba(127,183,126,0.04),transparent);pointer-events:none;border-radius:20px"></div>
+    <div style="position:absolute;inset:0;border:1px solid rgba(201,169,110,0.1);border-radius:20px;pointer-events:none"></div>
+    <div style="position:relative;z-index:1;text-align:center">
+      <div class="sec-label" style="text-align:center">Partner Impact</div>
+      <div class="sec-title" style="margin-bottom:1.5rem">The Second Journey™ Network</div>
+      <div class="stats" style="margin:0">
+        <div class="stat"><div class="stat-v"><span>380</span>+</div><div class="stat-l">Items Redistributed</div></div>
+        <div class="stat"><div class="stat-v"><span>4</span></div><div class="stat-l">Partner Businesses</div></div>
+        <div class="stat"><div class="stat-v"><span>85</span>+</div><div class="stat-l">Travelers Assisted</div></div>
+        <div class="stat"><div class="stat-v"><span>420</span> lbs</div><div class="stat-l">Estimated Waste Diverted</div></div>
+        <div class="stat"><div class="stat-v"><span>1</span></div><div class="stat-l">Pilot City</div></div>
+      </div>
+    </div>
+  </div>
+</section>
+
+<!-- Impact CTA -->
+<section class="sec" id="impact">
+  <div class="impact">
+    <div style="position:relative;z-index:1">
+      <div class="sec-label" style="text-align:center">Our Mission</div>
+      <h2 style="font-family:var(--ff-d);font-size:2rem;font-weight:400;margin-bottom:0.6rem">Travel lighter. <em style="color:var(--sage);font-style:italic">Leave less behind.</em></h2>
+      <p style="color:var(--muted);font-size:0.92rem;max-width:560px;margin:0 auto 1.5rem;line-height:1.6">Every item rehomed is waste diverted, a traveler helped, and a community strengthened. Second Journey is how BagFree gives back — one essential at a time.</p>
+      <a href="#browse" class="btn btn-sage">Browse Available Items</a>
+    </div>
+  </div>
+</section>
+
+<!-- Delivery Crew -->
+<section class="sec">
+  <div class="sec-label">Earn With Every Delivery</div>
+  <div class="sec-title">BAG Points for Delivery Crews</div>
+  <div class="sec-sub">You don’t have to be a traveler to earn BAG. Our delivery crew earns points based on the quality of every delivery — because how an item arrives matters as much as the item itself.</div>
+
+  <div class="how-grid">
+    <div class="how-card">
+      <div class="how-num"><svg viewBox="0 0 24 24" width="18" height="18" fill="none" stroke="var(--sage)" stroke-width="1.5"><circle cx="12" cy="12" r="10"/><path d="M12 6v6l4 2"/></svg></div>
+      <div class="how-title">On-Time Delivery</div>
+      <div class="how-desc">Deliver within the promised window and earn base BAG Points on every order. Consistency builds your score.</div>
+    </div>
+    <div class="how-card">
+      <div class="how-num"><svg viewBox="0 0 24 24" width="18" height="18" fill="none" stroke="var(--sage)" stroke-width="1.5"><polygon points="12 2 15.09 8.26 22 9.27 17 14.14 18.18 21.02 12 17.77 5.82 21.02 7 14.14 2 9.27 8.91 8.26"/></svg></div>
+      <div class="how-title">Traveler Ratings</div>
+      <div class="how-desc">Travelers rate every delivery. 5-star ratings earn bonus BAG. Maintain a 4.8+ average and unlock Elite Driver status.</div>
+    </div>
+    <div class="how-card">
+      <div class="how-num"><svg viewBox="0 0 24 24" width="18" height="18" fill="none" stroke="var(--sage)" stroke-width="1.5"><path d="M12 22s8-4 8-10V5l-8-3-8 3v7c0 6 8 10 8 10z"/></svg></div>
+      <div class="how-title">Item Condition</div>
+      <div class="how-desc">Items arrive in the same condition they left. Careful handling earns quality bonuses — especially for Second Journey items.</div>
+    </div>
+    <div class="how-card">
+      <div class="how-num"><svg viewBox="0 0 24 24" width="18" height="18" fill="none" stroke="var(--gold)" stroke-width="1.5"><path d="M20.84 4.61a5.5 5.5 0 00-7.78 0L12 5.67l-1.06-1.06a5.5 5.5 0 00-7.78 7.78L12 21.23l8.84-8.84a5.5 5.5 0 000-7.78z"/></svg></div>
+      <div class="how-title">Spend Anywhere</div>
+      <div class="how-desc">Use your BAG Points to claim Second Journey items, gift them to travelers, or redeem through the BagFree marketplace.</div>
+    </div>
+  </div>
+
+  <div style="text-align:center;margin-top:1.5rem">
+    <div style="display:inline-block;background:var(--card);border:1px solid var(--border);border-radius:12px;padding:1.2rem 2rem">
+      <div style="font-size:0.6rem;letter-spacing:2px;text-transform:uppercase;color:var(--sage);font-weight:600;margin-bottom:0.5rem">Delivery BAG Earnings</div>
+      <div style="display:flex;gap:2rem;flex-wrap:wrap;justify-content:center">
+        <div style="text-align:center"><div style="font-size:1.2rem;font-weight:600;color:var(--gold)">25</div><div style="font-size:0.62rem;color:var(--faint)">Per Delivery</div></div>
+        <div style="text-align:center"><div style="font-size:1.2rem;font-weight:600;color:var(--gold)">+15</div><div style="font-size:0.62rem;color:var(--faint)">5-Star Bonus</div></div>
+        <div style="text-align:center"><div style="font-size:1.2rem;font-weight:600;color:var(--gold)">+10</div><div style="font-size:0.62rem;color:var(--faint)">Condition Bonus</div></div>
+        <div style="text-align:center"><div style="font-size:1.2rem;font-weight:600;color:var(--gold)">50</div><div style="font-size:0.62rem;color:var(--faint)">Max Per Delivery</div></div>
+      </div>
+    </div>
+  </div>
+</section>
+
+
+<div style="max-width:800px;margin:0 auto;padding:1.5rem 2rem;text-align:center;font-size:0.62rem;color:var(--faint);line-height:1.5;font-style:italic;border-top:1px solid var(--border)">Second Journey™ is a sustainability initiative operated by BagFree. BagFree is not a registered charity or nonprofit organization. All contributions, whether cash, items, or services, are voluntary and are not tax-deductible. Contributors receive BAG Points or store credit as a thank-you, not as a tax benefit.</div>
+<footer class="ft"><a href="/">BagFree.app</a> · Second Journey™<br><span style="margin-top:0.4rem;display:inline-block">© 2026 BagFree. All rights reserved.</span></footer>
+
+<script>
+document.querySelectorAll('.filter').forEach(function(f){
+  f.addEventListener('click',function(){
+    document.querySelectorAll('.filter').forEach(function(x){x.classList.remove('active')});
+    this.classList.add('active');
+  });
+});
+document.querySelectorAll('a[href^="#"]').forEach(function(a){
+  a.addEventListener('click',function(e){
+    var t=document.querySelector(this.getAttribute('href'));
+    if(t){e.preventDefault();t.scrollIntoView({behavior:'smooth'});}
+  });
+});
+
+function setContribType(type) {
+  var sel = document.getElementById('contrib-type');
+  if (sel) {
+    for (var i = 0; i < sel.options.length; i++) {
+      if (sel.options[i].value === type) { sel.selectedIndex = i; break; }
+    }
+  }
+  document.getElementById('contrib-desc').focus();
+}
+
+
+
+function openContribModal() {
+  var name = document.getElementById('contrib-name').value.trim();
+  var email = document.getElementById('contrib-email').value.trim();
+  if (!name || !email) { alert('Please enter your name and email.'); return; }
+  document.getElementById('contrib-check').checked = false;
+  updateConfirmBtn('contrib-check','contrib-confirm');
+  document.getElementById('contrib-modal').classList.add('show');
+}
+
+function openPartnerModal() {
+  var name = document.getElementById('biz-name').value.trim();
+  var email = document.getElementById('biz-email').value.trim();
+  if (!name || !email) { alert('Please enter your business name and email.'); return; }
+  document.getElementById('partner-check').checked = false;
+  updateConfirmBtn('partner-check','partner-confirm');
+  document.getElementById('partner-modal').classList.add('show');
+}
+
+function closeModal(id) {
+  document.getElementById(id).classList.remove('show');
+}
+
+function toggleCheck(id) {
+  var cb = document.getElementById(id);
+  cb.checked = !cb.checked;
+  cb.dispatchEvent(new Event('change'));
+}
+
+function updateConfirmBtn(checkId, btnId) {
+  document.getElementById(btnId).disabled = !document.getElementById(checkId).checked;
+}
+
+function confirmContribution() {
+  closeModal('contrib-modal');
+  submitContribution();
+}
+
+function confirmPartner() {
+  closeModal('partner-modal');
+  submitPartner();
+}
+
+// Close modal on overlay click
+document.querySelectorAll('.modal-overlay').forEach(function(m) {
+  m.addEventListener('click', function(e) {
+    if (e.target === this) this.classList.remove('show');
+  });
+});
+
+function submitPartner() {
+  var name = document.getElementById('biz-name').value.trim();
+  var email = document.getElementById('biz-email').value.trim();
+  if (!name || !email) { alert('Please enter your business name and email.'); return; }
+  alert('Thank you, ' + name + '! Your partnership request has been submitted. Our team will be in touch within 2 business days.');
+}
+
+function submitContribution() {
+  var name = document.getElementById('contrib-name').value.trim();
+  var email = document.getElementById('contrib-email').value.trim();
+  if (!name || !email) { alert('Please enter your name and email.'); return; }
+  var type = document.getElementById('contrib-type').value;
+  var desc = document.getElementById('contrib-desc').value.trim();
+  var pref = document.querySelector('input[name="bag-pref"]:checked');
+  
+  // Simulate submission
+  alert('Thank you, ' + name + '! Your ' + type + ' contribution has been submitted for review. You\'ll receive a confirmation email within 24 hours.');
+  document.getElementById('contrib-name').value = '';
+  document.getElementById('contrib-email').value = '';
+  document.getElementById('contrib-desc').value = '';
+}
+
+function togT(){var l=document.documentElement.classList.toggle('light');var k=document.querySelector('.theme-toggle .knob');k.innerHTML=l?'<svg viewBox="0 0 24 24" stroke-width="2"><path d="M21 12.79A9 9 0 1111.21 3 7 7 0 0021 12.79z"/></svg>':'<svg viewBox="0 0 24 24" stroke-width="2"><circle cx="12" cy="12" r="5"/><path d="M12 1v2m0 18v2M4.22 4.22l1.42 1.42m12.72 12.72l1.42 1.42M1 12h2m18 0h2M4.22 19.78l1.42-1.42M18.36 5.64l1.42-1.42"/></svg>';try{localStorage.setItem('bf_sj_theme',l?'light':'dark');}catch(e){}}
+(function(){try{if(localStorage.getItem('bf_sj_theme')==='light'){document.documentElement.classList.add('light');var k=document.querySelector('.theme-toggle .knob');if(k)k.innerHTML='<svg viewBox="0 0 24 24" stroke-width="2"><path d="M21 12.79A9 9 0 1111.21 3 7 7 0 0021 12.79z"/></svg>';}}catch(e){}})();
+</script>
+
+<!-- Contribution Confirmation Modal -->
+<div class="modal-overlay" id="contrib-modal">
+  <div class="modal">
+    <div class="modal-icon">♻️</div>
+    <div class="modal-title">Confirm Your Contribution</div>
+    <div class="modal-text">Thank you for supporting Second Journey™ and sustainable travel in Savannah.</div>
+    <div class="modal-disclaimer">
+      <svg viewBox="0 0 24 24" width="20" height="20" fill="none" stroke="#c9a96e" stroke-width="1.5"><circle cx="12" cy="12" r="10"/><line x1="12" y1="8" x2="12" y2="12"/><line x1="12" y1="16" x2="12.01" y2="16"/></svg>
+      <div>BagFree is not a registered charity or nonprofit organization. <strong>Your contribution is not tax-deductible.</strong> Contributors may receive BAG Points or store credit as a thank-you, not as a tax benefit.</div>
+    </div>
+    <div class="modal-check" onclick="toggleCheck('contrib-check')">
+      <input type="checkbox" id="contrib-check" onchange="updateConfirmBtn('contrib-check','contrib-confirm')">
+      <label for="contrib-check">I understand that my contribution is not tax-deductible and that BagFree is not a nonprofit organization.</label>
+    </div>
+    <div class="modal-btns">
+      <button class="btn btn-outline" onclick="closeModal('contrib-modal')" style="font-size:0.72rem">Cancel</button>
+      <button class="btn btn-sage" id="contrib-confirm" disabled onclick="confirmContribution()" style="font-size:0.72rem">Confirm & Submit</button>
+    </div>
+  </div>
+</div>
+
+<!-- Partner Confirmation Modal -->
+<div class="modal-overlay" id="partner-modal">
+  <div class="modal">
+    <div class="modal-icon">🤝</div>
+    <div class="modal-title">Confirm Partnership Request</div>
+    <div class="modal-text">Thank you for your interest in becoming a Second Journey™ partner.</div>
+    <div class="modal-disclaimer">
+      <svg viewBox="0 0 24 24" width="20" height="20" fill="none" stroke="#c9a96e" stroke-width="1.5"><circle cx="12" cy="12" r="10"/><line x1="12" y1="8" x2="12" y2="12"/><line x1="12" y1="16" x2="12.01" y2="16"/></svg>
+      <div>Second Journey™ is a sustainability initiative of BagFree, not a charitable organization. <strong>Contributions of cash, items, or services are voluntary and are not tax-deductible.</strong> Partner recognition is provided as a courtesy, not a tax receipt.</div>
+    </div>
+    <div class="modal-check" onclick="toggleCheck('partner-check')">
+      <input type="checkbox" id="partner-check" onchange="updateConfirmBtn('partner-check','partner-confirm')">
+      <label for="partner-check">I understand that contributions are not tax-deductible and that BagFree is not a nonprofit organization.</label>
+    </div>
+    <div class="modal-btns">
+      <button class="btn btn-outline" onclick="closeModal('partner-modal')" style="font-size:0.72rem">Cancel</button>
+      <button class="btn btn-gold" id="partner-confirm" disabled onclick="confirmPartner()" style="font-size:0.72rem">Confirm & Submit</button>
+    </div>
+  </div>
+</div>
+<script src="/ios-viewport-lock.js" defer></script>
+</body>
+</html>

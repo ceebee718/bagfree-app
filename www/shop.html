@@ -100,30 +100,9 @@ html,body{min-height:100%;background:var(--noir);color:var(--white);font-family:
   .delivery-strip-inner{gap:1.5rem}
   .product-grid{grid-template-columns:repeat(auto-fill,minmax(160px,1fr))}
 }
-
-/* iOS Capacitor safe-area support */
-html,
-body {
-  min-height: 100%;
-  min-height: 100dvh;
-  background: var(--noir);
-}
-
-#nav {
-  padding-top: calc(0.75rem + env(safe-area-inset-top)) !important;
-}
-
-#app,
-#content {
-  padding-top: calc(60px + env(safe-area-inset-top)) !important;
-}
-
-body {
-  padding-bottom: env(safe-area-inset-bottom);
-}
-
 </style>
 <link rel="stylesheet" href="/ios-viewport-lock.css">
+<link rel="stylesheet" href="/embr-concierge-button.css">
 </head>
 <body>
 
@@ -132,7 +111,7 @@ body {
   <a href="/" class="nav-logo">BagFree</a>
   <div style="display:flex;align-items:center;gap:0.75rem;">
     <a href="/#vendors" class="nav-back">← All Vendors</a>
-    <a href="departure-lounge-landing.html" class="nav-back" style="border-color:rgba(201,169,110,0.3);color:rgba(201,169,110,0.8);">Departure Lounge</a>
+    <a href="/departure-lounge-landing" class="nav-back" style="border-color:rgba(201,169,110,0.3);color:rgba(201,169,110,0.8);">Departure Lounge</a>
   </div>
 </nav>
 
@@ -231,7 +210,7 @@ body {
       <div style="font-size:0.85rem;color:var(--mist);line-height:1.8;max-width:480px;margin:0 auto 2rem;">
         BagFree coordinates delivery of curated products to your hotel room before you check in. No bags. No queues.
       </div>
-      <a href="departure-lounge-landing.html" style="display:inline-block;background:linear-gradient(135deg,var(--gold),#b8893e);color:#0A0A08;padding:0.9rem 2.5rem;font-size:0.65rem;font-weight:600;letter-spacing:2.5px;text-transform:uppercase;text-decoration:none;">
+      <a href="/departure-lounge-landing" style="display:inline-block;background:linear-gradient(135deg,var(--gold),#b8893e);color:#0A0A08;padding:0.9rem 2.5rem;font-size:0.65rem;font-weight:600;letter-spacing:2.5px;text-transform:uppercase;text-decoration:none;">
         Enter The Departure Lounge ✦
       </a>
     </div>

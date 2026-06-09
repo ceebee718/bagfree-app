@@ -42,4 +42,6 @@
   to = "/.netlify/functions/track-vendor"
   status = 200
 
+[functions]
+  node_bundler = "esbuild"
 

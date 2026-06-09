@@ -1,0 +1,745 @@
+<!DOCTYPE html>
+<html lang="en" data-theme="dark">
+<head>
+<meta charset="UTF-8">
+<meta name="viewport" content="width=device-width, initial-scale=1, maximum-scale=1, user-scalable=no, viewport-fit=cover">
+<meta name="theme-color" content="#0D1525">
+<title>City Guide · BagFree</title>
+<meta name="description" content="Curated city intelligence for the luxury traveler. Best brunch, rooftop bars, hidden spots, luxury experiences and more — powered by BagFree.">
+<link rel="icon" href="/favicon-32.png" type="image/png">
+<link rel="apple-touch-icon" href="/apple-touch-icon.png">
+<meta property="og:title" content="BagFree City Guide · Arrive knowing everything.">
+<meta property="og:description" content="Curated city intelligence for the luxury traveler. Powered by BagFree.">
+<meta property="og:image" content="/og-image.png">
+<link rel="preconnect" href="https://fonts.googleapis.com">
+<link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+<link href="https://fonts.googleapis.com/css2?family=Cormorant+Garamond:ital,wght@0,300;0,400;0,500;1,300;1,400;1,500&family=Jost:wght@300;400;500;600&display=swap" rel="stylesheet">
+
+<style>
+/* ── TOKENS ── */
+:root {
+  --noir:       #0D1525;
+  --noir-2:     #141d30;
+  --noir-3:     #1b2540;
+  --gold:       #C9A96E;
+  --gold-rgb:   201, 169, 110;
+  --white:      #F5EDD8;
+  --white-rgb:  245, 237, 216;
+  --bg-rgb:     13, 21, 37;
+  --ff-display: 'Cormorant Garamond', Georgia, serif;
+  --ff-body:    'Jost', system-ui, sans-serif;
+}
+[data-theme="light"] {
+  --noir:      #F5F0E8;
+  --noir-2:    #EDE8DC;
+  --noir-3:    #E4DDD0;
+  --gold:      #8A6A2E;
+  --gold-rgb:  138, 106, 46;
+  --white:     #1A1428;
+  --white-rgb: 26, 20, 40;
+  --bg-rgb:    245, 240, 232;
+}
+
+/* ── RESET ── */
+*, *::before, *::after { box-sizing: border-box; margin: 0; padding: 0; }
+html { scroll-behavior: smooth; }
+body {
+  background: var(--noir);
+  color: var(--white);
+  font-family: var(--ff-body);
+  font-weight: 300;
+  line-height: 1.6;
+  -webkit-font-smoothing: antialiased;
+  min-height: 100vh;
+  overflow-x: hidden;
+  transition: background-color 0.4s ease, color 0.3s ease;
+}
+
+/* ── GRAIN ── */
+body::before {
+  content: '';
+  position: fixed; inset: 0;
+  pointer-events: none; z-index: 0; opacity: 0.022;
+  background-image: url("data:image/svg+xml,%3Csvg viewBox='0 0 200 200' xmlns='http://www.w3.org/2000/svg'%3E%3Cfilter id='n'%3E%3CfeTurbulence type='fractalNoise' baseFrequency='0.9' numOctaves='3'/%3E%3C/filter%3E%3Crect width='100%25' height='100%25' filter='url(%23n)'/%3E%3C/svg%3E");
+}
+
+/* ── NAV ── */
+nav {
+  position: fixed; top: 0; left: 0; right: 0; z-index: 100;
+  display: flex; align-items: center; justify-content: space-between;
+  padding: 1.25rem 2.5rem;
+  background: rgba(var(--bg-rgb), 0.88);
+  backdrop-filter: blur(20px) saturate(140%);
+  -webkit-backdrop-filter: blur(20px) saturate(140%);
+  border-bottom: 1px solid rgba(var(--gold-rgb), 0.14);
+  transition: background-color 0.4s;
+}
+.nav-brand {
+  font-family: var(--ff-display);
+  font-style: italic;
+  font-size: 1.25rem;
+  color: var(--white);
+  text-decoration: none;
+  letter-spacing: 0.3px;
+}
+.nav-brand em { color: var(--gold); font-style: normal; }
+.nav-links {
+  display: flex; align-items: center; gap: 1.5rem;
+  font-family: var(--ff-body);
+  font-size: 10px; letter-spacing: 3px; text-transform: uppercase;
+}
+.nav-links a {
+  color: rgba(var(--white-rgb), 0.6);
+  text-decoration: none;
+  transition: color 0.25s;
+}
+.nav-links a:hover { color: var(--gold); }
+.nav-shop {
+  font-size: 10px; letter-spacing: 2.5px; text-transform: uppercase;
+  color: var(--gold); border: 1px solid rgba(var(--gold-rgb), 0.4);
+  padding: 0.45rem 1rem; text-decoration: none;
+  transition: all 0.25s; display: inline-flex; align-items: center; gap: 6px;
+}
+.nav-shop:hover { background: var(--gold); color: var(--noir); }
+.theme-btn {
+  width: 30px; height: 30px; border-radius: 50%;
+  border: 1px solid rgba(var(--gold-rgb), 0.35);
+  background: none; color: rgba(var(--gold-rgb), 0.85);
+  cursor: pointer; font-size: 12px;
+  display: inline-flex; align-items: center; justify-content: center;
+  transition: border-color 0.25s;
+}
+.theme-btn:hover { border-color: rgba(var(--gold-rgb), 0.8); }
+
+/* ── HERO ── */
+.hero {
+  min-height: 100vh;
+  display: grid;
+  grid-template-rows: 1fr auto;
+  padding: 0 2.5rem;
+  position: relative;
+  overflow: hidden;
+}
+.hero-bg {
+  position: absolute; inset: 0; z-index: 0;
+  background:
+    radial-gradient(ellipse 80% 60% at 20% 50%, rgba(var(--gold-rgb), 0.07) 0%, transparent 60%),
+    radial-gradient(ellipse 60% 80% at 80% 20%, rgba(var(--gold-rgb), 0.04) 0%, transparent 50%);
+}
+/* Decorative vertical lines */
+.hero-bg::before, .hero-bg::after {
+  content: '';
+  position: absolute;
+  top: 0; bottom: 0; width: 1px;
+  background: linear-gradient(to bottom, transparent 0%, rgba(var(--gold-rgb), 0.2) 30%, rgba(var(--gold-rgb), 0.2) 70%, transparent 100%);
+}
+.hero-bg::before { left: 33.33%; }
+.hero-bg::after  { left: 66.66%; }
+
+.hero-content {
+  display: flex; flex-direction: column;
+  justify-content: center; align-items: flex-start;
+  padding: 9rem 0 4rem;
+  position: relative; z-index: 1;
+  max-width: 900px;
+}
+.hero-eyebrow {
+  display: inline-flex; align-items: center; gap: 0.75rem;
+  font-family: var(--ff-body); font-size: 10px;
+  letter-spacing: 4.5px; text-transform: uppercase;
+  color: rgba(var(--gold-rgb), 0.75);
+  margin-bottom: 2.5rem;
+  animation: fadeUp 0.8s ease-out both;
+}
+.hero-eyebrow::before {
+  content: ''; width: 32px; height: 1px;
+  background: rgba(var(--gold-rgb), 0.45);
+}
+.hero h1 {
+  font-family: var(--ff-display);
+  font-weight: 300;
+  font-size: clamp(3.5rem, 9vw, 8rem);
+  line-height: 0.92;
+  letter-spacing: -3px;
+  color: var(--white);
+  margin-bottom: 2rem;
+  animation: fadeUp 0.9s 0.1s ease-out both;
+}
+.hero h1 em { font-style: italic; color: var(--gold); }
+.hero-sub {
+  font-family: var(--ff-display);
+  font-style: italic;
+  font-size: clamp(1.1rem, 2.2vw, 1.5rem);
+  color: rgba(var(--white-rgb), 0.6);
+  max-width: 500px;
+  line-height: 1.55;
+  margin-bottom: 3rem;
+  font-weight: 300;
+  animation: fadeUp 1s 0.2s ease-out both;
+}
+.hero-input-wrap {
+  display: flex; width: 100%; max-width: 520px; gap: 0;
+  animation: fadeUp 1s 0.3s ease-out both;
+}
+.hero-input {
+  flex: 1;
+  padding: 1rem 1.5rem;
+  background: rgba(var(--bg-rgb), 0.6);
+  border: 1px solid rgba(var(--gold-rgb), 0.4);
+  border-right: none;
+  color: var(--white);
+  font-family: var(--ff-body);
+  font-size: 14px; font-weight: 300;
+  letter-spacing: 0.3px;
+  outline: none;
+  transition: border-color 0.25s, background 0.25s;
+}
+.hero-input::placeholder { color: rgba(var(--white-rgb), 0.4); }
+.hero-input:focus {
+  border-color: rgba(var(--gold-rgb), 0.8);
+  background: rgba(var(--bg-rgb), 0.85);
+}
+.hero-btn {
+  padding: 1rem 1.75rem;
+  background: var(--gold); color: var(--noir);
+  border: none; font-family: var(--ff-body);
+  font-size: 10px; letter-spacing: 3px;
+  text-transform: uppercase; font-weight: 600;
+  cursor: pointer; white-space: nowrap;
+  transition: background 0.25s;
+  flex-shrink: 0;
+}
+.hero-btn:hover { background: #DDD3B8; }
+
+/* Scroll hint */
+.hero-scroll {
+  padding: 2rem 0;
+  position: relative; z-index: 1;
+  display: flex; align-items: center; gap: 0.75rem;
+  font-family: var(--ff-body); font-size: 9px;
+  letter-spacing: 3px; text-transform: uppercase;
+  color: rgba(var(--white-rgb), 0.35);
+  animation: fadeUp 1.1s 0.5s ease-out both;
+}
+.hero-scroll::before {
+  content: ''; width: 1px; height: 40px;
+  background: linear-gradient(to bottom, rgba(var(--gold-rgb), 0.5), transparent);
+}
+
+/* ── CATEGORIES ── */
+.categories-section {
+  padding: 6rem 2.5rem;
+  background: var(--noir-2);
+  border-top: 1px solid rgba(var(--gold-rgb), 0.12);
+  position: relative; z-index: 1;
+}
+.section-label {
+  font-family: var(--ff-body); font-size: 10px;
+  letter-spacing: 4px; text-transform: uppercase;
+  color: rgba(var(--gold-rgb), 0.7);
+  margin-bottom: 1rem;
+  display: flex; align-items: center; gap: 1rem;
+}
+.section-label::after {
+  content: ''; flex: 1; height: 1px; max-width: 60px;
+  background: rgba(var(--gold-rgb), 0.3);
+}
+.section-title {
+  font-family: var(--ff-display);
+  font-weight: 300; font-size: clamp(2rem, 4vw, 3.2rem);
+  letter-spacing: -0.5px; color: var(--white);
+  margin-bottom: 0.5rem; line-height: 1.05;
+}
+.section-title em { font-style: italic; color: var(--gold); }
+.section-sub {
+  font-family: var(--ff-body); font-size: 13px;
+  color: rgba(var(--white-rgb), 0.45);
+  margin-bottom: 3.5rem; font-weight: 300;
+  letter-spacing: 0.5px;
+}
+
+.cat-grid {
+  display: grid;
+  grid-template-columns: repeat(auto-fill, minmax(240px, 1fr));
+  gap: 1px;
+  background: rgba(var(--gold-rgb), 0.1);
+  border: 1px solid rgba(var(--gold-rgb), 0.1);
+}
+.cat-card {
+  background: var(--noir-2);
+  padding: 2rem 1.75rem;
+  cursor: pointer;
+  display: flex; flex-direction: column; gap: 0.6rem;
+  border: none; text-align: left; font: inherit;
+  transition: background 0.25s;
+  position: relative; overflow: hidden;
+}
+.cat-card::after {
+  content: '';
+  position: absolute; bottom: 0; left: 0; right: 0;
+  height: 2px;
+  background: var(--gold);
+  transform: scaleX(0);
+  transform-origin: left;
+  transition: transform 0.3s ease;
+}
+.cat-card:hover::after,
+.cat-card.active::after { transform: scaleX(1); }
+.cat-card:hover { background: var(--noir-3); }
+.cat-card.active { background: rgba(var(--gold-rgb), 0.07); }
+
+.cat-num {
+  font-family: var(--ff-display); font-style: italic;
+  font-size: 1.6rem; font-weight: 300;
+  color: rgba(var(--gold-rgb), 0.55); line-height: 1;
+}
+.cat-card.active .cat-num { color: var(--gold); }
+.cat-title {
+  font-family: var(--ff-display);
+  font-size: 1.15rem; font-weight: 400;
+  color: var(--white); line-height: 1.2;
+}
+.cat-desc {
+  font-family: var(--ff-body); font-size: 11px;
+  color: rgba(var(--white-rgb), 0.45); font-weight: 300;
+  line-height: 1.55;
+}
+
+/* ── RESULTS ── */
+.results-section {
+  padding: 4rem 2.5rem 6rem;
+  max-width: 860px; margin: 0 auto;
+  display: none;
+}
+.results-eyebrow {
+  font-family: var(--ff-body); font-size: 9px;
+  letter-spacing: 4px; text-transform: uppercase;
+  color: rgba(var(--gold-rgb), 0.7);
+  margin-bottom: 0.75rem;
+}
+.results-title {
+  font-family: var(--ff-display);
+  font-size: clamp(1.6rem, 3vw, 2.4rem);
+  font-weight: 300; color: var(--white);
+  letter-spacing: -0.5px; margin-bottom: 2.5rem;
+  line-height: 1.1;
+}
+.results-title em { font-style: italic; color: var(--gold); }
+
+.results-loading {
+  display: none; text-align: center; padding: 4rem 0;
+}
+.loading-word {
+  font-family: var(--ff-display); font-style: italic;
+  font-size: 1.35rem; color: rgba(var(--gold-rgb), 0.7);
+  animation: breathe 2s ease-in-out infinite;
+}
+@keyframes breathe {
+  0%, 100% { opacity: 0.5; }
+  50% { opacity: 1; }
+}
+
+.result-item {
+  display: flex; gap: 2rem;
+  padding: 2rem 0;
+  border-bottom: 1px solid rgba(var(--gold-rgb), 0.1);
+  animation: fadeUp 0.6s ease-out both;
+}
+.result-num {
+  font-family: var(--ff-display); font-style: italic;
+  font-size: 2rem; font-weight: 300;
+  color: rgba(var(--gold-rgb), 0.4);
+  line-height: 1; flex-shrink: 0;
+  min-width: 32px; padding-top: 2px;
+}
+.result-body { flex: 1; }
+.result-name {
+  font-family: var(--ff-display);
+  font-size: 1.25rem; font-weight: 400;
+  color: var(--white); margin-bottom: 0.4rem;
+}
+.result-desc {
+  font-family: var(--ff-body); font-size: 13px;
+  color: rgba(var(--white-rgb), 0.65);
+  line-height: 1.75; margin-bottom: 0.75rem;
+  font-weight: 300;
+}
+.result-insider {
+  font-family: var(--ff-body); font-size: 11px;
+  color: rgba(var(--gold-rgb), 0.9);
+  line-height: 1.6;
+  display: flex; gap: 8px; align-items: flex-start;
+}
+.result-insider-dot {
+  flex-shrink: 0; font-size: 7px; margin-top: 4px;
+  color: var(--gold);
+}
+
+.results-actions {
+  margin-top: 2.5rem;
+  display: flex; gap: 1rem; align-items: center; flex-wrap: wrap;
+}
+.btn-ghost {
+  font-family: var(--ff-body); font-size: 10px;
+  letter-spacing: 2.5px; text-transform: uppercase;
+  color: rgba(var(--white-rgb), 0.5);
+  background: none; border: 1px solid rgba(var(--white-rgb), 0.2);
+  padding: 0.65rem 1.25rem; cursor: pointer; transition: all 0.25s;
+}
+.btn-ghost:hover { color: var(--white); border-color: rgba(var(--white-rgb), 0.5); }
+.btn-gold {
+  font-family: var(--ff-body); font-size: 10px;
+  letter-spacing: 2.5px; text-transform: uppercase;
+  color: var(--noir); background: var(--gold);
+  border: none; padding: 0.65rem 1.5rem;
+  cursor: pointer; text-decoration: none;
+  transition: background 0.25s; display: inline-block;
+}
+.btn-gold:hover { background: #DDD3B8; }
+
+/* ── COMING SOON (camera) ── */
+.camera-section {
+  padding: 4rem 2.5rem;
+  border-top: 1px solid rgba(var(--gold-rgb), 0.12);
+  background: var(--noir);
+}
+.camera-inner {
+  max-width: 860px; margin: 0 auto;
+  display: flex; gap: 2.5rem; align-items: center;
+  flex-wrap: wrap;
+}
+.camera-icon {
+  font-size: 3.5rem; opacity: 0.3; flex-shrink: 0;
+  line-height: 1;
+}
+.camera-body { flex: 1; min-width: 240px; }
+.camera-title {
+  font-family: var(--ff-display);
+  font-size: 1.6rem; font-weight: 300;
+  color: var(--white); margin-bottom: 0.5rem;
+  letter-spacing: -0.3px;
+}
+.camera-title em { font-style: italic; color: var(--gold); }
+.camera-desc {
+  font-family: var(--ff-body); font-size: 13px;
+  color: rgba(var(--white-rgb), 0.5);
+  line-height: 1.75; font-weight: 300;
+}
+.camera-badge {
+  font-family: var(--ff-body); font-size: 9px;
+  letter-spacing: 2.5px; text-transform: uppercase;
+  color: rgba(var(--gold-rgb), 0.65);
+  border: 1px solid rgba(var(--gold-rgb), 0.25);
+  padding: 0.5rem 1rem; flex-shrink: 0;
+}
+
+/* ── SHOP CTA ── */
+.shop-cta {
+  padding: 6rem 2.5rem;
+  text-align: center;
+  background: var(--noir-2);
+  border-top: 1px solid rgba(var(--gold-rgb), 0.12);
+}
+.shop-cta-eyebrow {
+  font-family: var(--ff-body); font-size: 10px;
+  letter-spacing: 4px; text-transform: uppercase;
+  color: rgba(var(--gold-rgb), 0.7);
+  margin-bottom: 1.5rem;
+  display: flex; align-items: center; justify-content: center; gap: 1rem;
+}
+.shop-cta-eyebrow::before, .shop-cta-eyebrow::after {
+  content: ''; width: 28px; height: 1px;
+  background: rgba(var(--gold-rgb), 0.35);
+}
+.shop-cta h2 {
+  font-family: var(--ff-display);
+  font-weight: 300;
+  font-size: clamp(2rem, 4vw, 3rem);
+  letter-spacing: -0.5px; color: var(--white);
+  margin-bottom: 1rem; line-height: 1.05;
+}
+.shop-cta h2 em { font-style: italic; color: var(--gold); }
+.shop-cta p {
+  font-family: var(--ff-body); font-size: 14px;
+  color: rgba(var(--white-rgb), 0.5);
+  max-width: 480px; margin: 0 auto 2.5rem;
+  line-height: 1.8; font-weight: 300;
+}
+
+/* ── FOOTER ── */
+footer {
+  padding: 2.5rem;
+  border-top: 1px solid rgba(var(--gold-rgb), 0.1);
+  display: flex; align-items: center;
+  justify-content: space-between; flex-wrap: wrap; gap: 1rem;
+  font-family: var(--ff-body); font-size: 10px;
+  letter-spacing: 1.5px; text-transform: uppercase;
+  color: rgba(var(--white-rgb), 0.3);
+}
+footer a {
+  color: rgba(var(--gold-rgb), 0.6);
+  text-decoration: none; transition: color 0.25s;
+  margin: 0 0.5rem;
+}
+footer a:hover { color: var(--gold); }
+
+/* ── ANIMATIONS ── */
+@keyframes fadeUp {
+  from { opacity: 0; transform: translateY(18px); }
+  to   { opacity: 1; transform: translateY(0); }
+}
+
+/* ── MOBILE ── */
+@media (max-width: 640px) {
+  nav { padding: 1rem 1.5rem; }
+  .nav-links a { display: none; }
+  .hero { padding: 0 1.5rem; }
+  .hero-content { padding: 8rem 0 3rem; }
+  .hero-input-wrap { max-width: 100%; }
+  .categories-section { padding: 4rem 1.5rem; }
+  .cat-grid { grid-template-columns: 1fr 1fr; }
+  .results-section { padding: 3rem 1.5rem 4rem; }
+  .result-item { gap: 1.25rem; }
+  .camera-section { padding: 3rem 1.5rem; }
+  .shop-cta { padding: 4rem 1.5rem; }
+  footer { padding: 2rem 1.5rem; flex-direction: column; text-align: center; }
+}
+</style>
+<link rel="stylesheet" href="/ios-viewport-lock.css">
+<link rel="stylesheet" href="/embr-concierge-button.css">
+</head>
+<body>
+
+<!-- ── NAV ── -->
+<nav>
+  <a href="/" class="nav-brand">Bag<em>Free</em></a>
+  <div class="nav-links">
+    <a href="/">Home</a>
+    <a href="/departure-lounge-landing.html">Shop</a>
+    <a href="/shop/nuor-edit/">The Nuor Edit</a>
+    <a href="/departure-lounge-landing.html" class="nav-shop">
+      <span style="width:5px;height:5px;background:var(--gold);display:inline-block;transform:rotate(45deg);"></span>
+      Reserve a kit
+    </a>
+    <button class="theme-btn" id="themeToggle" onclick="toggleTheme()" aria-label="Toggle theme">
+      <span id="themeIcon">☽</span>
+    </button>
+  </div>
+</nav>
+
+<!-- ── HERO ── -->
+<section class="hero">
+  <div class="hero-bg"></div>
+  <div class="hero-content">
+    <div class="hero-eyebrow">BagFree · City Guide</div>
+    <h1>Arrive knowing<br><em>everything.</em></h1>
+    <p class="hero-sub">Curated city intelligence for the luxury traveler. Brunch tables, rooftop bars, hidden spots — all of it, before you land.</p>
+    <div class="hero-input-wrap">
+      <input id="heroCity" class="hero-input" type="text"
+        placeholder="Where are you staying? Tampa, Savannah, NYC…"
+        onkeydown="if(event.key==='Enter')scrollToCategories()">
+      <button class="hero-btn" onclick="scrollToCategories()">Explore →</button>
+    </div>
+  </div>
+  <div class="hero-scroll">Scroll to explore</div>
+</section>
+
+<!-- ── CATEGORIES ── -->
+<section class="categories-section" id="categories">
+  <div class="section-label">Choose a category</div>
+  <h2 class="section-title">Eight ways to <em>know your city.</em></h2>
+  <p class="section-sub">Select a category and we'll curate five insider picks for where you're staying.</p>
+
+  <div class="cat-grid" id="catGrid">
+    <!-- Rendered by JS -->
+  </div>
+</section>
+
+<!-- ── RESULTS ── -->
+<section class="results-section" id="resultsSection">
+  <div class="results-eyebrow" id="resultsEyebrow">—</div>
+  <h2 class="results-title" id="resultsTitle">—</h2>
+  <div class="results-loading" id="resultsLoading">
+    <div class="loading-word">Curating your guide…</div>
+  </div>
+  <div id="resultsList"></div>
+  <div class="results-actions" id="resultsActions" style="display:none;">
+    <button class="btn-ghost" onclick="clearResults()">← Try another category</button>
+    <a href="/departure-lounge-landing.html" class="btn-gold">Reserve your essentials</a>
+  </div>
+</section>
+
+<!-- ── CAMERA (coming soon) ── -->
+<section class="camera-section">
+  <div class="camera-inner">
+    <div class="camera-icon">◎</div>
+    <div class="camera-body">
+      <h3 class="camera-title">Point &amp; <em>Discover.</em></h3>
+      <p class="camera-desc">Aim your phone camera at any landmark, restaurant, or street and get instant editorial coverage — curated by The Nuor Edit. Identifies the location, gives you the backstory, the best table, and what to wear. Coming in the BagFree app.</p>
+    </div>
+    <div class="camera-badge">Next version</div>
+  </div>
+</section>
+
+<!-- ── SHOP CTA ── -->
+<section class="shop-cta">
+  <div class="shop-cta-eyebrow">BagFree Essentials</div>
+  <h2>Now pack <em>nothing.</em></h2>
+  <p>Your curated travel kit — wardrobe essentials, wellness pouches, and emergency basics — delivered to your hotel before you arrive.</p>
+  <a href="/departure-lounge-landing.html" class="btn-gold">Reserve your arrival kit →</a>
+</section>
+
+<!-- ── FOOTER ── -->
+<footer>
+  <div>© 2026 BagFree</div>
+  <div>
+    <a href="/">Home</a>
+    <a href="/departure-lounge-landing.html">Shop</a>
+    <a href="/shop/nuor-edit/">The Nuor Edit</a>
+    <a href="https://valetbynuor.com" target="_blank" rel="noopener">Valet By Nuor</a>
+  </div>
+</footer>
+
+<script>
+// ── THEME ──────────────────────────────────────────────────────────────────────
+(function initTheme() {
+  try {
+    const saved = localStorage.getItem('bfGuideTheme');
+    const sys   = window.matchMedia('(prefers-color-scheme: dark)').matches;
+    const theme = saved || (sys ? 'dark' : 'light');
+    document.documentElement.setAttribute('data-theme', theme);
+    const icon = document.getElementById('themeIcon');
+    if (icon) icon.textContent = theme === 'dark' ? '☽' : '☀';
+  } catch(e) {}
+})();
+
+function toggleTheme() {
+  const html  = document.documentElement;
+  const next  = html.getAttribute('data-theme') === 'dark' ? 'light' : 'dark';
+  html.setAttribute('data-theme', next);
+  document.getElementById('themeIcon').textContent = next === 'dark' ? '☽' : '☀';
+  try { localStorage.setItem('bfGuideTheme', next); } catch(e) {}
+}
+
+// ── CATEGORIES ─────────────────────────────────────────────────────────────────
+const CATEGORIES = [
+  { id: 'brunch',   num: 'i.',    title: 'Best Brunch',         desc: 'Morning tables worth dressing for'           },
+  { id: 'rooftop',  num: 'ii.',   title: 'Rooftop Bars',        desc: 'Views worth the elevator ride'               },
+  { id: 'beach',    num: 'iii.',  title: 'Beach Day',           desc: 'The right spots and what to bring'           },
+  { id: 'hidden',   num: 'iv.',   title: 'Hidden Spots',        desc: 'What locals go to, not what Yelp shows'      },
+  { id: 'luxury',   num: 'v.',    title: 'Luxury Experiences',  desc: 'Splurge-worthy moments in the city'          },
+  { id: 'events',   num: 'vi.',   title: 'This Weekend',        desc: 'Events worth adjusting your plans for'       },
+  { id: 'wedding',  num: 'vii.',  title: 'Wedding & Cruise',    desc: 'What to wear, where to go, what to expect'   },
+  { id: 'curator',  num: 'viii.', title: 'Curator Picks',       desc: 'Spots your local Nuor Edit stylist swears by'},
+];
+
+let activeId = null;
+
+function renderCategories() {
+  document.getElementById('catGrid').innerHTML = CATEGORIES.map(c => `
+    <button class="cat-card" data-id="${c.id}" onclick="selectCat('${c.id}')">
+      <div class="cat-num">${c.num}</div>
+      <div class="cat-title">${c.title}</div>
+      <div class="cat-desc">${c.desc}</div>
+    </button>
+  `).join('');
+}
+
+function selectCat(id) {
+  activeId = id;
+  document.querySelectorAll('.cat-card').forEach(b => {
+    b.classList.toggle('active', b.dataset.id === id);
+  });
+  fetchGuide();
+}
+
+// ── HERO SCROLL ────────────────────────────────────────────────────────────────
+function scrollToCategories() {
+  const city = document.getElementById('heroCity').value.trim();
+  // Sync city value to the results query
+  if (city) window._guideCity = city;
+  document.getElementById('categories').scrollIntoView({ behavior: 'smooth' });
+}
+
+// ── GUIDE FETCH ────────────────────────────────────────────────────────────────
+async function fetchGuide() {
+  // Get city from hero input or stored value
+  const city = (document.getElementById('heroCity').value.trim()) || window._guideCity || '';
+  if (!city) {
+    document.getElementById('heroCity').focus();
+    document.getElementById('heroCity').style.borderColor = 'rgba(var(--gold-rgb),0.9)';
+    document.getElementById('categories').scrollIntoView({ behavior: 'smooth', block: 'start' });
+    // Scroll back up to hero input
+    document.querySelector('.hero').scrollIntoView({ behavior: 'smooth' });
+    return;
+  }
+  if (!activeId) return;
+
+  const cat = CATEGORIES.find(c => c.id === activeId);
+  const section  = document.getElementById('resultsSection');
+  const loading  = document.getElementById('resultsLoading');
+  const list     = document.getElementById('resultsList');
+  const actions  = document.getElementById('resultsActions');
+
+  section.style.display = 'block';
+  loading.style.display = 'block';
+  list.innerHTML = '';
+  actions.style.display = 'none';
+  document.getElementById('resultsEyebrow').textContent = cat.title.toUpperCase() + ' · ' + city.toUpperCase();
+  document.getElementById('resultsTitle').innerHTML = cat.title + ' in <em>' + city + '</em>';
+  section.scrollIntoView({ behavior: 'smooth', block: 'start' });
+
+  try {
+    const res = await fetch('/.netlify/functions/guide', {
+      method: 'POST',
+      headers: { 'Content-Type': 'application/json' },
+      body: JSON.stringify({ city, category: cat.title, desc: cat.desc }),
+    });
+
+    if (!res.ok) throw new Error('api');
+    const data = await res.json();
+    const items = data.items || [];
+
+    loading.style.display = 'none';
+
+    if (!items.length) {
+      list.innerHTML = '<p style="font-family:var(--ff-body);font-size:13px;color:rgba(var(--white-rgb),0.45);">No results returned — try a different city or category.</p>';
+    } else {
+      list.innerHTML = items.map((item, i) => `
+        <div class="result-item" style="animation-delay:${i * 0.1}s">
+          <div class="result-num">${i + 1}</div>
+          <div class="result-body">
+            <div class="result-name">${item.name}</div>
+            <div class="result-desc">${item.description}</div>
+            <div class="result-insider">
+              <span class="result-insider-dot">◆</span>
+              <span>${item.insider}</span>
+            </div>
+          </div>
+        </div>
+      `).join('');
+    }
+    actions.style.display = 'flex';
+
+  } catch(err) {
+    loading.style.display = 'none';
+    document.getElementById('resultsTitle').innerHTML = 'Guide <em>unavailable</em>';
+    list.innerHTML = '<p style="font-family:var(--ff-body);font-size:13px;color:rgba(var(--white-rgb),0.45);">The guide is temporarily unavailable. Please try again shortly.</p>';
+    actions.style.display = 'flex';
+  }
+}
+
+function clearResults() {
+  document.getElementById('resultsSection').style.display = 'none';
+  document.getElementById('resultsList').innerHTML = '';
+  activeId = null;
+  document.querySelectorAll('.cat-card').forEach(b => b.classList.remove('active'));
+  document.getElementById('categories').scrollIntoView({ behavior: 'smooth' });
+}
+
+// ── INIT ───────────────────────────────────────────────────────────────────────
+renderCategories();
+</script>
+<script src="/ios-viewport-lock.js" defer></script>
+</body>
+</html>

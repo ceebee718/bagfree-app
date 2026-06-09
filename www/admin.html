@@ -1,0 +1,656 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+<meta charset="UTF-8">
+<meta name="viewport" content="width=device-width, initial-scale=1, maximum-scale=1, user-scalable=no, viewport-fit=cover">
+<title>BagFree Admin — Search</title>
+<link rel="preconnect" href="https://fonts.googleapis.com">
+<link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+<link href="https://fonts.googleapis.com/css2?family=Cormorant+Garamond:wght@400;500&family=Manrope:wght@300;400;500;600;700&display=swap" rel="stylesheet">
+<style>
+:root{
+  --bg:#0a0f1e; --bg-2:#0f1525; --card:#131a2c;
+  --gold:#c9a96e; --gold-bright:#d4b87a; --gold-deep:#a8884a;
+  --white:#fdfcf8; --muted:rgba(253,252,248,0.62); --faint:rgba(253,252,248,0.4);
+  --border:rgba(201,169,110,0.16); --border-soft:rgba(253,252,248,0.06);
+  --red:#d05656;
+  --ff-display:'Cormorant Garamond',Georgia,serif;
+  --ff-body:'Manrope',-apple-system,sans-serif;
+}
+*{box-sizing:border-box;margin:0;padding:0}
+html,body{height:100%}
+body{font-family:var(--ff-body);background:var(--bg);color:var(--white);font-weight:300;-webkit-font-smoothing:antialiased}
+button,a,input,select,textarea{font-family:inherit;color:inherit}
+button{background:none;border:none;cursor:pointer}
+a{text-decoration:none}
+::-webkit-scrollbar{width:8px;height:8px}::-webkit-scrollbar-thumb{background:rgba(201,169,110,0.18);border-radius:4px}
+
+.wrap{max-width:1400px;margin:0 auto;padding:2rem 2.5rem 4rem}
+.header{display:flex;justify-content:space-between;align-items:center;margin-bottom:2rem;padding-bottom:1.4rem;border-bottom:1px solid var(--border-soft)}
+.brand{display:flex;flex-direction:column;gap:0.2rem}
+.brand-name{font-family:var(--ff-display);font-size:1.5rem;letter-spacing:5px;color:var(--gold);font-weight:500}
+.brand-tag{font-size:0.55rem;letter-spacing:4px;color:var(--gold);opacity:0.7}
+.back-link{font-size:0.72rem;letter-spacing:2px;color:var(--gold);text-transform:uppercase;font-weight:600;padding:0.55rem 1.2rem;border:1px solid var(--border);border-radius:8px;transition:all 0.2s}
+.back-link:hover{background:rgba(201,169,110,0.08);border-color:rgba(201,169,110,0.4)}
+
+.tabs{display:flex;gap:0.4rem;margin-bottom:1.5rem;border-bottom:1px solid var(--border-soft);padding-bottom:0}
+.tab{padding:0.85rem 1.2rem;font-size:0.85rem;color:var(--muted);border:none;cursor:pointer;letter-spacing:0.5px;position:relative;transition:color 0.2s}
+.tab:hover{color:var(--white)}
+.tab.active{color:var(--gold)}
+.tab.active::after{content:'';position:absolute;bottom:-1px;left:1rem;right:1rem;height:2px;background:var(--gold)}
+
+.page-title{font-family:var(--ff-display);font-size:1.8rem;font-weight:500;margin-bottom:0.4rem;letter-spacing:-0.3px}
+.page-tag{color:var(--muted);font-size:0.88rem;font-weight:300;margin-bottom:1.5rem}
+
+.toolbar{display:flex;gap:0.7rem;margin-bottom:1.2rem;flex-wrap:wrap;align-items:center}
+.search-input{
+  flex:1;min-width:220px;padding:0.7rem 1rem;border-radius:8px;
+  background:rgba(255,255,255,0.03);border:1px solid var(--border-soft);
+  color:var(--white);font-size:0.88rem;outline:none;transition:all 0.2s;
+}
+.search-input:focus{border-color:rgba(201,169,110,0.4);background:rgba(201,169,110,0.04)}
+.btn-primary{padding:0.7rem 1.2rem;border-radius:8px;background:var(--gold);color:var(--bg);font-size:0.7rem;letter-spacing:2px;font-weight:700;text-transform:uppercase;transition:all 0.2s;cursor:pointer;border:none}
+.btn-primary:hover{background:var(--gold-bright);transform:translateY(-1px)}
+.btn-outline{padding:0.7rem 1.2rem;border-radius:8px;background:transparent;border:1px solid var(--border);color:var(--gold);font-size:0.7rem;letter-spacing:2px;font-weight:700;text-transform:uppercase;transition:all 0.2s;cursor:pointer}
+.btn-outline:hover{background:rgba(201,169,110,0.08)}
+.btn-danger{padding:0.5rem 0.9rem;border-radius:6px;background:transparent;border:1px solid rgba(208,86,86,0.4);color:var(--red);font-size:0.62rem;letter-spacing:1.5px;font-weight:700;text-transform:uppercase;transition:all 0.2s;cursor:pointer}
+.btn-danger:hover{background:rgba(208,86,86,0.1)}
+
+select.search-input{appearance:none;background-image:url("data:image/svg+xml;charset=utf-8,%3Csvg xmlns='http://www.w3.org/2000/svg' viewBox='0 0 24 24' fill='none' stroke='%23c9a96e' stroke-width='1.5'%3E%3Cpolyline points='6 9 12 15 18 9'/%3E%3C/svg%3E");background-position:right 0.7rem center;background-repeat:no-repeat;background-size:14px;padding-right:2.2rem}
+
+/* Table */
+.table-wrap{background:var(--card);border:1px solid var(--border-soft);border-radius:12px;overflow:hidden}
+table{width:100%;border-collapse:collapse;font-size:0.85rem}
+th{text-align:left;padding:0.95rem 1rem;background:var(--bg-2);font-size:0.6rem;letter-spacing:2.5px;color:var(--gold);text-transform:uppercase;font-weight:600;border-bottom:1px solid var(--border-soft)}
+td{padding:0.85rem 1rem;border-bottom:1px solid var(--border-soft);vertical-align:middle;color:var(--white)}
+tr:last-child td{border-bottom:none}
+tr:hover td{background:rgba(201,169,110,0.03)}
+.cat-pill{display:inline-block;font-size:0.6rem;letter-spacing:1.5px;text-transform:uppercase;padding:0.25rem 0.55rem;border-radius:4px;background:rgba(201,169,110,0.08);color:var(--gold);border:1px solid var(--border);font-weight:600}
+.city-pill{display:inline-block;font-size:0.7rem;color:var(--muted)}
+.rank-score{display:inline-flex;align-items:center;gap:0.3rem;font-size:0.78rem;color:var(--gold);font-weight:600}
+.boost{font-size:0.55rem;letter-spacing:1.5px;color:var(--gold);background:rgba(201,169,110,0.15);padding:0.2rem 0.4rem;border-radius:3px;font-weight:700;text-transform:uppercase;margin-left:0.4rem}
+.thumb{width:46px;height:32px;border-radius:5px;background-size:cover;background-position:center;background-color:#1a2238;flex-shrink:0}
+.title-cell{display:flex;align-items:center;gap:0.7rem}
+.title-cell-text{display:flex;flex-direction:column;gap:0.15rem;min-width:0}
+.title-cell-name{font-weight:500;font-size:0.9rem}
+.title-cell-id{font-size:0.65rem;color:var(--faint);letter-spacing:0.5px}
+.actions{display:flex;gap:0.4rem}
+
+/* Modal */
+.modal-bg{position:fixed;inset:0;background:rgba(10,15,30,0.75);backdrop-filter:blur(4px);display:none;align-items:flex-start;justify-content:center;z-index:60;overflow-y:auto;padding:3rem 1.5rem}
+.modal-bg.show{display:flex}
+.modal{background:var(--card);border:1px solid var(--border);border-radius:14px;padding:2rem;width:100%;max-width:680px;box-shadow:0 30px 80px rgba(0,0,0,0.6);animation:modalIn 0.22s ease-out}
+@keyframes modalIn{from{opacity:0;transform:translateY(-10px)}to{opacity:1;transform:none}}
+.modal-head{display:flex;justify-content:space-between;align-items:center;margin-bottom:1.5rem;padding-bottom:1rem;border-bottom:1px solid var(--border-soft)}
+.modal-title{font-family:var(--ff-display);font-size:1.5rem;font-weight:500}
+.modal-close{width:32px;height:32px;border-radius:50%;background:rgba(255,255,255,0.06);color:var(--muted);display:flex;align-items:center;justify-content:center;font-size:1.2rem;cursor:pointer;transition:all 0.2s}
+.modal-close:hover{background:rgba(208,86,86,0.15);color:var(--red)}
+.form-grid{display:grid;grid-template-columns:1fr 1fr;gap:1rem}
+.form-grid .full{grid-column:1/-1}
+.field{display:flex;flex-direction:column;gap:0.35rem}
+.field label{font-size:0.6rem;letter-spacing:2px;color:var(--gold);text-transform:uppercase;font-weight:600}
+.field input,.field select,.field textarea{padding:0.7rem 0.9rem;border-radius:7px;background:rgba(255,255,255,0.03);border:1px solid var(--border-soft);color:var(--white);font-size:0.88rem;outline:none;transition:all 0.2s;font-family:inherit;width:100%}
+.field input:focus,.field select:focus,.field textarea:focus{border-color:rgba(201,169,110,0.4);background:rgba(201,169,110,0.04)}
+.field textarea{resize:vertical;min-height:80px;font-family:inherit}
+.field-row{display:flex;align-items:center;gap:0.55rem;font-size:0.85rem;color:var(--muted);cursor:pointer;padding-top:0.5rem}
+.field-row input[type="checkbox"]{accent-color:var(--gold);width:16px;height:16px}
+.modal-actions{display:flex;justify-content:flex-end;gap:0.6rem;margin-top:1.5rem}
+.score-row{display:flex;gap:0.7rem}
+.score-row .field{flex:1}
+
+/* Failed searches */
+.failed-grid{display:grid;grid-template-columns:repeat(auto-fill,minmax(280px,1fr));gap:0.8rem}
+.failed-card{background:var(--card);border:1px solid var(--border-soft);border-radius:10px;padding:1.1rem 1.2rem;display:flex;justify-content:space-between;align-items:center;gap:1rem;transition:border-color 0.2s}
+.failed-card:hover{border-color:var(--border)}
+.failed-query{font-size:0.95rem;font-weight:500;color:var(--white)}
+.failed-meta{font-size:0.7rem;color:var(--muted);margin-top:0.25rem;letter-spacing:0.3px}
+.failed-count{font-family:var(--ff-display);font-size:1.6rem;color:var(--gold);font-weight:500}
+
+.empty{padding:3rem 1rem;text-align:center;color:var(--muted);font-style:italic}
+.toast{position:fixed;bottom:1.5rem;right:1.5rem;background:var(--card);border:1px solid rgba(201,169,110,0.4);padding:0.8rem 1.3rem;border-radius:8px;color:var(--gold);font-size:0.78rem;letter-spacing:1px;box-shadow:0 12px 30px rgba(0,0,0,0.5);z-index:80;animation:toastIn 0.25s ease-out}
+@keyframes toastIn{from{opacity:0;transform:translateY(10px)}to{opacity:1;transform:none}}
+</style>
+<link rel="stylesheet" href="/ios-viewport-lock.css">
+<link rel="stylesheet" href="/embr-concierge-button.css">
+</head>
+<body>
+
+<div class="wrap">
+  <header class="header">
+    <div class="brand">
+      <div class="brand-name">BAGFREE</div>
+      <div class="brand-tag">ADMIN · SEARCH</div>
+    </div>
+    <a href="/" class="back-link">← Back to site</a>
+  </header>
+
+  <div class="tabs">
+    <button class="tab active" data-tab="content">Searchable Content</button>
+    <button class="tab" data-tab="failed">Failed Searches</button>
+    <button class="tab" data-tab="analytics">Recent Activity</button>
+  </div>
+
+  <div id="tab-content">
+    <h1 class="page-title">Searchable Content</h1>
+    <p class="page-tag">Add, edit, boost, or remove items that appear in BagFree search.</p>
+
+    <div class="toolbar">
+      <input class="search-input" id="filter" placeholder="Filter by title, tag, partner…"/>
+      <select class="search-input" id="catFilter" style="max-width:200px">
+        <option value="">All categories</option>
+        <option value="essentials">Essentials</option>
+        <option value="clothing">Clothing Rentals</option>
+        <option value="meals">Arrival Meals</option>
+        <option value="snacks">Snacks &amp; Drinks</option>
+        <option value="favorites">Local Favorites</option>
+        <option value="social">From Social</option>
+        <option value="experiences">Experiences</option>
+        <option value="curators">Curators</option>
+        <option value="hotels">Hotels</option>
+      </select>
+      <select class="search-input" id="cityFilter" style="max-width:180px">
+        <option value="">All cities</option>
+        <option value="all">All cities (item)</option>
+        <option value="savannah">Savannah</option>
+        <option value="atlanta">Atlanta</option>
+        <option value="tampa">Tampa</option>
+        <option value="orlando">Orlando</option>
+        <option value="miami">Miami</option>
+      </select>
+      <button class="btn-primary" id="addBtn">+ Add Item</button>
+      <button class="btn-outline" id="addSocialBtn">+ Add Social Post</button>
+    </div>
+
+    <div class="table-wrap">
+      <table>
+        <thead>
+          <tr>
+            <th style="width:38%">Item</th>
+            <th>Category</th>
+            <th>City</th>
+            <th>RealityRank</th>
+            <th>Partner</th>
+            <th style="text-align:right">Actions</th>
+          </tr>
+        </thead>
+        <tbody id="rows"></tbody>
+      </table>
+    </div>
+  </div>
+
+  <div id="tab-failed" style="display:none">
+    <h1 class="page-title">Failed Searches</h1>
+    <p class="page-tag">Queries that returned no results. Use these to find content gaps.</p>
+    <div class="failed-grid" id="failedGrid"></div>
+  </div>
+
+  <div id="tab-analytics" style="display:none">
+    <h1 class="page-title">Recent Activity</h1>
+    <p class="page-tag">Last 50 search events from this device (Phase 1 stores client-side; Phase 2 will read from <code>search_queries</code>, <code>search_clicks</code>).</p>
+    <div class="table-wrap">
+      <table>
+        <thead>
+          <tr><th>Event</th><th>Query / Item</th><th>City</th><th>When</th></tr>
+        </thead>
+        <tbody id="eventRows"></tbody>
+      </table>
+    </div>
+  </div>
+</div>
+
+<!-- Social post intake modal -->
+<div class="modal-bg" id="socialModalBg">
+  <div class="modal">
+    <div class="modal-head">
+      <div class="modal-title">Index a social post</div>
+      <button class="modal-close" onclick="closeSocialModal()">×</button>
+    </div>
+    <p style="color:var(--muted);font-size:0.82rem;line-height:1.5;margin-bottom:1rem">
+      Paste a TikTok, Instagram, YouTube, Threads, or X URL. We'll auto-detect the platform and try to fetch the post metadata via oEmbed. Anything we can't get, you can fill in manually.
+    </p>
+    <form id="socialForm">
+      <div class="form-grid">
+        <div class="field full">
+          <label>Post URL</label>
+          <input id="s_url" placeholder="https://www.tiktok.com/@user/video/123…" required/>
+        </div>
+        <div class="field full" style="margin-top:-0.3rem">
+          <button type="button" class="btn-outline" id="s_fetch">Fetch metadata via oEmbed</button>
+        </div>
+        <div class="field">
+          <label>Platform</label>
+          <select id="s_platform">
+            <option value="tiktok">TikTok</option>
+            <option value="instagram">Instagram</option>
+            <option value="youtube">YouTube</option>
+            <option value="threads">Threads</option>
+            <option value="twitter">X (Twitter)</option>
+            <option value="reddit">Reddit</option>
+            <option value="vimeo">Vimeo</option>
+          </select>
+        </div>
+        <div class="field">
+          <label>City</label>
+          <select id="s_city" required>
+            <option value="all">All cities</option>
+            <option value="savannah">Savannah</option>
+            <option value="atlanta">Atlanta</option>
+            <option value="tampa">Tampa</option>
+            <option value="orlando">Orlando</option>
+            <option value="miami">Miami</option>
+          </select>
+        </div>
+        <div class="field full">
+          <label>Creator handle</label>
+          <input id="s_handle" placeholder="@elegantsavannah"/>
+        </div>
+        <div class="field full">
+          <label>Title / Caption</label>
+          <input id="s_title" required/>
+        </div>
+        <div class="field full">
+          <label>Description (short summary)</label>
+          <textarea id="s_desc" rows="2"></textarea>
+        </div>
+        <div class="field full">
+          <label>Thumbnail URL</label>
+          <input id="s_thumb" placeholder="https://…"/>
+        </div>
+        <div class="field full">
+          <label>Tags (comma separated)</label>
+          <input id="s_tags" placeholder="ghost, tour, savannah"/>
+        </div>
+        <div class="field">
+          <label>View count</label>
+          <input id="s_views" type="number" min="0" placeholder="e.g. 1240000"/>
+        </div>
+        <div class="field">
+          <label>Posted (days ago)</label>
+          <input id="s_age" type="number" min="0" value="0" placeholder="0 = today"/>
+        </div>
+      </div>
+      <div class="modal-actions">
+        <button type="button" class="btn-outline" onclick="closeSocialModal()">Cancel</button>
+        <button type="submit" class="btn-primary">Save social post</button>
+      </div>
+    </form>
+  </div>
+</div>
+
+<!-- Edit modal -->
+<div class="modal-bg" id="modalBg">
+  <div class="modal">
+    <div class="modal-head">
+      <div class="modal-title" id="modalTitle">Edit Item</div>
+      <button class="modal-close" onclick="closeModal()">×</button>
+    </div>
+    <form id="itemForm">
+      <input type="hidden" id="f_id"/>
+      <div class="form-grid">
+        <div class="field full">
+          <label>Title</label>
+          <input id="f_title" required/>
+        </div>
+        <div class="field full">
+          <label>Description</label>
+          <textarea id="f_description" required></textarea>
+        </div>
+        <div class="field">
+          <label>Category</label>
+          <select id="f_category" required>
+            <option value="essentials">Essentials</option>
+            <option value="clothing">Clothing Rentals</option>
+            <option value="meals">Arrival Meals</option>
+            <option value="snacks">Snacks &amp; Drinks</option>
+            <option value="favorites">Local Favorites</option>
+            <option value="social">From Social</option>
+            <option value="experiences">Experiences</option>
+            <option value="curators">Curators</option>
+            <option value="hotels">Hotels</option>
+          </select>
+        </div>
+        <div class="field">
+          <label>City</label>
+          <select id="f_city" required>
+            <option value="all">All cities</option>
+            <option value="savannah">Savannah</option>
+            <option value="atlanta">Atlanta</option>
+            <option value="tampa">Tampa</option>
+            <option value="orlando">Orlando</option>
+            <option value="miami">Miami</option>
+          </select>
+        </div>
+        <div class="field full">
+          <label>Tags (comma separated)</label>
+          <input id="f_tags" placeholder="dinner, southern, arrival"/>
+        </div>
+        <div class="field full">
+          <label>Image URL</label>
+          <input id="f_image" placeholder="https://images.unsplash.com/..."/>
+        </div>
+        <div class="field full">
+          <label>Destination URL</label>
+          <input id="f_url" placeholder="/departure-lounge-landing.html" required/>
+        </div>
+        <div class="field">
+          <label>Partner ID</label>
+          <input id="f_partner" placeholder="p_partner_name"/>
+        </div>
+        <div class="field">
+          <label>&nbsp;</label>
+          <label class="field-row" style="padding-top:0.6rem">
+            <input type="checkbox" id="f_boost"/> Boost this item (priority in results)
+          </label>
+        </div>
+        <div class="field full">
+          <label>Scores (0–100)</label>
+          <div class="score-row">
+            <div class="field"><label style="font-size:0.55rem">Popularity</label><input id="f_pop" type="number" min="0" max="100" value="50"/></div>
+            <div class="field"><label style="font-size:0.55rem">Freshness</label><input id="f_fresh" type="number" min="0" max="100" value="50"/></div>
+            <div class="field"><label style="font-size:0.55rem">Conversion</label><input id="f_conv" type="number" min="0" max="100" value="50"/></div>
+          </div>
+        </div>
+      </div>
+      <div class="modal-actions">
+        <button type="button" class="btn-outline" onclick="closeModal()">Cancel</button>
+        <button type="submit" class="btn-primary">Save</button>
+      </div>
+    </form>
+  </div>
+</div>
+
+<script>
+// In Phase 1 the admin reads from localStorage (so devs can demo end-to-end).
+// In Phase 2: replace storage calls with Supabase REST/RPC calls.
+
+const STORAGE_KEY = 'bf_admin_content';
+
+const DEFAULTS = [
+  {id:'e001',title:'Toiletry Restock Kit',description:'Forget toothpaste, deodorant, razors? Restock kit delivered in 90 minutes.',category:'essentials',city:'savannah',tags:['toiletries','toothbrush'],image_url:'https://images.unsplash.com/photo-1556228720-195a672e8a03?w=600',destination_url:'/legacy.html#essentials',partner_id:'p_bf_essentials',popularity_score:88,freshness_score:95,conversion_score:82,is_boosted:false},
+  {id:'c001',title:'3-Day Womens Wardrobe',description:'Pick 4 pieces. Rental or buy at checkout.',category:'clothing',city:'all',tags:['rental','women','dress'],image_url:'https://images.unsplash.com/photo-1490481651871-ab68de25d43d?w=600',destination_url:'/departure-lounge-landing.html',partner_id:'p_departure_lounge',popularity_score:92,freshness_score:88,conversion_score:81,is_boosted:true},
+  {id:'m001',title:'Welcome to Savannah Dinner',description:'Low-country boil for two from The Grey.',category:'meals',city:'savannah',tags:['dinner','southern','the-grey'],image_url:'https://images.unsplash.com/photo-1546069901-ba9599a7e63c?w=600',destination_url:'/legacy.html#essentials',partner_id:'p_the_grey',popularity_score:91,freshness_score:94,conversion_score:86,is_boosted:false},
+  {id:'cu001',title:'Jasmine L. — Savannah Insider',description:'Born and raised. 4.9 stars across 128 trips.',category:'curators',city:'savannah',tags:['curator','insider'],image_url:'https://images.unsplash.com/photo-1494790108377-be9c29b29330?w=600',destination_url:'/curators.html',partner_id:'p_curator_jasmine',popularity_score:94,freshness_score:96,conversion_score:88,is_boosted:false},
+  {id:'h001',title:'The Alida, Savannah',description:'Boutique riverfront. BagFree integrated room concierge.',category:'hotels',city:'savannah',tags:['hotel','boutique','luxury'],image_url:'https://images.unsplash.com/photo-1564501049412-61c2a3083791?w=600',destination_url:'/concierge.html',partner_id:'p_alida',popularity_score:90,freshness_score:92,conversion_score:84,is_boosted:false}
+];
+
+const CAT_LABELS = {essentials:'Essentials',clothing:'Clothing',meals:'Meals',snacks:'Snacks',favorites:'Favorites',social:'Social',experiences:'Experiences',curators:'Curators',hotels:'Hotels'};
+
+function load(){
+  try {
+    const raw = localStorage.getItem(STORAGE_KEY);
+    if (raw) return JSON.parse(raw);
+  } catch(e){}
+  return DEFAULTS.slice();
+}
+function save(items){
+  try { localStorage.setItem(STORAGE_KEY, JSON.stringify(items)); } catch(e){}
+}
+function realityRank(it){ return Math.round(it.popularity_score*0.4 + it.conversion_score*0.4 + it.freshness_score*0.2); }
+function genId(cat){
+  const prefix = {essentials:'e',clothing:'c',meals:'m',snacks:'s',favorites:'f',experiences:'x',curators:'cu',hotels:'h'}[cat] || 'i';
+  return prefix + String(Math.floor(Math.random()*9000)+1000);
+}
+function toast(msg){
+  const t = document.createElement('div'); t.className='toast'; t.textContent=msg;
+  document.body.appendChild(t);
+  setTimeout(()=>t.remove(), 2400);
+}
+
+let items = load();
+
+function render(){
+  const filter = document.getElementById('filter').value.toLowerCase();
+  const cat = document.getElementById('catFilter').value;
+  const city = document.getElementById('cityFilter').value;
+  const tbody = document.getElementById('rows');
+  tbody.innerHTML = '';
+  const filtered = items.filter(it => {
+    if (cat && it.category !== cat) return false;
+    if (city && it.city !== city) return false;
+    if (filter){
+      const hay = (it.title + ' ' + it.description + ' ' + (it.tags||[]).join(' ') + ' ' + (it.partner_id||'')).toLowerCase();
+      if (hay.indexOf(filter) < 0) return false;
+    }
+    return true;
+  });
+  if (filtered.length === 0){
+    tbody.innerHTML = '<tr><td colspan="6" class="empty">No items match these filters.</td></tr>';
+    return;
+  }
+  filtered.forEach(it => {
+    const row = document.createElement('tr');
+    row.innerHTML = `
+      <td>
+        <div class="title-cell">
+          <div class="thumb" style="background-image:url(${it.image_url||''})"></div>
+          <div class="title-cell-text">
+            <div class="title-cell-name">${escapeHtml(it.title)}${it.is_boosted ? '<span class="boost">Boost</span>':''}</div>
+            <div class="title-cell-id">${it.id}</div>
+          </div>
+        </div>
+      </td>
+      <td><span class="cat-pill">${CAT_LABELS[it.category]||it.category}</span></td>
+      <td><span class="city-pill">${it.city==='all'?'All cities':capitalize(it.city)}</span></td>
+      <td><span class="rank-score">★ ${realityRank(it)}</span></td>
+      <td><span style="font-size:0.78rem;color:var(--muted)">${it.partner_id||'—'}</span></td>
+      <td style="text-align:right">
+        <div class="actions" style="justify-content:flex-end">
+          <button class="btn-outline" onclick="edit('${it.id}')">Edit</button>
+          <button class="btn-danger" onclick="del('${it.id}')">Delete</button>
+        </div>
+      </td>`;
+    tbody.appendChild(row);
+  });
+}
+
+function escapeHtml(s){ return String(s||'').replace(/[<>&"']/g, c => ({'<':'&lt;','>':'&gt;','&':'&amp;','"':'&quot;',"'":'&#39;'}[c])); }
+function capitalize(s){ return s ? s.charAt(0).toUpperCase()+s.slice(1) : ''; }
+
+function openModal(item){
+  document.getElementById('modalTitle').textContent = item ? 'Edit Item' : 'Add Item';
+  document.getElementById('f_id').value = item ? item.id : '';
+  document.getElementById('f_title').value = item ? item.title : '';
+  document.getElementById('f_description').value = item ? item.description : '';
+  document.getElementById('f_category').value = item ? item.category : 'essentials';
+  document.getElementById('f_city').value = item ? item.city : 'all';
+  document.getElementById('f_tags').value = item ? (item.tags||[]).join(', ') : '';
+  document.getElementById('f_image').value = item ? (item.image_url||'') : '';
+  document.getElementById('f_url').value = item ? item.destination_url : '/legacy.html#essentials';
+  document.getElementById('f_partner').value = item ? (item.partner_id||'') : '';
+  document.getElementById('f_boost').checked = item ? !!item.is_boosted : false;
+  document.getElementById('f_pop').value = item ? item.popularity_score : 50;
+  document.getElementById('f_fresh').value = item ? item.freshness_score : 50;
+  document.getElementById('f_conv').value = item ? item.conversion_score : 50;
+  document.getElementById('modalBg').classList.add('show');
+}
+function closeModal(){ document.getElementById('modalBg').classList.remove('show'); }
+
+function edit(id){ const it = items.find(x => x.id === id); if (it) openModal(it); }
+function del(id){
+  if (!confirm('Delete this item? This cannot be undone in Phase 1.')) return;
+  items = items.filter(x => x.id !== id);
+  save(items); render(); toast('Item deleted');
+}
+
+document.getElementById('addBtn').addEventListener('click', () => openModal(null));
+['filter','catFilter','cityFilter'].forEach(id => {
+  document.getElementById(id).addEventListener('input', render);
+});
+
+// ── Social post intake ────────────────────────────────────────────────────
+function detectPlatform(url){
+  if (!url) return null;
+  const u = url.toLowerCase();
+  if (u.includes('tiktok.com'))    return 'tiktok';
+  if (u.includes('instagram.com')) return 'instagram';
+  if (u.includes('youtube.com') || u.includes('youtu.be')) return 'youtube';
+  if (u.includes('threads.net'))   return 'threads';
+  if (u.includes('twitter.com') || u.includes('x.com'))    return 'twitter';
+  if (u.includes('reddit.com'))    return 'reddit';
+  if (u.includes('vimeo.com'))     return 'vimeo';
+  return null;
+}
+
+// oEmbed endpoints. YouTube/TikTok/Vimeo support CORS for the JSON response;
+// Instagram/Threads/X mostly do not from client-side, so those fall back to manual entry.
+const OEMBED = {
+  tiktok:    url => 'https://www.tiktok.com/oembed?url=' + encodeURIComponent(url),
+  youtube:   url => 'https://www.youtube.com/oembed?url=' + encodeURIComponent(url) + '&format=json',
+  vimeo:     url => 'https://vimeo.com/api/oembed.json?url=' + encodeURIComponent(url)
+};
+
+function openSocialModal(){
+  ['s_url','s_handle','s_title','s_desc','s_thumb','s_tags','s_views'].forEach(id => document.getElementById(id).value = '');
+  document.getElementById('s_age').value = 0;
+  document.getElementById('s_platform').value = 'tiktok';
+  document.getElementById('s_city').value = 'all';
+  document.getElementById('socialModalBg').classList.add('show');
+}
+function closeSocialModal(){ document.getElementById('socialModalBg').classList.remove('show'); }
+
+document.getElementById('addSocialBtn').addEventListener('click', openSocialModal);
+
+document.getElementById('s_url').addEventListener('input', e => {
+  const p = detectPlatform(e.target.value);
+  if (p) document.getElementById('s_platform').value = p;
+});
+
+document.getElementById('s_fetch').addEventListener('click', async () => {
+  const url = document.getElementById('s_url').value.trim();
+  if (!url){ toast('Paste a URL first'); return; }
+  const platform = detectPlatform(url);
+  if (!platform){ toast('Could not detect platform'); return; }
+  if (!OEMBED[platform]){
+    toast(`oEmbed unavailable for ${platform} — fill in manually`);
+    return;
+  }
+  try {
+    const res = await fetch(OEMBED[platform](url));
+    if (!res.ok) throw new Error('oEmbed fetch failed');
+    const data = await res.json();
+    if (data.title)         document.getElementById('s_title').value = data.title;
+    if (data.author_name)   document.getElementById('s_handle').value = (data.author_name.startsWith('@') ? '' : '@') + data.author_name;
+    if (data.thumbnail_url) document.getElementById('s_thumb').value = data.thumbnail_url;
+    toast('Metadata loaded — review and save');
+  } catch (err) {
+    toast('oEmbed fetch failed — fill in manually');
+  }
+});
+
+document.getElementById('socialForm').addEventListener('submit', e => {
+  e.preventDefault();
+  const ageDays = parseInt(document.getElementById('s_age').value, 10) || 0;
+  const views = parseInt(document.getElementById('s_views').value, 10) || 0;
+  const freshness = Math.max(20, Math.min(100, Math.round(100 - ageDays * 2)));   // recent = high freshness
+  const popularity = Math.max(40, Math.min(100, Math.round(40 + Math.log10(Math.max(views, 1)) * 10)));
+  const payload = {
+    id: 'soc' + Math.floor(Math.random()*9000+1000),
+    title: document.getElementById('s_title').value.trim(),
+    description: document.getElementById('s_desc').value.trim() || document.getElementById('s_title').value.trim(),
+    category: 'social',
+    city: document.getElementById('s_city').value,
+    tags: document.getElementById('s_tags').value.split(',').map(s=>s.trim()).filter(Boolean),
+    image_url: document.getElementById('s_thumb').value.trim(),
+    destination_url: document.getElementById('s_url').value.trim(),
+    partner_id: 'p_social_organic',
+    platform: document.getElementById('s_platform').value,
+    creator_handle: document.getElementById('s_handle').value.trim(),
+    view_count: views,
+    posted_at: new Date(Date.now() - ageDays * 864e5).toISOString(),
+    popularity_score: popularity,
+    freshness_score: freshness,
+    conversion_score: 50,
+    is_boosted: false
+  };
+  items.unshift(payload);
+  save(items); render(); closeSocialModal(); toast('Social post indexed');
+});
+
+document.getElementById('itemForm').addEventListener('submit', e => {
+  e.preventDefault();
+  const id = document.getElementById('f_id').value || genId(document.getElementById('f_category').value);
+  const payload = {
+    id: id,
+    title: document.getElementById('f_title').value.trim(),
+    description: document.getElementById('f_description').value.trim(),
+    category: document.getElementById('f_category').value,
+    city: document.getElementById('f_city').value,
+    tags: document.getElementById('f_tags').value.split(',').map(s=>s.trim()).filter(Boolean),
+    image_url: document.getElementById('f_image').value.trim(),
+    destination_url: document.getElementById('f_url').value.trim(),
+    partner_id: document.getElementById('f_partner').value.trim() || null,
+    popularity_score: parseInt(document.getElementById('f_pop').value, 10) || 0,
+    freshness_score:  parseInt(document.getElementById('f_fresh').value, 10) || 0,
+    conversion_score: parseInt(document.getElementById('f_conv').value, 10) || 0,
+    is_boosted: document.getElementById('f_boost').checked
+  };
+  const idx = items.findIndex(x => x.id === id);
+  if (idx >= 0) items[idx] = payload; else items.unshift(payload);
+  save(items); render(); closeModal(); toast('Saved');
+});
+
+// Tab switching
+document.querySelectorAll('.tab').forEach(t => {
+  t.addEventListener('click', () => {
+    document.querySelectorAll('.tab').forEach(x => x.classList.remove('active'));
+    t.classList.add('active');
+    ['content','failed','analytics'].forEach(name => {
+      document.getElementById('tab-'+name).style.display = (t.dataset.tab===name) ? '' : 'none';
+    });
+    if (t.dataset.tab === 'failed') renderFailed();
+    if (t.dataset.tab === 'analytics') renderAnalytics();
+  });
+});
+
+function renderFailed(){
+  const grid = document.getElementById('failedGrid');
+  let events = [];
+  try { events = JSON.parse(localStorage.getItem('bf_events')||'[]'); } catch(e){}
+  const fails = events.filter(e => e.event === 'search_no_results');
+  const counts = {};
+  fails.forEach(e => {
+    const k = (e.q||'').toLowerCase();
+    if (!counts[k]) counts[k] = { q:e.q, n:0, last:e.ts };
+    counts[k].n++;
+    if (e.ts > counts[k].last) counts[k].last = e.ts;
+  });
+  const list = Object.values(counts).sort((a,b)=>b.n-a.n);
+  if (list.length === 0){
+    grid.innerHTML = '<div class="empty" style="grid-column:1/-1">No failed searches recorded yet on this device.</div>';
+    return;
+  }
+  grid.innerHTML = list.map(f => `
+    <div class="failed-card">
+      <div>
+        <div class="failed-query">"${escapeHtml(f.q)}"</div>
+        <div class="failed-meta">Last seen ${new Date(f.last).toLocaleString()}</div>
+      </div>
+      <div class="failed-count">${f.n}</div>
+    </div>
+  `).join('');
+}
+
+function renderAnalytics(){
+  const tbody = document.getElementById('eventRows');
+  let events = [];
+  try { events = JSON.parse(localStorage.getItem('bf_events')||'[]'); } catch(e){}
+  const recent = events.slice(-50).reverse();
+  if (recent.length === 0){
+    tbody.innerHTML = '<tr><td colspan="4" class="empty">No events yet. Try searching on the main site first.</td></tr>';
+    return;
+  }
+  tbody.innerHTML = recent.map(e => `
+    <tr>
+      <td><span class="cat-pill">${e.event}</span></td>
+      <td>${escapeHtml(e.q || e.id || '—')}</td>
+      <td><span class="city-pill">${e.city || '—'}</span></td>
+      <td><span style="font-size:0.75rem;color:var(--muted)">${new Date(e.ts).toLocaleString()}</span></td>
+    </tr>
+  `).join('');
+}
+
+render();
+</script>
+<script src="/ios-viewport-lock.js" defer></script>
+</body>
+</html>

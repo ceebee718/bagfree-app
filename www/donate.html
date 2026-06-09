@@ -1,0 +1,274 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+<meta charset="UTF-8">
+<meta name="viewport" content="width=device-width, initial-scale=1, maximum-scale=1, user-scalable=no, viewport-fit=cover">
+<title>Donate &amp; Earn — BagFree Second Journey™</title>
+<meta name="description" content="Donate your gently worn travel clothing to Second Journey™ and earn BAG credits toward your next trip.">
+<link rel="preconnect" href="https://fonts.googleapis.com">
+<link href="https://fonts.googleapis.com/css2?family=Cormorant+Garamond:ital,wght@0,300;0,400;0,500;1,400&family=DM+Sans:wght@300;400;500;600&display=swap" rel="stylesheet">
+<style>
+:root{--noir:#0d1a32;--noir-2:#111f3a;--gold:#c9a96e;--gold-rgb:201,169,110;--emerald:#5DCAA5;--white:#fdfcf8;--text-rgb:253,252,248;--ff-display:'Cormorant Garamond',Georgia,serif;--ff-body:'DM Sans','Helvetica Neue',sans-serif;--border-soft:rgba(201,169,110,0.12)}
+*,*::before,*::after{box-sizing:border-box;margin:0;padding:0}
+html{scroll-behavior:smooth}
+body{font-family:var(--ff-body);color:rgba(var(--text-rgb),0.85);background:var(--noir);line-height:1.6;-webkit-font-smoothing:antialiased}
+a{color:var(--gold);text-decoration:none}
+button{cursor:pointer;border:none;font-family:var(--ff-body)}
+
+/* Nav */
+.nav{position:fixed;top:0;left:0;right:0;z-index:100;display:flex;align-items:center;justify-content:space-between;padding:1rem 2.5rem;background:rgba(13,26,50,0.92);backdrop-filter:blur(14px);border-bottom:1px solid var(--border-soft)}
+.nav-logo{font-family:var(--ff-display);font-size:1.5rem;font-weight:400;color:var(--gold)}
+.nav-links{display:flex;gap:1.8rem}
+.nav-link{font-size:0.68rem;letter-spacing:2.5px;text-transform:uppercase;color:rgba(var(--text-rgb),0.6);font-weight:500;transition:color 0.25s}
+.nav-link:hover{color:var(--gold)}
+
+/* Hero */
+.hero{padding:8rem 2rem 4rem;text-align:center;border-bottom:1px solid var(--border-soft);position:relative;overflow:hidden}
+.hero::before{content:'';position:absolute;top:-200px;left:50%;transform:translateX(-50%);width:900px;height:500px;pointer-events:none;background:radial-gradient(ellipse 100% 100% at 50% 30%,rgba(93,202,165,0.06),transparent 70%)}
+.hero-eyebrow{font-size:0.62rem;letter-spacing:4.5px;text-transform:uppercase;color:#5DCAA5;margin-bottom:1.4rem;font-weight:600}
+.hero h1{font-family:var(--ff-display);font-size:clamp(2.2rem,5vw,3.8rem);font-weight:300;color:var(--white);letter-spacing:-1.5px;line-height:1.08;margin-bottom:1.2rem;position:relative;z-index:1}
+.hero h1 em{font-style:italic;color:var(--gold)}
+.hero-sub{font-size:1rem;color:rgba(var(--text-rgb),0.5);max-width:600px;margin:0 auto 2rem;line-height:1.8;font-weight:300;position:relative;z-index:1}
+.hero-gold{font-family:var(--ff-display);font-size:1.1rem;color:var(--gold);font-style:italic;position:relative;z-index:1}
+
+/* How it works */
+.how{padding:4rem 2rem;max-width:1000px;margin:0 auto}
+.how-grid{display:grid;grid-template-columns:repeat(3,1fr);gap:1.5rem;margin-bottom:2.5rem}
+@media(max-width:768px){.how-grid{grid-template-columns:1fr;max-width:380px;margin-left:auto;margin-right:auto}}
+.how-card{text-align:center;padding:2rem 1.5rem;border:1px solid var(--border-soft);background:rgba(var(--gold-rgb),0.02);transition:all 0.3s}
+.how-card:hover{border-color:rgba(var(--gold-rgb),0.35);transform:translateY(-3px);box-shadow:0 16px 40px rgba(0,0,0,0.15)}
+.how-num{width:40px;height:40px;border-radius:50%;display:flex;align-items:center;justify-content:center;border:1px solid rgba(var(--gold-rgb),0.35);color:var(--gold);font-family:var(--ff-display);font-size:1.1rem;margin:0 auto 1rem}
+.how-name{font-family:var(--ff-display);font-size:1.3rem;font-weight:400;color:var(--white);margin-bottom:0.5rem}
+.how-desc{font-size:0.82rem;color:rgba(var(--text-rgb),0.5);line-height:1.6}
+
+/* Credits table */
+.credits{max-width:700px;margin:0 auto 3rem;padding:0 2rem}
+.credits-title{font-family:var(--ff-display);font-size:1.5rem;font-weight:300;color:var(--white);text-align:center;margin-bottom:1.2rem}
+.credits-table{width:100%;border-collapse:collapse}
+.credits-table th{font-size:0.55rem;letter-spacing:2.5px;text-transform:uppercase;color:rgba(var(--text-rgb),0.4);font-weight:600;padding:0.7rem 1rem;text-align:left;border-bottom:1px solid var(--border-soft)}
+.credits-table td{padding:0.75rem 1rem;font-size:0.88rem;color:rgba(var(--text-rgb),0.7);border-bottom:1px solid rgba(var(--gold-rgb),0.06)}
+.credits-table td:last-child{color:var(--gold);font-family:var(--ff-display);font-size:1.1rem;text-align:right}
+.credits-table tr:hover td{background:rgba(var(--gold-rgb),0.03)}
+
+/* Form */
+.form-section{padding:4rem 2rem 5rem;border-top:1px solid var(--border-soft)}
+.form-wrap{max-width:620px;margin:0 auto}
+.form-title{font-family:var(--ff-display);font-size:clamp(1.8rem,3.5vw,2.4rem);font-weight:300;color:var(--white);text-align:center;margin-bottom:0.5rem}
+.form-sub{font-size:0.88rem;color:rgba(var(--text-rgb),0.5);text-align:center;margin-bottom:2.5rem;font-weight:300}
+.fg{margin-bottom:1rem}
+.fg-row{display:grid;grid-template-columns:1fr 1fr;gap:1rem;margin-bottom:1rem}
+@media(max-width:560px){.fg-row{grid-template-columns:1fr}}
+.fg label{display:block;font-size:0.55rem;letter-spacing:2.5px;text-transform:uppercase;color:rgba(var(--text-rgb),0.4);margin-bottom:0.35rem;font-weight:600}
+.fg input,.fg select,.fg textarea{width:100%;padding:0.8rem 1rem;font-size:0.9rem;background:rgba(var(--gold-rgb),0.03);border:1px solid var(--border-soft);color:var(--white);font-family:var(--ff-body);transition:border-color 0.25s}
+.fg input:focus,.fg select:focus,.fg textarea:focus{outline:none;border-color:rgba(var(--gold-rgb),0.5);box-shadow:0 0 0 3px rgba(var(--gold-rgb),0.08)}
+.fg input::placeholder,.fg textarea::placeholder{color:rgba(var(--text-rgb),0.25)}
+.fg select{appearance:none;background-image:url("data:image/svg+xml,%3Csvg width='12' height='8' viewBox='0 0 12 8' fill='none' xmlns='http://www.w3.org/2000/svg'%3E%3Cpath d='M1 1.5L6 6.5L11 1.5' stroke='%23c9a96e' stroke-width='1.5'/%3E%3C/svg%3E");background-repeat:no-repeat;background-position:right 1rem center}
+.fg select option{background:var(--noir-2);color:var(--white)}
+.fg textarea{min-height:90px;resize:vertical}
+.fg-check{display:flex;align-items:flex-start;gap:0.6rem;margin:1.5rem 0;padding:0.8rem;border:1px solid rgba(93,202,165,0.2);background:rgba(93,202,165,0.04)}
+.fg-check input[type=checkbox]{margin-top:3px;accent-color:var(--gold)}
+.fg-check-text{font-size:0.78rem;color:rgba(var(--text-rgb),0.6);line-height:1.5}
+.fg-check-text em{color:#5DCAA5;font-style:normal;font-weight:500}
+.btn-submit{width:100%;padding:1rem;font-size:0.65rem;letter-spacing:3.5px;text-transform:uppercase;font-weight:600;color:var(--noir);background:linear-gradient(135deg,var(--gold),#d4b87a);border:none;box-shadow:0 8px 28px rgba(var(--gold-rgb),0.3);transition:all 0.3s;margin-top:0.5rem}
+.btn-submit:hover{box-shadow:0 14px 40px rgba(var(--gold-rgb),0.4);transform:translateY(-2px)}
+.btn-submit:disabled{opacity:0.35;pointer-events:none}
+
+/* Laundry bag callout */
+.bag-callout{display:flex;align-items:center;gap:0.8rem;max-width:620px;margin:2rem auto 0;padding:1.2rem 1.5rem;border:1px solid rgba(var(--gold-rgb),0.15);background:rgba(var(--gold-rgb),0.03)}
+.bag-callout-icon{width:44px;height:44px;flex-shrink:0;display:flex;align-items:center;justify-content:center;border:1px solid rgba(var(--gold-rgb),0.3);border-radius:50%;color:var(--gold);font-size:1.1rem}
+.bag-callout-text{font-size:0.82rem;color:rgba(var(--text-rgb),0.6);line-height:1.6}
+.bag-callout-text strong{color:var(--white);font-weight:500}
+
+/* Success */
+.success{display:none;text-align:center;padding:3rem 2rem}
+.success.show{display:block}
+.success-icon{font-size:2.5rem;color:var(--gold);margin-bottom:1rem}
+.success-title{font-family:var(--ff-display);font-size:2rem;font-weight:300;color:var(--white);margin-bottom:0.6rem}
+.success-sub{font-size:0.92rem;color:rgba(var(--text-rgb),0.5);max-width:450px;margin:0 auto 2rem;line-height:1.7}
+.btn-home{display:inline-block;padding:0.8rem 2rem;font-size:0.62rem;letter-spacing:3px;text-transform:uppercase;font-weight:600;color:var(--noir);background:var(--gold);transition:all 0.3s}
+.btn-home:hover{color:var(--noir);background:#d4b87a;transform:translateY(-2px)}
+
+/* Footer */
+.ft{text-align:center;padding:2rem;font-size:0.72rem;color:rgba(var(--text-rgb),0.3);border-top:1px solid var(--border-soft)}
+.ft a{color:var(--gold)}
+
+@keyframes fadeUp{from{opacity:0;transform:translateY(12px)}to{opacity:1;transform:translateY(0)}}
+@media(max-width:560px){.nav{padding:0.8rem 1.2rem}.hero{padding:7rem 1.2rem 3rem}}
+</style>
+<link rel="stylesheet" href="/ios-viewport-lock.css">
+<link rel="stylesheet" href="/embr-concierge-button.css">
+</head>
+<body>
+
+<nav class="nav">
+  <a href="/" class="nav-logo">BagFree</a>
+  <div class="nav-links">
+    <a href="/" class="nav-link">Home</a>
+    <a href="/departure-lounge-landing.html" class="nav-link">Shop</a>
+  </div>
+</nav>
+
+<section class="hero">
+  <div class="hero-eyebrow">♻ Donate &amp; Earn BAG Credits</div>
+  <h1>Give your clothing a <em>second journey.</em></h1>
+  <p class="hero-sub">Purchased from Valet By Nuor? Instead of packing it home, donate your gently worn clothing to Second Journey™ and earn BAG credits toward your next trip.</p>
+  <div class="hero-gold">Pack less on the way home. Help the next traveler pack less too.</div>
+</section>
+
+<section class="how">
+  <div class="how-grid">
+    <div class="how-card">
+      <div class="how-num">1</div>
+      <div class="how-name">Pack it</div>
+      <div class="how-desc">Place your gently worn Valet By Nuor clothing in the BagFree laundry bag that came with your delivery.</div>
+    </div>
+    <div class="how-card">
+      <div class="how-num">2</div>
+      <div class="how-name">Leave it</div>
+      <div class="how-desc">Drop the bag at the hotel front desk before checkout — or text us to schedule a pickup from your room.</div>
+    </div>
+    <div class="how-card">
+      <div class="how-num">3</div>
+      <div class="how-name">Earn credits</div>
+      <div class="how-desc">Once received and inspected, BAG credits are added to your account. Use them on your next order.</div>
+    </div>
+  </div>
+</section>
+
+<section class="credits">
+  <div class="credits-title">BAG Credit Rates</div>
+  <table class="credits-table">
+    <thead><tr><th>Item Type</th><th style="text-align:right">BAG Credits</th></tr></thead>
+    <tbody>
+      <tr><td>T-Shirts &amp; Tops</td><td>$3 – $5</td></tr>
+      <tr><td>Shorts &amp; Bottoms</td><td>$4 – $7</td></tr>
+      <tr><td>Pants &amp; Loungewear</td><td>$5 – $8</td></tr>
+      <tr><td>Full Outfit Set</td><td>$8 – $12</td></tr>
+      <tr><td>Complete Bundle (all items)</td><td>$15 – $25</td></tr>
+      <tr><td>Toiletry Kit (unopened items)</td><td>$5 – $10</td></tr>
+    </tbody>
+  </table>
+  <p style="text-align:center;font-size:0.72rem;color:rgba(var(--text-rgb),0.35);margin-top:0.8rem;font-style:italic">Credits vary based on item condition. Items must be gently worn and in good shape. Final credit amount determined after inspection.</p>
+</section>
+
+<section class="form-section" id="donateForm">
+  <div class="form-wrap" id="formContainer">
+    <div class="form-title">Start your donation.</div>
+    <div class="form-sub">Fill in the details and we'll coordinate the pickup.</div>
+
+    <div class="fg-row">
+      <div class="fg"><label>First Name *</label><input id="dFirst" placeholder="First name" required></div>
+      <div class="fg"><label>Last Name *</label><input id="dLast" placeholder="Last name" required></div>
+    </div>
+    <div class="fg"><label>Email *</label><input id="dEmail" type="email" placeholder="you@example.com" required></div>
+    <div class="fg"><label>Original Order Number</label><input id="dOrder" placeholder="BF-XXXX or Shopify order # (optional)"></div>
+    <div class="fg-row">
+      <div class="fg">
+        <label>City *</label>
+        <select id="dCity">
+          <option value="Savannah, GA" style="background:#111f3a;color:#fdfcf8">Savannah, GA</option>
+          <option value="Atlanta, GA" style="background:#111f3a;color:#fdfcf8">Atlanta, GA</option>
+          <option value="Tampa, FL" style="background:#111f3a;color:#fdfcf8">Tampa, FL</option>
+          <option value="Orlando, FL" style="background:#111f3a;color:#fdfcf8">Orlando, FL</option>
+        </select>
+      </div>
+      <div class="fg"><label>Hotel Name *</label><input id="dHotel" placeholder="Where you're staying" required></div>
+    </div>
+    <div class="fg">
+      <label>Items to Donate *</label>
+      <textarea id="dItems" placeholder="List the items you'd like to donate, e.g.&#10;• 3 T-shirts&#10;• 2 shorts&#10;• 1 loungewear pant&#10;• Toiletry kit (unopened sunscreen)"></textarea>
+    </div>
+    <div class="fg">
+      <label>Pickup Preference *</label>
+      <select id="dPickup">
+        <option value="front-desk" style="background:#111f3a;color:#fdfcf8">Leave at hotel front desk</option>
+        <option value="schedule" style="background:#111f3a;color:#fdfcf8">Schedule a room pickup (text me)</option>
+        <option value="checkout-day" style="background:#111f3a;color:#fdfcf8">Pickup on my checkout day</option>
+      </select>
+    </div>
+    <div class="fg"><label>Checkout Date</label><input id="dDate" type="date"></div>
+    <div class="fg"><label>Notes</label><textarea id="dNotes" placeholder="Anything else we should know?" style="min-height:60px"></textarea></div>
+
+    <div class="fg-check">
+      <input type="checkbox" id="dAgree" required>
+      <div class="fg-check-text">I understand that donated items become part of the <em>Second Journey™</em> program and cannot be returned. BAG credits will be issued after inspection. Items must be gently worn and in good condition.</div>
+    </div>
+
+    <button class="btn-submit" id="submitBtn" onclick="submitDonation()">Submit Donation Request</button>
+  </div>
+
+  <div class="success" id="successMsg">
+    <div class="success-icon">♻</div>
+    <div class="success-title">Donation submitted!</div>
+    <p class="success-sub">Thank you for giving your clothing a second journey. We'll coordinate the pickup and credit your BAG account once the items are inspected.</p>
+    <a href="/" class="btn-home">Return Home</a>
+  </div>
+
+  <div class="bag-callout">
+    <div class="bag-callout-icon">🧺</div>
+    <div class="bag-callout-text"><strong>Don't have a BagFree laundry bag?</strong> No problem — any bag works. Just let the front desk know it's a BagFree donation pickup and we'll take it from there.</div>
+  </div>
+</section>
+
+<footer class="ft"><a href="/">BagFree.app</a> · Donate &amp; Earn · <a href="/departure-lounge-landing.html">Shop</a><br><span style="margin-top:0.4rem;display:inline-block">© 2026 BagFree. All rights reserved.</span></footer>
+
+<script>
+async function submitDonation() {
+  var first = document.getElementById('dFirst').value.trim();
+  var last = document.getElementById('dLast').value.trim();
+  var email = document.getElementById('dEmail').value.trim();
+  var items = document.getElementById('dItems').value.trim();
+  var hotel = document.getElementById('dHotel').value.trim();
+  var agree = document.getElementById('dAgree').checked;
+
+  if (!first || !last || !email || !items || !hotel) {
+    alert('Please fill in all required fields.');
+    return;
+  }
+  if (!agree) {
+    alert('Please agree to the donation terms.');
+    return;
+  }
+
+  var btn = document.getElementById('submitBtn');
+  btn.disabled = true;
+  btn.textContent = 'Submitting...';
+
+  try {
+    var res = await fetch('https://formspree.io/f/mvzvwrkp', {
+      method: 'POST',
+      headers: { 'Content-Type': 'application/json', 'Accept': 'application/json' },
+      body: JSON.stringify({
+        _subject: '♻ Donation Request: ' + first + ' ' + last + ' — ' + document.getElementById('dCity').value,
+        _replyto: email,
+        type: 'clothing_donation',
+        first_name: first,
+        last_name: last,
+        email: email,
+        order_number: document.getElementById('dOrder').value.trim() || '(not provided)',
+        city: document.getElementById('dCity').value,
+        hotel: hotel,
+        items_to_donate: items,
+        pickup_preference: document.getElementById('dPickup').value,
+        checkout_date: document.getElementById('dDate').value || '(not specified)',
+        notes: document.getElementById('dNotes').value.trim() || '(none)',
+        submitted_at: new Date().toISOString()
+      })
+    });
+    if (!res.ok) throw new Error('HTTP ' + res.status);
+
+    document.getElementById('formContainer').style.display = 'none';
+    document.getElementById('successMsg').classList.add('show');
+    document.getElementById('donateForm').scrollIntoView({ behavior: 'smooth' });
+
+  } catch (err) {
+    console.error('Donation submit error:', err);
+    btn.disabled = false;
+    btn.textContent = 'Submit Donation Request';
+    alert("Something went wrong. Please try again or email hello@bagfree.app.\n\n(" + err.message + ")");
+  }
+}
+</script>
+<script src="/ios-viewport-lock.js" defer></script>
+</body>
+</html>

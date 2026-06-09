@@ -198,61 +198,9 @@ input{font-family:var(--fb)}
   .game-layout{grid-template-columns:1fr}
   .left-panel,.right-panel{max-height:300px}
 }
-
-/* Mobile polish: Tourism DX header containment */
-@media (max-width: 768px) {
-  #tdx-nav {
-    position: relative !important;
-    top: auto !important;
-    left: auto !important;
-    right: auto !important;
-    width: 100% !important;
-    max-width: 100vw !important;
-    height: auto !important;
-    min-height: 0 !important;
-    padding: 1rem 0.85rem !important;
-    display: grid !important;
-    grid-template-columns: 1fr !important;
-    gap: 0.85rem !important;
-    box-sizing: border-box !important;
-    overflow-x: hidden !important;
-  }
-
-  #tdx-nav > * {
-    max-width: 100% !important;
-    min-width: 0 !important;
-    box-sizing: border-box !important;
-  }
-
-  #tdx-nav a,
-  #tdx-nav button,
-  #tdx-nav [onclick] {
-    max-width: 100% !important;
-    white-space: normal !important;
-    text-align: center !important;
-  }
-
-  #tdx-nav img,
-  #tdx-nav svg {
-    max-width: 72px !important;
-    height: auto !important;
-  }
-
-  #tdx-nav [style*="letter-spacing"] {
-    letter-spacing: 2px !important;
-  }
-
-  #tdx-nav [style*="font-size"] {
-    line-height: 1.25 !important;
-  }
-
-  #game-screen {
-    padding-top: 0 !important;
-  }
-}
-
 </style>
 <link rel="stylesheet" href="/ios-viewport-lock.css">
+<link rel="stylesheet" href="/embr-concierge-button.css">
 </head>
 <body>
 
@@ -306,7 +254,7 @@ input{font-family:var(--fb)}
 
       <div style="margin-top:1.25rem;font-size:0.65rem;color:rgba(253,252,248,0.3);text-align:center;">
         Don&apos;t have an account?
-        <a href="departure-lounge-landing.html" style="color:rgba(201,169,110,0.7);text-decoration:none;margin-left:4px;" onmouseover="this.style.color='#C9A96E'" onmouseout="this.style.color='rgba(201,169,110,0.7)'">Join the Departure Lounge →</a>
+        <a href="/departure-lounge-landing" style="color:rgba(201,169,110,0.7);text-decoration:none;margin-left:4px;" onmouseover="this.style.color='#C9A96E'" onmouseout="this.style.color='rgba(201,169,110,0.7)'">Join the Departure Lounge →</a>
       </div>
     </div>
 
@@ -391,7 +339,7 @@ input{font-family:var(--fb)}
   </a>
   <div style="display:flex;gap:0.75rem;align-items:center;">
     <button class="btn-ghost" onclick="openLeaderboard()">⬡ Leaderboard</button>
-    <a href="departure-lounge-landing.html" class="nav-back">← Departure Lounge</a>
+    <a href="/departure-lounge-landing" class="nav-back">← Departure Lounge</a>
   </div>
 </nav>
 
@@ -736,7 +684,7 @@ input{font-family:var(--fb)}
     <div class="end-btns">
       <button class="btn-primary" onclick="resetToSetup()">Play Again</button>
       <button class="btn-ghost" onclick="openLeaderboard()">View Leaderboard</button>
-      <a href="departure-lounge-landing.html" class="btn-ghost" style="display:inline-block;">← Back to Lounge</a>
+      <a href="/departure-lounge-landing" class="btn-ghost" style="display:inline-block;">← Back to Lounge</a>
     </div>
   </div>
 </div>

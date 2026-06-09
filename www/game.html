@@ -1,0 +1,1411 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+<meta charset="UTF-8">
+<meta name="viewport" content="width=device-width, initial-scale=1, maximum-scale=1, user-scalable=no, viewport-fit=cover">
+<title>BagFree World&#x2122; &#x2014; City-First Travel Economy</title>
+<link rel="preconnect" href="https://fonts.googleapis.com">
+<link href="https://fonts.googleapis.com/css2?family=Cormorant+Garamond:ital,wght@0,300;0,400;0,500;0,600;0,700;1,300;1,400;1,500&family=DM+Sans:wght@300;400;500;600;700&display=swap" rel="stylesheet">
+<script src="https://cdn.jsdelivr.net/npm/@supabase/supabase-js@2/dist/umd/supabase.js"></script>
+<style>
+
+:root{
+  --noir:#07101f;--n2:#0b1828;--n3:#102030;--n4:#182c47;
+  --gold:#c9a96e;--gold2:#d4b87a;--gold3:#e8d4a8;--gr:201,169,110;
+  --em:#5DCAA5;--em2:93,202,165;--wh:#fdfcf8;--tr:253,252,248;
+  --urgent:#ef4444;--amber:#f59e0b;--purple:#8b5cf6;--blue:#60a5fa;
+  --fd:'Cormorant Garamond',Georgia,serif;--fb:'DM Sans',sans-serif;
+  --city-accent:var(--gold);
+}
+*{box-sizing:border-box;margin:0;padding:0}
+html,body{height:100%;overflow:hidden;font-family:var(--fb);background:var(--noir);color:rgba(var(--tr),.85)}
+button{cursor:pointer;border:none;font-family:var(--fb)}
+::-webkit-scrollbar{width:3px;height:3px}::-webkit-scrollbar-track{background:transparent}::-webkit-scrollbar-thumb{background:rgba(var(--gr),.18);border-radius:2px}
+@keyframes shimmer{0%{background-position:-200% center}100%{background-position:200% center}}
+@keyframes fadeIn{from{opacity:0;transform:translateY(8px)}to{opacity:1;transform:translateY(0)}}
+@keyframes slideUp{from{opacity:0;transform:translateY(12px)}to{opacity:1;transform:translateY(0)}}
+@keyframes cardIn{from{opacity:0;transform:translateY(8px)}to{opacity:1;transform:translateY(0)}}
+@keyframes float{0%,100%{transform:translateY(0)}50%{transform:translateY(-4px)}}
+@keyframes urgentPulse{0%,100%{box-shadow:0 0 0 0 rgba(239,68,68,0)}50%{box-shadow:0 0 0 7px rgba(239,68,68,.18)}}
+@keyframes timerTick{from{opacity:1}to{opacity:.4}}
+@keyframes heroReveal{from{opacity:0;transform:scale(1.02)}to{opacity:1;transform:scale(1)}}
+@keyframes confettiFall{0%{opacity:1;transform:translateY(-20px) rotate(0)}100%{opacity:0;transform:translateY(100vh) rotate(720deg)}}
+@keyframes cityGlow{0%,100%{opacity:.4}50%{opacity:.85}}
+@keyframes demandPulse{0%,100%{opacity:.5}50%{opacity:1}}
+@keyframes emgBlink{0%,100%{opacity:1}50%{opacity:.25}}
+@keyframes emergencyGlow{0%,100%{box-shadow:0 0 0 0 rgba(239,68,68,0)}50%{box-shadow:0 0 16px rgba(239,68,68,.2)}}
+@keyframes routeAnim{0%{stroke-opacity:.08}50%{stroke-opacity:.22}100%{stroke-opacity:.08}}
+@keyframes earningsFlash{0%{color:var(--gold)}50%{color:var(--em)}100%{color:var(--gold)}}
+@keyframes tokenPulse{0%,100%{r:4}50%{r:6}}
+@keyframes streakFire{0%,100%{text-shadow:0 0 6px rgba(245,158,11,.5)}50%{text-shadow:0 0 14px rgba(245,158,11,.95)}}
+
+.app{display:flex;flex-direction:column;height:100vh;overflow:hidden}
+
+/* ── TOP NAV ── */
+.tnav{height:50px;background:rgba(4,8,18,.98);border-bottom:1px solid rgba(var(--gr),.09);display:flex;align-items:center;flex-shrink:0;z-index:50}
+.tnav-logo{padding:0 .9rem;border-right:1px solid rgba(var(--gr),.07);flex-shrink:0;line-height:1}
+.tnav-logo-main{font-family:var(--fd);font-size:.98rem;letter-spacing:.4px;background:linear-gradient(90deg,var(--gold),var(--gold3),var(--gold));background-size:200%;-webkit-background-clip:text;-webkit-text-fill-color:transparent;background-clip:text;animation:shimmer 4s linear infinite}
+.tnav-logo-sub{font-size:.3rem;letter-spacing:2px;color:rgba(var(--tr),.15);text-transform:uppercase;margin-top:1px}
+.tnav-tabs{display:flex;flex:1;height:100%;overflow-x:auto;scrollbar-width:none}
+.tnav-tabs::-webkit-scrollbar{display:none}
+.tnav-tab{display:flex;align-items:center;gap:.22rem;padding:0 .7rem;font-size:.37rem;letter-spacing:1.8px;text-transform:uppercase;color:rgba(var(--tr),.25);font-weight:700;cursor:pointer;border-bottom:2px solid transparent;white-space:nowrap;transition:all .2s}
+.tnav-tab:hover{color:rgba(var(--tr),.5)}
+.tnav-tab.active{color:var(--gold);border-bottom-color:var(--gold)}
+.tnav-stats{display:flex;align-items:center;gap:.35rem;padding:0 .7rem;border-left:1px solid rgba(var(--gr),.08);flex-shrink:0}
+.tnav-chip{display:flex;align-items:center;gap:.22rem;padding:.18rem .42rem;border:1px solid rgba(var(--gr),.1);background:rgba(var(--gr),.025);border-radius:2px}
+.tnav-chip-val{font-family:var(--fd);font-size:.82rem;color:var(--gold)}
+.tnav-chip-lbl{font-size:.3rem;letter-spacing:1.5px;text-transform:uppercase;color:rgba(var(--tr),.2)}
+.tnav-actions{display:flex;gap:.32rem;padding:0 .6rem;align-items:center}
+.tnav-icon-btn{width:28px;height:28px;display:flex;align-items:center;justify-content:center;border:1px solid rgba(var(--gr),.1);background:rgba(var(--gr),.02);border-radius:2px;font-size:.75rem;cursor:pointer;position:relative;transition:all .2s}
+.tnav-icon-btn:hover{border-color:rgba(var(--gr),.28);background:rgba(var(--gr),.06)}
+.tnav-badge{position:absolute;top:3px;right:3px;width:5px;height:5px;border-radius:50%;background:var(--urgent)}
+
+/* ── EARNINGS STRIP ── */
+.earnings-strip{height:34px;background:rgba(4,10,22,.98);border-bottom:1px solid rgba(var(--gr),.06);display:flex;align-items:center;padding:0 .5rem;gap:0;flex-shrink:0;overflow-x:auto;scrollbar-width:none}
+.earnings-strip::-webkit-scrollbar{display:none}
+.es-item{display:flex;flex-direction:column;align-items:center;padding:0 .82rem;border-right:1px solid rgba(var(--gr),.06);flex-shrink:0}
+.es-item:last-child{border-right:none;margin-left:auto}
+.es-val{font-family:var(--fd);font-size:.86rem;background:linear-gradient(135deg,var(--gold),var(--gold3));-webkit-background-clip:text;-webkit-text-fill-color:transparent;background-clip:text;line-height:1}
+.es-val.em{background:linear-gradient(135deg,var(--em),#4dbf95);-webkit-background-clip:text;-webkit-text-fill-color:transparent;background-clip:text}
+.es-val.flash{animation:earningsFlash .6s ease}
+.es-lbl{font-size:.3rem;letter-spacing:2px;text-transform:uppercase;color:rgba(var(--tr),.18);margin-top:.05rem;white-space:nowrap}
+.es-passive{display:flex;align-items:center;gap:.28rem;padding:0 .82rem;border-right:1px solid rgba(var(--gr),.06);flex-shrink:0}
+.es-passive-dot{width:5px;height:5px;border-radius:50%;background:var(--em);animation:demandPulse 2s ease-in-out infinite;flex-shrink:0}
+.es-passive-val{font-family:var(--fd);font-size:.86rem;color:var(--em)}
+.es-passive-lbl{font-size:.3rem;letter-spacing:2px;text-transform:uppercase;color:rgba(var(--tr),.18);white-space:nowrap}
+.es-streak{display:flex;align-items:center;gap:.28rem;padding:0 .82rem;flex-shrink:0}
+.es-streak-icon{font-size:.82rem;animation:streakFire 2s ease-in-out infinite}
+.es-streak-val{font-family:var(--fd);font-size:.88rem;color:var(--amber)}
+.es-streak-lbl{font-size:.3rem;letter-spacing:2px;text-transform:uppercase;color:rgba(var(--tr),.18)}
+
+/* ── MAIN GRID ── */
+.main-grid{flex:1;display:grid;grid-template-columns:292px 1fr 318px;overflow:hidden}
+
+/* ── LEFT PANEL ── */
+.lp{background:linear-gradient(180deg,#07101f,#050d18);border-right:1px solid rgba(var(--gr),.07);overflow-y:auto;display:flex;flex-direction:column;scrollbar-width:thin}
+
+/* World Map in left panel */
+.wmap-wrap{flex-shrink:0;border-bottom:1px solid rgba(var(--gr),.07);background:rgba(4,9,18,.6)}
+.wmap-header{display:flex;align-items:center;justify-content:space-between;padding:.4rem .72rem;border-bottom:1px solid rgba(var(--gr),.05)}
+.wmap-title{font-size:.32rem;letter-spacing:3px;text-transform:uppercase;color:rgba(var(--tr),.2);font-weight:700;display:flex;align-items:center;gap:.32rem}
+.wmap-live{font-size:.36rem;color:rgba(var(--em2),.6);display:flex;align-items:center;gap:.22rem}
+.wmap-live-dot{width:4px;height:4px;border-radius:50%;background:var(--em);animation:demandPulse 2s infinite}
+.wmap-regions{display:flex;gap:.18rem;padding:0 .72rem .38rem}
+.wmap-reg{font-size:.3rem;padding:.14rem .35rem;border:1px solid rgba(var(--gr),.07);color:rgba(var(--tr),.22);cursor:pointer;transition:all .2s;border-radius:1px;letter-spacing:1px}
+.wmap-reg:hover{color:rgba(var(--tr),.45);border-color:rgba(var(--gr),.18)}
+.wmap-reg.active{color:var(--gold);border-color:rgba(var(--gr),.3);background:rgba(var(--gr),.04)}
+#worldMapSvg{display:block;width:100%}
+
+/* Left panel player */
+.lp-player{padding:.6rem .72rem;border-bottom:1px solid rgba(var(--gr),.06);display:flex;align-items:center;gap:.55rem}
+.lp-avatar{width:38px;height:38px;border-radius:50%;border:1.5px solid rgba(var(--gr),.25);display:flex;align-items:center;justify-content:center;font-size:1.22rem;background:radial-gradient(circle at 35% 35%,rgba(var(--gr),.08),rgba(0,0,0,.45));flex-shrink:0;animation:float 5s ease-in-out infinite}
+.lp-pname{font-size:.78rem;color:var(--wh);font-weight:600;line-height:1.2}
+.lp-arch{font-size:.34rem;letter-spacing:2px;text-transform:uppercase;color:var(--gold);margin-top:.04rem}
+.lp-loc{font-size:.36rem;color:rgba(var(--tr),.28);margin-top:.04rem}
+.lp-wallet{display:grid;grid-template-columns:repeat(3,1fr);gap:.2rem;padding:.48rem .72rem;border-bottom:1px solid rgba(var(--gr),.06)}
+.lp-w{padding:.32rem .35rem;background:rgba(var(--gr),.025);border:1px solid rgba(var(--gr),.06);text-align:center;border-radius:1px}
+.lp-w-val{font-family:var(--fd);font-size:.92rem;background:linear-gradient(135deg,var(--gold),var(--gold3));-webkit-background-clip:text;-webkit-text-fill-color:transparent;background-clip:text;line-height:1}
+.lp-w-lbl{font-size:.3rem;letter-spacing:1.5px;text-transform:uppercase;color:rgba(var(--tr),.18);margin-top:.1rem}
+.lp-stats4{display:grid;grid-template-columns:repeat(4,1fr);gap:.15rem;padding:.42rem .72rem;border-bottom:1px solid rgba(var(--gr),.06)}
+.lp-s4{text-align:center;padding:.22rem .1rem;background:rgba(var(--gr),.02);border:1px solid rgba(var(--gr),.05);border-radius:1px}
+.lp-s4-icon{font-size:.55rem;display:block;margin-bottom:.06rem}
+.lp-s4-val{font-family:var(--fd);font-size:.82rem;color:var(--wh);line-height:1}
+.lp-s4-lbl{font-size:.27rem;letter-spacing:1px;text-transform:uppercase;color:rgba(var(--tr),.18);margin-top:.05rem;line-height:1.2}
+.lp-xp{padding:.38rem .72rem;border-bottom:1px solid rgba(var(--gr),.06)}
+.lp-xp-info{display:flex;justify-content:space-between;font-size:.34rem;color:rgba(var(--tr),.22);margin-bottom:.16rem}
+.lp-bar{height:3px;background:rgba(var(--gr),.07);border-radius:2px;overflow:hidden}
+.lp-bar-fill{height:100%;border-radius:2px;transition:width .8s cubic-bezier(.4,0,.2,1)}
+.lp-bar-gold{background:linear-gradient(90deg,rgba(var(--gr),.4),var(--gold))}
+.lp-bar-em{background:linear-gradient(90deg,rgba(var(--em2),.4),var(--em))}
+.lp-bar-blue{background:linear-gradient(90deg,rgba(96,165,250,.4),var(--blue))}
+.lp-sec{padding:.48rem .72rem;border-bottom:1px solid rgba(var(--gr),.06)}
+.lp-sec-hdr{font-size:.32rem;letter-spacing:2.5px;text-transform:uppercase;color:rgba(var(--tr),.18);font-weight:700;margin-bottom:.35rem;display:flex;align-items:center;justify-content:space-between}
+.lp-badge{font-size:.32rem;padding:.12rem .38rem;border-radius:1px;font-weight:700}
+.badge-em{background:rgba(var(--em2),.08);border:1px solid rgba(var(--em2),.2);color:var(--em)}
+.badge-blue{background:rgba(96,165,250,.08);border:1px solid rgba(96,165,250,.2);color:var(--blue)}
+.badge-gold{background:rgba(var(--gr),.08);border:1px solid rgba(var(--gr),.2);color:var(--gold)}
+.sj-mini-grid{display:grid;grid-template-columns:repeat(2,1fr);gap:.18rem}
+.sj-mini-m{padding:.28rem .3rem;background:rgba(var(--em2),.04);border:1px solid rgba(var(--em2),.1);border-radius:1px;text-align:center}
+.sj-mini-val{font-family:var(--fd);font-size:.86rem;color:var(--em);line-height:1}
+.sj-mini-lbl{font-size:.28rem;letter-spacing:1px;text-transform:uppercase;color:rgba(var(--tr),.22);margin-top:.05rem}
+.lp-dice-row{display:flex;align-items:center;gap:.4rem}
+.lp-dice-pair{display:flex;gap:.22rem;flex-shrink:0}
+.die{width:34px;height:34px;background:rgba(13,24,41,.98);border:1.5px solid rgba(var(--gr),.22);border-radius:6px;display:flex;align-items:center;justify-content:center}
+.die svg{width:24px;height:24px}
+.lp-dice-info{flex:1}
+.dice-btn{width:100%;padding:.3rem;font-size:.33rem;letter-spacing:2.5px;text-transform:uppercase;color:var(--noir);background:linear-gradient(135deg,var(--gold),var(--gold2));font-weight:700;transition:all .22s;border-radius:1px;margin-bottom:.13rem}
+.dice-btn:hover:not(:disabled){box-shadow:0 4px 14px rgba(var(--gr),.38);transform:translateY(-1px)}
+.dice-btn:disabled{opacity:.18;pointer-events:none}
+.dice-left{font-size:.32rem;color:rgba(var(--tr),.25);text-align:center}
+.dice-left strong{color:var(--gold)}
+.boost-row{display:flex;align-items:center;gap:.35rem;padding:.22rem 0;border-bottom:1px solid rgba(var(--gr),.04)}
+.boost-row:last-child{border-bottom:none}
+.boost-dot{width:4px;height:4px;border-radius:50%;background:var(--em);flex-shrink:0}
+.boost-txt{font-size:.52rem;color:rgba(var(--tr),.5);flex:1}
+.boost-bon{font-size:.42rem;color:var(--em);font-weight:600}
+.boost-time{font-size:.33rem;color:rgba(var(--tr),.2)}
+.sec-label{font-size:.32rem;letter-spacing:2.5px;text-transform:uppercase;color:rgba(var(--tr),.2);font-weight:700;margin-bottom:.32rem;display:flex;align-items:center;gap:.38rem}
+.sec-label::after{content:'';flex:1;height:1px;background:linear-gradient(90deg,rgba(var(--gr),.1),transparent)}
+
+/* ── CENTER: CITY DASHBOARD ── */
+.city-dash{flex:1;overflow-y:auto;display:flex;flex-direction:column;scrollbar-width:thin;background:linear-gradient(180deg,#050d18,#040a15)}
+
+/* CITY HERO */
+.ch-hero{height:152px;position:relative;overflow:hidden;flex-shrink:0;animation:heroReveal .45s ease}
+.ch-hero-bg{position:absolute;inset:0;transition:background .5s}
+.ch-hero-overlay{position:absolute;inset:0;background:linear-gradient(90deg,rgba(4,9,20,.85),rgba(4,9,20,.3)),linear-gradient(180deg,transparent 40%,rgba(4,9,20,.72))}
+.ch-hero-content{position:absolute;inset:0;display:flex;flex-direction:column;justify-content:space-between}
+.ch-hero-top{display:flex;align-items:flex-start;justify-content:space-between;padding:.72rem .92rem .0}
+.ch-hero-left{}
+.ch-eyebrow{font-size:.32rem;letter-spacing:3px;text-transform:uppercase;color:rgba(var(--tr),.42);margin-bottom:.15rem}
+.ch-name{font-family:var(--fd);font-size:2.6rem;font-weight:300;color:rgba(253,252,248,.97);line-height:1;letter-spacing:.4px}
+.ch-tagline{font-family:var(--fd);font-style:italic;font-size:.78rem;color:rgba(var(--tr),.35);margin-top:.1rem}
+.ch-hero-right{display:flex;flex-direction:column;align-items:flex-end;gap:.35rem}
+.ch-event-badge{display:flex;align-items:center;gap:.28rem;padding:.28rem .55rem;background:rgba(0,0,0,.35);border:1px solid rgba(245,158,11,.25);border-radius:1px;backdrop-filter:blur(6px)}
+.ch-event-icon{font-size:.88rem}
+.ch-event-name{font-size:.52rem;color:var(--amber);font-weight:600;max-width:140px}
+.ch-event-bonus{font-size:.4rem;color:rgba(245,158,11,.65)}
+.ch-traveler-count{font-size:.46rem;color:rgba(var(--tr),.48);display:flex;align-items:center;gap:.22rem}
+/* City Pulse Row */
+.ch-pulse-row{display:flex;gap:0;background:rgba(0,0,0,.3);border-top:1px solid rgba(255,255,255,.04);backdrop-filter:blur(4px)}
+.ch-pulse-chip{flex:1;display:flex;flex-direction:column;align-items:center;padding:.28rem .2rem;border-right:1px solid rgba(255,255,255,.05);cursor:pointer;transition:all .2s}
+.ch-pulse-chip:last-child{border-right:none}
+.ch-pulse-chip:hover{background:rgba(255,255,255,.05)}
+.ch-pulse-val{font-family:var(--fd);font-size:.88rem;color:var(--wh);line-height:1}
+.ch-pulse-val.red{color:var(--urgent)}.ch-pulse-val.amber{color:var(--amber)}.ch-pulse-val.em{color:var(--em)}.ch-pulse-val.gold{color:var(--gold)}
+.ch-pulse-lbl{font-size:.28rem;letter-spacing:1.5px;text-transform:uppercase;color:rgba(253,252,248,.25);margin-top:.06rem;white-space:nowrap}
+
+/* EMERGENCY STRIP */
+.emg-strip{background:linear-gradient(135deg,rgba(22,4,4,.98),rgba(14,3,3,.99));border-bottom:2px solid rgba(239,68,68,.18);flex-shrink:0;animation:emergencyGlow 3s ease-in-out infinite}
+.emg-hdr{display:flex;align-items:center;justify-content:space-between;padding:.5rem .9rem .3rem}
+.emg-hdr-left{font-size:.33rem;letter-spacing:3px;text-transform:uppercase;color:var(--urgent);font-weight:700;display:flex;align-items:center;gap:.35rem}
+.emg-hdr-count{font-size:.32rem;padding:.1rem .38rem;background:rgba(239,68,68,.1);border:1px solid rgba(239,68,68,.25);color:var(--urgent);border-radius:1px}
+.emg-row{display:flex;gap:.5rem;overflow-x:auto;scrollbar-width:none;padding:.0 .9rem .55rem}
+.emg-row::-webkit-scrollbar{display:none}
+.emg-card{flex-shrink:0;width:265px;border:1px solid rgba(239,68,68,.28);background:linear-gradient(168deg,rgba(18,4,4,.98),rgba(10,2,2,.99));border-radius:2px;padding:.55rem .62rem;position:relative;overflow:hidden;transition:all .25s;animation:cardIn .4s both}
+.emg-card.critical{animation:urgentPulse 2.5s ease-in-out infinite,cardIn .4s both}
+.emg-card.high{border-color:rgba(245,158,11,.28)}
+.emg-card::before{content:'';position:absolute;top:0;left:0;right:0;height:2px;background:linear-gradient(90deg,var(--urgent),transparent)}
+.emg-card.high::before{background:linear-gradient(90deg,var(--amber),transparent)}
+.emg-top{display:flex;align-items:center;justify-content:space-between;margin-bottom:.18rem}
+.emg-badge{font-size:.3rem;letter-spacing:2px;text-transform:uppercase;font-weight:700;display:flex;align-items:center;gap:.15rem}
+.emg-badge.critical{color:var(--urgent)}.emg-badge.high{color:var(--amber)}
+.emg-timer{font-size:.36rem;font-weight:700;animation:timerTick 1s ease-in-out infinite}
+.emg-timer.critical{color:var(--urgent)}.emg-timer.high{color:var(--amber)}
+.emg-title{font-family:var(--fd);font-size:.9rem;color:var(--wh);line-height:1.2;margin-bottom:.12rem}
+.emg-city{font-size:.38rem;color:rgba(var(--tr),.3);margin-bottom:.28rem}
+.emg-rewards{display:flex;gap:.18rem;margin-bottom:.32rem;flex-wrap:wrap}
+.emg-chip{display:flex;align-items:center;gap:.12rem;padding:.12rem .32rem;border-radius:1px}
+.emg-chip.red{background:rgba(239,68,68,.07);border:1px solid rgba(239,68,68,.18)}
+.emg-chip.amber{background:rgba(245,158,11,.07);border:1px solid rgba(245,158,11,.18)}
+.emg-chip-val{font-family:var(--fd);font-size:.78rem}
+.emg-chip-val.red{color:#f87171}.emg-chip-val.amber{color:#fbbf24}
+.emg-chip-lbl{font-size:.28rem;letter-spacing:1px;text-transform:uppercase;color:rgba(var(--tr),.25)}
+.emg-btns{display:grid;grid-template-columns:1fr auto;gap:.18rem}
+.emg-accept{padding:.32rem;font-size:.33rem;letter-spacing:2px;text-transform:uppercase;font-weight:700;color:#fff;border-radius:1px;transition:all .18s}
+.emg-accept.critical{background:rgba(239,68,68,.8)}.emg-accept.critical:hover{background:rgba(239,68,68,1);box-shadow:0 3px 10px rgba(239,68,68,.35)}
+.emg-accept.high{background:rgba(245,158,11,.8)}.emg-accept.high:hover{background:rgba(245,158,11,1)}
+.emg-pass{padding:.32rem .42rem;font-size:.33rem;letter-spacing:1px;text-transform:uppercase;color:rgba(var(--tr),.25);background:rgba(var(--tr),.03);border:1px solid rgba(var(--tr),.07);border-radius:1px;transition:all .2s}
+.emg-pass:hover{color:rgba(var(--tr),.5)}
+
+/* FEATURED ROW */
+.opp-featured{display:grid;grid-template-columns:repeat(4,1fr);gap:.48rem;padding:.68rem .92rem;border-bottom:1px solid rgba(var(--gr),.06);flex-shrink:0;background:rgba(6,13,26,.55)}
+.ofc{border:1px solid rgba(var(--gr),.09);background:linear-gradient(168deg,rgba(10,20,36,.98),rgba(6,14,28,.99));border-radius:2px;overflow:hidden;cursor:pointer;transition:all .28s;animation:cardIn .35s both}
+.ofc:hover{border-color:rgba(var(--gr),.28);transform:translateY(-2px);box-shadow:0 10px 30px rgba(0,0,0,.4)}
+.ofc-visual{height:58px;display:flex;align-items:center;justify-content:center;font-size:1.65rem;position:relative}
+.ofc-visual.hotel{background:linear-gradient(135deg,rgba(var(--gr),.14),rgba(var(--gr),.04))}
+.ofc-visual.exp{background:linear-gradient(135deg,rgba(var(--em2),.12),rgba(var(--em2),.03))}
+.ofc-visual.sj{background:linear-gradient(135deg,rgba(var(--em2),.14),rgba(var(--em2),.04))}
+.ofc-visual.event{background:linear-gradient(135deg,rgba(245,158,11,.12),rgba(245,158,11,.03))}
+.ofc-type{position:absolute;top:.3rem;left:.38rem;font-size:.28rem;letter-spacing:2px;text-transform:uppercase;font-weight:700;opacity:.65}
+.ofc-body{padding:.42rem .52rem}
+.ofc-title{font-family:var(--fd);font-size:.88rem;color:var(--wh);line-height:1.2;margin-bottom:.15rem}
+.ofc-earn{font-size:.56rem;font-weight:600;margin-bottom:.3rem}
+.ofc-earn.gold{color:var(--gold)}.ofc-earn.em{color:var(--em)}.ofc-earn.amber{color:var(--amber)}
+.ofc-btn{width:100%;padding:.32rem;font-size:.32rem;letter-spacing:2.5px;text-transform:uppercase;font-weight:700;border-radius:1px;transition:all .2s;cursor:pointer}
+.ofc-btn.gold{color:var(--noir);background:linear-gradient(135deg,var(--gold),var(--gold2))}
+.ofc-btn.gold:hover{box-shadow:0 4px 14px rgba(var(--gr),.35)}
+.ofc-btn.em{color:var(--noir);background:linear-gradient(135deg,var(--em),#4dbf95)}
+.ofc-btn.em:hover{box-shadow:0 4px 14px rgba(var(--em2),.32)}
+.ofc-btn.amber{color:var(--noir);background:linear-gradient(135deg,#f59e0b,#fbbf24)}
+.ofc-btn.amber:hover{box-shadow:0 4px 14px rgba(245,158,11,.32)}
+.ofc-btn:disabled{opacity:.18;pointer-events:none}
+
+/* OPP SECTIONS */
+.opp-sections{flex:1;overflow-y:auto;scrollbar-width:thin;background:transparent}
+.opp-sec{padding:.58rem .92rem;border-bottom:1px solid rgba(var(--gr),.05)}
+.opp-sec-h{display:flex;align-items:center;justify-content:space-between;margin-bottom:.42rem}
+.opp-sec-title{display:flex;align-items:center;gap:.38rem;font-size:.33rem;letter-spacing:3px;text-transform:uppercase;color:rgba(var(--tr),.22);font-weight:700}
+.opp-sec-title::before{content:'';width:2px;height:10px;background:var(--city-accent);flex-shrink:0}
+.opp-sec-count{font-size:.32rem;padding:.1rem .35rem;background:rgba(var(--gr),.06);border:1px solid rgba(var(--gr),.14);color:rgba(var(--gr),.6);border-radius:1px}
+.opp-scroll{display:flex;gap:.48rem;overflow-x:auto;scrollbar-width:none;padding-bottom:.12rem}
+.opp-scroll::-webkit-scrollbar{display:none}
+.opp-card{flex-shrink:0;width:188px;border:1px solid rgba(var(--gr),.09);background:linear-gradient(168deg,rgba(10,20,36,.97),rgba(6,14,28,.99));border-radius:2px;overflow:hidden;cursor:pointer;transition:all .28s;animation:cardIn .35s both}
+.opp-card:hover{border-color:rgba(var(--gr),.28);transform:translateY(-2px);box-shadow:0 8px 24px rgba(0,0,0,.35)}
+.opp-card-visual{height:52px;display:flex;align-items:center;justify-content:center;font-size:1.45rem}
+.opp-card-body{padding:.45rem .52rem}
+.opp-card-title{font-family:var(--fd);font-size:.86rem;color:var(--wh);line-height:1.2;margin-bottom:.1rem}
+.opp-card-sub{font-size:.42rem;color:rgba(var(--tr),.33);margin-bottom:.28rem;line-height:1.3}
+.opp-card-chips{display:flex;gap:.14rem;flex-wrap:wrap;margin-bottom:.3rem}
+.occ{font-size:.3rem;padding:.09rem .28rem;border-radius:1px}
+.occ-g{background:rgba(var(--gr),.06);border:1px solid rgba(var(--gr),.14);color:rgba(var(--gr),.75)}
+.occ-e{background:rgba(var(--em2),.06);border:1px solid rgba(var(--em2),.14);color:var(--em)}
+.occ-p{background:rgba(139,92,246,.06);border:1px solid rgba(139,92,246,.14);color:#a78bfa}
+.occ-a{background:rgba(245,158,11,.06);border:1px solid rgba(245,158,11,.14);color:#fbbf24}
+.opp-card-btn{width:100%;padding:.35rem;font-size:.3rem;letter-spacing:2.5px;text-transform:uppercase;font-weight:700;border-radius:1px;cursor:pointer;transition:all .2s}
+.ocb-g{color:var(--noir);background:linear-gradient(135deg,var(--gold),var(--gold2))}
+.ocb-g:hover{box-shadow:0 4px 12px rgba(var(--gr),.32)}
+.ocb-e{color:var(--noir);background:linear-gradient(135deg,var(--em),#4dbf95)}
+.ocb-e:hover{box-shadow:0 4px 12px rgba(var(--em2),.28)}
+.ocb-p{color:#a78bfa;background:rgba(139,92,246,.07);border:1px solid rgba(139,92,246,.18)}
+.ocb-p:hover{background:rgba(139,92,246,.14)}
+.ocb-a{color:var(--noir);background:linear-gradient(135deg,#f59e0b,#fbbf24)}
+.ocb-a:hover{box-shadow:0 4px 12px rgba(245,158,11,.28)}
+.opp-card-btn:disabled{opacity:.18;pointer-events:none}
+
+/* Business card variant */
+.biz-own-tag{font-size:.3rem;padding:.1rem .35rem;background:rgba(139,92,246,.08);border:1px solid rgba(139,92,246,.2);color:#a78bfa;border-radius:1px;margin-left:auto;flex-shrink:0}
+.biz-passive{display:flex;align-items:center;justify-content:space-between;padding:.25rem .38rem;background:rgba(139,92,246,.04);border:1px solid rgba(139,92,246,.08);border-radius:1px;margin:.2rem 0 .3rem}
+.biz-passive-lbl{font-size:.28rem;letter-spacing:1.5px;text-transform:uppercase;color:rgba(139,92,246,.6)}
+.biz-passive-val{font-family:var(--fd);font-size:.82rem;color:#a78bfa}
+
+/* Travelers section */
+.trv-sec{padding:.58rem .92rem .78rem;border-bottom:1px solid rgba(var(--gr),.05)}
+.trv-scroll{display:flex;gap:.45rem;overflow-x:auto;scrollbar-width:none;padding-bottom:.1rem}
+.trv-scroll::-webkit-scrollbar{display:none}
+.trv-card{flex-shrink:0;width:135px;padding:.55rem .6rem;border:1px solid rgba(var(--gr),.07);background:rgba(8,16,30,.5);border-radius:2px;text-align:center;transition:all .2s}
+.trv-card:hover{border-color:rgba(var(--gr),.2)}
+.trv-card-av{width:34px;height:34px;border-radius:50%;border:1.5px solid rgba(var(--gr),.18);display:flex;align-items:center;justify-content:center;font-size:.88rem;margin:0 auto .32rem;background:rgba(var(--gr),.04)}
+.trv-card-name{font-size:.6rem;color:var(--wh);font-weight:600}
+.trv-card-arch{font-size:.36rem;color:rgba(var(--tr),.28);margin-top:.05rem}
+.trv-card-earn{font-family:var(--fd);font-size:.85rem;color:var(--gold);margin-top:.15rem}
+.trv-card-act{font-size:.38rem;color:rgba(var(--tr),.25);margin-top:.08rem;line-height:1.3}
+
+/* ── RIGHT PANEL ── */
+.rp{background:linear-gradient(180deg,#070f1e,#05101a);border-left:1px solid rgba(var(--gr),.07);overflow-y:auto;display:flex;flex-direction:column;scrollbar-width:thin}
+.rp-section{padding:.55rem .72rem;border-bottom:1px solid rgba(var(--gr),.06)}
+.rp-hdr{font-size:.33rem;letter-spacing:3px;text-transform:uppercase;color:rgba(var(--tr),.18);font-weight:700;margin-bottom:.45rem;display:flex;align-items:center;justify-content:space-between}
+.rp-hdr-link{font-size:.32rem;color:rgba(var(--gr),.4);cursor:pointer;transition:color .2s;font-weight:400}
+.rp-hdr-link:hover{color:var(--gold)}
+
+/* Live Feed */
+.feed-item{display:flex;gap:.42rem;padding:.32rem 0;border-bottom:1px solid rgba(var(--gr),.05)}
+.feed-item:last-child{border-bottom:none}
+.feed-av{width:22px;height:22px;border-radius:50%;border:1px solid rgba(var(--gr),.18);display:flex;align-items:center;justify-content:center;font-size:.68rem;flex-shrink:0;background:rgba(var(--gr),.04)}
+.feed-body{flex:1;min-width:0}
+.feed-name{font-size:.55rem;color:var(--wh);font-weight:600}
+.feed-act{font-size:.48rem;color:rgba(var(--tr),.35);line-height:1.3;margin-top:.02rem}
+.feed-chips{display:flex;gap:.13rem;margin-top:.1rem;flex-wrap:wrap}
+.feed-chip{font-size:.3rem;padding:.08rem .28rem;background:rgba(var(--gr),.06);border:1px solid rgba(var(--gr),.12);color:var(--gold);border-radius:1px}
+.feed-chip.em{background:rgba(var(--em2),.06);border-color:rgba(var(--em2),.14);color:var(--em)}
+.feed-time{font-size:.34rem;color:rgba(var(--tr),.15);flex-shrink:0;margin-top:.03rem}
+
+/* ── SECOND JOURNEY™ DASHBOARD v5 ── */
+.sj-panel{padding:.62rem .72rem;background:linear-gradient(180deg,rgba(5,20,14,.7),rgba(4,12,10,.4));border-bottom:1px solid rgba(var(--em2),.1)}
+.sj-panel-hdr{font-size:.33rem;letter-spacing:3px;text-transform:uppercase;color:rgba(var(--em2),.55);font-weight:700;margin-bottom:.5rem;display:flex;align-items:center;justify-content:space-between}
+.sj-rank-display{display:flex;align-items:center;gap:.55rem;padding:.5rem .62rem;background:linear-gradient(135deg,rgba(var(--em2),.09),rgba(var(--em2),.02));border:1px solid rgba(var(--em2),.2);border-radius:2px;margin-bottom:.45rem}
+.sj-rank-icon{font-size:1.75rem;line-height:1}
+.sj-rank-text{}
+.sj-rank-label{font-size:.28rem;letter-spacing:2px;text-transform:uppercase;color:rgba(var(--em2),.55);margin-bottom:.03rem}
+.sj-rank-name{font-family:var(--fd);font-size:1.25rem;color:var(--em);line-height:1}
+.sj-rank-sub{font-size:.36rem;color:rgba(var(--em2),.42);margin-top:.04rem}
+.sj-six-grid{display:grid;grid-template-columns:repeat(3,1fr);gap:.2rem;margin-bottom:.38rem}
+.sj-six-item{padding:.28rem .25rem;background:rgba(var(--em2),.04);border:1px solid rgba(var(--em2),.1);border-radius:1px;text-align:center}
+.sj-six-val{font-family:var(--fd);font-size:.86rem;color:var(--em);line-height:1}
+.sj-six-lbl{font-size:.27rem;letter-spacing:1px;text-transform:uppercase;color:rgba(var(--em2),.38);margin-top:.05rem}
+.sj-eco-bar-wrap{margin-bottom:.15rem}
+.sj-eco-bar{height:4px;background:rgba(var(--em2),.07);border-radius:2px;overflow:hidden;margin-bottom:.1rem}
+.sj-eco-fill{height:100%;background:linear-gradient(90deg,rgba(var(--em2),.4),var(--em));border-radius:2px;transition:width .8s}
+.sj-eco-meta{display:flex;justify-content:space-between;font-size:.32rem;color:rgba(var(--tr),.22)}
+.sj-why{font-size:.48rem;color:rgba(var(--em2),.45);line-height:1.45;font-style:italic;margin-top:.28rem;font-family:var(--fd)}
+
+/* Rankings */
+.rk-row{display:flex;align-items:center;gap:.35rem;padding:.26rem 0;border-bottom:1px solid rgba(var(--gr),.05)}
+.rk-row:last-child{border-bottom:none}
+.rk-num{font-family:var(--fd);font-size:.8rem;width:15px;color:rgba(var(--tr),.2);text-align:center;flex-shrink:0}
+.rk-num.r1{color:var(--gold)}
+.rk-av{width:19px;height:19px;border-radius:50%;border:1px solid rgba(var(--gr),.15);display:flex;align-items:center;justify-content:center;font-size:.58rem;flex-shrink:0;background:rgba(var(--gr),.04)}
+.rk-info{flex:1;min-width:0}
+.rk-name{font-size:.56rem;color:rgba(var(--tr),.68);font-weight:500;white-space:nowrap;overflow:hidden;text-overflow:ellipsis}
+.rk-detail{font-size:.38rem;color:rgba(var(--tr),.25)}
+.rk-val{font-family:var(--fd);font-size:.72rem;color:var(--gold);flex-shrink:0}
+
+/* Chat */
+.chat-wrap{padding:.52rem .72rem;border-top:1px solid rgba(var(--gr),.06);background:rgba(4,9,18,.45);flex-shrink:0}
+.chat-msgs{max-height:88px;overflow-y:auto;margin-bottom:.38rem;scrollbar-width:thin}
+.chat-msg{display:flex;align-items:flex-start;gap:.28rem;margin-bottom:.25rem}
+.chat-av{width:17px;height:17px;border-radius:50%;display:flex;align-items:center;justify-content:center;font-size:.52rem;flex-shrink:0;background:rgba(var(--gr),.05);border:1px solid rgba(var(--gr),.1)}
+.chat-player{font-size:.48rem;color:var(--gold);font-weight:600}
+.chat-text{font-size:.5rem;color:rgba(var(--tr),.48);line-height:1.3}
+.chat-row{display:flex;gap:.25rem}
+.chat-inp{flex:1;padding:.3rem .4rem;background:rgba(var(--tr),.03);border:1px solid rgba(var(--gr),.1);color:rgba(var(--tr),.65);font-size:.5rem;font-family:var(--fb);border-radius:1px;outline:none}
+.chat-inp:focus{border-color:rgba(var(--gr),.25)}
+.chat-inp::placeholder{color:rgba(var(--tr),.18)}
+.chat-send{width:26px;height:26px;display:flex;align-items:center;justify-content:center;background:rgba(var(--gr),.09);border:1px solid rgba(var(--gr),.15);color:var(--gold);font-size:.65rem;border-radius:1px;transition:all .2s}
+.chat-send:hover{background:rgba(var(--gr),.18)}
+
+/* Action Strip */
+.action-strip{display:grid;grid-template-columns:repeat(7,1fr);border-top:1px solid rgba(var(--gr),.08);background:rgba(3,8,17,.98);flex-shrink:0}
+.as-btn{display:flex;flex-direction:column;align-items:center;gap:.18rem;padding:.42rem .22rem;cursor:pointer;transition:all .2s;border-right:1px solid rgba(var(--gr),.05)}
+.as-btn:last-child{border-right:none}
+.as-btn:hover{background:rgba(var(--gr),.03)}
+.as-icon{width:30px;height:30px;border-radius:50%;border:1.5px solid rgba(var(--gr),.17);display:flex;align-items:center;justify-content:center;font-size:.85rem;background:rgba(var(--gr),.03);transition:all .2s}
+.as-btn:hover .as-icon{border-color:rgba(var(--gr),.38);background:rgba(var(--gr),.08);transform:scale(1.05)}
+.as-name{font-size:.32rem;letter-spacing:1.8px;text-transform:uppercase;color:var(--gold);font-weight:700}
+.as-desc{font-size:.3rem;color:rgba(var(--tr),.25);text-align:center}
+
+/* Onboarding */
+.ob{position:fixed;inset:0;z-index:100;background:rgba(3,6,15,.97);display:flex;align-items:center;justify-content:center;padding:2rem;backdrop-filter:blur(8px)}
+.ob-card{max-width:530px;width:100%;border:1px solid rgba(var(--gr),.14);background:linear-gradient(168deg,rgba(10,19,36,.99),rgba(5,10,22,.99));border-radius:2px;overflow:hidden;animation:fadeIn .5s ease;position:relative}
+.ob-card::before{content:'';position:absolute;top:0;left:0;right:0;height:1px;background:linear-gradient(90deg,transparent,rgba(var(--gr),.5),transparent)}
+.ob-header{padding:1.55rem 1.65rem .95rem;text-align:center;background:radial-gradient(ellipse at 50% 0%,rgba(var(--gr),.06),transparent 60%)}
+.ob-eyebrow{font-size:.33rem;letter-spacing:5px;text-transform:uppercase;color:var(--em);margin-bottom:.3rem;font-weight:600}
+.ob-title{font-family:var(--fd);font-size:2.45rem;font-weight:300;background:linear-gradient(135deg,var(--gold) 0%,var(--gold3) 50%,var(--gold) 100%);background-size:200%;-webkit-background-clip:text;-webkit-text-fill-color:transparent;background-clip:text;animation:shimmer 4s linear infinite;margin-bottom:.14rem}
+.ob-sub{font-family:var(--fd);font-style:italic;font-size:.82rem;color:rgba(var(--tr),.25)}
+.ob-body{padding:1.05rem 1.65rem 1.55rem}
+.ob-lbl{font-size:.33rem;letter-spacing:3px;text-transform:uppercase;color:rgba(var(--tr),.22);font-weight:700;margin-bottom:.42rem}
+.ob-grid{display:grid;grid-template-columns:repeat(4,1fr);gap:.3rem;margin-bottom:.88rem}
+.ob-arch{padding:.52rem .32rem;border:1px solid rgba(var(--gr),.09);text-align:center;cursor:pointer;transition:all .2s;background:rgba(var(--gr),.02);border-radius:1px}
+.ob-arch:hover{border-color:rgba(var(--gr),.25)}
+.ob-arch.sel{border-color:var(--gold);background:rgba(var(--gr),.07);box-shadow:0 0 0 1px var(--gold)}
+.ob-arch-icon{font-size:1.25rem;margin-bottom:.2rem;display:block}
+.ob-arch-name{font-size:.53rem;color:var(--wh);font-weight:600;margin-bottom:.1rem}
+.ob-arch-bonus{font-size:.38rem;color:var(--em);line-height:1.2}
+.ob-starter{display:grid;grid-template-columns:repeat(3,1fr);gap:.32rem;margin-bottom:1.05rem;padding:.55rem;background:rgba(var(--gr),.03);border:1px solid rgba(var(--gr),.07);border-radius:1px}
+.ob-starter-val{font-family:var(--fd);font-size:1.28rem;background:linear-gradient(135deg,var(--gold),var(--gold3));-webkit-background-clip:text;-webkit-text-fill-color:transparent;background-clip:text;text-align:center}
+.ob-starter-lbl{font-size:.3rem;letter-spacing:1.8px;text-transform:uppercase;color:rgba(var(--tr),.2);text-align:center}
+.ob-btn{width:100%;padding:.75rem;font-size:.42rem;letter-spacing:3.5px;text-transform:uppercase;font-weight:700;color:var(--noir);background:linear-gradient(135deg,var(--gold),var(--gold2));box-shadow:0 6px 22px rgba(var(--gr),.28);transition:all .25s;border-radius:1px}
+.ob-btn:hover:not(:disabled){box-shadow:0 12px 32px rgba(var(--gr),.48);transform:translateY(-2px)}
+.ob-btn:disabled{opacity:.2;pointer-events:none}
+
+/* View panels */
+.view-panel{display:none;position:absolute;inset:0;background:var(--n2);overflow-y:auto;z-index:5;animation:fadeIn .3s ease;padding:1.3rem}
+.view-panel.active{display:block}
+.view-h1{font-family:var(--fd);font-size:2rem;font-weight:300;color:var(--wh);margin-bottom:.18rem}
+.view-sub{font-size:.55rem;color:rgba(var(--tr),.35);margin-bottom:1.2rem}
+
+/* Toast + confetti */
+.toast{position:fixed;bottom:1.4rem;left:50%;transform:translateX(-50%) translateY(100px);z-index:999;padding:.68rem 1.35rem;background:linear-gradient(135deg,rgba(12,22,40,.98),rgba(7,16,31,.99));border:1px solid rgba(var(--gr),.2);color:var(--wh);font-size:.68rem;box-shadow:0 16px 44px rgba(0,0,0,.55);transition:transform .42s cubic-bezier(.34,1.56,.64,1);text-align:center;border-radius:2px;backdrop-filter:blur(10px);max-width:360px}
+.toast.show{transform:translateX(-50%) translateY(0)}
+.toast em{color:var(--gold);font-style:normal;font-weight:600}
+.confetti-wrap{position:fixed;top:0;left:0;width:100%;height:100%;pointer-events:none;z-index:9999}
+.confetto{position:absolute;opacity:0;animation:confettiFall 2.5s ease-in forwards}
+
+</style>
+<link rel="stylesheet" href="/ios-viewport-lock.css">
+<link rel="stylesheet" href="/embr-concierge-button.css">
+</head>
+<body>
+
+<div class="toast" id="toast"></div>
+<div class="confetti-wrap" id="confetti"></div>
+
+<!-- ONBOARDING -->
+<div class="ob" id="onboarding" style="display:none">
+<div class="ob-card">
+  <div class="ob-header">
+    <div class="ob-eyebrow">&#x2756; Living Global Travel Economy</div>
+    <div class="ob-title">BagFree World&#x2122;</div>
+    <div class="ob-sub">Cities alive with opportunity. No luggage required.</div>
+  </div>
+  <div class="ob-body">
+    <div class="ob-lbl">Choose your archetype</div>
+    <div class="ob-grid" id="obGrid"></div>
+    <div class="ob-lbl">Your starting assets</div>
+    <div class="ob-starter">
+      <div><div class="ob-starter-val">$500</div><div class="ob-starter-lbl">Cash</div></div>
+      <div><div class="ob-starter-val">1,000</div><div class="ob-starter-lbl">BAG Points</div></div>
+      <div><div class="ob-starter-val">Silver</div><div class="ob-starter-lbl">Airline Status</div></div>
+    </div>
+    <button class="ob-btn" id="obBtn" disabled onclick="beginGame()">Enter the World &#x2192;</button>
+  </div>
+</div>
+</div>
+
+<!-- MAIN APP -->
+<div class="app" id="appUI" style="display:none">
+
+<!-- TOP NAV -->
+<nav class="tnav">
+  <div class="tnav-logo">
+    <div class="tnav-logo-main">BAGFREE WORLD&#x2122;</div>
+    <div class="tnav-logo-sub">Live Without Luggage</div>
+  </div>
+  <div class="tnav-tabs">
+    <div class="tnav-tab active" onclick="showView('city',this)">&#x1F3D9; CITY</div>
+    <div class="tnav-tab" onclick="showView('marketplace',this)">&#x1F6D2; MARKETPLACE</div>
+    <div class="tnav-tab" onclick="showView('business',this)">&#x1F3E2; BUSINESSES</div>
+    <div class="tnav-tab" onclick="showView('rankings',this)">&#x1F3C6; RANKINGS</div>
+    <div class="tnav-tab" onclick="showView('sj',this)">&#x267B; SECOND JOURNEY&#x2122;</div>
+  </div>
+  <div class="tnav-stats">
+    <div class="tnav-chip"><span>&#x1F4B5;</span><div><div class="tnav-chip-val" id="navCash">$500</div><div class="tnav-chip-lbl">Cash</div></div></div>
+    <div class="tnav-chip"><span style="color:var(--gold);font-weight:700;font-size:.7rem">B</span><div><div class="tnav-chip-val" id="navBP">1,000</div><div class="tnav-chip-lbl">BAG Pts</div></div></div>
+  </div>
+  <div class="tnav-actions">
+    <div class="tnav-icon-btn">&#x1F514;<div class="tnav-badge"></div></div>
+    <div class="tnav-icon-btn" id="navAvatar">&#x1F464;</div>
+  </div>
+</nav>
+
+<!-- EARNINGS STRIP -->
+<div class="earnings-strip">
+  <div class="es-item"><div class="es-val" id="esToday">$0</div><div class="es-lbl">Today</div></div>
+  <div class="es-item"><div class="es-val" id="esWeek">$0</div><div class="es-lbl">This Week</div></div>
+  <div class="es-item"><div class="es-val" id="esMonth">$0</div><div class="es-lbl">This Month</div></div>
+  <div class="es-passive"><div class="es-passive-dot"></div><div class="es-passive-val" id="esPassive">$0/day</div><div class="es-passive-lbl">Passive</div></div>
+  <div class="es-item"><div class="es-val em" id="esBiz">$0/day</div><div class="es-lbl">Business</div></div>
+  <div class="es-item"><div class="es-val" id="esLifetime">$0</div><div class="es-lbl">Lifetime</div></div>
+  <div class="es-item" style="margin-left:auto"><div class="es-val" id="esLevel">Lvl 1</div><div class="es-lbl">Level</div></div>
+  <div class="es-streak"><div class="es-streak-icon">&#x1F525;</div><div class="es-streak-val" id="esStreak">1</div><div class="es-streak-lbl">Streak</div></div>
+</div>
+
+<!-- MAIN GRID -->
+<div class="main-grid">
+
+<!-- LEFT PANEL -->
+<div class="lp">
+
+  <!-- World Map -->
+  <div class="wmap-wrap">
+    <div class="wmap-header">
+      <div class="wmap-title">&#x1F5FA; GLOBAL NETWORK <span id="wmapPlayerCity" style="color:rgba(var(--gr),.45);font-size:.28rem;margin-left:.35rem">Savannah</span></div>
+      <div class="wmap-live"><div class="wmap-live-dot"></div><span id="wmapLive">47 online</span></div>
+    </div>
+    <svg id="worldMapSvg" viewBox="0 0 292 178" preserveAspectRatio="xMidYMid meet"></svg>
+    <div class="wmap-regions">
+      <span class="wmap-reg active" onclick="filterRegion('all',this)">ALL</span>
+      <span class="wmap-reg" onclick="filterRegion('na',this)">NA</span>
+      <span class="wmap-reg" onclick="filterRegion('eu',this)">EU</span>
+      <span class="wmap-reg" onclick="filterRegion('me',this)">ME</span>
+      <span class="wmap-reg" onclick="filterRegion('as',this)">AS</span>
+    </div>
+  </div>
+
+  <!-- Player -->
+  <div class="lp-player">
+    <div class="lp-avatar" id="lpAvatar">&#x1F464;</div>
+    <div>
+      <div class="lp-pname" id="lpName">Traveler</div>
+      <div class="lp-arch" id="lpArch">EXPLORER</div>
+      <div class="lp-loc" id="lpLoc">&#x1F4CD; Savannah</div>
+    </div>
+  </div>
+
+  <!-- Wallet -->
+  <div class="lp-wallet">
+    <div class="lp-w"><div class="lp-w-val" id="lpCash">$500</div><div class="lp-w-lbl">Cash</div></div>
+    <div class="lp-w"><div class="lp-w-val" id="lpBP">1,000</div><div class="lp-w-lbl">BAG Pts</div></div>
+    <div class="lp-w"><div class="lp-w-val" id="lpVouchers">0</div><div class="lp-w-lbl">Vouchers</div></div>
+  </div>
+
+  <!-- Stats -->
+  <div class="lp-stats4">
+    <div class="lp-s4"><span class="lp-s4-icon">&#x2708;</span><div class="lp-s4-val" id="stTrips">0</div><div class="lp-s4-lbl">Trips</div></div>
+    <div class="lp-s4"><span class="lp-s4-icon">&#x1F3D9;</span><div class="lp-s4-val" id="stCities">0</div><div class="lp-s4-lbl">Cities</div></div>
+    <div class="lp-s4"><span class="lp-s4-icon">&#x1F9F3;</span><div class="lp-s4-val" id="stNoLug">0</div><div class="lp-s4-lbl">No Bag</div></div>
+    <div class="lp-s4"><span class="lp-s4-icon">&#x1F3E2;</span><div class="lp-s4-val" id="stBiz">0</div><div class="lp-s4-lbl">Biz</div></div>
+  </div>
+
+  <!-- XP -->
+  <div class="lp-xp">
+    <div class="lp-xp-info"><span id="lpXpLabel">0 / 500 XP</span><span id="lpLvlLabel">Level 1</span></div>
+    <div class="lp-bar"><div class="lp-bar-fill lp-bar-gold" id="lpXpFill" style="width:0%"></div></div>
+  </div>
+
+  <!-- Dice -->
+  <div class="lp-sec">
+    <div class="lp-dice-row">
+      <div class="lp-dice-pair">
+        <div class="die" id="die1"><svg viewBox="0 0 26 26"><circle cx="13" cy="13" r="3" fill="rgba(201,169,110,.7)"/></svg></div>
+        <div class="die" id="die2"><svg viewBox="0 0 26 26"><circle cx="13" cy="13" r="3" fill="rgba(201,169,110,.7)"/></svg></div>
+      </div>
+      <div class="lp-dice-info">
+        <button class="dice-btn" id="rollBtn" onclick="rollDice()">&#x1F3B2; ROLL TO TRAVEL</button>
+        <div class="dice-left">ROLLS: <strong id="rollsLeft">3</strong>/3 TODAY</div>
+      </div>
+    </div>
+  </div>
+
+  <!-- SJ mini -->
+  <div class="lp-sec" style="background:linear-gradient(135deg,rgba(93,202,165,.04),transparent)">
+    <div class="lp-sec-hdr"><span>&#x267B; SECOND JOURNEY&#x2122;</span><span class="lp-badge badge-em" id="sjRankBadge">SEEDLING</span></div>
+    <div class="sj-mini-grid">
+      <div class="sj-mini-m"><div class="sj-mini-val" id="sjGarments">0</div><div class="sj-mini-lbl">Garments</div></div>
+      <div class="sj-mini-m"><div class="sj-mini-val" id="sjCO2">0 kg</div><div class="sj-mini-lbl">CO2 Saved</div></div>
+      <div class="sj-mini-m"><div class="sj-mini-val" id="sjBags">0</div><div class="sj-mini-lbl">Bags</div></div>
+      <div class="sj-mini-m"><div class="sj-mini-val" id="sjVouchers">0</div><div class="sj-mini-lbl">Vouchers</div></div>
+    </div>
+    <div class="lp-bar" style="margin-top:.28rem"><div class="lp-bar-fill lp-bar-em" id="sjEcoFill" style="width:5%"></div></div>
+  </div>
+
+  <!-- Airline -->
+  <div class="lp-sec">
+    <div class="lp-sec-hdr"><span>&#x2708; AIRLINE</span><span class="lp-badge badge-blue" id="airlineLvl">SILVER</span></div>
+    <div class="lp-bar"><div class="lp-bar-fill lp-bar-blue" id="airlineFill" style="width:35%"></div></div>
+    <div style="font-size:.33rem;color:rgba(var(--tr),.22);margin-top:.14rem" id="airlinePerks">+10% no-luggage bonus</div>
+  </div>
+
+  <!-- Boosts -->
+  <div class="lp-sec" style="flex:1">
+    <div class="sec-label">Active Boosts</div>
+    <div id="boostsList"></div>
+  </div>
+
+</div><!-- /lp -->
+
+<!-- CENTER: CITY DASHBOARD -->
+<div class="city-dash" id="cityDash" style="position:relative">
+  <!-- Fully JS-rendered -->
+  <div class="view-panel" id="panelMarketplace">
+    <div class="view-h1">Marketplace</div>
+    <div class="view-sub">Curator itineraries &amp; travel experiences</div>
+    <div style="display:grid;grid-template-columns:repeat(auto-fill,minmax(190px,1fr));gap:.65rem" id="marketplaceGrid"></div>
+  </div>
+  <div class="view-panel" id="panelBusiness">
+    <div class="view-h1">My Businesses</div>
+    <div class="view-sub">Passive income streams</div>
+    <div id="businessPanel"></div>
+  </div>
+  <div class="view-panel" id="panelRankings">
+    <div class="view-h1">Global Rankings</div>
+    <div class="view-sub">Top performers worldwide</div>
+    <div id="rankingsPanel"></div>
+  </div>
+  <div class="view-panel" id="panelSj">
+    <div class="view-h1">Second Journey&#x2122; Hub</div>
+    <div class="view-sub">Sustainable travel impact</div>
+    <div id="sjFullPanel"></div>
+  </div>
+</div>
+
+<!-- RIGHT PANEL -->
+<div class="rp">
+  <div class="rp-section">
+    <div class="rp-hdr"><span>&#x1F30D; LIVE WORLD ACTIVITY</span><span class="rp-hdr-link">ALL</span></div>
+    <div id="liveFeed"></div>
+  </div>
+
+  <!-- SECOND JOURNEY DASHBOARD v5 -->
+  <div class="sj-panel" id="sjDashboard">
+    <div class="sj-panel-hdr"><span>&#x267B; SECOND JOURNEY&#x2122;</span><span class="rp-hdr-link" onclick="showView('sj',document.querySelectorAll('.tnav-tab')[4])">FULL VIEW</span></div>
+    <div class="sj-rank-display">
+      <div class="sj-rank-icon" id="sjRankIcon">&#x1F331;</div>
+      <div class="sj-rank-text">
+        <div class="sj-rank-label">ECO RANK</div>
+        <div class="sj-rank-name" id="sjRankName">Seedling</div>
+        <div class="sj-rank-sub" id="sjRankSub">Begin your sustainability journey</div>
+      </div>
+    </div>
+    <div class="sj-six-grid" id="sjSixGrid"></div>
+    <div class="sj-eco-bar-wrap">
+      <div class="sj-eco-bar"><div class="sj-eco-fill" id="sjEcoDashFill" style="width:5%"></div></div>
+      <div class="sj-eco-meta"><span id="sjEcoDashLabel">5 / 100 Eco Points</span><span id="sjNextRank">Next: Sprout</span></div>
+    </div>
+    <div class="sj-why" id="sjWhyText">Every bag you avoid saves 4.2kg of CO&#x2082;. Every garment reused extends its life by 2 years.</div>
+  </div>
+
+  <div class="rp-section">
+    <div class="rp-hdr"><span>&#x1F3C6; RANKINGS</span><span class="rp-hdr-link" onclick="showView('rankings',document.querySelectorAll('.tnav-tab')[3])">SEE ALL</span></div>
+    <div id="rankingsMini"></div>
+  </div>
+
+  <div class="chat-wrap">
+    <div class="rp-hdr" style="margin-bottom:.3rem"><span>&#x1F4AC; GLOBAL CHAT</span></div>
+    <div class="chat-msgs" id="chatMsgs"></div>
+    <div class="chat-row">
+      <input class="chat-inp" id="chatInp" placeholder="Message the network..." onkeydown="if(event.key==='Enter')sendChat()">
+      <button class="chat-send" onclick="sendChat()">&#x203A;</button>
+    </div>
+  </div>
+
+</div><!-- /rp -->
+</div><!-- /main-grid -->
+
+<!-- ACTION STRIP -->
+<div class="action-strip">
+  <div class="as-btn" onclick="doAction('curate')"><div class="as-icon">&#x1F4CB;</div><div class="as-name">Curate</div><div class="as-desc">Sell itineraries</div></div>
+  <div class="as-btn" onclick="doAction('style')"><div class="as-icon">&#x1F457;</div><div class="as-name">Style</div><div class="as-desc">Wardrobe fees</div></div>
+  <div class="as-btn" onclick="doAction('delivery')"><div class="as-icon">&#x1F69A;</div><div class="as-name">Delivery</div><div class="as-desc">Earn income</div></div>
+  <div class="as-btn" onclick="doAction('ride')"><div class="as-icon">&#x1F695;</div><div class="as-name">Ride</div><div class="as-desc">Transfers</div></div>
+  <div class="as-btn" onclick="doAction('experience')"><div class="as-icon">&#x2728;</div><div class="as-name">Experience</div><div class="as-desc">Host &amp; earn</div></div>
+  <div class="as-btn" onclick="doAction('sj')"><div class="as-icon" style="border-color:rgba(93,202,165,.22);background:rgba(93,202,165,.03)">&#x267B;</div><div class="as-name" style="color:var(--em)">SJ</div><div class="as-desc">Eco travel</div></div>
+  <div class="as-btn" onclick="doAction('post')"><div class="as-icon">&#x1F4F1;</div><div class="as-name">Post</div><div class="as-desc">Social content</div></div>
+</div>
+
+</div><!-- /app -->
+
+<script>
+
+var SB_URL='https://vkctidpaghpdlmleezvq.supabase.co';
+var SB_KEY='eyJhbGciOiJIUzI1NiIsInR5cCI6IkpXVCJ9.eyJpc3MiOiJzdXBhYmFzZSIsInJlZiI6InZrY3RpZHBhZ2hwZGxtbGVlenZxIiwicm9sZSI6ImFub24iLCJpYXQiOjE3NzUzMjI5MjgsImV4cCI6MjA5MDg5ODkyOH0.wKtG6XD6CwLy3rJDZc4S10-NqNr3fcCXHYOWJt_C628';
+var sb=window.supabase.createClient(SB_URL,SB_KEY),user=null,gp=null,playerName='Traveler',currentCity='savannah',activeRegion='all',chatLog=[];
+
+var ARCHETYPES=[
+  {id:'explorer',icon:'\uD83E\uDDED',name:'Explorer',bonus:'+20% Travel XP'},
+  {id:'curator',icon:'\uD83D\uDCCB',name:'Curator',bonus:'+25% Itinerary Revenue'},
+  {id:'style',icon:'\uD83D\uDC57',name:'Style Partner',bonus:'+20% Styling Income'},
+  {id:'entrepreneur',icon:'\uD83C\uDFE2',name:'Entrepreneur',bonus:'+15% Business Revenue'},
+  {id:'influencer',icon:'\uD83D\uDCF1',name:'Influencer',bonus:'+30% Social Reach'},
+  {id:'voyager',icon:'\u2708',name:'Voyager',bonus:'+15% No-Luggage Bonus'},
+  {id:'adventurer',icon:'\uD83C\uDFD4',name:'Adventurer',bonus:'+20% Experience Rewards'}
+];
+
+/* ── WORLD MAP NODE POSITIONS (viewBox 0 0 292 178) ──
+   Scale from: 760x430 → 292x178 (factor 0.3842, 0.4140) */
+var WORLD_NODES={
+  savannah:  {x:80, y:57,  n:'Savannah',  icon:'\uD83C\uDF3F', region:'na', lvl:1, demand:'high'},
+  atlanta:   {x:78, y:56,  n:'Atlanta',   icon:'\u2708',       region:'na', lvl:1, demand:'medium'},
+  orlando:   {x:80, y:61,  n:'Orlando',   icon:'\uD83C\uDFA1', region:'na', lvl:1, demand:'high'},
+  tampa:     {x:79, y:62,  n:'Tampa',     icon:'\uD83C\uDF0A', region:'na', lvl:1, demand:'medium'},
+  miami:     {x:81, y:64,  n:'Miami',     icon:'\uD83C\uDF34', region:'na', lvl:1, demand:'high'},
+  new_york:  {x:86, y:49,  n:'New York',  icon:'\uD83D\uDDFD', region:'na', lvl:2, demand:'high'},
+  london:    {x:146,y:38,  n:'London',    icon:'\uD83C\uDFAD', region:'eu', lvl:3, demand:'high'},
+  paris:     {x:148,y:41,  n:'Paris',     icon:'\uD83D\uDDFC', region:'eu', lvl:3, demand:'high'},
+  dubai:     {x:191,y:64,  n:'Dubai',     icon:'\uD83C\uDFD9', region:'me', lvl:5, demand:'medium'},
+  singapore: {x:230,y:88,  n:'Singapore', icon:'\uD83E\uDD81', region:'as', lvl:5, demand:'medium'},
+  bali:      {x:239,y:97,  n:'Bali',      icon:'\uD83C\uDF3A', region:'as', lvl:5, demand:'low'},
+  sydney:    {x:269,y:123, n:'Sydney',    icon:'\uD83E\uDD98', region:'as', lvl:7, demand:'low'},
+  seoul:     {x:249,y:52,  n:'Seoul',     icon:'\uD83C\uDFEF', region:'as', lvl:5, demand:'medium'},
+  osaka:     {x:256,y:55,  n:'Osaka',     icon:'\u26E9',       region:'as', lvl:5, demand:'low'},
+  tokyo:     {x:259,y:54,  n:'Tokyo',     icon:'\uD83D\uDDFC', region:'as', lvl:5, demand:'high'}
+};
+
+var WORLD_ROUTES=[
+  {f:'new_york',t:'london',  cx:116,cy:14,dur:9, color:'rgba(201,169,110,.14)'},
+  {f:'miami',   t:'london',  cx:119,cy:20,dur:11,color:'rgba(201,169,110,.11)'},
+  {f:'new_york',t:'miami',   cx:84, cy:44,dur:5, color:'rgba(201,169,110,.1)'},
+  {f:'atlanta', t:'new_york',cx:82, cy:46,dur:5, color:'rgba(201,169,110,.09)'},
+  {f:'miami',   t:'orlando', cx:80, cy:59,dur:3, color:'rgba(201,169,110,.08)'},
+  {f:'savannah',t:'atlanta', cx:79, cy:52,dur:3, color:'rgba(201,169,110,.07)'},
+  {f:'london',  t:'paris',   cx:147,cy:34,dur:3, color:'rgba(96,165,250,.12)'},
+  {f:'london',  t:'dubai',   cx:169,cy:30,dur:8, color:'rgba(96,165,250,.1)'},
+  {f:'paris',   t:'dubai',   cx:170,cy:33,dur:7, color:'rgba(96,165,250,.1)'},
+  {f:'dubai',   t:'singapore',cx:211,cy:58,dur:8,color:'rgba(251,191,36,.1)'},
+  {f:'singapore',t:'tokyo',  cx:245,cy:69,dur:7,color:'rgba(192,132,252,.1)'},
+  {f:'singapore',t:'bali',   cx:235,cy:93,dur:4,color:'rgba(52,211,153,.1)'},
+  {f:'singapore',t:'sydney', cx:249,cy:108,dur:6,color:'rgba(52,211,153,.1)'},
+  {f:'tokyo',   t:'seoul',   cx:254,cy:48,dur:4,color:'rgba(192,132,252,.1)'},
+  {f:'new_york',t:'tokyo',   cx:173,cy:13,dur:14,color:'rgba(201,169,110,.08)'},
+  {f:'london',  t:'singapore',cx:189,cy:37,dur:11,color:'rgba(96,165,250,.09)'}
+];
+
+var BOARD_ORDER=['savannah','atlanta','orlando','tampa','miami','new_york','london','paris','dubai','singapore','bali','sydney','seoul','osaka','tokyo'];
+
+var CITY_ACCENTS={
+  savannah:'#5DCAA5',miami:'#ec4899',orlando:'#f59e0b',tampa:'#60a5fa',
+  atlanta:'#c9a96e',new_york:'#c084fc',london:'#60a5fa',paris:'#fcd34d',
+  dubai:'#fbbf24',singapore:'#34d399',bali:'#f472b6',sydney:'#34d399',
+  seoul:'#a78bfa',osaka:'#f59e0b',tokyo:'#a78bfa'
+};
+
+var DEMAND_COLORS={high:'rgba(201,169,110,.65)',medium:'rgba(93,202,165,.45)',low:'rgba(96,165,250,.25)'};
+
+/* ── CITY DATA ── */
+var CITIES={
+  savannah:{n:'Savannah',region:'Southeast US',tagline:'The Hostess City of the South',
+    accent:'#5DCAA5',color:'rgba(8,28,18,.95)',
+    activeEvent:{name:'Food & Wine Festival',bonus:'+30% Exp Revenue',icon:'\uD83C\uDF77',dates:'Nov 3\u201310'},
+    travelers:6,revIndex:'HIGH',
+    hotels:[
+      {n:'Mansion on Forsyth Park',stars:5,c:280,xp:55,desc:'Historic landmark with garden views.',tag:'Landmark',visual:'\uD83C\uDFEF'},
+      {n:'The Alida Hotel',stars:4,c:160,xp:30,desc:'River-view boutique with rooftop bar.',tag:'Boutique',visual:'\uD83C\uDFE8'},
+      {n:'Savannah Hostel',stars:2,c:45,xp:8,desc:'Budget-friendly, walking to squares.',tag:'Budget',visual:'\uD83C\uDFD8'}
+    ],
+    experiences:[
+      {n:'Savannah Food Tour',c:55,xp:40,rep:.15,revenue:85,desc:'Chef-guided culinary journey.',tag:'Curated',visual:'\uD83C\uDF7D'},
+      {n:'Ghost & Ghouls Evening',c:35,xp:25,rep:.1,revenue:55,desc:'After-dark haunted squares walk.',tag:'Popular',visual:'\uD83D\uDC7B'},
+      {n:'Coastal Kayak',c:45,xp:35,rep:.12,revenue:70,desc:'Sunrise marsh kayak with naturalist.',tag:'Adventure',visual:'\uD83D\uDEF6'}
+    ],
+    sj:[
+      {n:'3-Day Southern Style Bundle',days:3,c:30,xp:15,sus:20,items:4,visual:'\uD83D\uDC57'},
+      {n:'5-Day Explorer Collection',days:5,c:50,xp:22,sus:35,items:7,visual:'\u267B'},
+      {n:'Weekend Getaway Set',days:2,c:22,xp:10,sus:14,items:3,visual:'\uD83D\uDC5A'}
+    ],
+    events:[
+      {n:'Food & Wine Festival',dates:'Nov 3\u201310',icon:'\uD83C\uDF77',bonuses:['+30% Exp Rev','Hotel upgrade','500 BP'],desc:'Ten days of culinary excellence with Michelin chefs.'},
+      {n:'Ghost Tour Season',dates:'Oct 1\u201331',icon:'\uD83D\uDC7B',bonuses:['+50% Tour Rev','Haunted access','200 BP'],desc:'October ghost tour revenue spikes 3x.'},
+      {n:"St. Patrick's Day",dates:'Mar 14\u201317',icon:'\u2618',bonuses:['+40% All Rev','City bonus','300 BP'],desc:'Second-largest celebration in the US.'}
+    ],
+    businesses:[
+      {id:'curator_agency',n:'Curator Agency',icon:'\uD83D\uDCCB',desc:'Premium Savannah itineraries worldwide.',cost:800,daily:120},
+      {id:'sj_center',n:'Second Journey Center',icon:'\u267B',desc:'Sustainable clothing for eco travelers.',cost:600,daily:85},
+      {id:'experience_co',n:'Experience Company',icon:'\u2728',desc:'Food tours, ghost walks, kayak adventures.',cost:1000,daily:165}
+    ]
+  },
+  miami:{n:'Miami',region:'Florida',tagline:'Where Luxury Meets the Ocean',
+    accent:'#ec4899',color:'rgba(32,4,18,.95)',
+    activeEvent:{name:'Miami Fashion Week',bonus:'+40% Style Revenue',icon:'\uD83D\uDC57',dates:'Apr 24\u201328'},
+    travelers:14,revIndex:'VERY HIGH',
+    hotels:[
+      {n:'Faena Hotel Miami Beach',stars:5,c:420,xp:80,desc:'Art, performance, and ocean extravagance.',tag:'Icon',visual:'\uD83C\uDFD6'},
+      {n:'1 Hotel South Beach',stars:5,c:320,xp:65,desc:'Eco-luxury with living walls and ocean pools.',tag:'Eco-Luxury',visual:'\uD83C\uDF3F'},
+      {n:'The Betsy Hotel',stars:4,c:195,xp:38,desc:'Literary boutique with acclaimed restaurant.',tag:'Boutique',visual:'\uD83D\uDCDA'}
+    ],
+    experiences:[
+      {n:'Art Basel VIP Access',c:180,xp:85,rep:.4,revenue:280,desc:'Curator-led private tour of the world art fair.',tag:'VIP',visual:'\uD83C\uDFA8'},
+      {n:'Yacht Charter Sunset',c:120,xp:65,rep:.3,revenue:190,desc:'Private yacht along Biscayne Bay.',tag:'Luxury',visual:'\u26F5'},
+      {n:'Wynwood Street Art Tour',c:40,xp:30,rep:.12,revenue:65,desc:'Walking tour with a local street artist.',tag:'Cultural',visual:'\uD83C\uDFA8'}
+    ],
+    sj:[
+      {n:'7-Day Beach Luxury Bundle',days:7,c:80,xp:35,sus:52,items:10,visual:'\uD83D\uDC57'},
+      {n:'Fashion Week Ready Set',days:5,c:65,xp:28,sus:40,items:8,visual:'\uD83D\uDC60'},
+      {n:'Weekend Beach Essentials',days:2,c:28,xp:12,sus:18,items:4,visual:'\uD83D\uDC5C'}
+    ],
+    events:[
+      {n:'Miami Fashion Week',dates:'Apr 24\u201328',icon:'\uD83D\uDC57',bonuses:['+40% Style Rev','VIP access','800 BP'],desc:'Premier fashion event of the Southeast.'},
+      {n:'Art Basel Miami Beach',dates:'Dec 1\u20136',icon:'\uD83C\uDFA8',bonuses:['+35% Curator Rev','Gallery access','600 BP'],desc:'Most important art fair in the Americas.'},
+      {n:'Ultra Music Festival',dates:'Mar 20\u201322',icon:'\uD83C\uDFB5',bonuses:['+25% Exp Rev','Festival badge','400 BP'],desc:'165,000 attendees, massive traveler demand.'}
+    ],
+    businesses:[
+      {id:'style_boutique',n:'Style Boutique',icon:'\uD83D\uDC57',desc:'Premium wardrobe consulting for Miami events.',cost:1200,daily:200},
+      {id:'delivery_hub',n:'Delivery Hub',icon:'\uD83D\uDE9A',desc:'Emergency delivery across Miami.',cost:700,daily:110},
+      {id:'transport_fleet',n:'Luxury Transport',icon:'\uD83D\uDE95',desc:'Premium airport transfers and VIP services.',cost:1500,daily:250}
+    ]
+  },
+  tokyo:{n:'Tokyo',region:'Japan',tagline:'Neon Lights & Timeless Tradition',
+    accent:'#a78bfa',color:'rgba(16,4,28,.95)',
+    activeEvent:{name:'Cherry Blossom Festival',bonus:'+35% All Revenue',icon:'\uD83C\uDF38',dates:'Mar 28\u2013Apr 15'},
+    travelers:11,revIndex:'HIGH',
+    hotels:[
+      {n:'Aman Tokyo',stars:5,c:680,xp:110,desc:'Japanese luxury with Imperial Palace views.',tag:'Ultra-Luxury',visual:'\uD83C\uDFF0'},
+      {n:'The Okura Tokyo',stars:5,c:380,xp:72,desc:'Legendary hotel with art-deco Japanese design.',tag:'Heritage',visual:'\uD83C\uDFEF'},
+      {n:'Grids Tokyo Capsule',stars:2,c:55,xp:10,desc:'Premium tech-forward capsule in Shinjuku.',tag:'Tech',visual:'\uD83E\uDD16'}
+    ],
+    experiences:[
+      {n:'Tsukiji Market Dawn Tour',c:65,xp:50,rep:.2,revenue:100,desc:'Private before-public access ending in sushi.',tag:'Exclusive',visual:'\uD83C\uDF63'},
+      {n:'Hidden Izakaya Crawl',c:80,xp:45,rep:.18,revenue:125,desc:'Secret Golden Gai bars with a local guide.',tag:'Local',visual:'\uD83C\uDFEE'},
+      {n:'Akihabara Tech Experience',c:45,xp:32,rep:.12,revenue:72,desc:'Deep dive into electronics and gaming culture.',tag:'Cultural',visual:'\uD83D\uDCBB'}
+    ],
+    sj:[
+      {n:'7-Day Tokyo Minimal Edit',days:7,c:70,xp:30,sus:48,items:9,visual:'\uD83C\uDF3F'},
+      {n:'Business Travel Set',days:5,c:60,xp:25,sus:38,items:7,visual:'\uD83D\uDC54'},
+      {n:'Weekend Explorer Kit',days:2,c:25,xp:10,sus:16,items:3,visual:'\uD83C\uDF92'}
+    ],
+    events:[
+      {n:'Cherry Blossom Festival',dates:'Mar 28\u2013Apr 15',icon:'\uD83C\uDF38',bonuses:['+35% All Rev','Park access','700 BP'],desc:'Japan most beloved season, record tourist demand.'},
+      {n:'Tokyo Tech Conference',dates:'Jun 10\u201312',icon:'\uD83D\uDCBB',bonuses:['+40% Biz Rev','Speaker pass','500 BP'],desc:'Asia leading tech summit, wardrobe demand peaks.'},
+      {n:'Tokyo Fashion Week',dates:'Mar 17\u201322',icon:'\uD83E\uDDE5',bonuses:['+45% Style Rev','Runway access','600 BP'],desc:'Avant-garde Japanese fashion meets global luxury.'}
+    ],
+    businesses:[
+      {id:'curator_agency',n:'Curator Agency',icon:'\uD83D\uDCCB',desc:'Sell premium Tokyo itineraries, 5x during cherry blossom.',cost:900,daily:155},
+      {id:'experience_co',n:'Experience Company',icon:'\u2728',desc:'After-dark bar crawls and cultural experiences.',cost:1100,daily:180},
+      {id:'sj_center',n:'Second Journey Center',icon:'\u267B',desc:'Sustainable clothing for arriving-without-luggage travelers.',cost:650,daily:100}
+    ]
+  },
+  london:{n:'London',region:'United Kingdom',tagline:'Empire of Culture & Commerce',
+    accent:'#60a5fa',color:'rgba(4,12,25,.95)',
+    activeEvent:{name:'London Fashion Week',bonus:'+45% Style Revenue',icon:'\uD83C\uDF93',dates:'Feb 16\u201320'},
+    travelers:9,revIndex:'HIGH',
+    hotels:[
+      {n:'The Savoy',stars:5,c:520,xp:95,desc:'The original luxury. Thames views, legendary.',tag:'Heritage',visual:'\uD83C\uDFEF'},
+      {n:"Claridge's",stars:5,c:480,xp:88,desc:'Art Deco Mayfair. Choice of royalty.',tag:'Iconic',visual:'\uD83D\uDC51'},
+      {n:'The Hoxton Shoreditch',stars:3,c:120,xp:22,desc:'Stylish urban hotel in creative East London.',tag:'Boutique',visual:'\uD83C\uDF86'}
+    ],
+    experiences:[
+      {n:'Private Tower of London',c:90,xp:60,rep:.22,revenue:140,desc:'After-hours with a Yeoman Warder.',tag:'Exclusive',visual:'\uD83C\uDFF0'},
+      {n:'Michelin Tasting Menu',c:150,xp:75,rep:.3,revenue:220,desc:'Multi-course with sommelier pairing.',tag:'Luxury',visual:'\uD83C\uDF7D'},
+      {n:'East End Street Art',c:35,xp:28,rep:.1,revenue:58,desc:'Banksy territory walk, Shoreditch.',tag:'Cultural',visual:'\uD83C\uDFA8'}
+    ],
+    sj:[
+      {n:'5-Day London Business Set',days:5,c:55,xp:24,sus:36,items:8,visual:'\uD83D\uDC54'},
+      {n:'7-Day City Explorer Bundle',days:7,c:72,xp:32,sus:50,items:10,visual:'\u267B'},
+      {n:'Weekend Cultural Kit',days:2,c:26,xp:11,sus:17,items:4,visual:'\uD83C\uDF92'}
+    ],
+    events:[
+      {n:'London Fashion Week',dates:'Feb 16\u201320',icon:'\uD83C\uDF93',bonuses:['+45% Style Rev','Runway access','900 BP'],desc:'Global epicentre of fashion. Premium rates.'},
+      {n:'Chelsea Flower Show',dates:'May 20\u201324',icon:'\uD83C\uDF38',bonuses:['+20% Exp Rev','Garden access','300 BP'],desc:'World most prestigious flower show.'},
+      {n:'Wimbledon Championships',dates:'Jul 1\u201314',icon:'\uD83C\uDFBE',bonuses:['+30% All Rev','Centre Court','500 BP'],desc:'Most prestigious tennis creates massive VIP demand.'}
+    ],
+    businesses:[
+      {id:'style_boutique',n:'Style Boutique',icon:'\uD83D\uDC57',desc:'Fashion Week wardrobe consulting, 5x revenue.',cost:1300,daily:215},
+      {id:'curator_agency',n:'Curator Agency',icon:'\uD83D\uDCCB',desc:'Theatre, museums, and royal experience itineraries.',cost:850,daily:140},
+      {id:'delivery_hub',n:'Delivery Hub',icon:'\uD83D\uDE9A',desc:'Emergency hotel deliveries across Greater London.',cost:650,daily:95}
+    ]
+  },
+  paris:{n:'Paris',region:'France',tagline:'City of Light & Haute Couture',
+    accent:'#fcd34d',color:'rgba(22,14,4,.95)',
+    activeEvent:{name:'Paris Fashion Week',bonus:'+50% Style Revenue',icon:'\uD83D\uDDFC',dates:'Sep 23\u2013Oct 1'},
+    travelers:12,revIndex:'VERY HIGH',
+    hotels:[
+      {n:'Le Bristol Paris',stars:5,c:580,xp:100,desc:'Palace with three Michelin stars and rooftop pool.',tag:'Palace',visual:'\uD83D\uDC51'},
+      {n:'Hotel Costes',stars:5,c:340,xp:68,desc:'Most fashionable hotel with legendary courtyard.',tag:'Fashion',visual:'\uD83C\uDF78'},
+      {n:'Generator Paris',stars:2,c:48,xp:9,desc:'Design hostel on Canal Saint-Martin.',tag:'Social',visual:'\uD83C\uDF89'}
+    ],
+    experiences:[
+      {n:'Private Louvre After Dark',c:200,xp:95,rep:.45,revenue:310,desc:'Exclusive after-hours with personal art historian.',tag:'Ultra-Exclusive',visual:'\uD83C\uDFDB'},
+      {n:'Parisian Wine & Cheese',c:75,xp:45,rep:.18,revenue:115,desc:'Cave a vin tasting in centuries-old Marais cellar.',tag:'Luxury',visual:'\uD83C\uDF77'},
+      {n:'Montmartre Artist Walk',c:40,xp:28,rep:.1,revenue:65,desc:'Morning walk with a working artist.',tag:'Cultural',visual:'\uD83D\uDDA8'}
+    ],
+    sj:[
+      {n:'Paris Chic 7-Day Bundle',days:7,c:75,xp:33,sus:52,items:10,visual:'\uD83D\uDC57'},
+      {n:'Fashion Week Ready Set',days:5,c:62,xp:27,sus:42,items:8,visual:'\uD83D\uDC60'},
+      {n:'Weekend City Kit',days:2,c:28,xp:12,sus:19,items:4,visual:'\uD83C\uDFAD'}
+    ],
+    events:[
+      {n:'Paris Fashion Week',dates:'Sep 23\u2013Oct 1',icon:'\uD83D\uDDFC',bonuses:['+50% Style Rev','Backstage access','1000 BP'],desc:'Pinnacle of global fashion. Extraordinary commissions.'},
+      {n:'Bastille Day',dates:'Jul 14',icon:'\uD83C\uDDE8\uD83C\uDDF5',bonuses:['+30% Exp Rev','Champs access','450 BP'],desc:'Every hotel full, all services in high demand.'},
+      {n:'Roland Garros',dates:'May 25\u2013Jun 8',icon:'\uD83C\uDFBE',bonuses:['+25% All Rev','Courtside','380 BP'],desc:'Premier clay court tennis draws luxury sports travelers.'}
+    ],
+    businesses:[
+      {id:'style_boutique',n:'Style Boutique',icon:'\uD83D\uDC57',desc:'Haute couture consultations during PFW.',cost:1400,daily:235},
+      {id:'curator_agency',n:'Curator Agency',icon:'\uD83D\uDCCB',desc:'Museum access, restaurants, fashion itineraries.',cost:950,daily:160},
+      {id:'sj_center',n:'Second Journey Center',icon:'\u267B',desc:'Chic sustainable clothing for Paris travelers.',cost:700,daily:115}
+    ]
+  }
+};
+var DEFAULT_CITY={n:'City',region:'International',tagline:'Your next destination awaits',
+  accent:'#c9a96e',color:'rgba(8,16,34,.95)',
+  activeEvent:{name:'Seasonal Opportunities',bonus:'+15% Revenue',icon:'\uD83C\uDF1F',dates:'Ongoing'},
+  travelers:4,revIndex:'MEDIUM',
+  hotels:[{n:'Luxury Collection Hotel',stars:5,c:350,xp:70,desc:'World-class 5-star accommodation.',tag:'Luxury',visual:'\uD83C\uDFE8'},{n:'Boutique City Hotel',stars:4,c:175,xp:32,desc:'Stylish boutique hotel in center.',tag:'Boutique',visual:'\uD83C\uDFD8'},{n:'City Hostel',stars:2,c:42,xp:7,desc:'Clean budget accommodation.',tag:'Budget',visual:'\uD83C\uDFD7'}],
+  experiences:[{n:'City Food Tour',c:50,xp:35,rep:.12,revenue:80,desc:'Guided culinary journey.',tag:'Popular',visual:'\uD83C\uDF7D'},{n:'Cultural Walking Tour',c:38,xp:25,rep:.1,revenue:60,desc:'Architecture and hidden gems.',tag:'Cultural',visual:'\uD83C\uDFDB'}],
+  sj:[{n:'5-Day Explorer Bundle',days:5,c:45,xp:20,sus:30,items:7,visual:'\u267B'},{n:'Weekend Kit',days:2,c:22,xp:9,sus:14,items:3,visual:'\uD83D\uDC5A'}],
+  events:[{n:'City Festival',dates:'Ongoing',icon:'\uD83C\uDF1F',bonuses:['+15% All Rev','200 BP'],desc:'Local celebration with increased traveler activity.'}],
+  businesses:[{id:'curator_agency',n:'Curator Agency',icon:'\uD83D\uDCCB',desc:'Create and sell premium local itineraries.',cost:800,daily:125},{id:'sj_center',n:'Second Journey Center',icon:'\u267B',desc:'Sustainable clothing rental.',cost:600,daily:88}]
+};
+function getCity(id){return CITIES[id]||Object.assign({},DEFAULT_CITY,{n:(WORLD_NODES[id]||{}).n||id});}
+
+/* ── URGENT REQUESTS ── */
+var URGENT_POOL=[
+  {type:'wedding',urgency:'critical',timer:'1h 45m',icon:'\uD83D\uDC57',title:'Wedding Dress Emergency',city:'Miami',desc:'Bride\'s couture gown torn 2 hours before ceremony. Replacement needed NOW.',rewards:[{val:'$800',lbl:'CASH',cls:'red'},{val:'250 BP',lbl:'BAG PTS',cls:'amber'}]},
+  {type:'luggage',urgency:'high',timer:'2h 55m',icon:'\uD83E\uDDF3',title:'Lost Luggage \u2014 Conference',city:'Atlanta',desc:'C-suite executive needs complete business wardrobe. Delta lost everything.',rewards:[{val:'$600',lbl:'CASH',cls:'red'},{val:'180 BP',lbl:'BAG PTS',cls:'amber'}]},
+  {type:'vip',urgency:'high',timer:'45m',icon:'\uD83D\uDE97',title:'VIP Airport Pickup',city:'Miami',desc:'Celebrity client arriving at Miami Executive. Private car required.',rewards:[{val:'$450',lbl:'CASH',cls:'red'},{val:'100 BP',lbl:'BAG PTS',cls:'amber'}]},
+  {type:'delivery',urgency:'critical',timer:'30m',icon:'\uD83D\uDE9A',title:'Emergency Hotel Delivery',city:'Savannah',desc:'VIP guest needs toiletries, charger, dress shirt before dinner.',rewards:[{val:'$280',lbl:'CASH',cls:'red'},{val:'75 BP',lbl:'BAG PTS',cls:'amber'}]},
+  {type:'bridesmaid',urgency:'high',timer:'3h 20m',icon:'\uD83C\uDF39',title:'Bridesmaid Dress Disaster',city:'Savannah',desc:'Bridesmaid\'s dress ripped. Wedding in 3 hours. Needs replacement now.',rewards:[{val:'$520',lbl:'CASH',cls:'red'},{val:'145 BP',lbl:'BAG PTS',cls:'amber'}]},
+  {type:'conference',urgency:'high',timer:'4h',icon:'\uD83D\uDC54',title:'Conference Attire Needed',city:'Tokyo',desc:'Business traveler arrived without luggage. Keynote in 4 hours.',rewards:[{val:'$480',lbl:'CASH',cls:'red'},{val:'130 BP',lbl:'BAG PTS',cls:'amber'}]}
+];
+
+var MOCK_PLAYERS=[
+  {name:'Nomad Nina',av:'\uD83D\uDC69',level:18,arch:'Curator',cash:125430,city:'savannah'},
+  {name:'Curator Chris',av:'\uD83D\uDC68',level:15,arch:'Curator',cash:98750,city:'miami'},
+  {name:'Explorer Alex',av:'\uD83E\uDDD1',level:12,arch:'Explorer',cash:87210,city:'tokyo'},
+  {name:'Traveler Ty',av:'\uD83D\uDC64',level:10,arch:'Voyager',cash:65000,city:'osaka'}
+];
+var LIVE_ACTIONS=[
+  {av:'\uD83D\uDC69',name:'Nomad Nina',action:'sold a Savannah Food Tour to 4 travelers',chips:['+$500','+100 BP'],isEm:false,time:'2m ago'},
+  {av:'\uD83D\uDC64',name:'Traveler Ty',action:'solved a wedding dress emergency',chips:['+$800','+250 BP'],isEm:false,time:'5m ago'},
+  {av:'\uD83D\uDC68',name:'Curator Chris',action:'opened a Style Boutique in Miami',chips:['+$200/day'],isEm:false,time:'9m ago'},
+  {av:'\uD83E\uDDD1',name:'Explorer Alex',action:'wore Second Journey\u2122 in Tokyo',chips:['+120 BP','+eco'],isEm:true,time:'11m ago'},
+  {av:'\uD83D\uDC69',name:'Nomad Nina',action:'attended Cherry Blossom Festival',chips:['+$200','+200 BP'],isEm:false,time:'18m ago'}
+];
+var DAILY_CHALLENGES=[
+  {icon:'\uD83C\uDF77',text:'Complete 3 experiences today',progress:1,total:3,reward:'+$300'},
+  {icon:'\uD83D\uDE9A',text:'Solve 2 emergency requests',progress:0,total:2,reward:'+500 BP'},
+  {icon:'\u267B',text:'Wear Second Journey\u2122 twice',progress:0,total:2,reward:'+eco rank progress'}
+];
+var BOOSTS=[
+  {icon:'\uD83C\uDF31',text:'Eco Traveler',bonus:'+10% XP',time:'1d 2h'},
+  {icon:'\uD83D\uDCF1',text:'Social Influencer',bonus:'+15% Posts',time:'2d 5h'},
+  {icon:'\uD83D\uDCCB',text:'Curator Pro',bonus:'+20% Revenue',time:'5h 30m'}
+];
+var MARKET_DATA=[
+  {n:'Savannah Food Tour',author:'Nomad Nina',icon:'\uD83C\uDF77',rating:'4.9',price:39,city:'Savannah'},
+  {n:'Miami Nightlife Guide',author:'Curator Chris',icon:'\uD83C\uDF19',rating:'4.8',price:49,city:'Miami'},
+  {n:'Tokyo Hidden Gems',author:'Explorer Alex',icon:'\uD83D\uDDFC',rating:'4.9',price:59,city:'Tokyo'},
+  {n:'Paris Art & Fashion',author:'Curator Chris',icon:'\uD83C\uDFE8',rating:'4.8',price:55,city:'Paris'},
+  {n:'Bali Wellness Retreat',author:'Nomad Nina',icon:'\uD83C\uDF3A',rating:'4.9',price:69,city:'Bali'},
+  {n:'Dubai Luxury Day',author:'Traveler Ty',icon:'\uD83C\uDFC7',rating:'4.6',price:89,city:'Dubai'}
+];
+var SJ_RANKS=[
+  {name:'Seedling',icon:'\uD83C\uDF31',sub:'Begin your sustainability journey',min:0},
+  {name:'Sprout',icon:'\uD83C\uDF3F',sub:'Growing eco-conscious traveler',min:20},
+  {name:'Tree',icon:'\uD83C\uDF33',sub:'Rooted in sustainable travel',min:40},
+  {name:'Forest',icon:'\uD83C\uDF32',sub:'Champion of green exploration',min:60},
+  {name:'Champion',icon:'\uD83C\uDFC6',sub:'The pinnacle of eco travel',min:80}
+];
+function getSJRank(eco){for(var i=SJ_RANKS.length-1;i>=0;i--){if(eco>=SJ_RANKS[i].min)return SJ_RANKS[i];}return SJ_RANKS[0];}
+
+/* ── SUPABASE + INIT ── */
+(async function(){
+  var r=await sb.auth.getSession();
+  if(!r.data||!r.data.session){window.location.href='/account-login.html';return;}
+  user=r.data.session.user;
+  var pr=await sb.from('profiles').select('first_name').eq('id',user.id).single();
+  playerName=(pr.data&&pr.data.first_name)||user.email.split('@')[0];
+  var res=await sb.from('game_profiles').select('*').eq('user_id',user.id).single();
+  if(res.data){gp=res.data;initApp();}else{showOnboarding();}
+})();
+
+function showOnboarding(){
+  document.getElementById('onboarding').style.display='flex';
+  document.getElementById('obGrid').innerHTML=ARCHETYPES.map(function(a){
+    return '<div class="ob-arch" onclick="pickArch(this,\''+a.id+'\')"><span class="ob-arch-icon">'+a.icon+'</span><div class="ob-arch-name">'+a.name+'</div><div class="ob-arch-bonus">'+a.bonus+'</div></div>';
+  }).join('');
+}
+function pickArch(el,id){document.querySelectorAll('.ob-arch').forEach(function(x){x.classList.remove('sel')});el.classList.add('sel');window._selArch=id;document.getElementById('obBtn').disabled=false;}
+async function beginGame(){
+  var today=new Date().toISOString().slice(0,10);
+  var res=await sb.from('game_profiles').insert({
+    user_id:user.id,travel_personality:window._selArch||'explorer',avatar:{},
+    game_bag_points:1000,level:1,experience_points:0,cities_visited:['savannah'],
+    current_city:'savannah',travel_reputation:20,sustainability_score:0,community_score:0,
+    curator_score:0,total_trips:0,sj_items_used:0,clothing_equipped:[],badges:[],
+    metadata:{cash:500,vouchers:0,no_luggage_trips:0,dice_rolls_today:0,last_roll_date:today,
+      rep_score:2.0,sj_garments:0,sj_bags_avoided:0,sj_eco:5,airline_miles:500,businesses:[],
+      today_earnings:0,week_earnings:0,month_earnings:0,lifetime_earnings:0,last_earnings_date:today}
+  }).select().single();
+  if(res.error){alert(res.error.message);return;}
+  gp=res.data;document.getElementById('onboarding').style.display='none';
+  initApp();toast('Welcome to <em>BagFree World\u2122!</em> Your journey begins in Savannah.');
+}
+
+function initApp(){
+  var m=gp.metadata||{};
+  if(!m.businesses)m.businesses=[];
+  var today=new Date().toISOString().slice(0,10);
+  if(m.last_roll_date&&m.last_roll_date!==today){m.dice_rolls_today=0;m.last_roll_date=today;}
+  if(m.last_earnings_date&&m.last_earnings_date!==today){m.today_earnings=0;m.last_earnings_date=today;}
+  currentCity=gp.current_city||'savannah';
+  gp.metadata=m;
+  document.getElementById('appUI').style.display='flex';
+  renderAll();
+  startFeedSimulation();
+}
+
+function renderAll(){
+  updateNav();updateLeftPanel();updateEarningsStrip();
+  renderWorldMap();renderCityDashboard(currentCity);
+  renderLiveFeed();renderSJDashboard();renderRankingsMini();renderChat();
+}
+
+function updateNav(){
+  var m=gp.metadata,arch=ARCHETYPES.find(function(a){return a.id===gp.travel_personality;})||ARCHETYPES[0];
+  document.getElementById('navCash').textContent='$'+num(m.cash||500);
+  document.getElementById('navBP').textContent=num(gp.game_bag_points||1000);
+  document.getElementById('navAvatar').textContent=arch.icon;
+}
+
+function updateEarningsStrip(){
+  var m=gp.metadata;
+  var pd=0;(m.businesses||[]).forEach(function(b){pd+=b.daily||0;});
+  document.getElementById('esToday').textContent='$'+num(m.today_earnings||0);
+  document.getElementById('esWeek').textContent='$'+num(m.week_earnings||0);
+  document.getElementById('esMonth').textContent='$'+num(m.month_earnings||0);
+  document.getElementById('esPassive').textContent='$'+num(pd)+'/day';
+  document.getElementById('esBiz').textContent='$'+num(pd*30)+'/mo';
+  document.getElementById('esLifetime').textContent='$'+num(m.lifetime_earnings||0);
+  document.getElementById('esLevel').textContent='Lvl '+gp.level;
+}
+
+function updateLeftPanel(){
+  var m=gp.metadata,arch=ARCHETYPES.find(function(a){return a.id===gp.travel_personality;})||ARCHETYPES[0];
+  var city=getCity(currentCity);
+  document.getElementById('lpAvatar').textContent=arch.icon;
+  document.getElementById('lpName').textContent=playerName;
+  document.getElementById('lpArch').textContent=arch.name.toUpperCase();
+  document.getElementById('lpLoc').textContent='\uD83D\uDCCD '+city.n+(city.region?', '+city.region:'');
+  document.getElementById('lpCash').textContent='$'+num(m.cash||500);
+  document.getElementById('lpBP').textContent=num(gp.game_bag_points||1000);
+  document.getElementById('lpVouchers').textContent=m.vouchers||0;
+  document.getElementById('stTrips').textContent=gp.total_trips||0;
+  document.getElementById('stCities').textContent=(gp.cities_visited||[]).length;
+  document.getElementById('stNoLug').textContent=m.no_luggage_trips||0;
+  document.getElementById('stBiz').textContent=(m.businesses||[]).length;
+  var xpNext=gp.level*500,xpCur=gp.experience_points%(gp.level*500);
+  document.getElementById('lpXpFill').style.width=Math.min(100,xpCur/xpNext*100)+'%';
+  document.getElementById('lpXpLabel').textContent=xpCur+' / '+xpNext+' XP';
+  document.getElementById('lpLvlLabel').textContent='Level '+gp.level;
+  var eco=m.sj_eco||5;
+  document.getElementById('sjGarments').textContent=m.sj_garments||0;
+  document.getElementById('sjCO2').textContent=Math.floor((m.sj_garments||0)*2.8)+' kg';
+  document.getElementById('sjBags').textContent=m.sj_bags_avoided||0;
+  document.getElementById('sjVouchers').textContent=m.vouchers||0;
+  document.getElementById('sjEcoFill').style.width=Math.min(100,eco)+'%';
+  var rk=getSJRank(eco);document.getElementById('sjRankBadge').textContent=rk.name.toUpperCase();
+  var miles=m.airline_miles||500;
+  var lvls=['BRONZE','SILVER','GOLD','PLATINUM'];var thrs=[0,1000,5000,15000,50000];
+  var li=0;for(var i=thrs.length-1;i>=0;i--){if(miles>=thrs[i]){li=i;break;}}
+  document.getElementById('airlineLvl').textContent=lvls[li];
+  document.getElementById('airlineFill').style.width=Math.min(100,(miles-thrs[li])/(thrs[Math.min(li+1,thrs.length-1)]-thrs[li])*100)+'%';
+  var perks={0:'Standard boarding',1:'+10% no-luggage bonus',2:'+20% no-luggage \u00b7 Lounge',3:'+30% no-luggage \u00b7 Suite upgrades'};
+  document.getElementById('airlinePerks').textContent=perks[li]||perks[0];
+  document.getElementById('rollsLeft').textContent=3-(m.dice_rolls_today||0);
+  document.getElementById('rollBtn').disabled=(m.dice_rolls_today||0)>=3;
+  document.getElementById('boostsList').innerHTML=BOOSTS.map(function(b){return '<div class="boost-row"><div class="boost-dot"></div><div class="boost-txt">'+b.icon+' '+b.text+'</div><div class="boost-bon">'+b.bonus+'</div><div class="boost-time">'+b.time+'</div></div>';}).join('');
+  document.getElementById('wmapPlayerCity').textContent=city.n;
+}
+
+/* ── WORLD MAP ── */
+function renderWorldMap(){
+  var svg=document.getElementById('worldMapSvg');
+  var pl=gp.level||1,visited=gp.cities_visited||[];
+  var s='';
+  s+='<defs><radialGradient id="bg" cx="40%" cy="35%" r="75%"><stop offset="0%" stop-color="#0c1e38"/><stop offset="100%" stop-color="#030a14"/></radialGradient></defs>';
+  s+='<rect width="292" height="178" fill="url(#bg)"/>';
+  for(var gx=16;gx<292;gx+=28){for(var gy=10;gy<178;gy+=28){s+='<circle cx="'+gx+'" cy="'+gy+'" r=".3" fill="rgba(201,169,110,.035)"/>';}}
+  /* continent shapes (viewBox scaled ~0.384x from 760x430) */
+  var lc='rgba(16,34,55,.5)';
+  s+='<polygon points="21,18 41,15 50,26 52,43 50,54 41,57 31,52 20,42 18,28" fill="'+lc+'"/>';
+  s+='<polygon points="31,52 38,50 40,57 33,62" fill="'+lc+'"/>';
+  s+='<polygon points="22,57 34,55 34,80 20,80 18,66" fill="'+lc+'"/>';
+  s+='<polygon points="134,12 162,10 165,22 162,28 154,29 148,26 135,23 131,18" fill="'+lc+'"/>';
+  s+='<polygon points="137,29 164,29 167,58 152,72 137,71 130,60 129,33" fill="'+lc+'"/>';
+  s+='<polygon points="165,24 197,23 202,43 190,44 165,38" fill="'+lc+'"/>';
+  s+='<polygon points="170,32 263,28 293,18 292,43 282,51 260,51 248,56 235,62 224,71 209,66 197,55 179,45 170,34" fill="'+lc+'"/>';
+  s+='<polygon points="257,90 292,88 292,113 283,120 268,117 257,105" fill="'+lc+'"/>';
+  /* routes */
+  WORLD_ROUTES.forEach(function(rt,idx){
+    var fn=WORLD_NODES[rt.f],tn=WORLD_NODES[rt.t];if(!fn||!tn)return;
+    var pid='r'+idx;
+    var show=activeRegion==='all'||(fn.region===activeRegion||tn.region===activeRegion);
+    s+='<path id="'+pid+'" d="M'+fn.x+','+fn.y+' Q'+rt.cx+','+rt.cy+' '+tn.x+','+tn.y+'" fill="none" stroke="'+(show?rt.color:'rgba(255,255,255,.02)')+'" stroke-width="'+(show?.8:.4)+'" stroke-dasharray="3 3"/>';
+    if(show){
+      var dur=(8+idx*1.1).toFixed(1),beg=(idx*1.6).toFixed(1);
+      s+='<circle r="1.8" fill="rgba(201,169,110,.7)"><animateMotion dur="'+dur+'s" begin="-'+beg+'s" repeatCount="indefinite"><mpath href="#'+pid+'"/></animateMotion></circle>';
+      if(idx%3!==0){
+        var pr='r'+idx+'b';s+='<path id="'+pr+'" d="M'+tn.x+','+tn.y+' Q'+rt.cx+','+rt.cy+' '+fn.x+','+fn.y+'" fill="none" stroke="none"/>';
+        var dur2=(10+idx*.9).toFixed(1),beg2=(idx*2.1).toFixed(1);
+        s+='<circle r="1.4" fill="rgba(93,202,165,.6)"><animateMotion dur="'+dur2+'s" begin="-'+beg2+'s" repeatCount="indefinite"><mpath href="#'+pr+'"/></animateMotion></circle>';
+      }
+    }
+  });
+  /* city nodes */
+  Object.keys(WORLD_NODES).forEach(function(id){
+    var nd=WORLD_NODES[id],city=getCity(id);
+    var locked=nd.lvl>pl&&visited.indexOf(id)<0;
+    var isSel=id===currentCity,isVis=visited.indexOf(id)>=0;
+    var show=activeRegion==='all'||nd.region===activeRegion;
+    var op=show?1:.2;
+    var accent=CITY_ACCENTS[id]||'#c9a96e';
+    var R=isSel?9:7;
+    if(isSel){s+='<circle cx="'+nd.x+'" cy="'+nd.y+'" r="'+(R+7)+'" fill="rgba(201,169,110,.08)" style="animation:cityGlow 3s ease-in-out infinite"/>';}
+    /* demand ring */
+    var dColor=DEMAND_COLORS[nd.demand]||DEMAND_COLORS.medium;
+    if(!locked&&show){s+='<circle cx="'+nd.x+'" cy="'+nd.y+'" r="'+(R+3)+'" fill="none" stroke="'+dColor+'" stroke-width="1.2" style="animation:demandPulse '+(nd.demand==='high'?'2':'nd.demand==="medium"?3:4')+'s ease-in-out infinite"/>';}
+    s+='<circle cx="'+nd.x+'" cy="'+nd.y+'" r="'+R+'" fill="'+(locked?'rgba(4,9,18,.8)':isSel?'rgba(12,24,44,.98)':isVis?'rgba(8,18,34,.96)':'rgba(4,9,18,.88)')+'" stroke="'+(isSel?accent:isVis?accent+'bb':locked?'rgba(201,169,110,.07)':'rgba(201,169,110,.2)')+'" stroke-width="'+(isSel?2:1.2)+'" style="cursor:'+(locked?'not-allowed':'pointer')+'" opacity="'+op+'" onclick="'+(locked?'':'"selectCity(\''+id+'\')"')+'"/>';
+    s+='<text x="'+nd.x+'" y="'+(nd.y+3)+'" text-anchor="middle" font-size="'+(R*.85)+'" style="pointer-events:none" opacity="'+(locked?.2:op)+'">'+nd.icon+'</text>';
+    s+='<text x="'+nd.x+'" y="'+(nd.y+R+8)+'" text-anchor="middle" font-family="DM Sans,sans-serif" font-size="'+(isSel?7:5.5)+'" fill="'+(isSel?accent:isVis?accent:locked?'rgba(253,252,248,.12)':'rgba(253,252,248,.32)')+'" style="pointer-events:none" opacity="'+op+'">'+nd.n+'</text>';
+    if(!locked&&(city.travelers||0)>0&&show){
+      s+='<circle cx="'+(nd.x+R)+'" cy="'+(nd.y-R)+'" r="4.5" fill="rgba(201,169,110,.88)" stroke="rgba(3,8,17,.9)" stroke-width="1"/>';
+      s+='<text x="'+(nd.x+R)+'" y="'+(nd.y-R+3)+'" text-anchor="middle" font-size="4.5" font-weight="bold" fill="#07101f" style="pointer-events:none">'+(city.travelers||0)+'</text>';
+    }
+    var hasEmg=URGENT_POOL.some(function(u){return u.city===city.n;});
+    if(!locked&&hasEmg&&show){s+='<circle cx="'+(nd.x-R)+'" cy="'+(nd.y-R)+'" r="3.5" fill="rgba(239,68,68,.9)"><animate attributeName="opacity" values="1;.2;1" dur="1.4s" repeatCount="indefinite"/></circle>';}
+    if(id===currentCity&&show){s+='<circle cx="'+nd.x+'" cy="'+(nd.y-R-4)+'" r="3.5" fill="rgba(201,169,110,.95)" stroke="rgba(3,8,17,.8)" stroke-width="1"><animate attributeName="r" values="3.5;4.8;3.5" dur="2.2s" repeatCount="indefinite"/></circle><circle cx="'+nd.x+'" cy="'+(nd.y-R-4)+'" r="1.5" fill="white" style="pointer-events:none"/>';}
+    if(locked&&show){s+='<text x="'+nd.x+'" y="'+(nd.y+3)+'" text-anchor="middle" font-size="7" fill="rgba(var(--tr),.2)" style="pointer-events:none">\uD83D\uDD12</text>';}
+  });
+  svg.innerHTML=s;
+}
+
+function filterRegion(r,btn){
+  activeRegion=r;
+  document.querySelectorAll('.wmap-reg').forEach(function(x){x.classList.remove('active')});
+  btn.classList.add('active');renderWorldMap();
+}
+
+function selectCity(id){
+  currentCity=id;gp.current_city=id;
+  if((gp.cities_visited||[]).indexOf(id)<0){
+    gp.cities_visited=(gp.cities_visited||[]).concat([id]);gp.game_bag_points+=100;
+  }
+  // Make sure city view is active
+  document.querySelectorAll('.view-panel').forEach(function(p){p.classList.remove('active')});
+  document.querySelectorAll('.tnav-tab').forEach(function(t){t.classList.remove('active')});
+  document.querySelectorAll('.tnav-tab')[0].classList.add('active');
+  renderCityDashboard(id);updateLeftPanel();updateNav();renderWorldMap();save();
+}
+
+/* ── CITY DASHBOARD (center) ── */
+function renderCityDashboard(id){
+  var city=getCity(id);var m=gp.metadata;
+  document.documentElement.style.setProperty('--city-accent',city.accent||'#c9a96e');
+  var owned=m.businesses||[];
+  var ae=city.activeEvent||{};
+  var tc=city.travelers||4;
+  var urgentsHere=URGENT_POOL.filter(function(u){return u.city===city.n;});
+  var h='';
+
+  /* ── HERO ── */
+  h+='<div class="ch-hero"><div class="ch-hero-bg" style="background:'+city.color+'"></div><div class="ch-hero-overlay"></div><div class="ch-hero-content">';
+  h+='<div class="ch-hero-top"><div class="ch-hero-left"><div class="ch-eyebrow">'+city.region+'</div><div class="ch-name">'+city.n+'</div><div class="ch-tagline">'+city.tagline+'</div></div>';
+  h+='<div class="ch-hero-right"><div class="ch-event-badge"><span class="ch-event-icon">'+ae.icon+'</span><div><div class="ch-event-name">'+ae.name+'</div><div class="ch-event-bonus">'+ae.bonus+'</div></div></div>';
+  h+='<div class="ch-traveler-count"><span style="font-size:.75rem">\uD83D\uDC65</span>'+tc+' travelers here now</div></div></div>';
+  /* Pulse chips */
+  h+='<div class="ch-pulse-row">';
+  h+='<div class="ch-pulse-chip"><div class="ch-pulse-val">'+tc+'</div><div class="ch-pulse-lbl">Travelers</div></div>';
+  h+='<div class="ch-pulse-chip"><div class="ch-pulse-val '+(urgentsHere.length>0?'red':'')+'">'+urgentsHere.length+'</div><div class="ch-pulse-lbl">Emergencies</div></div>';
+  h+='<div class="ch-pulse-chip"><div class="ch-pulse-val amber">'+(city.events?city.events.length:1)+'</div><div class="ch-pulse-lbl">Events</div></div>';
+  h+='<div class="ch-pulse-chip"><div class="ch-pulse-val">'+(city.hotels?city.hotels.length:3)+'</div><div class="ch-pulse-lbl">Hotels</div></div>';
+  h+='<div class="ch-pulse-chip"><div class="ch-pulse-val em">'+(city.experiences?city.experiences.length:2)+'</div><div class="ch-pulse-lbl">Experiences</div></div>';
+  h+='<div class="ch-pulse-chip"><div class="ch-pulse-val gold">'+(city.revIndex||'MED')+'</div><div class="ch-pulse-lbl">Rev Index</div></div>';
+  h+='</div></div></div>';
+
+  /* ── EMERGENCIES (show top 3 from pool + city-specific first) ── */
+  var topUrgents=urgentsHere.concat(URGENT_POOL.filter(function(u){return u.city!==city.n;})).slice(0,3);
+  if(topUrgents.length){
+    h+='<div class="emg-strip"><div class="emg-hdr"><div class="emg-hdr-left">\uD83D\uDEA8 EMERGENCY REQUESTS<div class="emg-hdr-count">'+topUrgents.length+' ACTIVE</div></div></div>';
+    h+='<div class="emg-row">';
+    topUrgents.forEach(function(r,ri){
+      var chips=r.rewards.map(function(rw){return '<div class="emg-chip '+rw.cls+'"><div class="emg-chip-val '+rw.cls+'">'+rw.val+'</div><div class="emg-chip-lbl">'+rw.lbl+'</div></div>';}).join('');
+      h+='<div class="emg-card '+(ri===0?r.urgency:r.urgency)+'">';
+      h+='<div class="emg-top"><div class="emg-badge '+r.urgency+'">\uD83D\uDEA8 '+r.urgency.toUpperCase()+'</div><div class="emg-timer '+r.urgency+'">\u23F1 '+r.timer+'</div></div>';
+      h+='<div class="emg-title">'+r.icon+' '+r.title+'</div><div class="emg-city">\uD83D\uDCCD '+r.city+'</div>';
+      h+='<div class="emg-rewards">'+chips+'</div>';
+      h+='<div class="emg-btns"><button class="emg-accept '+r.urgency+'" onclick="acceptEmg(this,\''+r.title.replace(/'/g,"\\'")+'\','+(parseInt((r.rewards[0].val||'$0').replace('$',''))||0)+','+(parseInt((r.rewards[1].val||'0').replace(' BP',''))||0)+')">ACCEPT</button><button class="emg-pass" onclick="declineEmg(this)">PASS</button></div>';
+      h+='</div>';
+    });
+    h+='</div></div>';
+  }
+
+  /* ── FEATURED ROW (4 highlighted opps) ── */
+  var fht=city.hotels&&city.hotels[0];
+  var fex=city.experiences&&city.experiences[0];
+  var fsj=city.sj&&city.sj[0];
+  var fev=city.events&&city.events[0];
+  h+='<div class="opp-featured">';
+  if(fht)h+='<div class="ofc"><div class="ofc-visual hotel"><div class="ofc-type" style="color:rgba(var(--gr),.6)">HOTEL</div>'+fht.visual+'</div><div class="ofc-body"><div class="ofc-title">'+fht.n+'</div><div class="ofc-earn gold">'+'\u2605'.repeat(fht.stars)+' \u00b7 '+fht.c+' BP</div><button class="ofc-btn gold" onclick="bookHotel(\''+fht.n.replace(/'/g,"\\'")+'\','+fht.c+','+fht.xp+')"'+(gp.game_bag_points<fht.c?' disabled':'')+'>Book Hotel</button></div></div>';
+  if(fex)h+='<div class="ofc"><div class="ofc-visual exp"><div class="ofc-type" style="color:rgba(var(--em2),.6)">EXPERIENCE</div>'+fex.visual+'</div><div class="ofc-body"><div class="ofc-title">'+fex.n+'</div><div class="ofc-earn em">Earn $'+fex.revenue+' \u00b7 +'+fex.xp+' XP</div><button class="ofc-btn em" onclick="doExp(\''+fex.n.replace(/'/g,"\\'")+'\','+fex.c+','+fex.xp+','+fex.rep+','+fex.revenue+')"'+(gp.game_bag_points<fex.c?' disabled':'')+'>Host Experience</button></div></div>';
+  if(fsj)h+='<div class="ofc"><div class="ofc-visual sj"><div class="ofc-type" style="color:rgba(var(--em2),.6)">\u267B SJ</div>'+fsj.visual+'</div><div class="ofc-body"><div class="ofc-title">'+fsj.n+'</div><div class="ofc-earn em">'+fsj.items+' items \u00b7 '+fsj.days+' days \u00b7 +eco</div><button class="ofc-btn em" onclick="equipSJ(\''+fsj.n.replace(/'/g,"\\'")+'\','+fsj.c+','+fsj.xp+','+fsj.sus+')"'+(gp.game_bag_points<fsj.c?' disabled':'')+'>Wear SJ\u2122</button></div></div>';
+  if(fev)h+='<div class="ofc"><div class="ofc-visual event"><div class="ofc-type" style="color:rgba(245,158,11,.6)">EVENT</div>'+fev.icon+'</div><div class="ofc-body"><div class="ofc-title">'+fev.n+'</div><div class="ofc-earn amber">'+fev.dates+' \u00b7 '+(fev.bonuses&&fev.bonuses[0]?fev.bonuses[0]:'')+'</div><button class="ofc-btn amber" onclick="attendEvent(\''+fev.n.replace(/'/g,"\\'")+'\')">Attend Event</button></div></div>';
+  h+='</div>';
+
+  /* ── SCROLLABLE SECTIONS ── */
+  h+='<div class="opp-sections">';
+
+  /* HOTELS */
+  h+='<div class="opp-sec"><div class="opp-sec-h"><div class="opp-sec-title">HOTELS</div><div class="opp-sec-count">'+(city.hotels?city.hotels.length:0)+' available</div></div><div class="opp-scroll">';
+  (city.hotels||[]).forEach(function(ht){
+    h+='<div class="opp-card"><div class="opp-card-visual" style="background:linear-gradient(135deg,rgba(var(--gr),.1),rgba(var(--gr),.03))">'+ht.visual+'</div><div class="opp-card-body"><div class="opp-card-title">'+ht.n+'</div><div class="opp-card-sub">'+'\u2605'.repeat(ht.stars)+'\u2606'.repeat(5-ht.stars)+' \u00b7 '+ht.tag+'</div><div class="opp-card-chips"><span class="occ occ-g">'+ht.c+' BP</span><span class="occ occ-g">+'+ht.xp+' XP</span></div><button class="opp-card-btn ocb-g" onclick="bookHotel(\''+ht.n.replace(/'/g,"\\'")+'\','+ht.c+','+ht.xp+')"'+(gp.game_bag_points<ht.c?' disabled':'')+'>Book Hotel</button></div></div>';
+  });
+  h+='</div></div>';
+
+  /* EXPERIENCES */
+  h+='<div class="opp-sec"><div class="opp-sec-h"><div class="opp-sec-title">EXPERIENCES</div><div class="opp-sec-count">'+(city.experiences?city.experiences.length:0)+' open</div></div><div class="opp-scroll">';
+  (city.experiences||[]).forEach(function(ex){
+    h+='<div class="opp-card"><div class="opp-card-visual" style="background:linear-gradient(135deg,rgba(var(--em2),.1),rgba(var(--em2),.03))">'+ex.visual+'</div><div class="opp-card-body"><div class="opp-card-title">'+ex.n+'</div><div class="opp-card-sub">'+ex.tag+' \u00b7 '+ex.desc.slice(0,42)+'...</div><div class="opp-card-chips"><span class="occ occ-e">+$'+ex.revenue+'</span><span class="occ occ-e">+'+ex.xp+' XP</span><span class="occ occ-g">'+ex.c+' BP</span></div><button class="opp-card-btn ocb-e" onclick="doExp(\''+ex.n.replace(/'/g,"\\'")+'\','+ex.c+','+ex.xp+','+ex.rep+','+ex.revenue+')"'+(gp.game_bag_points<ex.c?' disabled':'')+'>Host</button></div></div>';
+  });
+  h+='</div></div>';
+
+  /* SECOND JOURNEY */
+  h+='<div class="opp-sec"><div class="opp-sec-h"><div class="opp-sec-title">\u267B SECOND JOURNEY\u2122</div><div class="opp-sec-count">'+(city.sj?city.sj.length:0)+' bundles</div></div><div class="opp-scroll">';
+  (city.sj||[]).forEach(function(s){
+    h+='<div class="opp-card"><div class="opp-card-visual" style="background:linear-gradient(135deg,rgba(var(--em2),.12),rgba(var(--em2),.04))">'+s.visual+'</div><div class="opp-card-body"><div class="opp-card-title">'+s.n+'</div><div class="opp-card-sub">'+s.items+' items \u00b7 '+s.days+' days \u00b7 saves '+Math.floor(s.sus*.6)+' kg CO\u2082</div><div class="opp-card-chips"><span class="occ occ-e">+eco</span><span class="occ occ-e">+'+s.xp+' XP</span><span class="occ occ-g">'+s.c+' BP</span></div><button class="opp-card-btn ocb-e" onclick="equipSJ(\''+s.n.replace(/'/g,"\\'")+'\','+s.c+','+s.xp+','+s.sus+')"'+(gp.game_bag_points<s.c?' disabled':'')+'>Wear SJ\u2122</button></div></div>';
+  });
+  h+='</div></div>';
+
+  /* EVENTS */
+  h+='<div class="opp-sec"><div class="opp-sec-h"><div class="opp-sec-title">SEASONAL EVENTS</div><div class="opp-sec-count">'+(city.events?city.events.length:0)+' active</div></div><div class="opp-scroll">';
+  (city.events||[]).forEach(function(ev){
+    h+='<div class="opp-card" style="border-color:rgba(245,158,11,.12)"><div class="opp-card-visual" style="background:linear-gradient(135deg,rgba(245,158,11,.1),rgba(245,158,11,.03))">'+ev.icon+'</div><div class="opp-card-body"><div class="opp-card-title">'+ev.n+'</div><div class="opp-card-sub">'+ev.dates+'</div><div class="opp-card-chips">'+(ev.bonuses||[]).slice(0,2).map(function(b){return '<span class="occ occ-a">'+b+'</span>';}).join('')+'</div><button class="opp-card-btn ocb-a" onclick="attendEvent(\''+ev.n.replace(/'/g,"\\'")+'\')">Attend</button></div></div>';
+  });
+  h+='</div></div>';
+
+  /* BUSINESSES */
+  h+='<div class="opp-sec"><div class="opp-sec-h"><div class="opp-sec-title">BUSINESS DISTRICT</div><div class="opp-sec-count">'+(city.businesses?city.businesses.length:0)+' available</div></div><div class="opp-scroll">';
+  (city.businesses||[]).forEach(function(biz){
+    var ow=owned.find(function(b){return b.id===biz.id&&b.city===currentCity;});
+    h+='<div class="opp-card" style="border-color:rgba(139,92,246,'+(ow?.2:.09)+')"><div class="opp-card-visual" style="background:linear-gradient(135deg,rgba(139,92,246,'+(ow?.1:.06)+'),rgba(139,92,246,.02))">'+biz.icon+'</div><div class="opp-card-body"><div class="opp-card-title" style="display:flex;align-items:center;gap:.3rem">'+biz.n+(ow?'<span class="biz-own-tag">OWNED</span>':'')+'</div>';
+    if(ow)h+='<div class="biz-passive"><div class="biz-passive-lbl">DAILY PASSIVE</div><div class="biz-passive-val">$'+num(biz.daily)+'/day</div></div>';
+    else h+='<div class="opp-card-sub">'+biz.desc+'</div><div class="opp-card-chips"><span class="occ occ-p">$'+num(biz.daily)+'/day</span><span class="occ occ-g">Cost $'+num(biz.cost)+'</span></div>';
+    h+='<button class="opp-card-btn ocb-p" onclick="buyBusiness(\''+biz.id+'\','+biz.cost+','+biz.daily+')"'+(ow||(m.cash||0)<biz.cost?' disabled':'')+'>'+(ow?'Upgrade':'Buy Business')+'</button></div></div>';
+  });
+  h+='</div></div>';
+
+  h+='</div>';/* /opp-sections */
+
+  /* TRAVELERS */
+  h+='<div class="trv-sec"><div class="opp-sec-h"><div class="opp-sec-title">TRAVELERS HERE NOW</div><div class="opp-sec-count">'+tc+' active</div></div>';
+  h+='<div class="trv-scroll">';
+  var acts=['hosting an experience','booking a hotel','using Second Journey\u2122','posting social content','solving an emergency','browsing opportunities'];
+  MOCK_PLAYERS.forEach(function(p){
+    h+='<div class="trv-card"><div class="trv-card-av">'+p.av+'</div><div class="trv-card-name">'+p.name+'</div><div class="trv-card-arch">'+p.arch+' \u00b7 Lvl '+p.level+'</div><div class="trv-card-earn">$'+num(p.cash)+'</div><div class="trv-card-act">'+acts[Math.floor(Math.random()*acts.length)]+'</div></div>';
+  });
+  ['\uD83D\uDC69 Sofia R.','\uD83D\uDC68 James K.','\uD83E\uDDD1 Yuki M.'].forEach(function(n,i){
+    h+='<div class="trv-card"><div class="trv-card-av">'+n.charAt(0)+'</div><div class="trv-card-name">'+n.slice(3)+'</div><div class="trv-card-arch">Visitor</div><div class="trv-card-earn" style="color:rgba(var(--tr),.22)">Guest</div><div class="trv-card-act">exploring the city</div></div>';
+  });
+  h+='</div></div>';
+
+  document.getElementById('cityDash').innerHTML=h;
+}
+
+/* ── SECOND JOURNEY DASHBOARD (right panel) ── */
+function renderSJDashboard(){
+  var m=gp.metadata,eco=m.sj_eco||5,rk=getSJRank(eco);
+  document.getElementById('sjRankIcon').textContent=rk.icon;
+  document.getElementById('sjRankName').textContent=rk.name;
+  document.getElementById('sjRankSub').textContent=rk.sub;
+  var sjMetrics=[
+    {v:m.sj_garments||0,l:'Garments'},
+    {v:Math.floor((m.sj_garments||0)*2.8)+' kg',l:'CO\u2082 Saved'},
+    {v:m.sj_bags_avoided||0,l:'Bags Avoided'},
+    {v:m.no_luggage_trips||0,l:'No-Lug Trips'},
+    {v:m.vouchers||0,l:'Vouchers'},
+    {v:rk.name,l:'Eco Rank'}
+  ];
+  document.getElementById('sjSixGrid').innerHTML=sjMetrics.map(function(m){return '<div class="sj-six-item"><div class="sj-six-val">'+m.v+'</div><div class="sj-six-lbl">'+m.l+'</div></div>';}).join('');
+  document.getElementById('sjEcoDashFill').style.width=Math.min(100,eco)+'%';
+  document.getElementById('sjEcoDashLabel').textContent=eco+' / 100 Eco Points';
+  var ri=SJ_RANKS.indexOf(rk);
+  document.getElementById('sjNextRank').textContent=ri<SJ_RANKS.length-1?'Next: '+SJ_RANKS[ri+1].name:'Max Rank \u2713';
+  document.getElementById('sjRankBadge').textContent=rk.name.toUpperCase();
+}
+
+/* ── RIGHT PANEL COMPONENTS ── */
+function renderLiveFeed(){
+  document.getElementById('liveFeed').innerHTML=LIVE_ACTIONS.map(function(f){
+    return '<div class="feed-item"><div class="feed-av">'+f.av+'</div><div class="feed-body"><div class="feed-name">'+f.name+'</div><div class="feed-act">'+f.action+'</div><div class="feed-chips">'+f.chips.map(function(c){return '<div class="feed-chip'+(f.isEm?' em':'')+'">'+c+'</div>';}).join('')+'</div></div><div class="feed-time">'+f.time+'</div></div>';
+  }).join('');
+}
+function renderRankingsMini(){
+  document.getElementById('rankingsMini').innerHTML=MOCK_PLAYERS.map(function(p,i){
+    return '<div class="rk-row"><div class="rk-num'+(i===0?' r1':'')+'">'+(i+1)+'</div><div class="rk-av">'+p.av+'</div><div class="rk-info"><div class="rk-name">'+p.name+'</div><div class="rk-detail">'+p.arch+'</div></div><div class="rk-val">$'+num(p.cash)+'</div></div>';
+  }).join('');
+}
+function renderChat(){
+  document.getElementById('chatMsgs').innerHTML=chatLog.map(function(c){return '<div class="chat-msg"><div class="chat-av">'+c.av+'</div><div><div class="chat-player">'+c.player+'</div><div class="chat-text">'+c.msg+'</div></div></div>';}).join('');
+}
+function sendChat(){
+  var inp=document.getElementById('chatInp'),msg=inp.value.trim();if(!msg)return;
+  var arch=ARCHETYPES.find(function(a){return a.id===gp.travel_personality;})||ARCHETYPES[0];
+  chatLog.push({av:arch.icon,player:playerName,msg:msg});chatLog=chatLog.slice(-8);inp.value='';
+  renderChat();var cm=document.getElementById('chatMsgs');cm.scrollTop=cm.scrollHeight;
+}
+
+/* ── DICE ── */
+function getDieSVG(n){
+  var d={1:[[13,13]],2:[[7,7],[19,19]],3:[[7,7],[13,13],[19,19]],4:[[7,7],[19,7],[7,19],[19,19]],5:[[7,7],[19,7],[13,13],[7,19],[19,19]],6:[[7,7],[19,7],[7,13],[19,13],[7,19],[19,19]]};
+  return (d[n]||d[1]).map(function(p){return '<circle cx="'+p[0]+'" cy="'+p[1]+'" r="2.8" fill="rgba(201,169,110,.8)"/>';}).join('');
+}
+function rollDice(){
+  var m=gp.metadata;
+  if((m.dice_rolls_today||0)>=3){toast('No rolls remaining today!');return;}
+  var d1=Math.ceil(Math.random()*6),d2=Math.ceil(Math.random()*6),total=d1+d2;
+  document.getElementById('die1').innerHTML='<svg viewBox="0 0 26 26">'+getDieSVG(d1)+'</svg>';
+  document.getElementById('die2').innerHTML='<svg viewBox="0 0 26 26">'+getDieSVG(d2)+'</svg>';
+  m.dice_rolls_today=(m.dice_rolls_today||0)+1;
+  var order=BOARD_ORDER,cur=order.indexOf(currentCity);if(cur<0)cur=0;
+  var next=order[(cur+total)%order.length];
+  gp.total_trips=(gp.total_trips||0)+1;gp.experience_points+=30;m.airline_miles=(m.airline_miles||500)+total*10;
+  var alreadyVisited=(gp.cities_visited||[]).indexOf(next)>=0;
+  if(!alreadyVisited){confetti();toast('\u2708 Arrived in <em>'+getCity(next).n+'</em>! +150 BP first visit bonus.');gp.game_bag_points+=150;gp.cities_visited=(gp.cities_visited||[]).concat([next]);}
+  else{toast('\u2708 Back in <em>'+getCity(next).n+'</em>! +30 XP');}
+  checkLevel();selectCity(next);save();
+}
+
+/* ── ACTIONS ── */
+function earnCash(amount){
+  var m=gp.metadata;m.cash=(m.cash||0)+amount;
+  m.today_earnings=(m.today_earnings||0)+amount;m.week_earnings=(m.week_earnings||0)+amount;
+  m.month_earnings=(m.month_earnings||0)+amount;m.lifetime_earnings=(m.lifetime_earnings||0)+amount;
+  var el=document.getElementById('esToday');if(el){el.classList.remove('flash');void el.offsetWidth;el.classList.add('flash');}
+}
+function bookHotel(n,c,xp){
+  if(gp.game_bag_points<c){toast('Not enough BAG Points!');return;}
+  gp.game_bag_points-=c;gp.experience_points+=xp;gp.travel_reputation+=5;
+  checkLevel();toast('Checked into <em>'+n+'</em>! \u2212'+c+' BP, +'+xp+' XP');
+  save().then(function(){updateLeftPanel();updateNav();updateEarningsStrip();});
+}
+function doExp(n,c,xp,rep,revenue){
+  if(gp.game_bag_points<c){toast('Not enough BAG Points!');return;}
+  gp.game_bag_points-=c;gp.experience_points+=xp;gp.travel_reputation+=Math.round(rep*10);
+  earnCash(revenue);confetti();checkLevel();
+  toast('Completed <em>'+n+'</em>! Earned $'+revenue+', +'+xp+' XP');
+  save().then(function(){updateLeftPanel();updateNav();updateEarningsStrip();renderCityDashboard(currentCity);});
+}
+function equipSJ(n,c,xp,sus){
+  if(gp.game_bag_points<c){toast('Not enough BAG Points!');return;}
+  gp.game_bag_points-=c;gp.experience_points+=xp;gp.sustainability_score=(gp.sustainability_score||0)+sus;
+  var m=gp.metadata;m.sj_garments=(m.sj_garments||0)+Math.ceil(sus/5);m.sj_bags_avoided=(m.sj_bags_avoided||0)+1;
+  m.sj_eco=Math.min(100,(m.sj_eco||5)+Math.floor(sus/3));m.vouchers=(m.vouchers||0)+1;
+  m.no_luggage_trips=(m.no_luggage_trips||0)+1;m.airline_miles=(m.airline_miles||500)+200;
+  confetti();checkLevel();toast('\u267B Wearing <em>'+n+'</em>! +'+xp+' XP, +eco, +1 voucher');
+  save().then(function(){updateLeftPanel();updateNav();updateEarningsStrip();renderSJDashboard();renderCityDashboard(currentCity);});
+}
+function attendEvent(name){
+  gp.game_bag_points+=200;gp.experience_points+=50;earnCash(150);confetti();checkLevel();
+  toast('\uD83C\uDF89 Attending <em>'+name+'</em>! +200 BP, +$150');
+  save().then(function(){updateLeftPanel();updateNav();updateEarningsStrip();});
+}
+function buyBusiness(id,cost,daily){
+  var m=gp.metadata;if((m.cash||0)<cost){toast('Need $'+num(cost)+' cash to buy this business.');return;}
+  m.cash-=cost;m.businesses=m.businesses||[];m.businesses.push({id:id,city:currentCity,daily:daily,level:1});
+  gp.experience_points+=100;gp.curator_score=(gp.curator_score||0)+50;
+  confetti();checkLevel();toast('\uD83C\uDFE2 Business acquired! Earns $'+daily+'/day passively.');
+  save().then(function(){updateLeftPanel();updateNav();updateEarningsStrip();renderCityDashboard(currentCity);});
+}
+function acceptEmg(btn,title,cash,bp){
+  var m=gp.metadata;earnCash(cash||500);gp.game_bag_points+=bp||150;gp.experience_points+=75;gp.travel_reputation+=10;
+  confetti();checkLevel();toast('\u2705 Solved <em>'+title+'</em>! +$'+cash+', +'+bp+' BP');
+  save().then(function(){updateLeftPanel();updateNav();updateEarningsStrip();});
+  btn.closest('.emg-card').style.opacity='0';btn.closest('.emg-card').style.transition='opacity .4s';
+  setTimeout(function(){URGENT_POOL.splice(0,1);renderCityDashboard(currentCity);},450);
+}
+function declineEmg(btn){btn.closest('.emg-card').style.opacity='0';URGENT_POOL.splice(0,1);setTimeout(function(){renderCityDashboard(currentCity);},350);}
+function doAction(type){
+  var m=gp.metadata;
+  var o={curate:{cash:150,bp:80,xp:40,msg:'Itinerary created! <em>+$150, +80 BP</em>'},style:{cash:200,bp:60,xp:35,msg:'Styling session! <em>+$200, +60 BP</em>'},delivery:{cash:75,bp:25,xp:20,msg:'Delivery done! <em>+$75, +25 BP</em>'},ride:{cash:50,bp:15,xp:15,msg:'Ride complete! <em>+$50, +15 BP</em>'},experience:{cash:180,bp:90,xp:50,msg:'Experience hosted! <em>+$180, +90 BP</em>'},sj:{cash:0,bp:120,xp:60,eco:true,msg:'\u267B Second Journey\u2122! <em>+120 BP, +eco</em>'},post:{cash:120,bp:50,xp:30,msg:'Post published! <em>+$120, +50 BP</em>'}};
+  var a=o[type];if(!a)return;
+  if(a.cash>0)earnCash(a.cash);gp.game_bag_points+=a.bp;gp.experience_points+=a.xp;
+  if(a.eco){m.sj_garments=(m.sj_garments||0)+2;m.sj_eco=Math.min(100,(m.sj_eco||5)+5);m.no_luggage_trips=(m.no_luggage_trips||0)+1;m.sj_bags_avoided=(m.sj_bags_avoided||0)+1;m.vouchers=(m.vouchers||0)+1;renderSJDashboard();}
+  if(a.cash>0)confetti();toast(a.msg);checkLevel();
+  save().then(function(){updateLeftPanel();updateNav();updateEarningsStrip();});
+}
+
+/* ── VIEW SWITCHING ── */
+function showView(id,btn){
+  document.querySelectorAll('.tnav-tab').forEach(function(t){t.classList.remove('active')});
+  if(btn)btn.classList.add('active');
+  document.querySelectorAll('.view-panel').forEach(function(p){p.classList.remove('active')});
+  if(id==='city'){renderCityDashboard(currentCity);return;}
+  var panelMap={marketplace:'panelMarketplace',business:'panelBusiness',rankings:'panelRankings',sj:'panelSj'};
+  var pid=panelMap[id];if(!pid)return;
+  document.getElementById(pid).classList.add('active');
+  renderViewPanel(id);
+}
+function renderViewPanel(id){
+  if(id==='marketplace'){
+    document.getElementById('marketplaceGrid').innerHTML=MARKET_DATA.map(function(m){return '<div style="border:1px solid rgba(var(--gr),.09);background:linear-gradient(168deg,rgba(10,20,36,.97),rgba(6,14,28,.99));border-radius:2px;overflow:hidden;cursor:pointer;transition:all .28s"><div style="height:75px;display:flex;align-items:center;justify-content:center;font-size:1.8rem;background:linear-gradient(135deg,rgba(var(--gr),.1),rgba(var(--gr),.03))">'+m.icon+'</div><div style="padding:.62rem .72rem"><div style="font-family:var(--fd);font-size:.95rem;color:var(--wh);margin-bottom:.08rem">'+m.n+'</div><div style="font-size:.43rem;color:rgba(var(--tr),.28);margin-bottom:.3rem">by '+m.author+' \u00b7 '+m.city+'</div><div style="display:flex;align-items:center;justify-content:space-between;margin-bottom:.4rem"><div style="font-size:.43rem;color:var(--gold)">\u2605 '+m.rating+'</div><div style="font-family:var(--fd);font-size:.98rem;color:var(--gold)">$'+m.price+'</div></div><button style="width:100%;padding:.4rem;font-size:.32rem;letter-spacing:2.5px;text-transform:uppercase;color:var(--noir);background:linear-gradient(135deg,var(--gold),var(--gold2));font-weight:700;transition:all .2s;border-radius:1px;cursor:pointer" onclick="buyItinerary(\''+m.n.replace(/'/g,"\\'")+'\',' +m.price+')">Purchase</button></div></div>';}).join('');
+  }
+  if(id==='business'){
+    var owned=gp.metadata.businesses||[];
+    var bh='<div style="display:grid;grid-template-columns:repeat(auto-fill,minmax(230px,1fr));gap:.7rem">';
+    if(!owned.length)bh+='<div style="grid-column:1/-1;font-family:var(--fd);font-style:italic;color:rgba(var(--tr),.22);font-size:.9rem;text-align:center;padding:2rem">No businesses yet. Visit city dashboards to acquire passive income streams.</div>';
+    owned.forEach(function(b){bh+='<div style="border:1px solid rgba(139,92,246,.18);background:linear-gradient(168deg,rgba(10,6,20,.97),rgba(6,4,16,.99));border-radius:2px;padding:.72rem .8rem"><div style="font-size:.32rem;letter-spacing:2px;text-transform:uppercase;color:rgba(139,92,246,.6);margin-bottom:.15rem">BUSINESS</div><div style="font-family:var(--fd);font-size:.98rem;color:var(--wh);margin-bottom:.08rem">'+b.id.replace(/_/g,' ')+'</div><div style="font-size:.43rem;color:rgba(var(--tr),.28);margin-bottom:.38rem">'+b.city.toUpperCase()+' \u00b7 Level '+b.level+'</div><div style="display:flex;align-items:center;justify-content:space-between;padding:.28rem .42rem;background:rgba(139,92,246,.06);border:1px solid rgba(139,92,246,.1);border-radius:1px"><div style="font-size:.3rem;letter-spacing:1.5px;text-transform:uppercase;color:rgba(139,92,246,.6)">DAILY PASSIVE</div><div style="font-family:var(--fd);font-size:.85rem;color:#a78bfa">$'+b.daily+'/day</div></div></div>';});
+    bh+='</div>';document.getElementById('businessPanel').innerHTML=bh;
+  }
+  if(id==='rankings'){
+    var arch=ARCHETYPES.find(function(a){return a.id===gp.travel_personality;})||ARCHETYPES[0];
+    var all=MOCK_PLAYERS.concat([{name:playerName+'(You)',av:arch.icon,level:gp.level,arch:arch.name,cash:gp.metadata.cash||500}]).sort(function(a,b){return b.cash-a.cash;});
+    document.getElementById('rankingsPanel').innerHTML=all.map(function(p,i){return '<div style="display:flex;align-items:center;gap:.72rem;padding:.68rem .9rem;border:1px solid rgba(var(--gr),'+(i===0?.15:.07)+');margin-bottom:.35rem;background:rgba(10,20,37,.82);border-radius:2px"><div style="font-family:var(--fd);font-size:1.28rem;color:'+(i===0?'var(--gold)':'rgba(var(--tr),.2)')+';width:36px;text-align:center">'+(i+1)+'</div><div style="width:30px;height:30px;border-radius:50%;border:1.5px solid rgba(var(--gr),.2);display:flex;align-items:center;justify-content:center;font-size:.88rem;background:rgba(var(--gr),.04)">'+p.av+'</div><div style="flex:1"><div style="font-size:.72rem;color:var(--wh);font-weight:600">'+p.name+'</div><div style="font-size:.43rem;color:rgba(var(--tr),.28)">'+p.arch+' \u00b7 Level '+p.level+'</div></div><div style="font-family:var(--fd);font-size:1rem;color:var(--gold)">$'+num(p.cash)+'</div></div>';}).join('');
+  }
+  if(id==='sj'){
+    var m=gp.metadata,eco=m.sj_eco||5,rk=getSJRank(eco);
+    var sh='<div style="display:grid;grid-template-columns:repeat(3,1fr);gap:.85rem;margin-bottom:1.6rem">';
+    [{v:m.sj_garments||0,l:'Garments Reused',i:'\u267B'},{v:Math.floor((m.sj_garments||0)*2.8)+' kg',l:'CO\u2082 Saved',i:'\uD83C\uDF31'},{v:m.sj_bags_avoided||0,l:'Bags Avoided',i:'\uD83E\uDDF3'},{v:m.no_luggage_trips||0,l:'No-Lug Trips',i:'\u2708'},{v:m.vouchers||0,l:'Vouchers Earned',i:'\uD83C\uDFAB'},{v:rk.name,l:'Eco Rank',i:'\uD83C\uDFC6'}].forEach(function(item){sh+='<div style="padding:.85rem;background:linear-gradient(135deg,rgba(93,202,165,.06),rgba(93,202,165,.01));border:1px solid rgba(93,202,165,.14);border-radius:2px;text-align:center"><div style="font-size:1.5rem;margin-bottom:.28rem">'+item.i+'</div><div style="font-family:var(--fd);font-size:1.5rem;color:var(--em)">'+item.v+'</div><div style="font-size:.32rem;letter-spacing:2px;text-transform:uppercase;color:rgba(var(--tr),.25);margin-top:.1rem">'+item.l+'</div></div>';});
+    sh+='</div>';
+    sh+='<div style="padding:1rem;background:linear-gradient(135deg,rgba(93,202,165,.05),rgba(93,202,165,.01));border:1px solid rgba(93,202,165,.14);border-radius:2px"><div style="display:flex;align-items:center;gap:.65rem;margin-bottom:.75rem"><div style="font-size:2rem">'+rk.icon+'</div><div><div style="font-size:.33rem;letter-spacing:3px;text-transform:uppercase;color:rgba(93,202,165,.55);margin-bottom:.06rem">ECO RANK</div><div style="font-family:var(--fd);font-size:1.65rem;color:var(--em)">'+rk.name+'</div><div style="font-size:.45rem;color:rgba(93,202,165,.42)">'+rk.sub+'</div></div></div><div style="height:7px;background:rgba(93,202,165,.07);border-radius:4px;overflow:hidden;margin-bottom:.5rem"><div style="height:100%;width:'+eco+'%;background:linear-gradient(90deg,rgba(93,202,165,.5),var(--em));border-radius:4px;transition:width .8s"></div></div><div style="display:flex;justify-content:space-between;font-size:.36rem;color:rgba(var(--tr),.25)"><span>'+eco+' / 100 Eco Points</span><span id="sjViewNextRank"></span></div></div>';
+    document.getElementById('sjFullPanel').innerHTML=sh;
+  }
+}
+function buyItinerary(name,price){var m=gp.metadata;if((m.cash||0)<price){toast('Need $'+price);return;}earnCash(-price);gp.game_bag_points+=50;gp.experience_points+=20;toast('Purchased <em>'+name+'</em>! \u2212$'+price+', +50 BP');save().then(function(){updateNav();updateLeftPanel();updateEarningsStrip();});}
+
+/* ── FEED SIMULATION ── */
+function startFeedSimulation(){
+  setInterval(function(){
+    var fakeActs=[
+      {av:'\uD83D\uDC69',name:'Nomad Nina',action:'sold a luxury itinerary',chips:['+$'+(200+Math.floor(Math.random()*150))],isEm:false,time:'just now'},
+      {av:'\uD83D\uDC64',name:'Traveler Ty',action:'solved a wedding dress emergency',chips:['+$'+(400+Math.floor(Math.random()*200)),'+250 BP'],isEm:false,time:'just now'},
+      {av:'\uD83E\uDDD1',name:'Explorer Alex',action:'wore Second Journey\u2122 in Tokyo',chips:['+'+(100+Math.floor(Math.random()*80))+' BP','+eco'],isEm:true,time:'just now'},
+      {av:'\uD83D\uDC68',name:'Curator Chris',action:'hosted an Art Basel VIP experience',chips:['+$280','+85 XP'],isEm:false,time:'just now'}
+    ];
+    var f=fakeActs[Math.floor(Math.random()*fakeActs.length)];f.time='just now';
+    LIVE_ACTIONS.unshift(f);LIVE_ACTIONS=LIVE_ACTIONS.slice(0,6);
+    LIVE_ACTIONS.forEach(function(a,i){a.time=i===0?'just now':i<3?(i*2+1)+'m ago':(i*4)+'m ago';});
+    renderLiveFeed();
+    document.getElementById('wmapLive').textContent=(42+Math.floor(Math.random()*18))+' online';
+  },10000);
+}
+
+/* ── LEVEL / SAVE ── */
+function checkLevel(){var nl=Math.floor(gp.experience_points/500)+1;if(nl>gp.level){gp.level=nl;confetti();toast('\uD83C\uDFC6 <em>Level '+nl+'!</em> New cities and rewards unlocked!');renderWorldMap();}}
+function save(){return sb.from('game_profiles').update({game_bag_points:gp.game_bag_points,level:gp.level,experience_points:gp.experience_points,travel_reputation:gp.travel_reputation,sustainability_score:gp.sustainability_score,curator_score:gp.curator_score,community_score:gp.community_score||0,cities_visited:gp.cities_visited,badges:gp.badges||[],total_trips:gp.total_trips,sj_items_used:gp.sj_items_used,current_city:gp.current_city,metadata:gp.metadata,updated_at:new Date().toISOString()}).eq('user_id',user.id);}
+
+function num(n){return Math.round(n||0).toLocaleString();}
+function toast(html){var t=document.getElementById('toast');t.innerHTML=html;t.classList.add('show');clearTimeout(t._t);t._t=setTimeout(function(){t.classList.remove('show');},3500);}
+function confetti(){var c=document.getElementById('confetti');var cols=['#c9a96e','#5DCAA5','#d4b87a','#fdfcf8'];for(var i=0;i<40;i++){var d=document.createElement('div');d.className='confetto';d.style.cssText='left:'+Math.random()*100+'%;background:'+cols[i%4]+';animation-delay:'+Math.random()*.9+'s;width:'+(4+Math.random()*7)+'px;height:'+Math.random()*8+'px;border-radius:'+(Math.random()>.5?'50%':'1px');c.appendChild(d);}setTimeout(function(){c.innerHTML='';},3500);}
+
+</script>
+<script src="/ios-viewport-lock.js" defer></script>
+</body>
+</html>

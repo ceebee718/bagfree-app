@@ -1,0 +1,308 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+<meta charset="UTF-8">
+<meta name="viewport" content="width=device-width, initial-scale=1, maximum-scale=1, user-scalable=no, viewport-fit=cover">
+<title>Sign In — BagFree</title>
+<link rel="preconnect" href="https://fonts.googleapis.com">
+<link href="https://fonts.googleapis.com/css2?family=Cormorant+Garamond:ital,wght@0,300;0,400;1,400&family=DM+Sans:wght@300;400;500;600&display=swap" rel="stylesheet">
+<script src="https://cdn.jsdelivr.net/npm/@supabase/supabase-js@2"></script>
+<style>
+:root{--noir:#0d1a32;--noir-2:#111f3a;--gold:#c9a96e;--gold-rgb:201,169,110;--emerald:#5DCAA5;--white:#fdfcf8;--text-rgb:253,252,248;--ff-display:'Cormorant Garamond',Georgia,serif;--ff-body:'DM Sans','Helvetica Neue',sans-serif;--border-soft:rgba(201,169,110,0.12)}
+*,*::before,*::after{box-sizing:border-box;margin:0;padding:0}
+body{font-family:var(--ff-body);color:rgba(var(--text-rgb),0.85);background:var(--noir);min-height:100vh;display:flex;flex-direction:column;align-items:center;justify-content:center;padding:2rem;-webkit-font-smoothing:antialiased}
+a{color:var(--gold);text-decoration:none}
+.auth-wrap{width:100%;max-width:420px}
+.auth-logo{text-align:center;margin-bottom:2.5rem}
+.auth-logo a{font-family:var(--ff-display);font-size:2rem;color:var(--gold);letter-spacing:1px}
+.auth-logo-sub{font-size:0.72rem;color:rgba(var(--text-rgb),0.35);margin-top:0.3rem;letter-spacing:1px}
+
+/* Card */
+.auth-card{border:1px solid var(--border-soft);background:rgba(var(--gold-rgb),0.02);padding:2.5rem 2rem}
+.auth-title{font-family:var(--ff-display);font-size:1.8rem;font-weight:300;color:var(--white);text-align:center;margin-bottom:0.3rem}
+.auth-title em{font-style:italic;color:var(--gold)}
+.auth-sub{font-size:0.82rem;color:rgba(var(--text-rgb),0.45);text-align:center;margin-bottom:2rem;font-weight:300}
+
+/* Tabs */
+.auth-tabs{display:flex;margin-bottom:2rem;border-bottom:1px solid var(--border-soft)}
+.auth-tab{flex:1;padding:0.7rem;text-align:center;font-size:0.62rem;letter-spacing:2.5px;text-transform:uppercase;font-weight:600;color:rgba(var(--text-rgb),0.4);cursor:pointer;border-bottom:2px solid transparent;transition:all 0.25s;background:none;font-family:var(--ff-body)}
+.auth-tab.active{color:var(--gold);border-bottom-color:var(--gold)}
+.auth-tab:hover:not(.active){color:rgba(var(--text-rgb),0.6)}
+
+/* Fields */
+.auth-field{margin-bottom:1rem}
+.auth-label{display:block;font-size:0.55rem;letter-spacing:2.5px;text-transform:uppercase;color:rgba(var(--text-rgb),0.4);margin-bottom:0.35rem;font-weight:600}
+.auth-input{width:100%;padding:0.8rem 1rem;font-size:0.9rem;background:rgba(var(--gold-rgb),0.03);border:1px solid var(--border-soft);color:var(--white);font-family:var(--ff-body);transition:border-color 0.25s}
+.auth-input:focus{outline:none;border-color:rgba(var(--gold-rgb),0.5);box-shadow:0 0 0 3px rgba(var(--gold-rgb),0.08)}
+.auth-input::placeholder{color:rgba(var(--text-rgb),0.2)}
+.auth-row{display:grid;grid-template-columns:1fr 1fr;gap:0.8rem}
+@media(max-width:480px){.auth-row{grid-template-columns:1fr}}
+
+/* Button */
+.auth-btn{width:100%;padding:0.9rem;font-size:0.62rem;letter-spacing:3px;text-transform:uppercase;font-weight:600;color:var(--noir);background:var(--gold);border:none;cursor:pointer;font-family:var(--ff-body);box-shadow:0 6px 20px rgba(var(--gold-rgb),0.25);transition:all 0.3s;margin-top:0.5rem}
+.auth-btn:hover{background:#d4b87a;box-shadow:0 10px 30px rgba(var(--gold-rgb),0.35);transform:translateY(-1px)}
+.auth-btn:disabled{opacity:0.35;pointer-events:none}
+
+/* Magic link */
+.auth-divider{display:flex;align-items:center;gap:0.8rem;margin:1.5rem 0;font-size:0.6rem;letter-spacing:2px;text-transform:uppercase;color:rgba(var(--text-rgb),0.25)}
+.auth-divider::before,.auth-divider::after{content:'';flex:1;height:1px;background:var(--border-soft)}
+.auth-magic{width:100%;padding:0.75rem;font-size:0.6rem;letter-spacing:2.5px;text-transform:uppercase;font-weight:500;color:rgba(var(--text-rgb),0.55);background:none;border:1px solid var(--border-soft);cursor:pointer;font-family:var(--ff-body);transition:all 0.25s}
+.auth-magic:hover{border-color:rgba(var(--gold-rgb),0.4);color:var(--gold)}
+
+/* Error/success */
+.auth-msg{padding:0.7rem 0.9rem;font-size:0.78rem;margin-bottom:1rem;line-height:1.5;display:none}
+.auth-msg.error{background:rgba(224,114,96,0.08);border:1px solid rgba(224,114,96,0.3);color:#E07260;display:block}
+.auth-msg.success{background:rgba(93,202,165,0.08);border:1px solid rgba(93,202,165,0.3);color:#5DCAA5;display:block}
+
+/* Footer links */
+.auth-footer{text-align:center;margin-top:1.5rem;font-size:0.78rem;color:rgba(var(--text-rgb),0.4)}
+.auth-footer a{color:var(--gold);margin:0 0.3rem}
+
+/* Panel visibility */
+.auth-panel{display:none}
+.auth-panel.active{display:block}
+</style>
+<link rel="stylesheet" href="/ios-viewport-lock.css">
+<link rel="stylesheet" href="/embr-concierge-button.css">
+</head>
+<body>
+
+<div class="auth-wrap">
+  <div class="auth-logo">
+    <a href="/">BagFree</a>
+    <div class="auth-logo-sub">Travel Light. Experience More. Leave Less Behind.</div>
+  </div>
+
+  <div class="auth-card">
+    <div class="auth-tabs">
+      <button class="auth-tab active" id="tabLogin" onclick="showPanel('login')">Sign In</button>
+      <button class="auth-tab" id="tabSignup" onclick="showPanel('signup')">Create Account</button>
+    </div>
+
+    <div id="authMsg" class="auth-msg"></div>
+
+    <!-- LOGIN PANEL -->
+    <div class="auth-panel active" id="panelLogin">
+      <div class="auth-field">
+        <label class="auth-label">Email</label>
+        <input class="auth-input" id="loginEmail" type="email" placeholder="you@example.com">
+      </div>
+      <div class="auth-field">
+        <label class="auth-label">Password</label>
+        <input class="auth-input" id="loginPass" type="password" placeholder="Your password">
+      </div>
+      <div style="text-align:right;margin-bottom:1rem"><a href="#" onclick="showPanel('reset');return false" style="font-size:0.72rem;color:rgba(var(--text-rgb),0.4)">Forgot password?</a></div>
+      <button class="auth-btn" id="loginBtn" onclick="handleLogin()">Sign In</button>
+      <div class="auth-divider">or</div>
+      <button class="auth-magic" onclick="handleMagicLink()">✦ Send me a magic link</button>
+    </div>
+
+    <!-- SIGNUP PANEL -->
+    <div class="auth-panel" id="panelSignup">
+      <div class="auth-row">
+        <div class="auth-field">
+          <label class="auth-label">First Name</label>
+          <input class="auth-input" id="signupFirst" placeholder="First name">
+        </div>
+        <div class="auth-field">
+          <label class="auth-label">Last Name</label>
+          <input class="auth-input" id="signupLast" placeholder="Last name">
+        </div>
+      </div>
+      <div class="auth-field">
+        <label class="auth-label">Email</label>
+        <input class="auth-input" id="signupEmail" type="email" placeholder="you@example.com">
+      </div>
+      <div class="auth-field">
+        <label class="auth-label">Password</label>
+        <input class="auth-input" id="signupPass" type="password" placeholder="Min 8 characters">
+      </div>
+      <div class="auth-field">
+        <label class="auth-label">City</label>
+        <select class="auth-input" id="signupCity" style="appearance:none">
+          <option value="Savannah, GA" style="background:#111f3a;color:#fdfcf8">Savannah, GA</option>
+          <option value="Atlanta, GA" style="background:#111f3a;color:#fdfcf8">Atlanta, GA</option>
+          <option value="Tampa, FL" style="background:#111f3a;color:#fdfcf8">Tampa, FL</option>
+          <option value="Orlando, FL" style="background:#111f3a;color:#fdfcf8">Orlando, FL</option>
+        </select>
+      </div>
+      <button class="auth-btn" id="signupBtn" onclick="handleSignup()">Create Account</button>
+    </div>
+
+    <!-- PASSWORD RESET PANEL -->
+    <div class="auth-panel" id="panelReset">
+      <div class="auth-title" style="font-size:1.4rem;margin-bottom:0.5rem">Reset password</div>
+      <div class="auth-sub">Enter your email and we'll send a reset link.</div>
+      <div class="auth-field">
+        <label class="auth-label">Email</label>
+        <input class="auth-input" id="resetEmail" type="email" placeholder="you@example.com">
+      </div>
+      <button class="auth-btn" onclick="handleReset()">Send Reset Link</button>
+      <div style="text-align:center;margin-top:1rem"><a href="#" onclick="showPanel('login');return false" style="font-size:0.72rem">← Back to sign in</a></div>
+    </div>
+  </div>
+
+  <div class="auth-footer">
+    <a href="/">Home</a> · <a href="/departure-lounge-landing.html">Shop</a> · <a href="/membership.html">Membership</a>
+  </div>
+</div>
+
+<script>
+// ── SUPABASE INIT ──
+var SB_URL = 'https://vkctidpaghpdlmleezvq.supabase.co';
+var SB_KEY = 'eyJhbGciOiJIUzI1NiIsInR5cCI6IkpXVCJ9.eyJpc3MiOiJzdXBhYmFzZSIsInJlZiI6InZrY3RpZHBhZ2hwZGxtbGVlenZxIiwicm9sZSI6ImFub24iLCJpYXQiOjE3NzUzMjI5MjgsImV4cCI6MjA5MDg5ODkyOH0.wKtG6XD6CwLy3rJDZc4S10-NqNr3fcCXHYOWJt_C628';
+var supabase = window.supabase.createClient(SB_URL, SB_KEY);
+
+// Check if already logged in
+(async function() {
+  var { data } = await supabase.auth.getSession();
+  if (data.session) {
+    window.location.href = '/account.html';
+  }
+})();
+
+// ── PANEL SWITCHING ──
+function showPanel(panel) {
+  document.querySelectorAll('.auth-panel').forEach(function(p) { p.classList.remove('active'); });
+  document.querySelectorAll('.auth-tab').forEach(function(t) { t.classList.remove('active'); });
+  document.getElementById('panel' + panel.charAt(0).toUpperCase() + panel.slice(1)).classList.add('active');
+  if (panel === 'login') document.getElementById('tabLogin').classList.add('active');
+  if (panel === 'signup') document.getElementById('tabSignup').classList.add('active');
+  clearMsg();
+}
+
+function showMsg(text, type) {
+  var el = document.getElementById('authMsg');
+  el.textContent = text;
+  el.className = 'auth-msg ' + type;
+}
+
+function clearMsg() {
+  var el = document.getElementById('authMsg');
+  el.className = 'auth-msg';
+  el.textContent = '';
+}
+
+// ── LOGIN ──
+async function handleLogin() {
+  var email = document.getElementById('loginEmail').value.trim();
+  var pass = document.getElementById('loginPass').value;
+  if (!email || !pass) { showMsg('Please enter email and password.', 'error'); return; }
+
+  var btn = document.getElementById('loginBtn');
+  btn.disabled = true; btn.textContent = 'Signing in...';
+  clearMsg();
+
+  var { data, error } = await supabase.auth.signInWithPassword({ email: email, password: pass });
+
+  if (error) {
+    showMsg(error.message || 'Sign in failed. Please check your credentials.', 'error');
+    btn.disabled = false; btn.textContent = 'Sign In';
+    return;
+  }
+
+  // Success — redirect to account
+  showMsg('Welcome back! Redirecting...', 'success');
+  setTimeout(function() { window.location.href = '/account.html'; }, 800);
+}
+
+// ── SIGNUP ──
+async function handleSignup() {
+  var first = document.getElementById('signupFirst').value.trim();
+  var last = document.getElementById('signupLast').value.trim();
+  var email = document.getElementById('signupEmail').value.trim();
+  var pass = document.getElementById('signupPass').value;
+  var city = document.getElementById('signupCity').value;
+
+  if (!email || !pass) { showMsg('Please enter email and password.', 'error'); return; }
+  if (pass.length < 8) { showMsg('Password must be at least 8 characters.', 'error'); return; }
+
+  var btn = document.getElementById('signupBtn');
+  btn.disabled = true; btn.textContent = 'Creating account...';
+  clearMsg();
+
+  var { data, error } = await supabase.auth.signUp({
+    email: email,
+    password: pass,
+    options: {
+      data: {
+        first_name: first,
+        last_name: last,
+        preferred_city: city
+      }
+    }
+  });
+
+  if (error) {
+    showMsg(error.message || 'Signup failed. Please try again.', 'error');
+    btn.disabled = false; btn.textContent = 'Create Account';
+    return;
+  }
+
+  // Update profile with name and city
+  if (data.user) {
+    await supabase.from('profiles').update({
+      first_name: first,
+      last_name: last,
+      preferred_city: city
+    }).eq('id', data.user.id);
+  }
+
+  // Check if email confirmation is required
+  if (data.user && !data.session) {
+    showMsg('Account created! Check your email to confirm, then sign in.', 'success');
+    btn.disabled = false; btn.textContent = 'Create Account';
+  } else {
+    showMsg('Account created! Redirecting...', 'success');
+    setTimeout(function() { window.location.href = '/account.html'; }, 800);
+  }
+}
+
+// ── MAGIC LINK ──
+async function handleMagicLink() {
+  var email = document.getElementById('loginEmail').value.trim();
+  if (!email) { showMsg('Enter your email first, then click magic link.', 'error'); return; }
+  clearMsg();
+
+  var { error } = await supabase.auth.signInWithOtp({
+    email: email,
+    options: { emailRedirectTo: window.location.origin + '/account.html' }
+  });
+
+  if (error) {
+    showMsg(error.message || 'Could not send magic link.', 'error');
+    return;
+  }
+
+  showMsg('Magic link sent! Check your inbox for a login link.', 'success');
+}
+
+// ── PASSWORD RESET ──
+async function handleReset() {
+  var email = document.getElementById('resetEmail').value.trim();
+  if (!email) { showMsg('Please enter your email.', 'error'); return; }
+  clearMsg();
+
+  var { error } = await supabase.auth.resetPasswordForEmail(email, {
+    redirectTo: window.location.origin + '/account.html'
+  });
+
+  if (error) {
+    showMsg(error.message || 'Could not send reset link.', 'error');
+    return;
+  }
+
+  showMsg('Reset link sent! Check your inbox.', 'success');
+}
+
+// Enter key support
+document.addEventListener('keydown', function(e) {
+  if (e.key === 'Enter') {
+    if (document.getElementById('panelLogin').classList.contains('active')) handleLogin();
+    if (document.getElementById('panelSignup').classList.contains('active')) handleSignup();
+  }
+});
+</script>
+<script src="/ios-viewport-lock.js" defer></script>
+</body>
+</html>

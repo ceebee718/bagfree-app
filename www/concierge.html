@@ -1,0 +1,694 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+<meta charset="UTF-8">
+<meta name="viewport" content="width=device-width, initial-scale=1, maximum-scale=1, user-scalable=no, viewport-fit=cover">
+<title>BagFree Concierge — Book a trip with your BAG Rewards</title>
+<meta name="description" content="Tell our Fora travel agents where you want to go. Apply BAG Rewards to your booking. We handle the rest.">
+<meta name="theme-color" content="#C9A96E">
+
+<link href="https://fonts.googleapis.com/css2?family=Cormorant+Garamond:ital,wght@0,300;0,400;0,500;0,600;1,300;1,400&family=Jost:wght@200;300;400;500;600&display=swap" rel="stylesheet">
+
+<script>
+(function(){
+  try {
+    const saved = localStorage.getItem('bf-theme');
+    const theme = saved || (window.matchMedia('(prefers-color-scheme: light)').matches ? 'light' : 'dark');
+    document.documentElement.setAttribute('data-theme', theme);
+  } catch(e) { document.documentElement.setAttribute('data-theme', 'dark'); }
+})();
+</script>
+
+<!-- Supabase JS client (used to load the signed-in user's balance, if any) -->
+<script src="https://cdn.jsdelivr.net/npm/@supabase/supabase-js@2/dist/umd/supabase.min.js"></script>
+
+<style>
+*{margin:0;padding:0;box-sizing:border-box}
+
+:root{
+  --text-rgb: 253, 252, 248;
+  --bg-rgb: 13, 21, 37;
+  --gold-rgb: 201, 169, 110;
+  --noir:#0D1525;
+  --noir-2:#111C30;
+  --gold:#C9A96E;
+  --gold-light:#E8D5B0;
+  --white:#FDFCF8;
+  --mist:rgba(var(--text-rgb),0.55);
+  --border:rgba(var(--gold-rgb),0.18);
+  --border-hi:rgba(var(--gold-rgb),0.48);
+  --green:#5DCAA5;
+  --red:#E07260;
+  --ff-display:'Cormorant Garamond',Georgia,serif;
+  --ff-body:'Jost',sans-serif;
+}
+:root[data-theme="light"]{
+  --text-rgb: 13, 21, 37;
+  --bg-rgb: 245, 239, 228;
+  --gold-rgb: 166, 134, 74;
+  --noir:#F5EFE4;
+  --noir-2:#FAF7F0;
+  --gold:#A6864A;
+  --gold-light:#8A6B33;
+  --white:#0D1525;
+  --green:#2D8A60;
+}
+
+html{scroll-behavior:smooth}
+body{font-family:var(--ff-body);background:var(--noir);color:var(--white);font-weight:300;min-height:100vh;transition:background-color .5s ease, color .5s ease}
+button{cursor:pointer;border:none;background:none;color:inherit;font-family:inherit;font-weight:inherit}
+input,select,textarea{font-family:inherit;font-weight:inherit}
+
+.bg-mesh{position:fixed;inset:0;z-index:-1;pointer-events:none;background:radial-gradient(ellipse 70% 50% at 15% 25%, rgba(var(--gold-rgb),0.10), transparent 60%),radial-gradient(ellipse 60% 50% at 85% 75%, rgba(var(--gold-rgb),0.07), transparent 55%)}
+
+.nav{position:fixed;top:0;left:0;right:0;z-index:100;display:flex;align-items:center;justify-content:space-between;padding:1rem 2.5rem;background:rgba(var(--bg-rgb),0.7);backdrop-filter:blur(18px) saturate(140%);border-bottom:1px solid rgba(var(--gold-rgb),0.12)}
+.nav-logo{font-family:var(--ff-display);font-size:1.1rem;letter-spacing:5px;font-weight:300;text-transform:uppercase;color:var(--white);text-decoration:none}
+.nav-logo span{color:var(--gold)}
+.nav-back{font-size:0.7rem;letter-spacing:2.5px;text-transform:uppercase;color:var(--mist);text-decoration:none;transition:color .25s}
+.nav-back:hover{color:var(--gold)}
+.theme-toggle{display:inline-flex;align-items:center;justify-content:center;width:36px;height:36px;border-radius:50%;border:1px solid rgba(var(--gold-rgb),0.32);background:rgba(var(--gold-rgb),0.06);color:var(--gold);transition:all .35s cubic-bezier(.4,0,.2,1)}
+.theme-toggle:hover{background:rgba(var(--gold-rgb),0.16);border-color:var(--gold);transform:scale(1.06) rotate(15deg);box-shadow:0 4px 14px rgba(var(--gold-rgb),0.25)}
+.theme-toggle svg{width:15px;height:15px;stroke:currentColor;fill:none;stroke-width:1.8;stroke-linecap:round;stroke-linejoin:round}
+/* CSS-only icon visibility — no JS toggling required. Whichever theme the
+   <html data-theme=""> attribute is set to, the matching icon shows. */
+.theme-icon{display:none}
+:root[data-theme="dark"]  .theme-icon-dark{display:block}
+:root[data-theme="light"] .theme-icon-light{display:block}
+/* Fallback: if data-theme isn't set yet (pre-paint), show the dark icon
+   so the button is never empty. */
+:root:not([data-theme]) .theme-icon-dark{display:block}
+
+.stage{padding:7rem 1.5rem 5rem;max-width:680px;margin:0 auto;animation:fadeUp .7s cubic-bezier(.4,0,.2,1)}
+@keyframes fadeUp{from{opacity:0;transform:translateY(22px)}to{opacity:1;transform:translateY(0)}}
+
+.eyebrow{font-size:0.66rem;letter-spacing:4px;text-transform:uppercase;color:var(--gold);display:inline-flex;align-items:center;gap:0.7rem;margin-bottom:1.2rem}
+.eyebrow::before{content:'';width:6px;height:6px;background:var(--gold);transform:rotate(45deg);display:inline-block;box-shadow:0 0 12px rgba(var(--gold-rgb),0.55)}
+
+.title{font-family:var(--ff-display);font-size:clamp(2.4rem,5vw,3.6rem);font-weight:300;line-height:1.08;letter-spacing:-1px;margin-bottom:0.9rem}
+.title em{font-style:italic;color:var(--gold);font-weight:300}
+.sub{font-size:0.98rem;color:rgba(var(--text-rgb),0.62);line-height:1.75;max-width:520px;margin-bottom:2.5rem;font-weight:300}
+
+.progress{display:flex;align-items:center;gap:0.4rem;margin-bottom:2.2rem}
+.progress-dot{width:8px;height:8px;border-radius:50%;background:rgba(var(--gold-rgb),0.2);transition:all .35s}
+.progress-dot.active{background:var(--gold);box-shadow:0 0 12px rgba(var(--gold-rgb),0.5)}
+.progress-dot.done{background:var(--gold-light)}
+.progress-label{font-size:0.62rem;letter-spacing:3px;text-transform:uppercase;color:var(--mist);margin-left:0.6rem}
+
+.step{display:none;animation:fadeUp .5s cubic-bezier(.4,0,.2,1)}
+.step.active{display:block}
+
+.field{margin-bottom:1.4rem}
+.field-label{font-size:0.66rem;letter-spacing:3px;text-transform:uppercase;color:var(--gold);margin-bottom:0.55rem;display:block;font-weight:500}
+.field-hint{font-size:0.7rem;color:var(--mist);margin-top:0.4rem;line-height:1.5;font-style:italic}
+
+.input,.select,.textarea{
+  width:100%;background:rgba(var(--gold-rgb),0.04);border:1px solid var(--border);
+  color:var(--white);padding:0.85rem 1rem;font-size:0.95rem;font-weight:300;
+  transition:all .25s;font-family:var(--ff-body);
+}
+.input:focus,.select:focus,.textarea:focus{outline:none;border-color:var(--gold);background:rgba(var(--gold-rgb),0.08)}
+.textarea{resize:vertical;min-height:90px;font-family:var(--ff-display);font-size:1rem;line-height:1.6}
+
+.chip-row{display:flex;flex-wrap:wrap;gap:0.5rem}
+.chip{
+  padding:0.7rem 1.1rem;font-size:0.66rem;letter-spacing:2px;text-transform:uppercase;font-weight:500;
+  background:transparent;border:1px solid rgba(var(--gold-rgb),0.32);color:rgba(var(--text-rgb),0.82);
+  transition:all .22s cubic-bezier(.4,0,.2,1);font-family:var(--ff-body);
+}
+.chip:hover{border-color:var(--gold);color:var(--gold)}
+.chip.active{background:rgba(var(--gold-rgb),0.12);border-color:var(--gold);color:var(--gold);display:inline-flex;align-items:center;gap:0.45rem}
+.chip.active::before{content:'';width:5px;height:5px;background:var(--gold);transform:rotate(45deg);display:inline-block}
+
+.actions{display:flex;justify-content:space-between;align-items:center;margin-top:2.5rem;gap:1rem;flex-wrap:wrap}
+.btn-primary{
+  background:linear-gradient(135deg,var(--gold) 0%,#d8b06a 50%,#b8893e 100%);
+  color:var(--noir);padding:1rem 2.4rem;font-size:0.76rem;font-weight:600;letter-spacing:3.2px;
+  text-transform:uppercase;box-shadow:0 8px 24px rgba(var(--gold-rgb),0.25);
+  transition:all .3s cubic-bezier(.4,0,.2,1);font-family:var(--ff-body);
+}
+.btn-primary:hover:not(:disabled){transform:translateY(-2px);box-shadow:0 16px 40px rgba(var(--gold-rgb),0.38);letter-spacing:4px}
+.btn-primary:disabled{opacity:0.4;cursor:not-allowed}
+.btn-secondary{
+  background:transparent;color:var(--mist);padding:0.85rem 1.5rem;font-size:0.7rem;font-weight:500;
+  letter-spacing:2.5px;text-transform:uppercase;border:1px solid var(--border);transition:all .25s;font-family:var(--ff-body);
+}
+.btn-secondary:hover{border-color:var(--gold);color:var(--gold)}
+
+/* Points step UI */
+.balance-card{
+  background:linear-gradient(180deg, rgba(var(--gold-rgb),0.06), rgba(var(--gold-rgb),0.02));
+  border:1px solid var(--border);padding:1.6rem 1.5rem;margin-bottom:1.5rem;position:relative;
+}
+.balance-card::before{content:'';position:absolute;top:0;left:0;right:0;height:1px;background:linear-gradient(to right, transparent, rgba(var(--gold-rgb),0.55), transparent)}
+.balance-label{font-size:0.66rem;letter-spacing:3px;text-transform:uppercase;color:var(--gold);margin-bottom:0.5rem}
+.balance-amount{font-family:var(--ff-display);font-size:2.1rem;font-weight:300;color:var(--gold);letter-spacing:-0.5px;line-height:1.1}
+.balance-amount em{font-style:normal;font-size:0.95rem;color:var(--mist);font-family:var(--ff-body);letter-spacing:1.5px;margin-left:0.5rem;text-transform:uppercase}
+.balance-note{font-size:0.72rem;color:var(--mist);margin-top:0.6rem;line-height:1.55}
+
+.points-input-row{display:flex;align-items:center;gap:1rem}
+.points-input{flex:1}
+.points-preview{font-family:var(--ff-display);font-size:1.3rem;color:var(--gold);white-space:nowrap;font-weight:400}
+
+.range-wrap{margin-top:0.85rem}
+input[type=range]{-webkit-appearance:none;width:100%;background:transparent}
+input[type=range]::-webkit-slider-runnable-track{height:3px;background:rgba(var(--gold-rgb),0.24);border-radius:2px}
+input[type=range]::-moz-range-track{height:3px;background:rgba(var(--gold-rgb),0.24);border-radius:2px}
+input[type=range]::-webkit-slider-thumb{-webkit-appearance:none;width:18px;height:18px;border-radius:50%;background:var(--gold);margin-top:-7px;border:none;cursor:pointer;box-shadow:0 0 12px rgba(var(--gold-rgb),0.5)}
+input[type=range]::-moz-range-thumb{width:18px;height:18px;border-radius:50%;background:var(--gold);border:none;cursor:pointer;box-shadow:0 0 12px rgba(var(--gold-rgb),0.5)}
+
+.signin-prompt{padding:1.4rem;border:1px dashed rgba(var(--gold-rgb),0.35);background:rgba(var(--gold-rgb),0.03);margin-bottom:1.5rem;text-align:center}
+.signin-prompt-title{font-family:var(--ff-display);font-size:1.2rem;color:var(--white);margin-bottom:0.4rem;font-weight:400}
+.signin-prompt-sub{font-size:0.85rem;color:var(--mist);line-height:1.6;margin-bottom:1rem}
+.signin-link{font-size:0.72rem;letter-spacing:2.5px;text-transform:uppercase;color:var(--gold);border:1px solid var(--gold);padding:0.65rem 1.4rem;text-decoration:none;display:inline-block;transition:all .25s}
+.signin-link:hover{background:var(--gold);color:var(--noir)}
+
+/* Review step */
+.review-card{background:rgba(var(--gold-rgb),0.04);border:1px solid var(--border);padding:1.5rem;margin-bottom:1.2rem}
+.review-row{display:flex;justify-content:space-between;align-items:flex-start;padding:0.6rem 0;border-bottom:1px solid rgba(var(--gold-rgb),0.08);gap:1rem}
+.review-row:last-child{border-bottom:none}
+.review-label{font-size:0.62rem;letter-spacing:2.5px;text-transform:uppercase;color:var(--mist);flex-shrink:0;padding-top:0.1rem}
+.review-value{font-size:0.95rem;color:var(--white);text-align:right;font-weight:300;line-height:1.5}
+.review-value em{color:var(--gold);font-style:italic}
+
+/* Confirm step */
+.confirm-mark{display:flex;align-items:center;justify-content:center;width:84px;height:84px;border-radius:50%;border:1px solid rgba(var(--gold-rgb),0.42);background:radial-gradient(circle at 50% 35%, rgba(var(--gold-rgb),0.18), rgba(var(--gold-rgb),0.04) 70%);margin:0 auto 1.8rem;animation:markIn .8s .15s cubic-bezier(.4,0,.2,1) both}
+.confirm-mark svg{width:34px;height:34px;stroke:var(--gold);fill:none;stroke-width:1.6;stroke-linecap:round;stroke-linejoin:round;stroke-dasharray:42;stroke-dashoffset:42;animation:checkDraw .7s .55s cubic-bezier(.4,0,.2,1) forwards}
+@keyframes markIn{from{opacity:0;transform:scale(0.6) rotate(-8deg)}to{opacity:1;transform:scale(1) rotate(0)}}
+@keyframes checkDraw{to{stroke-dashoffset:0}}
+
+.err{color:var(--red);font-size:0.78rem;margin-top:0.6rem;padding:0.65rem 0.9rem;background:rgba(224,114,96,0.08);border:1px solid rgba(224,114,96,0.32);display:none;line-height:1.5}
+.err.show{display:block}
+
+@media(max-width:560px){
+  .nav{padding:0.85rem 1.1rem}
+  .stage{padding:6rem 1.1rem 4rem}
+  .actions{flex-direction:column-reverse;align-items:stretch}
+  .actions .btn-primary, .actions .btn-secondary{width:100%;text-align:center}
+  .review-row{flex-direction:column;align-items:flex-start;gap:0.2rem}
+  .review-value{text-align:left}
+  .points-input-row{flex-direction:column;align-items:stretch}
+  .points-preview{text-align:center}
+}
+</style>
+<link rel="stylesheet" href="/ios-viewport-lock.css">
+<link rel="stylesheet" href="/embr-concierge-button.css">
+</head>
+<body>
+<div class="bg-mesh"></div>
+
+<nav class="nav">
+  <a href="/" class="nav-logo">Bag<span>Free</span></a>
+  <div style="display:flex;align-items:center;gap:1.25rem">
+    <a href="/" class="nav-back">← Home</a>
+    <button class="theme-toggle" id="themeBtn" onclick="toggleTheme()" aria-label="Toggle theme" title="Toggle theme">
+      <!-- Dark mode icon (sun). Shown when data-theme=dark, hidden otherwise. CSS-controlled, no JS needed. -->
+      <svg class="theme-icon theme-icon-dark" viewBox="0 0 24 24" width="15" height="15" fill="none" stroke="currentColor" stroke-width="1.8" stroke-linecap="round" stroke-linejoin="round"><circle cx="12" cy="12" r="4"/><path d="M12 2v2M12 20v2M4.93 4.93l1.41 1.41M17.66 17.66l1.41 1.41M2 12h2M20 12h2M4.93 19.07l1.41-1.41M17.66 6.34l1.41-1.41"/></svg>
+      <!-- Light mode icon (moon). Shown when data-theme=light. -->
+      <svg class="theme-icon theme-icon-light" viewBox="0 0 24 24" width="15" height="15" fill="none" stroke="currentColor" stroke-width="1.8" stroke-linecap="round" stroke-linejoin="round"><path d="M21 12.79A9 9 0 1 1 11.21 3 7 7 0 0 0 21 12.79z"/></svg>
+    </button>
+  </div>
+</nav>
+
+<main class="stage">
+
+  <!-- ── PROGRESS ── -->
+  <div class="progress" id="progress">
+    <div class="progress-dot active" data-step="1"></div>
+    <div class="progress-dot" data-step="2"></div>
+    <div class="progress-dot" data-step="3"></div>
+    <div class="progress-dot" data-step="4"></div>
+    <span class="progress-label" id="progressLabel">Step 1 of 4 · Your trip</span>
+  </div>
+
+  <!-- ── STEP 1: TRIP BASICS ── -->
+  <div class="step active" id="step1">
+    <div class="eyebrow">BagFree Concierge</div>
+    <h1 class="title">Where to <em>next?</em></h1>
+    <p class="sub">Tell our travel team where you want to go. We'll come back within 24 hours with curated options, your BAG Rewards applied, and the upgrades and perks only Fora advisors can offer.</p>
+
+    <div class="field">
+      <label class="field-label" for="destination">Destination</label>
+      <input class="input" id="destination" type="text" placeholder="e.g., Anguilla, Tulum, Lake Como" autocomplete="off">
+    </div>
+
+    <div class="field">
+      <label class="field-label" for="travel_dates">When</label>
+      <input class="input" id="travel_dates" type="text" placeholder="e.g., March 14-21, or 'spring break'">
+      <div class="field-hint">Rough dates are fine — we'll firm them up together.</div>
+    </div>
+
+    <div class="field">
+      <label class="field-label" for="travelers">Travelers</label>
+      <select class="select" id="travelers">
+        <option value="1">1 traveler</option>
+        <option value="2" selected>2 travelers</option>
+        <option value="3">3 travelers</option>
+        <option value="4">4 travelers</option>
+        <option value="5">5 travelers</option>
+        <option value="6">6+ travelers</option>
+      </select>
+    </div>
+
+    <div class="field">
+      <label class="field-label">Vibe</label>
+      <div class="chip-row" id="vibeRow">
+        <button type="button" class="chip" data-vibe="beach">Beach &amp; sun</button>
+        <button type="button" class="chip" data-vibe="city">City escape</button>
+        <button type="button" class="chip" data-vibe="wellness">Wellness</button>
+        <button type="button" class="chip" data-vibe="culinary">Culinary</button>
+        <button type="button" class="chip" data-vibe="business">Business</button>
+        <button type="button" class="chip" data-vibe="family">Family</button>
+        <button type="button" class="chip" data-vibe="other">Other</button>
+      </div>
+    </div>
+
+    <div class="field">
+      <label class="field-label">Budget per traveler</label>
+      <div class="chip-row" id="budgetRow">
+        <button type="button" class="chip" data-budget="under_500">Under $500</button>
+        <button type="button" class="chip" data-budget="500_1500">$500–1,500</button>
+        <button type="button" class="chip" data-budget="1500_5000">$1,500–5,000</button>
+        <button type="button" class="chip" data-budget="5000_plus">$5,000+</button>
+        <button type="button" class="chip" data-budget="flexible">Flexible</button>
+      </div>
+    </div>
+
+    <div class="field">
+      <label class="field-label" for="special_requests">Anything else?</label>
+      <textarea class="textarea" id="special_requests" placeholder="Anniversary celebration, dietary needs, hotel preferences, specific experiences..."></textarea>
+    </div>
+
+    <div class="err" id="err1"></div>
+
+    <div class="actions">
+      <span></span>
+      <button class="btn-primary" onclick="goToStep(2)">Continue →</button>
+    </div>
+  </div>
+
+  <!-- ── STEP 2: APPLY POINTS ── -->
+  <div class="step" id="step2">
+    <div class="eyebrow">Apply your rewards</div>
+    <h1 class="title">Use your <em>BAG Rewards</em>.</h1>
+    <p class="sub">Travel redemption is our best value — every 100 points = $2 toward your booking. Save them up and they go further.</p>
+
+    <div id="balanceWrap"></div>
+
+    <div class="err" id="err2"></div>
+
+    <div class="actions">
+      <button class="btn-secondary" onclick="goToStep(1)">← Back</button>
+      <button class="btn-primary" onclick="goToStep(3)">Continue →</button>
+    </div>
+  </div>
+
+  <!-- ── STEP 3: CONTACT + REVIEW ── -->
+  <div class="step" id="step3">
+    <div class="eyebrow">Almost there</div>
+    <h1 class="title">How can we <em>reach you?</em></h1>
+    <p class="sub">Your dedicated travel advisor will follow up within 24 hours with options.</p>
+
+    <div id="contactWrap">
+      <div class="field">
+        <label class="field-label" for="contact_name">Your name</label>
+        <input class="input" id="contact_name" type="text" placeholder="First and last name" autocomplete="name">
+      </div>
+      <div class="field">
+        <label class="field-label" for="contact_email">Email</label>
+        <input class="input" id="contact_email" type="email" placeholder="you@example.com" autocomplete="email">
+      </div>
+      <div class="field">
+        <label class="field-label" for="contact_phone">Phone (optional)</label>
+        <input class="input" id="contact_phone" type="tel" placeholder="For urgent updates only" autocomplete="tel">
+      </div>
+    </div>
+
+    <div class="review-card" id="reviewCard">
+      <!-- Filled by JS -->
+    </div>
+
+    <div class="err" id="err3"></div>
+
+    <div class="actions">
+      <button class="btn-secondary" onclick="goToStep(2)">← Back</button>
+      <button class="btn-primary" id="submitBtn" onclick="submitRequest()">Submit to Concierge →</button>
+    </div>
+  </div>
+
+  <!-- ── STEP 4: CONFIRMATION ── -->
+  <div class="step" id="step4">
+    <div class="confirm-mark" aria-hidden="true">
+      <svg viewBox="0 0 24 24"><polyline points="4,12.5 10,18.5 20,7"/></svg>
+    </div>
+    <div class="eyebrow" style="justify-content:center">Request received</div>
+    <h1 class="title" style="text-align:center">Your concierge is <em>on it.</em></h1>
+    <p class="sub" style="text-align:center;margin-left:auto;margin-right:auto">
+      A Fora travel advisor will reach out within 24 hours with curated options for your trip. Watch your inbox at <em id="confirmEmail" style="color:var(--gold);font-style:normal">your email</em>.
+    </p>
+
+    <div class="review-card" style="margin-top:1rem">
+      <div class="balance-label" style="margin-bottom:0.8rem">Request ID</div>
+      <div style="font-family:monospace;font-size:0.78rem;color:var(--gold);word-break:break-all" id="confirmId">—</div>
+    </div>
+
+    <div class="actions" style="justify-content:center">
+      <a href="/" class="btn-primary" style="text-decoration:none">Back to home</a>
+    </div>
+  </div>
+
+</main>
+
+<script>
+// ─── CONFIG ───
+const SUPABASE_URL  = 'https://vkctidpaghpdlmleezvq.supabase.co';      // ← REPLACE
+const SUPABASE_ANON = 'eyJhbGciOiJIUzI1NiIsInR5cCI6IkpXVCJ9.eyJpc3MiOiJzdXBhYmFzZSIsInJlZiI6InZrY3RpZHBhZ2hwZGxtbGVlenZxIiwicm9sZSI6ImFub24iLCJpYXQiOjE3NzUzMjI5MjgsImV4cCI6MjA5MDg5ODkyOH0.wKtG6XD6CwLy3rJDZc4S10-NqNr3fcCXHYOWJt_C628';                          // ← REPLACE
+
+// ─── STATE ───
+const state = {
+  step: 1,
+  destination: '',
+  travel_dates: '',
+  travelers: 2,
+  vibe: '',
+  budget_range: '',
+  special_requests: '',
+  points_to_apply: 0,
+  contact_name: '',
+  contact_email: '',
+  contact_phone: '',
+  user: null,
+  available_points: 0,
+};
+
+// Map: budget bucket → conservative low-end (used for the points-cap preview)
+const BUDGET_LOW_USD = {
+  under_500:   200,
+  '500_1500':  500,
+  '1500_5000': 1500,
+  '5000_plus': 5000,
+  flexible:    500,
+};
+const POINTS_PER_DOLLAR_TRAVEL = 50;   // 100 points = $2 → 50 points = $1
+const MAX_REDEMPTION_PCT = 30;
+const MIN_TRIP_USD = 200;
+
+// ─── SUPABASE INIT ───
+let sb = null;
+try {
+  sb = window.supabase.createClient(SUPABASE_URL, SUPABASE_ANON);
+} catch(e) { console.warn('Supabase client not initialized — running without auth'); }
+
+// ─── THEME (mirrors landing page / lounge / thank-you so the choice persists across pages) ───
+// Icon visibility is fully CSS-driven via :root[data-theme] selectors,
+// so all this function does is flip the attribute and persist the choice.
+function toggleTheme() {
+  const cur = document.documentElement.getAttribute('data-theme') || 'dark';
+  const next = cur === 'dark' ? 'light' : 'dark';
+  document.documentElement.setAttribute('data-theme', next);
+  try { localStorage.setItem('bf-theme', next); } catch(e) {}
+  const btn = document.getElementById('themeBtn');
+  if (btn) btn.setAttribute('aria-label', next === 'dark' ? 'Switch to light mode' : 'Switch to dark mode');
+}
+
+// ─── ON LOAD ───
+document.addEventListener('DOMContentLoaded', async function() {
+  // Chip handlers
+  document.querySelectorAll('#vibeRow .chip').forEach(c => {
+    c.addEventListener('click', () => selectChip('vibe', c.dataset.vibe, '#vibeRow'));
+  });
+  document.querySelectorAll('#budgetRow .chip').forEach(c => {
+    c.addEventListener('click', () => selectChip('budget_range', c.dataset.budget, '#budgetRow'));
+  });
+
+  // Pre-fill destination from ?dest= URL param (used when arriving from a city chip)
+  try {
+    const params = new URLSearchParams(window.location.search);
+    const dest = params.get('dest');
+    if (dest) {
+      // Convert URL slug to a display label: 'new-york' → 'New York'
+      const label = dest.split('-').map(w => w.charAt(0).toUpperCase() + w.slice(1)).join(' ');
+      document.getElementById('destination').value = label;
+      state.destination = label;
+    }
+  } catch (e) {}
+
+  // Load user + balance if signed in
+  await loadUser();
+});
+
+async function loadUser() {
+  if (!sb) return;
+  try {
+    const { data: { session } } = await sb.auth.getSession();
+    if (!session) return;
+    state.user = session.user;
+
+    // Pre-fill contact fields from profile
+    const { data: profile } = await sb
+      .from('profiles').select('email,name').eq('id', session.user.id).maybeSingle();
+    if (profile) {
+      state.contact_email = profile.email || session.user.email || '';
+      state.contact_name = profile.name || '';
+    }
+
+    // Load available balance
+    const { data: bal } = await sb
+      .from('bag_available_balance').select('available').eq('user_id', session.user.id).maybeSingle();
+    if (bal) state.available_points = Number(bal.available) || 0;
+  } catch (e) {
+    console.warn('Could not load user state:', e);
+  }
+}
+
+function selectChip(field, value, scope) {
+  state[field] = value;
+  document.querySelectorAll(scope + ' .chip').forEach(c => c.classList.remove('active'));
+  const sel = document.querySelector(`${scope} .chip[data-${field === 'vibe' ? 'vibe' : 'budget'}="${value}"]`);
+  if (sel) sel.classList.add('active');
+}
+
+function validateStep(n) {
+  hideErr(n);
+  if (n === 1) {
+    const d = document.getElementById('destination').value.trim();
+    if (d.length < 2) { showErr(1, 'Where would you like to go?'); return false; }
+    state.destination = d;
+    state.travel_dates = document.getElementById('travel_dates').value.trim();
+    state.travelers = parseInt(document.getElementById('travelers').value, 10) || 2;
+    state.special_requests = document.getElementById('special_requests').value.trim();
+    if (!state.vibe) { showErr(1, 'Pick a vibe so we know what kind of trip to plan.'); return false; }
+    if (!state.budget_range) { showErr(1, 'Pick a budget so we can match options to your range.'); return false; }
+    return true;
+  }
+  if (n === 2) {
+    // Validate points input if any
+    const pts = parseInt(document.getElementById('pointsApply')?.value || '0', 10) || 0;
+    if (pts > state.available_points) { showErr(2, 'You can apply at most your available balance.'); return false; }
+    state.points_to_apply = pts;
+    return true;
+  }
+  if (n === 3) {
+    const name  = document.getElementById('contact_name').value.trim();
+    const email = document.getElementById('contact_email').value.trim();
+    const phone = document.getElementById('contact_phone').value.trim();
+    if (!email || !/^[^@\s]+@[^@\s]+\.[^@\s]+$/.test(email)) { showErr(3, 'A valid email is required.'); return false; }
+    state.contact_name = name; state.contact_email = email; state.contact_phone = phone;
+    return true;
+  }
+  return true;
+}
+
+function goToStep(n) {
+  if (n > state.step && !validateStep(state.step)) return;
+  state.step = n;
+  document.querySelectorAll('.step').forEach(s => s.classList.remove('active'));
+  document.getElementById('step' + n).classList.add('active');
+  document.querySelectorAll('.progress-dot').forEach(d => {
+    const i = Number(d.dataset.step);
+    d.classList.remove('active','done');
+    if (i < n) d.classList.add('done');
+    if (i === n) d.classList.add('active');
+  });
+  const labels = ['', 'Your trip', 'Apply rewards', 'Contact & confirm', 'Done'];
+  document.getElementById('progressLabel').textContent = `Step ${n} of 4 · ${labels[n]}`;
+  if (n === 2) renderPointsStep();
+  if (n === 3) renderReview();
+  window.scrollTo({ top:0, behavior:'smooth' });
+}
+
+function renderPointsStep() {
+  const wrap = document.getElementById('balanceWrap');
+  if (!state.user) {
+    wrap.innerHTML = `
+      <div class="signin-prompt">
+        <div class="signin-prompt-title">Sign in to use BAG Rewards</div>
+        <div class="signin-prompt-sub">You can still submit this request as a guest — just continue. Points can only be applied with an account.</div>
+        <a href="/departure-lounge.html" class="signin-link">Sign in or create account →</a>
+      </div>`;
+    return;
+  }
+
+  // Compute the cap based on budget bucket and constants
+  const budgetUsd = BUDGET_LOW_USD[state.budget_range] || 500;
+  const eligibleForRedemption = budgetUsd >= MIN_TRIP_USD;
+  const maxByCap = eligibleForRedemption
+    ? Math.floor(budgetUsd * MAX_REDEMPTION_PCT / 100 * POINTS_PER_DOLLAR_TRAVEL)
+    : 0;
+  const maxAllowed = Math.min(state.available_points, maxByCap);
+
+  if (!eligibleForRedemption) {
+    wrap.innerHTML = `
+      <div class="balance-card">
+        <div class="balance-label">Your BAG Rewards balance</div>
+        <div class="balance-amount">${state.available_points.toLocaleString()} <em>pts</em></div>
+        <div class="balance-note">Points redemption requires a trip cost of at least $${MIN_TRIP_USD}. Adjust your budget on the previous step to apply rewards, or continue without using points.</div>
+      </div>`;
+    return;
+  }
+
+  if (maxAllowed === 0) {
+    wrap.innerHTML = `
+      <div class="balance-card">
+        <div class="balance-label">Your BAG Rewards balance</div>
+        <div class="balance-amount">${state.available_points.toLocaleString()} <em>pts</em></div>
+        <div class="balance-note">You don't have enough points yet to apply to this trip. Continue without using rewards — they'll be ready for your next booking.</div>
+      </div>`;
+    return;
+  }
+
+  wrap.innerHTML = `
+    <div class="balance-card">
+      <div class="balance-label">Your BAG Rewards balance</div>
+      <div class="balance-amount">${state.available_points.toLocaleString()} <em>pts</em></div>
+      <div class="balance-note">Up to ${maxAllowed.toLocaleString()} points (${MAX_REDEMPTION_PCT}% of your estimated trip cost) can be applied to this booking.</div>
+    </div>
+    <div class="field">
+      <label class="field-label" for="pointsApply">Points to apply</label>
+      <div class="points-input-row">
+        <input class="input points-input" id="pointsApply" type="number" min="0" max="${maxAllowed}" step="100" value="0">
+        <div class="points-preview" id="pointsPreview">$0 off</div>
+      </div>
+      <div class="range-wrap">
+        <input type="range" id="pointsRange" min="0" max="${maxAllowed}" step="100" value="0">
+      </div>
+      <div class="field-hint">100 points = $2 toward your booking.</div>
+    </div>`;
+
+  const input = document.getElementById('pointsApply');
+  const range = document.getElementById('pointsRange');
+  const preview = document.getElementById('pointsPreview');
+  const sync = (src) => {
+    let v = parseInt(src.value, 10) || 0;
+    if (v < 0) v = 0;
+    if (v > maxAllowed) v = maxAllowed;
+    input.value = v;
+    range.value = v;
+    const dollars = (v / POINTS_PER_DOLLAR_TRAVEL).toFixed(2);
+    preview.textContent = `$${dollars} off`;
+  };
+  input.addEventListener('input', () => sync(input));
+  range.addEventListener('input', () => sync(range));
+  sync(input);
+}
+
+function renderReview() {
+  // Pre-fill contact fields if we have them from the user profile
+  if (state.user) {
+    document.getElementById('contact_name').value = state.contact_name || '';
+    document.getElementById('contact_email').value = state.contact_email || '';
+  }
+
+  const vibeLabels = {
+    beach:'Beach & sun', city:'City escape', wellness:'Wellness',
+    culinary:'Culinary', business:'Business', family:'Family', other:'Other'
+  };
+  const budgetLabels = {
+    under_500:'Under $500', '500_1500':'$500–1,500',
+    '1500_5000':'$1,500–5,000', '5000_plus':'$5,000+', flexible:'Flexible'
+  };
+
+  const pointsValueUsd = (state.points_to_apply / POINTS_PER_DOLLAR_TRAVEL).toFixed(2);
+  document.getElementById('reviewCard').innerHTML = `
+    <div class="review-row"><span class="review-label">Destination</span><span class="review-value">${esc(state.destination)}</span></div>
+    ${state.travel_dates ? `<div class="review-row"><span class="review-label">Dates</span><span class="review-value">${esc(state.travel_dates)}</span></div>` : ''}
+    <div class="review-row"><span class="review-label">Travelers</span><span class="review-value">${state.travelers}</span></div>
+    <div class="review-row"><span class="review-label">Vibe</span><span class="review-value">${esc(vibeLabels[state.vibe] || state.vibe)}</span></div>
+    <div class="review-row"><span class="review-label">Budget</span><span class="review-value">${esc(budgetLabels[state.budget_range] || state.budget_range)} per traveler</span></div>
+    ${state.points_to_apply > 0 ? `
+      <div class="review-row">
+        <span class="review-label">BAG Rewards</span>
+        <span class="review-value"><em>${state.points_to_apply.toLocaleString()} pts</em> · $${pointsValueUsd} off</span>
+      </div>` : ''}
+  `;
+}
+
+async function submitRequest() {
+  if (!validateStep(3)) return;
+  const btn = document.getElementById('submitBtn');
+  btn.disabled = true; btn.textContent = 'Sending...';
+  hideErr(3);
+
+  // Get auth token if signed in
+  let token = null;
+  if (sb) {
+    try {
+      const { data: { session } } = await sb.auth.getSession();
+      token = session?.access_token || null;
+    } catch (e) {}
+  }
+
+  try {
+    const res = await fetch('/.netlify/functions/submit-concierge-request', {
+      method:'POST',
+      headers: {
+        'Content-Type':'application/json',
+        ...(token ? { Authorization: `Bearer ${token}` } : {}),
+      },
+      body: JSON.stringify({
+        destination:      state.destination,
+        travel_dates:     state.travel_dates,
+        travelers:        state.travelers,
+        vibe:             state.vibe,
+        budget_range:     state.budget_range,
+        special_requests: state.special_requests,
+        points_to_apply:  state.points_to_apply,
+        contact_email:    state.contact_email,
+        contact_name:     state.contact_name,
+        contact_phone:    state.contact_phone,
+        estimated_trip_cost: (BUDGET_LOW_USD[state.budget_range] || 0) * 100,
+      }),
+    });
+    const data = await res.json();
+    if (!res.ok) {
+      showErr(3, data.error || 'Could not submit — please try again.');
+      btn.disabled = false; btn.textContent = 'Submit to Concierge →';
+      return;
+    }
+    document.getElementById('confirmEmail').textContent = state.contact_email;
+    document.getElementById('confirmId').textContent = data.request_id;
+    goToStep(4);
+  } catch (e) {
+    console.error(e);
+    showErr(3, 'Connection error — please check your internet and try again.');
+    btn.disabled = false; btn.textContent = 'Submit to Concierge →';
+  }
+}
+
+function showErr(step, msg) {
+  const el = document.getElementById('err' + step);
+  if (!el) return;
+  el.textContent = msg;
+  el.classList.add('show');
+}
+function hideErr(step) {
+  const el = document.getElementById('err' + step);
+  if (el) { el.classList.remove('show'); el.textContent = ''; }
+}
+function esc(s) {
+  return String(s == null ? '' : s).replace(/[&<>"']/g, c =>
+    ({ '&':'&amp;','<':'&lt;','>':'&gt;','"':'&quot;',"'":'&#39;' })[c]);
+}
+</script>
+<script src="/ios-viewport-lock.js" defer></script>
+</body>
+</html>

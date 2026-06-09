@@ -4,10 +4,7 @@
   "description": "BagFree travel platform",
   "private": true,
   "dependencies": {
-    "@capacitor/cli": "^8.3.4",
-    "@capacitor/core": "^8.3.4",
-    "@capacitor/ios": "^8.3.4",
-    "@capacitor/status-bar": "^8.0.2",
-    "stripe": "^14.0.0"
+    "stripe": "^17.0.0",
+    "@supabase/supabase-js": "^2.45.0"
   }
 }
