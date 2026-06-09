@@ -665,6 +665,20 @@ html.light .chat-panel{background:var(--bg);border-color:rgba(0,0,0,0.08)}
 html.light .chat-input{background:rgba(0,0,0,0.03);color:var(--white);border-color:rgba(0,0,0,0.1)}
 html.light .result-card{background:var(--card);border-color:rgba(0,0,0,0.06)}
 html.light .main{background:var(--bg)}
+/* network-role badges: hardcoded cream text (rgba 253 252 248 .5) is invisible on white */
+html.light .network-role{color:var(--muted);border-color:rgba(0,0,0,0.15)}
+html.light .network-role:hover{border-color:var(--gold);color:var(--gold)}
+/* widget-network: faint gold border needs more contrast on light bg */
+html.light .widget-network{border-color:rgba(0,0,0,0.1);background:rgba(201,169,110,0.04)}
+/* tile image dark overlay gradients look harsh on light-mode white cards */
+html.light .tile-image::before{background:linear-gradient(180deg,var(--card) 0%,rgba(0,0,0,0.07) 35%,transparent 70%)}
+html.light .tile-image::after{background:linear-gradient(180deg,transparent 55%,rgba(0,0,0,0.18) 100%)}
+/* result image overlay: dark navy → neutral dark */
+html.light .result-img::after{background:linear-gradient(180deg,transparent 55%,rgba(0,0,0,0.18))}
+/* refer panel icon box: hardcoded dark gradient → neutral */
+html.light .refer-img{background:linear-gradient(135deg,rgba(0,0,0,0.06),rgba(0,0,0,0.02));border-color:rgba(0,0,0,0.1)}
+/* widget base border visibility */
+html.light .widget{border-color:rgba(0,0,0,0.08)}
 
 /* ── Theme Toggle (pill) ── */
 .theme-pill{width:52px;height:26px;border-radius:13px;border:1px solid rgba(201,169,110,0.2);background:rgba(201,169,110,0.06);cursor:pointer;position:relative;transition:all 0.3s;padding:0;display:flex;align-items:center;flex-shrink:0}
