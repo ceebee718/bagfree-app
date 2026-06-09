@@ -2,7 +2,7 @@
 <html lang="en">
 <head>
 <meta charset="UTF-8">
-<meta name="viewport" content="width=device-width, initial-scale=1.0, viewport-fit=cover">
+<meta name="viewport" content="width=device-width, initial-scale=1, maximum-scale=1, user-scalable=no, viewport-fit=cover">
 <title>The Departure Lounge — BagFree</title>
 <link rel="stylesheet" href="https://unpkg.com/leaflet@1.9.4/dist/leaflet.css"/>
 <link href="https://fonts.googleapis.com/css2?family=Cormorant+Garamond:ital,wght@0,300;0,400;0,600;1,300;1,400&family=Jost:wght@300;400;500;600&display=swap" rel="stylesheet">
@@ -1227,6 +1227,7 @@ window._supabaseLaunchPatch = async function() {
   _launchDashboardCore()
 }
 </script>
+<link rel="stylesheet" href="/ios-viewport-lock.css">
 </head>
 <body>
 
@@ -6216,5 +6217,6 @@ function copyPromo(){
 })();
 </script>
 
+<script src="/ios-viewport-lock.js" defer></script>
 </body>
 </html>

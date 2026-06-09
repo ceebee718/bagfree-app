@@ -2,7 +2,7 @@
 <html lang="en">
 <head>
 <meta charset="UTF-8">
-<meta name="viewport" content="width=device-width, initial-scale=1.0, viewport-fit=cover">
+<meta name="viewport" content="width=device-width, initial-scale=1, maximum-scale=1, user-scalable=no, viewport-fit=cover">
 <title>BagFree — Arrive to Everything</title>
 <meta name="description" content="Shop travel essentials delivered to your hotel before you arrive. Powered by Valet By Nuor. Same-day delivery in Tampa & Orlando.">
 <meta name="theme-color" content="#C9A96E">
@@ -265,6 +265,7 @@ select option{background:#172138!important;color:rgb(var(--text-rgb))!important}
   } catch(e) { document.documentElement.setAttribute('data-theme', 'dark'); }
 })();
 </script>
+<link rel="stylesheet" href="/ios-viewport-lock.css">
 </head>
 <body>
 
@@ -3111,5 +3112,6 @@ const _hpObserver = new MutationObserver(() => {
 });
 _hpObserver.observe(document.body, { childList: true, subtree: true });
 </script>
+<script src="/ios-viewport-lock.js" defer></script>
 </body>
 </html>
