@@ -1403,6 +1403,7 @@ function TopBar(props) {
         </div>
         <SearchBar city={props.city} onSearch={props.onSearch} onItemClick={props.onItemClick} onClearResults={props.onClearResults}/>
       </div>
+      <div className="topbar-right">
       <div className="topbar-actions">
         <a href="/account-login.html" className="sign-in-btn" id="signInBtn">Sign In</a>
         <a href="/join-network.html" className="join-network-btn">Join Network</a>
@@ -1441,6 +1442,8 @@ function TopBar(props) {
             <button className="profile-dd-item" id="ddSignOut" onClick={handleSignOut} style={{color:'rgba(224,114,96,0.7)'}}>Sign Out</button>
           </div>
         </div>
+      </div>
+      {props.networkCard || null}
       </div>
     </div>
   );
@@ -1497,40 +1500,36 @@ function GrowingNetwork() {
 
       <div className="gn-map-wrap">
         <svg className="gn-map" viewBox="0 0 460 300" preserveAspectRatio="xMidYMid meet" aria-label="BagFree network coverage map of the southeastern United States">
-          {/* Alabama */}
-          <path d="M96 38 L168 34 L172 150 L178 176 L160 180 L158 190 L120 192 L112 158 L100 92 Z" className="gn-state"/>
-          <text x="135" y="118" className="gn-state-label">AL</text>
-          {/* Georgia */}
-          <path d="M168 34 L252 28 L268 52 L292 80 L312 102 L322 124 L316 142 L322 158 L308 162 L296 158 L240 164 L236 152 L172 150 Z" className="gn-state"/>
-          <text x="238" y="100" className="gn-state-label">GA</text>
-          {/* South Carolina */}
-          <path d="M252 28 L330 16 L368 44 L348 76 L322 96 L312 102 L292 80 L268 52 Z" className="gn-state"/>
-          <text x="316" y="58" className="gn-state-label">SC</text>
-          {/* Florida */}
-          <path d="M178 176 L236 168 L296 162 L308 166 L330 176 L352 206 L368 238 L372 264 L358 276 L344 262 L332 232 L312 204 L286 188 L226 186 L196 190 L160 190 L158 184 Z" className="gn-state"/>
-          <text x="250" y="216" className="gn-state-label">FL</text>
+          {/* Real state boundaries (US Census via GeoJSON, equirectangular projection) */}
+          <path d="M142.7 23.2 L182.4 23.6 L186.4 46.1 L192.0 79.3 L194.6 86.6 L197.1 90.7 L196.1 93.3 L198.7 94.9 L194.8 98.2 L195.0 101.5 L193.0 106.0 L195.2 113.8 L193.6 120.7 L196.1 127.9 L184.9 128.0 L137.3 128.0 L136.5 131.5 L141.6 136.5 L140.7 140.8 L142.5 143.0 L139.1 146.8 L136.0 147.7 L130.3 143.4 L129.7 136.9 L128.0 136.2 L125.9 141.1 L125.1 145.8 L119.3 144.5 L117.5 104.5 L122.8 54.7 L126.0 26.0 L123.6 23.3 L142.7 23.2 Z" className="gn-state"/>
+          <path d="M239.0 23.2 L234.2 28.8 L233.8 31.5 L241.4 37.1 L243.7 36.7 L247.2 42.4 L247.9 45.4 L251.5 50.9 L256.7 54.2 L259.7 59.0 L265.8 63.5 L265.5 66.5 L269.5 71.4 L275.6 75.4 L277.1 79.7 L277.3 85.3 L280.4 87.2 L284.0 94.2 L284.2 98.6 L289.4 100.9 L283.8 109.8 L282.8 114.4 L280.4 118.4 L280.2 122.6 L277.7 124.5 L276.7 135.7 L270.5 134.6 L265.3 132.5 L263.2 134.5 L264.1 139.4 L263.1 144.7 L260.3 144.8 L259.2 139.2 L230.2 137.2 L199.2 135.5 L196.1 127.9 L193.6 120.7 L195.2 113.8 L193.0 106.0 L195.0 101.5 L194.8 98.2 L198.7 94.9 L196.1 93.3 L197.1 90.7 L194.6 86.6 L192.0 79.3 L186.4 46.1 L182.4 23.6 L211.6 23.5 L227.5 23.6 L239.0 23.2 Z" className="gn-state"/>
+          <path d="M246.8 21.4 L251.6 19.0 L257.9 18.0 L285.8 19.3 L285.9 22.0 L288.2 20.4 L291.7 24.9 L291.3 27.9 L316.8 28.3 L342.5 53.3 L338.5 54.6 L333.5 58.9 L328.7 65.6 L327.8 71.1 L324.0 75.4 L318.9 75.4 L317.8 78.5 L312.4 82.0 L309.5 85.7 L304.7 87.3 L299.7 91.3 L299.2 93.2 L294.4 95.3 L289.4 100.9 L284.2 98.6 L284.0 94.2 L280.4 87.2 L277.3 85.3 L277.1 79.7 L275.6 75.4 L269.5 71.4 L265.5 66.5 L265.8 63.5 L259.7 59.0 L256.7 54.2 L251.5 50.9 L247.9 45.4 L247.2 42.4 L243.7 36.7 L241.4 37.1 L233.8 31.5 L234.2 28.8 L239.0 23.2 L246.8 21.4 Z" className="gn-state"/>
+          <path d="M184.9 128.0 L196.1 127.9 L199.2 135.5 L230.2 137.2 L259.2 139.2 L260.3 144.8 L263.1 144.7 L264.1 139.4 L263.2 134.5 L265.3 132.5 L270.5 134.6 L276.7 135.7 L278.1 147.0 L280.9 159.8 L287.5 176.5 L297.5 194.5 L296.1 195.8 L296.6 204.1 L300.8 213.4 L307.3 232.2 L308.7 238.1 L308.6 244.1 L306.1 265.8 L304.0 266.2 L301.8 273.0 L302.5 275.1 L298.2 280.0 L296.4 278.8 L292.2 280.9 L285.0 282.0 L282.9 279.3 L283.9 275.3 L278.8 263.6 L274.8 261.5 L271.4 263.1 L268.6 256.6 L267.9 251.3 L263.2 245.4 L262.1 241.5 L262.8 235.9 L260.2 234.9 L260.8 238.2 L258.5 239.1 L251.3 224.9 L248.4 221.3 L255.2 210.8 L250.8 211.4 L247.8 214.7 L244.8 209.5 L248.8 195.2 L249.5 183.3 L246.8 180.4 L245.9 176.5 L241.6 175.7 L236.5 169.4 L232.4 166.8 L232.2 162.9 L229.3 161.5 L227.0 157.2 L218.3 151.4 L210.7 152.7 L211.1 156.7 L208.6 156.0 L199.2 160.9 L189.1 162.1 L189.4 159.2 L187.0 155.7 L175.2 148.0 L166.8 144.7 L159.2 143.8 L152.9 144.4 L139.1 146.8 L142.5 143.0 L140.7 140.8 L141.6 136.5 L136.5 131.5 L137.3 128.0 L184.9 128.0 Z" className="gn-state"/>
+          <text x="155.4" y="83.4" className="gn-state-label" textAnchor="middle">AL</text>
+          <text x="232.4" y="86.1" className="gn-state-label" textAnchor="middle">GA</text>
+          <text x="273.2" y="214.4" className="gn-state-label" textAnchor="middle">FL</text>
 
-          {/* SC expanding marker (smaller, top-right) */}
-          <line x1="330" y1="62" x2="372" y2="50" className="gn-leader gn-leader--soon"/>
-          <circle cx="330" cy="62" r="6" className="gn-marker gn-marker--soon"/>
-          <text x="378" y="54" className="gn-map-label gn-map-label--soon">SC</text>
+          {/* Charleston, SC — expanding */}
+          <line x1="311.0" y1="81.4" x2="345.0" y2="75.4" className="gn-leader gn-leader--soon"/>
+          <circle cx="311.0" cy="81.4" r="5.5" className="gn-marker gn-marker--soon"/>
+          <text x="351.0" y="79.4" className="gn-map-label gn-map-label--soon">SC</text>
 
           {/* Savannah — live */}
-          <line x1="312" y1="118" x2="368" y2="112" className="gn-leader gn-leader--live"/>
-          <circle cx="312" cy="118" r="7" className="gn-marker gn-marker--live"/>
-          <circle cx="312" cy="118" r="12" className="gn-marker-ring"/>
-          <text x="374" y="116" className="gn-map-label">Savannah</text>
+          <line x1="284.7" y1="99.7" x2="336.7" y2="99.7" className="gn-leader gn-leader--live"/>
+          <circle cx="284.7" cy="99.7" r="6.5" className="gn-marker gn-marker--live"/>
+          <circle cx="284.7" cy="99.7" r="11" className="gn-marker-ring"/>
+          <text x="342.7" y="103.7" className="gn-map-label">Savannah</text>
 
-          {/* Orlando — soon */}
-          <line x1="312" y1="208" x2="360" y2="202" className="gn-leader gn-leader--soon"/>
-          <circle cx="312" cy="208" r="6" className="gn-marker gn-marker--soon"/>
-          <text x="366" y="206" className="gn-map-label gn-map-label--soon">Orlando</text>
+          {/* Orlando — expanding */}
+          <line x1="278.2" y1="192.5" x2="324.2" y2="192.5" className="gn-leader gn-leader--soon"/>
+          <circle cx="278.2" cy="192.5" r="5.5" className="gn-marker gn-marker--soon"/>
+          <text x="330.2" y="196.5" className="gn-map-label gn-map-label--soon">Orlando</text>
 
           {/* Tampa — live */}
-          <line x1="268" y1="222" x2="216" y2="228" className="gn-leader gn-leader--live"/>
-          <circle cx="268" cy="222" r="7" className="gn-marker gn-marker--live"/>
-          <circle cx="268" cy="222" r="12" className="gn-marker-ring"/>
-          <text x="210" y="232" className="gn-map-label" textAnchor="end">Tampa</text>
+          <line x1="253.8" y1="207.9" x2="209.8" y2="207.9" className="gn-leader gn-leader--live"/>
+          <circle cx="253.8" cy="207.9" r="6.5" className="gn-marker gn-marker--live"/>
+          <circle cx="253.8" cy="207.9" r="11" className="gn-marker-ring"/>
+          <text x="203.8" y="211.9" className="gn-map-label" textAnchor="end">Tampa</text>
         </svg>
       </div>
 
@@ -2155,13 +2154,12 @@ function App() {
       <div className={'drawer-overlay' + (drawerOpen ? ' show' : '')} onClick={function(){ setDrawerOpen(false); }}></div>
       <Sidebar mobileOpen={drawerOpen} onClose={function(){ setDrawerOpen(false); }} active={active} setActive={setActive} city={city} setCity={setCity}/>
       <main className="main">
-        <TopBar city={city} setCity={setCity} onSearch={onSearch} onItemClick={openItem} onClearResults={clearSearch}/>
+        <TopBar city={city} setCity={setCity} onSearch={onSearch} onItemClick={openItem} onClearResults={clearSearch} networkCard={!viewing && search.results === null ? <GrowingNetwork/> : null}/>
         {viewing ? (
           <ResultDetail item={viewing} onBack={closeDetail} onItemClick={openItem}/>
         ) : search.results === null ? (
           <React.Fragment>
             <Grid/>
-            <GrowingNetwork/>
             <QuoteSection/>
             <VideoSection/>
             <SocialFooter/>
