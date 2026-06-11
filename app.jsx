@@ -1499,7 +1499,7 @@ function GrowingNetwork() {
       </div>
 
       <div className="gn-map-wrap">
-        <svg className="gn-map" viewBox="0 0 460 300" preserveAspectRatio="xMidYMid meet" aria-label="BagFree network coverage map of the southeastern United States">
+        <svg className="gn-map" viewBox="39 8 435 284" preserveAspectRatio="xMidYMid meet" aria-label="BagFree network coverage map of the southeastern United States">
           {/* Real state boundaries (US Census via GeoJSON, equirectangular projection) */}
           <path d="M142.7 23.2 L182.4 23.6 L186.4 46.1 L192.0 79.3 L194.6 86.6 L197.1 90.7 L196.1 93.3 L198.7 94.9 L194.8 98.2 L195.0 101.5 L193.0 106.0 L195.2 113.8 L193.6 120.7 L196.1 127.9 L184.9 128.0 L137.3 128.0 L136.5 131.5 L141.6 136.5 L140.7 140.8 L142.5 143.0 L139.1 146.8 L136.0 147.7 L130.3 143.4 L129.7 136.9 L128.0 136.2 L125.9 141.1 L125.1 145.8 L119.3 144.5 L117.5 104.5 L122.8 54.7 L126.0 26.0 L123.6 23.3 L142.7 23.2 Z" className="gn-state"/>
           <path d="M239.0 23.2 L234.2 28.8 L233.8 31.5 L241.4 37.1 L243.7 36.7 L247.2 42.4 L247.9 45.4 L251.5 50.9 L256.7 54.2 L259.7 59.0 L265.8 63.5 L265.5 66.5 L269.5 71.4 L275.6 75.4 L277.1 79.7 L277.3 85.3 L280.4 87.2 L284.0 94.2 L284.2 98.6 L289.4 100.9 L283.8 109.8 L282.8 114.4 L280.4 118.4 L280.2 122.6 L277.7 124.5 L276.7 135.7 L270.5 134.6 L265.3 132.5 L263.2 134.5 L264.1 139.4 L263.1 144.7 L260.3 144.8 L259.2 139.2 L230.2 137.2 L199.2 135.5 L196.1 127.9 L193.6 120.7 L195.2 113.8 L193.0 106.0 L195.0 101.5 L194.8 98.2 L198.7 94.9 L196.1 93.3 L197.1 90.7 L194.6 86.6 L192.0 79.3 L186.4 46.1 L182.4 23.6 L211.6 23.5 L227.5 23.6 L239.0 23.2 Z" className="gn-state"/>
