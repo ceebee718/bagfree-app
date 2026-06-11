@@ -1470,6 +1470,107 @@ function Grid() {
   );
 }
 
+function GrowingNetwork() {
+  /* Southeast US map — simplified state outlines (GA, FL, SC, AL) in a 460x300 viewBox */
+  return (
+    <section className="gn-card">
+      <div className="gn-left">
+        <div className="gn-eyebrow">
+          <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" strokeWidth="1.6"><path d="M4.9 19.1C1 15.2 1 8.8 4.9 4.9"/><path d="M7.8 16.2c-2.3-2.3-2.3-6.1 0-8.5"/><circle cx="12" cy="12" r="2"/><path d="M16.2 7.8c2.3 2.3 2.3 6.1 0 8.5"/><path d="M19.1 4.9C23 8.8 23 15.2 19.1 19.1"/></svg>
+          BagFree Network
+        </div>
+        <h2 className="gn-title">Growing Network</h2>
+        <div className="gn-sub">Travel lighter in these destinations today.</div>
+
+        <div className="gn-list-label">Currently Available</div>
+        <div className="gn-list">
+          <div className="gn-list-item"><span className="gn-dot gn-dot--live"></span>Savannah, GA</div>
+          <div className="gn-list-item"><span className="gn-dot gn-dot--live"></span>Tampa, FL</div>
+        </div>
+
+        <div className="gn-list-label">Expanding Soon</div>
+        <div className="gn-list">
+          <div className="gn-list-item"><span className="gn-dot gn-dot--soon"></span>Orlando, FL</div>
+          <div className="gn-list-item"><span className="gn-dot gn-dot--soon"></span>Atlanta, GA</div>
+        </div>
+      </div>
+
+      <div className="gn-map-wrap">
+        <svg className="gn-map" viewBox="0 0 460 300" preserveAspectRatio="xMidYMid meet" aria-label="BagFree network coverage map of the southeastern United States">
+          {/* Alabama */}
+          <path d="M96 38 L168 34 L172 150 L178 176 L160 180 L158 190 L120 192 L112 158 L100 92 Z" className="gn-state"/>
+          <text x="135" y="118" className="gn-state-label">AL</text>
+          {/* Georgia */}
+          <path d="M168 34 L252 28 L268 52 L292 80 L312 102 L322 124 L316 142 L322 158 L308 162 L296 158 L240 164 L236 152 L172 150 Z" className="gn-state"/>
+          <text x="238" y="100" className="gn-state-label">GA</text>
+          {/* South Carolina */}
+          <path d="M252 28 L330 16 L368 44 L348 76 L322 96 L312 102 L292 80 L268 52 Z" className="gn-state"/>
+          <text x="316" y="58" className="gn-state-label">SC</text>
+          {/* Florida */}
+          <path d="M178 176 L236 168 L296 162 L308 166 L330 176 L352 206 L368 238 L372 264 L358 276 L344 262 L332 232 L312 204 L286 188 L226 186 L196 190 L160 190 L158 184 Z" className="gn-state"/>
+          <text x="250" y="216" className="gn-state-label">FL</text>
+
+          {/* SC expanding marker (smaller, top-right) */}
+          <line x1="330" y1="62" x2="372" y2="50" className="gn-leader gn-leader--soon"/>
+          <circle cx="330" cy="62" r="6" className="gn-marker gn-marker--soon"/>
+          <text x="378" y="54" className="gn-map-label gn-map-label--soon">SC</text>
+
+          {/* Savannah — live */}
+          <line x1="312" y1="118" x2="368" y2="112" className="gn-leader gn-leader--live"/>
+          <circle cx="312" cy="118" r="7" className="gn-marker gn-marker--live"/>
+          <circle cx="312" cy="118" r="12" className="gn-marker-ring"/>
+          <text x="374" y="116" className="gn-map-label">Savannah</text>
+
+          {/* Orlando — soon */}
+          <line x1="312" y1="208" x2="360" y2="202" className="gn-leader gn-leader--soon"/>
+          <circle cx="312" cy="208" r="6" className="gn-marker gn-marker--soon"/>
+          <text x="366" y="206" className="gn-map-label gn-map-label--soon">Orlando</text>
+
+          {/* Tampa — live */}
+          <line x1="268" y1="222" x2="216" y2="228" className="gn-leader gn-leader--live"/>
+          <circle cx="268" cy="222" r="7" className="gn-marker gn-marker--live"/>
+          <circle cx="268" cy="222" r="12" className="gn-marker-ring"/>
+          <text x="210" y="232" className="gn-map-label" textAnchor="end">Tampa</text>
+        </svg>
+      </div>
+
+      <div className="gn-stats">
+        <div className="gn-stat">
+          <div className="gn-stat-top">
+            <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" strokeWidth="1.5"><path d="M3 21h18"/><path d="M5 21V7l8-4v18"/><path d="M19 21V11l-6-4"/></svg>
+            <span className="gn-stat-val">4</span>
+          </div>
+          <div className="gn-stat-lbl">Cities Active</div>
+        </div>
+        <div className="gn-stat">
+          <div className="gn-stat-top">
+            <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" strokeWidth="1.5"><path d="M2 20h20"/><path d="M4 20V8a2 2 0 012-2h12a2 2 0 012 2v12"/><path d="M9 20v-4h6v4"/><path d="M8 10h.01M12 10h.01M16 10h.01M8 13h.01M12 13h.01M16 13h.01"/></svg>
+            <span className="gn-stat-val">18</span>
+          </div>
+          <div className="gn-stat-lbl">Hotels</div>
+        </div>
+        <div className="gn-stat">
+          <div className="gn-stat-top">
+            <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" strokeWidth="1.5"><path d="M20 21v-2a4 4 0 00-4-4H8a4 4 0 00-4 4v2"/><circle cx="12" cy="7" r="4"/></svg>
+            <span className="gn-stat-val">27</span>
+          </div>
+          <div className="gn-stat-lbl">Curators</div>
+        </div>
+        <div className="gn-stat">
+          <div className="gn-stat-top">
+            <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" strokeWidth="1.5"><path d="M20.4 14.5L16 10 4 20"/><circle cx="7.5" cy="7.5" r="3.5"/><path d="M14 4l6 6"/></svg>
+            <span className="gn-stat-val">12</span>
+          </div>
+          <div className="gn-stat-lbl">Style Partners</div>
+        </div>
+        <a href="/join-network.html" className="gn-coverage-link">View Coverage
+          <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" strokeWidth="2"><line x1="5" y1="12" x2="19" y2="12"/><polyline points="12 5 19 12 12 19"/></svg>
+        </a>
+      </div>
+    </section>
+  );
+}
+
 function QuoteSection() {
   return (
     <div className="why-bf-img-wrap">
@@ -2060,6 +2161,7 @@ function App() {
         ) : search.results === null ? (
           <React.Fragment>
             <Grid/>
+            <GrowingNetwork/>
             <QuoteSection/>
             <VideoSection/>
             <SocialFooter/>
