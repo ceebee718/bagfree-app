@@ -657,7 +657,7 @@ const NAV = [
 const TILES = [
   { id:'clothing', title:'Clothing', desc:'Shop or rent for any occasion.', icon:Icon.Hanger, link:'/departure-lounge-landing.html', img:'https://images.unsplash.com/photo-1490481651871-ab68de25d43d?w=600&h=400&fit=crop' },
   { id:'meals', title:'Arrival Meals', desc:'Chef-prepared meals delivered to your hotel.', icon:Icon.Dome, link:'/legacy.html#essentials', img:'https://images.unsplash.com/photo-1546069901-ba9599a7e63c?w=600&h=400&fit=crop' },
-  { id:'secondjourney', title:'Second Journey™', desc:'Rent. Wear. Return. Repeat. Sustainable travel clothing delivered to your hotel.', icon:function(){return React.createElement('img',{src:'/images/second-journey-logo.png',style:{width:'72px',height:'72px',objectFit:'contain',filter:'drop-shadow(0 2px 8px rgba(0,0,0,0.5))',marginBottom:'-15px',marginTop:'-15px',marginLeft:'-15px'},alt:'Second Journey'})}, link:'/departure-lounge-landing.html?vendor=second-journey', img:'https://images.unsplash.com/photo-1490114538077-0a7f8cb49891?w=600&h=400&fit=crop', badge:'NEW' },
+  { id:'secondjourney', title:'Second Journey™', desc:'Rent. Wear. Return. Repeat.', verified:'Professionally laundered, quality inspected, and ready for its next journey.', icon:function(){return React.createElement('img',{src:'/images/second-journey-logo.png',style:{width:'72px',height:'72px',objectFit:'contain',filter:'drop-shadow(0 2px 8px rgba(0,0,0,0.5))',marginBottom:'-15px',marginTop:'-15px',marginLeft:'-15px'},alt:'Second Journey'})}, link:'/departure-lounge-landing.html?vendor=second-journey', img:'https://images.unsplash.com/photo-1490114538077-0a7f8cb49891?w=600&h=400&fit=crop', badge:'NEW' },
   { id:'essentials', title:'Hotel Essentials', desc:'Premium comforts for a seamless stay.', icon:Icon.Bottle, link:'/legacy.html#essentials', img:ESSENTIALS_IMG },
   { id:'curators', title:'Travel Curators', desc:'Local experts. Personalized experiences.', icon:Icon.Person, link:'/curators.html', img:'https://images.unsplash.com/photo-1529156069898-49953e39b3ac?w=600&h=400&fit=crop', badge:'NEW' },
   { id:'experiences', title:'Local Experiences', desc:'Tours, activities and hidden gems.', icon:Icon.Compass, link:'/legacy.html#essentials', img:'https://images.unsplash.com/photo-1571893544028-06b07af6dade?w=600&h=400&fit=crop' },
@@ -1460,6 +1460,15 @@ function Tile(props) {
         <div className="tile-icon"><I/></div>
         <div className="tile-title">{t.title}</div>
         <div className="tile-desc">{t.desc}</div>
+        {t.verified ? (
+          <div className="tile-verified">
+            <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" strokeWidth="2"><path d="M22 11.08V12a10 10 0 11-5.93-9.14"/><polyline points="22 4 12 14.01 9 11.01"/></svg>
+            <div className="tile-verified-text">
+              <div className="tile-verified-label">Second Journey™ Verified</div>
+              <div className="tile-verified-sub">{t.verified}</div>
+            </div>
+          </div>
+        ) : null}
       </div>
     </a>
   );
