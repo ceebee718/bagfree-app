@@ -647,6 +647,60 @@ a{text-decoration:none}
   .main{padding:1.2rem 1.1rem 4.5rem}
 }
 
+/* ── Growing Network ── */
+.gn-card{
+  position:relative;display:grid;grid-template-columns:240px 1fr;grid-template-rows:1fr auto;
+  gap:0 1.5rem;background:var(--card);border:1px solid var(--border-soft);
+  border-radius:14px;padding:1.8rem 2rem 0;overflow:hidden;transition:border-color 0.25s;
+}
+.gn-card:hover{border-color:var(--border)}
+.gn-left{grid-column:1;grid-row:1;display:flex;flex-direction:column;padding-bottom:1.6rem}
+.gn-eyebrow{display:flex;align-items:center;gap:0.45rem;font-size:0.6rem;letter-spacing:3px;text-transform:uppercase;color:var(--gold);font-weight:600;margin-bottom:0.7rem}
+.gn-eyebrow svg{width:14px;height:14px}
+.gn-title{font-family:var(--ff-display);font-size:1.85rem;font-weight:400;letter-spacing:-0.3px;line-height:1.1;margin-bottom:0.4rem}
+.gn-sub{font-size:0.85rem;color:var(--muted);font-weight:300;margin-bottom:1.5rem}
+.gn-list-label{font-size:0.55rem;letter-spacing:2.5px;text-transform:uppercase;color:var(--faint);font-weight:600;margin-bottom:0.55rem}
+.gn-list{display:flex;flex-direction:column;gap:0.45rem;margin-bottom:1.2rem}
+.gn-list-item{display:flex;align-items:center;gap:0.55rem;font-size:0.85rem;color:var(--white);font-weight:300}
+.gn-dot{width:8px;height:8px;border-radius:50%;flex-shrink:0}
+.gn-dot--live{background:#3fae6a;box-shadow:0 0 0 3px rgba(63,174,106,0.15)}
+.gn-dot--soon{background:var(--gold);box-shadow:0 0 0 3px rgba(201,169,110,0.15)}
+.gn-map-wrap{grid-column:2;grid-row:1;display:flex;align-items:center;justify-content:center;min-height:260px;padding-bottom:1rem}
+.gn-map{width:100%;max-width:520px;height:auto}
+.gn-state{fill:rgba(253,252,248,0.025);stroke:rgba(253,252,248,0.1);stroke-width:1;stroke-linejoin:round}
+.gn-state-label{font-family:var(--ff-body);font-size:11px;fill:rgba(253,252,248,0.18);letter-spacing:1px;font-weight:500}
+.gn-marker--live{fill:#3fae6a}
+.gn-marker--soon{fill:var(--gold)}
+.gn-marker-ring{fill:none;stroke:rgba(63,174,106,0.3);stroke-width:1.5}
+.gn-leader{stroke-dasharray:2 3;stroke-width:1.2;fill:none}
+.gn-leader--live{stroke:rgba(63,174,106,0.5)}
+.gn-leader--soon{stroke:rgba(201,169,110,0.5)}
+.gn-map-label{font-family:var(--ff-body);font-size:12px;fill:var(--white);font-weight:500;letter-spacing:0.3px}
+.gn-map-label--soon{fill:var(--muted)}
+.gn-stats{
+  grid-column:1 / -1;grid-row:2;display:flex;align-items:center;gap:2.4rem;
+  border-top:1px solid var(--border-soft);margin:0 -2rem;padding:1.1rem 2rem;
+}
+.gn-stat{display:flex;flex-direction:column;gap:0.25rem}
+.gn-stat-top{display:flex;align-items:center;gap:0.5rem}
+.gn-stat-top svg{width:17px;height:17px;color:var(--gold);flex-shrink:0}
+.gn-stat-val{font-family:var(--ff-display);font-size:1.45rem;font-weight:500;color:var(--white);line-height:1}
+.gn-stat-lbl{font-size:0.58rem;letter-spacing:2px;text-transform:uppercase;color:var(--faint);font-weight:500}
+.gn-coverage-link{
+  margin-left:auto;display:inline-flex;align-items:center;gap:0.45rem;
+  font-size:0.68rem;letter-spacing:2px;text-transform:uppercase;color:var(--gold);
+  font-weight:600;transition:gap 0.25s;
+}
+.gn-coverage-link:hover{gap:0.7rem}
+.gn-coverage-link svg{width:14px;height:14px}
+@media (max-width:900px){
+  .gn-card{grid-template-columns:1fr;padding:1.5rem 1.4rem 0}
+  .gn-left{grid-column:1;grid-row:1}
+  .gn-map-wrap{grid-column:1;grid-row:2;min-height:220px}
+  .gn-stats{grid-row:3;flex-wrap:wrap;gap:1.2rem 1.8rem;margin:0 -1.4rem;padding:1rem 1.4rem}
+  .gn-coverage-link{margin-left:0;width:100%}
+}
+
 /* ── Light Mode ── */
 html.light{--bg:#f5f3ee;--bg2:#eceae4;--card:#ffffff;--card-hover:#f8f7f4;--white:#1a1a2e;--muted:#555a6e;--faint:#8a8fa0;--border:rgba(0,0,0,0.08);--border-soft:rgba(0,0,0,0.04)}
 html.light .sidebar{background:var(--bg);border-color:rgba(0,0,0,0.06)}
@@ -679,6 +733,12 @@ html.light .result-img::after{background:linear-gradient(180deg,transparent 55%,
 html.light .refer-img{background:linear-gradient(135deg,rgba(0,0,0,0.06),rgba(0,0,0,0.02));border-color:rgba(0,0,0,0.1)}
 /* widget base border visibility */
 html.light .widget{border-color:rgba(0,0,0,0.08)}
+/* Growing Network light mode */
+html.light .gn-card{background:var(--card);box-shadow:0 2px 10px rgba(0,0,0,0.05);border-color:rgba(0,0,0,0.06)}
+html.light .gn-state{fill:rgba(0,0,0,0.025);stroke:rgba(0,0,0,0.12)}
+html.light .gn-state-label{fill:rgba(0,0,0,0.22)}
+html.light .gn-map-label{fill:var(--white)}
+html.light .gn-map-label--soon{fill:var(--muted)}
 
 /* ── Theme Toggle (pill) ── */
 .theme-pill{width:52px;height:26px;border-radius:13px;border:1px solid rgba(201,169,110,0.2);background:rgba(201,169,110,0.06);cursor:pointer;position:relative;transition:all 0.3s;padding:0;display:flex;align-items:center;flex-shrink:0}
