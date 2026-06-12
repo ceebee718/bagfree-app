@@ -1548,7 +1548,7 @@ function GrowingNetwork() {
           {/* Tampa — live */}
           <line x1="253.8" y1="207.9" x2="209.8" y2="207.9" className="gn-leader gn-leader--live"/>
           <circle cx="253.8" cy="207.9" r="6.5" className="gn-marker gn-marker--live"/>
-          <circle cx="253.8" cy="207.9" r="11" className="gn-marker-ring"/>
+          <circle cx="253.8" cy="207.9" r="11" className="gn-marker-ring gn-marker-ring--alt"/>
           <text x="203.8" y="211.9" className="gn-map-label" textAnchor="end">Tampa</text>
         </svg>
       </div>
