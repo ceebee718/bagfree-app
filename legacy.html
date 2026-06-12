@@ -3895,13 +3895,14 @@ function EssentialsPage({setPage}) {
                 tagline:'Founding supplier · luxury travel kits, emergency wardrobe bundles, wellness pouches.',
                 accent:'Same-day delivery · FL & GA',
               },
-              { id:'nuor-edit', name:'The Nuor Edit',
-                tagline:'Curated rental wardrobes by Selena. Wear it for your stay, we collect. Tampa Bay only.',
-                accent:'Rental · The Weekend Edit · The Voyager Collection',
+              { id:'second-journey', name:'Second Journey™',
+                tagline:'Rent. Wear. Return. Repeat. Sustainable travel clothing — professionally laundered, quality inspected, and ready for its next journey. Savannah only.',
+                accent:'Sustainable Rental · Verified Clean',
+                href:'/second-journey.html',
               },
             ].map(v => (
               <a key={v.id}
-                href={`/departure-lounge-landing.html?vendor=${v.id}`}
+                href={v.href || `/departure-lounge-landing.html?vendor=${v.id}`}
                 style={{
                   textDecoration:'none', color:'inherit', display:'block',
                   background:'rgba(var(--gold-rgb),0.05)',
