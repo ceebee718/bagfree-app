@@ -1594,6 +1594,124 @@ function GrowingNetwork() {
   );
 }
 
+function MeetLocalExperts() {
+  var cards = [
+    {
+      type: 'curator',
+      avatar: 'https://images.unsplash.com/photo-1494790108377-be9c29b29330?w=120&h=120&fit=crop&crop=faces',
+      name: 'Jasmine L.',
+      role: 'Savannah Insider',
+      city: 'Savannah, GA',
+      rating: '4.9',
+      reviews: 128,
+      tags: ['Food', 'Culture', 'History'],
+      cta: 'View Profile',
+      href: '/curators.html',
+      bio: 'Born and raised in Savannah. I know every hidden square, every legendary kitchen, and every story the guidebooks miss.'
+    },
+    {
+      type: 'itinerary',
+      img: 'https://images.unsplash.com/photo-1558618666-fcd25c85cd64?w=500&h=300&fit=crop',
+      label: 'FEATURED ITINERARY',
+      title: 'Historic Squares Walking Tour',
+      curator: 'Jasmine L.',
+      price: '$45',
+      duration: '2.5 hrs',
+      group: 'Up to 8',
+      cta: 'Book Experience',
+      href: '/experiences.html'
+    },
+    {
+      type: 'style',
+      avatar: 'https://images.unsplash.com/photo-1531746020798-e6953c6e8e04?w=120&h=120&fit=crop&crop=faces',
+      name: 'Lynda Osorio',
+      role: 'Power Image',
+      city: 'Miami, FL',
+      rating: '5.0',
+      reviews: 64,
+      tags: ['Luxury', 'Fashion', 'Event Styling'],
+      cta: 'View Style Partner',
+      href: '/local-style-partners.html',
+      bio: 'Miami\u2019s premier image consultant. Executive presence, event dressing, and destination style \u2014 curated for you.'
+    },
+    {
+      type: 'itinerary',
+      img: 'https://images.unsplash.com/photo-1414235077428-338989a2e8c0?w=500&h=300&fit=crop',
+      label: 'TOP EXPERIENCE',
+      title: 'Midnight Garden Food Crawl',
+      curator: 'Jasmine L.',
+      price: '$65',
+      duration: '3 hrs',
+      group: 'Up to 6',
+      cta: 'Book Experience',
+      href: '/experiences.html'
+    }
+  ];
+
+  return (
+    <div className="mle-wrap">
+      <div className="mle-header">
+        <div className="mle-eyebrow">&#x2756; Bagfree Experts</div>
+        <h2 className="mle-title">Meet Local Experts</h2>
+        <p className="mle-sub">Real curators. Handpicked itineraries. Local style — delivered to your door.</p>
+      </div>
+      <div className="mle-grid">
+        {cards.map(function(c, i) {
+          if (c.type === 'curator' || c.type === 'style') {
+            return (
+              <a key={i} href={c.href} className={'mle-card mle-profile' + (c.type === 'style' ? ' mle-style' : '')}>
+                <div className="mle-avatar-wrap">
+                  <img src={c.avatar} alt={c.name} className="mle-avatar"/>
+                  <div className={'mle-type-badge' + (c.type === 'style' ? ' mle-type-style' : '')}>{c.type === 'style' ? 'Style Partner' : 'Curator'}</div>
+                </div>
+                <div className="mle-profile-body">
+                  <div className="mle-profile-name">{c.name}</div>
+                  <div className="mle-profile-role">{c.role} &middot; {c.city}</div>
+                  <div className="mle-rating">
+                    <span className="mle-star">&#9733;</span>
+                    <span className="mle-rating-val">{c.rating}</span>
+                    <span className="mle-rating-ct">({c.reviews})</span>
+                  </div>
+                  <p className="mle-bio">{c.bio}</p>
+                  <div className="mle-tags">
+                    {c.tags.map(function(tag, ti) { return <span key={ti} className="mle-tag">{tag}</span>; })}
+                  </div>
+                  <div className="mle-cta">{c.cta} &#x2192;</div>
+                </div>
+              </a>
+            );
+          }
+          return (
+            <a key={i} href={c.href} className="mle-card mle-exp">
+              <div className="mle-exp-img" style={{backgroundImage:'url(' + c.img + ')'}}>
+                <div className="mle-exp-img-overlay"></div>
+                <div className="mle-exp-label">{c.label}</div>
+              </div>
+              <div className="mle-exp-body">
+                <div className="mle-exp-title">{c.title}</div>
+                <div className="mle-exp-curator">by {c.curator}</div>
+                <div className="mle-exp-meta">
+                  <span>{c.price}/person</span>
+                  <span className="mle-dot-sep">&#xB7;</span>
+                  <span>{c.duration}</span>
+                  <span className="mle-dot-sep">&#xB7;</span>
+                  <span>{c.group}</span>
+                </div>
+                <div className="mle-cta">{c.cta} &#x2192;</div>
+              </div>
+            </a>
+          );
+        })}
+      </div>
+      <div className="mle-footer">
+        <a href="/curators.html" className="mle-all-link">Explore all curators &amp; experts &#x2192;</a>
+        <a href="/experiences.html" className="mle-all-link">Browse all experiences &#x2192;</a>
+        <a href="/local-style-partners.html" className="mle-all-link">Meet style partners &#x2192;</a>
+      </div>
+    </div>
+  );
+}
+
 function HowItWorks() {
   var steps = [
     {
@@ -2293,10 +2411,7 @@ function App() {
             <HowItWorks/>
             <Grid end={4}/>
             <QuoteSection/>
-            <div className="grid-section-label">
-              <span>&#x2756; Discover &amp; Reward</span>
-            </div>
-            <Grid start={4}/>
+            <MeetLocalExperts/>
             <VideoSection/>
             <SocialFooter/>
           </React.Fragment>
