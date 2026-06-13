@@ -1603,7 +1603,7 @@ function TravelBanner() {
       <div className="tb-inner">
         <div className="tb-header">
           <div className="tb-icon">
-            <svg width="20" height="20" viewBox="0 0 24 24" fill="none" stroke="currentColor" strokeWidth="1.6">
+            <svg width="18" height="18" viewBox="0 0 24 24" fill="none" stroke="#c9a96e" strokeWidth="1.8">
               <rect x="2" y="7" width="20" height="14" rx="2"/><path d="M16 7V5a2 2 0 00-2-2h-4a2 2 0 00-2 2v2"/><line x1="12" y1="12" x2="12" y2="16"/><line x1="10" y1="14" x2="14" y2="14"/>
             </svg>
           </div>
@@ -1614,7 +1614,7 @@ function TravelBanner() {
             return (
               <div key={i} className="tb-feat">
                 <span className="tb-check">&#10003;</span>
-                <div className="tb-feat-text">
+                <div>
                   <div className="tb-feat-title">{f.title}</div>
                   <div className="tb-feat-sub">{f.sub}</div>
                 </div>
@@ -1624,7 +1624,7 @@ function TravelBanner() {
         </div>
       </div>
       <div className="tb-photo">
-        <img src="https://images.unsplash.com/photo-1504609813442-a8924e83f76e?w=600&h=300&fit=crop&crop=center" alt="Travel" className="tb-photo-img"/>
+        <img src="/savannah-banner.png" alt="Savannah, Georgia" className="tb-photo-img"/>
         <div className="tb-photo-fade"></div>
       </div>
     </div>
