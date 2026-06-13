@@ -1590,6 +1590,48 @@ function GrowingNetwork() {
   );
 }
 
+function TravelBanner() {
+  var features = [
+    { check:'\u2713', title:'Clothing Delivered', sub:'Before Arrival' },
+    { check:'\u2713', title:'Local Experts &', sub:'Curated Experiences' },
+    { check:'\u2713', title:'Sustainable', sub:'Second Journey\u2122 Fashion' },
+    { check:'\u2713', title:'Rewards For', sub:'Traveling Lighter' },
+    { check:'\u2713', title:'Everything Waiting', sub:'At Your Destination' }
+  ];
+  return (
+    <div className="tb-wrap">
+      <div className="tb-inner">
+        {/* Icon + Title */}
+        <div className="tb-header">
+          <div className="tb-icon">
+            <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" strokeWidth="1.4"><path d="M6 2h12a2 2 0 012 2v1a2 2 0 01-2 2H6a2 2 0 01-2-2V4a2 2 0 012-2z"/><path d="M4 7h16v13a2 2 0 01-2 2H6a2 2 0 01-2-2V7z"/><path d="M9 2v5m6-5v5"/><circle cx="12" cy="14" r="2"/><path d="M12 16v3"/></svg>
+          </div>
+          <h2 className="tb-title">Travel Without The Baggage</h2>
+        </div>
+        {/* Features */}
+        <div className="tb-features">
+          {features.map(function(f, i) {
+            return (
+              <div key={i} className="tb-feat">
+                <span className="tb-check">{f.check}</span>
+                <div>
+                  <div className="tb-feat-title">{f.title}</div>
+                  <div className="tb-feat-sub">{f.sub}</div>
+                </div>
+              </div>
+            );
+          })}
+        </div>
+      </div>
+      {/* Photo */}
+      <div className="tb-photo">
+        <img src="https://images.unsplash.com/photo-1504609813442-a8924e83f76e?w=700&h=340&fit=crop&crop=center" alt="Savannah travel" className="tb-photo-img"/>
+        <div className="tb-photo-fade"></div>
+      </div>
+    </div>
+  );
+}
+
 function QuoteSection() {
   return (
     <div className="why-bf-img-wrap">
@@ -2180,6 +2222,7 @@ function App() {
           <ResultDetail item={viewing} onBack={closeDetail} onItemClick={openItem}/>
         ) : search.results === null ? (
           <React.Fragment>
+            <TravelBanner/>
             <Grid/>
             <QuoteSection/>
             <VideoSection/>
