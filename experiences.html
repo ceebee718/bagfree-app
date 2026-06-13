@@ -8,7 +8,7 @@
 <link rel="preconnect" href="https://fonts.googleapis.com">
 <link href="https://fonts.googleapis.com/css2?family=Cormorant+Garamond:ital,wght@0,300;0,400;0,500;1,400&family=DM+Sans:wght@300;400;500;600&display=swap" rel="stylesheet">
 <style>
-:root{--noir:#0d1a32;--noir-2:#111f3a;--noir-3:#162240;--gold:#c9a96e;--gold-rgb:201,169,110;--emerald:#5DCAA5;--white:#fdfcf8;--text-rgb:253,252,248;--ff-display:'Cormorant Garamond',Georgia,serif;--ff-body:'DM Sans','Helvetica Neue',sans-serif;--border-soft:rgba(201,169,110,0.12)}
+:root{--noir:#0d1a32;--noir-2:#111f3a;--noir-3:#162240;--gold:#c9a96e;--gold-rgb:201,169,110;--emerald:#5DCAA5;--white:#fdfcf8;--text-rgb:253,252,248;--ff-display:'Cormorant Garamond',Georgia,serif;--ff-body:'DM Sans','Helvetica Neue',sans-serif;--border-soft:rgba(201,169,110,0.12);--nav-bg:rgba(13,26,50,0.92)}
 *,*::before,*::after{box-sizing:border-box;margin:0;padding:0}
 html{scroll-behavior:smooth}
 body{font-family:var(--ff-body);color:rgba(var(--text-rgb),0.85);background:var(--noir);line-height:1.6;-webkit-font-smoothing:antialiased}
@@ -18,7 +18,7 @@ button{cursor:pointer;border:none;font-family:var(--ff-body)}
 img{display:block;max-width:100%}
 
 /* ── NAV ── */
-.nav{position:fixed;top:0;left:0;right:0;z-index:100;display:flex;align-items:center;justify-content:space-between;padding:1rem 2.5rem;background:rgba(13,26,50,0.92);backdrop-filter:blur(14px);border-bottom:1px solid var(--border-soft)}
+.nav{position:fixed;top:0;left:0;right:0;z-index:100;display:flex;align-items:center;justify-content:space-between;padding:1rem 2.5rem;background:var(--nav-bg);backdrop-filter:blur(14px);border-bottom:1px solid var(--border-soft)}
 .nav-logo{font-family:var(--ff-display);font-size:1.5rem;font-weight:400;color:var(--gold);letter-spacing:1px}
 .nav-links{display:flex;gap:1.8rem;align-items:center}
 .nav-link{font-size:0.68rem;letter-spacing:2.5px;text-transform:uppercase;color:rgba(var(--text-rgb),0.6);font-weight:500;transition:color 0.25s}
