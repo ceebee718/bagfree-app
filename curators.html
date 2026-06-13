@@ -209,6 +209,21 @@ a{color:inherit}
   .field-row .field{margin-bottom:1.3rem}
   .curator-section{padding:3.5rem 1.1rem}
 }
+
+/* ─── CURATOR EMPTY SLOTS ─── */
+.slot-grid{display:grid;grid-template-columns:repeat(5,1fr);gap:1rem}
+@media(max-width:900px){.slot-grid{grid-template-columns:repeat(3,1fr)}}
+@media(max-width:580px){.slot-grid{grid-template-columns:repeat(2,1fr)}}
+.slot-card{display:flex;flex-direction:column;align-items:center;justify-content:center;gap:1rem;padding:2.8rem 1rem;border:1.5px dashed rgba(var(--gold-rgb),0.28);background:rgba(var(--gold-rgb),0.03);text-decoration:none;transition:all .28s cubic-bezier(.4,0,.2,1);cursor:pointer}
+.slot-card:hover{border-color:rgba(var(--gold-rgb),0.7);background:rgba(var(--gold-rgb),0.08);transform:translateY(-3px)}
+.slot-ring{width:60px;height:60px;border-radius:50%;border:1.5px dashed rgba(var(--gold-rgb),0.45);display:flex;align-items:center;justify-content:center;transition:border-color .28s}
+.slot-ring svg{width:22px;height:22px;stroke:var(--gold);opacity:0.65;transition:opacity .28s}
+.slot-card:hover .slot-ring{border-color:var(--gold)}
+.slot-card:hover .slot-ring svg{opacity:1}
+.slot-label{font-size:0.62rem;letter-spacing:2.5px;text-transform:uppercase;color:rgba(var(--gold-rgb),0.65);font-weight:500;text-align:center;transition:color .28s}
+.slot-sub{font-size:0.6rem;letter-spacing:1.5px;color:rgba(var(--text-rgb),0.3);text-align:center;transition:color .28s}
+.slot-card:hover .slot-label{color:var(--gold)}
+.slot-card:hover .slot-sub{color:rgba(var(--text-rgb),0.55)}
 </style>
 </head>
 <body>
@@ -281,15 +296,34 @@ a{color:inherit}
     <p class="section-sub">Every curator is scored by ExperienceRank™ — combining AI evaluation, traveler reviews, and booking data. These are the best.</p>
   </div>
 
-  <div class="dir-filters" id="dirFilters">
-    <button class="dir-filter active" onclick="filterCurators('all', this)">All Cities</button>
-    <button class="dir-filter" onclick="filterCurators('savannah', this)">Savannah</button>
-    <button class="dir-filter" onclick="filterCurators('atlanta', this)">Atlanta</button>
-    <button class="dir-filter" onclick="filterCurators('tampa', this)">Tampa</button>
-    <button class="dir-filter" onclick="filterCurators('orlando', this)">Orlando</button>
+  <div class="dir-count">Be among the <em>first</em> curators on the leaderboard.</div>
+  <div class="slot-grid" id="dirGrid">
+    <a class="slot-card" href="#apply">
+      <div class="slot-ring"><svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.4" stroke-linecap="round"><line x1="12" y1="5" x2="12" y2="19"/><line x1="5" y1="12" x2="19" y2="12"/></svg></div>
+      <span class="slot-label">Become a Curator</span>
+      <span class="slot-sub">Apply now →</span>
+    </a>
+    <a class="slot-card" href="#apply">
+      <div class="slot-ring"><svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.4" stroke-linecap="round"><line x1="12" y1="5" x2="12" y2="19"/><line x1="5" y1="12" x2="19" y2="12"/></svg></div>
+      <span class="slot-label">Become a Curator</span>
+      <span class="slot-sub">Apply now →</span>
+    </a>
+    <a class="slot-card" href="#apply">
+      <div class="slot-ring"><svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.4" stroke-linecap="round"><line x1="12" y1="5" x2="12" y2="19"/><line x1="5" y1="12" x2="19" y2="12"/></svg></div>
+      <span class="slot-label">Become a Curator</span>
+      <span class="slot-sub">Apply now →</span>
+    </a>
+    <a class="slot-card" href="#apply">
+      <div class="slot-ring"><svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.4" stroke-linecap="round"><line x1="12" y1="5" x2="12" y2="19"/><line x1="5" y1="12" x2="19" y2="12"/></svg></div>
+      <span class="slot-label">Become a Curator</span>
+      <span class="slot-sub">Apply now →</span>
+    </a>
+    <a class="slot-card" href="#apply">
+      <div class="slot-ring"><svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.4" stroke-linecap="round"><line x1="12" y1="5" x2="12" y2="19"/><line x1="5" y1="12" x2="19" y2="12"/></svg></div>
+      <span class="slot-label">Become a Curator</span>
+      <span class="slot-sub">Apply now →</span>
+    </a>
   </div>
-  <div class="dir-count" id="dirCount"></div>
-  <div class="dir-grid" id="dirGrid"></div>
 </section>
 
 <!-- ─── CITIES ─── -->
@@ -598,56 +632,7 @@ function toggleTheme() {
   if (btn) btn.setAttribute('aria-label', next === 'dark' ? 'Switch to light mode' : 'Switch to dark mode');
 }
 
-// ─── CURATOR DIRECTORY ───
-var CURATORS = [
-  { rank:1, name:'Jasmine L.', city:'savannah', cityLabel:'Savannah, GA', level:'elite', score:96.4, experiences:34, rating:'4.9', reviews:128, followers:'1.2k', avatar:'https://images.unsplash.com/photo-1494790108377-be9c29b29330?w=120&h=120&fit=crop&crop=faces', awards:['🏆 Best Savannah','⭐ Top Rated','🍽️ Best Food'], specialty:'Lowcountry cuisine, historic tours, coastal adventures' },
-  { rank:2, name:'Marcus D.', city:'atlanta', cityLabel:'Atlanta, GA', level:'verified', score:93.1, experiences:22, rating:'4.8', reviews:94, followers:'890', avatar:'https://images.unsplash.com/photo-1507003211169-0a1dd7228f2d?w=120&h=120&fit=crop&crop=faces', awards:['🎵 Best Nightlife','🏆 Best Atlanta'], specialty:'Nightlife, music scenes, soul food heritage' },
-  { rank:3, name:'Sofia R.', city:'tampa', cityLabel:'Tampa, FL', level:'verified', score:91.8, experiences:19, rating:'4.9', reviews:112, followers:'760', avatar:'https://images.unsplash.com/photo-1438761681033-6461ffad8d80?w=120&h=120&fit=crop&crop=faces', awards:['🍽️ Best Food Tampa','🌅 Best Adventure'], specialty:'Cuban culture, waterfront dining, boat tours' },
-  { rank:4, name:'Elena V.', city:'orlando', cityLabel:'Orlando, FL', level:'insider', score:88.5, experiences:15, rating:'4.8', reviews:87, followers:'540', avatar:'https://images.unsplash.com/photo-1573496359142-b8d87734a5a2?w=120&h=120&fit=crop&crop=faces', awards:['🌿 Best Nature','✨ Rising Star'], specialty:'Off-park Orlando, nature springs, wine culture' },
-  { rank:5, name:'Darius W.', city:'savannah', cityLabel:'Savannah, GA', level:'insider', score:85.2, experiences:11, rating:'4.7', reviews:52, followers:'380', avatar:'https://images.unsplash.com/photo-1500648767791-00dcc994a43e?w=120&h=120&fit=crop&crop=faces', awards:['🎨 Best Culture'], specialty:'Art walks, SCAD galleries, live music' },
-  { rank:6, name:'Camila P.', city:'atlanta', cityLabel:'Atlanta, GA', level:'insider', score:83.7, experiences:9, rating:'4.8', reviews:41, followers:'310', avatar:'https://images.unsplash.com/photo-1580489944761-15a19d654956?w=120&h=120&fit=crop&crop=faces', awards:['🛍️ Best Shopping'], specialty:'Buckhead shopping, brunch culture, BeltLine art' },
-  { rank:7, name:'Andre M.', city:'tampa', cityLabel:'Tampa, FL', level:'insider', score:81.4, experiences:8, rating:'4.7', reviews:38, followers:'270', avatar:'https://images.unsplash.com/photo-1472099645785-5658abf4ff4e?w=120&h=120&fit=crop&crop=faces', awards:[], specialty:'Ybor City history, craft breweries, fishing' },
-  { rank:8, name:'Maya K.', city:'orlando', cityLabel:'Orlando, FL', level:'insider', score:79.6, experiences:7, rating:'4.7', reviews:29, followers:'210', avatar:'https://images.unsplash.com/photo-1534528741775-53994a69daeb?w=120&h=120&fit=crop&crop=faces', awards:[], specialty:'Family adventures, Winter Park, nature trails' },
-];
 
-var curFilter = 'all';
-
-function filterCurators(city, btn) {
-  curFilter = city;
-  document.querySelectorAll('.dir-filter').forEach(function(b){ b.classList.remove('active'); });
-  btn.classList.add('active');
-  renderCurators();
-}
-
-function renderCurators() {
-  var filtered = curFilter === 'all' ? CURATORS : CURATORS.filter(function(c){ return c.city === curFilter; });
-  var cityLabel = curFilter === 'all' ? 'all cities' : curFilter.charAt(0).toUpperCase() + curFilter.slice(1);
-  document.getElementById('dirCount').innerHTML = '<em>' + filtered.length + '</em> curator' + (filtered.length !== 1 ? 's' : '') + ' in ' + cityLabel;
-
-  document.getElementById('dirGrid').innerHTML = filtered.map(function(c, i) {
-    var levelLabel = c.level === 'elite' ? '✦ Elite Curator' : c.level === 'verified' ? '✓ Verified Curator' : '◇ Insider';
-    var awardsHtml = c.awards.length ? c.awards.map(function(a){ return '<span class="cur-award">' + a + '</span>'; }).join('') : '';
-    var rankClass = c.rank === 1 ? ' r1' : '';
-
-    return '<div class="cur-card">' +
-      '<div class="cur-rank' + rankClass + '">#' + c.rank + '</div>' +
-      '<div class="cur-avatar"><img src="' + c.avatar + '" alt="' + c.name + '"></div>' +
-      '<div class="cur-name">' + c.name + '</div>' +
-      '<div class="cur-city">' + c.cityLabel + '</div>' +
-      '<span class="cur-level ' + c.level + '">' + levelLabel + '</span>' +
-      '<div class="cur-stats">' +
-        '<div><div class="cur-stat-val">' + c.score + '</div><div class="cur-stat-lbl">Score</div></div>' +
-        '<div><div class="cur-stat-val">' + c.experiences + '</div><div class="cur-stat-lbl">Experiences</div></div>' +
-        '<div><div class="cur-stat-val">' + c.followers + '</div><div class="cur-stat-lbl">Followers</div></div>' +
-      '</div>' +
-      (awardsHtml ? '<div class="cur-awards">' + awardsHtml + '</div>' : '') +
-      '<div style="font-size:0.7rem;color:rgba(var(--text-rgb),0.4);margin-bottom:0.8rem;line-height:1.5;font-style:italic">' + c.specialty + '</div>' +
-      '<a href="/experiences.html?city=' + c.city + '" class="cur-link">View Experiences →</a>' +
-    '</div>';
-  }).join('');
-}
-
-renderCurators();
 
 // ─── TRAVELER WAITLIST FORM ───
 async function submitTravelerForm(ev) {
