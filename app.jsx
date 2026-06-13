@@ -1626,6 +1626,7 @@ function SocialFooter() {
       <div className="social-footer-left">
         <span className="social-footer-brand">BagFree</span>
         <span className="social-footer-tagline">Travel Light. Experience More. Leave Less Behind.</span>
+        <a href="tel:+18138162448" className="social-footer-phone">(813) 816-2448</a>
       </div>
       <div className="social-footer-right">
         <span className="social-footer-label">Share BagFree</span>
