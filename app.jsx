@@ -657,9 +657,9 @@ const NAV = [
 const TILES = [
   { id:'clothing', title:'Clothing', desc:'Shop or rent for any occasion.', icon:Icon.Hanger, link:'/departure-lounge-landing.html', img:'https://images.unsplash.com/photo-1490481651871-ab68de25d43d?w=600&h=400&fit=crop' },
   { id:'meals', title:'Arrival Meals', desc:'Chef-prepared meals delivered to your hotel.', icon:Icon.Dome, link:'/legacy.html#essentials', img:'https://images.unsplash.com/photo-1546069901-ba9599a7e63c?w=600&h=400&fit=crop' },
-  { id:'secondjourney', title:'Second Journey™', desc:'Rent. Wear. Return. Repeat.', verified:'Professionally laundered, quality inspected, and ready for its next journey.', icon:function(){return React.createElement('img',{src:'/images/second-journey-logo.png',style:{width:'72px',height:'72px',objectFit:'contain',filter:'drop-shadow(0 2px 8px rgba(0,0,0,0.5))',marginBottom:'-15px',marginTop:'-15px',marginLeft:'-15px'},alt:'Second Journey'})}, link:'/departure-lounge-landing.html?vendor=second-journey', img:'https://images.unsplash.com/photo-1490114538077-0a7f8cb49891?w=600&h=400&fit=crop', badge:'NEW' },
-  { id:'essentials', title:'Hotel Essentials', desc:'Premium comforts for a seamless stay.', icon:Icon.Bottle, link:'/legacy.html#essentials', img:ESSENTIALS_IMG },
+  { id:'secondjourney', title:'Second Journey™', desc:'Rent. Wear. Return. Repeat.', verified:'Professionally laundered, quality inspected, and ready for its next journey.', tealAccent:true, icon:function(){return React.createElement('img',{src:'/images/second-journey-logo.png',style:{width:'72px',height:'72px',objectFit:'contain',filter:'drop-shadow(0 2px 8px rgba(0,0,0,0.5))',marginBottom:'-15px',marginTop:'-15px',marginLeft:'-15px'},alt:'Second Journey'})}, link:'/departure-lounge-landing.html?vendor=second-journey', img:'https://images.unsplash.com/photo-1490114538077-0a7f8cb49891?w=600&h=400&fit=crop', badge:'NEW' },
   { id:'curators', title:'Travel Curators', desc:'Local experts. Personalized experiences.', icon:Icon.Person, link:'/curators.html', img:'https://images.unsplash.com/photo-1529156069898-49953e39b3ac?w=600&h=400&fit=crop', badge:'NEW' },
+  { id:'essentials', title:'Hotel Essentials', desc:'Premium comforts for a seamless stay.', icon:Icon.Bottle, link:'/legacy.html#essentials', img:ESSENTIALS_IMG },
   { id:'experiences', title:'Local Experiences', desc:'Tours, activities and hidden gems.', icon:Icon.Compass, link:'/legacy.html#essentials', img:'https://images.unsplash.com/photo-1571893544028-06b07af6dade?w=600&h=400&fit=crop' },
   { id:'stylepartners', title:'Style Partners', desc:'Local fashion experts. Destination styling.', icon:Icon.Sparkles, link:'/local-style-partners.html', img:'https://images.unsplash.com/photo-1441984904996-e0b6ba687e04?w=600&h=400&fit=crop' },
   { id:'rewards', title:'BAG Rewards', desc:'Earn points. Unlock exclusive benefits.', icon:Icon.GiftBox, link:'/legacy.html#rewards', img:'https://images.unsplash.com/photo-1549465220-1a8b9238cd48?w=600&h=400&fit=crop' }
@@ -1452,12 +1452,14 @@ function TopBar(props) {
 function Tile(props) {
   const t = props.tile;
   const I = t.icon;
+  const isTeal = t.tealAccent;
   return (
-    <a className="tile" href={t.link || '#'}>
-      {t.badge ? <div className="tile-badge">{t.badge}</div> : null}
+    <a className={'tile' + (isTeal ? ' tile-teal' : '')} href={t.link || '#'}>
+      {t.badge ? <div className={'tile-badge' + (isTeal ? ' tile-badge-teal' : '')}>{t.badge}</div> : null}
+      {isTeal ? <div className="tile-teal-line"></div> : null}
       <div className="tile-image" style={{ backgroundImage: 'url(' + t.img + ')' }}></div>
       <div className="tile-top">
-        <div className="tile-icon"><I/></div>
+        <div className={'tile-icon' + (isTeal ? ' tile-icon-teal' : '')}><I/></div>
         <div className="tile-title">{t.title}</div>
         <div className="tile-desc">{t.desc}</div>
         {t.verified ? (
@@ -1474,10 +1476,12 @@ function Tile(props) {
   );
 }
 
-function Grid() {
+function Grid(props) {
+  var start = props.start || 0;
+  var end = props.end !== undefined ? props.end : TILES.length;
   return (
     <div className="grid">
-      {TILES.map(function(t){ return <Tile key={t.id} tile={t}/>; })}
+      {TILES.slice(start, end).map(function(t){ return <Tile key={t.id} tile={t}/>; })}
     </div>
   );
 }
@@ -1587,6 +1591,70 @@ function GrowingNetwork() {
         </a>
       </div>
     </section>
+  );
+}
+
+function HowItWorks() {
+  var steps = [
+    {
+      n: '01',
+      icon: React.createElement('svg', {width:26,height:26,viewBox:'0 0 24 24',fill:'none',stroke:'currentColor',strokeWidth:1.5},
+        React.createElement('path',{d:'M12 2C8.13 2 5 5.13 5 9c0 5.25 7 13 7 13s7-7.75 7-13c0-3.87-3.13-7-7-7z'}),
+        React.createElement('circle',{cx:12,cy:9,r:2.5})
+      ),
+      title: 'Choose Your Destination',
+      desc: 'Select your city and travel dates. BagFree is live in Savannah, Tampa, and expanding soon.'
+    },
+    {
+      n: '02',
+      icon: React.createElement('svg', {width:26,height:26,viewBox:'0 0 24 24',fill:'none',stroke:'currentColor',strokeWidth:1.5},
+        React.createElement('rect',{x:2,y:7,width:20,height:14,rx:2}),
+        React.createElement('path',{d:'M16 7V5a2 2 0 00-2-2h-4a2 2 0 00-2 2v2'}),
+        React.createElement('path',{d:'M8 12h8m-8 4h5'})
+      ),
+      title: 'Reserve What You Need',
+      desc: 'Book clothing bundles, curated experiences, meals, and hotel essentials — all before you land.'
+    },
+    {
+      n: '03',
+      icon: React.createElement('svg', {width:26,height:26,viewBox:'0 0 24 24',fill:'none',stroke:'currentColor',strokeWidth:1.5},
+        React.createElement('path',{d:'M22 11.08V12a10 10 0 11-5.93-9.14'}),
+        React.createElement('polyline',{points:'22 4 12 14.01 9 11.01'})
+      ),
+      title: 'Arrive Prepared',
+      desc: 'Everything is waiting at your hotel. Travel lighter, experience more, leave less behind.'
+    }
+  ];
+  return (
+    <div className="hiw-wrap">
+      <div className="hiw-header">
+        <div className="hiw-eyebrow">&#x2756; How It Works</div>
+        <h2 className="hiw-title">Three steps to luggage-free travel.</h2>
+      </div>
+      <div className="hiw-steps">
+        {steps.map(function(s, i) {
+          return (
+            <React.Fragment key={i}>
+              <div className="hiw-step">
+                <div className="hiw-step-top">
+                  <div className="hiw-num">{s.n}</div>
+                  <div className="hiw-icon">{s.icon}</div>
+                </div>
+                <div className="hiw-step-title">{s.title}</div>
+                <div className="hiw-step-desc">{s.desc}</div>
+              </div>
+              {i < steps.length - 1 && (
+                <div className="hiw-connector">
+                  <div className="hiw-line"></div>
+                  <div className="hiw-arrow">&#xbb;</div>
+                  <div className="hiw-line"></div>
+                </div>
+              )}
+            </React.Fragment>
+          );
+        })}
+      </div>
+    </div>
   );
 }
 
@@ -2222,8 +2290,13 @@ function App() {
         ) : search.results === null ? (
           <React.Fragment>
             <TravelBanner/>
-            <Grid/>
+            <HowItWorks/>
+            <Grid end={4}/>
             <QuoteSection/>
+            <div className="grid-section-label">
+              <span>&#x2756; Discover &amp; Reward</span>
+            </div>
+            <Grid start={4}/>
             <VideoSection/>
             <SocialFooter/>
           </React.Fragment>
