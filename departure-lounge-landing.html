@@ -1036,6 +1036,8 @@ input,select,textarea{outline:none}
 }
 
 
+.sj-bp-delivery-tier{font-size:0.78rem;color:#5DCAA5;margin-top:0.35rem;line-height:1.4;display:flex;align-items:flex-start;gap:0.35rem}
+.sj-expedited{color:rgba(93,202,165,0.65);white-space:nowrap}
 </style>
 </head>
 <body>
@@ -1294,15 +1296,15 @@ input,select,textarea{outline:none}
           <div class="sj-card-price">
             <span class="sj-price-main">Free</span>
           </div>
-          <div class="sj-card-delivery">+ $5 hotel delivery</div>
+          <div class="sj-card-delivery">+ $7 hotel delivery</div>
           <ul class="sj-card-features">
             <li><span class="sj-check">✓</span> Second Journey™ included</li>
             <li><span class="sj-check">✓</span> 2-day clothing bundle</li>
             <li><span class="sj-check">✓</span> Hotel delivery &amp; pickup</li>
             <li class="sj-muted">No membership required</li>
           </ul>
-          <button class="sj-card-cta sj-cta-trial" onclick="addSJFromSection('sj-2day')">Start free trial — $5</button>
-          <div class="sj-card-note">$5 delivery · Checkout via Stripe</div>
+          <button class="sj-card-cta sj-cta-trial" onclick="addSJFromSection('sj-2day')">Start free trial — $7</button>
+          <div class="sj-card-note">$7 delivery · Checkout via Stripe</div>
         </div>
 
         <!-- 3-DAY · SECOND JOURNEY -->
@@ -1318,7 +1320,7 @@ input,select,textarea{outline:none}
           <ul class="sj-card-features">
             <li><span class="sj-check">✓</span> Second Journey™ included</li>
             <li><span class="sj-check">✓</span> Explorer — up to 3 days</li>
-            <li><span class="sj-check">✓</span> Free hotel delivery</li>
+            <li><span class="sj-check">✓</span> Complimentary hotel delivery (standard drop-off)</li>
             <li><span class="sj-check">✓</span> Cancel anytime</li>
           </ul>
           <button class="sj-card-cta" onclick="openMembershipCheck('3day', 'sj-3day')">Choose Second Journey</button>
@@ -1338,7 +1340,8 @@ input,select,textarea{outline:none}
           <ul class="sj-card-features">
             <li><span class="sj-check">✓</span> Everything in Second Journey</li>
             <li><span class="sj-check">✓</span> Voyager — up to 5 days</li>
-            <li><span class="sj-check">✓</span> Free hotel delivery</li>
+            <li><span class="sj-check">✓</span> Complimentary hotel delivery (standard drop-off)</li>
+            <li><span class="sj-check">✓</span> Expedited delivery available — $14</li>
             <li><span class="sj-check">✓</span> Priority support</li>
           </ul>
           <button class="sj-card-cta sj-cta-popular" onclick="openMembershipCheck('5day', 'sj-5day')">Choose Emerald</button>
@@ -1357,7 +1360,8 @@ input,select,textarea{outline:none}
           <ul class="sj-card-features">
             <li><span class="sj-check">✓</span> Everything in Emerald</li>
             <li><span class="sj-check">✓</span> Adventurer — up to 7 days</li>
-            <li><span class="sj-check">✓</span> Free hotel delivery</li>
+            <li><span class="sj-check">✓</span> Complimentary hotel delivery (standard drop-off)</li>
+            <li><span class="sj-check">✓</span> Complimentary expedited delivery</li>
             <li><span class="sj-check">✓</span> Dedicated concierge</li>
           </ul>
           <button class="sj-card-cta" onclick="openMembershipCheck('7day', 'sj-7day')">Choose Gold</button>
@@ -1365,7 +1369,7 @@ input,select,textarea{outline:none}
 
       </div><!-- /sj-grid -->
 
-      <p class="sj-footer-note">All memberships include free hotel delivery, curated clothing bundles, and flexible cancellation. Second Journey™ bundles contain <em>professionally cleaned, quality-checked garments</em> — reused by future travelers to reduce waste. <em>Savannah pilot — expanding city by city.</em></p>
+      <p class="sj-footer-note">All memberships include complimentary hotel delivery for standard drop-off times. Emerald members may add expedited delivery for $14. Gold members receive complimentary expedited delivery. Second Journey™ bundles contain <em>professionally cleaned, quality-checked garments</em> — reused by future travelers to reduce waste. <em>Savannah pilot — expanding city by city.</em></p>
 
     </div>
   </section>
@@ -1747,7 +1751,7 @@ const BUNDLES = [
     "id": "sj-2day", "vendor": "second-journey",
     "title": "2-Day Explorer Bundle",
     "category": "unisex",
-    "tagline": "Try Second Journey™ free. Pay only the $5 hotel delivery fee. A curated 2-day clothing bundle — professionally cleaned and delivered to your hotel.",
+    "tagline": "Try Second Journey™ free. Pay only the $7 hotel delivery fee. A curated 2-day clothing bundle — professionally cleaned and delivered to your hotel.",
     "price": 5,
     "image": "/images/bundles/2-day-explorer-bundle.png",
     "units": 50,
@@ -1982,9 +1986,16 @@ function renderSJBundleCard(b) {
   const isSelected = qty > 0;
 
   const priceDisplay = isTrial
-    ? '<span class="sj-bp-main">$5</span><span class="sj-bp-period"> delivery only</span>'
+    ? '<span class="sj-bp-main">$7</span><span class="sj-bp-period"> delivery only</span>'
     : '<span class="sj-bp-main">$' + (b.price % 1 === 0 ? b.price : b.price.toFixed(2)) + '</span><span class="sj-bp-period">/mo</span>';
-  const trialNote = isTrial ? '<div class="sj-bp-delivery">Try Second Journey™ free — just cover delivery</div>' : '';
+  const deliveryNote = isTrial
+    ? '<div class="sj-bp-delivery">Try Second Journey™ free — just cover delivery</div>'
+    : b.sj_tier === '3day'
+      ? '<div class="sj-bp-delivery-tier">♻ Complimentary hotel delivery (standard drop-off)</div>'
+      : b.sj_tier === '5day'
+        ? '<div class="sj-bp-delivery-tier">♻ Complimentary hotel delivery (standard drop-off)<span class="sj-expedited"> · Expedited available — $14</span></div>'
+        : '<div class="sj-bp-delivery-tier">♻ Complimentary hotel delivery incl. expedited</div>';
+  const trialNote = deliveryNote;
   const annualNote = b.sj_annual ? '<div class="sj-bp-annual">or ' + b.sj_annual + '</div>' : '';
   const dayLabel = b.sj_days + '-Day Clothing Bundle';
 
@@ -1999,7 +2010,7 @@ function renderSJBundleCard(b) {
         <button class="bundle-qty-btn" onclick="changeBundleQty('${b.id}', 1)" aria-label="Increase" ${qty >= b.units ? 'disabled' : ''}>+</button>
       </div>`;
     } else {
-      actionBtn = `<button class="sj-bp-cta sj-bp-cta-trial" onclick="addBundle('${b.id}')">Add to order — $5</button>`;
+      actionBtn = `<button class="sj-bp-cta sj-bp-cta-trial" onclick="addBundle('${b.id}')">Add to order — $7</button>`;
     }
   } else if (isMember || isSelected) {
     // Verified member or already added: show qty controls
