@@ -55,6 +55,16 @@ img{display:block;max-width:100%}
 .exp-card.tier-gold:hover{border-color:var(--gold);box-shadow:0 20px 50px rgba(0,0,0,0.2),0 0 0 1px rgba(var(--gold-rgb),0.2)}
 .exp-card.tier-exclusive{border-color:rgba(147,112,219,0.3);background:linear-gradient(160deg,rgba(147,112,219,0.05),rgba(147,112,219,0.01))}
 .exp-card.tier-exclusive:hover{border-color:rgba(147,112,219,0.6);box-shadow:0 20px 50px rgba(0,0,0,0.2),0 0 0 1px rgba(147,112,219,0.2)}
+.exp-card-example{position:relative;overflow:visible}
+.exp-example-ribbon{
+  position:absolute;top:20px;right:-28px;z-index:20;
+  width:120px;padding:5px 0;
+  background:rgba(201,169,110,0.92);color:#07101f;
+  font-family:var(--ff-body);font-size:0.5rem;font-weight:800;
+  letter-spacing:4px;text-align:center;text-transform:uppercase;
+  transform:rotate(45deg);pointer-events:none;
+  box-shadow:0 2px 8px rgba(0,0,0,0.35);
+}
 .exp-tier-badge{position:absolute;top:0;left:0;right:0;z-index:3;padding:0.35rem 0;text-align:center;font-size:0.48rem;letter-spacing:3px;text-transform:uppercase;font-weight:700}
 .exp-tier-badge.gold-badge{background:linear-gradient(135deg,rgba(var(--gold-rgb),0.9),rgba(180,140,60,0.9));color:var(--noir)}
 .exp-tier-badge.exclusive-badge{background:linear-gradient(135deg,rgba(147,112,219,0.9),rgba(120,80,200,0.9));color:var(--white)}
@@ -352,43 +362,10 @@ var EXPERIENCES = [
   //   affiliate_partner: 'Partner Name'                             — display name
   // When affiliate_url is set, "Book Experience" opens the partner link instead of the internal flow.
   // BagFree tracks clicks via the ref parameter. Revenue splits are handled in your admin dashboard.
-  { id:'sav-1', city:'savannah', tier:'standard', title:'Historic Squares Walking Tour', category:'hidden-gems', type:'Walking Tour', desc:'Explore Savannah\'s 22 iconic squares with stories of history, haunts, and hidden gardens. 2.5 hours of the city\'s best-kept secrets.', curator:'Jasmine L.', role:'Savannah Insider', rating:'4.9', reviews:128, avatar:'https://images.unsplash.com/photo-1494790108377-be9c29b29330?w=120&h=120&fit=crop&crop=faces', price:45, duration:'2.5 hrs', group:'Up to 8', itinerary_price:5,
-    // Example affiliate link (uncomment to activate):
-    // affiliate_url: 'https://example-tours.com/savannah-squares?ref=bagfree&curator=jasmine',
-    // affiliate_split: { bagfree: 15, curator: 10 },
-    // affiliate_partner: 'Savannah Walking Tours Co.'
-  },
-  { id:'sav-2', city:'savannah', tier:'standard', title:'Midnight in the Garden Food Crawl', category:'food', type:'Food & Drink', desc:'A curated tasting tour through Savannah\'s culinary underbelly — from Lowcountry soul food to craft cocktails in speakeasy basements.', curator:'Jasmine L.', role:'Savannah Insider', rating:'4.9', reviews:128, avatar:'https://images.unsplash.com/photo-1494790108377-be9c29b29330?w=120&h=120&fit=crop&crop=faces', price:65, duration:'3 hrs', group:'Up to 6', itinerary_price:8 },
-  { id:'sav-3', city:'savannah', tier:'standard', title:'Tybee Island Kayak & Dolphin Watch', category:'adventure', type:'Outdoor Adventure', desc:'Paddle through Savannah\'s coastal marshes with a local guide. High chance of dolphin sightings. All equipment provided.', curator:'Jasmine L.', role:'Savannah Insider', rating:'4.9', reviews:128, avatar:'https://images.unsplash.com/photo-1494790108377-be9c29b29330?w=120&h=120&fit=crop&crop=faces', price:75, duration:'3.5 hrs', group:'Up to 4', itinerary_price:5 },
-  { id:'sav-4', city:'savannah', tier:'standard', title:'Savannah Art & Architecture Tour', category:'hidden-gems', type:'Culture', desc:'From SCAD galleries to antebellum mansions — discover the artistic soul of America\'s most beautiful city.', curator:'Jasmine L.', role:'Savannah Insider', rating:'4.9', reviews:128, avatar:'https://images.unsplash.com/photo-1494790108377-be9c29b29330?w=120&h=120&fit=crop&crop=faces', price:40, duration:'2 hrs', group:'Up to 10', itinerary_price:5 },
-  // SAVANNAH — GOLD
-  { id:'sav-g1', city:'savannah', tier:'gold', title:'Private Chef\'s Table at a Restored Mansion', category:'luxury', type:'Fine Dining', desc:'A 5-course meal by a James Beard-nominated chef in a private 1850s dining room. Wine pairings included. Limited to 8 seats per evening.', curator:'Jasmine L.', role:'Savannah Insider', rating:'5.0', reviews:128, avatar:'https://images.unsplash.com/photo-1494790108377-be9c29b29330?w=120&h=120&fit=crop&crop=faces', price:195, duration:'3 hrs', group:'Up to 8', itinerary_price:15 },
-  { id:'sav-g2', city:'savannah', tier:'gold', title:'Moonlit Cemetery Ghost & History Walk', category:'luxury', type:'Exclusive Tour', desc:'After-hours access to Bonaventure Cemetery with a historian guide. Lantern-lit paths, untold stories, and the real history behind Midnight in the Garden.', curator:'Jasmine L.', role:'Savannah Insider', rating:'4.9', reviews:128, avatar:'https://images.unsplash.com/photo-1494790108377-be9c29b29330?w=120&h=120&fit=crop&crop=faces', price:120, duration:'2.5 hrs', group:'Up to 6', itinerary_price:12 },
-  // SAVANNAH — EXCLUSIVE
-  { id:'sav-x1', city:'savannah', tier:'exclusive', title:'Curator\'s Circle: Jasmine\'s Savannah', category:'luxury', type:'Invite Only', desc:'A full-day private experience curated personally by Jasmine. Locations undisclosed until the morning of. Past events have included rooftop dinners, private island trips, and gallery previews.', curator:'Jasmine L.', role:'Savannah Insider', rating:'5.0', reviews:128, avatar:'https://images.unsplash.com/photo-1494790108377-be9c29b29330?w=120&h=120&fit=crop&crop=faces', price:350, duration:'Full day', group:'Up to 4', itinerary_price:null },
-
-  // ── ATLANTA — STANDARD ──
-  { id:'atl-1', city:'atlanta', tier:'standard', title:'Buckhead Speakeasy Crawl', category:'nightlife', type:'Nightlife', desc:'Three hidden bars, custom cocktails, and the stories behind Atlanta\'s underground drinking culture. Dress code: smart casual.', curator:'Marcus D.', role:'Atlanta Insider', rating:'4.8', reviews:94, avatar:'https://images.unsplash.com/photo-1507003211169-0a1dd7228f2d?w=120&h=120&fit=crop&crop=faces', price:55, duration:'3 hrs', group:'Up to 6', itinerary_price:8 },
-  { id:'atl-2', city:'atlanta', tier:'standard', title:'Atlanta BeltLine Art Walk', category:'hidden-gems', type:'Culture', desc:'Walk the BeltLine\'s outdoor gallery with a local artist as your guide. Murals, installations, and the stories behind the transformation.', curator:'Marcus D.', role:'Atlanta Insider', rating:'4.8', reviews:94, avatar:'https://images.unsplash.com/photo-1507003211169-0a1dd7228f2d?w=120&h=120&fit=crop&crop=faces', price:35, duration:'2 hrs', group:'Up to 12', itinerary_price:5 },
-  { id:'atl-3', city:'atlanta', tier:'standard', title:'Soul Food Heritage Trail', category:'food', type:'Food & Drink', desc:'From West End to Sweet Auburn — taste the dishes that shaped Atlanta\'s culture. 5 stops, full portions at each.', curator:'Marcus D.', role:'Atlanta Insider', rating:'4.8', reviews:94, avatar:'https://images.unsplash.com/photo-1507003211169-0a1dd7228f2d?w=120&h=120&fit=crop&crop=faces', price:70, duration:'3.5 hrs', group:'Up to 8', itinerary_price:8 },
-  // ATLANTA — GOLD
-  { id:'atl-g1', city:'atlanta', tier:'gold', title:'Rooftop Jazz & Bourbon Tasting', category:'nightlife', type:'Nightlife', desc:'A private rooftop session with a live jazz trio, curated bourbon flight, and charcuterie. Views of the Atlanta skyline at sunset.', curator:'Marcus D.', role:'Atlanta Insider', rating:'4.9', reviews:94, avatar:'https://images.unsplash.com/photo-1507003211169-0a1dd7228f2d?w=120&h=120&fit=crop&crop=faces', price:145, duration:'2.5 hrs', group:'Up to 8', itinerary_price:12 },
-  // ATLANTA — EXCLUSIVE
-  { id:'atl-x1', city:'atlanta', tier:'exclusive', title:'Curator\'s Circle: Marcus\'s Atlanta', category:'luxury', type:'Invite Only', desc:'An unrepeatable day with Marcus — past editions included a private studio session with an Atlanta producer, a members-only supper club, and courtside access. Limited availability.', curator:'Marcus D.', role:'Atlanta Insider', rating:'5.0', reviews:94, avatar:'https://images.unsplash.com/photo-1507003211169-0a1dd7228f2d?w=120&h=120&fit=crop&crop=faces', price:400, duration:'Full day', group:'Up to 4', itinerary_price:null },
-
-  // ── TAMPA — STANDARD ──
-  { id:'tpa-1', city:'tampa', tier:'standard', title:'Ybor City Cuban Culture Walk', category:'hidden-gems', type:'Walking Tour', desc:'Explore Tampa\'s historic Cuban quarter — hand-rolled cigars, café con leche, and the stories of immigrants who built a city.', curator:'Sofia R.', role:'Tampa Insider', rating:'4.9', reviews:112, avatar:'https://images.unsplash.com/photo-1438761681033-6461ffad8d80?w=120&h=120&fit=crop&crop=faces', price:40, duration:'2.5 hrs', group:'Up to 10', itinerary_price:5 },
-  { id:'tpa-2', city:'tampa', tier:'standard', title:'Riverwalk Brunch & Brew Tour', category:'food', type:'Food & Drink', desc:'Waterfront dining meets craft brewing. Three stops along the Riverwalk featuring Tampa\'s best brunch spots.', curator:'Sofia R.', role:'Tampa Insider', rating:'4.9', reviews:112, avatar:'https://images.unsplash.com/photo-1438761681033-6461ffad8d80?w=120&h=120&fit=crop&crop=faces', price:60, duration:'3 hrs', group:'Up to 8', itinerary_price:8 },
-  // TAMPA — GOLD
-  { id:'tpa-g1', city:'tampa', tier:'gold', title:'Private Sunset Yacht & Seafood Feast', category:'luxury', type:'Premium Experience', desc:'A private yacht through Tampa Bay at golden hour. Fresh-caught seafood prepared onboard, champagne, and a captain who knows every hidden cove.', curator:'Sofia R.', role:'Tampa Insider', rating:'4.9', reviews:112, avatar:'https://images.unsplash.com/photo-1438761681033-6461ffad8d80?w=120&h=120&fit=crop&crop=faces', price:225, duration:'3 hrs', group:'Up to 6', itinerary_price:15 },
-
-  // ── ORLANDO — STANDARD ──
-  { id:'orl-1', city:'orlando', tier:'standard', title:'Beyond the Theme Parks: Local Orlando', category:'hidden-gems', type:'Culture', desc:'Skip the rides — discover Orlando\'s real personality through murals, indie shops, and neighborhoods tourists never see.', curator:'Elena V.', role:'Orlando Insider', rating:'4.8', reviews:87, avatar:'https://images.unsplash.com/photo-1573496359142-b8d87734a5a2?w=120&h=120&fit=crop&crop=faces', price:35, duration:'2.5 hrs', group:'Up to 10', itinerary_price:5 },
-  { id:'orl-2', city:'orlando', tier:'standard', title:'Springs & Nature Day Trip', category:'adventure', type:'Outdoor Adventure', desc:'Crystal-clear natural springs, kayaking through cypress forests, and a picnic lunch — 45 minutes from downtown.', curator:'Elena V.', role:'Orlando Insider', rating:'4.8', reviews:87, avatar:'https://images.unsplash.com/photo-1573496359142-b8d87734a5a2?w=120&h=120&fit=crop&crop=faces', price:70, duration:'5 hrs', group:'Up to 4', itinerary_price:8 },
-  // ORLANDO — GOLD
-  { id:'orl-g1', city:'orlando', tier:'gold', title:'Winter Park Wine & Chef\'s Table Evening', category:'luxury', type:'Fine Dining', desc:'An intimate 4-course wine pairing dinner in a private Winter Park courtyard. Artisan cheeses, seasonal courses, and a sommelier who makes it personal.', curator:'Elena V.', role:'Orlando Insider', rating:'4.9', reviews:87, avatar:'https://images.unsplash.com/photo-1573496359142-b8d87734a5a2?w=120&h=120&fit=crop&crop=faces', price:155, duration:'3 hrs', group:'Up to 6', itinerary_price:12 },
-  // ORLANDO — EXCLUSIVE
-  { id:'orl-x1', city:'orlando', tier:'exclusive', title:'Curator\'s Circle: Elena\'s Orlando', category:'luxury', type:'Invite Only', desc:'Elena personally designs a one-of-a-kind day based on your interests. Past editions: private nature preserves, chef collaborations, sunrise hot air balloon flights. By invitation only.', curator:'Elena V.', role:'Orlando Insider', rating:'5.0', reviews:87, avatar:'https://images.unsplash.com/photo-1573496359142-b8d87734a5a2?w=120&h=120&fit=crop&crop=faces', price:325, duration:'Full day', group:'Up to 4', itinerary_price:null },
+  { id:'sav-1', city:'savannah', tier:'standard', isExample:true, title:'Historic Squares Walking Tour', category:'hidden-gems', type:'Walking Tour', desc:'Explore Savannah\'s 22 iconic squares with stories of history, haunts, and hidden gardens. 2.5 hours of the city\'s best-kept secrets.', curator:'Jasmine L.', role:'Savannah Insider', rating:'4.9', reviews:128, avatar:'https://images.unsplash.com/photo-1494790108377-be9c29b29330?w=120&h=120&fit=crop&crop=faces', price:45, duration:'2.5 hrs', group:'Up to 8', itinerary_price:5,
+    img:'https://images.unsplash.com/photo-1558618666-fcd25c85cd64?w=600&h=340&fit=crop' },
+  { id:'sav-g2', city:'savannah', tier:'gold', isExample:true, title:'Moonlit Cemetery Ghost & History Walk', category:'luxury', type:'Exclusive Tour', desc:'After-hours access to Bonaventure Cemetery with a historian guide. Lantern-lit paths, untold stories, and the real history behind Midnight in the Garden.', curator:'Jasmine L.', role:'Savannah Insider', rating:'4.9', reviews:128, avatar:'https://images.unsplash.com/photo-1494790108377-be9c29b29330?w=120&h=120&fit=crop&crop=faces', price:120, duration:'2.5 hrs', group:'Up to 6', itinerary_price:12,
+    img:'https://images.unsplash.com/photo-1509316785289-025f5b846b35?w=600&h=340&fit=crop' }
 ];
 
 var currentFilter = 'all';
@@ -440,8 +417,9 @@ function renderCards() {
     var cityDisplay = e.city.charAt(0).toUpperCase() + e.city.slice(1);
     var isGold = e.tier === 'gold';
     var isExclusive = e.tier === 'exclusive';
-    var isLocked = isExclusive; // Exclusive experiences are locked by default
-    var cardClass = 'exp-card' + (isGold ? ' tier-gold' : '') + (isExclusive ? ' tier-exclusive locked' : '');
+    var isExample = e.isExample || false;
+    var isLocked = isExclusive;
+    var cardClass = 'exp-card' + (isGold ? ' tier-gold' : '') + (isExclusive ? ' tier-exclusive locked' : '') + (isExample ? ' exp-card-example' : '');
 
     // Tier badge
     var tierBadge = '';
@@ -481,11 +459,13 @@ function renderCards() {
       ? '<div style="display:flex;align-items:center;gap:0.4rem;margin-top:0.5rem;font-size:0.62rem;color:rgba(253,252,248,0.35)"><svg viewBox="0 0 24 24" width="12" height="12" fill="none" stroke="currentColor" stroke-width="1.5"><path d="M18 13v6a2 2 0 01-2 2H5a2 2 0 01-2-2V8a2 2 0 012-2h6"/><polyline points="15 3 21 3 21 9"/><line x1="10" y1="14" x2="21" y2="3"/></svg> Booked via ' + (e.affiliate_partner || 'partner') + '</div>'
       : '';
 
+    var exampleRibbon = isExample ? '<div class="exp-example-ribbon">EXAMPLE</div>' : '';
     return '<div class="' + cardClass + '" data-city="' + e.city + '" data-tier="' + e.tier + '">' +
+      exampleRibbon +
       tierBadge +
       lockedOverlay +
       '<div class="exp-img"' + (isGold ? ' style="background:linear-gradient(135deg,rgba(var(--gold-rgb),0.08),var(--noir-3))"' : '') + (isExclusive ? ' style="background:linear-gradient(135deg,rgba(147,112,219,0.08),var(--noir-3))"' : '') + '>' +
-        '<div class="exp-img-placeholder">Photo Coming Soon</div>' +
+        (e.img ? '<img src="' + e.img + '" style="width:100%;height:100%;object-fit:cover;display:block" alt="' + e.title + '">' : '<div class="exp-img-placeholder">Photo Coming Soon</div>') +
         '<div class="exp-img-city">' + cityDisplay + '</div>' +
         '<div class="exp-img-type">' + e.type + '</div>' +
       '</div>' +
