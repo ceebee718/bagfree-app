@@ -1486,7 +1486,12 @@ function Grid(props) {
   );
 }
 
-function GrowingNetwork() {
+function GrowingNetwork(props) {
+  var onCitySelect = props.onCitySelect || function(){};
+  function selectCity(id) {
+    var c = CITIES.find(function(c){ return c.id === id; });
+    if (c && !c.soon) onCitySelect(c);
+  }
   /* Southeast US map — simplified state outlines (GA, FL, SC, AL) in a 460x300 viewBox */
   return (
     <section className="gn-card">
@@ -1500,8 +1505,8 @@ function GrowingNetwork() {
 
         <div className="gn-list-label">Currently Available</div>
         <div className="gn-list">
-          <div className="gn-list-item"><span className="gn-dot gn-dot--live"></span>Savannah, GA</div>
-          <div className="gn-list-item"><span className="gn-dot gn-dot--live"></span>Tampa, FL</div>
+          <div className="gn-list-item gn-list-item--click" onClick={function(){ selectCity('savannah'); }}><span className="gn-dot gn-dot--live"></span>Savannah, GA</div>
+          <div className="gn-list-item gn-list-item--click" onClick={function(){ selectCity('tampa'); }}><span className="gn-dot gn-dot--live"></span>Tampa, FL</div>
         </div>
 
         <div className="gn-list-label">Expanding Soon</div>
@@ -1529,10 +1534,12 @@ function GrowingNetwork() {
           <text x="351.0" y="79.4" className="gn-map-label gn-map-label--soon">SC</text>
 
           {/* Savannah — live */}
+          {/* Savannah — live, clickable */}
           <line x1="284.7" y1="99.7" x2="336.7" y2="99.7" className="gn-leader gn-leader--live"/>
           <circle cx="284.7" cy="99.7" r="6.5" className="gn-marker gn-marker--live"/>
           <circle cx="284.7" cy="99.7" r="11" className="gn-marker-ring"/>
-          <text x="342.7" y="103.7" className="gn-map-label">Savannah</text>
+          <circle cx="284.7" cy="99.7" r="18" fill="transparent" style={{cursor:'pointer'}} onClick={function(){ selectCity('savannah'); }}/>
+          <text x="342.7" y="103.7" className="gn-map-label" style={{cursor:'pointer'}} onClick={function(){ selectCity('savannah'); }}>Savannah</text>
 
           {/* Orlando — expanding */}
           <line x1="278.2" y1="192.5" x2="324.2" y2="192.5" className="gn-leader gn-leader--soon"/>
@@ -1550,9 +1557,12 @@ function GrowingNetwork() {
           <text x="357.1" y="269.2" className="gn-map-label gn-map-label--soon">Miami</text>
 
           {/* Tampa — live */}
+          {/* Tampa — live, clickable */}
           <line x1="253.8" y1="207.9" x2="209.8" y2="207.9" className="gn-leader gn-leader--live"/>
           <circle cx="253.8" cy="207.9" r="6.5" className="gn-marker gn-marker--live"/>
           <circle cx="253.8" cy="207.9" r="11" className="gn-marker-ring gn-marker-ring--alt"/>
+          <circle cx="253.8" cy="207.9" r="18" fill="transparent" style={{cursor:'pointer'}} onClick={function(){ selectCity('tampa'); }}/>
+          <text x="209.8" y="211.9" className="gn-map-label" textAnchor="end" style={{cursor:'pointer'}} onClick={function(){ selectCity('tampa'); }}>Tampa</text>
           <text x="203.8" y="211.9" className="gn-map-label" textAnchor="end">Tampa</text>
         </svg>
       </div>
@@ -2422,7 +2432,7 @@ function App() {
       <div className={'drawer-overlay' + (drawerOpen ? ' show' : '')} onClick={function(){ setDrawerOpen(false); }}></div>
       <Sidebar mobileOpen={drawerOpen} onClose={function(){ setDrawerOpen(false); }} active={active} setActive={setActive} city={city} setCity={setCity}/>
       <main className="main">
-        <TopBar city={city} setCity={setCity} onSearch={onSearch} onItemClick={openItem} onClearResults={clearSearch} networkCard={!viewing && search.results === null ? <GrowingNetwork/> : null}/>
+        <TopBar city={city} setCity={setCity} onSearch={onSearch} onItemClick={openItem} onClearResults={clearSearch} networkCard={!viewing && search.results === null ? <GrowingNetwork onCitySelect={setCity}/> : null}/>
         {viewing ? (
           <ResultDetail item={viewing} onBack={closeDetail} onItemClick={openItem}/>
         ) : search.results === null ? (
