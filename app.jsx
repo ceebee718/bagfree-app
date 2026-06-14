@@ -1651,9 +1651,27 @@ function MeetLocalExperts() {
   return (
     <div className="mle-wrap">
       <div className="mle-header">
-        <div className="mle-eyebrow">&#x2756; Bagfree Experts</div>
-        <h2 className="mle-title">Meet Local Experts</h2>
-        <p className="mle-sub">Real curators. Handpicked itineraries. Local style — delivered to your door.</p>
+        <div className="mle-eyebrow">&#x2756; Exclusive to BagFree</div>
+        <h2 className="mle-title">More than a booking platform.</h2>
+        <p className="mle-sub">Connect with real local experts, book handpicked experiences, and work with destination style partners — all in one place.</p>
+        <div className="mle-chips">
+          <div className="mle-chip">
+            <svg width="14" height="14" viewBox="0 0 24 24" fill="none" stroke="currentColor" strokeWidth="1.6"><path d="M20 21v-2a4 4 0 00-4-4H8a4 4 0 00-4 4v2"/><circle cx="12" cy="7" r="4"/></svg>
+            Curator Profiles
+          </div>
+          <div className="mle-chip">
+            <svg width="14" height="14" viewBox="0 0 24 24" fill="none" stroke="currentColor" strokeWidth="1.6"><circle cx="12" cy="12" r="10"/><path d="M12 8l4 4-4 4-4-4 4-4z"/></svg>
+            Local Experiences
+          </div>
+          <div className="mle-chip mle-chip-teal">
+            <svg width="14" height="14" viewBox="0 0 24 24" fill="none" stroke="currentColor" strokeWidth="1.6"><path d="M20.4 14.5L16 10 4 20"/><circle cx="7.5" cy="7.5" r="3.5"/></svg>
+            Style Partners
+          </div>
+          <div className="mle-chip">
+            <svg width="14" height="14" viewBox="0 0 24 24" fill="none" stroke="currentColor" strokeWidth="1.6"><path d="M14 2H6a2 2 0 00-2 2v16a2 2 0 002 2h12a2 2 0 002-2V8z"/><path d="M14 2v6h6M16 13H8m8 4H8m2-8H8"/></svg>
+            Real Itineraries
+          </div>
+        </div>
       </div>
       <div className="mle-grid">
         {cards.map(function(c, i) {
