@@ -825,10 +825,20 @@ html.light .tb-photo-fade{background:linear-gradient(90deg,#1a2540 0%,rgba(26,37
 /* Profile cards */
 .mle-card{
   border:1px solid var(--border-soft);border-radius:12px;overflow:hidden;
-  background:var(--card);cursor:pointer;
+  background:var(--card);cursor:pointer;position:relative;
   transition:all .3s cubic-bezier(.4,0,.2,1);text-decoration:none;color:inherit;
   display:flex;flex-direction:column;
 }
+.mle-example-ribbon{
+  position:absolute;top:16px;right:-26px;z-index:10;
+  width:110px;padding:4px 0;
+  background:rgba(201,169,110,0.9);color:#07101f;
+  font-family:var(--ff-body);font-size:0.48rem;font-weight:800;
+  letter-spacing:3px;text-align:center;text-transform:uppercase;
+  transform:rotate(45deg);pointer-events:none;
+  box-shadow:0 2px 8px rgba(0,0,0,.2);
+}
+
 .mle-card:hover{transform:translateY(-4px);border-color:rgba(var(--gr),.35);box-shadow:0 16px 40px rgba(0,0,0,.35)}
 .mle-profile{}
 .mle-style{border-color:rgba(var(--em2),.15)}
