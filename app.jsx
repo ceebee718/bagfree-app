@@ -2288,6 +2288,14 @@ function App() {
   const setSearch = searchState[1];
 
   const viewingState = useState(null);
+  const rightOpenState = useState(function(){ try { return localStorage.getItem('bf_rr') === '1'; } catch(e){ return false; }});
+  const rightOpen = rightOpenState[0];
+  const setRightOpen = rightOpenState[1];
+  function toggleRightRail() {
+    var next = !rightOpen;
+    setRightOpen(next);
+    try { localStorage.setItem('bf_rr', next ? '1' : '0'); } catch(e){}
+  }
   const viewing = viewingState[0];
   const setViewing = viewingState[1];
 
@@ -2449,7 +2457,17 @@ function App() {
           <SearchResults query={search.query} results={search.results} expansion={search.expansion} aiHint={search.aiHint} onClear={clearSearch} onItemClick={openItem} onAskConcierge={askConcierge}/>
         )}
       </main>
-      <RightRail city={city}/>
+      <div className={'rr-outer' + (rightOpen ? ' rr-outer--open' : '')}>
+        <button className="rr-toggle-tab" onClick={toggleRightRail} aria-label={rightOpen ? 'Close panel' : 'Open panel'} title={rightOpen ? 'Hide panel' : 'Show panel'}>
+          <svg width="12" height="12" viewBox="0 0 24 24" fill="none" stroke="currentColor" strokeWidth="2.5">
+            {rightOpen
+              ? React.createElement('polyline', {points:'9 18 15 12 9 6'})
+              : React.createElement('polyline', {points:'15 18 9 12 15 6'})
+            }
+          </svg>
+        </button>
+        <RightRail city={city}/>
+      </div>
       <ConciergeChat open={chatOpen} setOpen={setChatOpen} city={city} seed={chatSeed}/>
     </div>
   );
