@@ -1663,7 +1663,7 @@ function MeetLocalExperts() {
             <svg width="14" height="14" viewBox="0 0 24 24" fill="none" stroke="currentColor" strokeWidth="1.6"><circle cx="12" cy="12" r="10"/><path d="M12 8l4 4-4 4-4-4 4-4z"/></svg>
             Local Experiences
           </div>
-          <div className="mle-chip mle-chip-teal">
+          <div className="mle-chip">
             <svg width="14" height="14" viewBox="0 0 24 24" fill="none" stroke="currentColor" strokeWidth="1.6"><path d="M20.4 14.5L16 10 4 20"/><circle cx="7.5" cy="7.5" r="3.5"/></svg>
             Style Partners
           </div>
