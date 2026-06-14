@@ -8,7 +8,7 @@
 <link rel="preconnect" href="https://fonts.googleapis.com">
 <link href="https://fonts.googleapis.com/css2?family=Cormorant+Garamond:ital,wght@0,300;0,400;0,500;1,300;1,400&family=DM+Sans:wght@300;400;500;600&display=swap" rel="stylesheet">
 <style>
-:root{--noir:#0d1a32;--n2:#111f3a;--gold:#c9a96e;--gr:201,169,110;--em:#5DCAA5;--wh:#fdfcf8;--tr:253,252,248;--fd:'Cormorant Garamond',Georgia,serif;--fb:'DM Sans','Helvetica Neue',sans-serif;--bs:rgba(201,169,110,0.12)}
+:root{--noir:#0d1a32;--n2:#111f3a;--gold:#c9a96e;--gr:201,169,110;--em:#5DCAA5;--wh:#fdfcf8;--tr:253,252,248;--fd:'Cormorant Garamond',Georgia,serif;--fb:'DM Sans','Helvetica Neue',sans-serif;--bs:rgba(201,169,110,0.12);--nav-bg:rgba(13,26,50,0.92)}
 *,*::before,*::after{box-sizing:border-box;margin:0;padding:0}
 html{scroll-behavior:smooth}
 body{font-family:var(--fb);color:rgba(var(--tr),0.85);background:var(--noir);line-height:1.6;-webkit-font-smoothing:antialiased}
@@ -18,7 +18,7 @@ button{cursor:pointer;border:none;font-family:var(--fb)}
 img{display:block;max-width:100%}
 
 /* Nav */
-.nav{position:fixed;top:0;left:0;right:0;z-index:100;display:flex;align-items:center;justify-content:space-between;padding:1rem 2.5rem;background:rgba(13,26,50,0.92);backdrop-filter:blur(14px);border-bottom:1px solid var(--bs)}
+.nav{position:fixed;top:0;left:0;right:0;z-index:100;display:flex;align-items:center;justify-content:space-between;padding:1rem 2.5rem;background:var(--nav-bg);backdrop-filter:blur(14px);border-bottom:1px solid var(--bs)}
 .nav-logo{font-family:var(--fd);font-size:1.5rem;font-weight:400;color:var(--gold);letter-spacing:1px}
 .nav-links{display:flex;gap:1.8rem;align-items:center}
 .nav-link{font-size:0.68rem;letter-spacing:2.5px;text-transform:uppercase;color:rgba(var(--tr),0.6);font-weight:500;transition:color 0.25s}
@@ -131,6 +131,36 @@ img{display:block;max-width:100%}
 .cs-city{font-family:var(--fd);font-size:2rem;color:var(--wh);margin-bottom:0.3rem}
 .cs-status{font-size:0.6rem;letter-spacing:3px;text-transform:uppercase;color:rgba(var(--tr),0.35);margin-bottom:1rem}
 .cs-desc{font-size:0.88rem;color:rgba(var(--tr),0.45);max-width:450px;margin:0 auto;line-height:1.7}
+
+/* ── Theme Toggle ── */
+.theme-toggle{background:none;border:none;cursor:pointer;padding:0;display:flex;align-items:center;margin-left:0.6rem}
+.theme-toggle-track{display:flex;align-items:center;width:48px;height:26px;border-radius:13px;background:rgba(201,169,110,0.12);border:1px solid rgba(201,169,110,0.25);position:relative;transition:background 0.35s,border-color 0.35s;padding:2px}
+html.light .theme-toggle-track{background:rgba(201,169,110,0.18);border-color:rgba(201,169,110,0.45)}
+.theme-toggle-thumb{width:20px;height:20px;border-radius:50%;background:rgba(201,169,110,0.85);display:flex;align-items:center;justify-content:center;transition:transform 0.35s cubic-bezier(.4,0,.2,1),background 0.35s;position:relative;box-shadow:0 1px 4px rgba(0,0,0,0.3)}
+html.light .theme-toggle-thumb{transform:translateX(22px);background:var(--gold)}
+.theme-icon{position:absolute;font-size:11px;line-height:1;transition:opacity 0.25s}
+.theme-icon-moon{opacity:1;color:#fdfcf8}
+.theme-icon-sun{opacity:0;color:#07101f}
+html.light .theme-icon-moon{opacity:0}
+html.light .theme-icon-sun{opacity:1}
+@media(prefers-reduced-motion:reduce){.theme-toggle-thumb,.theme-toggle-track{transition:none}}
+
+/* ── Light Mode ── */
+html.light{--noir:#f4f1eb;--n2:#f9f7f3;--wh:#1a1a2e;--tr:18,22,34;--bs:rgba(0,0,0,0.09);--nav-bg:rgba(250,248,243,0.96)}
+html.light body{background:#f4f1eb;color:rgba(18,22,34,0.85)}
+html.light .nav{border-bottom-color:rgba(0,0,0,0.08)}
+html.light .nav-logo{color:var(--gold)}
+html.light .nav-link{color:rgba(18,22,34,0.55)}
+html.light .nav-link:hover{color:var(--gold)}
+html.light .hero h1{color:#1a1a2e}
+html.light .hero-sub,html.light .hero-support{color:rgba(18,22,34,0.55)}
+html.light .section-border{border-top-color:rgba(0,0,0,0.08)}
+html.light .why-card{background:#ffffff;border-color:rgba(0,0,0,0.08);box-shadow:0 2px 12px rgba(0,0,0,0.05)}
+html.light .why-card:hover{box-shadow:0 16px 40px rgba(0,0,0,0.1)}
+html.light .city-card{background:#ffffff;border-color:rgba(0,0,0,0.07)}
+html.light .city-card:hover{border-color:rgba(201,169,110,0.35)}
+html.light .cta-card{background:linear-gradient(160deg,rgba(201,169,110,0.06),rgba(201,169,110,0.02));border-color:rgba(201,169,110,0.2)}
+html.light .cs-partner{background:#ffffff;border-color:rgba(0,0,0,0.08)}
 </style>
 </head>
 <body>
@@ -142,6 +172,14 @@ img{display:block;max-width:100%}
     <a href="/departure-lounge-landing.html" class="nav-link">Shop</a>
     <a href="/experiences.html" class="nav-link">Experiences</a>
     <a href="/curators.html" class="nav-link">Curators</a>
+    <button class="theme-toggle" id="themeToggle" onclick="toggleTheme()" aria-label="Toggle light/dark mode">
+      <span class="theme-toggle-track">
+        <span class="theme-toggle-thumb">
+          <span class="theme-icon theme-icon-moon">&#9790;</span>
+          <span class="theme-icon theme-icon-sun">&#9728;</span>
+        </span>
+      </span>
+    </button>
   </div>
 </nav>
 
@@ -321,5 +359,18 @@ function filterPartners(city, btn) {
 }
 </script>
 
+<script>
+function toggleTheme(){
+  var isLight=document.documentElement.classList.toggle('light');
+  try{localStorage.setItem('sp-theme',isLight?'light':'dark');}catch(e){}
+}
+(function(){
+  try{
+    var saved=localStorage.getItem('sp-theme');
+    var prefersDark=window.matchMedia&&window.matchMedia('(prefers-color-scheme:dark)').matches;
+    if(saved==='light'||(!saved&&!prefersDark)){document.documentElement.classList.add('light');}
+  }catch(e){}
+})();
+</script>
 </body>
 </html>
