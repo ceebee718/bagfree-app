@@ -1597,7 +1597,7 @@ function GrowingNetwork() {
 function MeetLocalExperts() {
   var cards = [
     {
-      type: 'curator',
+      type: 'curator', isExample: true,
       avatar: 'https://images.unsplash.com/photo-1494790108377-be9c29b29330?w=120&h=120&fit=crop&crop=faces',
       name: 'Jasmine L.',
       role: 'Savannah Insider',
@@ -1610,7 +1610,7 @@ function MeetLocalExperts() {
       bio: 'Born and raised in Savannah. I know every hidden square, every legendary kitchen, and every story the guidebooks miss.'
     },
     {
-      type: 'itinerary',
+      type: 'itinerary', isExample: true,
       img: 'https://images.unsplash.com/photo-1558618666-fcd25c85cd64?w=500&h=300&fit=crop',
       label: 'FEATURED ITINERARY',
       title: 'Historic Squares Walking Tour',
@@ -1622,7 +1622,7 @@ function MeetLocalExperts() {
       href: '/experiences.html'
     },
     {
-      type: 'style',
+      type: 'style', isExample: true,
       avatar: 'https://images.unsplash.com/photo-1531746020798-e6953c6e8e04?w=120&h=120&fit=crop&crop=faces',
       name: 'Lynda Osorio',
       role: 'Power Image',
@@ -1635,7 +1635,7 @@ function MeetLocalExperts() {
       bio: 'Miami\u2019s premier image consultant. Executive presence, event dressing, and destination style \u2014 curated for you.'
     },
     {
-      type: 'itinerary',
+      type: 'itinerary', isExample: true,
       img: 'https://images.unsplash.com/photo-1414235077428-338989a2e8c0?w=500&h=300&fit=crop',
       label: 'TOP EXPERIENCE',
       title: 'Midnight Garden Food Crawl',
@@ -1660,6 +1660,7 @@ function MeetLocalExperts() {
           if (c.type === 'curator' || c.type === 'style') {
             return (
               <a key={i} href={c.href} className={'mle-card mle-profile' + (c.type === 'style' ? ' mle-style' : '')}>
+                {c.isExample ? <div className="mle-example-ribbon">Example</div> : null}
                 <div className="mle-avatar-wrap">
                   <img src={c.avatar} alt={c.name} className="mle-avatar"/>
                   <div className={'mle-type-badge' + (c.type === 'style' ? ' mle-type-style' : '')}>{c.type === 'style' ? 'Style Partner' : 'Curator'}</div>
@@ -1683,6 +1684,7 @@ function MeetLocalExperts() {
           }
           return (
             <a key={i} href={c.href} className="mle-card mle-exp">
+              {c.isExample ? <div className="mle-example-ribbon">Example</div> : null}
               <div className="mle-exp-img" style={{backgroundImage:'url(' + c.img + ')'}}>
                 <div className="mle-exp-img-overlay"></div>
                 <div className="mle-exp-label">{c.label}</div>
