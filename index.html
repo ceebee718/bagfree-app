@@ -36,9 +36,51 @@ a{text-decoration:none}
 ::-webkit-scrollbar-thumb{background:rgba(201,169,110,0.18);border-radius:4px}
 ::-webkit-scrollbar-thumb:hover{background:rgba(201,169,110,0.35)}
 
-.app{display:grid;grid-template-columns:260px 1fr 340px;min-height:100vh}
-@media (max-width:1280px){.app{grid-template-columns:240px 1fr 300px}}
-@media (max-width:1024px){.app{grid-template-columns:220px 1fr}.right-rail{display:none}}
+.app{display:grid;grid-template-columns:260px 1fr auto;min-height:100vh}
+@media (max-width:1280px){.app{grid-template-columns:240px 1fr auto}}
+@media (max-width:1024px){.app{grid-template-columns:220px 1fr}/* ── Collapsible Right Rail ── */
+.rr-outer{
+  position:relative;
+  width:0;
+  overflow:hidden;
+  transition:width 0.38s cubic-bezier(.4,0,.2,1);
+  flex-shrink:0;
+}
+.rr-outer--open{width:340px}
+.rr-outer .right-rail{
+  width:340px;
+  transform:translateX(0);
+  transition:transform 0.38s cubic-bezier(.4,0,.2,1),opacity 0.38s;
+}
+.rr-outer:not(.rr-outer--open) .right-rail{
+  transform:translateX(100%);
+  opacity:0;
+  pointer-events:none;
+}
+/* Toggle tab */
+.rr-toggle-tab{
+  position:absolute;top:50%;left:-28px;
+  transform:translateY(-50%);
+  z-index:50;
+  width:28px;height:52px;
+  background:var(--card);
+  border:1px solid var(--border-soft);
+  border-right:none;
+  border-radius:8px 0 0 8px;
+  display:flex;align-items:center;justify-content:center;
+  cursor:pointer;
+  color:var(--muted);
+  transition:background 0.2s,color 0.2s,border-color 0.2s;
+  box-shadow:-3px 0 10px rgba(0,0,0,0.15);
+}
+.rr-toggle-tab:hover{
+  background:var(--bg-2);
+  color:var(--gold);
+  border-color:rgba(var(--gr),0.25);
+}
+@media(max-width:1280px){.rr-outer--open{width:300px}.rr-outer .right-rail{width:300px}}
+@media(max-width:1024px){.rr-outer{display:none}}
+.right-rail{display:none}}
 /* mobile shell defaults (overridden in the 720px block) */
 .mobile-bar{display:none}
 .drawer-overlay{display:none}
@@ -555,6 +597,48 @@ a{text-decoration:none}
 .why-bf-img-wrap{margin-top:0.4rem;display:flex;justify-content:center;align-items:center}
 .why-bf-img{width:100%;max-width:1100px;display:block;border-radius:14px;border:1px solid var(--border-soft)}
 
+/* ── Collapsible Right Rail ── */
+.rr-outer{
+  position:relative;
+  width:0;
+  overflow:hidden;
+  transition:width 0.38s cubic-bezier(.4,0,.2,1);
+  flex-shrink:0;
+}
+.rr-outer--open{width:340px}
+.rr-outer .right-rail{
+  width:340px;
+  transform:translateX(0);
+  transition:transform 0.38s cubic-bezier(.4,0,.2,1),opacity 0.38s;
+}
+.rr-outer:not(.rr-outer--open) .right-rail{
+  transform:translateX(100%);
+  opacity:0;
+  pointer-events:none;
+}
+/* Toggle tab */
+.rr-toggle-tab{
+  position:absolute;top:50%;left:-28px;
+  transform:translateY(-50%);
+  z-index:50;
+  width:28px;height:52px;
+  background:var(--card);
+  border:1px solid var(--border-soft);
+  border-right:none;
+  border-radius:8px 0 0 8px;
+  display:flex;align-items:center;justify-content:center;
+  cursor:pointer;
+  color:var(--muted);
+  transition:background 0.2s,color 0.2s,border-color 0.2s;
+  box-shadow:-3px 0 10px rgba(0,0,0,0.15);
+}
+.rr-toggle-tab:hover{
+  background:var(--bg-2);
+  color:var(--gold);
+  border-color:rgba(var(--gr),0.25);
+}
+@media(max-width:1280px){.rr-outer--open{width:300px}.rr-outer .right-rail{width:300px}}
+@media(max-width:1024px){.rr-outer{display:none}}
 .right-rail{background:var(--bg-2);border-left:1px solid var(--border-soft);padding:2rem 1.4rem 7rem;display:flex;flex-direction:column;gap:1rem;position:sticky;top:0;max-height:100vh;overflow-y:auto}
 .widget{background:var(--card);border:1px solid var(--border-soft);border-radius:12px;padding:1.2rem 1.2rem;display:flex;flex-direction:column;gap:0.7rem;transition:border-color 0.25s}
 .widget:hover{border-color:var(--border)}
@@ -661,11 +745,95 @@ a{text-decoration:none}
 
 @media (max-width:1024px){
   .app{grid-template-columns:220px 1fr}
-  .right-rail{display:none !important}
+  /* ── Collapsible Right Rail ── */
+.rr-outer{
+  position:relative;
+  width:0;
+  overflow:hidden;
+  transition:width 0.38s cubic-bezier(.4,0,.2,1);
+  flex-shrink:0;
+}
+.rr-outer--open{width:340px}
+.rr-outer .right-rail{
+  width:340px;
+  transform:translateX(0);
+  transition:transform 0.38s cubic-bezier(.4,0,.2,1),opacity 0.38s;
+}
+.rr-outer:not(.rr-outer--open) .right-rail{
+  transform:translateX(100%);
+  opacity:0;
+  pointer-events:none;
+}
+/* Toggle tab */
+.rr-toggle-tab{
+  position:absolute;top:50%;left:-28px;
+  transform:translateY(-50%);
+  z-index:50;
+  width:28px;height:52px;
+  background:var(--card);
+  border:1px solid var(--border-soft);
+  border-right:none;
+  border-radius:8px 0 0 8px;
+  display:flex;align-items:center;justify-content:center;
+  cursor:pointer;
+  color:var(--muted);
+  transition:background 0.2s,color 0.2s,border-color 0.2s;
+  box-shadow:-3px 0 10px rgba(0,0,0,0.15);
+}
+.rr-toggle-tab:hover{
+  background:var(--bg-2);
+  color:var(--gold);
+  border-color:rgba(var(--gr),0.25);
+}
+@media(max-width:1280px){.rr-outer--open{width:300px}.rr-outer .right-rail{width:300px}}
+@media(max-width:1024px){.rr-outer{display:none}}
+.right-rail{display:none !important}
 }
 @media (max-width:720px){
   .app{grid-template-columns:1fr}
-  .right-rail{display:none !important}
+  /* ── Collapsible Right Rail ── */
+.rr-outer{
+  position:relative;
+  width:0;
+  overflow:hidden;
+  transition:width 0.38s cubic-bezier(.4,0,.2,1);
+  flex-shrink:0;
+}
+.rr-outer--open{width:340px}
+.rr-outer .right-rail{
+  width:340px;
+  transform:translateX(0);
+  transition:transform 0.38s cubic-bezier(.4,0,.2,1),opacity 0.38s;
+}
+.rr-outer:not(.rr-outer--open) .right-rail{
+  transform:translateX(100%);
+  opacity:0;
+  pointer-events:none;
+}
+/* Toggle tab */
+.rr-toggle-tab{
+  position:absolute;top:50%;left:-28px;
+  transform:translateY(-50%);
+  z-index:50;
+  width:28px;height:52px;
+  background:var(--card);
+  border:1px solid var(--border-soft);
+  border-right:none;
+  border-radius:8px 0 0 8px;
+  display:flex;align-items:center;justify-content:center;
+  cursor:pointer;
+  color:var(--muted);
+  transition:background 0.2s,color 0.2s,border-color 0.2s;
+  box-shadow:-3px 0 10px rgba(0,0,0,0.15);
+}
+.rr-toggle-tab:hover{
+  background:var(--bg-2);
+  color:var(--gold);
+  border-color:rgba(var(--gr),0.25);
+}
+@media(max-width:1280px){.rr-outer--open{width:300px}.rr-outer .right-rail{width:300px}}
+@media(max-width:1024px){.rr-outer{display:none}}
+.right-rail{display:none !important}
   /* Sidebar becomes off-canvas drawer */
   .sidebar{
     position:fixed !important;
