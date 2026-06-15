@@ -1621,7 +1621,7 @@ function MeetLocalExperts() {
     },
     {
       type: 'itinerary', isExample: true,
-      img: 'https://images.unsplash.com/photo-1558618666-fcd25c85cd64?w=500&h=300&fit=crop',
+      img: '/savannah-walking-tour.png',
       label: 'FEATURED ITINERARY',
       title: 'Historic Squares Walking Tour',
       curator: 'Jasmine L.',
