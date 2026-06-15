@@ -3923,7 +3923,7 @@ function EssentialsPage({setPage}) {
   const INTEREST_OPTS = ['Meals','Snacks','Toiletries','Chargers','Wellness Items','Local Favorites'];
 
   return (
-    <div style={{background:'#0d1a32', color:'var(--white)', minHeight:'100vh'}}>
+    <div style={{background:'var(--noir)', color:'var(--white)', minHeight:'100vh'}}>
 
       {/* ─── AVAILABLE NOW (live vendors) ───
           Sits ABOVE the hero so visitors immediately see what's actually
@@ -3952,7 +3952,7 @@ function EssentialsPage({setPage}) {
             }}>
               What you can <em style={{fontStyle:'italic', color:'#c9a84c'}}>book today</em>.
             </h2>
-            <p style={{fontSize:'0.95rem', color:'rgba(253,252,248,0.55)', maxWidth:520, margin:'0 auto', lineHeight:1.7, fontWeight:300}}>
+            <p style={{fontSize:'0.95rem', color:'rgba(var(--text-rgb),0.55)', maxWidth:520, margin:'0 auto', lineHeight:1.7, fontWeight:300}}>
               Live partners with bundles ready to deliver to your hotel.
             </p>
           </div>
@@ -4022,7 +4022,7 @@ function EssentialsPage({setPage}) {
                   </div>
                 </div>
 
-                <p style={{fontSize:'0.88rem', color:'rgba(253,252,248,0.62)', lineHeight:1.7, fontWeight:300, marginBottom:'1.4rem'}}>{v.tagline}</p>
+                <p style={{fontSize:'0.88rem', color:'rgba(var(--text-rgb),0.62)', lineHeight:1.7, fontWeight:300, marginBottom:'1.4rem'}}>{v.tagline}</p>
 
                 <div style={{
                   fontSize:'0.66rem', letterSpacing:'3px', textTransform:'uppercase',
@@ -4066,14 +4066,14 @@ function EssentialsPage({setPage}) {
             Everything you need. <em style={{fontStyle:'italic', color:'#c9a84c'}}>Delivered.</em>
           </h1>
 
-          <p style={{fontSize:'1.05rem', color:'rgba(253,252,248,0.65)', lineHeight:1.8, maxWidth:560, margin:'0 auto 2.6rem', fontWeight:300}}>
+          <p style={{fontSize:'1.05rem', color:'rgba(var(--text-rgb),0.65)', lineHeight:1.8, maxWidth:560, margin:'0 auto 2.6rem', fontWeight:300}}>
             From meals and snacks to toiletries and travel essentials, BagFree is building a complete traveler convenience platform.
           </p>
 
           <div style={{display:'flex', justifyContent:'center', gap:'1rem', flexWrap:'wrap'}}>
             <a href="#order-form" onClick={function(e){e.preventDefault();var el=document.getElementById('order-form');if(!el)return;var y=el.getBoundingClientRect().top+window.pageYOffset-80;window.scrollTo({top:y,behavior:'smooth'});}} style={{
-              background:'linear-gradient(135deg,#c9a84c 0%,#d8b06a 50%,#b8893e 100%)',
-              color:'#0d1a32', padding:'1.05rem 2.4rem', textDecoration:'none',
+              background:'linear-gradient(135deg,var(--gold) 0%,#d8b06a 50%,#b8893e 100%)',
+              color:'var(--noir)', padding:'1.05rem 2.4rem', textDecoration:'none',
               fontSize:'0.78rem', fontWeight:600, letterSpacing:'3px', textTransform:'uppercase',
               boxShadow:'0 8px 24px rgba(201,168,76,0.25)',
               transition:'all 0.3s cubic-bezier(.4,0,.2,1)',
@@ -4083,13 +4083,13 @@ function EssentialsPage({setPage}) {
               Request Order →
             </a>
             <a href="/partners.html" style={{
-              background:'transparent', color:'rgba(253,252,248,0.85)', padding:'1.05rem 2rem',
+              background:'transparent', color:'rgba(var(--text-rgb),0.85)', padding:'1.05rem 2rem',
               border:'1px solid rgba(201,168,76,0.32)', textDecoration:'none',
               fontSize:'0.78rem', letterSpacing:'2.8px', textTransform:'uppercase',
               transition:'all 0.3s',
             }}
             onMouseOver={e=>{e.currentTarget.style.borderColor='#c9a84c';e.currentTarget.style.color='#c9a84c';}}
-            onMouseOut={e=>{e.currentTarget.style.borderColor='rgba(201,168,76,0.32)';e.currentTarget.style.color='rgba(253,252,248,0.85)';}}>
+            onMouseOut={e=>{e.currentTarget.style.borderColor='rgba(201,168,76,0.32)';e.currentTarget.style.color='rgba(var(--text-rgb),0.85)';}}>
               Become a Partner
             </a>
           </div>
@@ -4101,7 +4101,7 @@ function EssentialsPage({setPage}) {
         <div style={{textAlign:'center', marginBottom:'3.5rem'}}>
           <div style={{fontSize:'0.66rem', letterSpacing:'4px', textTransform:'uppercase', color:'#c9a84c', marginBottom:'0.9rem'}}>Order What You Need</div>
           <h2 style={{fontFamily:'var(--ff-display)', fontSize:'clamp(2rem,4vw,2.8rem)', fontWeight:300, letterSpacing:'-0.5px'}}>What's <em style={{fontStyle:'italic', color:'#c9a84c'}}>available</em>.</h2>
-          <p style={{fontSize:'0.9rem', color:'rgba(253,252,248,0.5)', marginTop:'0.8rem', fontWeight:300}}>Select a category and place a request — we'll contact you to confirm details and preferences.</p>
+          <p style={{fontSize:'0.9rem', color:'rgba(var(--text-rgb),0.5)', marginTop:'0.8rem', fontWeight:300}}>Select a category and place a request — we'll contact you to confirm details and preferences.</p>
         </div>
 
         <div style={{display:'grid', gridTemplateColumns:'repeat(auto-fit, minmax(260px, 1fr))', gap:'1.4rem'}}>
@@ -4130,11 +4130,11 @@ function EssentialsPage({setPage}) {
                 <div style={{display:'none', position:'absolute', inset:0, alignItems:'center', justifyContent:'center', fontSize:'3rem', color:'rgba(201,168,76,0.45)'}}>{c.icon}</div>
               </div>
               <h3 style={{fontFamily:'var(--ff-display)', fontSize:'1.55rem', fontWeight:400, marginBottom:'0.6rem', letterSpacing:'-0.3px'}}>{c.title}</h3>
-              <p style={{fontSize:'0.85rem', color:'rgba(253,252,248,0.6)', lineHeight:1.7, fontWeight:300, marginBottom:'1.2rem'}}>{c.desc}</p>
+              <p style={{fontSize:'0.85rem', color:'rgba(var(--text-rgb),0.6)', lineHeight:1.7, fontWeight:300, marginBottom:'1.2rem'}}>{c.desc}</p>
               <button onClick={function(){scrollToForm(c.title);}} style={{
                 width:'100%', padding:'0.75rem 1.5rem',
                 background:'linear-gradient(135deg,#c9a84c 0%,#d8b06a 100%)',
-                color:'#0d1a32', border:'none', cursor:'pointer',
+                color:'var(--noir)', border:'none', cursor:'pointer',
                 fontSize:'0.7rem', fontWeight:700, letterSpacing:'2.5px', textTransform:'uppercase',
                 transition:'all 0.25s',
               }}
@@ -4152,7 +4152,7 @@ function EssentialsPage({setPage}) {
         <div style={{textAlign:'center', marginBottom:'3rem'}}>
           <div style={{fontSize:'0.66rem', letterSpacing:'4px', textTransform:'uppercase', color:'#c9a84c', marginBottom:'0.9rem'}}>Partner Spotlight</div>
           <h2 style={{fontFamily:'var(--ff-display)', fontSize:'clamp(2rem,4vw,2.8rem)', fontWeight:300, letterSpacing:'-0.5px', marginBottom:'0.6rem'}}>Curated <em style={{fontStyle:'italic', color:'#c9a84c'}}>local</em>.</h2>
-          <p style={{fontSize:'0.95rem', color:'rgba(253,252,248,0.55)', maxWidth:520, margin:'0 auto', lineHeight:1.7}}>The best of each city, delivered to your hotel. We're partnering with established local restaurants and brands.</p>
+          <p style={{fontSize:'0.95rem', color:'rgba(var(--text-rgb),0.55)', maxWidth:520, margin:'0 auto', lineHeight:1.7}}>The best of each city, delivered to your hotel. We're partnering with established local restaurants and brands.</p>
         </div>
 
         <div style={{maxWidth:680, margin:'0 auto'}}>
@@ -4172,7 +4172,7 @@ function EssentialsPage({setPage}) {
               <div style={{...comingSoonBadge, marginBottom:'0.8rem'}}>Launching Soon</div>
               <h3 style={{fontFamily:'var(--ff-display)', fontSize:'1.65rem', fontWeight:400, marginBottom:'0.3rem', letterSpacing:'-0.3px'}}>Savannah Kitchen Co.</h3>
               <div style={{fontSize:'0.78rem', color:'#c9a84c', letterSpacing:'2px', textTransform:'uppercase', marginBottom:'0.7rem'}}>Premium Southern Cuisine</div>
-              <p style={{fontSize:'0.85rem', color:'rgba(253,252,248,0.6)', lineHeight:1.7, fontWeight:300}}>
+              <p style={{fontSize:'0.85rem', color:'rgba(var(--text-rgb),0.6)', lineHeight:1.7, fontWeight:300}}>
                 Heritage recipes, locally sourced ingredients, prepared for travelers and delivered to your hotel suite.
               </p>
             </div>
@@ -4185,7 +4185,7 @@ function EssentialsPage({setPage}) {
               fontSize:'0.76rem', letterSpacing:'2.8px', textTransform:'uppercase', fontWeight:500,
               transition:'all 0.3s', display:'inline-block',
             }}
-            onMouseOver={e=>{e.currentTarget.style.background='#c9a84c';e.currentTarget.style.color='#0d1a32';}}
+            onMouseOver={e=>{e.currentTarget.style.background='#c9a84c';e.currentTarget.style.color='var(--noir)';}}
             onMouseOut={e=>{e.currentTarget.style.background='transparent';e.currentTarget.style.color='#c9a84c';}}>
               Become a Restaurant Partner →
             </a>
@@ -4198,7 +4198,7 @@ function EssentialsPage({setPage}) {
         <div style={{textAlign:'center', marginBottom:'2.5rem'}}>
           <div style={{fontSize:'0.66rem', letterSpacing:'4px', textTransform:'uppercase', color:'#c9a84c', marginBottom:'0.9rem'}}>Your Voice</div>
           <h2 style={{fontFamily:'var(--ff-display)', fontSize:'clamp(2rem,4vw,2.6rem)', fontWeight:300, letterSpacing:'-0.5px', marginBottom:'0.7rem'}}>Help us prioritize what <em style={{fontStyle:'italic', color:'#c9a84c'}}>launches first</em>.</h2>
-          <p style={{fontSize:'0.95rem', color:'rgba(253,252,248,0.55)', maxWidth:520, margin:'0 auto', lineHeight:1.7}}>Select what you'd want most on your next trip. We'll build the categories travelers actually want.</p>
+          <p style={{fontSize:'0.95rem', color:'rgba(var(--text-rgb),0.55)', maxWidth:520, margin:'0 auto', lineHeight:1.7}}>Select what you'd want most on your next trip. We'll build the categories travelers actually want.</p>
         </div>
 
         <div style={{maxWidth:640, margin:'0 auto'}}>
@@ -4209,7 +4209,7 @@ function EssentialsPage({setPage}) {
                 border:'1px solid rgba(201,168,76,0.42)',
                 display:'flex', alignItems:'center', justifyContent:'center', fontSize:'1.6rem', color:'#c9a84c'}}>✓</div>
               <h3 style={{fontFamily:'var(--ff-display)', fontSize:'1.5rem', fontWeight:400, marginBottom:'0.4rem'}}>You're on the list, <em style={{fontStyle:'italic', color:'#c9a84c'}}>thanks.</em></h3>
-              <p style={{fontSize:'0.85rem', color:'rgba(253,252,248,0.6)', lineHeight:1.7}}>We'll email you the moment Essentials launches in your city.</p>
+              <p style={{fontSize:'0.85rem', color:'rgba(var(--text-rgb),0.6)', lineHeight:1.7}}>We'll email you the moment Essentials launches in your city.</p>
             </div>
           ) : (
             <>
@@ -4221,7 +4221,7 @@ function EssentialsPage({setPage}) {
                       padding:'0.75rem 1.4rem',
                       background: active ? 'rgba(201,168,76,0.14)' : 'transparent',
                       border:`1px solid ${active ? '#c9a84c' : 'rgba(201,168,76,0.32)'}`,
-                      color: active ? '#c9a84c' : 'rgba(253,252,248,0.82)',
+                      color: active ? '#c9a84c' : 'rgba(var(--text-rgb),0.82)',
                       fontFamily:'var(--ff-body)', fontSize:'0.72rem',
                       letterSpacing:'2px', textTransform:'uppercase', fontWeight:500, cursor:'pointer',
                       transition:'all 0.22s', display:'inline-flex', alignItems:'center', gap:'0.5rem',
@@ -4242,7 +4242,7 @@ function EssentialsPage({setPage}) {
                     padding:'0.95rem 1rem', fontFamily:'var(--ff-body)', fontSize:'0.92rem',
                   }}/>
                 <button onClick={()=>submitInterest('notify')} disabled={status==='submitting'} style={{
-                  background:'#c9a84c', color:'#0d1a32', border:'none', padding:'0.95rem 1.8rem',
+                  background:'#c9a84c', color:'var(--noir)', border:'none', padding:'0.95rem 1.8rem',
                   fontFamily:'var(--ff-body)', fontSize:'0.72rem', fontWeight:600,
                   letterSpacing:'2.8px', textTransform:'uppercase', cursor: status==='submitting' ? 'wait' : 'pointer',
                   opacity: status==='submitting' ? 0.6 : 1, transition:'all 0.25s',
@@ -4270,7 +4270,7 @@ function EssentialsPage({setPage}) {
             <h2 style={{fontFamily:'var(--ff-display)', fontSize:'clamp(2rem,4vw,2.8rem)', fontWeight:300, letterSpacing:'-0.5px', marginBottom:'0.7rem'}}>
               Order <em style={{fontStyle:'italic', color:'#c9a84c'}}>before you arrive</em>.
             </h2>
-            <p style={{fontSize:'0.9rem', color:'rgba(253,252,248,0.5)', lineHeight:1.7, fontWeight:300}}>
+            <p style={{fontSize:'0.9rem', color:'rgba(var(--text-rgb),0.5)', lineHeight:1.7, fontWeight:300}}>
               Fill in your details and we'll contact you to confirm availability, preferences, and delivery time.
             </p>
           </div>
@@ -4282,7 +4282,7 @@ function EssentialsPage({setPage}) {
             }}>
               <div style={{fontSize:'2.5rem', marginBottom:'1rem'}}>✓</div>
               <h3 style={{fontFamily:'var(--ff-display)', fontSize:'1.8rem', fontWeight:300, color:'#c9a84c', marginBottom:'0.6rem'}}>Request Received</h3>
-              <p style={{fontSize:'0.9rem', color:'rgba(253,252,248,0.6)', lineHeight:1.7}}>
+              <p style={{fontSize:'0.9rem', color:'rgba(var(--text-rgb),0.6)', lineHeight:1.7}}>
                 Thank you! We'll be in touch shortly to confirm your order details and preferences.
               </p>
             </div>
@@ -4295,7 +4295,7 @@ function EssentialsPage({setPage}) {
               {/* What are you ordering? */}
               <div style={{marginBottom:'1.8rem'}}>
                 <label style={{display:'block', fontSize:'0.65rem', letterSpacing:'2.5px', textTransform:'uppercase', color:'#c9a84c', marginBottom:'0.75rem', fontWeight:600}}>
-                  What do you need? <span style={{color:'rgba(253,252,248,0.35)', fontWeight:400}}>(select all that apply)</span>
+                  What do you need? <span style={{color:'rgba(var(--text-rgb),0.35)', fontWeight:400}}>(select all that apply)</span>
                 </label>
                 <div style={{display:'flex', flexWrap:'wrap', gap:'0.6rem'}}>
                   {['Arrival Meals','Travel Snacks & Drinks','Hotel Essentials','Local Favorites'].map(function(opt) { return (
@@ -4303,7 +4303,7 @@ function EssentialsPage({setPage}) {
                       padding:'0.55rem 1.1rem',
                       background: interests.includes(opt) ? 'linear-gradient(135deg,#c9a84c,#d8b06a)' : 'rgba(201,168,76,0.06)',
                       border: '1px solid ' + (interests.includes(opt) ? '#c9a84c' : 'rgba(201,168,76,0.25)'),
-                      color: interests.includes(opt) ? '#0d1a32' : 'rgba(253,252,248,0.7)',
+                      color: interests.includes(opt) ? 'var(--noir)' : 'rgba(var(--text-rgb),0.7)',
                       fontSize:'0.75rem', fontWeight: interests.includes(opt) ? 700 : 400,
                       cursor:'pointer', transition:'all 0.2s', letterSpacing:'0.5px',
                     }}>{opt}</button>
@@ -4314,18 +4314,18 @@ function EssentialsPage({setPage}) {
               {/* Name + Phone */}
               <div style={{display:'grid', gridTemplateColumns:'1fr 1fr', gap:'1rem', marginBottom:'1rem'}}>
                 <div>
-                  <label style={{display:'block', fontSize:'0.6rem', letterSpacing:'2px', textTransform:'uppercase', color:'rgba(253,252,248,0.4)', marginBottom:'0.45rem'}}>Full Name *</label>
+                  <label style={{display:'block', fontSize:'0.6rem', letterSpacing:'2px', textTransform:'uppercase', color:'rgba(var(--text-rgb),0.4)', marginBottom:'0.45rem'}}>Full Name *</label>
                   <input type="text" placeholder="Your name" value={name} onChange={function(e){setName(e.target.value);}} style={{
-                    width:'100%', padding:'0.75rem 1rem', background:'rgba(255,255,255,0.04)',
-                    border:'1px solid rgba(201,168,76,0.2)', color:'rgba(253,252,248,0.9)',
+                    width:'100%', padding:'0.75rem 1rem', background:'rgba(var(--gold-rgb),0.04)',
+                    border:'1px solid rgba(201,168,76,0.2)', color:'rgba(var(--text-rgb),0.9)',
                     fontSize:'0.88rem', fontFamily:'var(--ff-body)', outline:'none', boxSizing:'border-box',
                   }}/>
                 </div>
                 <div>
-                  <label style={{display:'block', fontSize:'0.6rem', letterSpacing:'2px', textTransform:'uppercase', color:'rgba(253,252,248,0.4)', marginBottom:'0.45rem'}}>Contact Number *</label>
+                  <label style={{display:'block', fontSize:'0.6rem', letterSpacing:'2px', textTransform:'uppercase', color:'rgba(var(--text-rgb),0.4)', marginBottom:'0.45rem'}}>Contact Number *</label>
                   <input type="tel" placeholder="(555) 000-0000" value={phone} onChange={function(e){setPhone(e.target.value);}} style={{
-                    width:'100%', padding:'0.75rem 1rem', background:'rgba(255,255,255,0.04)',
-                    border:'1px solid rgba(201,168,76,0.2)', color:'rgba(253,252,248,0.9)',
+                    width:'100%', padding:'0.75rem 1rem', background:'rgba(var(--gold-rgb),0.04)',
+                    border:'1px solid rgba(201,168,76,0.2)', color:'rgba(var(--text-rgb),0.9)',
                     fontSize:'0.88rem', fontFamily:'var(--ff-body)', outline:'none', boxSizing:'border-box',
                   }}/>
                 </div>
@@ -4334,18 +4334,18 @@ function EssentialsPage({setPage}) {
               {/* Email + Hotel */}
               <div style={{display:'grid', gridTemplateColumns:'1fr 1fr', gap:'1rem', marginBottom:'1rem'}}>
                 <div>
-                  <label style={{display:'block', fontSize:'0.6rem', letterSpacing:'2px', textTransform:'uppercase', color:'rgba(253,252,248,0.4)', marginBottom:'0.45rem'}}>Email Address *</label>
+                  <label style={{display:'block', fontSize:'0.6rem', letterSpacing:'2px', textTransform:'uppercase', color:'rgba(var(--text-rgb),0.4)', marginBottom:'0.45rem'}}>Email Address *</label>
                   <input type="email" placeholder="you@email.com" value={email} onChange={function(e){setEmail(e.target.value);}} style={{
-                    width:'100%', padding:'0.75rem 1rem', background:'rgba(255,255,255,0.04)',
-                    border:'1px solid rgba(201,168,76,0.2)', color:'rgba(253,252,248,0.9)',
+                    width:'100%', padding:'0.75rem 1rem', background:'rgba(var(--gold-rgb),0.04)',
+                    border:'1px solid rgba(201,168,76,0.2)', color:'rgba(var(--text-rgb),0.9)',
                     fontSize:'0.88rem', fontFamily:'var(--ff-body)', outline:'none', boxSizing:'border-box',
                   }}/>
                 </div>
                 <div>
-                  <label style={{display:'block', fontSize:'0.6rem', letterSpacing:'2px', textTransform:'uppercase', color:'rgba(253,252,248,0.4)', marginBottom:'0.45rem'}}>Hotel Name *</label>
+                  <label style={{display:'block', fontSize:'0.6rem', letterSpacing:'2px', textTransform:'uppercase', color:'rgba(var(--text-rgb),0.4)', marginBottom:'0.45rem'}}>Hotel Name *</label>
                   <input type="text" placeholder="e.g. The Alida, Savannah" value={hotel} onChange={function(e){setHotel(e.target.value);}} style={{
-                    width:'100%', padding:'0.75rem 1rem', background:'rgba(255,255,255,0.04)',
-                    border:'1px solid rgba(201,168,76,0.2)', color:'rgba(253,252,248,0.9)',
+                    width:'100%', padding:'0.75rem 1rem', background:'rgba(var(--gold-rgb),0.04)',
+                    border:'1px solid rgba(201,168,76,0.2)', color:'rgba(var(--text-rgb),0.9)',
                     fontSize:'0.88rem', fontFamily:'var(--ff-body)', outline:'none', boxSizing:'border-box',
                   }}/>
                 </div>
@@ -4354,19 +4354,19 @@ function EssentialsPage({setPage}) {
               {/* Date + Time */}
               <div style={{display:'grid', gridTemplateColumns:'1fr 1fr', gap:'1rem', marginBottom:'1rem'}}>
                 <div>
-                  <label style={{display:'block', fontSize:'0.6rem', letterSpacing:'2px', textTransform:'uppercase', color:'rgba(253,252,248,0.4)', marginBottom:'0.45rem'}}>Delivery Date *</label>
+                  <label style={{display:'block', fontSize:'0.6rem', letterSpacing:'2px', textTransform:'uppercase', color:'rgba(var(--text-rgb),0.4)', marginBottom:'0.45rem'}}>Delivery Date *</label>
                   <input type="date" value={date} onChange={function(e){setDate(e.target.value);}} style={{
-                    width:'100%', padding:'0.75rem 1rem', background:'rgba(255,255,255,0.04)',
-                    border:'1px solid rgba(201,168,76,0.2)', color:'rgba(253,252,248,0.9)',
+                    width:'100%', padding:'0.75rem 1rem', background:'rgba(var(--gold-rgb),0.04)',
+                    border:'1px solid rgba(201,168,76,0.2)', color:'rgba(var(--text-rgb),0.9)',
                     fontSize:'0.88rem', fontFamily:'var(--ff-body)', outline:'none', boxSizing:'border-box',
                     colorScheme:'dark',
                   }}/>
                 </div>
                 <div>
-                  <label style={{display:'block', fontSize:'0.6rem', letterSpacing:'2px', textTransform:'uppercase', color:'rgba(253,252,248,0.4)', marginBottom:'0.45rem'}}>Preferred Time</label>
+                  <label style={{display:'block', fontSize:'0.6rem', letterSpacing:'2px', textTransform:'uppercase', color:'rgba(var(--text-rgb),0.4)', marginBottom:'0.45rem'}}>Preferred Time</label>
                   <select value={deliveryTime} onChange={function(e){setDeliveryTime(e.target.value);}} style={{
-                    width:'100%', padding:'0.75rem 1rem', background:'#0d1a32',
-                    border:'1px solid rgba(201,168,76,0.2)', color:deliveryTime ? 'rgba(253,252,248,0.9)' : 'rgba(253,252,248,0.35)',
+                    width:'100%', padding:'0.75rem 1rem', background:'var(--noir)',
+                    border:'1px solid rgba(201,168,76,0.2)', color:deliveryTime ? 'rgba(var(--text-rgb),0.9)' : 'rgba(var(--text-rgb),0.35)',
                     fontSize:'0.88rem', fontFamily:'var(--ff-body)', outline:'none', boxSizing:'border-box', cursor:'pointer',
                   }}>
                     <option value="">Flexible / Any time</option>
@@ -4382,10 +4382,10 @@ function EssentialsPage({setPage}) {
 
               {/* Message */}
               <div style={{marginBottom:'1.8rem'}}>
-                <label style={{display:'block', fontSize:'0.6rem', letterSpacing:'2px', textTransform:'uppercase', color:'rgba(253,252,248,0.4)', marginBottom:'0.45rem'}}>Message / Special Requests</label>
+                <label style={{display:'block', fontSize:'0.6rem', letterSpacing:'2px', textTransform:'uppercase', color:'rgba(var(--text-rgb),0.4)', marginBottom:'0.45rem'}}>Message / Special Requests</label>
                 <textarea placeholder="Any dietary restrictions, specific brands, room number, or other details..." value={message} onChange={function(e){setMessage(e.target.value);}} rows={4} style={{
-                  width:'100%', padding:'0.75rem 1rem', background:'rgba(255,255,255,0.04)',
-                  border:'1px solid rgba(201,168,76,0.2)', color:'rgba(253,252,248,0.9)',
+                  width:'100%', padding:'0.75rem 1rem', background:'rgba(var(--gold-rgb),0.04)',
+                  border:'1px solid rgba(201,168,76,0.2)', color:'rgba(var(--text-rgb),0.9)',
                   fontSize:'0.85rem', fontFamily:'var(--ff-body)', outline:'none', boxSizing:'border-box',
                   resize:'vertical', lineHeight:1.6,
                 }}/>
@@ -4400,13 +4400,13 @@ function EssentialsPage({setPage}) {
               <button onClick={submitOrder} disabled={status === 'submitting'} style={{
                 width:'100%', padding:'1.05rem', cursor: status === 'submitting' ? 'wait' : 'pointer',
                 background: status === 'submitting' ? 'rgba(201,168,76,0.4)' : 'linear-gradient(135deg,#c9a84c 0%,#d8b06a 100%)',
-                color:'#0d1a32', border:'none',
+                color:'var(--noir)', border:'none',
                 fontSize:'0.78rem', fontWeight:700, letterSpacing:'3px', textTransform:'uppercase',
                 transition:'all 0.25s', boxShadow: status === 'submitting' ? 'none' : '0 6px 22px rgba(201,168,76,0.28)',
               }}>
                 {status === 'submitting' ? 'Sending Request…' : 'Send Order Request →'}
               </button>
-              <p style={{textAlign:'center', fontSize:'0.72rem', color:'rgba(253,252,248,0.28)', marginTop:'0.9rem', lineHeight:1.6}}>
+              <p style={{textAlign:'center', fontSize:'0.72rem', color:'rgba(var(--text-rgb),0.28)', marginTop:'0.9rem', lineHeight:1.6}}>
                 We'll contact you within a few hours to confirm your order, availability, and any preferences.
               </p>
             </div>
