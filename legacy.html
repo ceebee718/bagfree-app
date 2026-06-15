@@ -4009,16 +4009,16 @@ function EssentialsPage({setPage}) {
           </p>
 
           <div style={{display:'flex', justifyContent:'center', gap:'1rem', flexWrap:'wrap'}}>
-            <a href="#interest" onClick={e=>{e.preventDefault();const el=document.getElementById('interest');if(!el){console.warn('[BagFree] #interest section not found in DOM');return;}const y=el.getBoundingClientRect().top+window.pageYOffset-80;window.scrollTo({top:y,behavior:'smooth'});setTimeout(()=>{const inp=el.querySelector('input[type="email"]');if(inp)inp.focus();},600);}} style={{
+            <a href="#order-form" onClick={function(e){e.preventDefault();var el=document.getElementById('order-form');if(!el)return;var y=el.getBoundingClientRect().top+window.pageYOffset-80;window.scrollTo({top:y,behavior:'smooth'});}} style={{
               background:'linear-gradient(135deg,#c9a84c 0%,#d8b06a 50%,#b8893e 100%)',
               color:'#0d1a32', padding:'1.05rem 2.4rem', textDecoration:'none',
               fontSize:'0.78rem', fontWeight:600, letterSpacing:'3px', textTransform:'uppercase',
               boxShadow:'0 8px 24px rgba(201,168,76,0.25)',
               transition:'all 0.3s cubic-bezier(.4,0,.2,1)',
             }}
-            onMouseOver={e=>{e.currentTarget.style.transform='translateY(-2px)';e.currentTarget.style.letterSpacing='3.5px';}}
-            onMouseOut={e=>{e.currentTarget.style.transform='';e.currentTarget.style.letterSpacing='3px';}}>
-              Notify Me When It Launches
+            onMouseOver={function(e){e.currentTarget.style.transform='translateY(-2px)';e.currentTarget.style.letterSpacing='3.5px';}}
+            onMouseOut={function(e){e.currentTarget.style.transform='';e.currentTarget.style.letterSpacing='3px';}}>
+              Request Order
             </a>
             <a href="/partners.html" style={{
               background:'transparent', color:'rgba(253,252,248,0.85)', padding:'1.05rem 2rem',
@@ -4128,71 +4128,6 @@ function EssentialsPage({setPage}) {
               Become a Restaurant Partner →
             </a>
           </div>
-        </div>
-      </section>
-
-      {/* ─── INTEREST COLLECTION ─── */}
-      <section id="interest" style={{...sectionStyle, paddingTop:'2rem'}}>
-        <div style={{textAlign:'center', marginBottom:'2.5rem'}}>
-          <div style={{fontSize:'0.66rem', letterSpacing:'4px', textTransform:'uppercase', color:'#c9a84c', marginBottom:'0.9rem'}}>Your Voice</div>
-          <h2 style={{fontFamily:'var(--ff-display)', fontSize:'clamp(2rem,4vw,2.6rem)', fontWeight:300, letterSpacing:'-0.5px', marginBottom:'0.7rem'}}>Help us prioritize what <em style={{fontStyle:'italic', color:'#c9a84c'}}>launches first</em>.</h2>
-          <p style={{fontSize:'0.95rem', color:'rgba(253,252,248,0.55)', maxWidth:520, margin:'0 auto', lineHeight:1.7}}>Select what you'd want most on your next trip. We'll build the categories travelers actually want.</p>
-        </div>
-
-        <div style={{maxWidth:640, margin:'0 auto'}}>
-          {status === 'done' ? (
-            <div style={{...cardStyle, padding:'2.5rem 2rem', textAlign:'center', borderColor:'rgba(201,168,76,0.42)'}}>
-              <div style={{width:64, height:64, borderRadius:'50%', margin:'0 auto 1.2rem',
-                background:'radial-gradient(circle, rgba(201,168,76,0.18), rgba(201,168,76,0.04) 70%)',
-                border:'1px solid rgba(201,168,76,0.42)',
-                display:'flex', alignItems:'center', justifyContent:'center', fontSize:'1.6rem', color:'#c9a84c'}}>✓</div>
-              <h3 style={{fontFamily:'var(--ff-display)', fontSize:'1.5rem', fontWeight:400, marginBottom:'0.4rem'}}>You're on the list, <em style={{fontStyle:'italic', color:'#c9a84c'}}>thanks.</em></h3>
-              <p style={{fontSize:'0.85rem', color:'rgba(253,252,248,0.6)', lineHeight:1.7}}>We'll email you the moment Essentials launches in your city.</p>
-            </div>
-          ) : (
-            <>
-              <div style={{display:'flex', flexWrap:'wrap', gap:'0.6rem', justifyContent:'center', marginBottom:'2rem'}}>
-                {INTEREST_OPTS.map(opt => {
-                  const active = interests.includes(opt);
-                  return (
-                    <button key={opt} onClick={()=>toggleInterest(opt)} style={{
-                      padding:'0.75rem 1.4rem',
-                      background: active ? 'rgba(201,168,76,0.14)' : 'transparent',
-                      border:`1px solid ${active ? '#c9a84c' : 'rgba(201,168,76,0.32)'}`,
-                      color: active ? '#c9a84c' : 'rgba(253,252,248,0.82)',
-                      fontFamily:'var(--ff-body)', fontSize:'0.72rem',
-                      letterSpacing:'2px', textTransform:'uppercase', fontWeight:500, cursor:'pointer',
-                      transition:'all 0.22s', display:'inline-flex', alignItems:'center', gap:'0.5rem',
-                    }}>
-                      {active && <span style={{width:5,height:5,background:'#c9a84c',transform:'rotate(45deg)',display:'inline-block'}}/>}
-                      {opt}
-                    </button>
-                  );
-                })}
-              </div>
-
-              <div style={{display:'flex', gap:'0.7rem', maxWidth:480, margin:'0 auto', flexWrap:'wrap'}}>
-                <input type="email" placeholder="you@example.com" value={email}
-                  onChange={e=>setEmail(e.target.value)}
-                  style={{
-                    flex:1, minWidth:200, background:'rgba(201,168,76,0.04)',
-                    border:'1px solid rgba(201,168,76,0.32)', color:'#fdfcf8',
-                    padding:'0.95rem 1rem', fontFamily:'var(--ff-body)', fontSize:'0.92rem',
-                  }}/>
-                <button onClick={()=>submitInterest('notify')} disabled={status==='submitting'} style={{
-                  background:'#c9a84c', color:'#0d1a32', border:'none', padding:'0.95rem 1.8rem',
-                  fontFamily:'var(--ff-body)', fontSize:'0.72rem', fontWeight:600,
-                  letterSpacing:'2.8px', textTransform:'uppercase', cursor: status==='submitting' ? 'wait' : 'pointer',
-                  opacity: status==='submitting' ? 0.6 : 1, transition:'all 0.25s',
-                }}>{status==='submitting' ? 'Sending...' : 'Notify Me →'}</button>
-              </div>
-              {status === 'error' && errMsg && (
-                <div style={{maxWidth:480, margin:'1rem auto 0', padding:'0.6rem 0.9rem',
-                  background:'rgba(224,114,96,0.08)', border:'1px solid rgba(224,114,96,0.32)',
-                  color:'#E07260', fontSize:'0.78rem', lineHeight:1.5}}>{errMsg}</div>
-              )}
-            </>
-          )}
         </div>
       </section>
 
