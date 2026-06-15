@@ -233,13 +233,44 @@ a{color:inherit}
 .slot-sub{font-size:0.6rem;letter-spacing:1.5px;color:rgba(var(--text-rgb),0.3);text-align:center;transition:color .28s}
 .slot-card:hover .slot-label{color:var(--gold)}
 .slot-card:hover .slot-sub{color:rgba(var(--text-rgb),0.55)}
-.slot-card.slot-filled{border:1.5px solid rgba(var(--gold-rgb),0.35);background:rgba(var(--gold-rgb),0.05);cursor:default;justify-content:flex-start;padding:1.6rem 1rem 1.4rem}
-.slot-card.slot-filled:hover{border-color:rgba(var(--gold-rgb),0.6);background:rgba(var(--gold-rgb),0.09);transform:translateY(-3px)}
-.slot-photo{width:72px;height:72px;border-radius:50%;object-fit:cover;object-position:center top;border:2px solid rgba(var(--gold-rgb),0.4);margin-bottom:0.1rem;flex-shrink:0}
-.slot-badge{font-size:0.44rem;letter-spacing:2px;text-transform:uppercase;color:var(--gold);background:rgba(var(--gold-rgb),0.1);border:1px solid rgba(var(--gold-rgb),0.25);padding:0.18rem 0.52rem;margin-bottom:0.5rem}
-.slot-name{font-family:var(--ff-display);font-size:1.1rem;font-weight:400;color:var(--text);text-align:center;line-height:1.1;margin-bottom:0.18rem}
-.slot-role{font-size:0.58rem;color:rgba(var(--text-rgb),0.45);letter-spacing:1px;text-transform:uppercase;text-align:center;margin-bottom:0.5rem}
-.slot-city{font-size:0.65rem;color:rgba(var(--gold-rgb),0.65);text-align:center;font-weight:300}
+.slot-card.slot-filled{
+  border:2px solid rgba(var(--gold-rgb),0.8);
+  background:linear-gradient(145deg,#2a1e00,#3d2c00,#2a1e00);
+  cursor:default;justify-content:center;padding:2rem 1rem 1.8rem;
+  box-shadow:0 0 0 1px rgba(var(--gold-rgb),0.2), 0 8px 32px rgba(var(--gold-rgb),0.25), inset 0 1px 0 rgba(var(--gold-rgb),0.3);
+}
+.slot-card.slot-filled:hover{
+  border-color:var(--gold);
+  background:linear-gradient(145deg,#3a2900,#4d3800,#3a2900);
+  transform:translateY(-3px);
+  box-shadow:0 0 0 1px rgba(var(--gold-rgb),0.4), 0 14px 40px rgba(var(--gold-rgb),0.35), inset 0 1px 0 rgba(var(--gold-rgb),0.4);
+}
+.slot-photo{
+  width:76px;height:76px;border-radius:50%;
+  object-fit:cover;object-position:center top;
+  border:2.5px solid var(--gold);
+  display:block;margin:0 auto 0.6rem;
+  box-shadow:0 0 0 4px rgba(var(--gold-rgb),0.2), 0 4px 16px rgba(0,0,0,0.5);
+}
+.slot-badge{
+  font-size:0.44rem;letter-spacing:2.5px;text-transform:uppercase;
+  color:#0d1a32;background:var(--gold);
+  padding:0.2rem 0.6rem;margin-bottom:0.6rem;font-weight:700;
+  display:block;text-align:center;width:fit-content;margin-left:auto;margin-right:auto;
+}
+.slot-name{
+  font-family:var(--ff-display);font-size:1.15rem;font-weight:400;
+  color:var(--gold);text-align:center;line-height:1.1;margin-bottom:0.2rem;
+  display:block;
+}
+.slot-role{
+  font-size:0.56rem;color:rgba(var(--gold-rgb),0.6);letter-spacing:1.5px;
+  text-transform:uppercase;text-align:center;margin-bottom:0.5rem;display:block;
+}
+.slot-city{
+  font-size:0.68rem;color:rgba(var(--gold-rgb),0.85);
+  text-align:center;font-weight:500;display:block;
+}
 </style>
 </head>
 <body>
