@@ -233,6 +233,13 @@ a{color:inherit}
 .slot-sub{font-size:0.6rem;letter-spacing:1.5px;color:rgba(var(--text-rgb),0.3);text-align:center;transition:color .28s}
 .slot-card:hover .slot-label{color:var(--gold)}
 .slot-card:hover .slot-sub{color:rgba(var(--text-rgb),0.55)}
+.slot-card.slot-filled{border:1.5px solid rgba(var(--gold-rgb),0.35);background:rgba(var(--gold-rgb),0.05);cursor:default;justify-content:flex-start;padding:1.6rem 1rem 1.4rem}
+.slot-card.slot-filled:hover{border-color:rgba(var(--gold-rgb),0.6);background:rgba(var(--gold-rgb),0.09);transform:translateY(-3px)}
+.slot-photo{width:72px;height:72px;border-radius:50%;object-fit:cover;object-position:center top;border:2px solid rgba(var(--gold-rgb),0.4);margin-bottom:0.1rem;flex-shrink:0}
+.slot-badge{font-size:0.44rem;letter-spacing:2px;text-transform:uppercase;color:var(--gold);background:rgba(var(--gold-rgb),0.1);border:1px solid rgba(var(--gold-rgb),0.25);padding:0.18rem 0.52rem;margin-bottom:0.5rem}
+.slot-name{font-family:var(--ff-display);font-size:1.1rem;font-weight:400;color:var(--text);text-align:center;line-height:1.1;margin-bottom:0.18rem}
+.slot-role{font-size:0.58rem;color:rgba(var(--text-rgb),0.45);letter-spacing:1px;text-transform:uppercase;text-align:center;margin-bottom:0.5rem}
+.slot-city{font-size:0.65rem;color:rgba(var(--gold-rgb),0.65);text-align:center;font-weight:300}
 </style>
 </head>
 <body>
@@ -311,11 +318,13 @@ a{color:inherit}
 
   <div class="dir-count">Be among the <em>first</em> curators on the leaderboard.</div>
   <div class="slot-grid" id="dirGrid">
-    <a class="slot-card" href="#apply">
-      <div class="slot-ring"><svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.4" stroke-linecap="round"><line x1="12" y1="5" x2="12" y2="19"/><line x1="5" y1="12" x2="19" y2="12"/></svg></div>
-      <span class="slot-label">Become a Curator</span>
-      <span class="slot-sub">Apply now →</span>
-    </a>
+    <div class="slot-card slot-filled">
+      <img src="/larry-bagfree.png" alt="Larry B." class="slot-photo"/>
+      <span class="slot-badge">Founder</span>
+      <span class="slot-name">Larry B.</span>
+      <span class="slot-role">BagFree · Tampa, FL</span>
+      <span class="slot-city">&#9733; BagFree Insider</span>
+    </div>
     <a class="slot-card" href="#apply">
       <div class="slot-ring"><svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.4" stroke-linecap="round"><line x1="12" y1="5" x2="12" y2="19"/><line x1="5" y1="12" x2="19" y2="12"/></svg></div>
       <span class="slot-label">Become a Curator</span>
