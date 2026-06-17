@@ -1736,8 +1736,17 @@ function MeetLocalExperts() {
   );
 }
 
+var HERO_IMAGES = {
+  savannah: '/savannah-banner.png',
+  atlanta:  '/hero-atlanta.png',
+  tampa:    '/hero-tampa.png',
+  orlando:  '/hero-orlando.png',
+  miami:    '/hero-miami.png',
+};
+
 function Hero(props) {
   var city = props.city;
+  var heroImg = HERO_IMAGES[city && city.id] || '/savannah-banner.png';
   var features = [
     { icon:React.createElement('svg',{width:14,height:14,viewBox:'0 0 24 24',fill:'none',stroke:'currentColor',strokeWidth:1.8},React.createElement('rect',{x:2,y:7,width:20,height:14,rx:2}),React.createElement('path',{d:'M16 7V5a2 2 0 00-2-2h-4a2 2 0 00-2 2v2'})), label:'Skip Baggage Fees' },
     { icon:React.createElement('svg',{width:14,height:14,viewBox:'0 0 24 24',fill:'none',stroke:'currentColor',strokeWidth:1.8},React.createElement('path',{d:'M5 17H3a2 2 0 01-2-2V5a2 2 0 012-2h11a2 2 0 012 2v3'}),React.createElement('rect',{x:9,y:11,width:14,height:10,rx:1})), label:'Travel Lighter' },
@@ -1746,9 +1755,11 @@ function Hero(props) {
   ];
   return (
     <div className="hero-section">
+      <img key={heroImg} src={heroImg} alt={(city ? city.name : 'BagFree') + ' cityscape'} className="hero-bg-img"/>
       <div className="hero-overlay"></div>
       <div className="hero-content">
         <div className="hero-text">
+          <div className="hero-city-tag"><span className="hero-city-dot"></span>{city ? city.name : 'Savannah'}</div>
           <h1 className="hero-title">Travel Without<br/><em className="hero-title-gold">The Baggage</em></h1>
           <p className="hero-subtitle">Everything you need, delivered before you arrive. So you can travel lighter, experience more, and leave less behind.</p>
           <a href="/plan-my-trip.html" className="hero-cta">Plan My Trip →</a>
