@@ -450,6 +450,31 @@ async function submitMemberCheckout() {
     });
   } catch(e){}
 
+  // Backup lead capture via the concierge function (writes to Supabase AND
+  // emails the team). Independent of Formspree so no signup is ever lost.
+  try {
+    fetch('/.netlify/functions/submit-concierge-request', {
+      method:'POST',
+      headers:{'Content-Type':'application/json'},
+      body:JSON.stringify({
+        destination: 'Membership Signup — ' + info.name + ' (' + (bc === 'a' ? 'Annual' : 'Monthly') + ')',
+        contact_email: email,
+        contact_name: email,
+        travelers: 1,
+        special_requests:
+          '[MEMBERSHIP SIGNUP]\n\n' +
+          'Tier: ' + info.name + '\n' +
+          'Billing: ' + (bc === 'a' ? 'Annual' : 'Monthly') + '\n' +
+          'Price: ' + (bc === 'a' ? '$' + price + '/year' : '$' + price + '/month') + '\n' +
+          'Email: ' + email + '\n' +
+          'City: ' + city + '\n' +
+          'Submitted: ' + new Date().toISOString() + '\n\n' +
+          'Note: Non-transferable membership, registered to this email only. ' +
+          'This lead was captured at the moment of checkout — payment is confirmed separately via Stripe.'
+      })
+    });
+  } catch(e){}
+
   // Call Netlify create-checkout
   try {
     var today = new Date().toISOString().split('T')[0];
