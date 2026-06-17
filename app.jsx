@@ -637,7 +637,7 @@ function highlight(text, q){
 
 const NAV = [
   { id:'home',         label:'Home',           icon:Icon.Grid,    href:'/' },
-  { id:'plan',         label:'Plan My Trip',   icon:Icon.Map,     href:'/departure-lounge-landing.html' },
+  { id:'plan',         label:'Plan My Trip',   icon:Icon.Map,     href:'/plan-my-trip.html' },
   { id:'clothing',     label:'Clothing',       icon:Icon.Hanger,  href:'/departure-lounge-landing.html' },
   { id:'curators',     label:'Curators',       icon:Icon.Person,  href:'/curators.html' },
   { id:'essentials',   label:'Essentials',     icon:Icon.Bag,     href:'/legacy.html#essentials' },
@@ -1751,7 +1751,7 @@ function Hero(props) {
         <div className="hero-text">
           <h1 className="hero-title">Travel Without<br/><em className="hero-title-gold">The Baggage</em></h1>
           <p className="hero-subtitle">Everything you need, delivered before you arrive. So you can travel lighter, experience more, and leave less behind.</p>
-          <a href="/departure-lounge-landing.html" className="hero-cta">Plan My Trip →</a>
+          <a href="/plan-my-trip.html" className="hero-cta">Plan My Trip →</a>
         </div>
         <div className="hero-features">
           {features.map(function(f,i){
