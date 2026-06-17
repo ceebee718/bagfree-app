@@ -644,7 +644,7 @@ const NAV = [
   { id:'experiences',  label:'Experiences',    icon:Icon.Compass, href:'/experiences.html' },
   { id:'membership',   label:'Membership',     icon:Icon.Crown,   href:'/membership.html' },
   { id:'rewards',      label:'Rewards',        icon:Icon.Star,    href:'/legacy.html#rewards' },
-  { id:'secondjourney',label:'Second Journey™',icon:SecondJourneyIcon, href:'/second-journey.html', sage:true, badge:true },
+  { id:'secondjourney',label:'Second Journey™',icon:SecondJourneyIcon, href:'/second-journey.html', sage:true },
   { id:'partner',      label:'Partner',        icon:Icon.Gift,    href:'/partners.html' },
 ];
 
@@ -733,7 +733,7 @@ function Sidebar(props) {
                 window.location.href = (res.data && res.data.session) ? n.href : '/account-login.html';
               });
             } : undefined}>
-              {n.badge ? <span className="nav-icon-badge"><I/></span> : <I/>}<span>{n.label}</span>
+              <I/><span>{n.label}</span>
             </a>
           );
         })}
