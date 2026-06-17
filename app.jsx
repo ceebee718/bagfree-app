@@ -1770,13 +1770,13 @@ function Hero(props) {
 
 function AccessCards() {
   var cards = [
-    { title:'Clothing', desc:'Select outfits delivered before you arrive.', link:'/departure-lounge-landing.html', img:'https://images.unsplash.com/photo-1490481651871-ab68de25d43d?w=500&h=340&fit=crop', cta:'Explore',
+    { title:'Clothing', desc:'Select outfits delivered before you arrive.', link:'/departure-lounge-landing.html', img:'/clothing-card.png', cta:'Explore',
       icon:React.createElement('svg',{width:18,height:18,viewBox:'0 0 24 24',fill:'none',stroke:'currentColor',strokeWidth:1.6},React.createElement('path',{d:'M20.38 3.46L16 2a4 4 0 01-8 0L3.62 3.46a2 2 0 00-1.34 2.23l.58 3.57a1 1 0 00.99.84H6v10c0 1.1.9 2 2 2h8a2 2 0 002-2V10h2.15a1 1 0 00.99-.84l.58-3.57a2 2 0 00-1.34-2.23z'})) },
     { title:'Curators', desc:'Local experts who help you experience the real city.', link:'/curators.html', img:'/curators-card.png', cta:'Meet a Curator',
       icon:React.createElement('svg',{width:18,height:18,viewBox:'0 0 24 24',fill:'none',stroke:'currentColor',strokeWidth:1.6},React.createElement('path',{d:'M17 21v-2a4 4 0 00-4-4H5a4 4 0 00-4 4v2'}),React.createElement('circle',{cx:9,cy:7,r:4}),React.createElement('path',{d:'M23 21v-2a4 4 0 00-3-3.87M16 3.13a4 4 0 010 7.75'})) },
     { title:'Essentials', desc:'Hotel essentials and items you may have forgotten.', link:'/legacy.html#essentials', img:'/essentials-card.png', cta:'View Essentials',
       icon:React.createElement('svg',{width:18,height:18,viewBox:'0 0 24 24',fill:'none',stroke:'currentColor',strokeWidth:1.6},React.createElement('rect',{x:2,y:7,width:20,height:14,rx:2}),React.createElement('path',{d:'M16 7V5a2 2 0 00-2-2h-4a2 2 0 00-2 2v2'}),React.createElement('line',{x1:12,y1:12,x2:12,y2:16}),React.createElement('line',{x1:10,y1:14,x2:14,y2:14})) },
-    { title:'Second Journey™', desc:'Quality clothing, cleaned and prepared for its next traveler.', link:'/second-journey.html', img:'https://images.unsplash.com/photo-1490114538077-0a7f8cb49891?w=500&h=340&fit=crop', cta:'Learn More', teal:true,
+    { title:'Second Journey™', desc:'Quality clothing, cleaned and prepared for its next traveler.', link:'/second-journey.html', img:'/second-journey-card.png', cta:'Learn More', teal:true,
       icon:React.createElement('img',{src:'/images/second-journey-logo.png',style:{width:20,height:20,objectFit:'contain',filter:'drop-shadow(0 1px 4px rgba(0,0,0,0.5))'},alt:'SJ'}) },
   ];
   return (
