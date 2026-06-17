@@ -1830,7 +1830,7 @@ function NetworkSection(props) {
             );
           })}
         </div>
-        <a href="/legacy.html" className="net-btn">View Full Coverage →</a>
+        <a href="/expansion-map.html" className="net-btn">View Expansion Map →</a>
       </div>
       <div className="net-map">
         <svg viewBox="37 8 435 284" preserveAspectRatio="xMidYMid meet" className="net-svg">
