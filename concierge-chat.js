@@ -6,7 +6,7 @@
 //
 // Env vars needed (set in Netlify dashboard → Site settings → Environment variables):
 //   ANTHROPIC_API_KEY   - sk-ant-... key from console.anthropic.com
-//   ANTHROPIC_MODEL      - optional, defaults to 'claude-sonnet-4-20250514' below
+//   ANTHROPIC_MODEL      - optional, defaults to 'claude-sonnet-4-6' below
 //
 // Expected POST body from the frontend:
 //   {
@@ -74,7 +74,7 @@ exports.handler = async (event) => {
         'anthropic-version': '2023-06-01',
       },
       body: JSON.stringify({
-        model: process.env.ANTHROPIC_MODEL || 'claude-sonnet-4-20250514',
+        model: process.env.ANTHROPIC_MODEL || 'claude-sonnet-4-6',
         max_tokens: 400,
         system: system ? String(system).slice(0, 6000) : undefined,
         messages: trimmed,
