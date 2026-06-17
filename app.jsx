@@ -2202,16 +2202,16 @@ function ConciergeChat(props) {
       return { role: m.role === 'user' ? 'user' : 'assistant', content: m.text };
     });
 
-    const data = await callClaude({
-      model: 'claude-sonnet-4-20250514',
-      max_tokens: 400,
-      system: systemPrompt,
-      messages: apiMessages
+    const res = await fetch('/.netlify/functions/concierge-chat', {
+      method: 'POST',
+      headers: { 'Content-Type': 'application/json' },
+      body: JSON.stringify({ system: systemPrompt, messages: apiMessages }),
     });
-    if (data && data.content && data.content[0] && data.content[0].text) {
-      return data.content[0].text;
+    const data = await res.json().catch(function(){ return {}; });
+    if (!res.ok || !data.reply) {
+      throw new Error((data && data.error) || ('Proxy HTTP ' + res.status));
     }
-    throw new Error('No response');
+    return data.reply;
   }
 
   async function sendMessage(text) {
