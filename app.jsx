@@ -2228,6 +2228,10 @@ function ConciergeChat(props) {
       const reply = await callConcierge(nextMsgs);
       setMsgs(nextMsgs.concat([{ role:'bot', text: reply }]));
     } catch(e) {
+      // Log the real failure reason so it shows in the browser console —
+      // the chat bubble stays friendly, but this makes diagnosing
+      // server/API issues possible without digging through Netlify logs.
+      console.error('[ConciergeChat] request failed:', e && e.message ? e.message : e);
       setMsgs(nextMsgs.concat([{ role:'bot', text:'Sorry \u2014 I had trouble responding just now. Please try again in a moment.' }]));
     }
     setBusy(false);
