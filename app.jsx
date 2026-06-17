@@ -644,8 +644,8 @@ const NAV = [
   { id:'experiences',  label:'Experiences',    icon:Icon.Compass, href:'/experiences.html' },
   { id:'membership',   label:'Membership',     icon:Icon.Crown,   href:'/membership.html' },
   { id:'rewards',      label:'Rewards',        icon:Icon.Star,    href:'/legacy.html#rewards' },
-  { id:'secondjourney',label:'Second Journey™',icon:SecondJourneyIcon, href:'/second-journey.html' },
-  { id:'contribute',   label:'Contribute',     icon:Icon.Gift,    href:'/second-journey.html#contribute' },
+  { id:'secondjourney',label:'Second Journey™',icon:SecondJourneyIcon, href:'/second-journey.html', sage:true },
+  { id:'partner',      label:'Partner',        icon:Icon.Gift,    href:'/partners.html' },
 ];
 
 const TILES = [
@@ -720,7 +720,7 @@ function Sidebar(props) {
             return <div key={'hdr-'+n.label} className="nav-section-header">{n.label}</div>;
           }
           const I = n.icon;
-          const cls = 'nav-item' + (props.active === n.id ? ' active' : '');
+          const cls = 'nav-item' + (props.active === n.id ? ' active' : '') + (n.sage ? ' nav-item--sage' : '');
           var navHref = n.href;
           if (n.authRequired) {
             navHref = sbClient ? n.href : '/account-login.html';
