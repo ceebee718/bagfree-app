@@ -1,0 +1,491 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+<meta charset="UTF-8">
+<meta name="viewport" content="width=device-width, initial-scale=1.0">
+<title>Plan My Trip — BagFree</title>
+<meta name="description" content="Tell us about your trip and we'll handle the rest — hotel, clothing, experiences, meals, and transportation, all curated for you.">
+<link rel="preconnect" href="https://fonts.googleapis.com">
+<link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+<link href="https://fonts.googleapis.com/css2?family=Cormorant+Garamond:ital,wght@0,300;0,400;0,500;1,400&family=DM+Sans:wght@300;400;500;600;700&display=swap" rel="stylesheet">
+<style>
+:root{
+  --noir:#0d1a32; --noir-2:#111f3a; --noir-3:#162240;
+  --gold:#c9a96e; --gold-bright:#d4b87a; --gold-rgb:201,169,110;
+  --em:#5DCAA5; --em-rgb:93,202,165;
+  --white:#fdfcf8; --text-rgb:253,252,248;
+  --muted:rgba(253,252,248,0.62); --faint:rgba(253,252,248,0.38);
+  --border-soft:rgba(201,169,110,0.14);
+  --ff-display:'Cormorant Garamond',Georgia,serif;
+  --ff-body:'DM Sans','Helvetica Neue',sans-serif;
+}
+*{box-sizing:border-box;margin:0;padding:0}
+html,body{height:100%}
+body{font-family:var(--ff-body);background:var(--noir);color:var(--white);font-weight:300;-webkit-font-smoothing:antialiased}
+a{text-decoration:none;color:inherit}
+button{font-family:inherit;cursor:pointer;background:none;border:none;color:inherit}
+::-webkit-scrollbar{width:8px}
+::-webkit-scrollbar-thumb{background:rgba(201,169,110,0.2);border-radius:4px}
+
+/* ── Nav ── */
+.nav{
+  position:sticky;top:0;z-index:50;display:flex;align-items:center;justify-content:space-between;
+  padding:1.1rem 2.5rem;background:rgba(13,26,50,0.92);backdrop-filter:blur(14px);
+  border-bottom:1px solid var(--border-soft);
+}
+.nav-logo{font-family:var(--ff-display);font-size:1.4rem;font-weight:400;color:var(--gold);letter-spacing:0.5px}
+.nav-back{display:flex;align-items:center;gap:0.4rem;font-size:0.68rem;letter-spacing:1.5px;text-transform:uppercase;color:var(--muted);transition:color 0.2s}
+.nav-back:hover{color:var(--gold)}
+.nav-back svg{width:14px;height:14px}
+
+/* ── Hero ── */
+.ptp-hero{padding:3.5rem 2rem 2.5rem;text-align:center;max-width:680px;margin:0 auto}
+.ptp-eyebrow{font-size:0.58rem;letter-spacing:3.5px;text-transform:uppercase;color:var(--gold);font-weight:600;margin-bottom:0.9rem}
+.ptp-title{font-family:var(--ff-display);font-size:clamp(2rem,4.5vw,2.9rem);font-weight:300;letter-spacing:-0.5px;line-height:1.12;margin-bottom:1rem}
+.ptp-title em{color:var(--gold);font-style:italic}
+.ptp-sub{font-size:0.92rem;color:var(--muted);line-height:1.7;font-weight:300}
+
+/* ── Form shell ── */
+.ptp-form-wrap{max-width:760px;margin:0 auto;padding:0 2rem 5rem}
+.ptp-card{background:var(--noir-2);border:1px solid var(--border-soft);border-radius:14px;overflow:hidden}
+.ptp-section{padding:2.2rem 2.4rem;border-bottom:1px solid var(--border-soft)}
+.ptp-section:last-of-type{border-bottom:none}
+.ptp-section-head{display:flex;align-items:center;gap:0.7rem;margin-bottom:1.4rem}
+.ptp-section-num{
+  width:28px;height:28px;border-radius:50%;flex-shrink:0;
+  border:1px solid rgba(var(--gold-rgb),0.4);background:rgba(var(--gold-rgb),0.07);
+  display:flex;align-items:center;justify-content:center;
+  font-family:var(--ff-display);font-size:0.85rem;color:var(--gold);
+}
+.ptp-section-title{font-family:var(--ff-display);font-size:1.25rem;font-weight:500;color:var(--white)}
+.ptp-section-sub{font-size:0.74rem;color:var(--faint);margin-top:0.15rem}
+
+.ptp-row{display:grid;gap:1rem;margin-bottom:1rem}
+.ptp-row--2{grid-template-columns:1fr 1fr}
+.ptp-row--3{grid-template-columns:1fr 1fr 1fr}
+.ptp-field label{display:block;font-size:0.6rem;letter-spacing:2px;text-transform:uppercase;color:var(--faint);margin-bottom:0.45rem;font-weight:600}
+.ptp-field input,.ptp-field select,.ptp-field textarea{
+  width:100%;padding:0.75rem 0.95rem;background:rgba(255,255,255,0.035);
+  border:1px solid rgba(var(--gold-rgb),0.18);border-radius:6px;
+  color:var(--white);font-size:0.86rem;font-family:var(--ff-body);
+  outline:none;transition:border-color 0.2s;color-scheme:dark;
+}
+.ptp-field input:focus,.ptp-field select:focus,.ptp-field textarea:focus{border-color:rgba(var(--gold-rgb),0.55)}
+.ptp-field input::placeholder,.ptp-field textarea::placeholder{color:var(--faint)}
+.ptp-field select{cursor:pointer}
+.ptp-field textarea{resize:vertical;line-height:1.6;min-height:90px}
+.ptp-hint{font-size:0.68rem;color:var(--faint);margin-top:0.4rem;line-height:1.5}
+
+/* Pill-choice groups (yes/no, single + multi select) */
+.ptp-pills{display:flex;flex-wrap:wrap;gap:0.55rem}
+.ptp-pill{
+  padding:0.6rem 1.15rem;border-radius:99px;cursor:pointer;
+  background:rgba(255,255,255,0.035);border:1px solid rgba(var(--gold-rgb),0.18);
+  color:var(--muted);font-size:0.76rem;font-weight:400;transition:all 0.2s;
+}
+.ptp-pill:hover{border-color:rgba(var(--gold-rgb),0.4)}
+.ptp-pill.active{background:linear-gradient(135deg,var(--gold),var(--gold-bright));border-color:var(--gold);color:#0d1a32;font-weight:600}
+.ptp-pill--em.active{background:linear-gradient(135deg,var(--em),#74d6b3);border-color:var(--em);color:#0d1a32}
+
+.ptp-toggle-row{display:flex;align-items:center;justify-content:space-between;gap:1rem;padding:0.9rem 0;border-top:1px solid var(--border-soft)}
+.ptp-toggle-row:first-child{border-top:none;padding-top:0}
+.ptp-toggle-label{font-size:0.84rem;color:var(--white)}
+.ptp-toggle-sub{font-size:0.7rem;color:var(--faint);margin-top:0.15rem}
+.ptp-switch{width:44px;height:24px;border-radius:12px;background:rgba(255,255,255,0.08);border:1px solid rgba(var(--gold-rgb),0.22);position:relative;cursor:pointer;flex-shrink:0;transition:background 0.2s,border-color 0.2s}
+.ptp-switch.on{background:rgba(var(--gold-rgb),0.3);border-color:var(--gold)}
+.ptp-switch-thumb{width:18px;height:18px;border-radius:50%;background:var(--faint);position:absolute;top:2px;left:2px;transition:transform 0.25s,background 0.25s}
+.ptp-switch.on .ptp-switch-thumb{transform:translateX(20px);background:var(--gold)}
+
+.ptp-stepper{display:flex;align-items:center;gap:0.9rem}
+.ptp-step-btn{
+  width:34px;height:34px;border-radius:50%;border:1px solid rgba(var(--gold-rgb),0.3);
+  display:flex;align-items:center;justify-content:center;color:var(--gold);font-size:1.1rem;
+  transition:all 0.2s;background:rgba(var(--gold-rgb),0.05);
+}
+.ptp-step-btn:hover{background:rgba(var(--gold-rgb),0.15);border-color:rgba(var(--gold-rgb),0.5)}
+.ptp-step-val{font-family:var(--ff-display);font-size:1.4rem;min-width:32px;text-align:center;color:var(--white)}
+
+.ptp-error{color:#f87171;font-size:0.82rem;padding:0.7rem 1rem;background:rgba(239,68,68,0.08);border:1px solid rgba(239,68,68,0.22);border-radius:6px;margin:0 2.4rem 1.4rem}
+.ptp-submit-wrap{padding:1.8rem 2.4rem 2.2rem}
+.ptp-submit{
+  width:100%;padding:1.05rem;border-radius:6px;cursor:pointer;
+  background:linear-gradient(135deg,var(--gold) 0%,var(--gold-bright) 50%,#b8893e 100%);
+  color:#0d1a32;font-size:0.78rem;font-weight:700;letter-spacing:3px;text-transform:uppercase;
+  transition:all 0.25s;box-shadow:0 8px 24px rgba(201,169,110,0.25);
+}
+.ptp-submit:hover{letter-spacing:3.5px;box-shadow:0 10px 28px rgba(201,169,110,0.35)}
+.ptp-submit:disabled{opacity:0.55;cursor:wait}
+.ptp-submit-note{text-align:center;font-size:0.7rem;color:var(--faint);margin-top:0.9rem;line-height:1.6}
+
+.ptp-success{text-align:center;padding:4rem 2.4rem}
+.ptp-success-icon{font-size:2.6rem;margin-bottom:1.2rem}
+.ptp-success-title{font-family:var(--ff-display);font-size:1.9rem;font-weight:300;color:var(--gold);margin-bottom:0.7rem}
+.ptp-success-text{font-size:0.9rem;color:var(--muted);line-height:1.7;max-width:440px;margin:0 auto 1.8rem}
+.ptp-success-link{display:inline-block;border:1px solid rgba(var(--gold-rgb),0.35);padding:0.8rem 1.8rem;border-radius:6px;font-size:0.7rem;letter-spacing:2px;text-transform:uppercase;color:var(--gold);transition:all 0.2s}
+.ptp-success-link:hover{background:rgba(var(--gold-rgb),0.08);border-color:var(--gold)}
+
+@media(max-width:640px){
+  .nav{padding:0.9rem 1.2rem}
+  .ptp-hero{padding:2.2rem 1.2rem 1.8rem}
+  .ptp-form-wrap{padding:0 1.2rem 3rem}
+  .ptp-section{padding:1.6rem 1.4rem}
+  .ptp-row--2,.ptp-row--3{grid-template-columns:1fr}
+  .ptp-error{margin:0 1.4rem 1.2rem}
+  .ptp-submit-wrap{padding:1.4rem 1.4rem 1.8rem}
+}
+</style>
+</head>
+<body>
+
+<nav class="nav">
+  <a href="/" class="nav-logo">BagFree</a>
+  <a href="/" class="nav-back">
+    <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2"><line x1="19" y1="12" x2="5" y2="12"/><polyline points="12 19 5 12 12 5"/></svg>
+    Back to Home
+  </a>
+</nav>
+
+<div id="root"></div>
+
+<script src="https://unpkg.com/react@17/umd/react.production.min.js"></script>
+<script src="https://unpkg.com/react-dom@17/umd/react-dom.production.min.js"></script>
+<script src="https://unpkg.com/@babel/standalone/babel.min.js"></script>
+
+<script type="text/babel">
+const { useState } = React;
+
+function Icon(d, extra) {
+  return React.createElement('svg', {viewBox:'0 0 24 24', fill:'none', stroke:'currentColor', strokeWidth:1.7, width:14, height:14},
+    Array.isArray(d) ? d.map((p,i) => React.createElement('path', {key:i, d:p})) : React.createElement('path', {d})
+  );
+}
+
+function Pill({active, onClick, children, em}) {
+  return (
+    <div className={'ptp-pill' + (active ? ' active' : '') + (em ? ' ptp-pill--em' : '')} onClick={onClick}>
+      {children}
+    </div>
+  );
+}
+
+function Toggle({label, sub, on, onChange}) {
+  return (
+    <div className="ptp-toggle-row">
+      <div>
+        <div className="ptp-toggle-label">{label}</div>
+        {sub ? <div className="ptp-toggle-sub">{sub}</div> : null}
+      </div>
+      <div className={'ptp-switch' + (on ? ' on' : '')} onClick={()=>onChange(!on)}>
+        <div className="ptp-switch-thumb"></div>
+      </div>
+    </div>
+  );
+}
+
+function PlanMyTrip() {
+  // Contact
+  const [name, setName] = useState('');
+  const [email, setEmail] = useState('');
+  const [phone, setPhone] = useState('');
+  // Trip
+  const [destination, setDestination] = useState('');
+  const [checkIn, setCheckIn] = useState('');
+  const [checkOut, setCheckOut] = useState('');
+  const [travelers, setTravelers] = useState(2);
+  const [hotelStatus, setHotelStatus] = useState(''); // 'have' | 'need'
+  const [hotelName, setHotelName] = useState('');
+  // Clothing
+  const [clothingPref, setClothingPref] = useState(''); // 'second-journey' | 'new' | 'both' | 'none'
+  const [fashionStyle, setFashionStyle] = useState([]);
+  // Experiences
+  const [eventInterests, setEventInterests] = useState([]);
+  const [curatorHelp, setCuratorHelp] = useState(false);
+  // Logistics
+  const [needTransport, setNeedTransport] = useState(false);
+  const [needFood, setNeedFood] = useState(false);
+  const [dietary, setDietary] = useState('');
+  // Message
+  const [message, setMessage] = useState('');
+  // Status
+  const [status, setStatus] = useState('idle');
+  const [errMsg, setErrMsg] = useState('');
+
+  const FASHION_OPTS = ['Casual & Comfortable','Smart Casual','Business / Professional','Evening & Formal','Outdoor & Active','Beach & Resort'];
+  const EVENT_OPTS = ['Food & Dining Tours','Historic & Cultural Sites','Nightlife','Outdoor Adventure','Shopping & Style','Live Music & Events','Relaxation & Wellness'];
+
+  function toggleIn(arr, setArr, val) {
+    setArr(arr.includes(val) ? arr.filter(x => x !== val) : [...arr, val]);
+  }
+
+  async function submit() {
+    if (!name.trim()) { setErrMsg('Please enter your name.'); setStatus('error'); return; }
+    if (!phone.trim()) { setErrMsg('Please enter your contact number.'); setStatus('error'); return; }
+    if (!email || !/^[^\s@]+@[^\s@]+\.[^\s@]+$/.test(email)) { setErrMsg('Please enter a valid email address.'); setStatus('error'); return; }
+    if (!destination.trim()) { setErrMsg('Please tell us your destination city.'); setStatus('error'); return; }
+    if (!checkIn || !checkOut) { setErrMsg('Please select your travel dates.'); setStatus('error'); return; }
+
+    setStatus('submitting'); setErrMsg('');
+
+    const body = [
+      '[PLAN MY TRIP REQUEST]',
+      '',
+      `Name: ${name}`,
+      `Email: ${email}`,
+      `Phone: ${phone}`,
+      '',
+      `Destination: ${destination}`,
+      `Check-in: ${checkIn}`,
+      `Check-out: ${checkOut}`,
+      `Travelers: ${travelers}`,
+      `Hotel status: ${hotelStatus === 'have' ? 'Already booked — ' + (hotelName || 'name not given') : hotelStatus === 'need' ? 'Needs hotel booking help' : 'Not specified'}`,
+      '',
+      `Clothing preference: ${clothingPref || 'Not specified'}`,
+      `Fashion style: ${fashionStyle.length ? fashionStyle.join(', ') : 'Not specified'}`,
+      '',
+      `Event interests: ${eventInterests.length ? eventInterests.join(', ') : 'Not specified'}`,
+      `Wants curator matched: ${curatorHelp ? 'Yes' : 'No'}`,
+      '',
+      `Needs transportation help: ${needTransport ? 'Yes' : 'No'}`,
+      `Needs meals/food planning: ${needFood ? 'Yes' : 'No'}`,
+      dietary ? `Dietary notes: ${dietary}` : null,
+      '',
+      'Additional message:',
+      message || 'None',
+    ].filter(Boolean).join('\n');
+
+    try {
+      const res = await fetch('/.netlify/functions/submit-concierge-request', {
+        method: 'POST', headers: {'Content-Type':'application/json'},
+        body: JSON.stringify({
+          destination: `Plan My Trip — ${destination}`,
+          contact_email: email,
+          contact_name: name,
+          contact_phone: phone,
+          special_requests: body,
+          travelers: travelers,
+        }),
+      });
+      if (!res.ok) {
+        const d = await res.json().catch(()=>({}));
+        setErrMsg(d.error || 'Could not submit — please try again.');
+        setStatus('error');
+        return;
+      }
+      setStatus('done');
+    } catch (e) {
+      setErrMsg('Connection error — please try again.');
+      setStatus('error');
+    }
+  }
+
+  if (status === 'done') {
+    return (
+      <div className="ptp-form-wrap">
+        <div className="ptp-card">
+          <div className="ptp-success">
+            <div className="ptp-success-icon">✓</div>
+            <div className="ptp-success-title">Request Received</div>
+            <p className="ptp-success-text">Thank you, {name.split(' ')[0]}! Our team is reviewing your trip details now. We'll reach out within 24 hours to start planning your stay.</p>
+            <a href="/" className="ptp-success-link">Back to Home</a>
+          </div>
+        </div>
+      </div>
+    );
+  }
+
+  return (
+    <React.Fragment>
+      <div className="ptp-hero">
+        <div className="ptp-eyebrow">Concierge Trip Planning</div>
+        <h1 className="ptp-title">Tell us about your trip.<br/>We'll handle <em>everything else</em>.</h1>
+        <p className="ptp-sub">From hotel and clothing to curated experiences, meals, and transportation — share your details below and our team will reach out to plan it all with you.</p>
+      </div>
+
+      <div className="ptp-form-wrap">
+        <div className="ptp-card">
+
+          {/* 1 — Contact */}
+          <div className="ptp-section">
+            <div className="ptp-section-head">
+              <div className="ptp-section-num">1</div>
+              <div>
+                <div className="ptp-section-title">Your Contact Info</div>
+                <div className="ptp-section-sub">So we know who we're planning for</div>
+              </div>
+            </div>
+            <div className="ptp-row ptp-row--2">
+              <div className="ptp-field">
+                <label>Full Name *</label>
+                <input type="text" placeholder="Jane Smith" value={name} onChange={e=>setName(e.target.value)}/>
+              </div>
+              <div className="ptp-field">
+                <label>Phone Number *</label>
+                <input type="tel" placeholder="(555) 000-0000" value={phone} onChange={e=>setPhone(e.target.value)}/>
+              </div>
+            </div>
+            <div className="ptp-row">
+              <div className="ptp-field">
+                <label>Email Address *</label>
+                <input type="email" placeholder="you@email.com" value={email} onChange={e=>setEmail(e.target.value)}/>
+              </div>
+            </div>
+          </div>
+
+          {/* 2 — Trip Basics */}
+          <div className="ptp-section">
+            <div className="ptp-section-head">
+              <div className="ptp-section-num">2</div>
+              <div>
+                <div className="ptp-section-title">Trip Details</div>
+                <div className="ptp-section-sub">Where and when you're headed</div>
+              </div>
+            </div>
+            <div className="ptp-row ptp-row--2">
+              <div className="ptp-field">
+                <label>Destination City *</label>
+                <select value={destination} onChange={e=>setDestination(e.target.value)}>
+                  <option value="">Select a city</option>
+                  <option>Savannah, GA</option>
+                  <option>Tampa, FL</option>
+                  <option>Orlando, FL</option>
+                  <option>Atlanta, GA</option>
+                  <option>Miami, FL</option>
+                  <option>Other (tell us in message)</option>
+                </select>
+              </div>
+              <div className="ptp-field">
+                <label>Travelers</label>
+                <div className="ptp-stepper">
+                  <div className="ptp-step-btn" onClick={()=>setTravelers(Math.max(1, travelers-1))}>−</div>
+                  <div className="ptp-step-val">{travelers}</div>
+                  <div className="ptp-step-btn" onClick={()=>setTravelers(travelers+1)}>+</div>
+                </div>
+              </div>
+            </div>
+            <div className="ptp-row ptp-row--2">
+              <div className="ptp-field">
+                <label>Check-in Date *</label>
+                <input type="date" value={checkIn} onChange={e=>setCheckIn(e.target.value)}/>
+              </div>
+              <div className="ptp-field">
+                <label>Check-out Date *</label>
+                <input type="date" value={checkOut} onChange={e=>setCheckOut(e.target.value)}/>
+              </div>
+            </div>
+            <div className="ptp-field" style={{marginBottom:'0.9rem'}}>
+              <label>Hotel</label>
+              <div className="ptp-pills">
+                <Pill active={hotelStatus==='have'} onClick={()=>setHotelStatus('have')}>I already have a hotel</Pill>
+                <Pill active={hotelStatus==='need'} onClick={()=>setHotelStatus('need')}>Help me book a hotel</Pill>
+              </div>
+            </div>
+            {hotelStatus === 'have' ? (
+              <div className="ptp-field">
+                <label>Hotel Name</label>
+                <input type="text" placeholder="e.g. The Alida, Savannah" value={hotelName} onChange={e=>setHotelName(e.target.value)}/>
+              </div>
+            ) : null}
+          </div>
+
+          {/* 3 — Clothing */}
+          <div className="ptp-section">
+            <div className="ptp-section-head">
+              <div className="ptp-section-num">3</div>
+              <div>
+                <div className="ptp-section-title">Clothing Preferences</div>
+                <div className="ptp-section-sub">Travel light — we'll bring the wardrobe to you</div>
+              </div>
+            </div>
+            <div className="ptp-field" style={{marginBottom:'1.1rem'}}>
+              <label>Would you like Second Journey™ or new clothing?</label>
+              <div className="ptp-pills">
+                <Pill em active={clothingPref==='second-journey'} onClick={()=>setClothingPref('second-journey')}>Second Journey™ (rental)</Pill>
+                <Pill active={clothingPref==='new'} onClick={()=>setClothingPref('new')}>New Clothing</Pill>
+                <Pill active={clothingPref==='both'} onClick={()=>setClothingPref('both')}>Open to Either</Pill>
+                <Pill active={clothingPref==='none'} onClick={()=>setClothingPref('none')}>No Clothing Needed</Pill>
+              </div>
+              <div className="ptp-hint">Second Journey™ items are professionally laundered, quality inspected, and ready for your trip.</div>
+            </div>
+            <div className="ptp-field">
+              <label>Your Fashion Style (select all that apply)</label>
+              <div className="ptp-pills">
+                {FASHION_OPTS.map(opt => (
+                  <Pill key={opt} active={fashionStyle.includes(opt)} onClick={()=>toggleIn(fashionStyle, setFashionStyle, opt)}>{opt}</Pill>
+                ))}
+              </div>
+            </div>
+          </div>
+
+          {/* 4 — Experiences */}
+          <div className="ptp-section">
+            <div className="ptp-section-head">
+              <div className="ptp-section-num">4</div>
+              <div>
+                <div className="ptp-section-title">Experiences & Events</div>
+                <div className="ptp-section-sub">What kind of trip are you hoping for?</div>
+              </div>
+            </div>
+            <div className="ptp-field" style={{marginBottom:'1.1rem'}}>
+              <label>What are you interested in?</label>
+              <div className="ptp-pills">
+                {EVENT_OPTS.map(opt => (
+                  <Pill key={opt} active={eventInterests.includes(opt)} onClick={()=>toggleIn(eventInterests, setEventInterests, opt)}>{opt}</Pill>
+                ))}
+              </div>
+            </div>
+            <Toggle label="Match me with a local curator" sub="A BagFree Insider can plan a personalized itinerary for you" on={curatorHelp} onChange={setCuratorHelp}/>
+          </div>
+
+          {/* 5 — Logistics */}
+          <div className="ptp-section">
+            <div className="ptp-section-head">
+              <div className="ptp-section-num">5</div>
+              <div>
+                <div className="ptp-section-title">Transportation & Food</div>
+                <div className="ptp-section-sub">Let us know what else you need help with</div>
+              </div>
+            </div>
+            <Toggle label="I need transportation help" sub="Airport transfers, local rides, or rentals" on={needTransport} onChange={setNeedTransport}/>
+            <Toggle label="I'd like meals planned" sub="Arrival meals, snacks, or dining recommendations" on={needFood} onChange={setNeedFood}/>
+            {needFood ? (
+              <div className="ptp-field" style={{marginTop:'1rem'}}>
+                <label>Dietary Restrictions or Preferences</label>
+                <input type="text" placeholder="e.g. vegetarian, gluten-free, nut allergy" value={dietary} onChange={e=>setDietary(e.target.value)}/>
+              </div>
+            ) : null}
+          </div>
+
+          {/* 6 — Message */}
+          <div className="ptp-section">
+            <div className="ptp-section-head">
+              <div className="ptp-section-num">6</div>
+              <div>
+                <div className="ptp-section-title">Anything Else?</div>
+                <div className="ptp-section-sub">Special occasions, requests, or details we should know</div>
+              </div>
+            </div>
+            <div className="ptp-field">
+              <textarea placeholder="Celebrating an anniversary, traveling with kids, specific brands you love, accessibility needs, etc." value={message} onChange={e=>setMessage(e.target.value)} rows={4}/>
+            </div>
+          </div>
+
+          {status === 'error' ? <div className="ptp-error">{errMsg}</div> : null}
+
+          <div className="ptp-submit-wrap">
+            <button className="ptp-submit" disabled={status==='submitting'} onClick={submit}>
+              {status === 'submitting' ? 'Sending Request…' : 'Send My Trip Request →'}
+            </button>
+            <p className="ptp-submit-note">We'll review your details and follow up by email or phone within 24 hours to start planning.</p>
+          </div>
+
+        </div>
+      </div>
+    </React.Fragment>
+  );
+}
+
+ReactDOM.render(<PlanMyTrip/>, document.getElementById('root'));
+</script>
+
+</body>
+</html>
