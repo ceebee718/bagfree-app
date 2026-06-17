@@ -636,22 +636,16 @@ function highlight(text, q){
 }
 
 const NAV = [
-  { id:'home', label:'Home', icon:Icon.Grid, href:'/' },
-  { id:'dashboard', label:'Dashboard', icon:Icon.Person, href:'/account.html', authRequired:true },
-  { type:'header', label:'Arrive' },
-  { id:'clothing', label:'Clothing', icon:Icon.Hanger, href:'/departure-lounge-landing.html' },
-  { id:'meals', label:'Meals', icon:Icon.Cup, href:'/legacy.html#essentials' },
-  { id:'essentials', label:'Essentials', icon:Icon.Bag, href:'/legacy.html#essentials' },
-  { type:'header', label:'Discover' },
-  { id:'curators', label:'Curators', icon:Icon.Map, href:'/curators.html' },
-  { id:'experiences', label:'Experiences', icon:Icon.Compass, href:'/experiences.html' },
-  { id:'stylepartners', label:'Style Partners', icon:Icon.Sparkles, href:'/local-style-partners.html' },
-  { type:'header', label:'Reward' },
-  { id:'membership', label:'Membership', icon:Icon.Crown, href:'/membership.html' },
-  { id:'rewards', label:'BAG Rewards', icon:Icon.Star, href:'/legacy.html#rewards' },
-  { type:'header', label:'Sustain' },
-  { id:'secondjourney', label:'Second Journey™', icon:SecondJourneyIcon, href:'/second-journey.html' },
-  { id:'contribute', label:'Contribute', icon:Icon.Gift, href:'/second-journey.html#contribute' }
+  { id:'home',         label:'Home',           icon:Icon.Grid,    href:'/' },
+  { id:'plan',         label:'Plan My Trip',   icon:Icon.Map,     href:'/departure-lounge-landing.html' },
+  { id:'clothing',     label:'Clothing',       icon:Icon.Hanger,  href:'/departure-lounge-landing.html' },
+  { id:'curators',     label:'Curators',       icon:Icon.Person,  href:'/curators.html' },
+  { id:'essentials',   label:'Essentials',     icon:Icon.Bag,     href:'/legacy.html#essentials' },
+  { id:'experiences',  label:'Experiences',    icon:Icon.Compass, href:'/experiences.html' },
+  { id:'membership',   label:'Membership',     icon:Icon.Crown,   href:'/membership.html' },
+  { id:'rewards',      label:'Rewards',        icon:Icon.Star,    href:'/legacy.html#rewards' },
+  { id:'secondjourney',label:'Second Journey™',icon:SecondJourneyIcon, href:'/second-journey.html' },
+  { id:'contribute',   label:'Contribute',     icon:Icon.Gift,    href:'/second-journey.html#contribute' },
 ];
 
 const TILES = [
@@ -1742,6 +1736,152 @@ function MeetLocalExperts() {
   );
 }
 
+function Hero(props) {
+  var city = props.city;
+  var features = [
+    { icon:React.createElement('svg',{width:14,height:14,viewBox:'0 0 24 24',fill:'none',stroke:'currentColor',strokeWidth:1.8},React.createElement('rect',{x:2,y:7,width:20,height:14,rx:2}),React.createElement('path',{d:'M16 7V5a2 2 0 00-2-2h-4a2 2 0 00-2 2v2'})), label:'Skip Baggage Fees' },
+    { icon:React.createElement('svg',{width:14,height:14,viewBox:'0 0 24 24',fill:'none',stroke:'currentColor',strokeWidth:1.8},React.createElement('path',{d:'M5 17H3a2 2 0 01-2-2V5a2 2 0 012-2h11a2 2 0 012 2v3'}),React.createElement('rect',{x:9,y:11,width:14,height:10,rx:1})), label:'Travel Lighter' },
+    { icon:React.createElement('svg',{width:14,height:14,viewBox:'0 0 24 24',fill:'none',stroke:'currentColor',strokeWidth:1.8},React.createElement('path',{d:'M17 21v-2a4 4 0 00-4-4H5a4 4 0 00-4 4v2'}),React.createElement('circle',{cx:9,cy:7,r:4}),React.createElement('path',{d:'M23 21v-2a4 4 0 00-3-3.87M16 3.13a4 4 0 010 7.75'})), label:'Local Expertise' },
+    { icon:React.createElement('svg',{width:14,height:14,viewBox:'0 0 24 24',fill:'none',stroke:'currentColor',strokeWidth:1.8},React.createElement('path',{d:'M11 20A7 7 0 014 13c0-3.5 1.7-6.6 4.3-8.5'}),React.createElement('path',{d:'M12 2a10 10 0 11-9.2 13.8'})), label:'Sustainable Impact' },
+  ];
+  return (
+    <div className="hero-section">
+      <div className="hero-overlay"></div>
+      <div className="hero-content">
+        <div className="hero-text">
+          <h1 className="hero-title">Travel Without<br/><em className="hero-title-gold">The Baggage</em></h1>
+          <p className="hero-subtitle">Everything you need, delivered before you arrive. So you can travel lighter, experience more, and leave less behind.</p>
+          <a href="/departure-lounge-landing.html" className="hero-cta">Plan My Trip →</a>
+        </div>
+        <div className="hero-features">
+          {features.map(function(f,i){
+            return (
+              <div key={i} className={'hero-feature' + (i < features.length-1 ? ' hero-feature--sep' : '')}>
+                <span className="hero-feature-icon">{f.icon}</span>
+                <span className="hero-feature-label">{f.label}</span>
+              </div>
+            );
+          })}
+        </div>
+      </div>
+    </div>
+  );
+}
+
+function AccessCards() {
+  var cards = [
+    { title:'Clothing', desc:'Select outfits delivered before you arrive.', link:'/departure-lounge-landing.html', img:'https://images.unsplash.com/photo-1490481651871-ab68de25d43d?w=500&h=340&fit=crop', cta:'Explore',
+      icon:React.createElement('svg',{width:18,height:18,viewBox:'0 0 24 24',fill:'none',stroke:'currentColor',strokeWidth:1.6},React.createElement('path',{d:'M20.38 3.46L16 2a4 4 0 01-8 0L3.62 3.46a2 2 0 00-1.34 2.23l.58 3.57a1 1 0 00.99.84H6v10c0 1.1.9 2 2 2h8a2 2 0 002-2V10h2.15a1 1 0 00.99-.84l.58-3.57a2 2 0 00-1.34-2.23z'})) },
+    { title:'Curators', desc:'Local experts who help you experience the real city.', link:'/curators.html', img:'https://images.unsplash.com/photo-1529156069898-49953e39b3ac?w=500&h=340&fit=crop', cta:'Meet a Curator',
+      icon:React.createElement('svg',{width:18,height:18,viewBox:'0 0 24 24',fill:'none',stroke:'currentColor',strokeWidth:1.6},React.createElement('path',{d:'M17 21v-2a4 4 0 00-4-4H5a4 4 0 00-4 4v2'}),React.createElement('circle',{cx:9,cy:7,r:4}),React.createElement('path',{d:'M23 21v-2a4 4 0 00-3-3.87M16 3.13a4 4 0 010 7.75'})) },
+    { title:'Essentials', desc:'Hotel essentials and items you may have forgotten.', link:'/legacy.html#essentials', img:'https://images.unsplash.com/photo-1611080626919-7cf5a9dbab12?w=500&h=340&fit=crop', cta:'View Essentials',
+      icon:React.createElement('svg',{width:18,height:18,viewBox:'0 0 24 24',fill:'none',stroke:'currentColor',strokeWidth:1.6},React.createElement('rect',{x:2,y:7,width:20,height:14,rx:2}),React.createElement('path',{d:'M16 7V5a2 2 0 00-2-2h-4a2 2 0 00-2 2v2'}),React.createElement('line',{x1:12,y1:12,x2:12,y2:16}),React.createElement('line',{x1:10,y1:14,x2:14,y2:14})) },
+    { title:'Second Journey™', desc:'Quality clothing, cleaned and prepared for its next traveler.', link:'/second-journey.html', img:'https://images.unsplash.com/photo-1490114538077-0a7f8cb49891?w=500&h=340&fit=crop', cta:'Learn More', teal:true,
+      icon:React.createElement('img',{src:'/images/second-journey-logo.png',style:{width:20,height:20,objectFit:'contain',filter:'drop-shadow(0 1px 4px rgba(0,0,0,0.5))'},alt:'SJ'}) },
+  ];
+  return (
+    <section className="access-section">
+      <div className="access-eyebrow">What You Can Access</div>
+      <h2 className="access-title">Everything you need. Nothing you don't.</h2>
+      <div className="access-grid">
+        {cards.map(function(c,i){
+          return (
+            <a key={i} href={c.link} className={'access-card' + (c.teal ? ' access-card--teal' : '')}>
+              <div className="access-card-img" style={{backgroundImage:'url('+c.img+')'}}>
+                <div className={'access-card-icon' + (c.teal ? ' access-card-icon--teal' : '')}>{c.icon}</div>
+              </div>
+              <div className="access-card-body">
+                <div className="access-card-title">{c.title}</div>
+                <div className="access-card-desc">{c.desc}</div>
+                <div className={'access-card-cta' + (c.teal ? ' access-card-cta--teal' : '')}>{c.cta} →</div>
+              </div>
+            </a>
+          );
+        })}
+      </div>
+    </section>
+  );
+}
+
+function NetworkSection(props) {
+  var onCitySelect = props.onCitySelect || function(){};
+  function selectCity(id){
+    var c = CITIES.find(function(c){ return c.id === id; });
+    if (c && !c.soon) onCitySelect(c);
+  }
+  var stats = [
+    { val:'4',  lbl:'Cities Active',   icon:React.createElement('svg',{width:16,height:16,viewBox:'0 0 24 24',fill:'none',stroke:'currentColor',strokeWidth:1.6},React.createElement('rect',{x:3,y:3,width:7,height:7}),React.createElement('rect',{x:14,y:3,width:7,height:7}),React.createElement('rect',{x:3,y:14,width:7,height:7}),React.createElement('rect',{x:14,y:14,width:7,height:7})) },
+    { val:'18', lbl:'Hotels',          icon:React.createElement('svg',{width:16,height:16,viewBox:'0 0 24 24',fill:'none',stroke:'currentColor',strokeWidth:1.6},React.createElement('rect',{x:2,y:3,width:20,height:14,rx:2}),React.createElement('path',{d:'M8 21V10m8 11V10M2 17h20'})) },
+    { val:'27', lbl:'Curators',        icon:React.createElement('svg',{width:16,height:16,viewBox:'0 0 24 24',fill:'none',stroke:'currentColor',strokeWidth:1.6},React.createElement('path',{d:'M17 21v-2a4 4 0 00-4-4H5a4 4 0 00-4 4v2'}),React.createElement('circle',{cx:9,cy:7,r:4}),React.createElement('path',{d:'M23 21v-2a4 4 0 00-3-3.87M16 3.13a4 4 0 010 7.75'})) },
+    { val:'12', lbl:'Style Partners',  icon:React.createElement('svg',{width:16,height:16,viewBox:'0 0 24 24',fill:'none',stroke:'currentColor',strokeWidth:1.6},React.createElement('path',{d:'M20.38 3.46L16 2a4 4 0 01-8 0L3.62 3.46a2 2 0 00-1.34 2.23l.58 3.57a1 1 0 00.99.84H6v10c0 1.1.9 2 2 2h8a2 2 0 002-2V10h2.15a1 1 0 00.99-.84l.58-3.57a2 2 0 00-1.34-2.23z'})) },
+  ];
+  return (
+    <section className="net-section">
+      <div className="net-left">
+        <div className="net-eyebrow">Growing Network</div>
+        <h2 className="net-title">More cities.<br/>More partners.</h2>
+        <div className="net-stats">
+          {stats.map(function(s,i){
+            return (
+              <div key={i} className="net-stat">
+                <div className="net-stat-icon">{s.icon}<span className="net-stat-val">{s.val}</span></div>
+                <div className="net-stat-lbl">{s.lbl}</div>
+              </div>
+            );
+          })}
+        </div>
+        <a href="/legacy.html" className="net-btn">View Full Coverage →</a>
+      </div>
+      <div className="net-map">
+        <svg viewBox="37 8 435 284" preserveAspectRatio="xMidYMid meet" className="net-svg">
+          <path d="M142.7 23.2 L182.4 23.6 L186.4 46.1 L192.0 79.3 L194.6 86.6 L197.1 90.7 L196.1 93.3 L198.7 94.9 L194.8 98.2 L195.0 101.5 L193.6 105.7 L191.3 107.7 L186.9 110.4 L184.5 115.0 L183.9 119.7 L180.2 123.8 L175.7 124.6 L169.5 126.2 L166.1 130.2 L163.3 132.5 L159.4 132.1 L157.2 137.7 L155.5 143.6 L149.8 148.6 L147.0 151.8 L143.0 152.8 L138.3 153.9 L133.8 153.4 L130.6 156.4 L125.5 156.3 L120.3 157.8 L117.6 157.0 L118.3 148.1 L118.7 139.3 L118.5 130.6 L118.7 121.8 L118.3 113.1 L118.2 104.4 L118.3 95.7 L118.5 87.0 L118.6 78.3 L119.1 69.6 L119.6 60.9 L120.5 52.4 L125.2 46.5 L134.9 39.0 L142.7 23.2 Z" className="ns-state"/>
+          <path d="M195.0 101.5 L200.0 102.5 L216.5 101.8 L233.0 101.0 L249.5 100.3 L266.0 99.5 L282.5 98.8 L299.0 98.0 L311.0 97.5 L311.5 90.0 L308.0 82.0 L301.5 72.0 L295.0 62.0 L291.0 55.0 L287.5 48.0 L283.0 41.0 L278.0 34.0 L272.0 27.5 L264.5 23.0 L256.5 22.0 L248.0 22.5 L239.5 23.0 L231.0 23.2 L222.5 23.4 L214.0 23.5 L205.5 23.6 L197.0 23.7 L193.0 27.0 L189.0 32.0 L185.5 38.0 L183.0 44.0 L182.4 23.6 L186.4 46.1 L192.0 79.3 L194.6 86.6 L197.1 90.7 L196.1 93.3 L198.7 94.9 L194.8 98.2 L195.0 101.5 Z" className="ns-state"/>
+          <path d="M311.0 97.5 L315.0 90.0 L318.0 80.0 L320.0 70.0 L318.0 60.0 L313.0 51.0 L306.0 43.0 L298.0 36.0 L289.0 30.0 L280.0 25.0 L272.0 27.5 L278.0 34.0 L283.0 41.0 L287.5 48.0 L291.0 55.0 L295.0 62.0 L301.5 72.0 L308.0 82.0 L311.5 90.0 L311.0 97.5 Z" className="ns-state"/>
+          <path d="M136.0 154.5 L138.5 165.0 L141.0 176.0 L142.5 187.0 L143.0 198.0 L143.5 209.0 L144.0 220.0 L144.5 231.0 L145.0 242.0 L145.5 253.0 L146.0 264.0 L148.0 272.0 L153.0 278.0 L160.0 281.5 L168.0 282.5 L176.0 282.0 L184.0 280.5 L192.0 278.0 L200.0 276.0 L210.0 276.5 L220.0 277.0 L230.0 276.5 L240.0 275.5 L250.0 274.0 L260.0 271.0 L268.0 266.5 L274.0 260.5 L278.0 253.0 L279.5 245.0 L278.5 237.0 L275.0 230.0 L270.0 224.0 L264.0 219.5 L258.0 216.5 L252.5 215.0 L247.0 215.5 L243.0 218.0 L241.0 222.0 L241.5 227.0 L244.0 231.0 L244.0 235.5 L241.5 239.0 L237.5 241.0 L233.0 241.0 L229.0 239.0 L226.5 235.5 L226.0 231.0 L228.0 227.0 L231.0 224.0 L232.5 220.0 L231.5 216.0 L228.0 212.5 L223.0 210.5 L217.5 210.0 L212.5 211.5 L209.0 215.0 L208.0 220.0 L209.5 225.0 L212.5 228.5 L214.0 232.5 L213.0 237.0 L209.5 240.0 L205.0 241.0 L200.5 240.0 L197.5 237.0 L196.5 233.0 L197.5 229.0 L199.5 225.5 L200.0 221.5 L198.5 218.0 L195.5 215.5 L192.0 214.5 L188.5 215.0 L185.5 217.5 L184.0 221.0 L184.5 225.0 L186.5 228.5 L186.5 232.5 L184.5 236.0 L181.0 238.0 L177.0 238.0 L173.5 236.0 L171.5 232.5 L171.5 228.5 L173.5 225.0 L174.0 221.0 L172.5 217.5 L169.5 215.0 L166.0 214.5 L162.5 215.5 L159.5 218.0 L158.0 221.5 L158.5 225.5 L160.5 229.0 L161.5 233.0 L160.5 237.0 L157.5 240.0 L153.0 241.0 L148.5 240.0 L145.5 237.0 L144.5 233.0 L146.0 229.0 L148.0 225.0 L148.5 221.0 L147.5 217.0 L145.0 214.0 L141.5 212.5 L138.0 213.0 L136.0 215.5 L136.0 154.5 Z" className="ns-state"/>
+          <text x="155" y="83" className="ns-label">AL</text>
+          <text x="232" y="62" className="ns-label">GA</text>
+          <text x="195" y="230" className="ns-label">FL</text>
+          <line x1="166" y1="48" x2="210" y2="56" className="ns-leader ns-leader--soon"/>
+          <circle cx="210" cy="56" r="5.5" className="ns-marker ns-marker--soon" style={{cursor:'pointer'}} onClick={function(){selectCity('atlanta');}}/>
+          <text x="160" y="52" className="ns-map-label ns-map-label--soon" textAnchor="end" style={{cursor:'pointer'}} onClick={function(){selectCity('atlanta');}}>Atlanta</text>
+          <line x1="311" y1="81.4" x2="345" y2="75" className="ns-leader ns-leader--soon"/>
+          <circle cx="311" cy="81.4" r="5.5" className="ns-marker ns-marker--soon"/>
+          <text x="351" y="79" className="ns-map-label ns-map-label--soon">SC</text>
+          <line x1="284.7" y1="99.7" x2="336.7" y2="99.7" className="ns-leader ns-leader--live"/>
+          <circle cx="284.7" cy="99.7" r="6.5" className="ns-marker ns-marker--live" style={{cursor:'pointer'}} onClick={function(){selectCity('savannah');}}/>
+          <circle cx="284.7" cy="99.7" r="11" className="ns-ring"/>
+          <text x="342.7" y="103.7" className="ns-map-label" style={{cursor:'pointer'}} onClick={function(){selectCity('savannah');}}>Savannah</text>
+          <line x1="278.2" y1="192.5" x2="326.2" y2="192.5" className="ns-leader ns-leader--soon"/>
+          <circle cx="278.2" cy="192.5" r="5.5" className="ns-marker ns-marker--soon"/>
+          <text x="332.2" y="196.5" className="ns-map-label ns-map-label--soon">Orlando</text>
+          <line x1="253.8" y1="207.9" x2="209.8" y2="207.9" className="ns-leader ns-leader--live"/>
+          <circle cx="253.8" cy="207.9" r="6.5" className="ns-marker ns-marker--live" style={{cursor:'pointer'}} onClick={function(){selectCity('tampa');}}/>
+          <circle cx="253.8" cy="207.9" r="11" className="ns-ring ns-ring--alt"/>
+          <text x="203.8" y="211.9" className="ns-map-label" textAnchor="end" style={{cursor:'pointer'}} onClick={function(){selectCity('tampa');}}>Tampa</text>
+          <line x1="305.1" y1="265.2" x2="351.1" y2="265.2" className="ns-leader ns-leader--soon"/>
+          <circle cx="305.1" cy="265.2" r="5.5" className="ns-marker ns-marker--soon"/>
+          <text x="357.1" y="269.2" className="ns-map-label ns-map-label--soon">Miami</text>
+        </svg>
+      </div>
+    </section>
+  );
+}
+
+function Testimonial() {
+  return (
+    <section className="testimonial-section">
+      <div className="testimonial-eyebrow">Trusted By Travelers</div>
+      <blockquote className="testimonial-quote">"BagFree completely changed the way I travel. I packed lighter, explored more, and left a positive impact."</blockquote>
+      <div className="testimonial-attr">— Jessica M., Atlanta</div>
+      <div className="testimonial-dots">
+        <span className="tdot tdot--active"></span>
+        <span className="tdot"></span>
+        <span className="tdot"></span>
+      </div>
+    </section>
+  );
+}
+
 function HowItWorks() {
   var steps = [
     {
@@ -2440,17 +2580,16 @@ function App() {
       <div className={'drawer-overlay' + (drawerOpen ? ' show' : '')} onClick={function(){ setDrawerOpen(false); }}></div>
       <Sidebar mobileOpen={drawerOpen} onClose={function(){ setDrawerOpen(false); }} active={active} setActive={setActive} city={city} setCity={setCity}/>
       <main className="main">
-        <TopBar city={city} setCity={setCity} onSearch={onSearch} onItemClick={openItem} onClearResults={clearSearch} networkCard={!viewing && search.results === null ? <GrowingNetwork onCitySelect={setCity}/> : null}/>
+        <TopBar city={city} setCity={setCity} onSearch={onSearch} onItemClick={openItem} onClearResults={clearSearch}/>
         {viewing ? (
           <ResultDetail item={viewing} onBack={closeDetail} onItemClick={openItem}/>
         ) : search.results === null ? (
           <React.Fragment>
-            <TravelBanner/>
+            <Hero city={city}/>
             <HowItWorks/>
-            <Grid end={4}/>
-            <QuoteSection/>
-            <MeetLocalExperts/>
-            <VideoSection/>
+            <AccessCards/>
+            <NetworkSection onCitySelect={setCity}/>
+            <Testimonial/>
             <SocialFooter/>
           </React.Fragment>
         ) : (
