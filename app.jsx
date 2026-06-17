@@ -1870,13 +1870,19 @@ function NetworkSection(props) {
 function Testimonial() {
   return (
     <section className="testimonial-section">
-      <div className="testimonial-eyebrow">Trusted By Travelers</div>
-      <blockquote className="testimonial-quote">"BagFree completely changed the way I travel. I packed lighter, explored more, and left a positive impact."</blockquote>
-      <div className="testimonial-attr">— Jessica M., Atlanta</div>
-      <div className="testimonial-dots">
-        <span className="tdot tdot--active"></span>
-        <span className="tdot"></span>
-        <span className="tdot"></span>
+      <div className="testimonial-text">
+        <div className="testimonial-eyebrow">Trusted By Travelers</div>
+        <blockquote className="testimonial-quote">"BagFree completely changed the way I travel. I packed lighter, explored more, and left a positive impact."</blockquote>
+        <div className="testimonial-attr">— Jessica M., Atlanta</div>
+        <div className="testimonial-dots">
+          <span className="tdot tdot--active"></span>
+          <span className="tdot"></span>
+          <span className="tdot"></span>
+        </div>
+      </div>
+      <div className="testimonial-photo">
+        <img src="/testimonial-sunset.png" alt="Traveler enjoying sunset by the river" className="testimonial-photo-img"/>
+        <div className="testimonial-photo-fade"></div>
       </div>
     </section>
   );
