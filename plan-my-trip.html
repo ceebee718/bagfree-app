@@ -147,9 +147,9 @@ button{font-family:inherit;cursor:pointer;background:none;border:none;color:inhe
 
 <div id="root"></div>
 
-<script src="https://unpkg.com/react@17/umd/react.production.min.js"></script>
-<script src="https://unpkg.com/react-dom@17/umd/react-dom.production.min.js"></script>
-<script src="https://unpkg.com/@babel/standalone/babel.min.js"></script>
+<script crossorigin src="https://cdnjs.cloudflare.com/ajax/libs/react/18.2.0/umd/react.production.min.js"></script>
+<script crossorigin src="https://cdnjs.cloudflare.com/ajax/libs/react-dom/18.2.0/umd/react-dom.production.min.js"></script>
+<script src="https://cdnjs.cloudflare.com/ajax/libs/babel-standalone/7.23.5/babel.min.js"></script>
 
 <script type="text/babel">
 const { useState } = React;
@@ -194,6 +194,8 @@ function PlanMyTrip() {
   const [travelers, setTravelers] = useState(2);
   const [hotelStatus, setHotelStatus] = useState(''); // 'have' | 'need'
   const [hotelName, setHotelName] = useState('');
+  const [hotelBudget, setHotelBudget] = useState('');
+  const [hotelRoomPref, setHotelRoomPref] = useState([]);
   // Clothing
   const [clothingPref, setClothingPref] = useState(''); // 'second-journey' | 'new' | 'both' | 'none'
   const [fashionStyle, setFashionStyle] = useState([]);
@@ -212,6 +214,7 @@ function PlanMyTrip() {
 
   const FASHION_OPTS = ['Casual & Comfortable','Smart Casual','Business / Professional','Evening & Formal','Outdoor & Active','Beach & Resort'];
   const EVENT_OPTS = ['Food & Dining Tours','Historic & Cultural Sites','Nightlife','Outdoor Adventure','Shopping & Style','Live Music & Events','Relaxation & Wellness'];
+  const ROOM_PREF_OPTS = ['King Bed','Two Queens','Suite','Ocean / Water View','City View','Pet-Friendly','Accessible Room'];
 
   function toggleIn(arr, setArr, val) {
     setArr(arr.includes(val) ? arr.filter(x => x !== val) : [...arr, val]);
@@ -238,6 +241,8 @@ function PlanMyTrip() {
       `Check-out: ${checkOut}`,
       `Travelers: ${travelers}`,
       `Hotel status: ${hotelStatus === 'have' ? 'Already booked — ' + (hotelName || 'name not given') : hotelStatus === 'need' ? 'Needs hotel booking help' : 'Not specified'}`,
+      hotelStatus === 'need' && hotelBudget ? `Hotel budget: ${hotelBudget}` : null,
+      hotelStatus === 'need' && hotelRoomPref.length ? `Room preferences: ${hotelRoomPref.join(', ')}` : null,
       '',
       `Clothing preference: ${clothingPref || 'Not specified'}`,
       `Fashion style: ${fashionStyle.length ? fashionStyle.join(', ') : 'Not specified'}`,
@@ -372,11 +377,22 @@ function PlanMyTrip() {
                 <input type="date" value={checkOut} onChange={e=>setCheckOut(e.target.value)}/>
               </div>
             </div>
-            <div className="ptp-field" style={{marginBottom:'0.9rem'}}>
-              <label>Hotel</label>
+          </div>
+
+          {/* 3 — Hotel */}
+          <div className="ptp-section">
+            <div className="ptp-section-head">
+              <div className="ptp-section-num">3</div>
+              <div>
+                <div className="ptp-section-title">Hotel Booking</div>
+                <div className="ptp-section-sub">Should we book your stay, or do you already have a place?</div>
+              </div>
+            </div>
+            <div className="ptp-field" style={{marginBottom:'1.1rem'}}>
+              <label>Would you like us to book your hotel?</label>
               <div className="ptp-pills">
-                <Pill active={hotelStatus==='have'} onClick={()=>setHotelStatus('have')}>I already have a hotel</Pill>
-                <Pill active={hotelStatus==='need'} onClick={()=>setHotelStatus('need')}>Help me book a hotel</Pill>
+                <Pill em active={hotelStatus==='need'} onClick={()=>setHotelStatus('need')}>Yes, book my hotel</Pill>
+                <Pill active={hotelStatus==='have'} onClick={()=>setHotelStatus('have')}>No, I already have one</Pill>
               </div>
             </div>
             {hotelStatus === 'have' ? (
@@ -385,12 +401,37 @@ function PlanMyTrip() {
                 <input type="text" placeholder="e.g. The Alida, Savannah" value={hotelName} onChange={e=>setHotelName(e.target.value)}/>
               </div>
             ) : null}
+            {hotelStatus === 'need' ? (
+              <React.Fragment>
+                <div className="ptp-row ptp-row--2">
+                  <div className="ptp-field">
+                    <label>Budget Per Night</label>
+                    <select value={hotelBudget} onChange={e=>setHotelBudget(e.target.value)}>
+                      <option value="">Select a range</option>
+                      <option>Under $150</option>
+                      <option>$150 – $300</option>
+                      <option>$300 – $500</option>
+                      <option>$500+</option>
+                      <option>No preference</option>
+                    </select>
+                  </div>
+                </div>
+                <div className="ptp-field">
+                  <label>Room Preferences (select all that apply)</label>
+                  <div className="ptp-pills">
+                    {ROOM_PREF_OPTS.map(opt => (
+                      <Pill key={opt} active={hotelRoomPref.includes(opt)} onClick={()=>toggleIn(hotelRoomPref, setHotelRoomPref, opt)}>{opt}</Pill>
+                    ))}
+                  </div>
+                </div>
+              </React.Fragment>
+            ) : null}
           </div>
 
-          {/* 3 — Clothing */}
+          {/* 4 — Clothing */}
           <div className="ptp-section">
             <div className="ptp-section-head">
-              <div className="ptp-section-num">3</div>
+              <div className="ptp-section-num">4</div>
               <div>
                 <div className="ptp-section-title">Clothing Preferences</div>
                 <div className="ptp-section-sub">Travel light — we'll bring the wardrobe to you</div>
@@ -416,10 +457,10 @@ function PlanMyTrip() {
             </div>
           </div>
 
-          {/* 4 — Experiences */}
+          {/* 5 — Experiences */}
           <div className="ptp-section">
             <div className="ptp-section-head">
-              <div className="ptp-section-num">4</div>
+              <div className="ptp-section-num">5</div>
               <div>
                 <div className="ptp-section-title">Experiences & Events</div>
                 <div className="ptp-section-sub">What kind of trip are you hoping for?</div>
@@ -436,10 +477,10 @@ function PlanMyTrip() {
             <Toggle label="Match me with a local curator" sub="A BagFree Insider can plan a personalized itinerary for you" on={curatorHelp} onChange={setCuratorHelp}/>
           </div>
 
-          {/* 5 — Logistics */}
+          {/* 6 — Logistics */}
           <div className="ptp-section">
             <div className="ptp-section-head">
-              <div className="ptp-section-num">5</div>
+              <div className="ptp-section-num">6</div>
               <div>
                 <div className="ptp-section-title">Transportation & Food</div>
                 <div className="ptp-section-sub">Let us know what else you need help with</div>
@@ -455,10 +496,10 @@ function PlanMyTrip() {
             ) : null}
           </div>
 
-          {/* 6 — Message */}
+          {/* 7 — Message */}
           <div className="ptp-section">
             <div className="ptp-section-head">
-              <div className="ptp-section-num">6</div>
+              <div className="ptp-section-num">7</div>
               <div>
                 <div className="ptp-section-title">Anything Else?</div>
                 <div className="ptp-section-sub">Special occasions, requests, or details we should know</div>
@@ -484,7 +525,8 @@ function PlanMyTrip() {
   );
 }
 
-ReactDOM.render(<PlanMyTrip/>, document.getElementById('root'));
+const root = ReactDOM.createRoot(document.getElementById('root'));
+root.render(<PlanMyTrip/>);
 </script>
 
 </body>
