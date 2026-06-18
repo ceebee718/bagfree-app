@@ -1827,7 +1827,7 @@ function NetworkSection(props) {
     {id:'savannah',  name:'Savannah',       state:'GA', type:'active',    lat:32.0835,  lng:-81.0998},
     {id:'atlanta',   name:'Atlanta',        state:'GA', type:'active',    lat:33.749,   lng:-84.388},
     {id:'tampa',     name:'Tampa',          state:'FL', type:'active',    lat:27.9506,  lng:-82.4572},
-    {id:'orlando',   name:'Orlando',        state:'FL', type:'soon',      lat:28.5383,  lng:-81.3792},
+    {id:'orlando',   name:'Orlando',        state:'FL', type:'active',    lat:28.5383,  lng:-81.3792},
     {id:'miami',     name:'Miami',          state:'FL', type:'soon',      lat:25.7617,  lng:-80.1918},
     {id:'charleston',name:'Charleston',     state:'SC', type:'soon',      lat:32.7765,  lng:-79.9311},
     {id:'nashville', name:'Nashville',      state:'TN', type:'soon',      lat:36.1627,  lng:-86.7816},
@@ -1840,6 +1840,7 @@ function NetworkSection(props) {
     {id:'dallas',    name:'Dallas',         state:'TX', type:'concierge', lat:32.7767,  lng:-96.797},
     {id:'chicago',   name:'Chicago',        state:'IL', type:'concierge', lat:41.8781,  lng:-87.6298},
     {id:'saltlake',  name:'Salt Lake City', state:'UT', type:'concierge', lat:40.7608,  lng:-111.891},
+    {id:'columbus',  name:'Columbus',       state:'OH', type:'concierge', lat:39.9612,  lng:-82.9988},
   ];
 
   var NET_ROUTES = [['savannah','atlanta'],['atlanta','tampa'],['tampa','orlando']];
@@ -1852,14 +1853,14 @@ function NetworkSection(props) {
 
   React.useEffect(function(){
     if(typeof d3==='undefined'||typeof topojson==='undefined') return;
-    d3.json('https://cdn.jsdelivr.net/npm/us-atlas@3/states-albers-10m.json').then(function(us){
+    d3.json('https://cdn.jsdelivr.net/npm/us-atlas@3/states-10m.json').then(function(us){
       setNetMapData(us);
     }).catch(function(){});
   },[]);
 
   function getProj(){
     if(typeof d3==='undefined') return null;
-    return d3.geoAlbersUsa().scale(1100).translate([487,305]);
+    return d3.geoAlbersUsa().scale(1300).translate([487.5,305]);
   }
 
   function getPath(){
