@@ -66,21 +66,9 @@ a{color:inherit}
 .nav-right{display:flex;align-items:center;gap:1.25rem}
 .nav-back{font-size:0.7rem;letter-spacing:2.5px;text-transform:uppercase;color:var(--mist);text-decoration:none;transition:color .25s}
 .nav-back:hover{color:var(--gold)}
-.theme-toggle{position:relative;display:inline-flex;align-items:center;width:64px;height:30px;border-radius:30px;border:1px solid rgba(var(--gold-rgb),0.32);background:rgba(var(--gold-rgb),0.06);cursor:pointer;transition:border-color .4s,background .4s;padding:0;overflow:hidden}
-.theme-toggle:hover{border-color:rgba(var(--gold-rgb),0.6);background:rgba(var(--gold-rgb),0.10)}
-.tt-track{position:relative;width:100%;height:100%;display:flex;align-items:center}
-.tt-knob{position:absolute;left:3px;width:22px;height:22px;border-radius:50%;background:linear-gradient(135deg,var(--gold) 0%,#d8b06a 100%);transition:transform .4s cubic-bezier(.68,-.15,.27,1.35),background .4s;box-shadow:0 1px 6px rgba(var(--gold-rgb),0.35);display:flex;align-items:center;justify-content:center;z-index:2}
-:root[data-theme="light"] .tt-knob{transform:translateX(34px);background:linear-gradient(135deg,#8A6B33 0%,#A6864A 100%)}
-:root:not([data-theme]) .tt-knob{transform:translateX(0)}
-.tt-icon{position:absolute;display:flex;align-items:center;justify-content:center;transition:opacity .3s,transform .3s}
-.tt-icon svg{width:12px;height:12px;stroke-width:2;stroke-linecap:round;stroke-linejoin:round}
-.tt-sun{left:5px;opacity:0;transform:scale(0.7) rotate(-30deg)}
-.tt-moon{right:5px;opacity:1;transform:scale(1) rotate(0deg)}
-:root[data-theme="light"] .tt-sun{opacity:1;transform:scale(1) rotate(0deg)}
-:root[data-theme="light"] .tt-moon{opacity:0;transform:scale(0.7) rotate(30deg)}
-:root:not([data-theme]) .tt-sun{opacity:0}
-:root:not([data-theme]) .tt-moon{opacity:1}
-.tt-sun svg{stroke:rgba(var(--gold-rgb),0.55)}
+.theme-toggle{display:inline-flex;align-items:center;justify-content:center;width:36px;height:36px;border-radius:50%;border:1px solid rgba(201,169,110,0.32);background:rgba(201,169,110,0.05);color:#c9a96e;cursor:pointer;transition:all 0.35s cubic-bezier(.4,0,.2,1);padding:0;flex-shrink:0}
+.theme-toggle:hover{background:rgba(201,169,110,0.14);border-color:#c9a96e;transform:scale(1.06) rotate(15deg);box-shadow:0 4px 14px rgba(201,169,110,0.22)}
+.theme-toggle svg{width:16px;height:16px;stroke:currentColor;fill:none;stroke-linecap:round;stroke-linejoin:round}
 .tt-moon svg{stroke:rgba(var(--gold-rgb),0.55)}
 
 /* ─── HERO ─── */
@@ -282,13 +270,7 @@ a{color:inherit}
     <a href="#directory" style="font-size:0.65rem;letter-spacing:2px;text-transform:uppercase;color:rgba(var(--text-rgb),0.6);transition:color 0.25s;font-weight:500">Leaderboard</a>
     <a href="/experiences.html" style="font-size:0.65rem;letter-spacing:2px;text-transform:uppercase;color:rgba(var(--text-rgb),0.6);transition:color 0.25s;font-weight:500">Experiences</a>
     <a href="/" class="nav-back">← Home</a>
-    <button class="theme-toggle" id="themeBtn" onclick="toggleTheme()" aria-label="Toggle theme" title="Toggle theme">
-      <div class="tt-track">
-        <div class="tt-knob"></div>
-        <span class="tt-icon tt-sun"><svg viewBox="0 0 24 24" fill="none"><circle cx="12" cy="12" r="4"/><path d="M12 2v2M12 20v2M4.93 4.93l1.41 1.41M17.66 17.66l1.41 1.41M2 12h2M20 12h2M4.93 19.07l1.41-1.41M17.66 6.34l1.41-1.41"/></svg></span>
-        <span class="tt-icon tt-moon"><svg viewBox="0 0 24 24" fill="none"><path d="M21 12.79A9 9 0 1 1 11.21 3 7 7 0 0 0 21 12.79z"/></svg></span>
-      </div>
-    </button>
+    <button class="theme-toggle" id="themeBtn" onclick="toggleTheme()" aria-label="Toggle theme"><svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.8" stroke-linecap="round" stroke-linejoin="round"><circle cx="12" cy="12" r="4"/><path d="M12 2v2M12 20v2M4.93 4.93l1.41 1.41M17.66 17.66l1.41 1.41M2 12h2M20 12h2M4.93 19.07l1.41-1.41M17.66 6.34l1.41-1.41"/></svg></button>
   </div>
 </nav>
 
@@ -682,7 +664,7 @@ function toggleTheme() {
   document.documentElement.setAttribute('data-theme', next);
   try { localStorage.setItem('bf-theme', next); } catch(e) {}
   const btn = document.getElementById('themeBtn');
-  if (btn) btn.setAttribute('aria-label', next === 'dark' ? 'Switch to light mode' : 'Switch to dark mode');
+  if (btn) { btn.innerHTML = next === 'light' ? '<svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.8" stroke-linecap="round" stroke-linejoin="round"><path d="M21 12.79A9 9 0 1 1 11.21 3 7 7 0 0 0 21 12.79z"/></svg>' : '<svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.8" stroke-linecap="round" stroke-linejoin="round"><circle cx="12" cy="12" r="4"/><path d="M12 2v2M12 20v2M4.93 4.93l1.41 1.41M17.66 17.66l1.41 1.41M2 12h2M20 12h2M4.93 19.07l1.41-1.41M17.66 6.34l1.41-1.41"/></svg>'; }
 }
 
 
