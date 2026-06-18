@@ -48,9 +48,7 @@
            '" stroke="currentColor" stroke-width="1.6" stroke-linecap="round" stroke-linejoin="round">' +
            (ICON[name] || '') + '</svg>';
   }
-  var BIRD = '<svg width="34" height="34" viewBox="0 0 48 48" fill="none" aria-hidden="true">' +
-    '<path d="M24 30c-2 4-7 7-13 7 3-3 4-6 4-9-3 1-7 0-9-3 4 0 6-2 8-5-2-2-2-6 0-9 1 3 4 4 7 4 1-4 5-7 10-7-2 3-2 6-1 8 3-1 6 0 8 3-3 0-5 2-6 4 4 2 6 6 5 11-2-3-5-4-8-4-1 0-1 0-2 .5" fill="#c9a96e"/>' +
-    '<circle cx="30" cy="18" r="1.3" fill="#0d1a32"/></svg>';
+  var BIRD = '<img src="/bagfree-logo-web.png" alt="" style="width:130px;max-width:80%;object-fit:contain" aria-hidden="true">';
 
   /* ── Styles (colors hardcoded so the bar looks identical on every page) ── */
   var css = ''
@@ -59,7 +57,7 @@
   +   'gap:1.3rem;overflow-y:auto;font-family:"Manrope",-apple-system,BlinkMacSystemFont,sans-serif;'
   +   'transform:translateX(0);transition:transform .28s ease;-webkit-font-smoothing:antialiased}'
   + '.bf-sidebar *{box-sizing:border-box}'
-  + '.bf-brand{display:flex;flex-direction:column;align-items:center;gap:.3rem;padding:.2rem 0 .1rem;text-decoration:none}'
+  + '.bf-brand{display:flex;flex-direction:column;align-items:center;padding:.3rem 0 .4rem;text-decoration:none}'
   + '.bf-brand-name{font-family:"Cormorant Garamond",Georgia,serif;font-size:1.45rem;font-weight:500;letter-spacing:5px;color:#c9a96e;line-height:1}'
   + '.bf-city{display:flex;align-items:center;gap:.55rem;padding:.6rem .8rem;border-radius:12px;border:1px solid rgba(253,252,248,0.06);background:rgba(255,255,255,0.02);text-decoration:none;transition:all .2s}'
   + '.bf-city:hover{border-color:rgba(201,169,110,0.3);background:rgba(201,169,110,0.06)}'
@@ -124,8 +122,7 @@
   }
 
   var html = ''
-    + '<a class="bf-brand" href="/" aria-label="BagFree home">' + BIRD +
-        '<span class="bf-brand-name">BAGFREE</span></a>'
+    + '<a class="bf-brand" href="/" aria-label="BagFree home">' + BIRD + '</a>'
     + '<a class="bf-city" href="/plan-my-trip.html">'
     +   '<span class="bf-city-info"><span class="bf-city-label">Current City</span>'
     +     '<span class="bf-city-name">' + svg('pin') + '<span id="bf-city">' + DEFAULT_CITY + '</span></span></span>'
