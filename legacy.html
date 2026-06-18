@@ -4440,7 +4440,8 @@ function App() {
       window.scrollTo(0,0);
     }
     window.addEventListener('popstate', onPop);
-    return () => window.removeEventListener('popstate', onPop);
+    window.addEventListener('hashchange', onPop);
+    return () => { window.removeEventListener('popstate', onPop); window.removeEventListener('hashchange', onPop); };
   },[]);
 
   return (
