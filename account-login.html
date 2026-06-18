@@ -155,7 +155,7 @@ var supabase = window.supabase.createClient(SB_URL, SB_KEY);
 (async function() {
   var { data } = await supabase.auth.getSession();
   if (data.session) {
-    window.location.href = '/account.html';
+    window.location.href = '/dashboard.html';
   }
 })();
 
@@ -201,7 +201,7 @@ async function handleLogin() {
 
   // Success — redirect to account
   showMsg('Welcome back! Redirecting...', 'success');
-  setTimeout(function() { window.location.href = '/account.html'; }, 800);
+  setTimeout(function() { window.location.href = '/dashboard.html'; }, 800);
 }
 
 // ── SIGNUP ──
@@ -252,7 +252,7 @@ async function handleSignup() {
     btn.disabled = false; btn.textContent = 'Create Account';
   } else {
     showMsg('Account created! Redirecting...', 'success');
-    setTimeout(function() { window.location.href = '/account.html'; }, 800);
+    setTimeout(function() { window.location.href = '/dashboard.html'; }, 800);
   }
 }
 
@@ -264,7 +264,7 @@ async function handleMagicLink() {
 
   var { error } = await supabase.auth.signInWithOtp({
     email: email,
-    options: { emailRedirectTo: window.location.origin + '/account.html' }
+    options: { emailRedirectTo: window.location.origin + '/dashboard.html' }
   });
 
   if (error) {
