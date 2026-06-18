@@ -192,29 +192,16 @@ html.light .ft{border-color:rgba(0,0,0,0.08)}
 html.light .modal{background:var(--card);box-shadow:0 20px 60px rgba(0,0,0,0.15)}
 
 /* Theme Toggle */
-.theme-toggle{width:56px;height:28px;border-radius:14px;border:1px solid rgba(201,169,110,0.2);background:var(--card);cursor:pointer;position:relative;transition:all 0.3s;padding:0;display:flex;align-items:center}
-.theme-toggle:hover{border-color:rgba(201,169,110,0.4)}
-.theme-toggle .knob{width:22px;height:22px;border-radius:50%;position:absolute;left:2px;transition:all 0.35s cubic-bezier(0.4,0,0.2,1);display:flex;align-items:center;justify-content:center}
-.theme-toggle .knob svg{width:14px;height:14px;transition:all 0.3s}
-html:not(.light) .theme-toggle .knob{background:linear-gradient(135deg,#c9a96e,#d4b87a);left:2px}
-html.light .theme-toggle .knob{background:linear-gradient(135deg,#1a1a2e,#2a2a4e);left:calc(100% - 24px)}
-html:not(.light) .theme-toggle .knob svg{stroke:#0d1a32;fill:none}
-html.light .theme-toggle .knob svg{stroke:#f8f7f4;fill:none}
-.theme-toggle .track-icons{display:flex;justify-content:space-between;width:100%;padding:0 6px;pointer-events:none}
-.theme-toggle .track-icons svg{width:12px;height:12px;opacity:0.3}
+.theme-toggle{display:inline-flex;align-items:center;justify-content:center;width:36px;height:36px;border-radius:50%;border:1px solid rgba(201,169,110,0.32);background:rgba(201,169,110,0.05);color:#c9a96e;cursor:pointer;transition:all 0.35s cubic-bezier(.4,0,.2,1);padding:0;flex-shrink:0}
+.theme-toggle:hover{background:rgba(201,169,110,0.14);border-color:#c9a96e;transform:scale(1.06) rotate(15deg);box-shadow:0 4px 14px rgba(201,169,110,0.22)}
+.theme-toggle svg{width:16px;height:16px;stroke:currentColor;fill:none;stroke-linecap:round;stroke-linejoin:round}
 </style>
 </head>
 <body>
 
 <nav class="nav">
   <a href="/" class="nav-logo">BAGFREE</a>
-  <div class="nav-links"><button class="theme-toggle" onclick="togT()" id="tb" aria-label="Toggle theme">
-              <span class="track-icons">
-                <svg viewBox="0 0 24 24" fill="none" stroke="var(--gold)" stroke-width="2"><circle cx="12" cy="12" r="5"/><path d="M12 1v2m0 18v2M4.22 4.22l1.42 1.42m12.72 12.72l1.42 1.42M1 12h2m18 0h2M4.22 19.78l1.42-1.42M18.36 5.64l1.42-1.42"/></svg>
-                <svg viewBox="0 0 24 24" fill="none" stroke="var(--muted)" stroke-width="2"><path d="M21 12.79A9 9 0 1111.21 3 7 7 0 0021 12.79z"/></svg>
-              </span>
-              <span class="knob"><svg viewBox="0 0 24 24" stroke-width="2"><circle cx="12" cy="12" r="5"/><path d="M12 1v2m0 18v2M4.22 4.22l1.42 1.42m12.72 12.72l1.42 1.42M1 12h2m18 0h2M4.22 19.78l1.42-1.42M18.36 5.64l1.42-1.42"/></svg></span>
-            </button>
+  <div class="nav-links"><button class="theme-toggle" id="tb" onclick="togT()" aria-label="Toggle theme"><svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.8" stroke-linecap="round" stroke-linejoin="round"><circle cx="12" cy="12" r="4"/><path d="M12 2v2M12 20v2M4.93 4.93l1.41 1.41M17.66 17.66l1.41 1.41M2 12h2M20 12h2M4.93 19.07l1.41-1.41M17.66 6.34l1.41-1.41"/></svg></button>
     <a href="#browse" class="active">Browse</a>
     <a href="#donate">Donate</a>
     <a href="#contribute">Contribute</a>
@@ -842,8 +829,8 @@ function submitContribution() {
   document.getElementById('contrib-desc').value = '';
 }
 
-function togT(){var l=document.documentElement.classList.toggle('light');var k=document.querySelector('.theme-toggle .knob');k.innerHTML=l?'<svg viewBox="0 0 24 24" stroke-width="2"><path d="M21 12.79A9 9 0 1111.21 3 7 7 0 0021 12.79z"/></svg>':'<svg viewBox="0 0 24 24" stroke-width="2"><circle cx="12" cy="12" r="5"/><path d="M12 1v2m0 18v2M4.22 4.22l1.42 1.42m12.72 12.72l1.42 1.42M1 12h2m18 0h2M4.22 19.78l1.42-1.42M18.36 5.64l1.42-1.42"/></svg>';try{localStorage.setItem('bf_sj_theme',l?'light':'dark');}catch(e){}}
-(function(){try{if(localStorage.getItem('bf_sj_theme')==='light'){document.documentElement.classList.add('light');var k=document.querySelector('.theme-toggle .knob');if(k)k.innerHTML='<svg viewBox="0 0 24 24" stroke-width="2"><path d="M21 12.79A9 9 0 1111.21 3 7 7 0 0021 12.79z"/></svg>';}}catch(e){}})();
+function togT(){var l=document.documentElement.classList.toggle('light');var btn=document.getElementById('tb');if(btn)btn.innerHTML=l?'<svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.8" stroke-linecap="round" stroke-linejoin="round"><path d="M21 12.79A9 9 0 1 1 11.21 3 7 7 0 0 0 21 12.79z"/></svg>':'<svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.8" stroke-linecap="round" stroke-linejoin="round"><circle cx="12" cy="12" r="4"/><path d="M12 2v2M12 20v2M4.93 4.93l1.41 1.41M17.66 17.66l1.41 1.41M2 12h2M20 12h2M4.93 19.07l1.41-1.41M17.66 6.34l1.41-1.41"/></svg>';try{localStorage.setItem('bf_sj_theme',l?'light':'dark');}catch(e){}}
+(function(){try{if(localStorage.getItem('bf_sj_theme')==='light'){document.documentElement.classList.add('light');var btn=document.getElementById('tb');if(btn)btn.innerHTML='<svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.8" stroke-linecap="round" stroke-linejoin="round"><path d="M21 12.79A9 9 0 1 1 11.21 3 7 7 0 0 0 21 12.79z"/></svg>';}}catch(e){}})();
 </script>
 
 <!-- Contribution Confirmation Modal -->
