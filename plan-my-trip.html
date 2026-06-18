@@ -694,5 +694,24 @@ root.render(<PlanMyTrip/>);
 
 
 <script src="/bagfree-nav.js" defer></script>
+<script defer>
+  // bagfree-nav.js converts this page's sticky nav into a fixed bar on
+  // desktop (so it can sit beside the injected sidebar). That removes the
+  // nav from normal page flow, so without this the hero collapses upward
+  // and its top gets hidden behind the now-floating nav. We restore the
+  // lost space by mirroring the nav's real height back onto #root.
+  (function () {
+    function fixOffset() {
+      var nav = document.querySelector('nav.nav');
+      var root = document.getElementById('root');
+      if (!nav || !root) return;
+      var desktop = window.innerWidth >= 981 && document.body.classList.contains('bfgnav-shift');
+      root.style.paddingTop = desktop ? nav.getBoundingClientRect().height + 'px' : '';
+    }
+    fixOffset();
+    window.addEventListener('load', fixOffset);
+    window.addEventListener('resize', fixOffset);
+  })();
+</script>
 </body>
 </html>
