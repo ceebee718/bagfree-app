@@ -18,10 +18,10 @@
     { label: 'Plan My Trip',    href: '/plan-my-trip.html',           icon: 'map'    },
     { label: 'Clothing',        href: '/departure-lounge-landing.html', icon: 'hanger' }, // ⚠ VERIFY
     { label: 'Curators',        href: '/curators.html',               icon: 'user'   },
-    { label: 'Essentials',      href: '/legacy.html',                 icon: 'bottle' },
+    { label: 'Essentials',      href: '/legacy.html#essentials',      icon: 'bottle' },
     { label: 'Experiences',     href: '/experiences.html',            icon: 'compass'},
     { label: 'Membership',      href: '/membership.html',             icon: 'crown'  },
-    { label: 'Rewards',         href: '/account.html',                icon: 'star'   }, // ⚠ VERIFY
+    { label: 'Rewards',         href: '/legacy.html#rewards',         icon: 'star'   },
     { label: 'Second Journey™', href: '/second-journey.html',         icon: 'sj', sage: true },
     { label: 'Partner',         href: '/partners.html',               icon: 'gift'   }
   ];
@@ -101,18 +101,24 @@
   +   '.bf-burger{display:flex}}'
   + '@media(prefers-reduced-motion:reduce){.bf-sidebar,.bf-scrim{transition:none}}';
 
-  /* ── Active-link detection (works with clean deployed filenames) ────────── */
-  function fileOf(p) {
-    p = (p || '').split('?')[0].split('#')[0].replace(/\/+$/, '');
-    var seg = p.split('/').pop();
-    return seg || '/';
+  /* ── Active-link detection (file + hash aware, so e.g. legacy.html and
+        legacy.html#rewards don't both light up at once) ─────────────────── */
+  function parseTarget(href) {
+    var hashIdx = href.indexOf('#');
+    var file = hashIdx === -1 ? href : href.slice(0, hashIdx);
+    var hash = hashIdx === -1 ? '' : href.slice(hashIdx + 1);
+    file = file.split('?')[0].replace(/\/+$/, '');
+    var seg = file.split('/').pop();
+    return { file: seg || '/', hash: hash };
   }
-  var hereFile = fileOf(location.pathname);
+  var here = parseTarget(location.pathname + location.hash);
+  var hereFile = here.file;
   var isHome = (hereFile === '/' || hereFile === '' || hereFile === 'index.html');
 
   /* ── Build markup ──────────────────────────────────────────────────────── */
   function itemHTML(it) {
-    var active = it.href === '/' ? isHome : (fileOf(it.href) === hereFile);
+    var t = parseTarget(it.href);
+    var active = it.href === '/' ? isHome : (t.file === hereFile && t.hash === here.hash);
     var icon = it.icon === 'sj'
       ? '<span class="bf-ic"><img src="/images/second-journey-logo.png" alt="" style="width:18px;height:18px;object-fit:contain"></span>'
       : svg(it.icon, it.icon === 'star' ? '#c9a96e' : 'none');
