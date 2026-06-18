@@ -99,7 +99,14 @@
   +   '.bfgnav-sidebar.bfgnav-open{transform:translateX(0)}'
   +   '.bfgnav-scrim.bfgnav-open{opacity:1;visibility:visible}'
   +   '.bfgnav-burger{display:flex}}'
-  + '@media(prefers-reduced-motion:reduce){.bfgnav-sidebar,.bfgnav-scrim{transition:none}}';
+  + '@media(prefers-reduced-motion:reduce){.bfgnav-sidebar,.bfgnav-scrim{transition:none}}'
+  /* Most existing pages ship their own top bar (class "nav", with its own
+     ".nav-logo"). Rather than delete it — it often still holds a page-local
+     theme toggle — hide just the duplicate logo and slide the bar over so it
+     sits beside this sidebar instead of underneath/behind it. */
+  + 'body.bfgnav-shift nav.nav .nav-logo{visibility:hidden!important;pointer-events:none!important}'
+  + '@media(min-width:981px){body.bfgnav-shift nav.nav{position:fixed!important;top:0!important;left:240px!important;right:0!important}}'
+  + '@media(max-width:980px){body.bfgnav-shift nav.nav{left:0!important}}';
 
   /* ── Active-link detection (file + hash aware, so e.g. legacy.html and
         legacy.html#rewards don't both light up at once) ─────────────────── */
