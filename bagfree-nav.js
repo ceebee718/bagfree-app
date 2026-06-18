@@ -57,7 +57,7 @@
   +   'gap:1.3rem;overflow-y:auto;font-family:"Manrope",-apple-system,BlinkMacSystemFont,sans-serif;'
   +   'transform:translateX(0);transition:transform .28s ease;-webkit-font-smoothing:antialiased}'
   + '.bfgnav-sidebar *{box-sizing:border-box}'
-  + '.bfgnav-brand{display:flex;flex-direction:column;align-items:center;padding:.3rem 0 .4rem;text-decoration:none}'
+  + '.bfgnav-brand{display:flex;flex-direction:column;align-items:center;padding:.3rem 0 .4rem;margin-bottom:.75rem;text-decoration:none}'
   + '.bfgnav-brand-name{font-family:"Cormorant Garamond",Georgia,serif;font-size:1.45rem;font-weight:500;letter-spacing:5px;color:#c9a96e;line-height:1}'
   + '.bfgnav-city{display:flex;align-items:center;gap:.55rem;padding:.6rem .8rem;border-radius:12px;border:1px solid rgba(253,252,248,0.06);background:rgba(255,255,255,0.02);text-decoration:none;transition:all .2s}'
   + '.bfgnav-city:hover{border-color:rgba(201,169,110,0.3);background:rgba(201,169,110,0.06)}'
