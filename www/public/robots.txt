@@ -1,4 +1,0 @@
-User-agent: *
-Allow: /
-
-Sitemap: https://bagfree.app/sitemap.xml

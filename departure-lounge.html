@@ -4650,19 +4650,47 @@ Best flight routes from their home city, rough cost, transit tips on arrival.
 Keep tone: refined, knowledgeable, like a well-traveled concierge friend. Bold key destination names and experiences. Be specific, not generic.`;
 
   try {
-    const fullPrompt = systemPrompt + '\n\nUser: ' + _aiBrainHistory.map(m=>m.role+': '+m.content).join('\n');
-    const res = await fetch('/api/ai-brain', {
+    const isNative =
+      window.location.protocol === 'capacitor:' ||
+      window.location.href.includes('capacitor://') ||
+      window.location.hostname === 'localhost';
+
+    const endpoint = isNative
+      ? 'https://bagfree.app/.netlify/functions/embr-travel-brain'
+      : '/api/embr-travel-brain';
+
+    const res = await fetch(endpoint, {
       method: 'POST',
       headers: { 'Content-Type': 'application/json' },
       body: JSON.stringify({
         model: 'claude-sonnet-4-20250514',
         max_tokens: 2000,
-        messages: [{ role: 'user', content: fullPrompt }]
+        systemPrompt,
+        userMessage: text,
+        history: _aiBrainHistory,
+        profile: {
+          name: profile.name || 'Traveler',
+          homeCity: profile.homeCity || '',
+          travelStyle: profile.travelStyle || 'Luxury',
+          interests: profile.entertainment || [],
+          destinations: profile.destinations || []
+        },
+        activeTrip: window._activeTrip || {}
       })
     });
+
     if (!res.ok) throw new Error('API error ' + res.status);
+
     const data = await res.json();
-    const reply = (data.content?.[0]?.text || '').trim() || 'I had trouble generating your itinerary. Please try again.';
+
+    const reply = (
+      data.text ||
+      data.reply ||
+      data.response ||
+      data.message ||
+      data.content?.[0]?.text ||
+      ''
+    ).trim() || 'I had trouble generating your itinerary. Please try again.';
 
     // Update history
     _aiBrainHistory.push({ role: 'assistant', content: reply });

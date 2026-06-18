@@ -43,3 +43,9 @@
   status = 200
 
 
+
+
+[[redirects]]
+  from = "/api/embr-travel-brain"
+  to = "/.netlify/functions/embr-travel-brain"
+  status = 200

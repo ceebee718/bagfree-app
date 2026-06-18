@@ -42,6 +42,10 @@
   to = "/.netlify/functions/track-vendor"
   status = 200
 
-[functions]
-  node_bundler = "esbuild"
 
+
+
+[[redirects]]
+  from = "/api/embr-travel-brain"
+  to = "/.netlify/functions/embr-travel-brain"
+  status = 200

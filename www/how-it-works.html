@@ -2,7 +2,7 @@
 <html lang="en">
 <head>
 <meta charset="UTF-8">
-<meta name="viewport" content="width=device-width, initial-scale=1, maximum-scale=1, user-scalable=no, viewport-fit=cover">
+<meta name="viewport" content="width=device-width,initial-scale=1">
 <title>How It Works — BagFree</title>
 <link href="https://fonts.googleapis.com/css2?family=Cormorant+Garamond:ital,wght@0,300;0,400;0,600;1,300;1,400&family=Jost:wght@300;400;500&display=swap" rel="stylesheet">
 <style>
@@ -125,8 +125,6 @@ footer{border-top:1px solid var(--border);padding:2rem 2.5rem;display:flex;align
   .step{grid-template-columns:48px 1fr;gap:0 1.25rem;}
 }
 </style>
-<link rel="stylesheet" href="/ios-viewport-lock.css">
-<link rel="stylesheet" href="/embr-concierge-button.css">
 </head>
 <body>
 
@@ -139,7 +137,7 @@ footer{border-top:1px solid var(--border);padding:2rem 2.5rem;display:flex;align
     <a href="/index.html">Marketplace</a>
     <a href="/index.html">Cruise</a>
     <a href="/index.html">Suppliers</a>
-    <a class="btn-lounge" href="/departure-lounge-landing">
+    <a class="btn-lounge" href="departure-lounge-landing.html">
       <span class="btn-lounge-dot"></span>Departure Lounge
     </a>
   </div>
@@ -262,6 +260,5 @@ const observer = new IntersectionObserver((entries) => {
 }, { threshold: 0.1 });
 document.querySelectorAll('.step').forEach(el => observer.observe(el));
 </script>
-<script src="/ios-viewport-lock.js" defer></script>
 </body>
 </html>
