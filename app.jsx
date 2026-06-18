@@ -1822,6 +1822,119 @@ function NetworkSection(props) {
     { val:'27', lbl:'Curators',        icon:React.createElement('svg',{width:16,height:16,viewBox:'0 0 24 24',fill:'none',stroke:'currentColor',strokeWidth:1.6},React.createElement('path',{d:'M17 21v-2a4 4 0 00-4-4H5a4 4 0 00-4 4v2'}),React.createElement('circle',{cx:9,cy:7,r:4}),React.createElement('path',{d:'M23 21v-2a4 4 0 00-3-3.87M16 3.13a4 4 0 010 7.75'})) },
     { val:'12', lbl:'Style Partners',  icon:React.createElement('svg',{width:16,height:16,viewBox:'0 0 24 24',fill:'none',stroke:'currentColor',strokeWidth:1.6},React.createElement('path',{d:'M20.38 3.46L16 2a4 4 0 01-8 0L3.62 3.46a2 2 0 00-1.34 2.23l.58 3.57a1 1 0 00.99.84H6v10c0 1.1.9 2 2 2h8a2 2 0 002-2V10h2.15a1 1 0 00.99-.84l.58-3.57a2 2 0 00-1.34-2.23z'})) },
   ];
+
+  var NET_CITIES = [
+    {id:'savannah',  name:'Savannah',       state:'GA', type:'active',    lat:32.0835,  lng:-81.0998},
+    {id:'atlanta',   name:'Atlanta',        state:'GA', type:'active',    lat:33.749,   lng:-84.388},
+    {id:'tampa',     name:'Tampa',          state:'FL', type:'active',    lat:27.9506,  lng:-82.4572},
+    {id:'orlando',   name:'Orlando',        state:'FL', type:'soon',      lat:28.5383,  lng:-81.3792},
+    {id:'miami',     name:'Miami',          state:'FL', type:'soon',      lat:25.7617,  lng:-80.1918},
+    {id:'charleston',name:'Charleston',     state:'SC', type:'soon',      lat:32.7765,  lng:-79.9311},
+    {id:'nashville', name:'Nashville',      state:'TN', type:'soon',      lat:36.1627,  lng:-86.7816},
+    {id:'sandiego',  name:'San Diego',      state:'CA', type:'concierge', lat:32.7157,  lng:-117.1611},
+    {id:'seattle',   name:'Seattle',        state:'WA', type:'concierge', lat:47.6062,  lng:-122.3321},
+    {id:'denver',    name:'Denver',         state:'CO', type:'concierge', lat:39.7392,  lng:-104.9903},
+    {id:'phoenix',   name:'Phoenix',        state:'AZ', type:'concierge', lat:33.4484,  lng:-112.074},
+    {id:'losangeles',name:'Los Angeles',    state:'CA', type:'concierge', lat:33.9425,  lng:-118.408},
+    {id:'houston',   name:'Houston',        state:'TX', type:'concierge', lat:29.7604,  lng:-95.3698},
+    {id:'dallas',    name:'Dallas',         state:'TX', type:'concierge', lat:32.7767,  lng:-96.797},
+    {id:'chicago',   name:'Chicago',        state:'IL', type:'concierge', lat:41.8781,  lng:-87.6298},
+    {id:'saltlake',  name:'Salt Lake City', state:'UT', type:'concierge', lat:40.7608,  lng:-111.891},
+  ];
+
+  var NET_ROUTES = [['savannah','atlanta'],['atlanta','tampa'],['tampa','orlando']];
+  var NET_COLOR = {active:'#3fae6a', soon:'#c9a96e', concierge:'rgba(26,26,46,0.35)'};
+
+  var [netTooltip, setNetTooltip] = React.useState(null);
+  var [netTooltipPos, setNetTooltipPos] = React.useState({x:0,y:0});
+  var [netMapData, setNetMapData] = React.useState(null);
+  var svgRef = React.useRef(null);
+
+  React.useEffect(function(){
+    if(typeof d3==='undefined'||typeof topojson==='undefined') return;
+    d3.json('https://cdn.jsdelivr.net/npm/us-atlas@3/states-albers-10m.json').then(function(us){
+      setNetMapData(us);
+    }).catch(function(){});
+  },[]);
+
+  function getProj(){
+    if(typeof d3==='undefined') return null;
+    return d3.geoAlbersUsa().scale(1100).translate([487,305]);
+  }
+
+  function getPath(){
+    var proj=getProj();
+    if(!proj) return null;
+    return d3.geoPath().projection(proj);
+  }
+
+  function handleMarkerHover(e, city){
+    if(!svgRef.current) return;
+    var rect = svgRef.current.getBoundingClientRect();
+    var svgW = svgRef.current.clientWidth || rect.width;
+    var svgH = svgRef.current.clientHeight || rect.height;
+    var viewW=975, viewH=610;
+    var proj=getProj(); if(!proj) return;
+    var pt=proj([city.lng,city.lat]); if(!pt) return;
+    var x=(pt[0]/viewW)*svgW; var y=(pt[1]/viewH)*svgH;
+    setNetTooltipPos({x:x, y:y});
+    setNetTooltip(city);
+  }
+
+  function renderNetMap(){
+    if(typeof d3==='undefined'||typeof topojson==='undefined'||!netMapData) {
+      return React.createElement('div',{style:{display:'flex',alignItems:'center',justifyContent:'center',height:'260px',color:'rgba(26,26,46,0.3)',fontSize:'0.8rem'}},'Loading map…');
+    }
+    var proj=getProj(); var pathFn=getPath();
+    var features=topojson.feature(netMapData, netMapData.objects.states).features;
+    var ROUTES_SVG=NET_ROUTES.map(function(pair,ri){
+      var ca=NET_CITIES.find(function(c){return c.id===pair[0];});
+      var cb=NET_CITIES.find(function(c){return c.id===pair[1];});
+      var pa=proj([ca.lng,ca.lat]); var pb=proj([cb.lng,cb.lat]);
+      if(!pa||!pb) return null;
+      return React.createElement('line',{key:ri,x1:pa[0],y1:pa[1],x2:pb[0],y2:pb[1],stroke:'rgba(63,174,106,0.35)',strokeWidth:1.2,strokeDasharray:'4 4'});
+    });
+    var MARKERS=NET_CITIES.map(function(city,ci){
+      var pt=proj([city.lng,city.lat]); if(!pt) return null;
+      var isActive=city.type==='active';
+      var isSoon=city.type==='soon';
+      var r=isActive?6.5:isSoon?5:4;
+      var fill=NET_COLOR[city.type];
+      return React.createElement('g',{key:ci,style:{cursor:'pointer'},
+        onMouseEnter:function(e){handleMarkerHover(e,city);},
+        onMouseLeave:function(){setNetTooltip(null);},
+        onClick:function(){if(isActive)selectCity(city.id);}
+      },
+        isActive&&React.createElement('circle',{cx:pt[0],cy:pt[1],r:11,fill:'none',stroke:'#3fae6a',strokeWidth:1.4,
+          style:{animation:'gnRingPulse 2.4s ease-out infinite',transformOrigin:pt[0]+'px '+pt[1]+'px'}}),
+        React.createElement('circle',{cx:pt[0],cy:pt[1],r:r,fill:fill,stroke:'rgba(248,246,240,0.7)',strokeWidth:1})
+      );
+    });
+    return React.createElement('div',{style:{position:'relative',width:'100%'}},
+      React.createElement('svg',{ref:svgRef,viewBox:'0 0 975 610',style:{width:'100%',display:'block'},'aria-label':'BagFree US expansion network map'},
+        React.createElement('g',null,
+          features.map(function(f,i){
+            return React.createElement('path',{key:i,d:pathFn(f),fill:'rgba(26,26,46,0.045)',stroke:'rgba(26,26,46,0.14)',strokeWidth:0.7});
+          })
+        ),
+        React.createElement('g',null,ROUTES_SVG),
+        React.createElement('g',null,MARKERS)
+      ),
+      netTooltip&&React.createElement('div',{style:{
+        position:'absolute',left:netTooltipPos.x+12,top:Math.max(0,netTooltipPos.y-24),
+        background:'#1a1a2e',borderRadius:'8px',padding:'0.7rem 0.9rem',
+        pointerEvents:'none',zIndex:10,minWidth:'160px',
+        border:'1px solid rgba(201,169,110,0.25)',boxShadow:'0 8px 24px rgba(0,0,0,0.18)'
+      }},
+        React.createElement('div',{style:{fontFamily:'Cormorant Garamond,Georgia,serif',fontSize:'0.95rem',color:'#e8e0d0',fontWeight:500}},netTooltip.name+', '+netTooltip.state),
+        React.createElement('div',{style:{fontSize:'0.62rem',letterSpacing:'1.5px',textTransform:'uppercase',marginTop:'0.2rem',
+          color:netTooltip.type==='active'?'#3fae6a':netTooltip.type==='soon'?'#c9a96e':'rgba(232,224,208,0.45)',fontWeight:600}},
+          netTooltip.type==='active'?'Active':netTooltip.type==='soon'?'Launching 2026':'Concierge availability'
+        )
+      )
+    );
+  }
+
   return (
     <section className="net-section">
       <div className="net-left">
@@ -1837,42 +1950,26 @@ function NetworkSection(props) {
             );
           })}
         </div>
+        <div style={{display:'flex',alignItems:'center',gap:'0.6rem',marginBottom:'0.75rem',flexWrap:'wrap'}}>
+          <span style={{display:'flex',alignItems:'center',gap:'0.3rem',fontSize:'0.6rem',letterSpacing:'1.5px',textTransform:'uppercase',color:'rgba(26,26,46,0.45)'}}>
+            <span style={{width:8,height:8,borderRadius:'50%',background:'#3fae6a',display:'inline-block',flexShrink:0}}></span>Active
+          </span>
+          <span style={{display:'flex',alignItems:'center',gap:'0.3rem',fontSize:'0.6rem',letterSpacing:'1.5px',textTransform:'uppercase',color:'rgba(26,26,46,0.45)'}}>
+            <span style={{width:8,height:8,borderRadius:'50%',background:'#c9a96e',display:'inline-block',flexShrink:0}}></span>Launching soon
+          </span>
+          <span style={{display:'flex',alignItems:'center',gap:'0.3rem',fontSize:'0.6rem',letterSpacing:'1.5px',textTransform:'uppercase',color:'rgba(26,26,46,0.45)'}}>
+            <span style={{width:8,height:8,borderRadius:'50%',background:'rgba(26,26,46,0.3)',display:'inline-block',flexShrink:0}}></span>Concierge
+          </span>
+        </div>
         <a href="/expansion-map.html" className="net-btn">View Expansion Map →</a>
       </div>
-      <div className="net-map">
-        <svg viewBox="37 8 435 284" preserveAspectRatio="xMidYMid meet" className="net-svg">
-          <path d="M142.7 23.2 L182.4 23.6 L192.0 79.3 L194.6 86.6 L197.1 90.7 L196.1 93.3 L198.7 94.9 L194.8 98.2 L195.0 101.5 L193.0 106.0 L195.2 113.8 L193.6 120.7 L196.1 127.9 L137.3 128.0 L136.5 131.5 L141.6 136.5 L140.7 140.8 L142.5 143.0 L139.1 146.8 L136.0 147.7 L130.3 143.4 L129.7 136.9 L128.0 136.2 L125.9 141.1 L125.1 145.8 L119.3 144.5 L117.5 104.5 L126.0 26.0 L123.6 23.3 L142.7 23.2 Z" className="ns-state"/>
-          <path d="M239.0 23.2 L234.2 28.8 L233.8 31.5 L241.4 37.1 L243.7 36.7 L251.5 50.9 L256.7 54.2 L259.7 59.0 L265.8 63.5 L265.5 66.5 L269.5 71.4 L275.6 75.4 L277.1 79.7 L277.3 85.3 L280.4 87.2 L284.0 94.2 L284.2 98.6 L289.4 100.9 L283.8 109.8 L282.8 114.4 L280.4 118.4 L280.2 122.6 L277.7 124.5 L276.7 135.7 L270.5 134.6 L265.3 132.5 L263.2 134.5 L264.1 139.4 L263.1 144.7 L260.3 144.8 L259.2 139.2 L199.2 135.5 L193.6 120.7 L195.2 113.8 L193.0 106.0 L195.0 101.5 L194.8 98.2 L198.7 94.9 L196.1 93.3 L197.1 90.7 L194.6 86.6 L192.0 79.3 L182.4 23.6 L239.0 23.2 Z" className="ns-state"/>
-          <path d="M246.8 21.4 L251.6 19.0 L257.9 18.0 L285.8 19.3 L285.9 22.0 L288.2 20.4 L291.7 24.9 L291.3 27.9 L316.8 28.3 L342.5 53.3 L338.5 54.6 L333.5 58.9 L328.7 65.6 L327.8 71.1 L324.0 75.4 L318.9 75.4 L317.8 78.5 L312.4 82.0 L309.5 85.7 L304.7 87.3 L299.7 91.3 L299.2 93.2 L294.4 95.3 L289.4 100.9 L284.2 98.6 L284.0 94.2 L280.4 87.2 L277.3 85.3 L277.1 79.7 L275.6 75.4 L269.5 71.4 L265.5 66.5 L265.8 63.5 L259.7 59.0 L256.7 54.2 L251.5 50.9 L243.7 36.7 L241.4 37.1 L233.8 31.5 L234.2 28.8 L239.0 23.2 L246.8 21.4 Z" className="ns-state"/>
-          <path d="M184.9 128.0 L196.1 127.9 L199.2 135.5 L259.2 139.2 L260.3 144.8 L263.1 144.7 L264.1 139.4 L263.2 134.5 L265.3 132.5 L270.5 134.6 L276.7 135.7 L278.1 147.0 L280.9 159.8 L287.5 176.5 L297.5 194.5 L296.1 195.8 L296.6 204.1 L300.8 213.4 L308.7 238.1 L306.1 265.8 L304.0 266.2 L301.8 273.0 L302.5 275.1 L298.2 280.0 L296.4 278.8 L292.2 280.9 L285.0 282.0 L282.9 279.3 L283.9 275.3 L278.8 263.6 L274.8 261.5 L271.4 263.1 L268.6 256.6 L267.9 251.3 L263.2 245.4 L262.1 241.5 L262.8 235.9 L260.2 234.9 L260.8 238.2 L258.5 239.1 L251.3 224.9 L248.4 221.3 L255.2 210.8 L250.8 211.4 L247.8 214.7 L244.8 209.5 L248.8 195.2 L249.5 183.3 L246.8 180.4 L245.9 176.5 L241.6 175.7 L236.5 169.4 L232.4 166.8 L232.2 162.9 L229.3 161.5 L227.0 157.2 L218.3 151.4 L210.7 152.7 L211.1 156.7 L208.6 156.0 L199.2 160.9 L189.1 162.1 L189.4 159.2 L187.0 155.7 L175.2 148.0 L166.8 144.7 L159.2 143.8 L139.1 146.8 L142.5 143.0 L140.7 140.8 L141.6 136.5 L136.5 131.5 L137.3 128.0 L184.9 128.0 Z" className="ns-state"/>
-          <text x="155" y="83" className="ns-label">AL</text>
-          <text x="232" y="62" className="ns-label">GA</text>
-          <text x="195" y="230" className="ns-label">FL</text>
-          <line x1="166" y1="48" x2="210" y2="56" className="ns-leader ns-leader--soon"/>
-          <circle cx="210" cy="56" r="5.5" className="ns-marker ns-marker--soon" style={{cursor:'pointer'}} onClick={function(){selectCity('atlanta');}}/>
-          <text x="160" y="52" className="ns-map-label ns-map-label--soon" textAnchor="end" style={{cursor:'pointer'}} onClick={function(){selectCity('atlanta');}}>Atlanta</text>
-          <line x1="311" y1="81.4" x2="345" y2="75" className="ns-leader ns-leader--soon"/>
-          <circle cx="311" cy="81.4" r="5.5" className="ns-marker ns-marker--soon"/>
-          <text x="351" y="79" className="ns-map-label ns-map-label--soon">SC</text>
-          <line x1="284.7" y1="99.7" x2="336.7" y2="99.7" className="ns-leader ns-leader--live"/>
-          <circle cx="284.7" cy="99.7" r="6.5" className="ns-marker ns-marker--live" style={{cursor:'pointer'}} onClick={function(){selectCity('savannah');}}/>
-          <circle cx="284.7" cy="99.7" r="11" className="ns-ring"/>
-          <text x="342.7" y="103.7" className="ns-map-label" style={{cursor:'pointer'}} onClick={function(){selectCity('savannah');}}>Savannah</text>
-          <line x1="278.2" y1="192.5" x2="326.2" y2="192.5" className="ns-leader ns-leader--soon"/>
-          <circle cx="278.2" cy="192.5" r="5.5" className="ns-marker ns-marker--soon"/>
-          <text x="332.2" y="196.5" className="ns-map-label ns-map-label--soon">Orlando</text>
-          <line x1="253.8" y1="207.9" x2="209.8" y2="207.9" className="ns-leader ns-leader--live"/>
-          <circle cx="253.8" cy="207.9" r="6.5" className="ns-marker ns-marker--live" style={{cursor:'pointer'}} onClick={function(){selectCity('tampa');}}/>
-          <circle cx="253.8" cy="207.9" r="11" className="ns-ring ns-ring--alt"/>
-          <text x="203.8" y="211.9" className="ns-map-label" textAnchor="end" style={{cursor:'pointer'}} onClick={function(){selectCity('tampa');}}>Tampa</text>
-          <line x1="305.1" y1="265.2" x2="351.1" y2="265.2" className="ns-leader ns-leader--soon"/>
-          <circle cx="305.1" cy="265.2" r="5.5" className="ns-marker ns-marker--soon"/>
-          <text x="357.1" y="269.2" className="ns-map-label ns-map-label--soon">Miami</text>
-        </svg>
+      <div className="net-map" style={{position:'relative'}}>
+        {renderNetMap()}
       </div>
     </section>
   );
 }
+
 
 function Testimonial() {
   return (
