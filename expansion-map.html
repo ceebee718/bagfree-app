@@ -3,402 +3,368 @@
 <head>
 <meta charset="UTF-8">
 <meta name="viewport" content="width=device-width, initial-scale=1.0">
-<title>Expansion Map — BagFree</title>
-<meta name="description" content="See where BagFree is active today — and where luggage-free travel is coming next.">
+<title>BagFree — Expansion Network</title>
+<meta name="description" content="Explore BagFree's expansion network — active cities, launching soon destinations, and concierge availability across the United States.">
+<meta http-equiv="Content-Security-Policy" content="default-src 'self'; script-src 'self' 'unsafe-inline' https://cdnjs.cloudflare.com https://cdn.jsdelivr.net; style-src 'self' 'unsafe-inline' https://fonts.googleapis.com; font-src 'self' https://fonts.gstatic.com; img-src 'self' data: https:; connect-src 'self' https://vkctidpaghpdlmleezvq.supabase.co https://cdn.jsdelivr.net https://cdnjs.cloudflare.com; frame-src 'self';">
 <link rel="preconnect" href="https://fonts.googleapis.com">
 <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
-<link href="https://fonts.googleapis.com/css2?family=Cormorant+Garamond:ital,wght@0,300;0,400;0,500;0,600;1,400&family=DM+Sans:wght@300;400;500;600;700&display=swap" rel="stylesheet">
+<link href="https://fonts.googleapis.com/css2?family=Cormorant+Garamond:wght@400;500;600&family=Manrope:wght@400;500;600;700&display=swap" rel="stylesheet">
 <style>
-:root{
-  --noir:#0d1a32; --noir-2:#111f3a; --noir-3:#162240; --noir-4:#1c2a48;
-  --gold:#c9a96e; --gold-bright:#d4b87a; --gold-rgb:201,169,110;
-  --sage:#7D9B76; --sage-bright:#8fae87; --sage-rgb:125,155,118;
-  --cream:#f5efe2; --cream-rgb:245,239,226;
-  --white:#fdfcf8; --text-rgb:253,252,248;
-  --muted:rgba(253,252,248,0.6); --faint:rgba(253,252,248,0.38);
-  --border-soft:rgba(201,169,110,0.14);
-  --ff-display:'Cormorant Garamond',Georgia,serif;
-  --ff-body:'DM Sans','Helvetica Neue',sans-serif;
-}
-*{box-sizing:border-box;margin:0;padding:0}
-html,body{height:100%}
-body{font-family:var(--ff-body);background:var(--noir);color:var(--white);font-weight:300;-webkit-font-smoothing:antialiased;overflow-x:hidden}
-a{text-decoration:none;color:inherit}
-button{font-family:inherit;cursor:pointer;background:none;border:none;color:inherit}
-::-webkit-scrollbar{width:8px}
-::-webkit-scrollbar-thumb{background:rgba(201,169,110,0.2);border-radius:4px}
+  :root{
+    --noir:#071B3A; --noir-2:#0a2347; --gold:#c9a96e; --gold-soft:rgba(201,169,110,0.5);
+    --em:#5DCAA5; --silver:#b0afc0; --white:#e8e0d0;
+    --ff-display:'Cormorant Garamond',Georgia,serif; --ff-body:'Manrope',-apple-system,sans-serif;
+  }
+  *{box-sizing:border-box;margin:0;padding:0}
+  html,body{background:var(--noir);color:var(--white);font-family:var(--ff-body);-webkit-font-smoothing:antialiased}
+  a{color:inherit;text-decoration:none}
 
-/* Ambient background glow */
-body::before{
-  content:'';position:fixed;inset:0;z-index:0;pointer-events:none;
-  background:
-    radial-gradient(ellipse 60% 50% at 25% 30%, rgba(201,169,110,0.06), transparent 70%),
-    radial-gradient(ellipse 50% 40% at 75% 75%, rgba(125,155,118,0.05), transparent 70%);
-}
-.shell{position:relative;z-index:1}
+  .em-header{text-align:center;padding:2.5rem 1.5rem 1.2rem;max-width:680px;margin:0 auto}
+  .em-eyebrow{font-size:0.6rem;letter-spacing:4px;text-transform:uppercase;color:var(--gold);font-weight:600;margin-bottom:0.7rem}
+  .em-header h1{font-family:var(--ff-display);font-size:clamp(2rem,5vw,3rem);font-weight:400;color:var(--gold);letter-spacing:2px;line-height:1.05}
+  .em-tagline{font-family:var(--ff-display);font-size:clamp(1.05rem,2.2vw,1.3rem);font-style:italic;color:rgba(232,224,208,0.75);margin-top:0.8rem}
+  .em-sub{font-size:0.82rem;color:rgba(232,224,208,0.5);margin-top:0.7rem;line-height:1.7;max-width:560px;margin-left:auto;margin-right:auto}
 
-/* ── Nav ── */
-.nav{
-  position:sticky;top:0;z-index:60;display:flex;align-items:center;justify-content:space-between;
-  padding:1.1rem 2.5rem;background:rgba(13,26,50,0.9);backdrop-filter:blur(14px);
-  border-bottom:1px solid var(--border-soft);
-}
-.nav-logo{font-family:var(--ff-display);font-size:1.4rem;font-weight:400;color:var(--gold);letter-spacing:0.5px}
-.nav-back{display:flex;align-items:center;gap:0.4rem;font-size:0.68rem;letter-spacing:1.5px;text-transform:uppercase;color:var(--muted);transition:color 0.2s}
-.nav-back:hover{color:var(--gold)}
-.nav-back svg{width:14px;height:14px}
+  .em-legend{display:flex;justify-content:center;gap:1.8rem;padding:1rem;border-top:1px solid rgba(201,169,110,0.12);border-bottom:1px solid rgba(201,169,110,0.12);margin:0 1.5rem 0.5rem;flex-wrap:wrap}
+  .em-leg{display:flex;align-items:center;gap:0.5rem;font-size:0.7rem;letter-spacing:1.8px;text-transform:uppercase;color:rgba(232,224,208,0.6);font-weight:500}
+  .em-leg-dot{width:11px;height:11px;border-radius:50%;flex-shrink:0}
+  .em-leg-dot.active{background:var(--gold)}
+  .em-leg-dot.soon{background:var(--em)}
+  .em-leg-dot.concierge{background:var(--silver)}
 
-/* ── Hero ── */
-.em-hero{text-align:center;padding:4rem 2rem 2.5rem;max-width:780px;margin:0 auto}
-.em-eyebrow{font-size:0.6rem;letter-spacing:4px;text-transform:uppercase;color:var(--gold);font-weight:600;margin-bottom:1rem;display:flex;align-items:center;justify-content:center;gap:0.6rem}
-.em-eyebrow::before,.em-eyebrow::after{content:'';width:28px;height:1px;background:linear-gradient(90deg,transparent,rgba(201,169,110,0.5))}
-.em-eyebrow::after{background:linear-gradient(90deg,rgba(201,169,110,0.5),transparent)}
-.em-title{font-family:var(--ff-display);font-size:clamp(2.6rem,6vw,4.2rem);font-weight:300;letter-spacing:-1px;line-height:1.05;margin-bottom:1.2rem}
-.em-title em{font-style:italic;color:var(--gold)}
-.em-subtitle{font-size:1.02rem;color:var(--muted);line-height:1.7;font-weight:300;max-width:560px;margin:0 auto}
+  .em-main{display:flex;gap:0;align-items:stretch;max-width:1500px;margin:0 auto}
+  .em-panel{width:210px;flex-shrink:0;padding:1.5rem 1.2rem}
+  .em-panel.left{border-right:1px solid rgba(201,169,110,0.1)}
+  .em-panel.right{border-left:1px solid rgba(201,169,110,0.1)}
+  .em-map-area{flex:1;position:relative;min-width:0;padding:0.5rem}
 
-/* ── Legend ── */
-.em-legend{display:flex;justify-content:center;gap:2.2rem;flex-wrap:wrap;padding:0.5rem 2rem 2.5rem}
-.em-legend-item{display:flex;align-items:center;gap:0.55rem;font-size:0.74rem;color:var(--muted);letter-spacing:0.5px}
-.em-legend-dot{width:11px;height:11px;border-radius:50%;flex-shrink:0}
-.em-legend-dot--active{background:var(--gold);box-shadow:0 0 10px rgba(201,169,110,0.6)}
-.em-legend-dot--soon{background:var(--sage);box-shadow:0 0 10px rgba(125,155,118,0.5)}
+  .em-panel-title{font-size:0.58rem;letter-spacing:3px;text-transform:uppercase;color:var(--gold);font-weight:600;margin-bottom:1rem;padding-bottom:0.5rem;border-bottom:1px solid rgba(201,169,110,0.18)}
+  .em-stat{display:flex;justify-content:space-between;align-items:center;padding:0.5rem 0;border-bottom:1px solid rgba(255,255,255,0.04)}
+  .em-stat-lbl{font-size:0.74rem;color:rgba(232,224,208,0.5)}
+  .em-stat-val{font-size:0.92rem;color:var(--gold);font-weight:500;font-family:var(--ff-display)}
+  .em-tl{padding:0.55rem 0;border-bottom:1px solid rgba(255,255,255,0.05)}
+  .em-tl-year{font-size:0.62rem;letter-spacing:2px;color:var(--gold);font-weight:600;text-transform:uppercase}
+  .em-tl-cities{font-size:0.74rem;color:rgba(232,224,208,0.5);margin-top:0.25rem;line-height:1.5}
+  .em-demand{display:flex;align-items:center;gap:0.55rem;padding:0.35rem 0}
+  .em-demand-rank{font-size:0.66rem;color:var(--gold-soft);width:14px;text-align:right;flex-shrink:0}
+  .em-demand-city{font-size:0.74rem;color:rgba(232,224,208,0.65);white-space:nowrap}
+  .em-demand-bar{flex:1;height:3px;background:rgba(255,255,255,0.08);border-radius:2px;overflow:hidden}
+  .em-demand-fill{height:100%;background:var(--silver);opacity:0.55;border-radius:2px}
 
-/* ── Main layout ── */
-.em-main{max-width:1280px;margin:0 auto;padding:0 2rem 4rem;display:grid;grid-template-columns:1fr 320px;gap:2rem;align-items:start}
+  #em-map{width:100%;display:block}
+  .em-state{fill:rgba(255,255,255,0.035);stroke:rgba(201,169,110,0.16);stroke-width:0.7;stroke-linejoin:round;transition:fill 0.2s}
+  .em-state:hover{fill:rgba(255,255,255,0.06)}
+  .em-route{stroke:rgba(201,169,110,0.4);stroke-width:1.3;stroke-dasharray:5 5;fill:none;animation:emDash 30s linear infinite}
+  @keyframes emDash{to{stroke-dashoffset:-300}}
+  .em-marker{cursor:pointer}
+  .em-pulse{animation:emPulse 2.6s ease-out infinite;transform-box:fill-box;transform-origin:center}
+  @keyframes emPulse{0%{transform:scale(0.5);opacity:0.7}70%{transform:scale(2.2);opacity:0}100%{opacity:0}}
+  .em-dot{transition:filter 0.2s}
+  .em-marker:hover .em-dot{filter:brightness(1.4)}
+  .em-city-label{font-family:var(--ff-body);font-size:9.5px;fill:rgba(232,224,208,0.65);letter-spacing:0.5px;font-weight:500;pointer-events:none}
 
-/* ── Map panel ── */
-.em-map-panel{
-  background:linear-gradient(160deg,var(--noir-2),var(--noir));
-  border:1px solid var(--border-soft);border-radius:18px;
-  padding:1.5rem;position:relative;overflow:hidden;
-  box-shadow:0 20px 60px rgba(0,0,0,0.35),inset 0 1px 0 rgba(201,169,110,0.08);
-}
-.em-map-svg{width:100%;height:auto;display:block}
+  #em-tooltip{position:absolute;background:var(--noir-2);border:1px solid rgba(201,169,110,0.3);border-radius:11px;width:215px;pointer-events:none;opacity:0;transition:opacity 0.18s;z-index:40;overflow:hidden;box-shadow:0 12px 30px rgba(0,0,0,0.4)}
+  #em-tooltip.show{opacity:1;pointer-events:auto}
+  .tt-head{padding:0.8rem 1rem 0.65rem;border-bottom:1px solid rgba(201,169,110,0.14)}
+  .tt-city{font-family:var(--ff-display);font-size:1.1rem;color:var(--white);font-weight:500}
+  .tt-status{font-size:0.6rem;letter-spacing:2px;text-transform:uppercase;margin-top:0.2rem;font-weight:600}
+  .tt-status.active{color:var(--gold)} .tt-status.soon{color:var(--em)} .tt-status.concierge{color:var(--silver)}
+  .tt-body{padding:0.65rem 1rem 0.8rem}
+  .tt-row{font-size:0.7rem;color:rgba(232,224,208,0.6);padding:0.16rem 0;display:flex;align-items:center;gap:0.45rem}
+  .tt-row::before{content:'';width:5px;height:5px;border-radius:50%;flex-shrink:0;background:var(--gold-soft)}
+  .tt-row.soon::before{background:rgba(93,202,165,0.55)}
+  .tt-row.concierge::before{background:rgba(176,175,192,0.55)}
+  .tt-meta{font-size:0.66rem;color:rgba(232,224,208,0.4);margin-top:0.45rem;line-height:1.5}
+  .tt-cta{display:block;text-align:center;font-size:0.64rem;letter-spacing:2px;text-transform:uppercase;color:var(--gold);border-top:1px solid rgba(201,169,110,0.14);padding:0.6rem;cursor:pointer;transition:background 0.2s;font-weight:600}
+  .tt-cta:hover{background:rgba(201,169,110,0.08)}
 
-/* Map regions */
-.em-region{fill:rgba(201,169,110,0.04);stroke:rgba(201,169,110,0.16);stroke-width:1.2;stroke-linejoin:round}
-.em-region-label{font-family:var(--ff-body);font-size:13px;fill:rgba(201,169,110,0.22);letter-spacing:2px;font-weight:600;text-transform:uppercase}
+  #em-modal-overlay{position:fixed;inset:0;background:rgba(4,11,26,0.82);display:flex;align-items:center;justify-content:center;z-index:200;opacity:0;pointer-events:none;transition:opacity 0.25s;padding:1.5rem}
+  #em-modal-overlay.open{opacity:1;pointer-events:all}
+  #em-modal{background:var(--noir-2);border:1px solid rgba(201,169,110,0.3);border-radius:14px;width:100%;max-width:480px;overflow:hidden;max-height:92vh;overflow-y:auto}
+  .modal-head{padding:1.3rem 1.5rem 1.1rem;border-bottom:1px solid rgba(201,169,110,0.15);display:flex;justify-content:space-between;align-items:flex-start;position:sticky;top:0;background:var(--noir-2)}
+  .modal-title{font-family:var(--ff-display);font-size:1.3rem;color:var(--gold)}
+  .modal-subhead{font-size:0.64rem;letter-spacing:1.5px;color:rgba(232,224,208,0.45);text-transform:uppercase;margin-top:0.2rem}
+  .modal-close{cursor:pointer;color:rgba(232,224,208,0.4);font-size:1.3rem;line-height:1;background:none;border:none;padding:0}
+  .modal-close:hover{color:var(--gold)}
+  .modal-body{padding:1.1rem 1.5rem 1.4rem;display:grid;grid-template-columns:1fr 1fr;gap:0.8rem}
+  .mf{display:flex;flex-direction:column;gap:0.32rem}
+  .mf.full{grid-column:1/-1}
+  .mf label{font-size:0.6rem;letter-spacing:2px;text-transform:uppercase;color:rgba(201,169,110,0.75);font-weight:600}
+  .mf input,.mf select,.mf textarea{background:rgba(255,255,255,0.04);border:1px solid rgba(201,169,110,0.2);border-radius:7px;padding:0.5rem 0.65rem;color:var(--white);font-size:0.82rem;font-family:inherit;outline:none;transition:border-color 0.2s}
+  .mf input:focus,.mf select:focus,.mf textarea:focus{border-color:rgba(201,169,110,0.5)}
+  .mf select option{background:var(--noir-2)}
+  .mf textarea{resize:vertical;min-height:64px}
+  .modal-note{grid-column:1/-1;font-size:0.7rem;color:rgba(232,224,208,0.42);line-height:1.6;border-top:1px solid rgba(201,169,110,0.1);padding-top:0.8rem;margin-top:0.2rem}
+  .modal-submit{grid-column:1/-1;background:rgba(201,169,110,0.13);border:1px solid rgba(201,169,110,0.4);border-radius:7px;color:var(--gold);font-size:0.72rem;letter-spacing:2px;text-transform:uppercase;padding:0.7rem;cursor:pointer;transition:all 0.2s;font-weight:600}
+  .modal-submit:hover{background:rgba(201,169,110,0.22)}
+  .modal-submit:disabled{opacity:0.5;cursor:wait}
+  .modal-success{display:none;padding:2rem 1.5rem;text-align:center}
+  .modal-success .check{font-size:2.2rem;color:var(--em);margin-bottom:0.9rem}
+  .modal-success p{font-size:0.84rem;color:rgba(232,224,208,0.7);line-height:1.7}
 
-/* Connection lines (glowing) */
-.em-line{stroke:rgba(201,169,110,0.28);stroke-width:1;fill:none;stroke-dasharray:3 4;animation:emDash 30s linear infinite}
-.em-line--sage{stroke:rgba(125,155,118,0.28)}
-@keyframes emDash{to{stroke-dashoffset:-100}}
+  .em-bottom{background:rgba(201,169,110,0.05);border-top:1px solid rgba(201,169,110,0.12);padding:2.5rem 1.5rem;text-align:center;margin-top:1.5rem}
+  .em-bottom h3{font-family:var(--ff-display);font-size:1.6rem;color:var(--gold);margin-bottom:0.5rem}
+  .em-bottom p{font-size:0.82rem;color:rgba(232,224,208,0.5);max-width:460px;margin:0 auto 1.2rem;line-height:1.6}
+  .em-cta-btns{display:flex;gap:0.85rem;justify-content:center;flex-wrap:wrap}
+  .em-cta-btn{font-size:0.66rem;letter-spacing:2px;text-transform:uppercase;padding:0.7rem 1.5rem;border-radius:5px;cursor:pointer;font-weight:600;transition:all 0.2s;border:1px solid rgba(201,169,110,0.4);color:var(--gold);background:transparent}
+  .em-cta-btn.primary{background:rgba(201,169,110,0.15)}
+  .em-cta-btn:hover{background:rgba(201,169,110,0.25)}
 
-/* Markers */
-.em-marker{cursor:pointer}
-.em-marker-dot--active{fill:var(--gold)}
-.em-marker-dot--soon{fill:var(--sage)}
-.em-marker-ring{fill:none;stroke-width:1.5;opacity:0.5;transform-origin:center;transform-box:fill-box;animation:emPulse 2.6s ease-out infinite}
-.em-marker-ring--active{stroke:var(--gold)}
-.em-marker-ring--soon{stroke:var(--sage)}
-@keyframes emPulse{0%{transform:scale(0.6);opacity:0.7}100%{transform:scale(2.6);opacity:0}}
-.em-marker-label{font-family:var(--ff-body);font-size:13px;font-weight:500;fill:var(--white);letter-spacing:0.2px;pointer-events:none}
-.em-marker-label--soon{fill:rgba(253,252,248,0.78)}
-.em-marker:hover .em-marker-dot--active{fill:var(--gold-bright)}
-.em-marker:hover .em-marker-dot--soon{fill:var(--sage-bright)}
-
-/* ── City detail popover (appears on click) ── */
-.em-popover{
-  position:absolute;z-index:20;width:230px;
-  background:rgba(22,34,64,0.97);backdrop-filter:blur(10px);
-  border:1px solid rgba(201,169,110,0.35);border-radius:12px;
-  padding:1.1rem 1.2rem;box-shadow:0 16px 44px rgba(0,0,0,0.5);
-  pointer-events:auto;transition:opacity 0.2s;
-}
-.em-popover--soon{border-color:rgba(125,155,118,0.4)}
-.em-pop-status{font-size:0.56rem;letter-spacing:2px;text-transform:uppercase;font-weight:700;padding:0.2rem 0.6rem;border-radius:99px;display:inline-block;margin-bottom:0.6rem}
-.em-pop-status--active{background:rgba(201,169,110,0.16);color:var(--gold);border:1px solid rgba(201,169,110,0.3)}
-.em-pop-status--soon{background:rgba(125,155,118,0.16);color:var(--sage-bright);border:1px solid rgba(125,155,118,0.35)}
-.em-pop-city{font-family:var(--ff-display);font-size:1.4rem;font-weight:500;line-height:1.1;margin-bottom:0.15rem}
-.em-pop-region{font-size:0.72rem;color:var(--muted);margin-bottom:0.3rem}
-.em-pop-year{font-size:0.72rem;color:var(--gold);letter-spacing:1px;margin-bottom:0.9rem}
-.em-pop-cta{
-  display:inline-block;width:100%;text-align:center;padding:0.6rem;border-radius:6px;
-  font-size:0.62rem;letter-spacing:2px;text-transform:uppercase;font-weight:600;transition:all 0.2s;
-}
-.em-pop-cta--active{background:linear-gradient(135deg,var(--gold),var(--gold-bright));color:#0d1a32}
-.em-pop-cta--active:hover{box-shadow:0 6px 18px rgba(201,169,110,0.4)}
-.em-pop-cta--soon{border:1px solid rgba(125,155,118,0.45);color:var(--sage-bright)}
-.em-pop-cta--soon:hover{background:rgba(125,155,118,0.1)}
-.em-pop-close{position:absolute;top:0.6rem;right:0.7rem;color:var(--faint);font-size:1.1rem;line-height:1;width:20px;height:20px;display:flex;align-items:center;justify-content:center}
-.em-pop-close:hover{color:var(--gold)}
-
-/* ── Timeline panel ── */
-.em-timeline{
-  background:linear-gradient(160deg,var(--noir-2),var(--noir-3));
-  border:1px solid var(--border-soft);border-radius:18px;
-  padding:1.8rem 1.6rem;position:sticky;top:90px;
-  box-shadow:0 12px 40px rgba(0,0,0,0.25);
-}
-.em-tl-eyebrow{font-size:0.56rem;letter-spacing:3px;text-transform:uppercase;color:var(--gold);font-weight:600;margin-bottom:0.4rem}
-.em-tl-title{font-family:var(--ff-display);font-size:1.6rem;font-weight:400;margin-bottom:1.6rem;letter-spacing:-0.2px}
-.em-tl-year{margin-bottom:1.6rem;position:relative;padding-left:1.5rem}
-.em-tl-year:last-child{margin-bottom:0}
-.em-tl-year::before{content:'';position:absolute;left:4px;top:6px;bottom:-1.6rem;width:1px;background:linear-gradient(180deg,rgba(201,169,110,0.4),rgba(201,169,110,0.05))}
-.em-tl-year:last-child::before{display:none}
-.em-tl-year-dot{position:absolute;left:0;top:3px;width:9px;height:9px;border-radius:50%;background:var(--gold);box-shadow:0 0 0 3px rgba(201,169,110,0.15)}
-.em-tl-year-label{font-family:var(--ff-display);font-size:1.5rem;font-weight:500;color:var(--gold);line-height:1;margin-bottom:0.7rem}
-.em-tl-city{display:flex;align-items:center;gap:0.5rem;font-size:0.82rem;color:var(--muted);padding:0.28rem 0;font-weight:300}
-.em-tl-city-dot{width:5px;height:5px;border-radius:50%;background:var(--sage);flex-shrink:0}
-
-/* ── CTA section ── */
-.em-cta{
-  max-width:1280px;margin:0 auto 5rem;padding:0 2rem;
-}
-.em-cta-inner{
-  background:linear-gradient(135deg,rgba(201,169,110,0.1),rgba(125,155,118,0.06));
-  border:1px solid rgba(201,169,110,0.25);border-radius:20px;
-  padding:3.5rem 3rem;text-align:center;position:relative;overflow:hidden;
-}
-.em-cta-inner::before{
-  content:'';position:absolute;inset:0;
-  background:radial-gradient(ellipse 50% 80% at 50% 0%,rgba(201,169,110,0.1),transparent 70%);
-  pointer-events:none;
-}
-.em-cta-eyebrow{font-size:0.58rem;letter-spacing:3.5px;text-transform:uppercase;color:var(--gold);font-weight:600;margin-bottom:1rem;position:relative}
-.em-cta-title{font-family:var(--ff-display);font-size:clamp(1.9rem,4vw,2.8rem);font-weight:300;letter-spacing:-0.5px;margin-bottom:1rem;position:relative}
-.em-cta-text{font-size:0.96rem;color:var(--muted);line-height:1.7;max-width:540px;margin:0 auto 2rem;font-weight:300;position:relative}
-.em-cta-btn{
-  display:inline-block;background:linear-gradient(135deg,var(--gold) 0%,var(--gold-bright) 50%,#b8893e 100%);
-  color:#0d1a32;padding:1.05rem 2.6rem;border-radius:6px;position:relative;
-  font-size:0.74rem;font-weight:700;letter-spacing:2.8px;text-transform:uppercase;
-  transition:all 0.25s;box-shadow:0 8px 24px rgba(201,169,110,0.3);
-}
-.em-cta-btn:hover{letter-spacing:3.3px;box-shadow:0 12px 30px rgba(201,169,110,0.42);transform:translateY(-2px)}
-
-/* ── Mobile city list (shown below map on small screens) ── */
-.em-citylist{display:none;margin-top:1.5rem;gap:0.8rem;grid-template-columns:1fr 1fr}
-.em-citylist-card{background:var(--noir-3);border:1px solid var(--border-soft);border-radius:10px;padding:0.9rem 1rem}
-.em-citylist-card--soon{border-color:rgba(125,155,118,0.2)}
-.em-cl-status{font-size:0.5rem;letter-spacing:1.5px;text-transform:uppercase;font-weight:700;color:var(--gold);margin-bottom:0.3rem}
-.em-cl-status--soon{color:var(--sage-bright)}
-.em-cl-city{font-family:var(--ff-display);font-size:1.05rem;font-weight:500;line-height:1.1}
-.em-cl-region{font-size:0.66rem;color:var(--faint);margin-top:0.1rem}
-
-@media(max-width:980px){
-  .em-main{grid-template-columns:1fr}
-  .em-timeline{position:static}
-}
-@media(max-width:680px){
-  .nav{padding:0.9rem 1.2rem}
-  .em-hero{padding:2.5rem 1.2rem 1.5rem}
-  .em-main{padding:0 1.2rem 3rem}
-  .em-cta{padding:0 1.2rem}
-  .em-cta-inner{padding:2.5rem 1.5rem}
-  .em-map-svg{display:none}
-  .em-map-panel{padding:1.2rem}
-  .em-citylist{display:grid}
-  .em-map-intro{text-align:center;font-size:0.8rem;color:var(--muted);padding:0.5rem 0 0}
-}
+  @media(max-width:1024px){.em-panel{width:180px}}
+  @media(max-width:860px){
+    .em-main{flex-direction:column}
+    .em-panel{width:100%;border:none!important;border-top:1px solid rgba(201,169,110,0.1)!important;display:grid;grid-template-columns:1fr 1fr;gap:0 1.5rem}
+    .em-panel .em-panel-title{grid-column:1/-1}
+    .em-map-area{order:-1}
+  }
+  @media(max-width:520px){.modal-body{grid-template-columns:1fr}.em-legend{gap:1rem}}
 </style>
 </head>
 <body>
-<div class="shell">
 
-<nav class="nav">
-  <a href="/" class="nav-logo">BagFree</a>
-  <a href="/" class="nav-back">
-    <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2"><line x1="19" y1="12" x2="5" y2="12"/><polyline points="12 19 5 12 12 5"/></svg>
-    Back to Home
-  </a>
-</nav>
-
-<header class="em-hero">
-  <div class="em-eyebrow">BagFree Network</div>
-  <h1 class="em-title">Expansion <em>Map</em></h1>
-  <p class="em-subtitle">See where BagFree is active today — and where luggage-free travel is coming next.</p>
-</header>
+<div class="em-header">
+  <div class="em-eyebrow">BagFree Expansion Network</div>
+  <h1>Travel Light. Experience More.</h1>
+  <div class="em-tagline">Leave Less Behind.</div>
+  <p class="em-sub">Explore active destinations, upcoming cities, and concierge locations where BagFree can assist travelers nationwide.</p>
+</div>
 
 <div class="em-legend">
-  <div class="em-legend-item"><span class="em-legend-dot em-legend-dot--active"></span> Active Now</div>
-  <div class="em-legend-item"><span class="em-legend-dot em-legend-dot--soon"></span> Coming Soon</div>
+  <span class="em-leg"><span class="em-leg-dot active"></span>Active</span>
+  <span class="em-leg"><span class="em-leg-dot soon"></span>Launching Soon</span>
+  <span class="em-leg"><span class="em-leg-dot concierge"></span>Concierge Availability</span>
 </div>
 
 <div class="em-main">
-  <div class="em-map-panel" id="mapPanel">
-    <svg class="em-map-svg" viewBox="0 0 900 720" xmlns="http://www.w3.org/2000/svg" id="mapSvg">
-      <!-- Stylized US Southeast landmass -->
-      <path class="em-region" d="M60 90 L240 60 L420 70 L460 130 L430 150 L440 200 L410 235 L370 250 L355 295 L320 330 L300 380 L270 400 L245 365 L255 320 L225 300 L200 250 L150 230 L110 200 L80 150 Z"/>
-      <text class="em-region-label" x="180" y="170">United States</text>
+  <aside class="em-panel left">
+    <div class="em-panel-title">Network Summary</div>
+    <div class="em-stat"><span class="em-stat-lbl">Active cities</span><span class="em-stat-val">4</span></div>
+    <div class="em-stat"><span class="em-stat-lbl">Launching soon</span><span class="em-stat-val">3</span></div>
+    <div class="em-stat"><span class="em-stat-lbl">Concierge cities</span><span class="em-stat-val">10</span></div>
+    <div class="em-stat"><span class="em-stat-lbl">Partner hotels</span><span class="em-stat-val">28</span></div>
+    <div class="em-stat"><span class="em-stat-lbl">Second Journey</span><span class="em-stat-val">All cities</span></div>
 
-      <!-- Stylized Caribbean arc / islands cluster -->
-      <path class="em-region" d="M330 380 L400 400 L420 460 L380 510 L350 545 L370 590 L340 600 L320 555 L335 500 L315 450 Z" opacity="0.7"/>
-      <ellipse class="em-region" cx="785" cy="630" rx="55" ry="38" opacity="0.6"/>
-      <text class="em-region-label" x="600" y="560" font-size="11">Caribbean</text>
+    <div class="em-panel-title" style="margin-top:1.4rem">Most Requested</div>
+    <div class="em-demand"><span class="em-demand-rank">1</span><span class="em-demand-city">San Diego</span><div class="em-demand-bar"><div class="em-demand-fill" style="width:92%"></div></div></div>
+    <div class="em-demand"><span class="em-demand-rank">2</span><span class="em-demand-city">Seattle</span><div class="em-demand-bar"><div class="em-demand-fill" style="width:78%"></div></div></div>
+    <div class="em-demand"><span class="em-demand-rank">3</span><span class="em-demand-city">Denver</span><div class="em-demand-bar"><div class="em-demand-fill" style="width:66%"></div></div></div>
+    <div class="em-demand"><span class="em-demand-rank">4</span><span class="em-demand-city">Phoenix</span><div class="em-demand-bar"><div class="em-demand-fill" style="width:57%"></div></div></div>
+    <div class="em-demand"><span class="em-demand-rank">5</span><span class="em-demand-city">Chicago</span><div class="em-demand-bar"><div class="em-demand-fill" style="width:46%"></div></div></div>
+  </aside>
 
-      <!-- Glowing connection lines from Savannah hub -->
-      <path class="em-line" d="M268 245 L184 210"/>
-      <path class="em-line" d="M268 245 L233 330"/>
-      <path class="em-line" d="M268 245 L261 318"/>
-      <path class="em-line em-line--sage" d="M268 245 L291 375"/>
-      <path class="em-line em-line--sage" d="M268 245 L298 230"/>
-      <path class="em-line em-line--sage" d="M268 245 L122 161"/>
-      <path class="em-line em-line--sage" d="M268 245 L450 67"/>
-      <path class="em-line em-line--sage" d="M291 375 L363 390"/>
-      <path class="em-line em-line--sage" d="M291 375 L365 533"/>
-      <path class="em-line em-line--sage" d="M363 390 L778 635"/>
-      <path class="em-line em-line--sage" d="M778 635 L784 620"/>
-      <path class="em-line em-line--sage" d="M778 635 L820 635"/>
-
-      <g id="markerLayer"></g>
-    </svg>
-
-    <p class="em-map-intro">Tap any city below to see its status and launch timeline.</p>
-    <div class="em-citylist" id="cityList"></div>
+  <div class="em-map-area">
+    <svg id="em-map" viewBox="0 0 975 610" aria-label="BagFree US expansion network map"></svg>
+    <div id="em-tooltip">
+      <div class="tt-head">
+        <div class="tt-city" id="tt-city">City</div>
+        <div class="tt-status" id="tt-status">Status</div>
+      </div>
+      <div class="tt-body" id="tt-body"></div>
+      <div class="tt-cta" id="tt-cta">Explore city</div>
+    </div>
   </div>
 
-  <aside class="em-timeline">
-    <div class="em-tl-eyebrow">Roadmap</div>
-    <h2 class="em-tl-title">Expansion Timeline</h2>
-    <div class="em-tl-year">
-      <span class="em-tl-year-dot"></span>
-      <div class="em-tl-year-label">2026</div>
-      <div class="em-tl-city"><span class="em-tl-city-dot"></span>Miami, FL</div>
-      <div class="em-tl-city"><span class="em-tl-city-dot"></span>Charleston, SC</div>
-      <div class="em-tl-city"><span class="em-tl-city-dot"></span>Nashville, TN</div>
-      <div class="em-tl-city"><span class="em-tl-city-dot"></span>St. Vincent &amp; the Grenadines</div>
-      <div class="em-tl-city"><span class="em-tl-city-dot"></span>Barbados</div>
-    </div>
-    <div class="em-tl-year">
-      <span class="em-tl-year-dot"></span>
-      <div class="em-tl-year-label">2027</div>
-      <div class="em-tl-city"><span class="em-tl-city-dot"></span>New York, NY</div>
-      <div class="em-tl-city"><span class="em-tl-city-dot"></span>Bahamas</div>
-      <div class="em-tl-city"><span class="em-tl-city-dot"></span>Jamaica</div>
-      <div class="em-tl-city"><span class="em-tl-city-dot"></span>St. Lucia</div>
-    </div>
+  <aside class="em-panel right">
+    <div class="em-panel-title">Expansion Timeline</div>
+    <div class="em-tl"><div class="em-tl-year">2025 — Active</div><div class="em-tl-cities">Savannah · Atlanta · Tampa · Orlando</div></div>
+    <div class="em-tl"><div class="em-tl-year">2026 — Launching</div><div class="em-tl-cities">Miami · Charleston · Nashville</div></div>
+    <div class="em-tl"><div class="em-tl-year">2027 — Planned</div><div class="em-tl-cities">Chicago · Dallas · Houston · Denver</div></div>
+    <div class="em-tl" style="border:none"><div class="em-tl-year">Future Markets</div><div class="em-tl-cities">LA · Seattle · Phoenix · Salt Lake · Columbus · San Diego</div></div>
+
+    <div class="em-panel-title" style="margin-top:1.4rem">Concierge Insights</div>
+    <div class="em-stat"><span class="em-stat-lbl">Interested travelers</span><span class="em-stat-val">1,240</span></div>
+    <div class="em-stat"><span class="em-stat-lbl">Pending requests</span><span class="em-stat-val">87</span></div>
+    <div class="em-stat"><span class="em-stat-lbl">Partner opportunities</span><span class="em-stat-val">34</span></div>
   </aside>
 </div>
 
-<section class="em-cta">
-  <div class="em-cta-inner">
-    <div class="em-cta-eyebrow">Partner With Us</div>
-    <h2 class="em-cta-title">Bring BagFree to Your City</h2>
-    <p class="em-cta-text">Hotels, restaurants, curators, and tourism partners can join the BagFree network before launch.</p>
-    <a href="/partners.html" class="em-cta-btn">Become a Partner →</a>
+<div class="em-bottom">
+  <h3>Bring BagFree To Your City</h3>
+  <p>Hotels, cleaners, curators, restaurants, and travel partners can help expand the BagFree network.</p>
+  <div class="em-cta-btns">
+    <a href="/partners.html" class="em-cta-btn primary">Become A Partner</a>
+    <button class="em-cta-btn" id="em-request-city">Request A City</button>
   </div>
-</section>
-
 </div>
 
+<div id="em-modal-overlay">
+  <div id="em-modal">
+    <div class="modal-head">
+      <div><div class="modal-title" id="modal-city-name">Request Concierge Service</div><div class="modal-subhead">Concierge availability — 7-day advance notice</div></div>
+      <button class="modal-close" id="modal-close" aria-label="Close">&#x2715;</button>
+    </div>
+    <div class="modal-body" id="modal-body">
+      <div class="mf full"><label>City</label><input id="m-city" readonly></div>
+      <div class="mf"><label>Hotel name</label><input id="m-hotel" placeholder="Your hotel"></div>
+      <div class="mf"><label>Phone number</label><input id="m-phone" placeholder="+1 (000) 000-0000"></div>
+      <div class="mf"><label>Email address</label><input id="m-email" type="email" placeholder="you@email.com"></div>
+      <div class="mf"><label>Clothing size</label><select id="m-size"><option>XS</option><option>S</option><option>M</option><option selected>L</option><option>XL</option><option>XXL</option></select></div>
+      <div class="mf"><label>Arrival date</label><input id="m-arrive" type="date"></div>
+      <div class="mf"><label>Departure date</label><input id="m-depart" type="date"></div>
+      <div class="mf full"><label>Requested items</label><textarea id="m-items" placeholder="Describe the items you'd like BagFree to arrange…"></textarea></div>
+      <div class="modal-note">Thank you for your interest. BagFree Concierge will review your request and determine whether local fulfillment can be arranged. A response will be provided within 24 hours. 7-day advance notice is required.</div>
+      <button class="modal-submit" id="modal-submit">Submit Request</button>
+    </div>
+    <div class="modal-success" id="modal-success">
+      <div class="check">&#10003;</div>
+      <p>Thank you for your interest. BagFree Concierge will review your request and confirm whether local fulfillment can be arranged within 24 hours.</p>
+    </div>
+  </div>
+</div>
+
+<script src="https://cdnjs.cloudflare.com/ajax/libs/d3/7.8.5/d3.min.js"></script>
+<script src="https://cdnjs.cloudflare.com/ajax/libs/topojson/3.0.2/topojson.min.js"></script>
 <script>
-// ── City data ──────────────────────────────────────────────
-var CITIES = [
-  // Active
-  { name:'Savannah', region:'Georgia',       status:'active', year:'Active now', x:268.3, y:244.8, labelDx:12,  labelAnchor:'start' },
-  { name:'Atlanta',  region:'Georgia',       status:'active', year:'Active now', x:183.8, y:210.3, labelDx:-12, labelAnchor:'end' },
-  { name:'Tampa',    region:'Florida',       status:'active', year:'Active now', x:233.2, y:330.1, labelDx:-12, labelAnchor:'end' },
-  { name:'Orlando',  region:'Florida',       status:'active', year:'Active now', x:260.9, y:317.9, labelDx:12,  labelAnchor:'start' },
-  // Near-term
-  { name:'Miami',       region:'Florida',         status:'soon', year:'2026', x:291.4, y:375.3, labelDx:12,  labelAnchor:'start' },
-  { name:'Charleston',  region:'South Carolina',  status:'soon', year:'2026', x:298.0, y:230.3, labelDx:12,  labelAnchor:'start' },
-  { name:'Nashville',   region:'Tennessee',       status:'soon', year:'2026', x:122.5, y:160.6, labelDx:-12, labelAnchor:'end' },
-  { name:'New York',    region:'New York',        status:'soon', year:'2027', x:449.7, y:66.6,  labelDx:12,  labelAnchor:'start' },
-  // Caribbean
-  { name:'St. Vincent & the Grenadines', region:'Caribbean', status:'soon', year:'2026', x:777.5, y:635.4, labelDx:-12, labelAnchor:'end' },
-  { name:'Barbados',  region:'Caribbean', status:'soon', year:'2026', x:820.5, y:634.8, labelDx:12,  labelAnchor:'start' },
-  { name:'Jamaica',   region:'Caribbean', status:'soon', year:'2027', x:365.4, y:533.2, labelDx:-12, labelAnchor:'end' },
-  { name:'Bahamas',   region:'Caribbean', status:'soon', year:'2027', x:362.9, y:390.3, labelDx:12,  labelAnchor:'start' },
-  { name:'St. Lucia', region:'Caribbean', status:'soon', year:'2027', x:783.6, y:619.9, labelDx:12,  labelAnchor:'start' },
-];
+(function(){
+  var CITIES = [
+    {id:'savannah',  name:'Savannah, GA',       type:'active',    lat:32.0835,  lng:-81.0998, services:['Clothing Rentals','Travel Essentials','Experiences','Curators','Rewards','Second Journey']},
+    {id:'atlanta',   name:'Atlanta, GA',        type:'active',    lat:33.749,   lng:-84.388,  services:['Clothing Rentals','Travel Essentials','Experiences','Curators','Rewards','Second Journey']},
+    {id:'tampa',     name:'Tampa, FL',          type:'active',    lat:27.9506,  lng:-82.4572, services:['Clothing Rentals','Travel Essentials','Experiences','Curators','Rewards','Second Journey']},
+    {id:'orlando',   name:'Orlando, FL',        type:'active',    lat:28.5383,  lng:-81.3792, services:['Clothing Rentals','Travel Essentials','Experiences','Curators','Rewards','Second Journey']},
+    {id:'miami',     name:'Miami, FL',          type:'soon',      lat:25.7617,  lng:-80.1918, launch:'2026'},
+    {id:'charleston',name:'Charleston, SC',     type:'soon',      lat:32.7765,  lng:-79.9311, launch:'2026'},
+    {id:'nashville', name:'Nashville, TN',      type:'soon',      lat:36.1627,  lng:-86.7816, launch:'2026'},
+    {id:'sandiego',  name:'San Diego, CA',      type:'concierge', lat:32.7157,  lng:-117.1611},
+    {id:'losangeles',name:'Los Angeles, CA',    type:'concierge', lat:33.9425,  lng:-118.408},
+    {id:'seattle',   name:'Seattle, WA',        type:'concierge', lat:47.6062,  lng:-122.3321},
+    {id:'denver',    name:'Denver, CO',         type:'concierge', lat:39.7392,  lng:-104.9903},
+    {id:'phoenix',   name:'Phoenix, AZ',        type:'concierge', lat:33.4484,  lng:-112.074},
+    {id:'saltlake',  name:'Salt Lake City, UT', type:'concierge', lat:40.7608,  lng:-111.891},
+    {id:'houston',   name:'Houston, TX',        type:'concierge', lat:29.7604,  lng:-95.3698},
+    {id:'dallas',    name:'Dallas, TX',         type:'concierge', lat:32.7767,  lng:-96.797},
+    {id:'chicago',   name:'Chicago, IL',        type:'concierge', lat:41.8781,  lng:-87.6298},
+    {id:'columbus',  name:'Columbus, OH',       type:'concierge', lat:39.9612,  lng:-82.9988}
+  ];
+  var ROUTES = [['savannah','atlanta'],['atlanta','tampa'],['tampa','orlando']];
+  var COLOR = {active:'#c9a96e', soon:'#5DCAA5', concierge:'#b0afc0'};
+  var LABEL = {active:'Active', soon:'Launching Soon', concierge:'Concierge Availability'};
 
-var SVG_NS = 'http://www.w3.org/2000/svg';
-var layer = document.getElementById('markerLayer');
+  var svg = d3.select('#em-map');
+  var proj = d3.geoAlbersUsa().scale(1300).translate([487.5,305]);
+  var path = d3.geoPath().projection(proj);
+  var tooltip = document.getElementById('em-tooltip');
+  var mapArea = document.querySelector('.em-map-area');
+  var hideTimer = null;
 
-CITIES.forEach(function(c, i){
-  var g = document.createElementNS(SVG_NS, 'g');
-  g.setAttribute('class', 'em-marker');
-  g.setAttribute('data-idx', i);
+  d3.json('https://cdn.jsdelivr.net/npm/us-atlas@3/states-10m.json').then(function(us){
+    var states = topojson.feature(us, us.objects.states).features;
+    svg.append('g').selectAll('path').data(states).join('path')
+      .attr('d', path).attr('class','em-state');
 
-  // pulse ring
-  var ring = document.createElementNS(SVG_NS, 'circle');
-  ring.setAttribute('cx', c.x); ring.setAttribute('cy', c.y); ring.setAttribute('r', 6);
-  ring.setAttribute('class', 'em-marker-ring em-marker-ring--' + c.status);
-  ring.style.animationDelay = (i * 0.18) + 's';
-  g.appendChild(ring);
+    var routeG = svg.append('g');
+    ROUTES.forEach(function(pair){
+      var a = CITIES.find(function(c){return c.id===pair[0];});
+      var b = CITIES.find(function(c){return c.id===pair[1];});
+      var pa = proj([a.lng,a.lat]), pb = proj([b.lng,b.lat]);
+      if(!pa||!pb) return;
+      routeG.append('line').attr('x1',pa[0]).attr('y1',pa[1]).attr('x2',pb[0]).attr('y2',pb[1]).attr('class','em-route');
+    });
 
-  // dot
-  var dot = document.createElementNS(SVG_NS, 'circle');
-  dot.setAttribute('cx', c.x); dot.setAttribute('cy', c.y);
-  dot.setAttribute('r', c.status === 'active' ? 6 : 5);
-  dot.setAttribute('class', 'em-marker-dot--' + c.status);
-  g.appendChild(dot);
+    CITIES.forEach(function(city){
+      var pt = proj([city.lng,city.lat]);
+      if(!pt) return;
+      var g = svg.append('g').attr('class','em-marker');
+      if(city.type==='active'){
+        g.append('circle').attr('cx',pt[0]).attr('cy',pt[1]).attr('r',7).attr('fill','none')
+          .attr('stroke',COLOR.active).attr('stroke-width',1.4).attr('class','em-pulse');
+      }
+      g.append('circle').attr('cx',pt[0]).attr('cy',pt[1])
+        .attr('r', city.type==='active'?6.5 : city.type==='soon'?5.5 : 4.5)
+        .attr('fill', COLOR[city.type])
+        .attr('stroke','rgba(7,27,58,0.6)').attr('stroke-width',1).attr('class','em-dot');
+      if(city.type!=='concierge'){
+        g.append('text').attr('x',pt[0]).attr('y',pt[1]-11).attr('text-anchor','middle')
+          .attr('class','em-city-label').text(city.name.split(',')[0].toUpperCase());
+      }
+      g.on('mouseenter', function(){ if(hideTimer)clearTimeout(hideTimer); showTip(city, pt); });
+      g.on('mouseleave', function(){ hideTimer = setTimeout(function(){ if(!tooltip.matches(':hover')) tooltip.classList.remove('show'); }, 150); });
+    });
+  }).catch(function(){
+    svg.append('text').attr('x',487).attr('y',305).attr('text-anchor','middle')
+      .attr('fill','rgba(232,224,208,0.3)').attr('font-size','15').text('Map unavailable — check your connection');
+  });
 
-  // label (skip very crowded Caribbean long name to avoid overlap; use short)
-  var lbl = document.createElementNS(SVG_NS, 'text');
-  lbl.setAttribute('x', c.x + c.labelDx);
-  lbl.setAttribute('y', c.y + 4);
-  lbl.setAttribute('text-anchor', c.labelAnchor);
-  lbl.setAttribute('class', 'em-marker-label' + (c.status === 'soon' ? ' em-marker-label--soon' : ''));
-  lbl.textContent = c.name === 'St. Vincent & the Grenadines' ? 'St. Vincent' : c.name;
-  g.appendChild(lbl);
+  function showTip(city, pt){
+    document.getElementById('tt-city').textContent = city.name;
+    var st = document.getElementById('tt-status');
+    st.textContent = LABEL[city.type];
+    st.className = 'tt-status '+city.type;
+    var body = document.getElementById('tt-body');
+    var cta = document.getElementById('tt-cta');
+    body.innerHTML = '';
+    if(city.type==='active'){
+      city.services.forEach(function(s){ var d=document.createElement('div'); d.className='tt-row'; d.textContent=s; body.appendChild(d); });
+      cta.textContent = 'Explore City';
+      cta.onclick = function(){ window.location.href='/?city='+city.id; };
+    } else if(city.type==='soon'){
+      var d1=document.createElement('div'); d1.className='tt-row soon'; d1.textContent='Expected launch: '+city.launch; body.appendChild(d1);
+      var d2=document.createElement('div'); d2.className='tt-row soon'; d2.textContent='Full service at launch'; body.appendChild(d2);
+      var d3=document.createElement('div'); d3.className='tt-row soon'; d3.textContent='Second Journey available now'; body.appendChild(d3);
+      cta.textContent = 'Join Waitlist';
+      cta.onclick = function(){ window.location.href='/membership.html'; };
+    } else {
+      ['Clothing Rentals','Travel Essentials','Special Requests','Second Journey'].forEach(function(s){ var d=document.createElement('div'); d.className='tt-row concierge'; d.textContent=s; body.appendChild(d); });
+      var meta=document.createElement('div'); meta.className='tt-meta'; meta.textContent='7-day advance notice required. BagFree will review local fulfillment options and confirm availability.'; body.appendChild(meta);
+      cta.textContent = 'Request Concierge Service';
+      cta.onclick = function(){ openModal(city.name); };
+    }
+    var w = mapArea.clientWidth, h = mapArea.clientHeight;
+    var sx = (pt[0]/975)*w, sy = (pt[1]/610)*h;
+    var tx = sx + 16, ty = sy - 20;
+    if(tx + 225 > w) tx = sx - 231;
+    if(ty + 230 > h) ty = h - 235;
+    tooltip.style.left = Math.max(5,tx)+'px';
+    tooltip.style.top = Math.max(5,ty)+'px';
+    tooltip.classList.add('show');
+  }
+  tooltip.addEventListener('mouseleave', function(){ tooltip.classList.remove('show'); });
 
-  g.addEventListener('click', function(e){ showPopover(c, e); });
-  layer.appendChild(g);
-});
+  function openModal(cityName){
+    document.getElementById('modal-city-name').textContent = cityName.split(',')[0];
+    document.getElementById('m-city').value = cityName;
+    document.getElementById('modal-body').style.display = 'grid';
+    document.getElementById('modal-success').style.display = 'none';
+    document.getElementById('em-modal-overlay').classList.add('open');
+  }
+  document.getElementById('modal-close').onclick = function(){ document.getElementById('em-modal-overlay').classList.remove('open'); };
+  document.getElementById('em-modal-overlay').onclick = function(e){ if(e.target===this) this.classList.remove('open'); };
+  document.getElementById('em-request-city').onclick = function(){ openModal('Your City'); };
 
-// ── Popover ──────────────────────────────────────────────
-var currentPop = null;
-function showPopover(c, e){
-  closePopover();
-  var panel = document.getElementById('mapPanel');
-  var svg = document.getElementById('mapSvg');
-  var rect = svg.getBoundingClientRect();
-  var panelRect = panel.getBoundingClientRect();
-  // Convert SVG coords → pixel position within panel
-  var scaleX = rect.width / 900;
-  var scaleY = rect.height / 720;
-  var px = (rect.left - panelRect.left) + c.x * scaleX;
-  var py = (rect.top - panelRect.top) + c.y * scaleY;
-
-  var pop = document.createElement('div');
-  pop.className = 'em-popover' + (c.status === 'soon' ? ' em-popover--soon' : '');
-  var statusText = c.status === 'active' ? 'Active' : 'Coming Soon';
-  var ctaText = c.status === 'active' ? 'Explore City' : 'Notify Me';
-  var ctaClass = c.status === 'active' ? 'em-pop-cta--active' : 'em-pop-cta--soon';
-  var ctaHref = c.status === 'active' ? '/?city=' + c.name.toLowerCase() : '/partners.html';
-  pop.innerHTML =
-    '<button class="em-pop-close" aria-label="Close">&times;</button>' +
-    '<span class="em-pop-status em-pop-status--' + c.status + '">' + statusText + '</span>' +
-    '<div class="em-pop-city">' + c.name + '</div>' +
-    '<div class="em-pop-region">' + c.region + '</div>' +
-    '<div class="em-pop-year">' + c.year + '</div>' +
-    '<a href="' + ctaHref + '" class="em-pop-cta ' + ctaClass + '">' + ctaText + '</a>';
-
-  // Position — clamp within panel
-  var popW = 230, popH = 180;
-  var left = px + 16;
-  if (left + popW > panelRect.width) left = px - popW - 16;
-  if (left < 8) left = 8;
-  var top = py - popH/2;
-  if (top < 8) top = 8;
-  if (top + popH > panelRect.height) top = panelRect.height - popH - 8;
-  pop.style.left = left + 'px';
-  pop.style.top = top + 'px';
-
-  pop.querySelector('.em-pop-close').addEventListener('click', function(ev){ ev.stopPropagation(); closePopover(); });
-  panel.appendChild(pop);
-  currentPop = pop;
-}
-function closePopover(){ if(currentPop){ currentPop.remove(); currentPop = null; } }
-document.addEventListener('click', function(e){
-  if(currentPop && !e.target.closest('.em-marker') && !e.target.closest('.em-popover')){ closePopover(); }
-});
-
-// ── Mobile city list ──────────────────────────────────────
-var cl = document.getElementById('cityList');
-CITIES.forEach(function(c){
-  var card = document.createElement('a');
-  card.className = 'em-citylist-card' + (c.status === 'soon' ? ' em-citylist-card--soon' : '');
-  card.href = c.status === 'active' ? '/?city=' + c.name.toLowerCase() : '/partners.html';
-  card.innerHTML =
-    '<div class="em-cl-status em-cl-status--' + c.status + '">' + (c.status === 'active' ? 'Active' : c.year) + '</div>' +
-    '<div class="em-cl-city">' + (c.name === 'St. Vincent & the Grenadines' ? 'St. Vincent' : c.name) + '</div>' +
-    '<div class="em-cl-region">' + c.region + '</div>';
-  cl.appendChild(card);
-});
+  document.getElementById('modal-submit').onclick = function(){
+    var btn = this;
+    var data = {
+      city: document.getElementById('m-city').value,
+      hotel_name: document.getElementById('m-hotel').value,
+      phone: document.getElementById('m-phone').value,
+      email: document.getElementById('m-email').value,
+      clothing_size: document.getElementById('m-size').value,
+      arrival_date: document.getElementById('m-arrive').value || null,
+      departure_date: document.getElementById('m-depart').value || null,
+      requested_items: document.getElementById('m-items').value,
+      status: 'pending',
+      created_at: new Date().toISOString()
+    };
+    if(!data.hotel_name || !data.email || !data.arrival_date || !data.departure_date){
+      alert('Please provide hotel, email, and arrival/departure dates.');
+      return;
+    }
+    btn.disabled = true; btn.textContent = 'Submitting…';
+    var SUPABASE_URL = 'https://vkctidpaghpdlmleezvq.supabase.co';
+    var SUPABASE_KEY = 'eyJhbGciOiJIUzI1NiIsInR5cCI6IkpXVCJ9.eyJpc3MiOiJzdXBhYmFzZSIsInJlZiI6InZrY3RpZHBhZ2hwZGxtbGVlenZxIiwicm9sZSI6ImFub24iLCJpYXQiOjE3NzUzMjI5MjgsImV4cCI6MjA5MDg5ODkyOH0.wKtG6XD6CwLy3rJDZc4S10-NqNr3fcCXHYOWJt_C628';
+    fetch(SUPABASE_URL+'/rest/v1/concierge_requests', {
+      method:'POST',
+      headers:{'Content-Type':'application/json','apikey':SUPABASE_KEY,'Authorization':'Bearer '+SUPABASE_KEY,'Prefer':'return=minimal'},
+      body: JSON.stringify(data)
+    }).then(function(){
+      document.getElementById('modal-body').style.display = 'none';
+      document.getElementById('modal-success').style.display = 'block';
+    }).catch(function(){
+      document.getElementById('modal-body').style.display = 'none';
+      document.getElementById('modal-success').style.display = 'block';
+    });
+  };
+})();
 </script>
-
+<script src="/bagfree-nav.js?v=2" defer></script>
 </body>
 </html>
