@@ -701,7 +701,7 @@ function Sidebar(props) {
         <img src={LOGO_SRC} alt="BagFree" className="brand-img"/>
       </a>
 
-      <div className="meta-anchor" style={{ marginTop:'-1.4rem' }}>
+      <div className="meta-anchor">
         <div className="sidebar-city" onClick={function(e){ e.stopPropagation(); setOpen(!open); }}>
           <div className="sidebar-city-info">
             <div className="sidebar-city-label">Current City</div>
