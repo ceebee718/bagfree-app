@@ -660,8 +660,8 @@ const TILES = [
 ];
 
 
-const SunSVG = '<svg viewBox="0 0 24 24" stroke-width="2"><circle cx="12" cy="12" r="5"/><path d="M12 1v2m0 18v2M4.22 4.22l1.42 1.42m12.72 12.72l1.42 1.42M1 12h2m18 0h2M4.22 19.78l1.42-1.42M18.36 5.64l1.42-1.42"/></svg>';
-const MoonSVG = '<svg viewBox="0 0 24 24" stroke-width="2"><path d="M21 12.79A9 9 0 1111.21 3 7 7 0 0021 12.79z"/></svg>';
+const SunSVG = '<svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.8" stroke-linecap="round" stroke-linejoin="round"><circle cx="12" cy="12" r="4"/><path d="M12 2v2M12 20v2M4.93 4.93l1.41 1.41M17.66 17.66l1.41 1.41M2 12h2M20 12h2M4.93 19.07l1.41-1.41M17.66 6.34l1.41-1.41"/></svg>';
+const MoonSVG = '<svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.8" stroke-linecap="round" stroke-linejoin="round"><path d="M21 12.79A9 9 0 1 1 11.21 3 7 7 0 0 0 21 12.79z"/></svg>';
 
 function ThemeToggle() {
   const [light, setLight] = React.useState(function(){ try { return localStorage.getItem('bf_theme') === 'light'; } catch(e){ return false; }});
@@ -670,12 +670,8 @@ function ThemeToggle() {
     try { localStorage.setItem('bf_theme', light ? 'light' : 'dark'); } catch(e){}
   }, [light]);
   return (
-    <button className="theme-pill" onClick={function(){ setLight(!light); }} aria-label="Toggle theme">
-      <span className="pill-tracks">
-        <svg viewBox="0 0 24 24" fill="none" stroke="var(--gold)" strokeWidth="2"><circle cx="12" cy="12" r="5"/><path d="M12 1v2m0 18v2M4.22 4.22l1.42 1.42m12.72 12.72l1.42 1.42M1 12h2m18 0h2M4.22 19.78l1.42-1.42M18.36 5.64l1.42-1.42"/></svg>
-        <svg viewBox="0 0 24 24" fill="none" stroke="var(--muted)" strokeWidth="2"><path d="M21 12.79A9 9 0 1111.21 3 7 7 0 0021 12.79z"/></svg>
-      </span>
-      <span className="pill-knob" dangerouslySetInnerHTML={{__html: light ? MoonSVG : SunSVG}}></span>
+    <button className="theme-toggle" onClick={function(){ setLight(!light); }} aria-label="Toggle theme">
+      <span dangerouslySetInnerHTML={{__html: light ? MoonSVG : SunSVG}}></span>
     </button>
   );
 }
