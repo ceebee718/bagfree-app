@@ -1453,16 +1453,9 @@ html.light .gn-map-label{fill:var(--white)}
 html.light .gn-map-label--soon{fill:var(--muted)}
 
 /* ── Theme Toggle (pill) ── */
-.theme-pill{width:52px;height:26px;border-radius:13px;border:1px solid rgba(201,169,110,0.2);background:rgba(201,169,110,0.06);cursor:pointer;position:relative;transition:all 0.3s;padding:0;display:flex;align-items:center;flex-shrink:0}
-.theme-pill:hover{border-color:rgba(201,169,110,0.4)}
-.theme-pill .pill-knob{width:20px;height:20px;border-radius:50%;position:absolute;left:2px;transition:all 0.35s cubic-bezier(0.4,0,0.2,1);display:flex;align-items:center;justify-content:center}
-.theme-pill .pill-knob svg{width:12px;height:12px}
-html:not(.light) .theme-pill .pill-knob{background:linear-gradient(135deg,#c9a96e,#d4b87a);left:2px}
-html:not(.light) .theme-pill .pill-knob svg{stroke:#0d1a32;fill:none}
-html.light .theme-pill .pill-knob{background:linear-gradient(135deg,#1a1a2e,#2a2a4e);left:calc(100% - 22px)}
-html.light .theme-pill .pill-knob svg{stroke:#f8f7f4;fill:none}
-.theme-pill .pill-tracks{display:flex;justify-content:space-between;width:100%;padding:0 5px;pointer-events:none}
-.theme-pill .pill-tracks svg{width:11px;height:11px;opacity:0.25}
+.theme-toggle{display:inline-flex;align-items:center;justify-content:center;width:36px;height:36px;border-radius:50%;border:1px solid rgba(201,169,110,0.32);background:rgba(201,169,110,0.05);color:#c9a96e;cursor:pointer;transition:all 0.35s cubic-bezier(.4,0,.2,1);padding:0;flex-shrink:0}
+.theme-toggle:hover{background:rgba(201,169,110,0.14);border-color:#c9a96e;transform:scale(1.06) rotate(15deg);box-shadow:0 4px 14px rgba(201,169,110,0.22)}
+.theme-toggle svg{width:16px;height:16px;fill:none;stroke:currentColor;stroke-width:1.8;stroke-linecap:round;stroke-linejoin:round}
 </style>
 <!-- Vibe.co Pixel -->
 <script>
