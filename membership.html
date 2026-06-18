@@ -517,5 +517,7 @@ function togT(){var l=document.documentElement.classList.toggle('light');var k=d
 document.querySelectorAll('a[href^="#"]').forEach(function(a){a.addEventListener('click',function(e){var t=document.querySelector(this.getAttribute('href'));if(t){e.preventDefault();t.scrollIntoView({behavior:'smooth'});}});});
 (function(){var p=new URLSearchParams(window.location.search);if(p.get('success')==='true'){alert('Welcome to BagFree! Your membership is active.');window.history.replaceState({},'',window.location.pathname);}if(p.get('cancelled')==='true'){alert('Checkout cancelled. No charge.');window.history.replaceState({},'',window.location.pathname);}})();
 </script>
+
+<script src="/bagfree-nav.js" defer></script>
 </body>
 </html>
