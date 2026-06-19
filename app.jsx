@@ -2482,7 +2482,16 @@ function ConciergeChat(props) {
     const res = await fetch('/.netlify/functions/embr-travel-brain', {
       method: 'POST',
       headers: { 'Content-Type': 'application/json' },
-      body: JSON.stringify({ system: systemPrompt, messages: apiMessages }),
+      body: JSON.stringify({
+        userMessage: input,
+        history: apiMessages,
+        systemPrompt,
+        profile: {
+          name: 'Traveler',
+          travelStyle: 'Luxury'
+        },
+        activeTrip: {}
+      }),
     });
     const data = await res.json().catch(function(){ return {}; });
     if (!res.ok || !data.reply) {
