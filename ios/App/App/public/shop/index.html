@@ -1,0 +1,221 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+<meta charset="UTF-8">
+<meta name="viewport" content="width=device-width, initial-scale=1.0">
+<title>Shop — BagFree</title>
+<link href="https://fonts.googleapis.com/css2?family=Cormorant+Garamond:ital,wght@0,300;0,400;1,300&family=Jost:wght@300;400;500&display=swap" rel="stylesheet">
+<style>
+  *, *::before, *::after { margin: 0; padding: 0; box-sizing: border-box; }
+  body { background: #0D1525; color: #F5EDD8; font-family: 'Cormorant Garamond', Georgia, serif; min-height: 100vh; }
+
+  .shop-wrap { max-width: 860px; margin: 0 auto; padding: 5rem 2rem 4rem; }
+
+  .eyebrow {
+    font-family: 'Jost', sans-serif;
+    font-size: 11px;
+    letter-spacing: 4px;
+    color: rgba(201,169,110,0.65);
+    text-transform: uppercase;
+    text-align: center;
+    margin-bottom: 1.25rem;
+    display: flex;
+    align-items: center;
+    justify-content: center;
+    gap: 1rem;
+  }
+  .eyebrow::before, .eyebrow::after {
+    content: '';
+    width: 24px;
+    height: 1px;
+    background: rgba(201,169,110,0.35);
+    display: inline-block;
+  }
+
+  h1 {
+    font-family: 'Cormorant Garamond', serif;
+    font-size: clamp(2.4rem, 5vw, 3.5rem);
+    font-weight: 300;
+    color: #F5EDD8;
+    text-align: center;
+    letter-spacing: -0.5px;
+    margin-bottom: 0.6rem;
+    line-height: 1.1;
+  }
+
+  .subtitle {
+    font-family: 'Jost', sans-serif;
+    font-size: 13px;
+    color: rgba(245,237,216,0.4);
+    text-align: center;
+    letter-spacing: 1px;
+    margin-bottom: 4rem;
+    font-weight: 300;
+  }
+
+  .cards {
+    display: grid;
+    grid-template-columns: repeat(auto-fit, minmax(280px, 1fr));
+    gap: 1px;
+    background: rgba(201,169,110,0.1);
+    margin-bottom: 3rem;
+  }
+
+  .card {
+    background: #111C30;
+    padding: 2.75rem 2.25rem;
+    text-decoration: none;
+    display: flex;
+    flex-direction: column;
+    align-items: flex-start;
+    border: 1px solid rgba(201,169,110,0.12);
+    position: relative;
+    overflow: hidden;
+    transition: background 0.25s;
+  }
+  .card::before {
+    content: '';
+    position: absolute;
+    top: 0; left: 0; right: 0;
+    height: 2px;
+    background: linear-gradient(90deg, transparent, rgba(201,169,110,0.4), transparent);
+  }
+  .card:hover { background: #172138; }
+
+  .card-tag {
+    font-family: 'Jost', sans-serif;
+    font-size: 10px;
+    letter-spacing: 3px;
+    color: rgba(201,169,110,0.55);
+    text-transform: uppercase;
+    margin-bottom: 1.5rem;
+    display: flex;
+    align-items: center;
+    gap: 8px;
+  }
+  .card-tag span {
+    width: 16px;
+    height: 1px;
+    background: rgba(201,169,110,0.35);
+    display: inline-block;
+  }
+
+  .card-title {
+    font-family: 'Cormorant Garamond', serif;
+    font-size: 2.4rem;
+    font-weight: 300;
+    color: #F5EDD8;
+    margin-bottom: 1rem;
+    line-height: 1.1;
+    letter-spacing: -0.3px;
+  }
+
+  .card-desc {
+    font-family: 'Jost', sans-serif;
+    font-size: 13px;
+    color: rgba(245,237,216,0.45);
+    line-height: 1.8;
+    margin-bottom: 1.75rem;
+    font-weight: 300;
+    flex: 1;
+  }
+
+  .card-items {
+    width: 100%;
+    margin-bottom: 2rem;
+  }
+  .card-item {
+    font-family: 'Jost', sans-serif;
+    font-size: 11px;
+    color: rgba(245,237,216,0.3);
+    letter-spacing: 0.5px;
+    padding: 6px 0;
+    border-bottom: 0.5px solid rgba(201,169,110,0.08);
+    font-weight: 300;
+  }
+  .card-item:last-child { border-bottom: none; }
+  .card-item::before {
+    content: '✦';
+    color: rgba(201,169,110,0.35);
+    font-size: 8px;
+    margin-right: 8px;
+  }
+
+  .card-cta {
+    font-family: 'Jost', sans-serif;
+    font-size: 11px;
+    letter-spacing: 2.5px;
+    text-transform: uppercase;
+    color: #C9A96E;
+    border: 1px solid rgba(201,169,110,0.3);
+    padding: 0.65rem 1.5rem;
+    display: inline-flex;
+    align-items: center;
+    gap: 8px;
+    transition: all 0.2s;
+    font-weight: 400;
+  }
+  .card:hover .card-cta {
+    background: rgba(201,169,110,0.08);
+    border-color: rgba(201,169,110,0.5);
+  }
+
+  .shop-footer {
+    font-family: 'Jost', sans-serif;
+    font-size: 11px;
+    color: rgba(245,237,216,0.2);
+    text-align: center;
+    letter-spacing: 2px;
+    text-transform: uppercase;
+  }
+  .shop-footer span { color: rgba(201,169,110,0.3); margin: 0 8px; }
+</style>
+</head>
+<body>
+<div class="shop-wrap">
+
+  <div class="eyebrow">The Collection</div>
+  <h1>Shop BagFree</h1>
+  <p class="subtitle">Delivered to your hotel before you arrive</p>
+
+  <div class="cards">
+
+    <a class="card" href="https://bagfree.app/shop/mens">
+      <div class="card-tag"><span></span>For him</div>
+      <div class="card-title">Men's</div>
+      <div class="card-desc">Everything from a full 7-day wardrobe to individual essentials. Dress shirts, casual wear, grooming kits, and more.</div>
+      <div class="card-items">
+        <div class="card-item">7-Day travel bundles</div>
+        <div class="card-item">Dress shirts &amp; chinos</div>
+        <div class="card-item">Grooming &amp; toiletry kits</div>
+        <div class="card-item">Casual &amp; athletic wear</div>
+      </div>
+      <div class="card-cta">Shop men's &rarr;</div>
+    </a>
+
+    <a class="card" href="https://bagfree.app/shop/womens">
+      <div class="card-tag"><span></span>For her</div>
+      <div class="card-title">Women's</div>
+      <div class="card-desc">Curated pieces for every occasion. From resort wear and dresses to essentials and the exclusive Nuor Edit rental collection.</div>
+      <div class="card-items">
+        <div class="card-item">7-Day essentials bundle</div>
+        <div class="card-item">Dresses &amp; resort wear</div>
+        <div class="card-item">The Nuor Edit &mdash; Tampa only</div>
+        <div class="card-item">Toiletry &amp; stay fresh kits</div>
+      </div>
+      <div class="card-cta">Shop women's &rarr;</div>
+    </a>
+
+  </div>
+
+  <div class="shop-footer">
+    Same-day delivery
+    <span>·</span>Savannah
+    <span>·</span>Atlanta
+    <span>·</span>Tampa
+    <span>·</span>Orlando
+  </div>
+
+</div>
+</body>
+</html>

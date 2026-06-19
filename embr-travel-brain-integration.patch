@@ -1,0 +1,475 @@
+From d9f1dd27588e1052f3c34bd75ddd81aa130c63f5 Mon Sep 17 00:00:00 2001
+From: Matt Powers <matt@echosignalmedia.com>
+Date: Fri, 19 Jun 2026 12:36:50 -0400
+Subject: [PATCH] Wire Travel Brain to Embr
+
+---
+ netlify/functions/embr-travel-brain.js     | 194 +++++++--------------
+ www/netlify/functions/embr-travel-brain.js | 194 +++++++--------------
+ 2 files changed, 130 insertions(+), 258 deletions(-)
+
+diff --git a/netlify/functions/embr-travel-brain.js b/netlify/functions/embr-travel-brain.js
+index 50df776..8655b32 100644
+--- a/netlify/functions/embr-travel-brain.js
++++ b/netlify/functions/embr-travel-brain.js
+@@ -12,112 +12,13 @@ function normalizeText(data) {
+     data?.response ||
+     data?.message ||
+     data?.answer ||
+-    data?.content?.[0]?.text ||
+     data?.output ||
++    data?.content?.[0]?.text ||
++    data?.data?.text ||
+     ''
+   );
+ }
+ 
+-async function callEmbr(body) {
+-  const baseUrl = process.env.EMBR_API_BASE_URL || 'https://api.embrintelligence.ai';
+-  const appId = process.env.EMBR_APP_ID || 'bagfree';
+-  const apiKey = process.env.EMBR_API_KEY;
+-
+-  if (!apiKey) {
+-    throw new Error('EMBR_API_KEY not configured');
+-  }
+-
+-  const response = await fetch(`${baseUrl}/app-intelligence/respond`, {
+-    method: 'POST',
+-    headers: {
+-      'Content-Type': 'application/json',
+-      'Authorization': `Bearer ${apiKey}`,
+-      'x-embr-app-id': appId,
+-      'x-embr-api-key': apiKey,
+-    },
+-    body: JSON.stringify({
+-      appId,
+-      domain: 'travel',
+-      feature: 'bagfree_travel_brain',
+-      userMessage: body.userMessage,
+-      message: body.userMessage,
+-      messages: body.history || [],
+-      systemPrompt: body.systemPrompt || '',
+-      context: {
+-        app: 'BagFree',
+-        product: 'Travel Brain',
+-        travelerProfile: body.profile || {},
+-        activeTrip: body.activeTrip || {},
+-        instruction:
+-          'Act as BagFree Travel Brain: a refined travel concierge that connects trip intent to itinerary ideas, packing intelligence, hotel delivery, and BagFree kit recommendations.',
+-      },
+-    }),
+-  });
+-
+-  const data = await response.json().catch(() => ({}));
+-
+-  if (!response.ok) {
+-    throw new Error(data?.error || data?.message || `Embr API error ${response.status}`);
+-  }
+-
+-  const text = normalizeText(data);
+-
+-  if (!text) {
+-    throw new Error('Embr returned no response text');
+-  }
+-
+-  return {
+-    text,
+-    source: 'embr',
+-    raw: data,
+-  };
+-}
+-
+-async function callClaudeFallback(body) {
+-  const anthropicKey = process.env.ANTHROPIC_API_KEY;
+-
+-  if (!anthropicKey) {
+-    throw new Error('ANTHROPIC_API_KEY not configured for fallback');
+-  }
+-
+-  const fullPrompt = `${body.systemPrompt || ''}
+-
+-User conversation:
+-${(body.history || []).map((m) => `${m.role}: ${m.content}`).join('\n')}`;
+-
+-  const response = await fetch('https://api.anthropic.com/v1/messages', {
+-    method: 'POST',
+-    headers: {
+-      'Content-Type': 'application/json',
+-      'x-api-key': anthropicKey,
+-      'anthropic-version': '2023-06-01',
+-    },
+-    body: JSON.stringify({
+-      model: body.model || 'claude-sonnet-4-20250514',
+-      max_tokens: body.max_tokens || 2000,
+-      messages: [{ role: 'user', content: fullPrompt }],
+-    }),
+-  });
+-
+-  const data = await response.json().catch(() => ({}));
+-
+-  if (!response.ok) {
+-    throw new Error(data?.error?.message || `Claude fallback error ${response.status}`);
+-  }
+-
+-  const text = normalizeText(data);
+-
+-  if (!text) {
+-    throw new Error('Claude fallback returned no response text');
+-  }
+-
+-  return {
+-    text,
+-    source: 'claude_fallback',
+-    raw: data,
+-  };
+-}
+-
+ exports.handler = async function(event) {
+   if (event.httpMethod === 'OPTIONS') {
+     return { statusCode: 204, headers: corsHeaders, body: '' };
+@@ -132,7 +33,6 @@ exports.handler = async function(event) {
+   }
+ 
+   let body;
+-
+   try {
+     body = JSON.parse(event.body || '{}');
+   } catch {
+@@ -143,40 +43,76 @@ exports.handler = async function(event) {
+     };
+   }
+ 
+-  try {
+-    const embrResult = await callEmbr(body);
++  const baseUrl = process.env.EMBR_API_BASE_URL || 'https://api.embrintelligence.ai';
++  const appId = process.env.EMBR_APP_ID || 'bagfree';
++  const apiKey = process.env.EMBR_API_KEY;
+ 
++  if (!apiKey) {
+     return {
+-      statusCode: 200,
++      statusCode: 500,
+       headers: corsHeaders,
+-      body: JSON.stringify(embrResult),
++      body: JSON.stringify({ error: 'EMBR_API_KEY not configured' }),
+     };
+-  } catch (embrError) {
+-    console.error('Embr Travel Brain error:', embrError.message);
++  }
+ 
+-    try {
+-      const fallbackResult = await callClaudeFallback(body);
++  try {
++    const response = await fetch(`${baseUrl}/app-intelligence/respond`, {
++      method: 'POST',
++      headers: {
++        'Content-Type': 'application/json',
++        Authorization: `Bearer ${apiKey}`,
++        'x-embr-app-id': appId,
++        'x-embr-api-key': apiKey,
++      },
++      body: JSON.stringify({
++        appId,
++        domain: 'travel',
++        feature: 'bagfree_travel_brain',
++        userMessage: body.userMessage,
++        message: body.userMessage,
++        messages: body.history || [],
++        systemPrompt: body.systemPrompt || '',
++        context: {
++          app: 'BagFree',
++          product: 'Travel Brain',
++          travelerProfile: body.profile || {},
++          activeTrip: body.activeTrip || {},
++          instruction:
++            'Act as BagFree Travel Brain: a refined travel concierge that connects trip intent to itinerary ideas, packing intelligence, hotel delivery, and BagFree kit recommendations.',
++        },
++      }),
++    });
++
++    const data = await response.json().catch(() => ({}));
++
++    if (!response.ok) {
++      throw new Error(data?.error || data?.message || `Embr API error ${response.status}`);
++    }
+ 
+-      return {
+-        statusCode: 200,
+-        headers: corsHeaders,
+-        body: JSON.stringify({
+-          ...fallbackResult,
+-          embrError: embrError.message,
+-        }),
+-      };
+-    } catch (fallbackError) {
+-      console.error('Travel Brain fallback error:', fallbackError.message);
++    const text = normalizeText(data);
+ 
+-      return {
+-        statusCode: 500,
+-        headers: corsHeaders,
+-        body: JSON.stringify({
+-          error: 'Travel Brain unavailable',
+-          detail: fallbackError.message,
+-          embrError: embrError.message,
+-        }),
+-      };
++    if (!text) {
++      throw new Error('Embr returned no response text');
+     }
++
++    return {
++      statusCode: 200,
++      headers: corsHeaders,
++      body: JSON.stringify({
++        text,
++        source: 'embr',
++      }),
++    };
++  } catch (err) {
++    console.error('Embr Travel Brain error:', err);
++
++    return {
++      statusCode: 500,
++      headers: corsHeaders,
++      body: JSON.stringify({
++        error: 'Travel Brain temporarily unavailable',
++        detail: err.message,
++      }),
++    };
+   }
+ };
+diff --git a/www/netlify/functions/embr-travel-brain.js b/www/netlify/functions/embr-travel-brain.js
+index 50df776..8655b32 100644
+--- a/www/netlify/functions/embr-travel-brain.js
++++ b/www/netlify/functions/embr-travel-brain.js
+@@ -12,112 +12,13 @@ function normalizeText(data) {
+     data?.response ||
+     data?.message ||
+     data?.answer ||
+-    data?.content?.[0]?.text ||
+     data?.output ||
++    data?.content?.[0]?.text ||
++    data?.data?.text ||
+     ''
+   );
+ }
+ 
+-async function callEmbr(body) {
+-  const baseUrl = process.env.EMBR_API_BASE_URL || 'https://api.embrintelligence.ai';
+-  const appId = process.env.EMBR_APP_ID || 'bagfree';
+-  const apiKey = process.env.EMBR_API_KEY;
+-
+-  if (!apiKey) {
+-    throw new Error('EMBR_API_KEY not configured');
+-  }
+-
+-  const response = await fetch(`${baseUrl}/app-intelligence/respond`, {
+-    method: 'POST',
+-    headers: {
+-      'Content-Type': 'application/json',
+-      'Authorization': `Bearer ${apiKey}`,
+-      'x-embr-app-id': appId,
+-      'x-embr-api-key': apiKey,
+-    },
+-    body: JSON.stringify({
+-      appId,
+-      domain: 'travel',
+-      feature: 'bagfree_travel_brain',
+-      userMessage: body.userMessage,
+-      message: body.userMessage,
+-      messages: body.history || [],
+-      systemPrompt: body.systemPrompt || '',
+-      context: {
+-        app: 'BagFree',
+-        product: 'Travel Brain',
+-        travelerProfile: body.profile || {},
+-        activeTrip: body.activeTrip || {},
+-        instruction:
+-          'Act as BagFree Travel Brain: a refined travel concierge that connects trip intent to itinerary ideas, packing intelligence, hotel delivery, and BagFree kit recommendations.',
+-      },
+-    }),
+-  });
+-
+-  const data = await response.json().catch(() => ({}));
+-
+-  if (!response.ok) {
+-    throw new Error(data?.error || data?.message || `Embr API error ${response.status}`);
+-  }
+-
+-  const text = normalizeText(data);
+-
+-  if (!text) {
+-    throw new Error('Embr returned no response text');
+-  }
+-
+-  return {
+-    text,
+-    source: 'embr',
+-    raw: data,
+-  };
+-}
+-
+-async function callClaudeFallback(body) {
+-  const anthropicKey = process.env.ANTHROPIC_API_KEY;
+-
+-  if (!anthropicKey) {
+-    throw new Error('ANTHROPIC_API_KEY not configured for fallback');
+-  }
+-
+-  const fullPrompt = `${body.systemPrompt || ''}
+-
+-User conversation:
+-${(body.history || []).map((m) => `${m.role}: ${m.content}`).join('\n')}`;
+-
+-  const response = await fetch('https://api.anthropic.com/v1/messages', {
+-    method: 'POST',
+-    headers: {
+-      'Content-Type': 'application/json',
+-      'x-api-key': anthropicKey,
+-      'anthropic-version': '2023-06-01',
+-    },
+-    body: JSON.stringify({
+-      model: body.model || 'claude-sonnet-4-20250514',
+-      max_tokens: body.max_tokens || 2000,
+-      messages: [{ role: 'user', content: fullPrompt }],
+-    }),
+-  });
+-
+-  const data = await response.json().catch(() => ({}));
+-
+-  if (!response.ok) {
+-    throw new Error(data?.error?.message || `Claude fallback error ${response.status}`);
+-  }
+-
+-  const text = normalizeText(data);
+-
+-  if (!text) {
+-    throw new Error('Claude fallback returned no response text');
+-  }
+-
+-  return {
+-    text,
+-    source: 'claude_fallback',
+-    raw: data,
+-  };
+-}
+-
+ exports.handler = async function(event) {
+   if (event.httpMethod === 'OPTIONS') {
+     return { statusCode: 204, headers: corsHeaders, body: '' };
+@@ -132,7 +33,6 @@ exports.handler = async function(event) {
+   }
+ 
+   let body;
+-
+   try {
+     body = JSON.parse(event.body || '{}');
+   } catch {
+@@ -143,40 +43,76 @@ exports.handler = async function(event) {
+     };
+   }
+ 
+-  try {
+-    const embrResult = await callEmbr(body);
++  const baseUrl = process.env.EMBR_API_BASE_URL || 'https://api.embrintelligence.ai';
++  const appId = process.env.EMBR_APP_ID || 'bagfree';
++  const apiKey = process.env.EMBR_API_KEY;
+ 
++  if (!apiKey) {
+     return {
+-      statusCode: 200,
++      statusCode: 500,
+       headers: corsHeaders,
+-      body: JSON.stringify(embrResult),
++      body: JSON.stringify({ error: 'EMBR_API_KEY not configured' }),
+     };
+-  } catch (embrError) {
+-    console.error('Embr Travel Brain error:', embrError.message);
++  }
+ 
+-    try {
+-      const fallbackResult = await callClaudeFallback(body);
++  try {
++    const response = await fetch(`${baseUrl}/app-intelligence/respond`, {
++      method: 'POST',
++      headers: {
++        'Content-Type': 'application/json',
++        Authorization: `Bearer ${apiKey}`,
++        'x-embr-app-id': appId,
++        'x-embr-api-key': apiKey,
++      },
++      body: JSON.stringify({
++        appId,
++        domain: 'travel',
++        feature: 'bagfree_travel_brain',
++        userMessage: body.userMessage,
++        message: body.userMessage,
++        messages: body.history || [],
++        systemPrompt: body.systemPrompt || '',
++        context: {
++          app: 'BagFree',
++          product: 'Travel Brain',
++          travelerProfile: body.profile || {},
++          activeTrip: body.activeTrip || {},
++          instruction:
++            'Act as BagFree Travel Brain: a refined travel concierge that connects trip intent to itinerary ideas, packing intelligence, hotel delivery, and BagFree kit recommendations.',
++        },
++      }),
++    });
++
++    const data = await response.json().catch(() => ({}));
++
++    if (!response.ok) {
++      throw new Error(data?.error || data?.message || `Embr API error ${response.status}`);
++    }
+ 
+-      return {
+-        statusCode: 200,
+-        headers: corsHeaders,
+-        body: JSON.stringify({
+-          ...fallbackResult,
+-          embrError: embrError.message,
+-        }),
+-      };
+-    } catch (fallbackError) {
+-      console.error('Travel Brain fallback error:', fallbackError.message);
++    const text = normalizeText(data);
+ 
+-      return {
+-        statusCode: 500,
+-        headers: corsHeaders,
+-        body: JSON.stringify({
+-          error: 'Travel Brain unavailable',
+-          detail: fallbackError.message,
+-          embrError: embrError.message,
+-        }),
+-      };
++    if (!text) {
++      throw new Error('Embr returned no response text');
+     }
++
++    return {
++      statusCode: 200,
++      headers: corsHeaders,
++      body: JSON.stringify({
++        text,
++        source: 'embr',
++      }),
++    };
++  } catch (err) {
++    console.error('Embr Travel Brain error:', err);
++
++    return {
++      statusCode: 500,
++      headers: corsHeaders,
++      body: JSON.stringify({
++        error: 'Travel Brain temporarily unavailable',
++        detail: err.message,
++      }),
++    };
+   }
+ };
+-- 
+2.53.0
+
