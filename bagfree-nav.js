@@ -25,7 +25,7 @@
     { label: 'Second Journey™', href: '/second-journey.html',         icon: 'sj', sage: true },
     { label: 'Partner',         href: '/partners.html',               icon: 'gift'   }
   ];
-  var REWARDS_HREF = '/account.html';        // "View rewards" link at the bottom
+  var REWARDS_HREF = '/legacy.html#rewards';  // "View rewards" link at the bottom
   var DEFAULT_CITY = 'Savannah';
   var DEFAULT_POINTS = '2,450';
 
