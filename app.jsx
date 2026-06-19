@@ -92,7 +92,7 @@ function relativeTime(iso){
 const CITIES = [
   { id:'savannah', name:'Savannah', region:'Georgia', delivery:'sameday', deliveryLabel:'Same day', temp:'72°F', hotel:'The Alida',
     curator:{ name:'Jasmine L.', role:'Savannah Insider', rating:'4.9', reviews:'128', avatar:'https://images.unsplash.com/photo-1494790108377-be9c29b29330?w=120&h=120&fit=crop&crop=faces' } },
-  { id:'atlanta', name:'Atlanta', region:'Georgia', delivery:'days7', deliveryLabel:'7-day advance', temp:'68°F', hotel:'Hotel Clermont',
+  { id:'atlanta', name:'Atlanta', region:'Georgia', delivery:'days3', deliveryLabel:'Under 3 days', temp:'68°F', hotel:'Hotel Clermont',
     curator:{ name:'Marcus D.', role:'Atlanta Insider', rating:'4.8', reviews:'94', avatar:'https://images.unsplash.com/photo-1507003211169-0a1dd7228f2d?w=120&h=120&fit=crop&crop=faces' } },
   { id:'tampa', name:'Tampa', region:'Florida', delivery:'sameday', deliveryLabel:'Same day', temp:'81°F', hotel:'Tampa EDITION',
     curator:{ name:'Sofia R.', role:'Tampa Insider', rating:'4.9', reviews:'112', avatar:'https://images.unsplash.com/photo-1438761681033-6461ffad8d80?w=120&h=120&fit=crop&crop=faces' } },
@@ -1851,7 +1851,7 @@ function NetworkSection(props) {
 
   var NET_CITIES = [
     {id:'savannah',  name:'Savannah',       state:'GA', type:'active',    delivery:'sameday', lat:32.0835,  lng:-81.0998},
-    {id:'atlanta',   name:'Atlanta',        state:'GA', type:'active',    delivery:'days7',   lat:33.749,   lng:-84.388},
+    {id:'atlanta',   name:'Atlanta',        state:'GA', type:'active',    delivery:'days3',   lat:33.749,   lng:-84.388},
     {id:'tampa',     name:'Tampa',          state:'FL', type:'active',    delivery:'sameday', lat:27.9506,  lng:-82.4572},
     {id:'orlando',   name:'Orlando',        state:'FL', type:'active',    delivery:'days3',   lat:28.5383,  lng:-81.3792},
     {id:'miami',     name:'Miami',          state:'FL', type:'soon',      delivery:'days3',   lat:25.7617,  lng:-80.1918},
@@ -1886,6 +1886,47 @@ function NetworkSection(props) {
       setNetMapData(us);
     }).catch(function(){});
   },[]);
+
+  React.useEffect(function(){
+    if(!netMapData || !svgRef.current) return;
+    var svg = svgRef.current;
+    var container = svg.parentElement;
+    if(!container || container.querySelector('.net-mag')) return;
+    var ZOOM = 3;
+    var SIZE = 180;
+    var lens = document.createElement('div');
+    lens.className = 'net-mag';
+    lens.style.cssText = 'position:absolute;width:'+SIZE+'px;height:'+SIZE+'px;border:1.5px solid rgba(201,169,110,0.5);border-radius:4px;overflow:hidden;pointer-events:none;display:none;z-index:30;box-shadow:0 8px 20px rgba(0,0,0,0.15);background:rgba(248,246,240,0.98)';
+    container.appendChild(lens);
+    var clone = null;
+    function refreshClone(){
+      if(clone && clone.parentElement) clone.parentElement.removeChild(clone);
+      clone = svg.cloneNode(true);
+      clone.removeAttribute('id');
+      clone.style.cssText = 'position:absolute;pointer-events:none';
+      var r = svg.getBoundingClientRect();
+      clone.style.width = (r.width * ZOOM) + 'px';
+      clone.style.height = (r.height * ZOOM) + 'px';
+      lens.appendChild(clone);
+    }
+    svg.addEventListener('mouseenter', function(){ refreshClone(); lens.style.display = 'block'; });
+    svg.addEventListener('mousemove', function(e){
+      var r = svg.getBoundingClientRect();
+      var mx = e.clientX - r.left;
+      var my = e.clientY - r.top;
+      var lx = mx + 20; var ly = my - SIZE/2;
+      if(lx + SIZE + 10 > container.clientWidth) lx = mx - SIZE - 20;
+      if(ly < 0) ly = 5;
+      if(ly + SIZE > container.clientHeight) ly = container.clientHeight - SIZE - 5;
+      lens.style.left = lx + 'px';
+      lens.style.top = ly + 'px';
+      if(clone){
+        clone.style.left = -(mx * ZOOM) + SIZE/2 + 'px';
+        clone.style.top = -(my * ZOOM) + SIZE/2 + 'px';
+      }
+    });
+    svg.addEventListener('mouseleave', function(){ lens.style.display = 'none'; });
+  },[netMapData]);
 
   function getProj(){
     if(typeof d3==='undefined') return null;
