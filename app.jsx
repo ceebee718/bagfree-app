@@ -762,25 +762,35 @@ function Sidebar(props) {
 
 function CityMenu(props) {
   var DCOLORS = {sameday:'rgb(77,216,138)', days3:'rgb(232,192,106)', days7:'rgb(168,180,204)'};
+  var expandState = React.useState(false);
+  var expanded = expandState[0]; var setExpanded = expandState[1];
+  var primary = CITIES.filter(function(c){ return !c.limited && !c.soon; });
+  var extra = CITIES.filter(function(c){ return c.limited || c.soon; });
+  function renderItem(c) {
+    var isActive = c.id === props.city.id;
+    var cls = 'city-menu-item' + (isActive ? ' active' : '') + (c.soon ? ' disabled' : '');
+    var nameColor = c.delivery ? DCOLORS[c.delivery] : 'rgba(253,252,248,0.5)';
+    return (
+      <button key={c.id} className={cls}
+        onClick={function(){ if(!c.soon){ props.setCity(c); props.close(); } }}>
+        <span>
+          <span style={{color: nameColor}}>{c.name}</span>
+          <span className="city-region">{c.region}{c.deliveryLabel ? ' · ' + c.deliveryLabel : ''}{c.limited ? ' · Limited' : ''}</span>
+        </span>
+        {c.soon
+          ? <span className="soon">Soon</span>
+          : (isActive ? <span className="tick">✓</span> : null)}
+      </button>
+    );
+  }
   return (
     <div className="city-menu" onClick={function(e){ e.stopPropagation(); }}>
-      {CITIES.map(function(c){
-        const isActive = c.id === props.city.id;
-        const cls = 'city-menu-item' + (isActive ? ' active' : '') + (c.soon ? ' disabled' : '');
-        var nameColor = c.delivery ? DCOLORS[c.delivery] : 'rgba(253,252,248,0.5)';
-        return (
-          <button key={c.id} className={cls}
-            onClick={function(){ if(!c.soon){ props.setCity(c); props.close(); } }}>
-            <span>
-              <span style={{color: nameColor}}>{c.name}</span>
-              <span className="city-region">{c.region}{c.deliveryLabel ? ' · ' + c.deliveryLabel : ''}{c.limited ? ' · Limited' : ''}</span>
-            </span>
-            {c.soon
-              ? <span className="soon">Soon</span>
-              : (isActive ? <span className="tick">✓</span> : null)}
-          </button>
-        );
-      })}
+      {primary.map(renderItem)}
+      <button className="city-menu-expand" onClick={function(){ setExpanded(!expanded); }}>
+        <span>{expanded ? 'Show fewer cities' : 'All cities (' + extra.length + ' more)'}</span>
+        <span style={{fontSize:'0.7rem',transition:'transform 0.2s',display:'inline-block',transform:expanded?'rotate(180deg)':'none'}}>▾</span>
+      </button>
+      {expanded && extra.map(renderItem)}
     </div>
   );
 }
