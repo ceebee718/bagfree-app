@@ -112,8 +112,8 @@ const CITIES = [
   { id:'seattle', name:'Seattle', region:'Washington', delivery:'days7', deliveryLabel:'7-day advance', limited:true },
   { id:'saltlake', name:'Salt Lake City', region:'Utah', delivery:'days7', deliveryLabel:'7-day advance', limited:true },
   { id:'columbus', name:'Columbus', region:'Ohio', delivery:'days7', deliveryLabel:'7-day advance', limited:true },
-  { id:'newyork', name:'New York', region:'New York', delivery:'days7', deliveryLabel:'7-day advance', limited:true },
-  { id:'washington', name:'Washington', region:'D.C.', delivery:'days7', deliveryLabel:'7-day advance', limited:true },
+  { id:'newyork', name:'New York', region:'New York', delivery:'days3', deliveryLabel:'Under 3 days', limited:true },
+  { id:'washington', name:'Washington', region:'D.C.', delivery:'days3', deliveryLabel:'Under 3 days', limited:true },
   { id:'caribbean', name:'Caribbean', region:'Coming soon', soon:true }
 ];
 
@@ -1873,8 +1873,8 @@ function NetworkSection(props) {
     {id:'chicago',   name:'Chicago',        state:'IL', type:'concierge', delivery:'days7',   lat:41.8781,  lng:-87.6298},
     {id:'saltlake',  name:'Salt Lake City', state:'UT', type:'concierge', delivery:'days7',   lat:40.7608,  lng:-111.891},
     {id:'columbus',  name:'Columbus',       state:'OH', type:'concierge', delivery:'days7',   lat:39.9612,  lng:-82.9988},
-    {id:'newyork',   name:'New York',       state:'NY', type:'concierge', delivery:'days7',   lat:40.7128,  lng:-74.0060},
-    {id:'washington',name:'Washington',     state:'DC', type:'concierge', delivery:'days7',   lat:38.9072,  lng:-77.0369},
+    {id:'newyork',   name:'New York',       state:'NY', type:'concierge', delivery:'days3',   lat:40.7128,  lng:-74.0060},
+    {id:'washington',name:'Washington',     state:'DC', type:'concierge', delivery:'days3',   lat:38.9072,  lng:-77.0369},
   ];
 
   var NET_ROUTES = [['savannah','atlanta'],['atlanta','tampa'],['tampa','orlando']];
