@@ -1783,7 +1783,7 @@ function Hero(props) {
   ];
   return (
     <div className="hero-section">
-      <img key={heroImg} src={heroImg} alt={(city ? city.name : 'BagFree') + ' cityscape'} className="hero-bg-img" style={isLimited ? {objectPosition:'right center'} : undefined}/>
+      <img key={heroImg} src={heroImg} alt={(city ? city.name : 'BagFree') + ' cityscape'} className="hero-bg-img" style={isLimited ? {objectFit:'contain',objectPosition:'center center',background:'rgb(7,16,31)'} : undefined}/>
       <div className="hero-overlay"></div>
       <div className="hero-content">
         <div className="hero-text">
