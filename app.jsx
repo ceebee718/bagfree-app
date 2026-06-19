@@ -1417,7 +1417,6 @@ function TopBar(props) {
           </div>
           {props.city.temp ? <div className="meta-item"><Icon.Sun/> {props.city.temp}</div> : null}
         </div>
-        <MapStrip/>
         <SearchBar city={props.city} onSearch={props.onSearch} onItemClick={props.onItemClick} onClearResults={props.onClearResults}/>
       </div>
       <div className="topbar-right">
@@ -1461,6 +1460,7 @@ function TopBar(props) {
         </div>
       </div>
       {props.networkCard || null}
+      <MapStrip/>
       </div>
     </div>
   );
