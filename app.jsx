@@ -2479,7 +2479,7 @@ function ConciergeChat(props) {
       return { role: m.role === 'user' ? 'user' : 'assistant', content: m.text };
     });
 
-    const res = await fetch('/.netlify/functions/concierge-chat', {
+    const res = await fetch('/.netlify/functions/embr-travel-brain', {
       method: 'POST',
       headers: { 'Content-Type': 'application/json' },
       body: JSON.stringify({ system: systemPrompt, messages: apiMessages }),
