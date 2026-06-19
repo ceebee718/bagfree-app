@@ -81,7 +81,7 @@ button{cursor:pointer;border:none;font-family:var(--ff-body);background:none;col
   padding:1.6rem 1.1rem 1.2rem;
 }
 html.light .side{background:linear-gradient(180deg,var(--navy-ink),#E8E0CF)}
-.brand{display:flex;align-items:center;gap:.55rem;padding:.2rem .5rem 1.4rem;}
+.brand{display:flex;align-items:center;gap:.55rem;padding:.2rem .5rem 1.4rem;text-decoration:none;cursor:pointer;}
 .brand-logo-img{width:130px;max-width:100%;height:auto;object-fit:contain;display:block}
 .brand-mark{width:30px;height:30px;flex-shrink:0}
 .brand-name{font-family:var(--ff-display);font-size:1.55rem;color:var(--gold);line-height:1}
@@ -486,7 +486,7 @@ function Sidebar({active,onNav,light,toggleTheme,closeNav}){
   const account=NAV.filter(n=>n.group==='account');
   return (
     <aside className="side">
-      <div className="brand"><img src="/bagfree-logo-full.png" alt="BagFree" className="brand-logo-img"/></div>
+      <a href="/" className="brand"><img src="/bagfree-logo-full.png" alt="BagFree" className="brand-logo-img"/></a>
       <div className="nav-group-label">Explore</div>
       {primary.map(n=>(
         <a key={n.k} href={n.href} className={'nav-item'+(active===n.k?' active':'')}
