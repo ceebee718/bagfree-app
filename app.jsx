@@ -1769,6 +1769,10 @@ var HERO_IMAGES = {
 function Hero(props) {
   var city = props.city;
   var isLimited = city && city.limited;
+  var modalState = React.useState(false);
+  var showModal = modalState[0]; var setShowModal = modalState[1];
+  var successState = React.useState(false);
+  var submitted = successState[0]; var setSubmitted = successState[1];
   var heroImg = isLimited ? '/hero-concierge.png' : (HERO_IMAGES[city && city.id] || '/savannah-banner.png');
   var features = isLimited ? [
     { icon:React.createElement('svg',{width:14,height:14,viewBox:'0 0 24 24',fill:'none',stroke:'currentColor',strokeWidth:1.8},React.createElement('path',{d:'M12 2a2 2 0 012 2 2 2 0 01-2 2 2 2 0 01-2-2 2 2 0 012-2z'}),React.createElement('path',{d:'M12 6L2 12.5a1.5 1.5 0 001.6 2.54L12 10l8.4 5.04a1.5 1.5 0 001.6-2.54L12 6z'})), label:'Clothing Rentals' },
@@ -1781,8 +1785,8 @@ function Hero(props) {
     { icon:React.createElement('svg',{width:14,height:14,viewBox:'0 0 24 24',fill:'none',stroke:'currentColor',strokeWidth:1.8},React.createElement('path',{d:'M17 21v-2a4 4 0 00-4-4H5a4 4 0 00-4 4v2'}),React.createElement('circle',{cx:9,cy:7,r:4}),React.createElement('path',{d:'M23 21v-2a4 4 0 00-3-3.87M16 3.13a4 4 0 010 7.75'})), label:'Local Expertise' },
     { icon:React.createElement('svg',{width:14,height:14,viewBox:'0 0 24 24',fill:'none',stroke:'currentColor',strokeWidth:1.8},React.createElement('path',{d:'M11 20A7 7 0 014 13c0-3.5 1.7-6.6 4.3-8.5'}),React.createElement('path',{d:'M12 2a10 10 0 11-9.2 13.8'})), label:'Sustainable Impact' },
   ];
-  return (
-    <div className="hero-section">
+  return [
+    <div className="hero-section" key="hero">
       <img key={heroImg} src={heroImg} alt={(city ? city.name : 'BagFree') + ' cityscape'} className="hero-bg-img" style={isLimited ? {objectFit:'contain',objectPosition:'center center',background:'rgb(7,16,31)'} : undefined}/>
       <div className="hero-overlay"></div>
       <div className="hero-content">
@@ -1790,7 +1794,10 @@ function Hero(props) {
           <div className="hero-city-tag"><span className="hero-city-dot"></span>{isLimited ? 'Concierge Availability' : (city ? city.name : 'Savannah')}</div>
           <h1 className="hero-title">{isLimited ? React.createElement(React.Fragment,null,'Bringing BagFree',React.createElement('br'),React.createElement('em',{className:'hero-title-gold'},'To '+city.name)) : React.createElement(React.Fragment,null,'Travel Without',React.createElement('br'),React.createElement('em',{className:'hero-title-gold'},'The Baggage'))}</h1>
           <p className="hero-subtitle">{isLimited ? 'Travel essentials, clothing rentals, and Second Journey\u2122 services may be available with '+(city.deliveryLabel||'7-day advance')+' notice.' : 'Everything you need, delivered before you arrive. So you can travel lighter, experience more, and leave less behind.'}</p>
-          <a href={isLimited ? '/expansion-map.html' : '/plan-my-trip.html'} className="hero-cta">{isLimited ? 'Request Concierge Service \u2192' : 'Plan My Trip \u2192'}</a>
+          {isLimited
+            ? React.createElement('button',{className:'hero-cta',onClick:function(){setShowModal(true);setSubmitted(false);}},'Request Concierge Service \u2192')
+            : React.createElement('a',{href:'/plan-my-trip.html',className:'hero-cta'},'Plan My Trip \u2192')
+          }
         </div>
         <div className="hero-features">
           {features.map(function(f,i){
@@ -1803,7 +1810,42 @@ function Hero(props) {
           })}
         </div>
       </div>
-    </div>
+    </div>,
+    showModal && React.createElement('div',{className:'crm-overlay',onClick:function(e){if(e.target.className==='crm-overlay')setShowModal(false);}},
+      React.createElement('div',{className:'crm-modal'},
+        React.createElement('div',{className:'crm-head'},
+          React.createElement('div',null,
+            React.createElement('div',{className:'crm-title'},'Request Concierge Service'),
+            React.createElement('div',{className:'crm-sub'},city ? city.name + ' \u2014 ' + (city.deliveryLabel || '7-day advance') + ' notice' : '')
+          ),
+          React.createElement('button',{className:'crm-close',onClick:function(){setShowModal(false);},ariaLabel:'Close'},'\u2715')
+        ),
+        !submitted ? React.createElement('div',{className:'crm-body'},
+          React.createElement('div',{className:'crm-field crm-full'},React.createElement('label',null,'City'),React.createElement('input',{readOnly:true,value:city?city.name:''})),
+          React.createElement('div',{className:'crm-field'},React.createElement('label',null,'Full name'),React.createElement('input',{id:'crm-name',placeholder:'Your name'})),
+          React.createElement('div',{className:'crm-field'},React.createElement('label',null,'Phone'),React.createElement('input',{id:'crm-phone',placeholder:'+1 (000) 000-0000'})),
+          React.createElement('div',{className:'crm-field'},React.createElement('label',null,'Email'),React.createElement('input',{id:'crm-email',type:'email',placeholder:'you@email.com'})),
+          React.createElement('div',{className:'crm-field'},React.createElement('label',null,'Hotel name'),React.createElement('input',{id:'crm-hotel',placeholder:'Your hotel'})),
+          React.createElement('div',{className:'crm-field'},React.createElement('label',null,'Arrival date'),React.createElement('input',{id:'crm-arrive',type:'date'})),
+          React.createElement('div',{className:'crm-field'},React.createElement('label',null,'Departure date'),React.createElement('input',{id:'crm-depart',type:'date'})),
+          React.createElement('div',{className:'crm-field'},React.createElement('label',null,'Clothing size'),
+            React.createElement('select',{id:'crm-size'},['XS','S','M','L','XL','XXL'].map(function(s){return React.createElement('option',{key:s,value:s},s);}))),
+          React.createElement('div',{className:'crm-field crm-full'},React.createElement('label',null,'What do you need?'),React.createElement('textarea',{id:'crm-items',placeholder:'Describe items or services you\'d like arranged\u2026',rows:3})),
+          React.createElement('div',{className:'crm-note'},'BagFree Concierge will review your request and determine whether local fulfillment can be arranged. A response will be provided within 24 hours.'),
+          React.createElement('button',{className:'crm-submit',onClick:function(){
+            var d={city:city?city.name:'',full_name:document.getElementById('crm-name').value,phone:document.getElementById('crm-phone').value,email:document.getElementById('crm-email').value,hotel_name:document.getElementById('crm-hotel').value,arrival_date:document.getElementById('crm-arrive').value||null,departure_date:document.getElementById('crm-depart').value||null,clothing_size:document.getElementById('crm-size').value,requested_items:document.getElementById('crm-items').value,status:'pending',created_at:new Date().toISOString()};
+            if(!d.email||!d.full_name){alert('Please provide your name and email.');return;}
+            fetch('https://vkctidpaghpdlmleezvq.supabase.co/rest/v1/concierge_requests',{method:'POST',headers:{'Content-Type':'application/json','apikey':'eyJhbGciOiJIUzI1NiIsInR5cCI6IkpXVCJ9.eyJpc3MiOiJzdXBhYmFzZSIsInJlZiI6InZrY3RpZHBhZ2hwZGxtbGVlenZxIiwicm9sZSI6ImFub24iLCJpYXQiOjE3NzUzMjI5MjgsImV4cCI6MjA5MDg5ODkyOH0.wKtG6XD6CwLy3rJDZc4S10-NqNr3fcCXHYOWJt_C628','Authorization':'Bearer eyJhbGciOiJIUzI1NiIsInR5cCI6IkpXVCJ9.eyJpc3MiOiJzdXBhYmFzZSIsInJlZiI6InZrY3RpZHBhZ2hwZGxtbGVlenZxIiwicm9sZSI6ImFub24iLCJpYXQiOjE3NzUzMjI5MjgsImV4cCI6MjA5MDg5ODkyOH0.wKtG6XD6CwLy3rJDZc4S10-NqNr3fcCXHYOWJt_C628','Prefer':'return=minimal'},body:JSON.stringify(d)}).catch(function(){});
+            setSubmitted(true);
+          }},'Submit Request')
+        ) : React.createElement('div',{className:'crm-success'},
+          React.createElement('div',{className:'crm-check'},'\u2713'),
+          React.createElement('p',null,'Thank you for your interest in BagFree ',city?city.name:'','. Our concierge team will review your request and confirm availability within 24 hours.'),
+          React.createElement('button',{className:'crm-submit',onClick:function(){setShowModal(false);}},'Close')
+        )
+      )
+    )
+    ]
   );
 }
 
