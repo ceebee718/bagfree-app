@@ -1417,6 +1417,7 @@ function TopBar(props) {
           </div>
           {props.city.temp ? <div className="meta-item"><Icon.Sun/> {props.city.temp}</div> : null}
         </div>
+        <MapStrip/>
         <SearchBar city={props.city} onSearch={props.onSearch} onItemClick={props.onItemClick} onClearResults={props.onClearResults}/>
       </div>
       <div className="topbar-right">
@@ -2872,7 +2873,6 @@ function App() {
           <ResultDetail item={viewing} onBack={closeDetail} onItemClick={openItem}/>
         ) : search.results === null ? (
           <React.Fragment>
-            <MapStrip/>
             <Hero city={city}/>
             <HowItWorks/>
             <AccessCards/>
