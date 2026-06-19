@@ -1759,32 +1759,55 @@ function MeetLocalExperts() {
 }
 
 function MapStrip() {
-  var dots = [
-    {x:235,y:175,d:'days7'},{x:345,y:275,d:'days7'},{x:430,y:290,d:'days7'},
-    {x:245,y:345,d:'days7'},{x:260,y:365,d:'days7'},{x:330,y:365,d:'days7'},
-    {x:555,y:370,d:'days7'},{x:570,y:405,d:'days7'},{x:685,y:310,d:'days7'},
-    {x:650,y:250,d:'days7'},{x:730,y:285,d:'days7'},
-    {x:720,y:340,d:'days3'},{x:785,y:345,d:'days7'},{x:775,y:360,d:'sameday'},
-    {x:740,y:425,d:'sameday'},{x:755,y:415,d:'days3'},{x:775,y:460,d:'days3'},
-    {x:835,y:265,d:'days3'},{x:810,y:290,d:'days3'}
+  var svgRef = React.useRef(null);
+  var [loaded, setLoaded] = React.useState(false);
+  var CITIES = [
+    {x:0,y:0,lng:-81.0998,lat:32.0835,d:'sameday'},{x:0,y:0,lng:-84.388,lat:33.749,d:'days3'},
+    {x:0,y:0,lng:-82.4572,lat:27.9506,d:'sameday'},{x:0,y:0,lng:-81.3792,lat:28.5383,d:'days3'},
+    {x:0,y:0,lng:-80.1918,lat:25.7617,d:'days3'},{x:0,y:0,lng:-79.9311,lat:32.7765,d:'days7'},
+    {x:0,y:0,lng:-86.7816,lat:36.1627,d:'days7'},{x:0,y:0,lng:-117.1611,lat:32.7157,d:'days7'},
+    {x:0,y:0,lng:-118.408,lat:33.9425,d:'days7'},{x:0,y:0,lng:-122.3321,lat:47.6062,d:'days7'},
+    {x:0,y:0,lng:-104.9903,lat:39.7392,d:'days7'},{x:0,y:0,lng:-112.074,lat:33.4484,d:'days7'},
+    {x:0,y:0,lng:-111.891,lat:40.7608,d:'days7'},{x:0,y:0,lng:-95.3698,lat:29.7604,d:'days7'},
+    {x:0,y:0,lng:-96.797,lat:32.7767,d:'days7'},{x:0,y:0,lng:-87.6298,lat:41.8781,d:'days7'},
+    {x:0,y:0,lng:-82.9988,lat:39.9612,d:'days7'},{x:0,y:0,lng:-74.006,lat:40.7128,d:'days3'},
+    {x:0,y:0,lng:-77.0369,lat:38.9072,d:'days3'}
   ];
-  var routes = [[775,360,720,340],[720,340,740,425],[740,425,755,415]];
-  var DC = {sameday:'rgb(77,216,138)',days3:'rgb(232,192,106)',days7:'rgb(168,180,204)'};
+  var ROUTES = [[0,2],[0,1],[2,3]];
+  var DC = {sameday:'rgb(77,216,138)',days3:'rgb(232,192,106)',days7:'rgba(168,180,204,0.7)'};
+
+  React.useEffect(function(){
+    if(typeof d3==='undefined'||typeof topojson==='undefined'||!svgRef.current) return;
+    var svg = d3.select(svgRef.current);
+    var proj = d3.geoAlbersUsa().scale(1300).translate([487.5,305]);
+    var pathFn = d3.geoPath().projection(proj);
+    d3.json('https://cdn.jsdelivr.net/npm/us-atlas@3/states-10m.json').then(function(us){
+      svg.selectAll('*').remove();
+      var states = topojson.feature(us, us.objects.states).features;
+      svg.append('g').selectAll('path').data(states).join('path')
+        .attr('d',pathFn).attr('fill','rgba(255,255,255,0.04)').attr('stroke','rgba(201,169,110,0.1)').attr('stroke-width',0.5);
+      ROUTES.forEach(function(pair){
+        var a=CITIES[pair[0]], b=CITIES[pair[1]];
+        var pa=proj([a.lng,a.lat]), pb=proj([b.lng,b.lat]);
+        if(pa&&pb) svg.append('line').attr('x1',pa[0]).attr('y1',pa[1]).attr('x2',pb[0]).attr('y2',pb[1])
+          .attr('stroke','rgba(201,169,110,0.25)').attr('stroke-width',1.2).attr('stroke-dasharray','5 5');
+      });
+      CITIES.forEach(function(c){
+        var pt=proj([c.lng,c.lat]); if(!pt) return;
+        var r=c.d==='sameday'?6:c.d==='days3'?5:3;
+        if(c.d==='sameday'){
+          svg.append('circle').attr('cx',pt[0]).attr('cy',pt[1]).attr('r',10).attr('fill','none')
+            .attr('stroke','rgba(77,216,138,0.35)').attr('stroke-width',1).style('animation','msPulse 2.8s ease-out infinite')
+            .style('transform-origin',pt[0]+'px '+pt[1]+'px');
+        }
+        svg.append('circle').attr('cx',pt[0]).attr('cy',pt[1]).attr('r',r).attr('fill',DC[c.d]);
+      });
+      setLoaded(true);
+    }).catch(function(){});
+  },[]);
+
   return React.createElement('div',{className:'map-strip'},
-    React.createElement('svg',{viewBox:'0 160 975 320',preserveAspectRatio:'xMidYMid slice',className:'map-strip-svg','aria-hidden':'true'},
-      routes.map(function(r,i){
-        return React.createElement('line',{key:'r'+i,x1:r[0],y1:r[1],x2:r[2],y2:r[3],
-          stroke:'rgba(201,169,110,0.25)',strokeWidth:1.5,strokeDasharray:'5 5'});
-      }),
-      dots.map(function(d,i){
-        var r = d.d==='sameday'?6:d.d==='days3'?5:3.5;
-        return React.createElement('g',{key:i},
-          d.d==='sameday'&&React.createElement('circle',{cx:d.x,cy:d.y,r:11,fill:'none',
-            stroke:'rgba(77,216,138,0.4)',strokeWidth:1.2,className:'ms-pulse'}),
-          React.createElement('circle',{cx:d.x,cy:d.y,r:r,fill:DC[d.d],opacity:0.9})
-        );
-      })
-    )
+    React.createElement('svg',{ref:svgRef,viewBox:'0 140 975 340',preserveAspectRatio:'xMidYMid slice',className:'map-strip-svg','aria-hidden':'true'})
   );
 }
 
