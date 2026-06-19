@@ -218,7 +218,7 @@
 (function(){
   var CITIES = [
     {id:'savannah',  name:'Savannah, GA',       type:'active',    delivery:'sameday', dir:'r', lat:32.0835,  lng:-81.0998, services:['Clothing Rentals','Travel Essentials','Experiences','Curators','Rewards','Second Journey']},
-    {id:'atlanta',   name:'Atlanta, GA',        type:'active',    delivery:'days7',   dir:'l', lat:33.749,   lng:-84.388,  services:['Clothing Rentals','Travel Essentials','Experiences','Curators','Rewards','Second Journey']},
+    {id:'atlanta',   name:'Atlanta, GA',        type:'active',    delivery:'days3',   dir:'l', lat:33.749,   lng:-84.388,  services:['Clothing Rentals','Travel Essentials','Experiences','Curators','Rewards','Second Journey']},
     {id:'tampa',     name:'Tampa, FL',          type:'active',    delivery:'sameday', dir:'l', lat:27.9506,  lng:-82.4572, services:['Clothing Rentals','Travel Essentials','Experiences','Curators','Rewards','Second Journey']},
     {id:'orlando',   name:'Orlando, FL',        type:'active',    delivery:'days3',   dir:'r', lat:28.5383,  lng:-81.3792, services:['Clothing Rentals','Travel Essentials','Experiences','Curators','Rewards','Second Journey']},
     {id:'miami',     name:'Miami, FL',          type:'soon',      delivery:'days3',   dir:'r', lat:25.7617,  lng:-80.1918, launch:'2026'},
@@ -289,6 +289,38 @@
       g.on('mouseenter', function(){ if(hideTimer)clearTimeout(hideTimer); showTip(city, pt); });
       g.on('mouseleave', function(){ hideTimer = setTimeout(function(){ if(!tooltip.matches(':hover')) tooltip.classList.remove('show'); }, 150); });
     });
+
+    // ── Magnifier lens ──
+    var ZOOM = 3, MSIZE = 200;
+    var magLens = document.createElement('div');
+    magLens.style.cssText = 'position:absolute;width:'+MSIZE+'px;height:'+MSIZE+'px;border:1.5px solid rgba(201,169,110,0.45);border-radius:4px;overflow:hidden;pointer-events:none;display:none;z-index:35;box-shadow:0 10px 28px rgba(0,0,0,0.35);background:rgba(7,27,58,0.97)';
+    mapArea.appendChild(magLens);
+    var magClone = null;
+    var svgEl = document.getElementById('em-map');
+    svgEl.addEventListener('mouseenter', function(){
+      if(magClone&&magClone.parentElement) magClone.parentElement.removeChild(magClone);
+      magClone = svgEl.cloneNode(true);
+      magClone.removeAttribute('id');
+      magClone.style.cssText = 'position:absolute;pointer-events:none';
+      var r = svgEl.getBoundingClientRect();
+      magClone.style.width = (r.width*ZOOM)+'px';
+      magClone.style.height = (r.height*ZOOM)+'px';
+      magLens.appendChild(magClone);
+      magLens.style.display = 'block';
+    });
+    svgEl.addEventListener('mousemove', function(e){
+      var r = svgEl.getBoundingClientRect();
+      var mx = e.clientX-r.left, my = e.clientY-r.top;
+      var lx = mx+24, ly = my-MSIZE/2;
+      if(lx+MSIZE+10>mapArea.clientWidth) lx = mx-MSIZE-24;
+      if(ly<0) ly = 5;
+      if(ly+MSIZE>mapArea.clientHeight) ly = mapArea.clientHeight-MSIZE-5;
+      magLens.style.left = lx+'px';
+      magLens.style.top = ly+'px';
+      if(magClone){ magClone.style.left = -(mx*ZOOM)+MSIZE/2+'px'; magClone.style.top = -(my*ZOOM)+MSIZE/2+'px'; }
+    });
+    svgEl.addEventListener('mouseleave', function(){ magLens.style.display = 'none'; });
+
   }).catch(function(){
     svg.append('text').attr('x',487).attr('y',305).attr('text-anchor','middle')
       .attr('fill','rgba(232,224,208,0.3)').attr('font-size','15').text('Map unavailable — check your connection');
