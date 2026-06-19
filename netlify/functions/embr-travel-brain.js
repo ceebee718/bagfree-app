@@ -112,11 +112,17 @@ exports.handler = async function(event) {
       ''
     ).trim();
 
+    const finalText = text || 'I had trouble generating your itinerary. Please try again.';
+
     return {
       statusCode: 200,
       headers,
       body: JSON.stringify({
-        text: text || 'I had trouble generating your itinerary. Please try again.',
+        ok: true,
+        text: finalText,
+        reply: finalText,
+        message: finalText,
+        content: finalText,
         source: 'embr'
       })
     };
