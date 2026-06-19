@@ -1768,8 +1768,14 @@ var HERO_IMAGES = {
 
 function Hero(props) {
   var city = props.city;
-  var heroImg = HERO_IMAGES[city && city.id] || '/savannah-banner.png';
-  var features = [
+  var isLimited = city && city.limited;
+  var heroImg = isLimited ? '/hero-concierge.png' : (HERO_IMAGES[city && city.id] || '/savannah-banner.png');
+  var features = isLimited ? [
+    { icon:React.createElement('svg',{width:14,height:14,viewBox:'0 0 24 24',fill:'none',stroke:'currentColor',strokeWidth:1.8},React.createElement('path',{d:'M12 2a2 2 0 012 2 2 2 0 01-2 2 2 2 0 01-2-2 2 2 0 012-2z'}),React.createElement('path',{d:'M12 6L2 12.5a1.5 1.5 0 001.6 2.54L12 10l8.4 5.04a1.5 1.5 0 001.6-2.54L12 6z'})), label:'Clothing Rentals' },
+    { icon:React.createElement('svg',{width:14,height:14,viewBox:'0 0 24 24',fill:'none',stroke:'currentColor',strokeWidth:1.8},React.createElement('path',{d:'M11 20A7 7 0 014 13c0-3.5 1.7-6.6 4.3-8.5'}),React.createElement('path',{d:'M12 2a10 10 0 11-9.2 13.8'})), label:'Second Journey\u2122' },
+    { icon:React.createElement('svg',{width:14,height:14,viewBox:'0 0 24 24',fill:'none',stroke:'currentColor',strokeWidth:1.8},React.createElement('path',{d:'M10 3h4v2.5l1 2v12a1.5 1.5 0 01-1.5 1.5h-3A1.5 1.5 0 019 19.5v-12l1-2z'}),React.createElement('path',{d:'M9 11h6'})), label:'Travel Essentials' },
+    { icon:React.createElement('svg',{width:14,height:14,viewBox:'0 0 24 24',fill:'none',stroke:'currentColor',strokeWidth:1.8},React.createElement('circle',{cx:12,cy:12,r:9}),React.createElement('path',{d:'M12 7v5l3 3'})), label:'7-Day Advance' },
+  ] : [
     { icon:React.createElement('svg',{width:14,height:14,viewBox:'0 0 24 24',fill:'none',stroke:'currentColor',strokeWidth:1.8},React.createElement('rect',{x:2,y:7,width:20,height:14,rx:2}),React.createElement('path',{d:'M16 7V5a2 2 0 00-2-2h-4a2 2 0 00-2 2v2'})), label:'Skip Baggage Fees' },
     { icon:React.createElement('svg',{width:14,height:14,viewBox:'0 0 24 24',fill:'none',stroke:'currentColor',strokeWidth:1.8},React.createElement('path',{d:'M5 17H3a2 2 0 01-2-2V5a2 2 0 012-2h11a2 2 0 012 2v3'}),React.createElement('rect',{x:9,y:11,width:14,height:10,rx:1})), label:'Travel Lighter' },
     { icon:React.createElement('svg',{width:14,height:14,viewBox:'0 0 24 24',fill:'none',stroke:'currentColor',strokeWidth:1.8},React.createElement('path',{d:'M17 21v-2a4 4 0 00-4-4H5a4 4 0 00-4 4v2'}),React.createElement('circle',{cx:9,cy:7,r:4}),React.createElement('path',{d:'M23 21v-2a4 4 0 00-3-3.87M16 3.13a4 4 0 010 7.75'})), label:'Local Expertise' },
@@ -1781,10 +1787,10 @@ function Hero(props) {
       <div className="hero-overlay"></div>
       <div className="hero-content">
         <div className="hero-text">
-          <div className="hero-city-tag"><span className="hero-city-dot"></span>{city ? city.name : 'Savannah'}</div>
-          <h1 className="hero-title">Travel Without<br/><em className="hero-title-gold">The Baggage</em></h1>
-          <p className="hero-subtitle">Everything you need, delivered before you arrive. So you can travel lighter, experience more, and leave less behind.</p>
-          <a href="/plan-my-trip.html" className="hero-cta">Plan My Trip →</a>
+          <div className="hero-city-tag"><span className="hero-city-dot"></span>{isLimited ? 'Concierge Availability' : (city ? city.name : 'Savannah')}</div>
+          <h1 className="hero-title">{isLimited ? React.createElement(React.Fragment,null,'Bringing BagFree',React.createElement('br'),React.createElement('em',{className:'hero-title-gold'},'To '+city.name)) : React.createElement(React.Fragment,null,'Travel Without',React.createElement('br'),React.createElement('em',{className:'hero-title-gold'},'The Baggage'))}</h1>
+          <p className="hero-subtitle">{isLimited ? 'Travel essentials, clothing rentals, and Second Journey\u2122 services may be available with '+(city.deliveryLabel||'7-day advance')+' notice.' : 'Everything you need, delivered before you arrive. So you can travel lighter, experience more, and leave less behind.'}</p>
+          <a href={isLimited ? '/expansion-map.html' : '/plan-my-trip.html'} className="hero-cta">{isLimited ? 'Request Concierge Service \u2192' : 'Plan My Trip \u2192'}</a>
         </div>
         <div className="hero-features">
           {features.map(function(f,i){
