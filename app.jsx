@@ -1807,7 +1807,7 @@ function MapStrip() {
   },[]);
 
   return React.createElement('div',{className:'map-strip'},
-    React.createElement('svg',{ref:svgRef,viewBox:'0 140 975 340',preserveAspectRatio:'xMidYMid slice',className:'map-strip-svg','aria-hidden':'true'})
+    React.createElement('svg',{ref:svgRef,viewBox:'0 0 975 610',preserveAspectRatio:'xMidYMid meet',className:'map-strip-svg','aria-hidden':'true'})
   );
 }
 
