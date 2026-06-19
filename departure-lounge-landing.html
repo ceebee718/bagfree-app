@@ -1038,6 +1038,27 @@ input,select,textarea{outline:none}
 
 .sj-bp-delivery-tier{font-size:0.78rem;color:#5DCAA5;margin-top:0.35rem;line-height:1.4;display:flex;align-items:flex-start;gap:0.35rem}
 .sj-expedited{color:rgba(93,202,165,0.65);white-space:nowrap}
+/* ── City Selector Modal ── */
+.csm-overlay{position:fixed;inset:0;background:rgba(5,12,28,0.82);z-index:500;display:flex;align-items:center;justify-content:center;opacity:0;pointer-events:none;transition:opacity 0.25s;padding:1.5rem}
+.csm-overlay.open{opacity:1;pointer-events:all}
+.csm-modal{background:var(--noir-2);border:1px solid var(--border);border-radius:14px;width:100%;max-width:520px;max-height:85vh;overflow-y:auto}
+.csm-head{padding:1.3rem 1.5rem 1rem;border-bottom:1px solid var(--border);display:flex;justify-content:space-between;align-items:center;position:sticky;top:0;background:var(--noir-2);z-index:1}
+.csm-title{font-family:var(--ff-display);font-size:1.3rem;color:var(--gold)}
+.csm-close{cursor:pointer;color:var(--mist);font-size:1.3rem;background:none;border:none;padding:0;line-height:1}
+.csm-close:hover{color:var(--gold)}
+.csm-body{padding:0.8rem 1rem 1.2rem}
+.csm-tier{margin-bottom:1rem}
+.csm-tier-label{font-size:0.58rem;letter-spacing:2.5px;text-transform:uppercase;font-weight:600;padding:0.4rem 0.5rem;display:flex;align-items:center;gap:0.5rem}
+.csm-tier-label .csm-dot{width:8px;height:8px;border-radius:50%;flex-shrink:0}
+.csm-tier-label.sameday{color:rgb(77,216,138)} .csm-tier-label.sameday .csm-dot{background:rgb(77,216,138)}
+.csm-tier-label.days3{color:rgb(232,192,106)} .csm-tier-label.days3 .csm-dot{background:rgb(232,192,106)}
+.csm-tier-label.days7{color:rgb(168,180,204)} .csm-tier-label.days7 .csm-dot{background:rgb(168,180,204)}
+.csm-city{display:flex;align-items:center;justify-content:space-between;width:100%;padding:0.65rem 0.8rem;border:none;background:rgba(var(--gold-rgb),0.04);border-radius:8px;color:rgba(var(--text-rgb),0.85);font-size:0.88rem;font-family:inherit;cursor:pointer;transition:all 0.15s;margin-bottom:0.35rem}
+.csm-city:hover{background:rgba(var(--gold-rgb),0.1);color:var(--gold)}
+.csm-city-name{font-weight:500}
+.csm-city-region{font-size:0.72rem;color:var(--mist);margin-left:0.5rem;font-weight:300}
+.csm-city-arrow{color:rgba(var(--gold-rgb),0.4);font-size:0.8rem;transition:transform 0.15s}
+.csm-city:hover .csm-city-arrow{transform:translateX(3px);color:var(--gold)}
 </style>
 </head>
 <body>
@@ -1104,7 +1125,7 @@ input,select,textarea{outline:none}
       <button class="city-tile" onclick="pickCity('Miami')"><div class="city-name">Miami</div><div class="city-tag">Next-Day · FL</div></button>
       <button class="city-tile" onclick="pickCity('Savannah')"><div class="city-name">Savannah</div><div class="city-tag">Same-Day · GA</div></button>
       <button class="city-tile" onclick="pickCity('Atlanta')"><div class="city-name">Atlanta</div><div class="city-tag">Same-Day · GA</div></button>
-      <button class="city-tile other" onclick="pickCity('OTHER')"><div class="city-name">Somewhere else</div><div class="city-tag">Join the waitlist</div></button>
+      <button class="city-tile other" onclick="openCityModal()"><div class="city-name">Somewhere else</div><div class="city-tag">Select city</div></button>
     </div>
     <div class="step-nav"><button class="btn-back" onclick="goToStep(0)">← Back</button></div>
   </div>
@@ -1833,13 +1854,16 @@ function updateProgress(n) {
 
 // ─── CITY / DATES ───
 function pickCity(city) {
-  if (city === 'OTHER') { goToStep('W'); return; }
   state.city = city;
-  const tomorrow = new Date(); tomorrow.setDate(tomorrow.getDate() + 1);
-  const fiveDays = new Date(tomorrow); fiveDays.setDate(fiveDays.getDate() + 5);
-  document.getElementById('dateArrive').value = tomorrow.toISOString().split('T')[0];
-  document.getElementById('dateDepart').value = fiveDays.toISOString().split('T')[0];
-  document.getElementById('dateArrive').min = tomorrow.toISOString().split('T')[0];
+  var netCity = ALL_NETWORK_CITIES ? ALL_NETWORK_CITIES.find(function(c){ return c.name === city; }) : null;
+  var minDays = 1;
+  if(netCity && netCity.delivery === 'days3') minDays = 3;
+  if(netCity && netCity.delivery === 'days7') minDays = 7;
+  var arrive = new Date(); arrive.setDate(arrive.getDate() + minDays);
+  var depart = new Date(arrive); depart.setDate(depart.getDate() + 5);
+  document.getElementById('dateArrive').value = arrive.toISOString().split('T')[0];
+  document.getElementById('dateDepart').value = depart.toISOString().split('T')[0];
+  document.getElementById('dateArrive').min = arrive.toISOString().split('T')[0];
   updateDates();
   populateHotels();
   goToStep(2);
@@ -2976,5 +3000,74 @@ updateProgress(0);
 
 
 <script src="/bagfree-nav.js" defer></script>
+<!-- City Selector Modal -->
+<div class="csm-overlay" id="csmOverlay" onclick="if(event.target===this)closeCityModal()">
+  <div class="csm-modal">
+    <div class="csm-head">
+      <div class="csm-title">Select your city</div>
+      <button class="csm-close" onclick="closeCityModal()" aria-label="Close">&#x2715;</button>
+    </div>
+    <div class="csm-body" id="csmBody"></div>
+  </div>
+</div>
+<script>
+var ALL_NETWORK_CITIES = [
+  {name:'Savannah',      region:'GA', delivery:'sameday', label:'Same day · 4 hrs'},
+  {name:'Tampa',         region:'FL', delivery:'sameday', label:'Same day · 4 hrs'},
+  {name:'Orlando',       region:'FL', delivery:'days3',   label:'Under 3 days'},
+  {name:'Miami',         region:'FL', delivery:'days3',   label:'Under 3 days'},
+  {name:'Atlanta',       region:'GA', delivery:'days7',   label:'7-day advance'},
+  {name:'Nashville',     region:'TN', delivery:'days7',   label:'7-day advance'},
+  {name:'Charleston',    region:'SC', delivery:'days7',   label:'7-day advance'},
+  {name:'Chicago',       region:'IL', delivery:'days7',   label:'7-day advance'},
+  {name:'Dallas',        region:'TX', delivery:'days7',   label:'7-day advance'},
+  {name:'Houston',       region:'TX', delivery:'days7',   label:'7-day advance'},
+  {name:'Denver',        region:'CO', delivery:'days7',   label:'7-day advance'},
+  {name:'Phoenix',       region:'AZ', delivery:'days7',   label:'7-day advance'},
+  {name:'Los Angeles',   region:'CA', delivery:'days7',   label:'7-day advance'},
+  {name:'San Diego',     region:'CA', delivery:'days7',   label:'7-day advance'},
+  {name:'Seattle',       region:'WA', delivery:'days7',   label:'7-day advance'},
+  {name:'Salt Lake City',region:'UT', delivery:'days7',   label:'7-day advance'},
+  {name:'Columbus',      region:'OH', delivery:'days7',   label:'7-day advance'},
+  {name:'New York',      region:'NY', delivery:'days7',   label:'7-day advance'},
+  {name:'Washington',    region:'DC', delivery:'days7',   label:'7-day advance'},
+];
+
+function buildCityModal(){
+  var body = document.getElementById('csmBody');
+  if(body.children.length) return;
+  var tiers = [
+    {key:'sameday', label:'Same-day delivery', cls:'sameday'},
+    {key:'days3',   label:'Under 3 days',      cls:'days3'},
+    {key:'days7',   label:'7-day advance notice', cls:'days7'}
+  ];
+  tiers.forEach(function(tier){
+    var cities = ALL_NETWORK_CITIES.filter(function(c){ return c.delivery === tier.key; });
+    if(!cities.length) return;
+    var section = document.createElement('div');
+    section.className = 'csm-tier';
+    section.innerHTML = '<div class="csm-tier-label ' + tier.cls + '"><span class="csm-dot"></span>' + tier.label + '</div>';
+    cities.forEach(function(c){
+      var btn = document.createElement('button');
+      btn.className = 'csm-city';
+      btn.innerHTML = '<span><span class="csm-city-name">' + c.name + '</span><span class="csm-city-region">' + c.region + '</span></span><span class="csm-city-arrow">›</span>';
+      btn.onclick = function(){
+        closeCityModal();
+        pickCity(c.name);
+      };
+      section.appendChild(btn);
+    });
+    body.appendChild(section);
+  });
+}
+
+function openCityModal(){
+  buildCityModal();
+  document.getElementById('csmOverlay').classList.add('open');
+}
+function closeCityModal(){
+  document.getElementById('csmOverlay').classList.remove('open');
+}
+</script>
 </body>
 </html>
