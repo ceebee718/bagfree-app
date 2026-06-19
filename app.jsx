@@ -1845,8 +1845,7 @@ function Hero(props) {
         )
       )
     )
-    ]
-  );
+    ];
 }
 
 function AccessCards() {
