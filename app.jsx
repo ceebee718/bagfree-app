@@ -90,16 +90,30 @@ function relativeTime(iso){
 }
 
 const CITIES = [
-  { id:'savannah', name:'Savannah', region:'Georgia', temp:'72°F', hotel:'The Alida',
+  { id:'savannah', name:'Savannah', region:'Georgia', delivery:'sameday', deliveryLabel:'Same day', temp:'72°F', hotel:'The Alida',
     curator:{ name:'Jasmine L.', role:'Savannah Insider', rating:'4.9', reviews:'128', avatar:'https://images.unsplash.com/photo-1494790108377-be9c29b29330?w=120&h=120&fit=crop&crop=faces' } },
-  { id:'atlanta', name:'Atlanta', region:'Georgia', temp:'68°F', hotel:'Hotel Clermont',
+  { id:'atlanta', name:'Atlanta', region:'Georgia', delivery:'days7', deliveryLabel:'7-day advance', temp:'68°F', hotel:'Hotel Clermont',
     curator:{ name:'Marcus D.', role:'Atlanta Insider', rating:'4.8', reviews:'94', avatar:'https://images.unsplash.com/photo-1507003211169-0a1dd7228f2d?w=120&h=120&fit=crop&crop=faces' } },
-  { id:'tampa', name:'Tampa', region:'Florida', temp:'81°F', hotel:'Tampa EDITION',
+  { id:'tampa', name:'Tampa', region:'Florida', delivery:'sameday', deliveryLabel:'Same day', temp:'81°F', hotel:'Tampa EDITION',
     curator:{ name:'Sofia R.', role:'Tampa Insider', rating:'4.9', reviews:'112', avatar:'https://images.unsplash.com/photo-1438761681033-6461ffad8d80?w=120&h=120&fit=crop&crop=faces' } },
-  { id:'orlando', name:'Orlando', region:'Florida', temp:'79°F', hotel:'Waldorf Astoria',
+  { id:'orlando', name:'Orlando', region:'Florida', delivery:'days3', deliveryLabel:'Under 3 days', temp:'79°F', hotel:'Waldorf Astoria',
     curator:{ name:'Elena V.', role:'Orlando Insider', rating:'4.8', reviews:'87', avatar:'https://images.unsplash.com/photo-1573496359142-b8d87734a5a2?w=120&h=120&fit=crop&crop=faces' } },
-  { id:'miami', name:'Miami', region:'Florida', temp:'84°F', tag:'Next-day', hotel:'Faena Hotel',
+  { id:'miami', name:'Miami', region:'Florida', delivery:'days3', deliveryLabel:'Under 3 days', temp:'84°F', hotel:'Faena Hotel',
     curator:{ name:'Camila P.', role:'Miami Insider', rating:'5.0', reviews:'63', avatar:'https://images.unsplash.com/photo-1580489944761-15a19d654956?w=120&h=120&fit=crop&crop=faces' } },
+  { id:'nashville', name:'Nashville', region:'Tennessee', delivery:'days7', deliveryLabel:'7-day advance', limited:true },
+  { id:'charleston', name:'Charleston', region:'South Carolina', delivery:'days7', deliveryLabel:'7-day advance', limited:true },
+  { id:'chicago', name:'Chicago', region:'Illinois', delivery:'days7', deliveryLabel:'7-day advance', limited:true },
+  { id:'dallas', name:'Dallas', region:'Texas', delivery:'days7', deliveryLabel:'7-day advance', limited:true },
+  { id:'houston', name:'Houston', region:'Texas', delivery:'days7', deliveryLabel:'7-day advance', limited:true },
+  { id:'denver', name:'Denver', region:'Colorado', delivery:'days7', deliveryLabel:'7-day advance', limited:true },
+  { id:'phoenix', name:'Phoenix', region:'Arizona', delivery:'days7', deliveryLabel:'7-day advance', limited:true },
+  { id:'losangeles', name:'Los Angeles', region:'California', delivery:'days7', deliveryLabel:'7-day advance', limited:true },
+  { id:'sandiego', name:'San Diego', region:'California', delivery:'days7', deliveryLabel:'7-day advance', limited:true },
+  { id:'seattle', name:'Seattle', region:'Washington', delivery:'days7', deliveryLabel:'7-day advance', limited:true },
+  { id:'saltlake', name:'Salt Lake City', region:'Utah', delivery:'days7', deliveryLabel:'7-day advance', limited:true },
+  { id:'columbus', name:'Columbus', region:'Ohio', delivery:'days7', deliveryLabel:'7-day advance', limited:true },
+  { id:'newyork', name:'New York', region:'New York', delivery:'days7', deliveryLabel:'7-day advance', limited:true },
+  { id:'washington', name:'Washington', region:'D.C.', delivery:'days7', deliveryLabel:'7-day advance', limited:true },
   { id:'caribbean', name:'Caribbean', region:'Coming soon', soon:true }
 ];
 
@@ -747,17 +761,19 @@ function Sidebar(props) {
 }
 
 function CityMenu(props) {
+  var DCOLORS = {sameday:'rgb(77,216,138)', days3:'rgb(232,192,106)', days7:'rgb(168,180,204)'};
   return (
     <div className="city-menu" onClick={function(e){ e.stopPropagation(); }}>
       {CITIES.map(function(c){
         const isActive = c.id === props.city.id;
         const cls = 'city-menu-item' + (isActive ? ' active' : '') + (c.soon ? ' disabled' : '');
+        var nameColor = c.delivery ? DCOLORS[c.delivery] : 'rgba(253,252,248,0.5)';
         return (
           <button key={c.id} className={cls}
             onClick={function(){ if(!c.soon){ props.setCity(c); props.close(); } }}>
             <span>
-              {c.name}
-              <span className="city-region">{c.region}{c.tag ? ' · ' + c.tag : ''}</span>
+              <span style={{color: nameColor}}>{c.name}</span>
+              <span className="city-region">{c.region}{c.deliveryLabel ? ' · ' + c.deliveryLabel : ''}{c.limited ? ' · Limited' : ''}</span>
             </span>
             {c.soon
               ? <span className="soon">Soon</span>
