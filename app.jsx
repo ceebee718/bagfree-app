@@ -1824,27 +1824,30 @@ function NetworkSection(props) {
   ];
 
   var NET_CITIES = [
-    {id:'savannah',  name:'Savannah',       state:'GA', type:'active',    lat:32.0835,  lng:-81.0998},
-    {id:'atlanta',   name:'Atlanta',        state:'GA', type:'active',    lat:33.749,   lng:-84.388},
-    {id:'tampa',     name:'Tampa',          state:'FL', type:'active',    lat:27.9506,  lng:-82.4572},
-    {id:'orlando',   name:'Orlando',        state:'FL', type:'active',    lat:28.5383,  lng:-81.3792},
-    {id:'miami',     name:'Miami',          state:'FL', type:'soon',      lat:25.7617,  lng:-80.1918},
-    {id:'charleston',name:'Charleston',     state:'SC', type:'soon',      lat:32.7765,  lng:-79.9311},
-    {id:'nashville', name:'Nashville',      state:'TN', type:'soon',      lat:36.1627,  lng:-86.7816},
-    {id:'sandiego',  name:'San Diego',      state:'CA', type:'concierge', lat:32.7157,  lng:-117.1611},
-    {id:'seattle',   name:'Seattle',        state:'WA', type:'concierge', lat:47.6062,  lng:-122.3321},
-    {id:'denver',    name:'Denver',         state:'CO', type:'concierge', lat:39.7392,  lng:-104.9903},
-    {id:'phoenix',   name:'Phoenix',        state:'AZ', type:'concierge', lat:33.4484,  lng:-112.074},
-    {id:'losangeles',name:'Los Angeles',    state:'CA', type:'concierge', lat:33.9425,  lng:-118.408},
-    {id:'houston',   name:'Houston',        state:'TX', type:'concierge', lat:29.7604,  lng:-95.3698},
-    {id:'dallas',    name:'Dallas',         state:'TX', type:'concierge', lat:32.7767,  lng:-96.797},
-    {id:'chicago',   name:'Chicago',        state:'IL', type:'concierge', lat:41.8781,  lng:-87.6298},
-    {id:'saltlake',  name:'Salt Lake City', state:'UT', type:'concierge', lat:40.7608,  lng:-111.891},
-    {id:'columbus',  name:'Columbus',       state:'OH', type:'concierge', lat:39.9612,  lng:-82.9988},
+    {id:'savannah',  name:'Savannah',       state:'GA', type:'active',    delivery:'sameday', lat:32.0835,  lng:-81.0998},
+    {id:'atlanta',   name:'Atlanta',        state:'GA', type:'active',    delivery:'days7',   lat:33.749,   lng:-84.388},
+    {id:'tampa',     name:'Tampa',          state:'FL', type:'active',    delivery:'sameday', lat:27.9506,  lng:-82.4572},
+    {id:'orlando',   name:'Orlando',        state:'FL', type:'active',    delivery:'days3',   lat:28.5383,  lng:-81.3792},
+    {id:'miami',     name:'Miami',          state:'FL', type:'soon',      delivery:'days3',   lat:25.7617,  lng:-80.1918},
+    {id:'charleston',name:'Charleston',     state:'SC', type:'soon',      delivery:'days7',   lat:32.7765,  lng:-79.9311},
+    {id:'nashville', name:'Nashville',      state:'TN', type:'soon',      delivery:'days7',   lat:36.1627,  lng:-86.7816},
+    {id:'sandiego',  name:'San Diego',      state:'CA', type:'concierge', delivery:'days7',   lat:32.7157,  lng:-117.1611},
+    {id:'seattle',   name:'Seattle',        state:'WA', type:'concierge', delivery:'days7',   lat:47.6062,  lng:-122.3321},
+    {id:'denver',    name:'Denver',         state:'CO', type:'concierge', delivery:'days7',   lat:39.7392,  lng:-104.9903},
+    {id:'phoenix',   name:'Phoenix',        state:'AZ', type:'concierge', delivery:'days7',   lat:33.4484,  lng:-112.074},
+    {id:'losangeles',name:'Los Angeles',    state:'CA', type:'concierge', delivery:'days7',   lat:33.9425,  lng:-118.408},
+    {id:'houston',   name:'Houston',        state:'TX', type:'concierge', delivery:'days7',   lat:29.7604,  lng:-95.3698},
+    {id:'dallas',    name:'Dallas',         state:'TX', type:'concierge', delivery:'days7',   lat:32.7767,  lng:-96.797},
+    {id:'chicago',   name:'Chicago',        state:'IL', type:'concierge', delivery:'days7',   lat:41.8781,  lng:-87.6298},
+    {id:'saltlake',  name:'Salt Lake City', state:'UT', type:'concierge', delivery:'days7',   lat:40.7608,  lng:-111.891},
+    {id:'columbus',  name:'Columbus',       state:'OH', type:'concierge', delivery:'days7',   lat:39.9612,  lng:-82.9988},
+    {id:'newyork',   name:'New York',       state:'NY', type:'concierge', delivery:'days7',   lat:40.7128,  lng:-74.0060},
+    {id:'washington',name:'Washington',     state:'DC', type:'concierge', delivery:'days7',   lat:38.9072,  lng:-77.0369},
   ];
 
   var NET_ROUTES = [['savannah','atlanta'],['atlanta','tampa'],['tampa','orlando']];
-  var NET_COLOR = {active:'#3fae6a', soon:'#c9a96e', concierge:'rgba(26,26,46,0.35)'};
+  var NET_COLOR = {sameday:'#4dd88a', days3:'#e8c06a', days7:'#a8b4cc'};
+  var NET_DELIVERY_LABEL = {sameday:'Same-day · within 4 hrs', days3:'Under 3 days', days7:'7-day advance notice'};
 
   var [netTooltip, setNetTooltip] = React.useState(null);
   var [netTooltipPos, setNetTooltipPos] = React.useState({x:0,y:0});
@@ -1898,17 +1901,19 @@ function NetworkSection(props) {
     var MARKERS=NET_CITIES.map(function(city,ci){
       var pt=proj([city.lng,city.lat]); if(!pt) return null;
       var isActive=city.type==='active';
-      var isSoon=city.type==='soon';
-      var r=isActive?6.5:isSoon?5:4;
-      var fill=NET_COLOR[city.type];
+      var isSameday=city.delivery==='sameday';
+      var r=city.delivery==='sameday'?9:city.delivery==='days3'?8:7;
+      var fill=NET_COLOR[city.delivery];
       return React.createElement('g',{key:ci,style:{cursor:'pointer'},
         onMouseEnter:function(e){handleMarkerHover(e,city);},
         onMouseLeave:function(){setNetTooltip(null);},
         onClick:function(){if(isActive)selectCity(city.id);}
       },
-        isActive&&React.createElement('circle',{cx:pt[0],cy:pt[1],r:11,fill:'none',stroke:'#3fae6a',strokeWidth:1.4,
+        isSameday&&React.createElement('circle',{cx:pt[0],cy:pt[1],r:14,fill:'none',stroke:'#4dd88a',strokeWidth:1.4,
           style:{animation:'gnRingPulse 2.4s ease-out infinite',transformOrigin:pt[0]+'px '+pt[1]+'px'}}),
-        React.createElement('circle',{cx:pt[0],cy:pt[1],r:r,fill:fill,stroke:'rgba(248,246,240,0.7)',strokeWidth:1})
+        React.createElement('circle',{cx:pt[0],cy:pt[1],r:r,fill:fill,stroke:'rgba(248,246,240,0.8)',strokeWidth:1.5}),
+        React.createElement('text',{x:pt[0],y:pt[1]-r-5,textAnchor:'middle',fontSize:10.5,fontWeight:600,fill:'#1a1a2e',letterSpacing:'0.5',
+          style:{paintOrder:'stroke',stroke:'#f8f6f0',strokeWidth:'3.5px',strokeLinejoin:'round',pointerEvents:'none'}},city.name)
       );
     });
     return React.createElement('div',{style:{position:'relative',width:'100%'}},
@@ -1929,8 +1934,8 @@ function NetworkSection(props) {
       }},
         React.createElement('div',{style:{fontFamily:'Cormorant Garamond,Georgia,serif',fontSize:'0.95rem',color:'#e8e0d0',fontWeight:500}},netTooltip.name+', '+netTooltip.state),
         React.createElement('div',{style:{fontSize:'0.62rem',letterSpacing:'1.5px',textTransform:'uppercase',marginTop:'0.2rem',
-          color:netTooltip.type==='active'?'#3fae6a':netTooltip.type==='soon'?'#c9a96e':'rgba(232,224,208,0.45)',fontWeight:600}},
-          netTooltip.type==='active'?'Active':netTooltip.type==='soon'?'Launching 2026':'Concierge availability'
+          color:netTooltip.delivery==='sameday'?'#c9a96e':netTooltip.delivery==='days3'?'#5DCAA5':'rgba(232,224,208,0.5)',fontWeight:600}},
+          NET_DELIVERY_LABEL[netTooltip.delivery]
         )
       )
     );
@@ -1953,13 +1958,13 @@ function NetworkSection(props) {
         </div>
         <div style={{display:'flex',alignItems:'center',gap:'0.6rem',marginBottom:'0.75rem',flexWrap:'wrap'}}>
           <span style={{display:'flex',alignItems:'center',gap:'0.3rem',fontSize:'0.6rem',letterSpacing:'1.5px',textTransform:'uppercase',color:'rgba(26,26,46,0.45)'}}>
-            <span style={{width:8,height:8,borderRadius:'50%',background:'#3fae6a',display:'inline-block',flexShrink:0}}></span>Active
+            <span style={{width:9,height:9,borderRadius:'50%',background:''#4dd88a',display:'inline-block',flexShrink:0}}></span>Same day
           </span>
           <span style={{display:'flex',alignItems:'center',gap:'0.3rem',fontSize:'0.6rem',letterSpacing:'1.5px',textTransform:'uppercase',color:'rgba(26,26,46,0.45)'}}>
-            <span style={{width:8,height:8,borderRadius:'50%',background:'#c9a96e',display:'inline-block',flexShrink:0}}></span>Launching soon
+            <span style={{width:9,height:9,borderRadius:'50%',background:''#e8c06a',display:'inline-block',flexShrink:0}}></span>Under 3 days
           </span>
           <span style={{display:'flex',alignItems:'center',gap:'0.3rem',fontSize:'0.6rem',letterSpacing:'1.5px',textTransform:'uppercase',color:'rgba(26,26,46,0.45)'}}>
-            <span style={{width:8,height:8,borderRadius:'50%',background:'rgba(26,26,46,0.3)',display:'inline-block',flexShrink:0}}></span>Concierge
+            <span style={{width:9,height:9,borderRadius:'50%',background:''#a8b4cc',display:'inline-block',flexShrink:0}}></span>7-day advance
           </span>
         </div>
         <a href="/expansion-map.html" className="net-btn">View Expansion Map →</a>
