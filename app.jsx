@@ -1049,7 +1049,7 @@ function SearchResults(props) {
           {props.aiHint ? (
             <div className="smart-match" style={{ marginTop:'0.45rem', background:'linear-gradient(135deg,rgba(100,140,255,0.10),rgba(100,140,255,0.04))', borderColor:'rgba(100,140,255,0.25)' }}>
               <svg viewBox="0 0 24 24" width="13" height="13" fill="none" stroke="#7aa2f7" strokeWidth="1.5"><path d="M12 3 L13.5 9 L19.5 10.5 L13.5 12 L12 18 L10.5 12 L4.5 10.5 L10.5 9 Z"/></svg>
-              <span className="smart-match-label" style={{ color:'#7aa2f7' }}>AI</span>
+              <span className="smart-match-label" style={{ color:'rgb(122,162,247)' }}>AI</span>
               <span className="smart-match-terms">{props.aiHint}</span>
             </div>
           ) : null}
@@ -1846,7 +1846,7 @@ function NetworkSection(props) {
   ];
 
   var NET_ROUTES = [['savannah','atlanta'],['atlanta','tampa'],['tampa','orlando']];
-  var NET_COLOR = {sameday:'#4dd88a', days3:'#e8c06a', days7:'#a8b4cc'};
+  var NET_COLOR = {sameday:'rgb(77,216,138)', days3:'#e8c06a', days7:'#a8b4cc'};
   var NET_DELIVERY_LABEL = {sameday:'Same-day · within 4 hrs', days3:'Under 3 days', days7:'7-day advance notice'};
 
   var [netTooltip, setNetTooltip] = React.useState(null);
@@ -1909,10 +1909,10 @@ function NetworkSection(props) {
         onMouseLeave:function(){setNetTooltip(null);},
         onClick:function(){if(isActive)selectCity(city.id);}
       },
-        isSameday&&React.createElement('circle',{cx:pt[0],cy:pt[1],r:14,fill:'none',stroke:'#4dd88a',strokeWidth:1.4,
+        isSameday&&React.createElement('circle',{cx:pt[0],cy:pt[1],r:14,fill:'none',stroke:'rgb(77,216,138)',strokeWidth:1.4,
           style:{animation:'gnRingPulse 2.4s ease-out infinite',transformOrigin:pt[0]+'px '+pt[1]+'px'}}),
         React.createElement('circle',{cx:pt[0],cy:pt[1],r:r,fill:fill,stroke:'rgba(248,246,240,0.8)',strokeWidth:1.5}),
-        React.createElement('text',{x:pt[0],y:pt[1]-r-5,textAnchor:'middle',fontSize:10.5,fontWeight:600,fill:'#1a1a2e',letterSpacing:'0.5',
+        React.createElement('text',{x:pt[0],y:pt[1]-r-5,textAnchor:'middle',fontSize:10.5,fontWeight:600,fill:'rgb(26,26,46)',letterSpacing:'0.5',
           style:{paintOrder:'stroke',stroke:'#f8f6f0',strokeWidth:'3.5px',strokeLinejoin:'round',pointerEvents:'none'}},city.name)
       );
     });
@@ -1928,13 +1928,13 @@ function NetworkSection(props) {
       ),
       netTooltip&&React.createElement('div',{style:{
         position:'absolute',left:netTooltipPos.x+12,top:Math.max(0,netTooltipPos.y-24),
-        background:'#1a1a2e',borderRadius:'8px',padding:'0.7rem 0.9rem',
+        background:'rgb(26,26,46)',borderRadius:'8px',padding:'0.7rem 0.9rem',
         pointerEvents:'none',zIndex:10,minWidth:'160px',
         border:'1px solid rgba(201,169,110,0.25)',boxShadow:'0 8px 24px rgba(0,0,0,0.18)'
       }},
         React.createElement('div',{style:{fontFamily:'Cormorant Garamond,Georgia,serif',fontSize:'0.95rem',color:'#e8e0d0',fontWeight:500}},netTooltip.name+', '+netTooltip.state),
         React.createElement('div',{style:{fontSize:'0.62rem',letterSpacing:'1.5px',textTransform:'uppercase',marginTop:'0.2rem',
-          color:netTooltip.delivery==='sameday'?'#c9a96e':netTooltip.delivery==='days3'?'#5DCAA5':'rgba(232,224,208,0.5)',fontWeight:600}},
+          color:netTooltip.delivery==='sameday'?'#c9a96e':netTooltip.delivery==='days3'?'rgb(93,202,165)':'rgba(232,224,208,0.5)',fontWeight:600}},
           NET_DELIVERY_LABEL[netTooltip.delivery]
         )
       )
@@ -1958,13 +1958,13 @@ function NetworkSection(props) {
         </div>
         <div style={{display:'flex',alignItems:'center',gap:'0.6rem',marginBottom:'0.75rem',flexWrap:'wrap'}}>
           <span style={{display:'flex',alignItems:'center',gap:'0.3rem',fontSize:'0.6rem',letterSpacing:'1.5px',textTransform:'uppercase',color:'rgba(26,26,46,0.45)'}}>
-            <span style={{width:9,height:9,borderRadius:'50%',background:''#4dd88a',display:'inline-block',flexShrink:0}}></span>Same day
+            <span style={{width:9,height:9,borderRadius:'50%',background:'rgb(77,216,138)',display:'inline-block',flexShrink:0}}></span>Same day
           </span>
           <span style={{display:'flex',alignItems:'center',gap:'0.3rem',fontSize:'0.6rem',letterSpacing:'1.5px',textTransform:'uppercase',color:'rgba(26,26,46,0.45)'}}>
-            <span style={{width:9,height:9,borderRadius:'50%',background:''#e8c06a',display:'inline-block',flexShrink:0}}></span>Under 3 days
+            <span style={{width:9,height:9,borderRadius:'50%',background:'rgb(232,192,106)',display:'inline-block',flexShrink:0}}></span>Under 3 days
           </span>
           <span style={{display:'flex',alignItems:'center',gap:'0.3rem',fontSize:'0.6rem',letterSpacing:'1.5px',textTransform:'uppercase',color:'rgba(26,26,46,0.45)'}}>
-            <span style={{width:9,height:9,borderRadius:'50%',background:''#a8b4cc',display:'inline-block',flexShrink:0}}></span>7-day advance
+            <span style={{width:9,height:9,borderRadius:'50%',background:'rgb(168,180,204)',display:'inline-block',flexShrink:0}}></span>7-day advance
           </span>
         </div>
         <a href="/expansion-map.html" className="net-btn">View Expansion Map →</a>
