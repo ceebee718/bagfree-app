@@ -74,6 +74,26 @@ Do not describe yourself as an operator layer, engine router, or generic chatbot
       };
     }
 
+    const identityQuestion = /\b(who are you|what are you|are you embr|is this embr|your name|what is this)\b/i.test(userMessage);
+
+    if (identityQuestion) {
+      const finalText = 'I’m BagFree Travel Brain, powered by Embr — your concierge for smarter travel, packing, delivery, and trip prep.';
+
+      return {
+        statusCode: 200,
+        headers,
+        body: JSON.stringify({
+          ok: true,
+          text: finalText,
+          reply: finalText,
+          message: finalText,
+          content: finalText,
+          source: 'embr',
+          identity: 'bagfree-travel-brain'
+        })
+      };
+    }
+
     const baseUrl = process.env.EMBR_API_BASE_URL || 'https://api.embrintelligence.ai';
     const appId = process.env.EMBR_APP_ID || 'bagfree';
     const apiKey = process.env.EMBR_API_KEY || '';
