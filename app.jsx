@@ -1771,17 +1771,17 @@ function MapStrip() {
   var routes = [[775,360,720,340],[720,340,740,425],[740,425,755,415]];
   var DC = {sameday:'rgb(77,216,138)',days3:'rgb(232,192,106)',days7:'rgb(168,180,204)'};
   return React.createElement('div',{className:'map-strip'},
-    React.createElement('svg',{viewBox:'0 100 975 400',preserveAspectRatio:'xMidYMid slice',className:'map-strip-svg','aria-hidden':'true'},
+    React.createElement('svg',{viewBox:'0 160 975 320',preserveAspectRatio:'xMidYMid slice',className:'map-strip-svg','aria-hidden':'true'},
       routes.map(function(r,i){
         return React.createElement('line',{key:'r'+i,x1:r[0],y1:r[1],x2:r[2],y2:r[3],
-          stroke:'rgba(201,169,110,0.2)',strokeWidth:1.2,strokeDasharray:'4 4'});
+          stroke:'rgba(201,169,110,0.25)',strokeWidth:1.5,strokeDasharray:'5 5'});
       }),
       dots.map(function(d,i){
-        var r = d.d==='sameday'?5:d.d==='days3'?4:3;
+        var r = d.d==='sameday'?6:d.d==='days3'?5:3.5;
         return React.createElement('g',{key:i},
-          d.d==='sameday'&&React.createElement('circle',{cx:d.x,cy:d.y,r:9,fill:'none',
-            stroke:'rgba(77,216,138,0.35)',strokeWidth:1,className:'ms-pulse'}),
-          React.createElement('circle',{cx:d.x,cy:d.y,r:r,fill:DC[d.d],opacity:0.85})
+          d.d==='sameday'&&React.createElement('circle',{cx:d.x,cy:d.y,r:11,fill:'none',
+            stroke:'rgba(77,216,138,0.4)',strokeWidth:1.2,className:'ms-pulse'}),
+          React.createElement('circle',{cx:d.x,cy:d.y,r:r,fill:DC[d.d],opacity:0.9})
         );
       })
     )
