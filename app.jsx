@@ -1785,7 +1785,7 @@ function MapStrip() {
       svg.selectAll('*').remove();
       var states = topojson.feature(us, us.objects.states).features;
       svg.append('g').selectAll('path').data(states).join('path')
-        .attr('d',pathFn).attr('fill','rgba(255,255,255,0.04)').attr('stroke','rgba(201,169,110,0.1)').attr('stroke-width',0.5);
+        .attr('d',pathFn).attr('fill','rgba(255,255,255,0.05)').attr('stroke','rgba(201,169,110,0.15)').attr('stroke-width',0.6);
       ROUTES.forEach(function(pair){
         var a=CITIES[pair[0]], b=CITIES[pair[1]];
         var pa=proj([a.lng,a.lat]), pb=proj([b.lng,b.lat]);
@@ -1807,7 +1807,7 @@ function MapStrip() {
   },[]);
 
   return React.createElement('div',{className:'map-strip'},
-    React.createElement('svg',{ref:svgRef,viewBox:'0 0 975 610',preserveAspectRatio:'xMidYMid slice',className:'map-strip-svg','aria-hidden':'true'})
+    React.createElement('svg',{ref:svgRef,viewBox:'0 0 975 610',preserveAspectRatio:'xMidYMid meet',className:'map-strip-svg','aria-hidden':'true'})
   );
 }
 
