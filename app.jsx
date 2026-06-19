@@ -1895,7 +1895,7 @@ function Hero(props) {
           React.createElement('div',{className:'crm-field'},React.createElement('label',null,'Clothing size'),
             React.createElement('select',{id:'crm-size'},['XS','S','M','L','XL','XXL'].map(function(s){return React.createElement('option',{key:s,value:s},s);}))),
           React.createElement('div',{className:'crm-field crm-full'},React.createElement('label',null,'What do you need?'),React.createElement('textarea',{id:'crm-items',placeholder:'Describe items or services you\'d like arranged\u2026',rows:3})),
-          React.createElement('div',{className:'crm-note'},'BagFree Concierge will review your request and determine whether local fulfillment can be arranged. A response will be provided within 24 hours.'),
+          React.createElement('div',{className:'crm-note'},'BagFree Travel Brain will review your request and determine whether local fulfillment can be arranged. A response will be provided within 24 hours.'),
           React.createElement('button',{className:'crm-submit',onClick:function(){
             var d={city:city?city.name:'',full_name:document.getElementById('crm-name').value,phone:document.getElementById('crm-phone').value,email:document.getElementById('crm-email').value,hotel_name:document.getElementById('crm-hotel').value,arrival_date:document.getElementById('crm-arrive').value||null,departure_date:document.getElementById('crm-depart').value||null,clothing_size:document.getElementById('crm-size').value,requested_items:document.getElementById('crm-items').value,status:'pending',created_at:new Date().toISOString()};
             if(!d.email||!d.full_name){alert('Please provide your name and email.');return;}
@@ -2542,7 +2542,7 @@ function ConciergeChat(props) {
       <div className="chat-head">
         <div className="chat-head-avatar"><Icon.Chat/></div>
         <div className="chat-head-info">
-          <div className="chat-head-title">BagFree Concierge</div>
+          <div className="chat-head-title">BagFree Travel Brain</div>
           <div className="chat-head-sub"><span className="chat-head-dot"></span> Online · {city.name}</div>
         </div>
         <button className="chat-close" aria-label="Close chat" onClick={function(){ setOpen(false); }}><Icon.X/></button>
@@ -2568,7 +2568,7 @@ function ConciergeChat(props) {
 
       <div className="chat-foot">
         <textarea className="chat-input" rows={1} maxLength={2000}
-          placeholder="Message the concierge…"
+          placeholder="Message the Travel Brain…"
           value={input}
           onChange={function(e){ setInput(e.target.value); }}
           onKeyDown={onKey}/>
