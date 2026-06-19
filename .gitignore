@@ -1,0 +1,8 @@
+
+# Local/generated
+node_modules/
+ios/
+www/
+embr-travel-brain-integration.patch
+*.xcuserstate
+xcuserdata/
