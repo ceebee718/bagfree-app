@@ -1827,12 +1827,11 @@ function MapStrip() {
         if(c.code){
           var isGold = c.d==='days3';
           var labelColor = isGold ? 'rgb(201,169,110)' : (isLight ? 'rgba(26,26,46,0.55)' : 'rgba(232,224,208,0.5)');
-          var fontSize = isGold ? '17' : '8.5';
-          svg.append('text').attr('x',pt[0]).attr('y',pt[1]-r-(isGold?8:4)).attr('text-anchor','middle')
-            .attr('font-size',fontSize).attr('font-family','Manrope,sans-serif').attr('font-weight','600')
+          svg.append('text').attr('x',pt[0]).attr('y',pt[1]-r-8).attr('text-anchor','middle')
+            .attr('font-size','17').attr('font-family','Manrope,sans-serif').attr('font-weight','600')
             .attr('letter-spacing','1').attr('fill',labelColor)
             .style('paint-order','stroke').style('stroke',isLight?'rgba(248,246,240,0.8)':'rgba(13,26,50,0.7)')
-            .style('stroke-width',isGold?'3px':'2.5px').style('stroke-linejoin','round')
+            .style('stroke-width','3px').style('stroke-linejoin','round')
             .text(c.code);
         }
       });
