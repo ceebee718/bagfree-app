@@ -1779,8 +1779,8 @@ function MapStrip() {
     return function(){ obs.disconnect(); };
   },[]);
   var CITIES = [
-    {lng:-81.0998,lat:32.0835,d:'sameday',code:'SAV'},{lng:-84.388,lat:33.749,d:'sameday',code:'ATL'},
-    {lng:-82.4572,lat:27.9506,d:'sameday',code:'TPA'},{lng:-81.3792,lat:28.5383,d:'days3',code:'MCO'},
+    {lng:-81.0998,lat:32.0835,d:'sameday',code:'SAV',lbl:'r'},{lng:-84.388,lat:33.749,d:'sameday',code:'ATL'},
+    {lng:-82.4572,lat:27.9506,d:'sameday',code:'TPA',lbl:'l'},{lng:-81.3792,lat:28.5383,d:'days3',code:'MCO'},
     {lng:-80.1918,lat:25.7617,d:'days3',code:'MIA'},{lng:-79.9311,lat:32.7765,d:'days7',code:'CHS'},
     {lng:-86.7816,lat:36.1627,d:'days7',code:'BNA'},{lng:-117.1611,lat:32.7157,d:'days7',code:'SAN'},
     {lng:-118.408,lat:33.9425,d:'days7',code:'LAX'},{lng:-122.3321,lat:47.6062,d:'days7',code:'SEA'},
@@ -1825,10 +1825,13 @@ function MapStrip() {
         svg.append('circle').attr('cx',pt[0]).attr('cy',pt[1]).attr('r',r).attr('fill',DC2[c.d])
           .attr('stroke',isLight?'rgba(255,255,255,0.6)':'rgba(13,26,50,0.4)').attr('stroke-width',0.8);
         if(c.code){
-          var isGold = c.d==='days3';
           var isGreen = c.d==='sameday';
+          var isGold = c.d==='days3';
           var labelColor = isGreen ? 'rgb(77,216,138)' : isGold ? 'rgb(201,169,110)' : (isLight ? 'rgba(26,26,46,0.55)' : 'rgba(232,224,208,0.5)');
-          svg.append('text').attr('x',pt[0]).attr('y',pt[1]-r-8).attr('text-anchor','middle')
+          var tx = pt[0], ty = pt[1]-r-8, anchor = 'middle';
+          if(c.lbl==='r'){ tx = pt[0]+r+6; ty = pt[1]+5; anchor = 'start'; }
+          if(c.lbl==='l'){ tx = pt[0]-r-6; ty = pt[1]+5; anchor = 'end'; }
+          svg.append('text').attr('x',tx).attr('y',ty).attr('text-anchor',anchor)
             .attr('font-size','17').attr('font-family','Manrope,sans-serif').attr('font-weight','600')
             .attr('letter-spacing','1').attr('fill',labelColor)
             .style('paint-order','stroke').style('stroke',isLight?'rgba(248,246,240,0.8)':'rgba(13,26,50,0.7)')
