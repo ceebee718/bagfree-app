@@ -2543,6 +2543,7 @@ function ConciergeChat(props) {
         <div className="chat-head-avatar"><Icon.Chat/></div>
         <div className="chat-head-info">
           <div className="chat-head-title">BagFree Travel Brain</div>
+          <div className="chat-head-subtitle">Powered by Embr Intelligence</div>
           <div className="chat-head-sub"><span className="chat-head-dot"></span> Online · {city.name}</div>
         </div>
         <button className="chat-close" aria-label="Close chat" onClick={function(){ setOpen(false); }}><Icon.X/></button>
@@ -2568,7 +2569,7 @@ function ConciergeChat(props) {
 
       <div className="chat-foot">
         <textarea className="chat-input" rows={1} maxLength={2000}
-          placeholder="Message the Travel Brain…"
+          placeholder="Message BagFree Travel Brain…"
           value={input}
           onChange={function(e){ setInput(e.target.value); }}
           onKeyDown={onKey}/>
