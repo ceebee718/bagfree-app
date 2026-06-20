@@ -1779,16 +1779,16 @@ function MapStrip() {
     return function(){ obs.disconnect(); };
   },[]);
   var CITIES = [
-    {x:0,y:0,lng:-81.0998,lat:32.0835,d:'sameday'},{x:0,y:0,lng:-84.388,lat:33.749,d:'sameday'},
-    {x:0,y:0,lng:-82.4572,lat:27.9506,d:'sameday'},{x:0,y:0,lng:-81.3792,lat:28.5383,d:'days3'},
-    {x:0,y:0,lng:-80.1918,lat:25.7617,d:'days3'},{x:0,y:0,lng:-79.9311,lat:32.7765,d:'days7'},
-    {x:0,y:0,lng:-86.7816,lat:36.1627,d:'days7'},{x:0,y:0,lng:-117.1611,lat:32.7157,d:'days7'},
-    {x:0,y:0,lng:-118.408,lat:33.9425,d:'days7'},{x:0,y:0,lng:-122.3321,lat:47.6062,d:'days7'},
-    {x:0,y:0,lng:-104.9903,lat:39.7392,d:'days7'},{x:0,y:0,lng:-112.074,lat:33.4484,d:'days7'},
-    {x:0,y:0,lng:-111.891,lat:40.7608,d:'days7'},{x:0,y:0,lng:-95.3698,lat:29.7604,d:'days7'},
-    {x:0,y:0,lng:-96.797,lat:32.7767,d:'days7'},{x:0,y:0,lng:-87.6298,lat:41.8781,d:'days7'},
-    {x:0,y:0,lng:-82.9988,lat:39.9612,d:'days7'},{x:0,y:0,lng:-74.006,lat:40.7128,d:'days3'},
-    {x:0,y:0,lng:-77.0369,lat:38.9072,d:'days3'}
+    {lng:-81.0998,lat:32.0835,d:'sameday',code:'SAV'},{lng:-84.388,lat:33.749,d:'sameday',code:'ATL'},
+    {lng:-82.4572,lat:27.9506,d:'sameday',code:'TPA'},{lng:-81.3792,lat:28.5383,d:'days3',code:'MCO'},
+    {lng:-80.1918,lat:25.7617,d:'days3',code:'MIA'},{lng:-79.9311,lat:32.7765,d:'days7',code:'CHS'},
+    {lng:-86.7816,lat:36.1627,d:'days7',code:'BNA'},{lng:-117.1611,lat:32.7157,d:'days7',code:'SAN'},
+    {lng:-118.408,lat:33.9425,d:'days7',code:'LAX'},{lng:-122.3321,lat:47.6062,d:'days7',code:'SEA'},
+    {lng:-104.9903,lat:39.7392,d:'days7',code:'DEN'},{lng:-112.074,lat:33.4484,d:'days7',code:'PHX'},
+    {lng:-111.891,lat:40.7608,d:'days7',code:'SLC'},{lng:-95.3698,lat:29.7604,d:'days7',code:'IAH'},
+    {lng:-96.797,lat:32.7767,d:'days7',code:'DFW'},{lng:-87.6298,lat:41.8781,d:'days7',code:'ORD'},
+    {lng:-82.9988,lat:39.9612,d:'days7',code:'CMH'},{lng:-74.006,lat:40.7128,d:'days3',code:'JFK'},
+    {lng:-77.0369,lat:38.9072,d:'days3',code:'DCA'}
   ];
   var ROUTES = [[0,2],[0,1],[2,3]];
   var DC = {sameday:'rgb(77,216,138)',days3:'rgb(232,192,106)',days7:'rgba(168,180,204,0.7)'};
@@ -1824,6 +1824,15 @@ function MapStrip() {
         }
         svg.append('circle').attr('cx',pt[0]).attr('cy',pt[1]).attr('r',r).attr('fill',DC2[c.d])
           .attr('stroke',isLight?'rgba(255,255,255,0.6)':'rgba(13,26,50,0.4)').attr('stroke-width',0.8);
+        if(c.code){
+          var labelColor = isLight ? 'rgba(26,26,46,0.55)' : 'rgba(232,224,208,0.5)';
+          svg.append('text').attr('x',pt[0]).attr('y',pt[1]-r-4).attr('text-anchor','middle')
+            .attr('font-size','8.5').attr('font-family','Manrope,sans-serif').attr('font-weight','600')
+            .attr('letter-spacing','1').attr('fill',labelColor)
+            .style('paint-order','stroke').style('stroke',isLight?'rgba(248,246,240,0.8)':'rgba(13,26,50,0.7)')
+            .style('stroke-width','2.5px').style('stroke-linejoin','round')
+            .text(c.code);
+        }
       });
       setLoaded(true);
     }).catch(function(){});
