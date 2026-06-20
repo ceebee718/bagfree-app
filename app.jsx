@@ -1,5 +1,21 @@
 
 try {
+  const oldGreeting = 'Hi! I’m your BagFree concierge for Savannah. Ask me anything — what to pack, where to eat, things to do, or help with your order.';
+  const newGreeting = 'Hi! I’m BagFree Travel Brain, powered by Embr Intelligence. Tell me where you’re going and I’ll help you pack lighter, plan what to deliver ahead, and prep your trip without dragging extra bags.';
+
+  for (let i = 0; i < localStorage.length; i++) {
+    const key = localStorage.key(i);
+    const value = localStorage.getItem(key);
+    if (value && value.includes(oldGreeting)) {
+      localStorage.setItem(key, value.split(oldGreeting).join(newGreeting));
+    }
+  }
+} catch (e) {
+  console.warn('[BagFree] greeting migration skipped', e);
+}
+
+
+try {
 const { useState } = React;
 
 const LOGO_SRC = '/bagfree-logo-web.png';
