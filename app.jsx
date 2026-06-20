@@ -1,21 +1,5 @@
 
 try {
-  const oldGreeting = 'Hi! I’m your BagFree concierge for Savannah. Ask me anything — what to pack, where to eat, things to do, or help with your order.';
-  const newGreeting = 'Hi! I’m BagFree Travel Brain, powered by Embr Intelligence. Tell me where you’re going and I’ll help you pack lighter, plan what to deliver ahead, and prep your trip without dragging extra bags.';
-
-  for (let i = 0; i < localStorage.length; i++) {
-    const key = localStorage.key(i);
-    const value = localStorage.getItem(key);
-    if (value && value.includes(oldGreeting)) {
-      localStorage.setItem(key, value.split(oldGreeting).join(newGreeting));
-    }
-  }
-} catch (e) {
-  console.warn('[BagFree] greeting migration skipped', e);
-}
-
-
-try {
 const { useState } = React;
 
 const LOGO_SRC = '/bagfree-logo-web.png';
@@ -2466,7 +2450,7 @@ function ConciergeChat(props) {
   // Greeting on first open
   React.useEffect(function(){
     if (open && msgs.length === 0 && !props.seed) {
-      setMsgs([{ role:'bot', text:'Hi! I\u2019m your BagFree concierge for ' + city.name + '. Ask me anything \u2014 what to pack, where to eat, things to do, or help with your order.' }]);
+      setMsgs([{ role:'bot', text:'Hi! I\u2019m BagFree Travel Brain, powered by Embr Intelligence. Tell me where you\u2019re going and I\u2019ll help you pack lighter, plan what to deliver ahead, and prep your trip without dragging extra bags.' }]);
     }
   }, [open]);
 
