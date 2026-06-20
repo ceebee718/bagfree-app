@@ -1796,10 +1796,10 @@ function MapStrip() {
   React.useEffect(function(){
     if(typeof d3==='undefined'||typeof topojson==='undefined'||!svgRef.current) return;
     var isLight = document.documentElement.classList.contains('light');
-    var stateFill = isLight ? 'rgba(26,26,46,0.05)' : 'rgba(255,255,255,0.05)';
-    var stateStroke = isLight ? 'rgba(26,26,46,0.18)' : 'rgba(201,169,110,0.15)';
-    var days7Color = isLight ? 'rgba(120,130,160,0.85)' : 'rgba(168,180,204,0.7)';
-    var DC2 = {sameday:'rgb(63,174,106)',days3:'rgb(201,150,60)',days7:days7Color};
+    var stateFill = isLight ? 'rgba(26,26,46,0.06)' : 'rgba(140,170,220,0.08)';
+    var stateStroke = isLight ? 'rgba(26,26,46,0.2)' : 'rgba(201,169,110,0.35)';
+    var days7Color = isLight ? 'rgba(100,115,150,0.9)' : 'rgba(180,195,220,0.9)';
+    var DC2 = {sameday:'rgb(77,216,138)',days3:'rgb(232,192,106)',days7:days7Color};
     var svg = d3.select(svgRef.current);
     var proj = d3.geoAlbersUsa().scale(1300).translate([487.5,305]);
     var pathFn = d3.geoPath().projection(proj);
@@ -1807,19 +1807,19 @@ function MapStrip() {
       svg.selectAll('*').remove();
       var states = topojson.feature(us, us.objects.states).features;
       svg.append('g').selectAll('path').data(states).join('path')
-        .attr('d',pathFn).attr('fill',stateFill).attr('stroke',stateStroke).attr('stroke-width',0.6);
+        .attr('d',pathFn).attr('fill',stateFill).attr('stroke',stateStroke).attr('stroke-width',0.9);
       ROUTES.forEach(function(pair){
         var a=CITIES[pair[0]], b=CITIES[pair[1]];
         var pa=proj([a.lng,a.lat]), pb=proj([b.lng,b.lat]);
         if(pa&&pb) svg.append('line').attr('x1',pa[0]).attr('y1',pa[1]).attr('x2',pb[0]).attr('y2',pb[1])
-          .attr('stroke','rgba(201,169,110,0.35)').attr('stroke-width',1.2).attr('stroke-dasharray','5 5');
+          .attr('stroke','rgba(201,169,110,0.5)').attr('stroke-width',1.4).attr('stroke-dasharray','5 5');
       });
       CITIES.forEach(function(c){
         var pt=proj([c.lng,c.lat]); if(!pt) return;
-        var r=c.d==='sameday'?6:c.d==='days3'?5:3.5;
+        var r=c.d==='sameday'?7:c.d==='days3'?6:4.5;
         if(c.d==='sameday'){
           svg.append('circle').attr('cx',pt[0]).attr('cy',pt[1]).attr('r',10).attr('fill','none')
-            .attr('stroke','rgba(63,174,106,0.4)').attr('stroke-width',1).style('animation','msPulse 2.8s ease-out infinite')
+            .attr('stroke','rgba(77,216,138,0.55)').attr('stroke-width',1.3).style('animation','msPulse 2.8s ease-out infinite')
             .style('transform-origin',pt[0]+'px '+pt[1]+'px');
         }
         svg.append('circle').attr('cx',pt[0]).attr('cy',pt[1]).attr('r',r).attr('fill',DC2[c.d])
