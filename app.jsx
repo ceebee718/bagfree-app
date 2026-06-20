@@ -1826,7 +1826,8 @@ function MapStrip() {
           .attr('stroke',isLight?'rgba(255,255,255,0.6)':'rgba(13,26,50,0.4)').attr('stroke-width',0.8);
         if(c.code){
           var isGold = c.d==='days3';
-          var labelColor = isGold ? 'rgb(201,169,110)' : (isLight ? 'rgba(26,26,46,0.55)' : 'rgba(232,224,208,0.5)');
+          var isGreen = c.d==='sameday';
+          var labelColor = isGreen ? 'rgb(77,216,138)' : isGold ? 'rgb(201,169,110)' : (isLight ? 'rgba(26,26,46,0.55)' : 'rgba(232,224,208,0.5)');
           svg.append('text').attr('x',pt[0]).attr('y',pt[1]-r-8).attr('text-anchor','middle')
             .attr('font-size','17').attr('font-family','Manrope,sans-serif').attr('font-weight','600')
             .attr('letter-spacing','1').attr('fill',labelColor)
