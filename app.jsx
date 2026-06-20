@@ -1772,12 +1772,6 @@ function MeetLocalExperts() {
 function MapStrip() {
   var svgRef = React.useRef(null);
   var [loaded, setLoaded] = React.useState(false);
-  var [themeVer, setThemeVer] = React.useState(0);
-  React.useEffect(function(){
-    var obs = new MutationObserver(function(){ setThemeVer(function(v){ return v+1; }); });
-    obs.observe(document.documentElement, {attributes:true, attributeFilter:['class']});
-    return function(){ obs.disconnect(); };
-  },[]);
   var CITIES = [
     {x:0,y:0,lng:-81.0998,lat:32.0835,d:'sameday'},{x:0,y:0,lng:-84.388,lat:33.749,d:'sameday'},
     {x:0,y:0,lng:-82.4572,lat:27.9506,d:'sameday'},{x:0,y:0,lng:-81.3792,lat:28.5383,d:'days3'},
@@ -1795,11 +1789,6 @@ function MapStrip() {
 
   React.useEffect(function(){
     if(typeof d3==='undefined'||typeof topojson==='undefined'||!svgRef.current) return;
-    var isLight = document.documentElement.classList.contains('light');
-    var stateFill = isLight ? 'rgba(26,26,46,0.05)' : 'rgba(255,255,255,0.05)';
-    var stateStroke = isLight ? 'rgba(26,26,46,0.18)' : 'rgba(201,169,110,0.15)';
-    var days7Color = isLight ? 'rgba(120,130,160,0.85)' : 'rgba(168,180,204,0.7)';
-    var DC2 = {sameday:'rgb(63,174,106)',days3:'rgb(201,150,60)',days7:days7Color};
     var svg = d3.select(svgRef.current);
     var proj = d3.geoAlbersUsa().scale(1300).translate([487.5,305]);
     var pathFn = d3.geoPath().projection(proj);
@@ -1807,27 +1796,26 @@ function MapStrip() {
       svg.selectAll('*').remove();
       var states = topojson.feature(us, us.objects.states).features;
       svg.append('g').selectAll('path').data(states).join('path')
-        .attr('d',pathFn).attr('fill',stateFill).attr('stroke',stateStroke).attr('stroke-width',0.6);
+        .attr('d',pathFn).attr('fill','rgba(255,255,255,0.05)').attr('stroke','rgba(201,169,110,0.15)').attr('stroke-width',0.6);
       ROUTES.forEach(function(pair){
         var a=CITIES[pair[0]], b=CITIES[pair[1]];
         var pa=proj([a.lng,a.lat]), pb=proj([b.lng,b.lat]);
         if(pa&&pb) svg.append('line').attr('x1',pa[0]).attr('y1',pa[1]).attr('x2',pb[0]).attr('y2',pb[1])
-          .attr('stroke','rgba(201,169,110,0.35)').attr('stroke-width',1.2).attr('stroke-dasharray','5 5');
+          .attr('stroke','rgba(201,169,110,0.25)').attr('stroke-width',1.2).attr('stroke-dasharray','5 5');
       });
       CITIES.forEach(function(c){
         var pt=proj([c.lng,c.lat]); if(!pt) return;
-        var r=c.d==='sameday'?6:c.d==='days3'?5:3.5;
+        var r=c.d==='sameday'?6:c.d==='days3'?5:3;
         if(c.d==='sameday'){
           svg.append('circle').attr('cx',pt[0]).attr('cy',pt[1]).attr('r',10).attr('fill','none')
-            .attr('stroke','rgba(63,174,106,0.4)').attr('stroke-width',1).style('animation','msPulse 2.8s ease-out infinite')
+            .attr('stroke','rgba(77,216,138,0.35)').attr('stroke-width',1).style('animation','msPulse 2.8s ease-out infinite')
             .style('transform-origin',pt[0]+'px '+pt[1]+'px');
         }
-        svg.append('circle').attr('cx',pt[0]).attr('cy',pt[1]).attr('r',r).attr('fill',DC2[c.d])
-          .attr('stroke',isLight?'rgba(255,255,255,0.6)':'rgba(13,26,50,0.4)').attr('stroke-width',0.8);
+        svg.append('circle').attr('cx',pt[0]).attr('cy',pt[1]).attr('r',r).attr('fill',DC[c.d]);
       });
       setLoaded(true);
     }).catch(function(){});
-  },[themeVer]);
+  },[]);
 
   return React.createElement('div',{className:'map-strip'},
     React.createElement('svg',{ref:svgRef,viewBox:'0 0 975 610',preserveAspectRatio:'xMidYMid meet',className:'map-strip-svg','aria-hidden':'true'})
@@ -1907,7 +1895,7 @@ function Hero(props) {
           React.createElement('div',{className:'crm-field'},React.createElement('label',null,'Clothing size'),
             React.createElement('select',{id:'crm-size'},['XS','S','M','L','XL','XXL'].map(function(s){return React.createElement('option',{key:s,value:s},s);}))),
           React.createElement('div',{className:'crm-field crm-full'},React.createElement('label',null,'What do you need?'),React.createElement('textarea',{id:'crm-items',placeholder:'Describe items or services you\'d like arranged\u2026',rows:3})),
-          React.createElement('div',{className:'crm-note'},'BagFree Concierge will review your request and determine whether local fulfillment can be arranged. A response will be provided within 24 hours.'),
+          React.createElement('div',{className:'crm-note'},'BagFree Travel Brain will review your request and determine whether local fulfillment can be arranged. A response will be provided within 24 hours.'),
           React.createElement('button',{className:'crm-submit',onClick:function(){
             var d={city:city?city.name:'',full_name:document.getElementById('crm-name').value,phone:document.getElementById('crm-phone').value,email:document.getElementById('crm-email').value,hotel_name:document.getElementById('crm-hotel').value,arrival_date:document.getElementById('crm-arrive').value||null,departure_date:document.getElementById('crm-depart').value||null,clothing_size:document.getElementById('crm-size').value,requested_items:document.getElementById('crm-items').value,status:'pending',created_at:new Date().toISOString()};
             if(!d.email||!d.full_name){alert('Please provide your name and email.');return;}
@@ -2491,10 +2479,19 @@ function ConciergeChat(props) {
       return { role: m.role === 'user' ? 'user' : 'assistant', content: m.text };
     });
 
-    const res = await fetch('/.netlify/functions/concierge-chat', {
+    const res = await fetch('/.netlify/functions/embr-travel-brain', {
       method: 'POST',
       headers: { 'Content-Type': 'application/json' },
-      body: JSON.stringify({ system: systemPrompt, messages: apiMessages }),
+      body: JSON.stringify({
+        userMessage: input,
+        history: apiMessages,
+        systemPrompt,
+        profile: {
+          name: 'Traveler',
+          travelStyle: 'Luxury'
+        },
+        activeTrip: {}
+      }),
     });
     const data = await res.json().catch(function(){ return {}; });
     if (!res.ok || !data.reply) {
@@ -2545,7 +2542,7 @@ function ConciergeChat(props) {
       <div className="chat-head">
         <div className="chat-head-avatar"><Icon.Chat/></div>
         <div className="chat-head-info">
-          <div className="chat-head-title">BagFree Concierge</div>
+          <div className="chat-head-title">BagFree Travel Brain</div>
           <div className="chat-head-sub"><span className="chat-head-dot"></span> Online · {city.name}</div>
         </div>
         <button className="chat-close" aria-label="Close chat" onClick={function(){ setOpen(false); }}><Icon.X/></button>
@@ -2571,7 +2568,7 @@ function ConciergeChat(props) {
 
       <div className="chat-foot">
         <textarea className="chat-input" rows={1} maxLength={2000}
-          placeholder="Message the concierge…"
+          placeholder="Message the Travel Brain…"
           value={input}
           onChange={function(e){ setInput(e.target.value); }}
           onKeyDown={onKey}/>
@@ -2885,7 +2882,7 @@ function App() {
           <span></span><span></span><span></span>
         </button>
         <a href="/" className="brand-link"><img src={LOGO_SRC} alt="BagFree" className="brand-img--sm"/></a>
-        <div className="mobile-bar-actions"><ThemeToggle/></div>
+        <div className="mobile-bar-spacer"></div>
       </div>
       <div className={'drawer-overlay' + (drawerOpen ? ' show' : '')} onClick={function(){ setDrawerOpen(false); }}></div>
       <Sidebar mobileOpen={drawerOpen} onClose={function(){ setDrawerOpen(false); }} active={active} setActive={setActive} city={city} setCity={setCity}/>
