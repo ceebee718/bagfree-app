@@ -145,6 +145,13 @@ html.light .ts-thumb{transform:translateX(0)}
 @keyframes rise{to{opacity:1;transform:none}}
 
 /* Hero */
+.mem-success-banner{display:flex;align-items:center;gap:1rem;padding:1.1rem 1.4rem;margin-bottom:1.4rem;border-radius:12px;border:1.5px solid rgba(93,202,165,0.4);background:rgba(93,202,165,0.06);animation:heroFade 0.5s ease}
+.msb-icon{width:40px;height:40px;border-radius:50%;background:rgba(93,202,165,0.15);color:#5DCAA5;display:flex;align-items:center;justify-content:center;font-size:1.3rem;font-weight:700;flex-shrink:0}
+.msb-text{flex:1;min-width:0}
+.msb-title{font-family:var(--ff-display);font-size:1.15rem;color:#5DCAA5;font-weight:500}
+.msb-sub{font-size:0.82rem;color:var(--sub);margin-top:0.2rem;line-height:1.5}
+.msb-close{background:none;border:none;color:var(--sub);font-size:1.1rem;cursor:pointer;padding:0.3rem;flex-shrink:0;line-height:1}
+.msb-close:hover{color:#5DCAA5}
 .hero{display:flex;align-items:flex-end;justify-content:space-between;gap:1.5rem;flex-wrap:wrap;margin-bottom:1.4rem}
 .hero h1{font-family:var(--ff-display);font-weight:300;font-size:clamp(2rem,4.2vw,3.05rem);color:var(--cream);line-height:1.04;letter-spacing:-.5px}
 .hero h1 em{font-style:italic;color:var(--gold)}
@@ -745,6 +752,9 @@ function Metrics({pts,value,streak,tier,level}){
 function App(){
   const [light,setLight]=useState(()=>{try{return localStorage.getItem('bf-theme')==='light';}catch(e){return false;}});
   const [navOpen,setNavOpen]=useState(false);
+  const [membershipSuccess,setMembershipSuccess]=useState(()=>{
+    try{var p=new URLSearchParams(window.location.search);if(p.get('membership')==='success'){window.history.replaceState({},'',window.location.pathname);return p.get('tier')||'member';}return null;}catch(e){return null;}
+  });
   const [loading,setLoading]=useState(true);
   const [data,setData]=useState({
     name:'Traveler', initial:'T', city:'Savannah, GA', level:'Explorer', streak:8,
@@ -813,6 +823,16 @@ function App(){
         </div>
 
         <div className="content">
+          {membershipSuccess && (
+            <div className="mem-success-banner reveal">
+              <div className="msb-icon">✓</div>
+              <div className="msb-text">
+                <div className="msb-title">Welcome to BagFree{membershipSuccess!=='member'?' — '+membershipSuccess.charAt(0).toUpperCase()+membershipSuccess.slice(1):''}!</div>
+                <div className="msb-sub">Your membership is active. You're ready to travel light, experience more, and leave less behind.</div>
+              </div>
+              <button className="msb-close" onClick={()=>setMembershipSuccess(null)} aria-label="Dismiss">✕</button>
+            </div>
+          )}
           <div className="hero reveal">
             <div>
               <h1>Welcome back, <em>{data.name}.</em></h1>
