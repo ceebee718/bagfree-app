@@ -375,9 +375,15 @@ var bc='m',P={s:{m:'$9.99',a:'$8'},e:{m:'$39',a:'$31'},g:{m:'$69',a:'$55'}};
 var pendingTier = null;
 
 var TIER_INFO = {
-  secondjourney: { name:'Second Journey', bundle:'sj-3day', price:9.99, annual:'or $105/year (save $24)', days:3 },
-  emerald: { name:'Emerald', bundle:'sj-5day', price:39, annual:'or $372/year (save $96)', days:5 },
-  gold: { name:'Gold', bundle:'sj-7day', price:69, annual:'or $650/year (save $168)', days:7 }
+  secondjourney: { name:'Second Journey', bundle:'sj-3day', price:9.99, annual:'or $96/year (save $24)', days:3,
+    stripePriceMonthly: 'price_1TkZdIPRxFcXOr25bIesxZdz',
+    stripePriceAnnual:  'price_1TkZRvPRxFcXOr255e9tSWUX' },
+  emerald: { name:'Emerald', bundle:'sj-5day', price:39, annual:'or $372/year (save $96)', days:5,
+    stripePriceMonthly: 'price_1TkYZjPRxFcXOr25i4Ew03O0',
+    stripePriceAnnual:  'price_1TkZZRPRxFcXOr25U6huubzf' },
+  gold: { name:'Gold', bundle:'sj-7day', price:69, annual:'or $660/year (save $168)', days:7,
+    stripePriceMonthly: 'price_1TkYarPRxFcXOr25tLzjiYrF',
+    stripePriceAnnual:  'price_1TkZdIPRxFcXOr25bIes' }
 };
 
 function setB(c){bc=c;var t=document.getElementById('trk'),lm=document.getElementById('lm'),la=document.getElementById('la'),sv=document.getElementById('sv');if(c==='a'){t.classList.add('an');lm.classList.remove('on');la.classList.add('on');sv.style.opacity='1';}else{t.classList.remove('an');lm.classList.add('on');la.classList.remove('on');sv.style.opacity='0.4';}document.querySelectorAll('.tc-price').forEach(function(el){var k=el.getAttribute('data-t');if(k&&P[k]){el.innerHTML=P[k][c]+'<span>/'+(c==='a'?'mo (billed yearly)':'month')+'</span>';}});}
@@ -462,27 +468,17 @@ async function submitMemberCheckout() {
     });
   } catch(e){}
 
-  // Call Netlify create-checkout
+  // Call Netlify create-membership-checkout
   try {
-    var today = new Date().toISOString().split('T')[0];
-    var depart = new Date(Date.now() + info.days * 86400000).toISOString().split('T')[0];
-    var res = await fetch('/.netlify/functions/create-checkout', {
+    var priceId = bc === 'a' ? info.stripePriceAnnual : info.stripePriceMonthly;
+    var res = await fetch('/.netlify/functions/create-membership-checkout', {
       method:'POST',
       headers:{'Content-Type':'application/json'},
       body:JSON.stringify({
-        city: city,
-        arrival: today,
-        departure: depart,
-        hotel: 'TBD — membership signup',
-        guest_name: email,
+        priceId: priceId,
         email: email,
-        bundles:[{
-          id: info.bundle,
-          title: info.name + ' Membership — ' + info.days + '-day clothing bundle',
-          price: price,
-          image: '',
-          qty: 1
-        }]
+        tier: pendingTier,
+        billing: bc === 'a' ? 'annual' : 'monthly'
       })
     });
     var data = await res.json();
