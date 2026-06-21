@@ -1823,7 +1823,8 @@ function MapStrip() {
             .style('transform-origin',pt[0]+'px '+pt[1]+'px');
         }
         svg.append('circle').attr('cx',pt[0]).attr('cy',pt[1]).attr('r',r).attr('fill',DC2[c.d])
-          .attr('stroke',isLight?'rgba(255,255,255,0.6)':'rgba(13,26,50,0.4)').attr('stroke-width',0.8);
+          .attr('stroke',isLight?'rgba(255,255,255,0.6)':'rgba(13,26,50,0.4)').attr('stroke-width',0.8)
+          .attr('class','city-dot').attr('data-orig-r',r);
         if(c.code){
           var isGreen = c.d==='sameday';
           var isGold = c.d==='days3';
@@ -1840,14 +1841,15 @@ function MapStrip() {
         }
       });
       // ── Twinkle effect: random dots brighten then dim ──
-      var allDots = svg.selectAll('circle').filter(function(){ return this.getAttribute('r') > 2 && !this.classList.contains('ms-pulse'); }).nodes();
+      var allDots = svg.selectAll('.city-dot').nodes();
       if(allDots.length > 0){
         if(window._mapTwinkle) clearInterval(window._mapTwinkle);
         window._mapTwinkle = setInterval(function(){
           var dot = allDots[Math.floor(Math.random() * allDots.length)];
-          var origR = parseFloat(dot.getAttribute('r'));
+          var origR = parseFloat(dot.getAttribute('data-orig-r'));
           var origFill = dot.getAttribute('fill');
-          d3.select(dot)
+          d3.select(dot).interrupt()
+            .attr('r', origR)
             .transition().duration(600).ease(d3.easeCubicOut)
             .attr('r', origR * 1.8)
             .style('filter','drop-shadow(0 0 8px ' + origFill + ')')
