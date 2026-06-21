@@ -2006,7 +2006,7 @@ function NetworkSection(props) {
   ];
 
   var NET_CITIES = [
-    {id:'savannah',  name:'Savannah',       state:'GA', type:'active',    delivery:'sameday', lat:32.0835,  lng:-81.0998},
+    {id:'savannah',  name:'Savannah',       state:'GA', type:'active',    delivery:'sameday', lat:32.0835,  lng:-81.0998, lbl:'l'},
     {id:'atlanta',   name:'Atlanta',        state:'GA', type:'active',    delivery:'sameday',   lat:33.749,   lng:-84.388},
     {id:'tampa',     name:'Tampa',          state:'FL', type:'active',    delivery:'sameday', lat:27.9506,  lng:-82.4572},
     {id:'orlando',   name:'Orlando',        state:'FL', type:'active',    delivery:'days3',   lat:28.5383,  lng:-81.3792},
@@ -2135,7 +2135,11 @@ function NetworkSection(props) {
         isSameday&&React.createElement('circle',{cx:pt[0],cy:pt[1],r:14,fill:'none',stroke:'rgb(77,216,138)',strokeWidth:1.4,
           style:{animation:'gnRingPulse 2.4s ease-out infinite',transformOrigin:pt[0]+'px '+pt[1]+'px'}}),
         React.createElement('circle',{cx:pt[0],cy:pt[1],r:r,fill:fill,stroke:'rgba(248,246,240,0.8)',strokeWidth:1.5}),
-        React.createElement('text',{x:pt[0],y:pt[1]-r-5,textAnchor:'middle',fontSize:10.5,fontWeight:600,fill:'rgb(26,26,46)',letterSpacing:'0.5',
+        React.createElement('text',{
+          x: city.lbl==='l' ? pt[0]-r-6 : city.lbl==='r' ? pt[0]+r+6 : pt[0],
+          y: city.lbl ? pt[1]+4 : pt[1]-r-5,
+          textAnchor: city.lbl==='l' ? 'end' : city.lbl==='r' ? 'start' : 'middle',
+          fontSize:10.5,fontWeight:600,fill:'rgb(26,26,46)',letterSpacing:'0.5',
           style:{paintOrder:'stroke',stroke:'#f8f6f0',strokeWidth:'3.5px',strokeLinejoin:'round',pointerEvents:'none'}},city.name)
       );
     });
