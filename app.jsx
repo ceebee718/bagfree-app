@@ -112,7 +112,7 @@ const CITIES = [
   { id:'seattle', name:'Seattle', region:'Washington', delivery:'days7', deliveryLabel:'7-day advance', limited:true },
   { id:'saltlake', name:'Salt Lake City', region:'Utah', delivery:'days7', deliveryLabel:'7-day advance', limited:true },
   { id:'columbus', name:'Columbus', region:'Ohio', delivery:'days7', deliveryLabel:'7-day advance', limited:true },
-  { id:'newyork', name:'New York', region:'New York', delivery:'days3', deliveryLabel:'Under 3 days', limited:true },
+  { id:'newyork', name:'New York City', region:'New York', delivery:'days3', deliveryLabel:'Under 3 days', limited:true },
   { id:'washington', name:'Washington', region:'D.C.', delivery:'days3', deliveryLabel:'Under 3 days', limited:true },
   { id:'lasvegas', name:'Las Vegas', region:'Nevada', delivery:'days7', deliveryLabel:'7-day advance', limited:true },
   { id:'caribbean', name:'Caribbean', region:'Coming soon', soon:true }
@@ -1788,7 +1788,7 @@ function MapStrip() {
     {lng:-104.9903,lat:39.7392,d:'days7',code:'DEN'},{lng:-112.074,lat:33.4484,d:'days7',code:'PHX'},
     {lng:-111.891,lat:40.7608,d:'days7',code:'SLC'},{lng:-95.3698,lat:29.7604,d:'days7',code:'IAH'},
     {lng:-96.797,lat:32.7767,d:'days7',code:'DFW'},{lng:-87.6298,lat:41.8781,d:'days7',code:'ORD'},
-    {lng:-82.9988,lat:39.9612,d:'days7',code:'CMH'},{lng:-74.006,lat:40.7128,d:'days3',code:'JFK'},
+    {lng:-82.9988,lat:39.9612,d:'days7',code:'CMH'},{lng:-74.006,lat:40.7128,d:'days3',code:'NYC'},
     {lng:-77.0369,lat:38.9072,d:'days3',code:'DCA'},
     {lng:-115.1398,lat:36.1699,d:'days7',code:'LAS'}
   ];
@@ -2025,7 +2025,7 @@ function NetworkSection(props) {
     {id:'chicago',   name:'Chicago',        state:'IL', type:'concierge', delivery:'days7',   lat:41.8781,  lng:-87.6298},
     {id:'saltlake',  name:'Salt Lake City', state:'UT', type:'concierge', delivery:'days7',   lat:40.7608,  lng:-111.891},
     {id:'columbus',  name:'Columbus',       state:'OH', type:'concierge', delivery:'days7',   lat:39.9612,  lng:-82.9988},
-    {id:'newyork',   name:'New York',       state:'NY', type:'concierge', delivery:'days3',   lat:40.7128,  lng:-74.0060},
+    {id:'newyork',   name:'New York City',       state:'NY', type:'concierge', delivery:'days3',   lat:40.7128,  lng:-74.0060},
     {id:'washington',name:'Washington',     state:'DC', type:'concierge', delivery:'days3',   lat:38.9072,  lng:-77.0369},
     {id:'lasvegas',  name:'Las Vegas',      state:'NV', type:'concierge', delivery:'days7',   lat:36.1699,  lng:-115.1398},
   ];
