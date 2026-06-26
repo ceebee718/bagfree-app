@@ -114,6 +114,7 @@ const CITIES = [
   { id:'columbus', name:'Columbus', region:'Ohio', delivery:'days7', deliveryLabel:'7-day advance', limited:true },
   { id:'newyork', name:'New York', region:'New York', delivery:'days3', deliveryLabel:'Under 3 days', limited:true },
   { id:'washington', name:'Washington', region:'D.C.', delivery:'days3', deliveryLabel:'Under 3 days', limited:true },
+  { id:'lasvegas', name:'Las Vegas', region:'Nevada', delivery:'days7', deliveryLabel:'7-day advance', limited:true },
   { id:'caribbean', name:'Caribbean', region:'Coming soon', soon:true }
 ];
 
@@ -1788,7 +1789,8 @@ function MapStrip() {
     {lng:-111.891,lat:40.7608,d:'days7',code:'SLC'},{lng:-95.3698,lat:29.7604,d:'days7',code:'IAH'},
     {lng:-96.797,lat:32.7767,d:'days7',code:'DFW'},{lng:-87.6298,lat:41.8781,d:'days7',code:'ORD'},
     {lng:-82.9988,lat:39.9612,d:'days7',code:'CMH'},{lng:-74.006,lat:40.7128,d:'days3',code:'JFK'},
-    {lng:-77.0369,lat:38.9072,d:'days3',code:'DCA'}
+    {lng:-77.0369,lat:38.9072,d:'days3',code:'DCA'},
+    {lng:-115.1398,lat:36.1699,d:'days7',code:'LAS'}
   ];
   var ROUTES = [[0,2],[0,1],[2,3]];
   var DC = {sameday:'rgb(77,216,138)',days3:'rgb(232,192,106)',days7:'rgba(168,180,204,0.7)'};
@@ -2025,6 +2027,7 @@ function NetworkSection(props) {
     {id:'columbus',  name:'Columbus',       state:'OH', type:'concierge', delivery:'days7',   lat:39.9612,  lng:-82.9988},
     {id:'newyork',   name:'New York',       state:'NY', type:'concierge', delivery:'days3',   lat:40.7128,  lng:-74.0060},
     {id:'washington',name:'Washington',     state:'DC', type:'concierge', delivery:'days3',   lat:38.9072,  lng:-77.0369},
+    {id:'lasvegas',  name:'Las Vegas',      state:'NV', type:'concierge', delivery:'days7',   lat:36.1699,  lng:-115.1398},
   ];
 
   var NET_ROUTES = [['savannah','atlanta'],['atlanta','tampa'],['tampa','orlando']];
