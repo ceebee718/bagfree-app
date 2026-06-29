@@ -1394,9 +1394,8 @@ function TopBar(props) {
     <div className="topbar">
       <div className="greeting">
         <h1 className="greeting-title">
-          <div style={{marginBottom:'0.6rem'}}>Travel Light.</div>
-          <div style={{marginBottom:'0.6rem'}}>Experience More.</div>
-          <em style={{color:'var(--gold)',fontStyle:'italic'}}>Leave Less Behind.</em>
+          <div style={{marginBottom:'0.6rem'}}>Travel Without Luggage.</div>
+          <em style={{color:'var(--gold)',fontStyle:'italic'}}>Your Clothes Are Waiting at Your Hotel.</em>
         </h1>
         <div style={{fontSize:'0.92rem',color:'var(--muted)',fontWeight:300,marginTop:'1.5rem',marginBottom:'1.8rem',lineHeight:1.6,maxWidth:'520px'}}>Travel lighter, discover more, and help create a more<br/>sustainable way to explore the world.</div>
         <div style={{display:'flex',alignItems:'center',gap:'0.6rem',marginBottom:'1rem',opacity:0.5}}>
