@@ -36,7 +36,7 @@
   .em-panel{width:210px;flex-shrink:0;padding:1.5rem 1.2rem}
   .em-panel.left{border-right:1px solid rgba(201,169,110,0.1)}
   .em-panel.right{border-left:1px solid rgba(201,169,110,0.1)}
-  .em-map-area{flex:1;position:relative;min-width:0;padding:0.5rem}
+  .em-map-area{flex:1;position:relative;min-width:0;padding:0.5rem;min-height:500px}
 
   .em-panel-title{font-size:0.58rem;letter-spacing:3px;text-transform:uppercase;color:var(--gold);font-weight:600;margin-bottom:1rem;padding-bottom:0.5rem;border-bottom:1px solid rgba(201,169,110,0.18)}
   .em-stat{display:flex;justify-content:space-between;align-items:center;padding:0.5rem 0;border-bottom:1px solid rgba(255,255,255,0.04)}
@@ -118,9 +118,51 @@
     .em-map-area{order:-1}
   }
   @media(max-width:520px){.modal-body{grid-template-columns:1fr}.em-legend{gap:1rem}}
+  /* ── Theme Toggle ── */
+  .theme-toggle{position:fixed;top:1rem;right:1rem;z-index:200;display:inline-flex;align-items:center;justify-content:center;width:36px;height:36px;border-radius:50%;border:1px solid rgba(201,169,110,0.32);background:rgba(201,169,110,0.05);color:#c9a96e;cursor:pointer;transition:all 0.35s cubic-bezier(.4,0,.2,1);padding:0;flex-shrink:0}
+  .theme-toggle:hover{background:rgba(201,169,110,0.14);border-color:#c9a96e;transform:scale(1.06) rotate(15deg);box-shadow:0 4px 14px rgba(201,169,110,0.22)}
+  .theme-toggle svg{width:16px;height:16px;stroke:currentColor;fill:none;stroke-linecap:round;stroke-linejoin:round}
+
+  /* ── Light Mode ── */
+  html.light{--noir:#f5f0e6;--noir-2:#faf7f0;--gold:#9A7B3D;--gold-soft:rgba(154,123,61,0.5);--em:#2d8f6f;--silver:#6a7088;--white:#1a1a2e}
+  html.light body{background:#f5f0e6;color:#1a1a2e}
+  html.light .em-header h1{color:#9A7B3D}
+  html.light .em-tagline{color:rgba(26,26,46,0.6)}
+  html.light .em-sub{color:rgba(26,26,46,0.5)}
+  html.light .em-legend{border-color:rgba(154,123,61,0.15)}
+  html.light .em-leg{color:rgba(26,26,46,0.5)}
+  html.light .em-panel{border-color:rgba(154,123,61,0.12)!important}
+  html.light .em-panel-title{color:#9A7B3D;border-color:rgba(154,123,61,0.18)}
+  html.light .em-stat-lbl{color:rgba(26,26,46,0.5)}
+  html.light .em-stat-val{color:#9A7B3D}
+  html.light .em-stat{border-color:rgba(26,26,46,0.06)}
+  html.light .em-tl-year{color:#9A7B3D}
+  html.light .em-tl-cities{color:rgba(26,26,46,0.5)}
+  html.light .em-tl{border-color:rgba(26,26,46,0.06)}
+  html.light .em-demand-city{color:rgba(26,26,46,0.6)}
+  html.light .em-demand-rank{color:rgba(154,123,61,0.5)}
+  html.light .em-demand-bar{background:rgba(26,26,46,0.08)}
+  html.light .em-demand-fill{background:rgba(26,26,46,0.25)}
+  html.light .em-state{fill:rgba(26,26,46,0.04)!important;stroke:rgba(26,26,46,0.15)!important}
+  html.light .em-city-label{fill:#1a1a2e!important;stroke:#f5f0e6!important}
+  html.light .em-bottom{background:rgba(154,123,61,0.04);border-color:rgba(154,123,61,0.12)}
+  html.light .em-bottom h3{color:#9A7B3D}
+  html.light .em-bottom p{color:rgba(26,26,46,0.5)}
+  html.light .em-cta-btn{border-color:rgba(154,123,61,0.3);color:#9A7B3D}
+  html.light .em-cta-btn:hover{background:rgba(154,123,61,0.1)}
+  html.light .em-eyebrow{color:#9A7B3D}
+  html.light #em-tooltip{background:#faf7f0;border-color:rgba(154,123,61,0.25);box-shadow:0 12px 30px rgba(0,0,0,0.1)}
+  html.light .tt-city{color:#1a1a2e}
+  html.light .tt-row{color:rgba(26,26,46,0.6)}
+  html.light .tt-meta{color:rgba(26,26,46,0.4)}
+  html.light .tt-cta{border-color:rgba(154,123,61,0.15);color:#9A7B3D}
+  html.light .theme-toggle{border-color:rgba(154,123,61,0.3);background:rgba(154,123,61,0.06);color:#9A7B3D}
 </style>
 </head>
 <body>
+<button class="theme-toggle" id="themeBtn" onclick="toggleTheme()" aria-label="Toggle theme">
+  <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.8" stroke-linecap="round" stroke-linejoin="round"><circle cx="12" cy="12" r="4"/><path d="M12 2v2M12 20v2M4.93 4.93l1.41 1.41M17.66 17.66l1.41 1.41M2 12h2M20 12h2M4.93 19.07l1.41-1.41M17.66 6.34l1.41-1.41"/></svg>
+</button>
 
 <div class="em-header">
   <div class="em-eyebrow">BagFree Expansion Network</div>
@@ -234,7 +276,7 @@
     {id:'dallas',    name:'Dallas, TX',         type:'concierge', delivery:'days7',   dir:'l', lat:32.7767,  lng:-96.797},
     {id:'chicago',   name:'Chicago, IL',        type:'concierge', delivery:'days7',   dir:'t', lat:41.8781,  lng:-87.6298},
     {id:'columbus',  name:'Columbus, OH',       type:'concierge', delivery:'days7',   dir:'t', lat:39.9612,  lng:-82.9988},
-    {id:'newyork',   name:'New York, NY',       type:'concierge', delivery:'days3',   dir:'r', lat:40.7128,  lng:-74.0060},
+    {id:'newyork',   name:'New York City, NY',       type:'concierge', delivery:'days3',   dir:'r', lat:40.7128,  lng:-74.0060},
     {id:'washington',name:'Washington, DC',     type:'concierge', delivery:'days3',   dir:'b', lat:38.9072,  lng:-77.0369}
     {id:'lasvegas',  name:'Las Vegas, NV',      type:'concierge', delivery:'days7',   lat:36.1699,  lng:-115.1398},
   ];
@@ -383,6 +425,29 @@
     });
   };
 })();
+</script>
+<script>
+var sunSVG = '<svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.8" stroke-linecap="round" stroke-linejoin="round"><circle cx="12" cy="12" r="4"/><path d="M12 2v2M12 20v2M4.93 4.93l1.41 1.41M17.66 17.66l1.41 1.41M2 12h2M20 12h2M4.93 19.07l1.41-1.41M17.66 6.34l1.41-1.41"/></svg>';
+var moonSVG = '<svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.8" stroke-linecap="round" stroke-linejoin="round"><path d="M21 12.79A9 9 0 1 1 11.21 3 7 7 0 0 0 21 12.79z"/></svg>';
+function toggleTheme(){
+  var isLight = document.documentElement.classList.toggle('light');
+  try { localStorage.setItem('bf-em-theme', isLight ? 'light' : 'dark'); } catch(e){}
+  var btn = document.getElementById('themeBtn');
+  if(btn) btn.innerHTML = isLight ? moonSVG : sunSVG;
+}
+(function(){
+  try {
+    if(localStorage.getItem('bf-em-theme')==='light'){
+      document.documentElement.classList.add('light');
+    }
+  } catch(e){}
+})();
+document.addEventListener('DOMContentLoaded',function(){
+  if(document.documentElement.classList.contains('light')){
+    var btn=document.getElementById('themeBtn');
+    if(btn) btn.innerHTML=moonSVG;
+  }
+});
 </script>
 <script src="/bagfree-nav.js?v=2" defer></script>
 </body>
