@@ -51,3 +51,8 @@
   from = "/api/embr-travel-brain"
   to = "/.netlify/functions/embr-travel-brain"
   status = 200
+
+[[redirects]]
+  from = "/api/embr-status"
+  to = "/.netlify/functions/embr-status"
+  status = 200
