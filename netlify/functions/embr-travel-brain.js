@@ -189,7 +189,48 @@ Do not describe yourself as an operator layer, engine router, or generic chatbot
       ''
     ).trim();
 
-    const finalText = text || 'I had trouble generating your itinerary. Please try again.';
+    let finalText = text || 'I had trouble generating your itinerary. Please try again.';
+
+    const isTripPrepQuestion =
+      /\b(pack|packing|bring|wear|clothes|outfit|trip|travel|date|weather|cold|hot|rain|jacket|shoes)\b/i.test(userMessage);
+
+    const hasTravelBrainFormat =
+      /Best move:/i.test(finalText) &&
+      /Pack with you:/i.test(finalText) &&
+      /What BagFree should handle:/i.test(finalText) &&
+      /Skip packing:/i.test(finalText) &&
+      /Next step:/i.test(finalText);
+
+    if (isTripPrepQuestion && !hasTravelBrainFormat) {
+      const contextLine = finalText.split('\n').find(Boolean) || 'Plan for the destination, dates, weather, and how much you actually need to carry.';
+
+      finalText =
+`Best move:
+${contextLine}
+
+Pack with you:
+- Weather-appropriate outfits and layers
+- Comfortable shoes
+- Personal medication, ID, cards, phone, and chargers
+- One versatile nicer outfit if dinners, meetings, or events are possible
+
+What BagFree should handle:
+- Toiletries and arrival essentials delivered to the hotel or rental
+- Snacks, drinks, or a small room-stock kit
+- Weather extras like an umbrella, rain layer, or cold-weather backup
+- Laundry support during the trip so you can pack fewer clothes
+- Return shipping for extras, gifts, or anything you do not want to carry home
+
+Skip packing:
+- Full-size toiletries
+- Too many backup outfits
+- Bulky extras you only might need
+- Heavy duplicate shoes or jackets unless the trip requires them
+- Items that can be delivered locally or handled after arrival
+
+Next step:
+Tell me whether this is business, casual, family, or event travel, and I’ll turn this into a tighter BagFree carry-light packing plan.`;
+    }
 
     return {
       statusCode: 200,
