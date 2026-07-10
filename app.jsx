@@ -1,5 +1,124 @@
 
 try {
+  if (!document.getElementById('bagfree-horizontal-scroll-lock')) {
+    const style = document.createElement('style');
+    style.id = 'bagfree-horizontal-scroll-lock';
+    style.textContent = `
+      html,
+      body,
+      #root {
+        width: 100%;
+        max-width: 100%;
+        overflow-x: hidden !important;
+        overscroll-behavior-x: none;
+      }
+
+      * {
+        box-sizing: border-box;
+      }
+
+      img,
+      video,
+      canvas,
+      svg {
+        max-width: 100%;
+      }
+
+      input,
+      textarea,
+      select,
+      button {
+        max-width: 100%;
+        box-sizing: border-box;
+      }
+
+      .mobile-bar,
+      .topbar,
+      .topbar-right,
+      .search,
+      .search-box,
+      .search-input,
+      .trip-search,
+      .searchbar,
+      .results,
+      .grid,
+      .cards,
+      .card,
+      .hero,
+      .section,
+      .content,
+      main {
+        max-width: 100% !important;
+        overflow-x: hidden !important;
+        box-sizing: border-box !important;
+      }
+
+      .chat-panel {
+        max-width: calc(100vw - 20px) !important;
+        width: calc(100vw - 20px) !important;
+        left: 10px !important;
+        right: 10px !important;
+        overflow-x: hidden !important;
+        box-sizing: border-box !important;
+      }
+
+      .chat-head,
+      .chat-head-info,
+      .chat-body,
+      .chat-input {
+        min-width: 0 !important;
+        max-width: 100% !important;
+        overflow-x: hidden !important;
+      }
+
+      .chat-head-title,
+      .chat-head-subtitle,
+      .chat-head-sub,
+      .chat-body,
+      .chat-bubble,
+      .chat-msg,
+      .chat-message {
+        overflow-wrap: anywhere !important;
+        word-break: break-word !important;
+      }
+
+      textarea.chat-input,
+      input.chat-input,
+      .chat-panel textarea,
+      .chat-panel input {
+        font-size: 16px !important;
+        min-width: 0 !important;
+        max-width: 100% !important;
+      }
+
+      @media (max-width: 640px) {
+        body {
+          position: relative;
+        }
+
+        .mobile-bar,
+        .topbar {
+          width: 100% !important;
+          max-width: 100% !important;
+        }
+
+        .topbar-right,
+        .search,
+        .search-box,
+        .search-input,
+        .trip-search,
+        .searchbar {
+          width: 100% !important;
+          min-width: 0 !important;
+        }
+      }
+    `;
+    document.head.appendChild(style);
+  }
+} catch (e) {}
+
+
+try {
 const { useState } = React;
 
 const LOGO_SRC = '/bagfree-logo-web.png';
@@ -2501,7 +2620,7 @@ function ConciergeChat(props) {
   // Greeting on first open
   React.useEffect(function(){
     if (open && msgs.length === 0 && !props.seed) {
-      setMsgs([{ role:'bot', text:'Hi! I\u2019m your BagFree concierge for ' + city.name + '. Ask me anything \u2014 what to pack, where to eat, things to do, or help with your order.' }]);
+      setMsgs([{ role:'bot', text:'Hi! I\u2019m BagFree Travel Brain, powered by Embr Intelligence. Tell me where you\u2019re going and I\u2019ll help you pack lighter, plan what to deliver ahead, and prep your trip without dragging extra bags.' }]);
     }
   }, [open]);
 
@@ -2519,7 +2638,7 @@ function ConciergeChat(props) {
       return '- ' + it.title + ' (' + (CATEGORIES[it.category] ? CATEGORIES[it.category].label : it.category) + ', ' + (it.city === 'all' ? 'all cities' : it.city) + ')';
     }).join('\n');
     const systemPrompt =
-      'You are the BagFree concierge, a warm, concise travel assistant. BagFree delivers clothing rentals, meals, snacks, essentials, local experiences, and curator services to hotel guests in these cities: Savannah, Atlanta, Tampa, Orlando, and Miami. ' +
+      'You are the BagFree Travel Brain, a warm, concise travel assistant. BagFree delivers clothing rentals, meals, snacks, essentials, local experiences, and curator services to hotel guests in these cities: Savannah, Atlanta, Tampa, Orlando, and Miami. ' +
       'The guest is currently in ' + city.name + ', ' + (city.region || '') + '. ' +
       'Help with travel questions, recommendations, packing, and what BagFree offers. Keep replies short (2-4 sentences) and friendly. ' +
       'If asked about something outside the cities BagFree serves, gently note BagFree operates in the Southeast US but still try to be helpful. ' +
@@ -2530,7 +2649,7 @@ function ConciergeChat(props) {
       return { role: m.role === 'user' ? 'user' : 'assistant', content: m.text };
     });
 
-    const res = await fetch('/.netlify/functions/concierge-chat', {
+    const res = await fetch('/.netlify/functions/embr-travel-brain', {
       method: 'POST',
       headers: { 'Content-Type': 'application/json' },
       body: JSON.stringify({ system: systemPrompt, messages: apiMessages }),
@@ -2574,7 +2693,7 @@ function ConciergeChat(props) {
   if (!open) {
     return (
       <button className="concierge" onClick={function(){ setOpen(true); track('concierge_open', { city: city.id }); }}>
-        <Icon.Chat/> Concierge Chat
+        <Icon.Chat/> Travel Brain
       </button>
     );
   }
@@ -2584,8 +2703,8 @@ function ConciergeChat(props) {
       <div className="chat-head">
         <div className="chat-head-avatar"><Icon.Chat/></div>
         <div className="chat-head-info">
-          <div className="chat-head-title">BagFree Concierge</div>
-          <div className="chat-head-sub"><span className="chat-head-dot"></span> Online · {city.name}</div>
+          <div className="chat-head-title">BagFree Travel Brain</div>
+          <div className="chat-head-sub"><span className="chat-head-dot"></span> Powered by Embr Intelligence · {city.name}</div>
         </div>
         <button className="chat-close" aria-label="Close chat" onClick={function(){ setOpen(false); }}><Icon.X/></button>
       </div>
@@ -2610,7 +2729,7 @@ function ConciergeChat(props) {
 
       <div className="chat-foot">
         <textarea className="chat-input" rows={1} maxLength={2000}
-          placeholder="Message the concierge…"
+          placeholder="Message BagFree Travel Brain…"
           value={input}
           onChange={function(e){ setInput(e.target.value); }}
           onKeyDown={onKey}/>

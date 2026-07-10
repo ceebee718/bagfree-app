@@ -1,0 +1,12 @@
+{
+  "appId": "com.bagfree.app",
+  "appName": "BagFree",
+  "webDir": "www",
+  "plugins": {
+    "StatusBar": {
+      "overlaysWebView": false,
+      "style": "LIGHT",
+      "backgroundColor": "#080E1A"
+    }
+  }
+}
