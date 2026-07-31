@@ -2634,31 +2634,76 @@ function ConciergeChat(props) {
   }, [open, props.seed]);
 
   async function callConcierge(history) {
-    const catalogSummary = SEARCHABLE.slice(0, 40).map(function(it){
-      return '- ' + it.title + ' (' + (CATEGORIES[it.category] ? CATEGORIES[it.category].label : it.category) + ', ' + (it.city === 'all' ? 'all cities' : it.city) + ')';
-    }).join('\n');
-    const systemPrompt =
-      'You are the BagFree Travel Brain, a warm, concise travel assistant. BagFree delivers clothing rentals, meals, snacks, essentials, local experiences, and curator services to hotel guests in these cities: Savannah, Atlanta, Tampa, Orlando, and Miami. ' +
-      'The guest is currently in ' + city.name + ', ' + (city.region || '') + '. ' +
-      'Help with travel questions, recommendations, packing, and what BagFree offers. Keep replies short (2-4 sentences) and friendly. ' +
-      'If asked about something outside the cities BagFree serves, gently note BagFree operates in the Southeast US but still try to be helpful. ' +
-      'You cannot access real-time data (exact current time, live weather, flight status). If asked for those, say so briefly and suggest how they could check. ' +
-      'When relevant, mention specific BagFree items from this catalog:\n' + catalogSummary;
-
     const apiMessages = history.map(function(m){
-      return { role: m.role === 'user' ? 'user' : 'assistant', content: m.text };
+      return {
+        role: m.role === 'bot' ? 'assistant' : 'user',
+        content: m.text || m.content || ''
+      };
     });
 
-    const res = await fetch('/.netlify/functions/embr-travel-brain', {
-      method: 'POST',
-      headers: { 'Content-Type': 'application/json' },
-      body: JSON.stringify({ system: systemPrompt, messages: apiMessages }),
-    });
-    const data = await res.json().catch(function(){ return {}; });
-    if (!res.ok || !data.reply) {
-      throw new Error((data && data.error) || ('Proxy HTTP ' + res.status));
+    const lastUser = apiMessages.slice().reverse().find(function(m){ return m.role === 'user'; });
+    const userMessage = lastUser ? lastUser.content : '';
+
+    const systemPrompt =
+      'You are BagFree Travel Brain, powered by Embr Intelligence. ' +
+      'You help travelers pack lighter, decide what BagFree should deliver ahead, prepare destination essentials, and avoid dragging unnecessary bags. ' +
+      'For packing and trip-prep questions, structure the answer with: Best move, Pack with you, What BagFree should handle, Skip packing, Next step. ' +
+      'Be concise, premium, practical, and destination-aware. Do not sound like a generic chatbot.';
+
+    const payload = {
+      userMessage: userMessage,
+      history: apiMessages,
+      systemPrompt: systemPrompt,
+      profile: {
+        name: 'Traveler',
+        travelStyle: 'Premium practical'
+      },
+      activeTrip: {}
+    };
+
+    const capHttp =
+      window.Capacitor &&
+      window.Capacitor.Plugins &&
+      window.Capacitor.Plugins.CapacitorHttp;
+
+    let data = {};
+    let status = 0;
+    let ok = false;
+
+    if (capHttp && window.location.protocol === 'capacitor:') {
+      const nativeRes = await capHttp.post({
+        url: 'https://bagfree.app/.netlify/functions/embr-travel-brain',
+        headers: { 'Content-Type': 'application/json' },
+        data: payload
+      });
+
+      status = nativeRes.status || 0;
+      ok = status >= 200 && status < 300;
+      data = typeof nativeRes.data === 'string'
+        ? JSON.parse(nativeRes.data || '{}')
+        : (nativeRes.data || {});
+    } else {
+      const res = await fetch('/.netlify/functions/embr-travel-brain', {
+        method: 'POST',
+        headers: { 'Content-Type': 'application/json' },
+        body: JSON.stringify(payload),
+      });
+
+      status = res.status;
+      ok = res.ok;
+      data = await res.json().catch(function(){ return {}; });
     }
-    return data.reply;
+
+    const reply = data.reply || data.text || data.message || data.content || data.response || data.answer || '';
+
+    if (!ok || !reply) {
+      throw new Error(
+        ((data && (data.error || data.detail || data.message)) || ('Travel Brain HTTP ' + status)) +
+        (data && data.embrStatus ? ' / Embr status ' + data.embrStatus : '')
+      );
+    }
+
+    return reply;
   }
 
   async function sendMessage(text) {
