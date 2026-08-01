@@ -6274,5 +6274,85 @@ setTimeout(function(){ if (window.bfSyncThemeIcons) window.bfSyncThemeIcons(); }
 })();
 </script>
 
+
+<script id="bagfree-lounge-dark-screen-rescue">
+(function () {
+  function rescueLounge() {
+    try {
+      // Hide common loading/fallback blockers.
+      [
+        'loadingOverlay',
+        'loadingFallback',
+        'loungeLoader',
+        'loader',
+        'bootLoader',
+        'splash',
+        'appLoader'
+      ].forEach(function(id) {
+        var el = document.getElementById(id);
+        if (el) {
+          el.style.display = 'none';
+          el.style.opacity = '0';
+          el.style.pointerEvents = 'none';
+        }
+      });
+
+      // Hide anything visibly saying Loading the Lounge.
+      Array.prototype.slice.call(document.querySelectorAll('body *')).forEach(function(el) {
+        var txt = (el.innerText || '').trim();
+        if (txt === 'Loading the Lounge…' || txt === 'Loading the Lounge...' || txt.indexOf('Couldn’t connect to our auth service') !== -1) {
+          var parent = el.closest('[id], section, div');
+          if (parent && parent !== document.body) {
+            parent.style.display = 'none';
+            parent.style.opacity = '0';
+            parent.style.pointerEvents = 'none';
+          }
+        }
+      });
+
+      // Make sure the body/app are visible.
+      document.documentElement.style.background = '';
+      document.body.style.background = '';
+      document.body.style.opacity = '1';
+      document.body.style.visibility = 'visible';
+      document.body.style.overflow = 'auto';
+
+      // Show auth overlay as the safe fallback if the dashboard did not render.
+      var auth = document.getElementById('authOverlay');
+      if (auth) {
+        var hasVisibleMain =
+          document.querySelector('.dash-shell, .dashboard, #dashboard, main, .dl-shell, .lounge-shell');
+
+        // If the screen is effectively blank, show sign-in/create account.
+        if (!hasVisibleMain || document.body.innerText.trim().length < 80) {
+          auth.style.display = 'flex';
+        }
+      }
+
+      // Add a home escape if missing.
+      if (!document.getElementById('bagfree-lounge-home-escape')) {
+        var a = document.createElement('a');
+        a.id = 'bagfree-lounge-home-escape';
+        a.href = '/';
+        a.textContent = '← Home';
+        a.style.cssText = 'position:fixed;left:16px;top:max(16px, env(safe-area-inset-top));z-index:999999;color:var(--gold,#c9a96e);background:rgba(0,0,0,.45);border:1px solid rgba(201,169,110,.35);padding:8px 12px;border-radius:999px;text-decoration:none;font:12px Arial,sans-serif;letter-spacing:1.5px;text-transform:uppercase;';
+        document.body.appendChild(a);
+      }
+    } catch (e) {
+      console.error('Lounge rescue failed:', e);
+    }
+  }
+
+  window.addEventListener('load', function () {
+    setTimeout(rescueLounge, 2500);
+    setTimeout(rescueLounge, 6000);
+  });
+
+  document.addEventListener('DOMContentLoaded', function () {
+    setTimeout(rescueLounge, 3500);
+  });
+})();
+</script>
+
 </body>
 </html>

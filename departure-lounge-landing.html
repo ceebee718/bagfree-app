@@ -1060,6 +1060,27 @@ input,select,textarea{outline:none}
 .csm-city-arrow{color:rgba(var(--gold-rgb),0.4);font-size:0.8rem;transition:transform 0.15s}
 .csm-city:hover .csm-city-arrow{transform:translateX(3px);color:var(--gold)}
 </style>
+
+<style id="bagfree-beta-cart-remove-fix">
+.confirm-bundle-remove {
+  margin-top: 0.35rem;
+  background: transparent;
+  border: 1px solid rgba(var(--text-rgb),0.18);
+  color: rgba(var(--text-rgb),0.55);
+  border-radius: 999px;
+  padding: 0.35rem 0.65rem;
+  font-size: 0.55rem;
+  letter-spacing: 1.8px;
+  text-transform: uppercase;
+  cursor: pointer;
+  font-family: var(--ff-body);
+}
+.confirm-bundle-remove:hover {
+  color: var(--red);
+  border-color: rgba(248,113,113,0.45);
+}
+</style>
+
 </head>
 <body>
 
@@ -2320,6 +2341,7 @@ function renderConfirmSummary() {
         <div class="confirm-bundle-body">
           <div class="confirm-bundle-name">${b.title}</div>
           <div class="confirm-bundle-qty">Qty ${qty}</div>
+          <button class="confirm-bundle-remove" type="button" onclick="removeBundleFromConfirm('${id}')">Remove</button>
         </div>
         <div class="confirm-bundle-price">$${b.price * qty % 1 === 0 ? b.price * qty : (b.price * qty).toFixed(2)}</div>
       </div>
@@ -2336,6 +2358,24 @@ function renderConfirmSummary() {
   document.getElementById('reserveSummary').innerHTML =
     '<em>' + (state.city || '') + '</em><br>' +
     fmt(state.dateArrive) + ' → ' + fmt(state.dateDepart);
+}
+
+function removeBundleFromConfirm(id) {
+  if (state.selectedBundles && state.selectedBundles[id]) {
+    delete state.selectedBundles[id];
+  }
+
+  renderBundles();
+  updateCartBar();
+
+  const remaining = Object.keys(state.selectedBundles || {});
+  if (remaining.length) {
+    renderConfirmSummary();
+  } else {
+    goToStep(3);
+  }
+
+  checkReserveReady();
 }
 
 // ─── HOTEL + EMAIL ───
@@ -2592,7 +2632,7 @@ async function submitReserve() {
 
   // 3) Call our Netlify function to create a Stripe Checkout session
   try {
-    const res = await fetch('/.netlify/functions/create-checkout', {
+    const res = await fetch('https://bagfree.app/.netlify/functions/create-checkout', {
       method: 'POST',
       headers: {'Content-Type':'application/json'},
       body: JSON.stringify({
