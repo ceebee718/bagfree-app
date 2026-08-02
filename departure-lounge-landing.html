@@ -1606,6 +1606,7 @@ const state = {
   dateDepart: null,
   selectedBundles: {}, // {bundleId: quantity}
   selectedSizes: {}, // {bundleId: 'S'|'M'|'L'|'XL'}
+  preferredSize: null, // filled from profiles.preferred_size once logged-in session loads
   filter: 'all',
   hotel: null,
   email: null,
@@ -1669,6 +1670,7 @@ const VENDORS = [
 // ─── BUNDLES ─── (real data from valetbynuor.com + SNUGL placeholders)
 // Inventory: change `units`. 0 = sold out (shows Notify Me modal).
 const SIZE_OPTIONS = ['S', 'M', 'L', 'XL'];
+function defaultSize() { return (state.preferredSize && SIZE_OPTIONS.includes(state.preferredSize)) ? state.preferredSize : 'M'; }
 
 const BUNDLES = [
   // ── VALET BY NUOR ──
@@ -1985,14 +1987,14 @@ function renderBundleCard(b) {
 
   const qty = state.selectedBundles[b.id] || 0;
   const isSelected = qty > 0;
-  const size = state.selectedSizes[b.id] || 'M';
+  const size = state.selectedSizes[b.id] || defaultSize();
   const unavailable = (b.units || 0) <= 0;
   const lowStock = !unavailable && b.units <= 5;
   const cardClass = ['bundle-card'];
   if (isSelected) cardClass.push('selected');
   if (unavailable) cardClass.push('unavailable');
   if (b.rental) cardClass.push('is-rental');
-  const sizeRow = isSelected ? `
+  const sizeRow = !unavailable ? `
     <div class="bundle-size-row">
       <label class="bundle-size-label" for="size-${b.id}">Size</label>
       <select class="bundle-size-select" id="size-${b.id}" onchange="setBundleSize('${b.id}', this.value)">
@@ -2038,14 +2040,14 @@ function renderSJBundleCard(b) {
   const isPopular = b.badge === 'Most Popular';
   const qty = state.selectedBundles[b.id] || 0;
   const isSelected = qty > 0;
-  const size = state.selectedSizes[b.id] || 'M';
-  const sizeRow = isSelected ? `
+  const size = state.selectedSizes[b.id] || defaultSize();
+  const sizeRow = `
     <div class="bundle-size-row" style="justify-content:center;margin-top:0.6rem">
       <label class="bundle-size-label" for="size-${b.id}">Size</label>
       <select class="bundle-size-select" id="size-${b.id}" onchange="setBundleSize('${b.id}', this.value)">
         ${SIZE_OPTIONS.map(s => `<option value="${s}" ${s === size ? 'selected' : ''}>${s}</option>`).join('')}
       </select>
-    </div>` : '';
+    </div>`;
 
   const priceDisplay = isTrial
     ? '<span class="sj-bp-main">$7</span><span class="sj-bp-period"> delivery only</span>'
@@ -2269,7 +2271,7 @@ function fmtDateShort(d) {
 
 function addBundle(id) {
   state.selectedBundles[id] = 1;
-  if (!state.selectedSizes[id]) state.selectedSizes[id] = 'M';
+  if (!state.selectedSizes[id]) state.selectedSizes[id] = defaultSize();
   renderBundles();
   updateCartBar();
 }
@@ -2380,7 +2382,7 @@ function renderConfirmSummary() {
   c.innerHTML = sjNotice + ids.map(id => {
     const b = BUNDLES.find(x => x.id === id);
     const qty = state.selectedBundles[id];
-    const size = state.selectedSizes[id] || 'M';
+    const size = state.selectedSizes[id] || defaultSize();
     return `
       <div class="confirm-bundle">
         <img class="confirm-bundle-thumb" src="${b.image}" alt="">
@@ -2451,7 +2453,42 @@ document.addEventListener('DOMContentLoaded', function() {
   if (arrEl) { arrEl.min = arrive; if (!arrEl.value) arrEl.value = arrive; }
   if (depEl) { depEl.min = arrive; if (!depEl.value) depEl.value = depart; }
   updateDatesFromCheckout();
+  applyReorderFromDashboard();
 });
+
+// If the traveler arrived here via the dashboard's "Reorder Last Trip"
+// button, pick up the handed-off cart from localStorage and jump straight
+// to the bundle picker (step 3) with everything pre-selected so they can
+// review before confirming.
+function applyReorderFromDashboard() {
+  try {
+    var params = new URLSearchParams(window.location.search);
+    if (params.get('reorder') !== '1') return;
+    var raw = localStorage.getItem('bf-reorder');
+    if (!raw) return;
+    var payload = JSON.parse(raw);
+    localStorage.removeItem('bf-reorder');
+
+    var appliedAny = false;
+    (payload.items || []).forEach(function(it) {
+      var bundle = BUNDLES.find(function(b) { return b.id === it.id; });
+      // Skip items that no longer exist or are sold out — a past order can
+      // reference a bundle that's since been retired or run out of stock.
+      if (!bundle || (bundle.units || 0) <= 0) return;
+      var qty = Math.max(1, Math.min(it.qty || 1, bundle.units));
+      state.selectedBundles[it.id] = qty;
+      state.selectedSizes[it.id] = SIZE_OPTIONS.includes(it.size) ? it.size : defaultSize();
+      appliedAny = true;
+    });
+
+    if (payload.city && HOTELS[payload.city]) state.city = payload.city;
+
+    if (appliedAny) {
+      goToStep(3);
+      updateCartBar();
+    }
+  } catch (e) { console.warn('Reorder pickup failed:', e && e.message); }
+}
 
 function updateCityFromCheckout() {
   var cityVal = document.getElementById('citySelectCheckout').value;
@@ -2529,6 +2566,14 @@ try {
           document.getElementById('reserveEmail').value = sbUser.email;
           state.email = sbUser.email;
         }
+        // Pull the traveler's saved size preference (set from a past order)
+        // so bundle cards default to it instead of a hardcoded 'M'.
+        sb.from('profiles').select('preferred_size').eq('id', sbUser.id).single().then(function(res2) {
+          if (res2.data && res2.data.preferred_size) {
+            state.preferredSize = res2.data.preferred_size;
+            renderBundles();
+          }
+        });
       }
     });
   }
@@ -2567,6 +2612,17 @@ async function saveOrderToSupabase(bundleCart, total, stripeSessionId) {
           order_id: order.id
         });
       }
+    }
+
+    // Remember the size they just ordered as their preferred size for next
+    // time (most frequent size in this cart wins; ties go to the first item).
+    if (bundleCart && bundleCart.length) {
+      var counts = {};
+      bundleCart.forEach(function(b) { counts[b.size] = (counts[b.size] || 0) + b.qty; });
+      var topSize = bundleCart[0].size;
+      var topCount = 0;
+      Object.keys(counts).forEach(function(s) { if (counts[s] > topCount) { topCount = counts[s]; topSize = s; } });
+      await sb.from('profiles').update({ preferred_size: topSize }).eq('id', sbUser.id);
     }
   } catch(e) { console.log('Supabase order save:', e); }
 }
@@ -2621,7 +2677,7 @@ async function submitReserve() {
       price: b.price,
       image: b.image,
       qty: state.selectedBundles[id],
-      size: state.selectedSizes[id] || 'M'
+      size: state.selectedSizes[id] || defaultSize()
     };
   });
   const total = bundleCart.reduce((s, b) => s + b.price * b.qty, 0);
