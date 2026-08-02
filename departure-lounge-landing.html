@@ -936,6 +936,19 @@ input,select,textarea{outline:none}
 .bundle-qty-remove{margin-left:0.4rem;font-size:0.55rem;letter-spacing:2px;text-transform:uppercase;color:rgba(var(--text-rgb),0.45);cursor:pointer;background:transparent;border:none;font-family:var(--ff-body);}
 .bundle-qty-remove:hover{color:var(--red)}
 
+/* Size selector on selected bundle cards */
+.bundle-size-row{display:flex;align-items:center;gap:0.6rem;margin-bottom:0.9rem;}
+.bundle-size-label{font-size:0.58rem;letter-spacing:2.5px;text-transform:uppercase;color:rgba(var(--text-rgb),0.5);}
+.bundle-size-select{background:rgba(var(--gold-rgb),0.06);border:1px solid rgba(var(--gold-rgb),0.3);color:var(--white);padding:0.35rem 0.6rem;font-size:0.78rem;font-family:var(--ff-body);cursor:pointer;}
+.bundle-size-select:focus{border-color:var(--gold);}
+.bundle-size-select option{background:var(--noir-2);color:var(--white);}
+:root[data-theme="light"] .bundle-size-select option{background:#FAF7F0;color:#0d1a32;}
+
+/* Remove control + size line on Review & Reserve (Step 4) */
+.confirm-bundle-remove{font-size:0.58rem;letter-spacing:2px;text-transform:uppercase;color:rgba(var(--text-rgb),0.45);cursor:pointer;background:transparent;border:none;font-family:var(--ff-body);margin-top:4px;padding:0;}
+.confirm-bundle-remove:hover{color:var(--red)}
+.confirm-bundle-meta{display:flex;align-items:center;gap:0.5rem;flex-wrap:wrap;}
+
 /* Sticky cart bar */
 .cart-bar{position:fixed;bottom:0;left:0;right:0;z-index:50;background:linear-gradient(180deg, rgba(var(--bg-rgb),0.92), rgba(var(--bg-rgb),0.99));backdrop-filter:blur(20px);-webkit-backdrop-filter:blur(20px);border-top:1px solid var(--gold);padding:0.95rem 2rem;display:none;align-items:center;justify-content:space-between;gap:1rem;flex-wrap:wrap;box-shadow:0 -12px 30px rgba(0,0,0,0.3);transform:translateY(100%);transition:transform 0.4s cubic-bezier(.4,0,.2,1);}
 .cart-bar.show{display:flex;transform:translateY(0);}
@@ -1592,6 +1605,7 @@ const state = {
   dateArrive: null,
   dateDepart: null,
   selectedBundles: {}, // {bundleId: quantity}
+  selectedSizes: {}, // {bundleId: 'S'|'M'|'L'|'XL'}
   filter: 'all',
   hotel: null,
   email: null,
@@ -1654,6 +1668,8 @@ const VENDORS = [
 
 // ─── BUNDLES ─── (real data from valetbynuor.com + SNUGL placeholders)
 // Inventory: change `units`. 0 = sold out (shows Notify Me modal).
+const SIZE_OPTIONS = ['S', 'M', 'L', 'XL'];
+
 const BUNDLES = [
   // ── VALET BY NUOR ──
   {
@@ -1969,12 +1985,20 @@ function renderBundleCard(b) {
 
   const qty = state.selectedBundles[b.id] || 0;
   const isSelected = qty > 0;
+  const size = state.selectedSizes[b.id] || 'M';
   const unavailable = (b.units || 0) <= 0;
   const lowStock = !unavailable && b.units <= 5;
   const cardClass = ['bundle-card'];
   if (isSelected) cardClass.push('selected');
   if (unavailable) cardClass.push('unavailable');
   if (b.rental) cardClass.push('is-rental');
+  const sizeRow = isSelected ? `
+    <div class="bundle-size-row">
+      <label class="bundle-size-label" for="size-${b.id}">Size</label>
+      <select class="bundle-size-select" id="size-${b.id}" onchange="setBundleSize('${b.id}', this.value)">
+        ${SIZE_OPTIONS.map(s => `<option value="${s}" ${s === size ? 'selected' : ''}>${s}</option>`).join('')}
+      </select>
+    </div>` : '';
   return `
     <div class="${cardClass.join(' ')}" data-bundle-id="${b.id}">
       <div class="bundle-img-wrap">
@@ -1988,6 +2012,7 @@ function renderBundleCard(b) {
       <div class="bundle-body">
         <div class="bundle-title">${b.title}</div>
         <div class="bundle-tagline">${b.tagline}</div>
+        ${sizeRow}
         <div class="bundle-bottom">
           <div class="bundle-price">$${b.price % 1 === 0 ? b.price : b.price.toFixed(2)}${b.rental ? '<span style="font-size:0.6rem;color:rgba(var(--text-rgb),0.55);font-weight:400;letter-spacing:1.5px;text-transform:uppercase;margin-left:0.4rem">rental</span>' : ''}</div>
           ${unavailable
@@ -1997,6 +2022,7 @@ function renderBundleCard(b) {
                   <button class="bundle-qty-btn" onclick="changeBundleQty('${b.id}', -1)" aria-label="Decrease">−</button>
                   <span class="bundle-qty-val">${qty}</span>
                   <button class="bundle-qty-btn" onclick="changeBundleQty('${b.id}', 1)" aria-label="Increase" ${qty >= b.units ? 'disabled' : ''}>+</button>
+                  <button class="bundle-qty-remove" onclick="removeBundle('${b.id}')" aria-label="Remove">Remove</button>
                 </div>`
               : `<button class="bundle-action" onclick="addBundle('${b.id}')">+ Add</button>`
           }
@@ -2012,6 +2038,14 @@ function renderSJBundleCard(b) {
   const isPopular = b.badge === 'Most Popular';
   const qty = state.selectedBundles[b.id] || 0;
   const isSelected = qty > 0;
+  const size = state.selectedSizes[b.id] || 'M';
+  const sizeRow = isSelected ? `
+    <div class="bundle-size-row" style="justify-content:center;margin-top:0.6rem">
+      <label class="bundle-size-label" for="size-${b.id}">Size</label>
+      <select class="bundle-size-select" id="size-${b.id}" onchange="setBundleSize('${b.id}', this.value)">
+        ${SIZE_OPTIONS.map(s => `<option value="${s}" ${s === size ? 'selected' : ''}>${s}</option>`).join('')}
+      </select>
+    </div>` : '';
 
   const priceDisplay = isTrial
     ? '<span class="sj-bp-main">$7</span><span class="sj-bp-period"> delivery only</span>'
@@ -2036,6 +2070,7 @@ function renderSJBundleCard(b) {
         <button class="bundle-qty-btn" onclick="changeBundleQty('${b.id}', -1)" aria-label="Decrease">−</button>
         <span class="bundle-qty-val">${qty}</span>
         <button class="bundle-qty-btn" onclick="changeBundleQty('${b.id}', 1)" aria-label="Increase" ${qty >= b.units ? 'disabled' : ''}>+</button>
+        <button class="bundle-qty-remove" onclick="removeBundle('${b.id}')" aria-label="Remove">Remove</button>
       </div>`;
     } else {
       actionBtn = `<button class="sj-bp-cta sj-bp-cta-trial" onclick="addBundle('${b.id}')">Add to order — $7</button>`;
@@ -2047,6 +2082,7 @@ function renderSJBundleCard(b) {
         <button class="bundle-qty-btn" onclick="changeBundleQty('${b.id}', -1)" aria-label="Decrease">−</button>
         <span class="bundle-qty-val">${qty}</span>
         <button class="bundle-qty-btn" onclick="changeBundleQty('${b.id}', 1)" aria-label="Increase" ${qty >= b.units ? 'disabled' : ''}>+</button>
+        <button class="bundle-qty-remove" onclick="removeBundle('${b.id}')" aria-label="Remove">Remove</button>
       </div>`;
     } else {
       actionBtn = `<button class="sj-bp-cta sj-bp-cta-member" onclick="addBundle('${b.id}')">✓ Member — Add to order</button>`;
@@ -2081,6 +2117,7 @@ function renderSJBundleCard(b) {
           <span class="sj-recycled-notice-icon">♻</span>
           <span>Professionally cleaned and quality-checked garments. Each item is reused by future travelers to help reduce waste. <em>Return items in your BagFree laundry bag at the front desk before checkout. You are only charged a $75 non-return fee if items are not returned within 48 hours.</em></span>
         </div>
+        ${sizeRow}
         <div style="margin-top:auto;padding-top:0.8rem">
           ${actionBtn}
         </div>
@@ -2232,6 +2269,7 @@ function fmtDateShort(d) {
 
 function addBundle(id) {
   state.selectedBundles[id] = 1;
+  if (!state.selectedSizes[id]) state.selectedSizes[id] = 'M';
   renderBundles();
   updateCartBar();
 }
@@ -2239,7 +2277,10 @@ function addBundle(id) {
 function changeBundleQty(id, delta) {
   const bundle = BUNDLES.find(b => b.id === id);
   const newQty = (state.selectedBundles[id] || 0) + delta;
-  if (newQty <= 0) delete state.selectedBundles[id];
+  if (newQty <= 0) {
+    delete state.selectedBundles[id];
+    delete state.selectedSizes[id];
+  }
   else if (bundle && newQty > bundle.units) {
     // Cap at available stock
     state.selectedBundles[id] = bundle.units;
@@ -2247,6 +2288,31 @@ function changeBundleQty(id, delta) {
   else state.selectedBundles[id] = newQty;
   renderBundles();
   updateCartBar();
+  if (state.step === 'C2') renderConfirmSummary();
+}
+
+// Fully removes a bundle from the cart (all qty + its size selection),
+// regardless of current quantity. Used by the Remove control on bundle
+// cards and on the Step 4 Review & Reserve screen.
+function removeBundle(id) {
+  delete state.selectedBundles[id];
+  delete state.selectedSizes[id];
+  renderBundles();
+  updateCartBar();
+  if (state.step === 'C2') {
+    // If the cart is now empty, there's nothing to review — send the
+    // user back to bundle selection instead of showing a blank summary.
+    if (Object.keys(state.selectedBundles).length === 0) {
+      goToStep(3);
+    } else {
+      renderConfirmSummary();
+    }
+  }
+}
+
+function setBundleSize(id, size) {
+  state.selectedSizes[id] = size;
+  if (state.step === 'C2') renderConfirmSummary();
 }
 
 function updateCartBar() {
@@ -2314,12 +2380,16 @@ function renderConfirmSummary() {
   c.innerHTML = sjNotice + ids.map(id => {
     const b = BUNDLES.find(x => x.id === id);
     const qty = state.selectedBundles[id];
+    const size = state.selectedSizes[id] || 'M';
     return `
       <div class="confirm-bundle">
         <img class="confirm-bundle-thumb" src="${b.image}" alt="">
         <div class="confirm-bundle-body">
           <div class="confirm-bundle-name">${b.title}</div>
-          <div class="confirm-bundle-qty">Qty ${qty}</div>
+          <div class="confirm-bundle-meta">
+            <span class="confirm-bundle-qty">Qty ${qty} · Size ${size}</span>
+          </div>
+          <button class="confirm-bundle-remove" onclick="removeBundle('${id}')">Remove</button>
         </div>
         <div class="confirm-bundle-price">$${b.price * qty % 1 === 0 ? b.price * qty : (b.price * qty).toFixed(2)}</div>
       </div>
@@ -2550,7 +2620,8 @@ async function submitReserve() {
       title: b.title,
       price: b.price,
       image: b.image,
-      qty: state.selectedBundles[id]
+      qty: state.selectedBundles[id],
+      size: state.selectedSizes[id] || 'M'
     };
   });
   const total = bundleCart.reduce((s, b) => s + b.price * b.qty, 0);
@@ -2560,7 +2631,7 @@ async function submitReserve() {
     localStorage.setItem('bf-reservation', JSON.stringify({
       city: state.city, arrival: state.dateArrive, departure: state.dateDepart,
       hotel: state.hotel, guest_name: state.guestName || '', phone: state.phone || '', email: state.email,
-      bundles: bundleCart.map(b => ({id: b.id, name: b.title, price: b.price, qty: b.qty})),
+      bundles: bundleCart.map(b => ({id: b.id, name: b.title, price: b.price, qty: b.qty, size: b.size})),
       total: total,
       reserved_at: new Date().toISOString()
     }));
@@ -2583,7 +2654,7 @@ async function submitReserve() {
         guest_name: state.guestName || '',
         phone: state.phone || '',
         email: state.email,
-        bundles: bundleCart.map(b => `${b.qty}× ${b.title} ($${b.price.toFixed(2)})`).join(' | '),
+        bundles: bundleCart.map(b => `${b.qty}× ${b.title} — Size ${b.size} ($${b.price.toFixed(2)})`).join(' | '),
         bundle_total: '$' + total.toFixed(2),
         submitted_at: new Date().toISOString()
       })
