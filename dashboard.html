@@ -203,6 +203,7 @@ html.light .ts-thumb{transform:translateX(0)}
 .pp-hero img{width:100%;height:100%;object-fit:cover;display:block;transition:transform .6s}
 .passport:hover .pp-hero img{transform:scale(1.05)}
 .pp-hero::after{content:'';position:absolute;inset:0;background:linear-gradient(180deg,transparent 40%,rgba(4,18,42,0.85))}
+.pp-hero-fallback{width:100%;height:100%;display:flex;align-items:center;justify-content:center;background:linear-gradient(135deg,rgba(var(--gold-rgb),0.14),rgba(var(--em-rgb),0.08));color:rgba(var(--gold-rgb),0.55)}
 .pp-city{position:absolute;left:.8rem;bottom:.6rem;z-index:2;font-family:var(--ff-display);font-style:italic;font-size:1.15rem;color:var(--cream);text-shadow:0 2px 12px rgba(0,0,0,.6)}
 .pp-stamps{display:grid;grid-template-columns:repeat(5,1fr);gap:.4rem;padding:.9rem 1.3rem .4rem}
 .stamp{aspect-ratio:1;border-radius:50%;display:flex;align-items:center;justify-content:center;font-size:.9rem;transition:transform .25s}
@@ -493,6 +494,16 @@ const MARKERS = [
 ];
 const CATS = ['All','Food & Drink','Attractions','Tours','Shopping','Hotels'];
 
+// City-specific passport hero photos (falls back to Savannah's if a city
+// isn't in the map yet, and to a plain gradient if the image fails to load).
+const PASSPORT_HERO_IMG = {
+  'Savannah, GA': {url:'https://images.unsplash.com/photo-1570144290151-9c2f234f7c9c?w=700&h=400&fit=crop', alt:'Forsyth Park fountain'},
+  'Atlanta, GA': {url:'https://images.unsplash.com/photo-1575917649705-5b59aaa12e6b?w=700&h=400&fit=crop', alt:'Atlanta skyline'},
+  'Tampa, FL': {url:'https://images.unsplash.com/photo-1600042205498-fb26ec2b6cff?w=700&h=400&fit=crop', alt:'Tampa Riverwalk'},
+  'Orlando, FL': {url:'https://images.unsplash.com/photo-1597466599360-3b9775841aec?w=700&h=400&fit=crop', alt:'Orlando skyline'},
+  'Miami, FL': {url:'https://images.unsplash.com/photo-1506966953602-c20cc11f75e3?w=700&h=400&fit=crop', alt:'Miami skyline'},
+};
+
 const FEED = [
   {id:1,tag:'traveler',name:'Emma B.',time:'2 min ago',text:'Live music just started at The Rooftop Bar!',dist:'0.2 mi away',likes:12,av:'https://images.unsplash.com/photo-1494790108377-be9c29b29330?w=80&h=80&fit=crop&crop=faces'},
   {id:2,tag:'partner',name:'Local Bistro',time:'15 min ago',text:'BagFree travelers get 15% off brunch today only!',dist:'0.1 mi away',likes:8,ic:I.store},
@@ -549,14 +560,19 @@ function Sidebar({active,onNav,light,toggleTheme,closeNav}){
 /* ───────────────────── Passport ───────────────────── */
 function Passport({city,filled,total,level}){
   const ref=useRef(null);
+  const [heroFailed,setHeroFailed]=useState(false);
   useEffect(()=>{const t=setTimeout(()=>{if(ref.current)ref.current.style.width=Math.round(filled/total*100)+'%';},250);return()=>clearTimeout(t);},[filled,total]);
+  useEffect(()=>{setHeroFailed(false);},[city]);
   const next=STAMPS.find(s=>s.next);
+  const hero=PASSPORT_HERO_IMG[city]||PASSPORT_HERO_IMG['Savannah, GA'];
   return (
     <div className="card passport reveal" style={{animationDelay:'.05s'}}>
       <div className="pp-top"><span className="pp-title">{city.split(',')[0]} Passport</span>
         <span className="pp-i" title="Collect a stamp at each partner location"><Icon d={I.passport}/></span></div>
       <div className="pp-hero">
-        <img src="https://images.unsplash.com/photo-1570144290151-9c2f234f7c9c?w=700&h=400&fit=crop" alt="Forsyth Park fountain"/>
+        {heroFailed
+          ? <div className="pp-hero-fallback"><Icon d={I.pin} style={{width:22,height:22}}/></div>
+          : <img src={hero.url} alt={hero.alt} onError={()=>setHeroFailed(true)}/>}
         <span className="pp-city">{city}</span>
       </div>
       <div className="pp-stamps">
