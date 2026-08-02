@@ -199,11 +199,10 @@ html.light .ts-thumb{transform:translateX(0)}
 .passport .pp-top{display:flex;align-items:center;justify-content:space-between;padding:1.1rem 1.3rem .6rem}
 .pp-title{font-size:.6rem;letter-spacing:3px;text-transform:uppercase;font-weight:700;color:var(--gold)}
 .pp-i{width:18px;height:18px;color:rgba(var(--cream-rgb),0.4)}
-.pp-hero{margin:0 1rem;border-radius:13px;overflow:hidden;position:relative;height:138px}
-.pp-hero img{width:100%;height:100%;object-fit:cover;display:block;transition:transform .6s}
-.passport:hover .pp-hero img{transform:scale(1.05)}
+.pp-hero{margin:0 1rem;border-radius:13px;overflow:hidden;position:relative;height:138px;background:var(--navy-ink)}
+.pp-hero svg{width:100%;height:100%;display:block;transition:transform .6s}
+.passport:hover .pp-hero svg{transform:scale(1.05)}
 .pp-hero::after{content:'';position:absolute;inset:0;background:linear-gradient(180deg,transparent 40%,rgba(4,18,42,0.85))}
-.pp-hero-fallback{width:100%;height:100%;display:flex;align-items:center;justify-content:center;background:linear-gradient(135deg,rgba(var(--gold-rgb),0.14),rgba(var(--em-rgb),0.08));color:rgba(var(--gold-rgb),0.55)}
 .pp-city{position:absolute;left:.8rem;bottom:.6rem;z-index:2;font-family:var(--ff-display);font-style:italic;font-size:1.15rem;color:var(--cream);text-shadow:0 2px 12px rgba(0,0,0,.6)}
 .pp-stamps{display:grid;grid-template-columns:repeat(5,1fr);gap:.4rem;padding:.9rem 1.3rem .4rem}
 .stamp{aspect-ratio:1;border-radius:50%;display:flex;align-items:center;justify-content:center;font-size:.9rem;transition:transform .25s}
@@ -494,14 +493,15 @@ const MARKERS = [
 ];
 const CATS = ['All','Food & Drink','Attractions','Tours','Shopping','Hotels'];
 
-// City-specific passport hero photos (falls back to Savannah's if a city
-// isn't in the map yet, and to a plain gradient if the image fails to load).
-const PASSPORT_HERO_IMG = {
-  'Savannah, GA': {url:'https://images.unsplash.com/photo-1570144290151-9c2f234f7c9c?w=700&h=400&fit=crop', alt:'Forsyth Park fountain'},
-  'Atlanta, GA': {url:'https://images.unsplash.com/photo-1575917649705-5b59aaa12e6b?w=700&h=400&fit=crop', alt:'Atlanta skyline'},
-  'Tampa, FL': {url:'https://images.unsplash.com/photo-1600042205498-fb26ec2b6cff?w=700&h=400&fit=crop', alt:'Tampa Riverwalk'},
-  'Orlando, FL': {url:'https://images.unsplash.com/photo-1597466599360-3b9775841aec?w=700&h=400&fit=crop', alt:'Orlando skyline'},
-  'Miami, FL': {url:'https://images.unsplash.com/photo-1506966953602-c20cc11f75e3?w=700&h=400&fit=crop', alt:'Miami skyline'},
+// City-specific passport hero skylines, drawn as inline SVG so the card
+// never depends on an external image loading. Each array is a set of
+// relative building heights (0-100) silhouetted against the brand gradient.
+const CITY_SKYLINE = {
+  'Savannah, GA': [28,52,38,60,34,48,40],
+  'Atlanta, GA': [68,44,82,52,92,58,72],
+  'Tampa, FL': [48,72,44,58,78,48,62],
+  'Orlando, FL': [52,38,58,86,48,66,42],
+  'Miami, FL': [62,86,52,72,48,80,58],
 };
 
 const FEED = [
@@ -557,22 +557,42 @@ function Sidebar({active,onNav,light,toggleTheme,closeNav}){
   );
 }
 
+/* ───────────────────── Passport hero skyline (no external images) ───────────────────── */
+function SkylineHero({city}){
+  const heights=CITY_SKYLINE[city]||CITY_SKYLINE['Savannah, GA'];
+  const w=700,h=400,barW=w/heights.length;
+  return (
+    <svg viewBox={`0 0 ${w} ${h}`} preserveAspectRatio="xMidYMax slice" width="100%" height="100%" style={{display:'block'}}>
+      <defs>
+        <linearGradient id="skySky" x1="0" y1="0" x2="0" y2="1">
+          <stop offset="0%" stopColor="rgba(var(--gold-rgb),0.16)"/>
+          <stop offset="100%" stopColor="rgba(var(--em-rgb),0.06)"/>
+        </linearGradient>
+        <linearGradient id="skyBldg" x1="0" y1="0" x2="0" y2="1">
+          <stop offset="0%" stopColor="var(--gold-soft)"/>
+          <stop offset="100%" stopColor="var(--gold)"/>
+        </linearGradient>
+      </defs>
+      <rect x="0" y="0" width={w} height={h} fill="url(#skySky)"/>
+      {heights.map((pct,i)=>{
+        const bh=(pct/100)*h*0.62, x=i*barW+barW*0.12, bw=barW*0.76;
+        return <rect key={i} x={x} y={h-bh} width={bw} height={bh} rx="2" fill="url(#skyBldg)" opacity={0.5+ (i%3)*0.12}/>;
+      })}
+    </svg>
+  );
+}
+
 /* ───────────────────── Passport ───────────────────── */
 function Passport({city,filled,total,level}){
   const ref=useRef(null);
-  const [heroFailed,setHeroFailed]=useState(false);
   useEffect(()=>{const t=setTimeout(()=>{if(ref.current)ref.current.style.width=Math.round(filled/total*100)+'%';},250);return()=>clearTimeout(t);},[filled,total]);
-  useEffect(()=>{setHeroFailed(false);},[city]);
   const next=STAMPS.find(s=>s.next);
-  const hero=PASSPORT_HERO_IMG[city]||PASSPORT_HERO_IMG['Savannah, GA'];
   return (
     <div className="card passport reveal" style={{animationDelay:'.05s'}}>
       <div className="pp-top"><span className="pp-title">{city.split(',')[0]} Passport</span>
         <span className="pp-i" title="Collect a stamp at each partner location"><Icon d={I.passport}/></span></div>
       <div className="pp-hero">
-        {heroFailed
-          ? <div className="pp-hero-fallback"><Icon d={I.pin} style={{width:22,height:22}}/></div>
-          : <img src={hero.url} alt={hero.alt} onError={()=>setHeroFailed(true)}/>}
+        <SkylineHero city={city}/>
         <span className="pp-city">{city}</span>
       </div>
       <div className="pp-stamps">
