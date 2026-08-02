@@ -314,6 +314,32 @@ html.light .btn-gold{color:#fff}
 .imp .n .u{font-size:.85rem}
 .imp .l{font-size:.62rem;color:rgba(var(--cream-rgb),0.5);margin-top:.25rem;letter-spacing:.3px}
 
+/* ── Order history ── */
+.orders-list{display:flex;flex-direction:column;gap:.8rem}
+.order-card{border:1px solid var(--line);border-radius:14px;background:var(--glass);padding:1.1rem 1.2rem;transition:.2s}
+.order-card:hover{border-color:rgba(var(--gold-rgb),0.35)}
+.order-head{display:flex;align-items:center;justify-content:space-between;gap:1rem;flex-wrap:wrap;margin-bottom:.7rem}
+.order-head-l{display:flex;align-items:center;gap:.6rem;flex-wrap:wrap}
+.order-date{font-size:.82rem;color:var(--cream);font-weight:500}
+.order-city{font-size:.72rem;color:rgba(var(--cream-rgb),0.45)}
+.order-total{font-family:var(--ff-display);font-size:1.15rem;color:var(--gold)}
+.status-pill{font-size:.56rem;letter-spacing:1.6px;text-transform:uppercase;font-weight:700;padding:.28rem .6rem;border-radius:20px;white-space:nowrap}
+.status-pending{color:var(--coral);border:1px solid rgba(224,138,110,0.4);background:rgba(224,138,110,0.08)}
+.status-confirmed{color:var(--gold);border:1px solid rgba(var(--gold-rgb),0.4);background:rgba(var(--gold-rgb),0.08)}
+.status-delivered{color:var(--em);border:1px solid rgba(var(--em-rgb),0.4);background:rgba(var(--em-rgb),0.08)}
+.status-cancelled{color:rgba(var(--cream-rgb),0.45);border:1px solid var(--line);background:transparent}
+.order-items{display:flex;flex-direction:column;gap:.4rem;border-top:1px solid var(--line-soft);padding-top:.65rem}
+.order-item-row{display:flex;align-items:center;justify-content:space-between;gap:.8rem;font-size:.8rem}
+.order-item-name{color:rgba(var(--cream-rgb),0.78);flex:1;min-width:0;overflow:hidden;text-overflow:ellipsis;white-space:nowrap}
+.order-item-meta{color:rgba(var(--cream-rgb),0.42);font-size:.68rem;letter-spacing:.5px;text-transform:uppercase;flex-shrink:0}
+.order-empty{padding:2rem 1rem;text-align:center;color:rgba(var(--cream-rgb),0.4);font-size:.85rem}
+.order-empty a{color:var(--gold);font-weight:600}
+
+/* ── Preferred size chip (hero) ── */
+.size-chip{display:flex;align-items:center;gap:.4rem;border:1px solid var(--line);border-radius:30px;padding:.4rem .5rem .4rem .85rem;font-size:.72rem;color:rgba(var(--cream-rgb),0.78);background:var(--glass)}
+.size-chip select{background:transparent;border:none;color:var(--gold);font-weight:700;font-family:var(--ff-body);font-size:.72rem;cursor:pointer;padding:.15rem .3rem}
+.size-chip select option{background:var(--navy-2);color:var(--cream)}
+
 .adventure{position:relative;overflow:hidden;border:1px solid rgba(var(--gold-rgb),0.3);
   background:linear-gradient(135deg,rgba(var(--gold-rgb),0.08),rgba(var(--em-rgb),0.05));}
 .adv-grid{display:grid;grid-template-columns:150px 1fr;gap:0;align-items:stretch}
@@ -424,6 +450,7 @@ const I = {
   fire:<path d="M12 3c1 3-1 4-1 6 0-1-2-1.5-2-3 0 0-3 2-3 6a6 6 0 0 0 12 0c0-3-2-4-3-6-1 2-3 0-3-3z"/>,
   crown:<path d="M5 16l-2-9 5 4 4-7 4 7 5-4-2 9z"/>,
   gift:<g><rect x="4" y="9" width="16" height="11" rx="1"/><path d="M4 13h16M12 9v11M8 9a2 2 0 1 1 4-2 2 2 0 1 1 4 2"/></g>,
+  repeat:<g><path d="M17 2l4 4-4 4"/><path d="M3 11V9a4 4 0 0 1 4-4h14"/><path d="M7 22l-4-4 4-4"/><path d="M21 13v2a4 4 0 0 1-4 4H3"/></g>,
 };
 const Icon = ({d,...p}) => <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" strokeWidth="1.6" strokeLinecap="round" strokeLinejoin="round" {...p}>{d}</svg>;
 
@@ -677,6 +704,48 @@ function Impact({impact}){
   );
 }
 
+/* ───────────────────── Order history ───────────────────── */
+const STATUS_LABEL={pending:'Pending',confirmed:'Confirmed',delivered:'Delivered',cancelled:'Cancelled'};
+function OrderHistory({orders}){
+  const fmt=d=>d?new Date(d).toLocaleDateString('en-US',{month:'short',day:'numeric',year:'numeric'}):'—';
+  return (
+    <div className="card card-pad">
+      <div className="sec-h" style={{margin:0,marginBottom:'.9rem'}}>
+        <h2 style={{fontSize:'1.25rem'}}>Recent Orders</h2>
+        <a href="/account.html" className="link">View all <Icon d={I.arrow} style={{width:13,height:13}}/></a>
+      </div>
+      {(!orders||orders.length===0)?(
+        <div className="order-empty">No orders yet. <a href="/plan-my-trip.html">Plan your first trip →</a></div>
+      ):(
+        <div className="orders-list">
+          {orders.slice(0,5).map(o=>(
+            <div className="order-card" key={o.id}>
+              <div className="order-head">
+                <div className="order-head-l">
+                  <span className="order-date">{fmt(o.created_at)}</span>
+                  {o.city&&<span className="order-city">· {o.city}</span>}
+                  <span className={'status-pill status-'+(o.status||'pending')}>{STATUS_LABEL[o.status]||o.status||'Pending'}</span>
+                </div>
+                <span className="order-total">${Number(o.total||0).toFixed(2)}</span>
+              </div>
+              {Array.isArray(o.items)&&o.items.length>0&&(
+                <div className="order-items">
+                  {o.items.map((it,i)=>(
+                    <div className="order-item-row" key={i}>
+                      <span className="order-item-name">{it.qty}× {it.title}</span>
+                      <span className="order-item-meta">{it.size?('Size '+it.size):''}</span>
+                    </div>
+                  ))}
+                </div>
+              )}
+            </div>
+          ))}
+        </div>
+      )}
+    </div>
+  );
+}
+
 /* ───────────────────── Today's adventure ───────────────────── */
 function Adventure(){
   return (
@@ -698,7 +767,7 @@ function Adventure(){
 }
 
 /* ───────────────────── Quick actions ───────────────────── */
-function QuickActions(){
+function QuickActions({lastOrder,onReorder}){
   const acts=[
     {ic:I.trips,l:'Plan Trip',href:'/plan-my-trip.html'},
     {ic:I.map,l:'Open Map',href:'/map.html'},
@@ -710,6 +779,11 @@ function QuickActions(){
     <div>
       <div className="sec-h"><h2>Quick Actions</h2></div>
       <div className="qa-bar">
+        {lastOrder&&(
+          <button className="qa" onClick={()=>onReorder(lastOrder)}>
+            <span className="qic"><Icon d={I.repeat}/></span><span className="ql">Reorder Last Trip</span>
+          </button>
+        )}
         {acts.map((a,i)=>(
           <a key={i} href={a.href} className="qa"><span className="qic"><Icon d={a.ic}/></span><span className="ql">{a.l}</span></a>
         ))}
@@ -748,6 +822,20 @@ function Metrics({pts,value,streak,tier,level}){
   );
 }
 
+/* ───────────────────── Preferred size chip ───────────────────── */
+const SIZE_OPTIONS=['S','M','L','XL'];
+function SizePref({size,onChange}){
+  return (
+    <span className="chip size-chip">
+      <Icon d={I.store} style={{width:14,height:14,color:'var(--gold)'}}/>
+      <span>Size</span>
+      <select value={size||'M'} onChange={e=>onChange(e.target.value)} aria-label="Preferred size">
+        {SIZE_OPTIONS.map(s=><option key={s} value={s}>{s}</option>)}
+      </select>
+    </span>
+  );
+}
+
 /* ───────────────────── App ───────────────────── */
 function App(){
   const [light,setLight]=useState(()=>{try{return localStorage.getItem('bf-theme')==='light';}catch(e){return false;}});
@@ -761,12 +849,20 @@ function App(){
     pts:940, value:9.40, tier:'Free', stamps:4, total:10, notif:2,
     trip:{city:'Savannah, GA',dates:'May 24 – May 28, 2025',nights:4,hotel:'Historic Inn'},
     impact:{garments:12,waste:34,hotels:3,local:2},
+    preferredSize:'M',
+    orders:[
+      {id:'m1',created_at:'2025-05-20',city:'Savannah, GA',status:'delivered',total:149,
+        items:[{title:"Men's 7-Day Travel Essentials",qty:1,size:'M'}]},
+      {id:'m2',created_at:'2025-04-02',city:'Atlanta, GA',status:'delivered',total:198,
+        items:[{title:"Women's Business Kit",qty:1,size:'S'},{title:'Second Journey Trial',qty:1,size:'M'}]},
+    ],
   });
 
   useEffect(()=>{document.documentElement.classList.toggle('light',light);},[light]);
   const toggleTheme=()=>{setLight(v=>{const nv=!v;try{localStorage.setItem('bf-theme',nv?'light':'dark');}catch(e){}return nv;});};
 
   // Load real Supabase data over the mock defaults (graceful if unauthenticated)
+  const sbUserRef=useRef(null);
   useEffect(()=>{(async()=>{
     if(!sb){setLoading(false);return;}
     try{
@@ -776,23 +872,28 @@ function App(){
         setLoading(false);return; // preview with mock data
       }
       const u=s.session.user;
+      sbUserRef.current=u;
       const next={};
       const {data:p}=await sb.from('profiles').select('*').eq('id',u.id).single();
       if(p){
         const nm=p.first_name||u.email.split('@')[0];
         next.name=nm; next.initial=nm.charAt(0).toUpperCase();
         if(p.preferred_city) next.city=p.preferred_city;
+        if(p.preferred_size) next.preferredSize=p.preferred_size;
         if(typeof p.bag_balance==='number'){next.value=p.bag_balance;next.pts=Math.round(p.bag_balance*100);}
       }
       const {data:mems}=await sb.from('memberships').select('*').eq('user_id',u.id).eq('status','active').order('created_at',{ascending:false}).limit(1);
       if(mems&&mems.length){const tn={secondjourney:'Second Journey',emerald:'Emerald',gold:'Gold'};next.tier=tn[mems[0].tier]||mems[0].tier;}
       const {data:orders}=await sb.from('orders').select('*').eq('user_id',u.id).order('created_at',{ascending:false}).limit(20);
       if(orders&&orders.length){
+        next.orders=orders; // full history feeds the Recent Orders card
         const active=orders.filter(o=>['pending','confirmed','delivered'].includes(o.status));
         if(active.length){const o=active[0];const fmt=d=>d?new Date(d).toLocaleDateString('en-US',{month:'short',day:'numeric',year:'numeric'}):'—';
           next.trip={city:o.city||data.city,dates:fmt(o.arrival_date)+' – '+fmt(o.departure_date),
             nights:(o.arrival_date&&o.departure_date)?Math.max(1,Math.round((new Date(o.departure_date)-new Date(o.arrival_date))/864e5)):4,
             hotel:o.hotel||'Your hotel'};}
+      } else {
+        next.orders=[];
       }
       const {data:don}=await sb.from('donations').select('bag_credits_awarded,items_description').eq('user_id',u.id);
       if(don&&don.length){next.impact={...data.impact,garments:don.length*3,hotels:Math.max(1,don.length)};}
@@ -803,7 +904,30 @@ function App(){
     setLoading(false);
   })();},[]);
 
+  // Lets the traveler correct their saved size directly from the dashboard;
+  // this is the same field the checkout size selector reads/writes.
+  const updatePreferredSize=async(size)=>{
+    setData(d=>({...d,preferredSize:size}));
+    if(sb&&sbUserRef.current){
+      try{ await sb.from('profiles').update({preferred_size:size}).eq('id',sbUserRef.current.id); }
+      catch(e){ console.warn('Could not save preferred size:',e&&e.message); }
+    }
+  };
+
   const onNav=(n,e)=>{ if(n.href==='#'||n.href.startsWith('#')){ e.preventDefault(); if(n.href.length>1){const el=document.querySelector(n.href); if(el)el.scrollIntoView({behavior:'smooth'});} } };
+
+  // Hands the last order's items off to the checkout page via localStorage,
+  // then sends the traveler there with everything pre-filled.
+  const handleReorder=(order)=>{
+    try{
+      localStorage.setItem('bf-reorder', JSON.stringify({
+        items:(order.items||[]).map(it=>({id:it.id,qty:it.qty||1,size:it.size||'M'})),
+        city:order.city||data.city,
+        saved_at:new Date().toISOString()
+      }));
+    }catch(e){}
+    window.location.href='/departure-lounge-landing.html?reorder=1';
+  };
 
   return (
     <div className={'app'+(navOpen?' nav-open':'')}>
@@ -842,6 +966,7 @@ function App(){
               <span className="chip"><span className="ic"><Icon d={I.pin} style={{width:14,height:14,color:'var(--gold)'}}/></span><b>{data.city}</b></span>
               <span className="chip"><Icon d={I.passport} style={{width:14,height:14,color:'var(--gold)'}}/> {data.level}</span>
               <span className="chip"><Icon d={I.fire} style={{width:14,height:14,color:'var(--coral)'}}/> {data.streak}-day streak</span>
+              <SizePref size={data.preferredSize} onChange={updatePreferredSize}/>
             </div>
           </div>
 
@@ -860,10 +985,12 @@ function App(){
             <Impact impact={data.impact}/>
           </div>
 
+          <OrderHistory orders={data.orders}/>
+
           <div className="sec-h" style={{marginBottom:'1rem'}}><h2>Today's Adventure</h2></div>
           <Adventure/>
 
-          <QuickActions/>
+          <QuickActions lastOrder={data.orders&&data.orders[0]} onReorder={handleReorder}/>
         </div>
       </div>
       {loading&&<div className="boot"><div className="sp"></div><div className="t">Preparing your journey…</div></div>}
