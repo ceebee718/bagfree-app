@@ -1,0 +1,537 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+<meta charset="UTF-8">
+<meta name="viewport" content="width=device-width,initial-scale=1">
+<title>Map — BagFree</title>
+<link rel="preconnect" href="https://fonts.googleapis.com">
+<link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+<link href="https://fonts.googleapis.com/css2?family=Cormorant+Garamond:ital,wght@0,300;0,400;0,500;0,600;1,300;1,400;1,500&family=DM+Sans:wght@300;400;500;600;700&display=swap" rel="stylesheet">
+
+<!-- React-via-Babel on Larry's cdnjs convention -->
+<script src="https://cdnjs.cloudflare.com/ajax/libs/react/18.3.1/umd/react.production.min.js"></script>
+<script src="https://cdnjs.cloudflare.com/ajax/libs/react-dom/18.3.1/umd/react-dom.production.min.js"></script>
+<script src="https://cdnjs.cloudflare.com/ajax/libs/babel-standalone/7.26.4/babel.min.js"></script>
+<!-- Supabase on the same jsdelivr path the existing account/dashboard pages use -->
+<script src="https://cdn.jsdelivr.net/npm/@supabase/supabase-js@2"></script>
+<!-- Leaflet for the real map (same library already used in the BagFree World game) -->
+<link rel="stylesheet" href="https://unpkg.com/leaflet@1.9.4/dist/leaflet.css"/>
+<script src="https://unpkg.com/leaflet@1.9.4/dist/leaflet.js"></script>
+
+<style>
+:root{
+  --navy:#071B3A; --navy-2:#0A2349; --navy-3:#0E2C58; --navy-ink:#04122A;
+  --gold:#D4AF6A; --gold-soft:#E8CF9E; --gold-rgb:212,175,106;
+  --cream:#F4EFE3; --cream-rgb:244,239,227;
+  --em:#5DCAA5; --em-rgb:93,202,165;
+  --coral:#E08A6E;
+  --ff-display:'Cormorant Garamond',Georgia,serif;
+  --ff-body:'DM Sans','Helvetica Neue',sans-serif;
+  --line:rgba(var(--gold-rgb),0.14);
+  --line-soft:rgba(var(--cream-rgb),0.08);
+  --glass:rgba(255,255,255,0.028);
+  --glass-2:rgba(255,255,255,0.05);
+  --shadow:0 24px 60px rgba(2,8,20,0.55);
+}
+html.light{
+  --navy:#F6F2E9; --navy-2:#FFFFFF; --navy-3:#F1EADC; --navy-ink:#EFE9DC;
+  --gold:#9A7B3D; --gold-soft:#B89A5C; --gold-rgb:154,123,61;
+  --cream:#21304A; --cream-rgb:33,48,74; --em:#2C8E6E; --em-rgb:44,142,110;
+  --line:rgba(154,123,61,0.18); --line-soft:rgba(33,48,74,0.08);
+  --glass:rgba(33,48,74,0.022); --glass-2:rgba(33,48,74,0.045);
+  --shadow:0 22px 50px rgba(120,104,70,0.18);
+}
+*,*::before,*::after{box-sizing:border-box;margin:0;padding:0}
+html{scroll-behavior:smooth}
+body{font-family:var(--ff-body);color:rgba(var(--cream-rgb),0.86);background:var(--navy);-webkit-font-smoothing:antialiased;overflow-x:hidden}
+body::before{content:'';position:fixed;inset:0;pointer-events:none;z-index:0;
+  background:radial-gradient(900px 600px at 78% -8%, rgba(var(--gold-rgb),0.10), transparent 60%),
+             radial-gradient(800px 700px at -10% 110%, rgba(var(--em-rgb),0.07), transparent 60%);}
+a{color:var(--gold);text-decoration:none}
+button{cursor:pointer;border:none;font-family:var(--ff-body);background:none;color:inherit}
+::selection{background:rgba(var(--gold-rgb),0.25);color:var(--cream)}
+:focus-visible{outline:2px solid var(--gold);outline-offset:2px;border-radius:3px}
+.eyebrow{font-size:.56rem;letter-spacing:3.4px;text-transform:uppercase;font-weight:600;color:var(--gold)}
+
+/* ─────────── App frame ─────────── */
+.app{position:relative;z-index:1;display:grid;grid-template-columns:248px 1fr;min-height:100vh}
+
+/* ─────────── Sidebar (identical to dashboard.html) ─────────── */
+.side{position:sticky;top:0;align-self:start;height:100vh;display:flex;flex-direction:column;
+  background:linear-gradient(180deg,var(--navy-ink),color-mix(in srgb,var(--navy-ink) 86%, #000));
+  border-right:1px solid var(--line);padding:1.6rem 1.1rem 1.2rem;}
+html.light .side{background:linear-gradient(180deg,var(--navy-ink),#E8E0CF)}
+.brand{display:flex;align-items:center;gap:.55rem;padding:.2rem .5rem 1.4rem;text-decoration:none;cursor:pointer}
+.brand-logo-img{width:130px;max-width:100%;height:auto;object-fit:contain;display:block}
+.nav-group-label{font-size:.5rem;letter-spacing:2.6px;text-transform:uppercase;color:rgba(var(--cream-rgb),0.32);font-weight:600;padding:.9rem .75rem .4rem}
+.nav-item{display:flex;align-items:center;gap:.7rem;width:100%;padding:.62rem .75rem;border-radius:11px;
+  font-size:.82rem;font-weight:500;color:rgba(var(--cream-rgb),0.6);text-align:left;transition:all .2s ease;position:relative}
+.nav-item svg{width:17px;height:17px;flex-shrink:0;opacity:.8}
+.nav-item:hover{color:var(--cream);background:var(--glass)}
+.nav-item.active{color:var(--navy-ink);font-weight:600;background:linear-gradient(135deg,var(--gold),var(--gold-soft));box-shadow:0 8px 22px rgba(var(--gold-rgb),0.28)}
+html.light .nav-item.active{color:#FFF}
+.nav-item.muted{color:rgba(var(--cream-rgb),0.4)}
+.nav-item.muted:hover{color:rgba(var(--cream-rgb),0.7)}
+.side-spacer{flex:1}
+.invite-card{border:1px solid var(--line);border-radius:14px;padding:.9rem 1rem;background:var(--glass);margin-bottom:.7rem}
+.invite-card .t{font-size:.78rem;color:rgba(var(--cream-rgb),0.72);line-height:1.4;margin-bottom:.35rem}
+.invite-card .a{font-size:.56rem;letter-spacing:2px;text-transform:uppercase;font-weight:700;color:var(--gold)}
+.side-foot{display:flex;align-items:center;justify-content:space-between;gap:.5rem;padding:.2rem .4rem}
+.help{display:flex;align-items:center;gap:.5rem;font-size:.74rem;color:rgba(var(--cream-rgb),0.5)}
+.theme-switch{position:relative;width:62px;height:31px;border-radius:31px;border:1px solid var(--line);background:var(--glass);display:flex;align-items:center;justify-content:space-between;padding:0 8px;cursor:pointer;transition:border-color .25s,background .25s;flex-shrink:0}
+.theme-switch:hover{border-color:rgba(var(--gold-rgb),0.45);background:var(--glass-2)}
+.theme-switch svg{width:14px;height:14px;position:relative;z-index:2;transition:color .3s}
+.theme-switch .ts-sun{color:rgba(var(--cream-rgb),0.4)}
+.theme-switch .ts-moon{color:#3a2c12}
+html.light .theme-switch .ts-sun{color:#3a2c12}
+html.light .theme-switch .ts-moon{color:rgba(var(--cream-rgb),0.4)}
+.ts-thumb{position:absolute;top:3px;left:3px;width:24px;height:24px;border-radius:50%;background:radial-gradient(circle at 35% 30%,var(--gold-soft),var(--gold));box-shadow:0 3px 9px rgba(0,0,0,.35),0 0 0 1px rgba(var(--gold-rgb),0.35),inset 0 1px 1px rgba(255,255,255,.4);transform:translateX(31px);transition:transform .36s cubic-bezier(.4,0,.2,1);z-index:1}
+html.light .ts-thumb{transform:translateX(0)}
+
+/* ─────────── Topbar ─────────── */
+.main{min-width:0;display:flex;flex-direction:column}
+.topbar{display:flex;align-items:center;justify-content:flex-end;gap:.9rem;padding:1rem 2.2rem;border-bottom:1px solid var(--line);
+  background:color-mix(in srgb,var(--navy) 80%, transparent);backdrop-filter:blur(12px);position:sticky;top:0;z-index:40}
+.hamburger{display:none;margin-right:auto}
+.hamburger svg{width:24px;height:24px;color:var(--cream)}
+.bell{position:relative;width:38px;height:38px;border-radius:50%;display:flex;align-items:center;justify-content:center;border:1px solid var(--line);color:rgba(var(--cream-rgb),0.7);transition:.2s}
+.bell:hover{color:var(--gold);border-color:rgba(var(--gold-rgb),0.4)}
+.bell .dot{position:absolute;top:-2px;right:-2px;min-width:17px;height:17px;border-radius:9px;background:var(--coral);color:#fff;font-size:.55rem;font-weight:700;display:flex;align-items:center;justify-content:center;padding:0 4px}
+.user-chip{display:flex;align-items:center;gap:.55rem;padding:.32rem .35rem .32rem .7rem;border:1px solid var(--line);border-radius:30px;transition:.2s}
+.user-chip:hover{border-color:rgba(var(--gold-rgb),0.4)}
+.user-name{font-size:.82rem;color:rgba(var(--cream-rgb),0.8)}
+.avatar{width:32px;height:32px;border-radius:50%;background:rgba(var(--gold-rgb),0.12);border:1px solid rgba(var(--gold-rgb),0.4);display:flex;align-items:center;justify-content:center;color:var(--gold);font-family:var(--ff-display);font-size:.95rem}
+
+/* ─────────── Content shell ─────────── */
+.content{padding:2rem 2.2rem 4rem;max-width:1180px;width:100%;margin:0 auto}
+.reveal{opacity:0;transform:translateY(16px);animation:rise .7s cubic-bezier(.2,.7,.2,1) forwards}
+@keyframes rise{to{opacity:1;transform:none}}
+.hero{display:flex;align-items:flex-end;justify-content:space-between;gap:1.5rem;flex-wrap:wrap;margin-bottom:1.6rem}
+.hero h1{font-family:var(--ff-display);font-weight:300;font-size:clamp(2rem,4.2vw,3.05rem);color:var(--cream);line-height:1.04;letter-spacing:-.5px}
+.hero h1 em{font-style:italic;color:var(--gold)}
+.hero p{font-size:.92rem;color:rgba(var(--cream-rgb),0.5);margin-top:.45rem;font-weight:300;max-width:38ch}
+.hero-chips{display:flex;gap:.5rem;flex-wrap:wrap}
+.chip{display:flex;align-items:center;gap:.45rem;border:1px solid var(--line);border-radius:30px;padding:.45rem .85rem;font-size:.72rem;color:rgba(var(--cream-rgb),0.78);background:var(--glass)}
+.chip b{color:var(--gold);font-weight:600}
+
+.card{border:1px solid var(--line);border-radius:18px;background:var(--glass);position:relative;overflow:hidden}
+
+/* ── City tabs ── */
+.city-tabs{display:flex;gap:.5rem;flex-wrap:wrap;margin-bottom:1.4rem}
+.city-tab{font-size:.72rem;font-weight:600;padding:.55rem 1.1rem;border-radius:30px;border:1px solid var(--line);color:rgba(var(--cream-rgb),0.6);transition:.2s;letter-spacing:.3px;display:flex;align-items:center;gap:.4rem}
+.city-tab:hover{color:var(--cream);border-color:rgba(var(--gold-rgb),0.4)}
+.city-tab.active{background:linear-gradient(135deg,var(--gold),var(--gold-soft));color:var(--navy-ink);border-color:transparent;font-weight:700;box-shadow:0 6px 16px rgba(var(--gold-rgb),0.28)}
+.city-tab.soon{opacity:.45;cursor:default}
+.city-tab.soon:hover{color:rgba(var(--cream-rgb),0.6);border-color:var(--line)}
+.city-tab .soon-pill{font-size:.52rem;letter-spacing:1.5px;text-transform:uppercase;border:1px solid var(--line-soft);border-radius:10px;padding:.1rem .4rem}
+
+/* ── Category filter tabs ── */
+.cat-tabs{display:flex;gap:.5rem;flex-wrap:wrap;margin-bottom:1rem}
+.cat-tab{font-size:.66rem;font-weight:600;padding:.45rem .9rem;border-radius:30px;border:1px solid var(--line);color:rgba(var(--cream-rgb),0.6);transition:.2s;letter-spacing:.3px}
+.cat-tab:hover{color:var(--cream);border-color:rgba(var(--gold-rgb),0.4)}
+.cat-tab.active{background:linear-gradient(135deg,var(--em),#4DBF95);color:var(--navy-ink);border-color:transparent;font-weight:700;box-shadow:0 6px 16px rgba(var(--em-rgb),0.3)}
+
+/* ── Map layout (real Leaflet map + place list) ── */
+.map-layout{display:grid;grid-template-columns:1fr 320px;gap:1.1rem;align-items:stretch;border:1px solid rgba(var(--gold-rgb),0.28);border-radius:20px;overflow:hidden;box-shadow:var(--shadow)}
+.map-wrap{position:relative;height:560px;background:var(--navy-ink)}
+#leafletMap{width:100%;height:100%}
+.locate-btn{position:absolute;bottom:1rem;left:1rem;z-index:500;display:flex;align-items:center;gap:.4rem;
+  background:rgba(4,18,42,0.88);backdrop-filter:blur(6px);border:1px solid rgba(var(--gold-rgb),0.35);color:var(--cream);
+  padding:.55rem .9rem;border-radius:30px;font-size:.68rem;font-weight:600;letter-spacing:.5px;transition:.2s}
+.locate-btn:hover{border-color:var(--gold);color:var(--gold)}
+.locate-btn svg{width:14px;height:14px}
+.map-legend{position:absolute;top:1rem;left:1rem;z-index:500;background:rgba(4,18,42,0.88);backdrop-filter:blur(6px);
+  border:1px solid var(--line);border-radius:12px;padding:.6rem .8rem;font-size:.62rem;color:rgba(var(--cream-rgb),0.6);display:flex;gap:.8rem;flex-wrap:wrap;max-width:280px}
+.map-legend span{display:flex;align-items:center;gap:.3rem}
+.map-legend i{width:8px;height:8px;border-radius:50%;display:inline-block}
+
+.place-panel{background:var(--navy-2);padding:1.1rem;overflow-y:auto;max-height:560px}
+.place-panel-t{font-size:.6rem;letter-spacing:3px;text-transform:uppercase;font-weight:700;color:var(--gold);margin-bottom:.9rem}
+.place-list{display:flex;flex-direction:column;gap:.5rem}
+.place-row{display:flex;align-items:center;gap:.7rem;padding:.7rem .75rem;border-radius:12px;border:1px solid var(--line-soft);background:var(--glass-2);transition:.2s;cursor:pointer}
+.place-row:hover,.place-row.sel{border-color:rgba(var(--gold-rgb),0.4);transform:translateX(2px)}
+.place-badge{width:34px;height:34px;border-radius:50%;display:flex;align-items:center;justify-content:center;flex-shrink:0;border:1.5px solid rgba(var(--gold-rgb),0.4);background:rgba(var(--gold-rgb),0.08);color:var(--gold)}
+.place-badge svg{width:16px;height:16px}
+.place-info{flex:1;min-width:0}
+.place-name{font-size:.8rem;color:var(--cream);font-weight:500;white-space:nowrap;overflow:hidden;text-overflow:ellipsis}
+.place-sub{font-size:.65rem;color:rgba(var(--cream-rgb),0.42);margin-top:1px}
+.place-pts{font-size:.6rem;font-weight:700;color:var(--gold);white-space:nowrap;flex-shrink:0}
+
+/* Leaflet overrides to match brand */
+.leaflet-popup-content-wrapper{background:var(--navy-2);color:var(--cream);border:1px solid rgba(var(--gold-rgb),0.3);border-radius:12px;box-shadow:var(--shadow)}
+.leaflet-popup-tip{background:var(--navy-2);border:1px solid rgba(var(--gold-rgb),0.3)}
+.leaflet-popup-content{margin:.8rem .9rem;font-family:var(--ff-body)}
+.pp-name{font-family:var(--ff-display);font-size:1.05rem;color:var(--cream)}
+.pp-meta{font-size:.7rem;color:rgba(var(--cream-rgb),0.5);margin:.25rem 0 .55rem}
+.pp-dir{font-size:.62rem;letter-spacing:1.5px;text-transform:uppercase;font-weight:700;color:var(--gold)}
+.leaflet-container{background:var(--navy-ink);font-family:var(--ff-body)}
+.mk-pin{width:34px;height:34px;border-radius:50% 50% 50% 12%;transform:rotate(45deg);display:flex;align-items:center;justify-content:center;
+  border:1.5px solid rgba(var(--gold-rgb),0.6);background:rgba(8,28,62,0.92);box-shadow:0 6px 16px rgba(0,0,0,.4)}
+.mk-pin svg{transform:rotate(-45deg);width:15px;height:15px;color:var(--gold)}
+.mk-you{width:16px;height:16px;border-radius:50%;background:#3B82F6;border:2px solid #fff;box-shadow:0 0 0 6px rgba(59,130,246,.25)}
+
+/* ── Coming soon strip ── */
+.soon-strip{border:1px dashed rgba(var(--gold-rgb),0.3);border-radius:16px;padding:1.1rem 1.4rem;display:flex;align-items:center;justify-content:space-between;gap:1rem;flex-wrap:wrap;margin-top:1.6rem;background:var(--glass-2)}
+.soon-strip .t{font-size:.85rem;color:var(--cream)}
+.soon-strip .t b{color:var(--gold)}
+.soon-strip .d{font-size:.74rem;color:rgba(var(--cream-rgb),0.45);margin-top:.2rem}
+
+/* loading */
+.boot{position:fixed;inset:0;display:flex;flex-direction:column;align-items:center;justify-content:center;gap:1rem;background:var(--navy);z-index:200}
+.boot .sp{width:42px;height:42px;border:2px solid rgba(var(--gold-rgb),0.2);border-top-color:var(--gold);border-radius:50%;animation:spin 1s linear infinite}
+.boot .t{font-family:var(--ff-display);font-style:italic;font-size:1.1rem;color:rgba(var(--cream-rgb),0.5)}
+@keyframes spin{to{transform:rotate(360deg)}}
+.scrim{display:none}
+
+@media(max-width:1080px){ .map-layout{grid-template-columns:1fr} .place-panel{max-height:280px} .map-wrap{height:420px} }
+@media(max-width:880px){
+  .app{grid-template-columns:1fr}
+  .side{position:fixed;left:0;top:0;z-index:120;width:264px;transform:translateX(-100%);transition:transform .3s cubic-bezier(.2,.7,.2,1)}
+  .app.nav-open .side{transform:none;box-shadow:0 0 60px rgba(0,0,0,.6)}
+  .app.nav-open .scrim{display:block;position:fixed;inset:0;background:rgba(2,8,20,.6);z-index:110;backdrop-filter:blur(2px)}
+  .hamburger{display:flex}
+  .content{padding:1.4rem 1.1rem 3.5rem}
+  .topbar{padding:.85rem 1.1rem}
+  .cat-tabs{overflow-x:auto;flex-wrap:nowrap}
+}
+@media(max-width:620px){ .user-name{display:none} }
+@media(prefers-reduced-motion:reduce){ *{animation-duration:.001ms!important;animation-iteration-count:1!important;transition-duration:.05ms!important} }
+</style>
+</head>
+<body>
+<div id="root"><div class="boot"><div class="sp"></div><div class="t">Opening your passport…</div></div></div>
+
+<script type="text/babel" data-presets="react">
+const { useState, useEffect, useRef } = React;
+
+/* ───────────────────── Config ───────────────────── */
+const REQUIRE_AUTH = false;
+const SB_URL = 'https://vkctidpaghpdlmleezvq.supabase.co';
+const SB_KEY = 'eyJhbGciOiJIUzI1NiIsInR5cCI6IkpXVCJ9.eyJpc3MiOiJzdXBhYmFzZSIsInJlZiI6InZrY3RpZHBhZ2hwZGxtbGVlenZxIiwicm9sZSI6ImFub24iLCJpYXQiOjE3NzUzMjI5MjgsImV4cCI6MjA5MDg5ODkyOH0.wKtG6XD6CwLy3rJDZc4S10-NqNr3fcCXHYOWJt_C628';
+const sb = window.supabase ? window.supabase.createClient(SB_URL, SB_KEY) : null;
+
+/* ───────────────────── Icons (inline, matches dashboard.html) ───────────────────── */
+const I = {
+  home:<path d="M3 11l9-8 9 8M5 9.5V21h5v-6h4v6h5V9.5"/>,
+  passport:<g><rect x="5" y="3" width="14" height="18" rx="2"/><circle cx="12" cy="10" r="3"/><path d="M9 17h6"/></g>,
+  map:<g><path d="M9 4 3 6v14l6-2 6 2 6-2V4l-6 2-6-2z"/><path d="M9 4v14M15 6v14"/></g>,
+  nearby:<g><circle cx="12" cy="11" r="2.5"/><path d="M12 22s7-5.6 7-11a7 7 0 1 0-14 0c0 5.4 7 11 7 11z"/></g>,
+  trips:<g><rect x="4" y="7" width="16" height="13" rx="2"/><path d="M9 7V5a2 2 0 0 1 2-2h2a2 2 0 0 1 2 2v2"/></g>,
+  exp:<g><path d="M12 3l2.5 5.5L20 9l-4 4 1 6-5-3-5 3 1-6-4-4 5.5-.5z"/></g>,
+  rewards:<g><path d="M12 3l2.5 5.5L20 9l-4 4 1 6-5-3-5 3 1-6-4-4 5.5-.5z"/></g>,
+  orders:<g><path d="M6 7h12l-1 13H7L6 7z"/><path d="M9 7a3 3 0 0 1 6 0"/></g>,
+  member:<path d="M5 16l-2-9 5 4 4-7 4 7 5-4-2 9z"/>,
+  profile:<g><circle cx="12" cy="8" r="4"/><path d="M4 21c0-4 4-6 8-6s8 2 8 6"/></g>,
+  settings:<g><circle cx="12" cy="12" r="3"/><path d="M19 12a7 7 0 0 0-.1-1.2l2-1.6-2-3.4-2.4 1a7 7 0 0 0-2-1.2L14 2h-4l-.5 2.6a7 7 0 0 0-2 1.2l-2.4-1-2 3.4 2 1.6A7 7 0 0 0 5 12a7 7 0 0 0 .1 1.2l-2 1.6 2 3.4 2.4-1a7 7 0 0 0 2 1.2L10 22h4l.5-2.6a7 7 0 0 0 2-1.2l2.4 1 2-3.4-2-1.6A7 7 0 0 0 19 12z"/></g>,
+  bell:<g><path d="M18 8a6 6 0 1 0-12 0c0 7-3 9-3 9h18s-3-2-3-9z"/><path d="M13.7 21a2 2 0 0 1-3.4 0"/></g>,
+  pin:<g><circle cx="12" cy="11" r="2.5"/><path d="M12 22s7-5.6 7-11a7 7 0 1 0-14 0c0 5.4 7 11 7 11z"/></g>,
+  msg:<path d="M4 5h16v11H8l-4 4V5z"/>,
+  arrow:<path d="M5 12h14M13 6l6 6-6 6"/>,
+  star:<path d="M12 3l2.5 5.5L20 9l-4 4 1 6-5-3-5 3 1-6-4-4 5.5-.5z"/>,
+  compass:<g><circle cx="12" cy="12" r="9"/><path d="M15 9l-4 2-2 4 4-2 2-4z"/></g>,
+  check:<g><circle cx="12" cy="12" r="9"/><path d="M8 12l3 3 5-6"/></g>,
+};
+const Icon = ({d,...p}) => <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" strokeWidth="1.6" strokeLinecap="round" strokeLinejoin="round" {...p}>{d}</svg>;
+
+/* ───────────────────── Nav (identical entries to dashboard.html) ───────────────────── */
+const NAV = [
+  {k:'dashboard',label:'Dashboard',icon:I.home,href:'/dashboard.html',group:'primary'},
+  {k:'passport',label:'Passport',icon:I.passport,href:'/passport.html',group:'primary'},
+  {k:'map',label:'Map',icon:I.map,href:'/map.html',group:'primary'},
+  {k:'nearby',label:'Nearby',icon:I.nearby,href:'/dashboard.html#happening',group:'primary'},
+  {k:'trips',label:'Trips',icon:I.trips,href:'/plan-my-trip.html',group:'primary'},
+  {k:'exp',label:'Experiences',icon:I.exp,href:'/experiences.html',group:'primary'},
+  {k:'rewards',label:'Rewards',icon:I.rewards,href:'/membership.html',group:'primary'},
+  {k:'orders',label:'Orders',icon:I.orders,href:'/account.html',group:'account'},
+  {k:'member',label:'Membership',icon:I.member,href:'/membership.html',group:'account'},
+  {k:'profile',label:'Profile',icon:I.profile,href:'/account.html',group:'account'},
+  {k:'settings',label:'Settings',icon:I.settings,href:'/account.html',group:'account'},
+];
+
+/* ───────────────────── Map data ───────────────────── */
+// Only Savannah has real, named partner locations right now (mirrors the
+// passport page's honesty rule) — other launch cities show as "Coming Soon"
+// tabs rather than fabricated pins.
+const SAVANNAH_CENTER = [32.0809, -81.0912]; // River Street, downtown Savannah
+const CATS = ['All','Food & Drink','Attractions','Tours','Shopping','Hotels'];
+const CITY_PLACES = {
+  'Savannah, GA': [
+    {id:1,name:'Forsyth Park',cat:'Attractions',pts:25,lat:32.0836,lng:-81.0998,icon:'star'},
+    {id:2,name:'River Street',cat:'Attractions',pts:25,lat:32.0809,lng:-81.0912,icon:'pin'},
+    {id:3,name:'City Market',cat:'Shopping',pts:15,lat:32.0798,lng:-81.0912,icon:'store'},
+    {id:4,name:'Cathedral of St. John the Baptist',cat:'Attractions',pts:20,lat:32.0759,lng:-81.0942,icon:'building'},
+    {id:5,name:'Telfair Museums',cat:'Attractions',pts:20,lat:32.0778,lng:-81.0956,icon:'building'},
+    {id:6,name:'Colonial Park Cemetery Walking Tour',cat:'Tours',pts:30,lat:32.0762,lng:-81.0906,icon:'ghost'},
+    {id:7,name:'Local Café, Broughton St',cat:'Food & Drink',pts:15,lat:32.0793,lng:-81.0940,icon:'coffee'},
+    {id:8,name:'Partner Restaurant, River St',cat:'Food & Drink',pts:20,lat:32.0812,lng:-81.0900,icon:'utensils'},
+    {id:9,name:'The Bohemian Hotel',cat:'Hotels',pts:0,lat:32.0800,lng:-81.0916,icon:'building'},
+  ],
+};
+const LAUNCH_CITIES = ['Savannah, GA','Atlanta, GA','Tampa, FL','Orlando, FL','Miami, FL'];
+const CITY_CENTER = {'Savannah, GA':SAVANNAH_CENTER};
+
+/* ───────────────────── Theme toggle ───────────────────── */
+function ThemeToggle({light,toggleTheme}){
+  return (
+    <button className="theme-switch" role="switch" aria-checked={light}
+            aria-label="Toggle light and dark mode" title="Toggle theme" onClick={toggleTheme}>
+      <Icon className="ts-sun" d={<g><circle cx="12" cy="12" r="4"/><path d="M12 2v2M12 20v2M4.9 4.9l1.4 1.4M17.7 17.7l1.4 1.4M2 12h2M20 12h2M4.9 19.1l1.4-1.4M17.7 6.3l1.4-1.4"/></g>}/>
+      <Icon className="ts-moon" d={<path d="M21 12.8A8.5 8.5 0 0 1 11.2 3a7 7 0 1 0 9.8 9.8z"/>}/>
+      <span className="ts-thumb"></span>
+    </button>
+  );
+}
+
+/* ───────────────────── Sidebar (identical to dashboard.html) ───────────────────── */
+function Sidebar({active,light,toggleTheme,closeNav}){
+  const primary=NAV.filter(n=>n.group==='primary');
+  const account=NAV.filter(n=>n.group==='account');
+  return (
+    <aside className="side">
+      <a href="/" className="brand"><img src="/bagfree-logo-full.png" alt="BagFree" className="brand-logo-img"/></a>
+      <div className="nav-group-label">Explore</div>
+      {primary.map(n=>(
+        <a key={n.k} href={n.href} className={'nav-item'+(active===n.k?' active':'')} onClick={closeNav}>
+          <Icon d={n.icon}/><span>{n.label}</span>
+        </a>
+      ))}
+      <div className="nav-group-label">Account</div>
+      {account.map(n=>(
+        <a key={n.k} href={n.href} className="nav-item muted" onClick={closeNav}>
+          <Icon d={n.icon}/><span>{n.label}</span>
+        </a>
+      ))}
+      <div className="side-spacer"></div>
+      <div className="invite-card">
+        <div className="t">Invite friends. Give $25, get $25.</div>
+        <a href="/membership.html" className="a">Refer &amp; Earn →</a>
+      </div>
+      <div className="side-foot">
+        <a href="/account.html" className="help"><Icon d={I.msg}/> Need help?</a>
+      </div>
+    </aside>
+  );
+}
+
+/* ───────────────────── Icon glyph paths for Leaflet divIcons ───────────────────── */
+// Leaflet markers are plain HTML, not React, so pins get their own tiny raw
+// SVG strings (same visual language as the Icon component above).
+const PIN_GLYPH = {
+  star:'<path d="M12 3l2.5 5.5L20 9l-4 4 1 6-5-3-5 3 1-6-4-4 5.5-.5z"/>',
+  pin:'<circle cx="12" cy="11" r="2.5"/><path d="M12 22s7-5.6 7-11a7 7 0 1 0-14 0c0 5.4 7 11 7 11z"/>',
+  store:'<path d="M4 9l1-5h14l1 5M4 9v11h16V9M4 9h16M9 20v-5h6v5"/>',
+  building:'<rect x="5" y="3" width="14" height="18" rx="1"/><path d="M9 7h2M13 7h2M9 11h2M13 11h2M9 15h2M13 15h2"/>',
+  ghost:'<path d="M5 21V10a7 7 0 0 1 14 0v11l-2.5-2-2.5 2-2-2-2 2-2.5-2L5 21z"/><circle cx="9.5" cy="10" r="1"/><circle cx="14.5" cy="10" r="1"/>',
+  coffee:'<path d="M4 8h13v5a4 4 0 0 1-4 4H8a4 4 0 0 1-4-4V8z"/><path d="M17 9h2a2 2 0 0 1 0 4h-2"/><path d="M7 3v2M11 3v2"/>',
+  utensils:'<path d="M5 3v8a2 2 0 0 0 4 0V3M7 11v10M17 3c-2 0-3 2-3 5s1 4 3 4v9"/>',
+};
+function pinDivIcon(iconKey){
+  const glyph=PIN_GLYPH[iconKey]||PIN_GLYPH.pin;
+  return L.divIcon({
+    className:'',
+    html:'<div class="mk-pin"><svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.8" stroke-linecap="round" stroke-linejoin="round">'+glyph+'</svg></div>',
+    iconSize:[34,34], iconAnchor:[17,34], popupAnchor:[0,-32]
+  });
+}
+const YOU_ICON = L.divIcon({className:'', html:'<div class="mk-you"></div>', iconSize:[16,16], iconAnchor:[8,8]});
+
+/* ───────────────────── Real Leaflet map ───────────────────── */
+function LiveMap({city,places,selected,onSelect}){
+  const mapRef=useRef(null);
+  const leafletRef=useRef(null);
+  const markersRef=useRef({});
+  const youMarkerRef=useRef(null);
+
+  useEffect(()=>{
+    if(!mapRef.current||leafletRef.current) return;
+    const center=CITY_CENTER[city]||SAVANNAH_CENTER;
+    const map=L.map(mapRef.current,{center,zoom:14,minZoom:11,maxZoom:18,zoomControl:true,attributionControl:true});
+    // Dark tiles (CartoDB, no API key needed) to match the navy brand palette.
+    L.tileLayer('https://{s}.basemaps.cartocdn.com/dark_all/{z}/{x}/{y}{r}.png',{
+      subdomains:'abcd', maxZoom:19,
+      attribution:'&copy; OpenStreetMap contributors &copy; CARTO'
+    }).addTo(map);
+    leafletRef.current=map;
+    return ()=>{ map.remove(); leafletRef.current=null; };
+  },[]);
+
+  // Re-pan when city changes
+  useEffect(()=>{
+    if(!leafletRef.current) return;
+    leafletRef.current.setView(CITY_CENTER[city]||SAVANNAH_CENTER,14);
+  },[city]);
+
+  // Sync markers to the current place list
+  useEffect(()=>{
+    const map=leafletRef.current;
+    if(!map) return;
+    Object.values(markersRef.current).forEach(m=>map.removeLayer(m));
+    markersRef.current={};
+    places.forEach(p=>{
+      const marker=L.marker([p.lat,p.lng],{icon:pinDivIcon(p.icon)}).addTo(map);
+      const dirUrl='https://www.google.com/maps/dir/?api=1&destination='+p.lat+','+p.lng;
+      marker.bindPopup(
+        '<div class="pp-name">'+p.name+'</div>'+
+        '<div class="pp-meta">'+p.cat+(p.pts?' · +'+p.pts+' BAG Points':'')+'</div>'+
+        '<a class="pp-dir" href="'+dirUrl+'" target="_blank" rel="noopener">Get Directions →</a>'
+      );
+      marker.on('click',()=>onSelect(p.id));
+      markersRef.current[p.id]=marker;
+    });
+  },[places]);
+
+  // Open the popup when a place is selected from the side list
+  useEffect(()=>{
+    const m=markersRef.current[selected];
+    if(m) m.openPopup();
+  },[selected]);
+
+  const locateMe=()=>{
+    const map=leafletRef.current;
+    if(!map) return;
+    if(!navigator.geolocation){ alert("Your browser doesn't support location."); return; }
+    navigator.geolocation.getCurrentPosition(pos=>{
+      const ll=[pos.coords.latitude,pos.coords.longitude];
+      if(youMarkerRef.current) map.removeLayer(youMarkerRef.current);
+      youMarkerRef.current=L.marker(ll,{icon:YOU_ICON,zIndexOffset:1000}).addTo(map);
+      map.setView(ll,15);
+    }, ()=>{ alert("Couldn't get your location — check your browser's location permission."); });
+  };
+
+  return (
+    <div className="map-wrap">
+      <div ref={mapRef} id="leafletMap"></div>
+      <button className="locate-btn" onClick={locateMe}><Icon d={I.compass}/> Find me</button>
+    </div>
+  );
+}
+
+/* ───────────────────── Place list panel ───────────────────── */
+const CAT_ICON={'Food & Drink':'coffee','Attractions':'star','Tours':'ghost','Shopping':'store','Hotels':'building'};
+function PlaceIcon({cat}){
+  const key=CAT_ICON[cat]||'pin';
+  const map={star:I.star,pin:I.pin,store:I.store,building:I.building,ghost:I.pin,coffee:I.pin,utensils:I.pin};
+  return <Icon d={map[key]||I.pin}/>;
+}
+function PlacePanel({places,selected,onSelect}){
+  return (
+    <div className="place-panel">
+      <div className="place-panel-t">{places.length} Nearby</div>
+      <div className="place-list">
+        {places.map(p=>(
+          <div key={p.id} className={'place-row'+(selected===p.id?' sel':'')} onClick={()=>onSelect(p.id)}>
+            <span className="place-badge"><PlaceIcon cat={p.cat}/></span>
+            <span className="place-info">
+              <span className="place-name">{p.name}</span>
+              <span className="place-sub">{p.cat}</span>
+            </span>
+            {p.pts>0&&<span className="place-pts">+{p.pts}</span>}
+          </div>
+        ))}
+        {places.length===0&&<div className="place-sub" style={{padding:'1rem 0'}}>No spots in this category yet.</div>}
+      </div>
+    </div>
+  );
+}
+
+/* ───────────────────── App ───────────────────── */
+function App(){
+  const [light,setLight]=useState(()=>{try{return localStorage.getItem('bf-theme')==='light';}catch(e){return false;}});
+  const [navOpen,setNavOpen]=useState(false);
+  const [loading,setLoading]=useState(true);
+  const [activeCity,setActiveCity]=useState('Savannah, GA');
+  const [cat,setCat]=useState('All');
+  const [selected,setSelected]=useState(null);
+  const [data,setData]=useState({name:'Traveler', initial:'T', notif:2});
+
+  useEffect(()=>{document.documentElement.classList.toggle('light',light);},[light]);
+  const toggleTheme=()=>{setLight(v=>{const nv=!v;try{localStorage.setItem('bf-theme',nv?'light':'dark');}catch(e){}return nv;});};
+
+  useEffect(()=>{(async()=>{
+    if(!sb){setLoading(false);return;}
+    try{
+      const {data:s}=await sb.auth.getSession();
+      if(!s.session){
+        if(REQUIRE_AUTH){window.location.href='/account-login.html';return;}
+        setLoading(false);return;
+      }
+      const u=s.session.user;
+      const next={};
+      const {data:p}=await sb.from('profiles').select('*').eq('id',u.id).single();
+      if(p){
+        const nm=p.first_name||u.email.split('@')[0];
+        next.name=nm; next.initial=nm.charAt(0).toUpperCase();
+        if(p.preferred_city){ setActiveCity(CITY_PLACES[p.preferred_city]?p.preferred_city:'Savannah, GA'); }
+      }
+      setData(d=>({...d,...next}));
+    }catch(e){console.warn('Map load (preview mode):',e&&e.message);}
+    setLoading(false);
+  })();},[]);
+
+  const allPlaces=CITY_PLACES[activeCity]||[];
+  const places=cat==='All'?allPlaces:allPlaces.filter(p=>p.cat===cat);
+
+  return (
+    <div className={'app'+(navOpen?' nav-open':'')}>
+      <Sidebar active="map" light={light} toggleTheme={toggleTheme} closeNav={()=>setNavOpen(false)}/>
+      <div className="scrim" onClick={()=>setNavOpen(false)}></div>
+      <div className="main">
+        <div className="topbar">
+          <button className="hamburger" onClick={()=>setNavOpen(true)} aria-label="Open menu">
+            <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" strokeWidth="1.8"><path d="M4 7h16M4 12h16M4 17h16"/></svg>
+          </button>
+          <ThemeToggle light={light} toggleTheme={toggleTheme}/>
+          <button className="bell" aria-label="Notifications"><Icon d={I.bell}/>{data.notif>0&&<span className="dot">{data.notif}</span>}</button>
+          <a className="user-chip" href="/account.html">
+            <span className="user-name">{data.name}</span>
+            <span className="avatar">{data.initial}</span>
+          </a>
+        </div>
+
+        <div className="content">
+          <div className="hero reveal">
+            <div>
+              <h1>Explore <em>Nearby.</em></h1>
+              <p>A real map of partner spots around you — tap a pin or a place to get directions.</p>
+            </div>
+            <div className="hero-chips">
+              <span className="chip"><Icon d={I.pin} style={{width:14,height:14,color:'var(--gold)'}}/><b>{activeCity}</b></span>
+            </div>
+          </div>
+
+          <div className="city-tabs">
+            {LAUNCH_CITIES.map(c=>{
+              const available = !!CITY_PLACES[c];
+              return available
+                ? <button key={c} className={'city-tab'+(activeCity===c?' active':'')} onClick={()=>{setActiveCity(c);setSelected(null);}}>{c.split(',')[0]}</button>
+                : <button key={c} className="city-tab soon" disabled title={c.split(',')[0]+' map is coming soon'}>{c.split(',')[0]} <span className="soon-pill">Soon</span></button>;
+            })}
+          </div>
+
+          <div className="cat-tabs">
+            {CATS.map(c=><button key={c} className={'cat-tab'+(cat===c?' active':'')} onClick={()=>setCat(c)}>{c}</button>)}
+          </div>
+
+          <div className="map-layout reveal" style={{animationDelay:'.06s'}}>
+            <LiveMap city={activeCity} places={places} selected={selected} onSelect={setSelected}/>
+            <PlacePanel places={places} selected={selected} onSelect={setSelected}/>
+          </div>
+
+          <div className="soon-strip">
+            <div>
+              <div className="t">More cities, more spots — <b>on the way.</b></div>
+              <div className="d">Atlanta, Tampa, Orlando, and Miami maps unlock as their partner networks go live.</div>
+            </div>
+            <a href="/plan-my-trip.html" className="chip" style={{color:'var(--gold)'}}>Plan a trip <Icon d={I.arrow} style={{width:13,height:13}}/></a>
+          </div>
+        </div>
+      </div>
+      {loading&&<div className="boot"><div className="sp"></div><div className="t">Opening the map…</div></div>}
+    </div>
+  );
+}
+
+ReactDOM.createRoot(document.getElementById('root')).render(<App/>);
+</script>
+</body>
+</html>
