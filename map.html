@@ -15,8 +15,8 @@
 <!-- Supabase on the same jsdelivr path the existing account/dashboard pages use -->
 <script src="https://cdn.jsdelivr.net/npm/@supabase/supabase-js@2"></script>
 <!-- Leaflet for the real map (same library already used in the BagFree World game) -->
-<link rel="stylesheet" href="https://unpkg.com/leaflet@1.9.4/dist/leaflet.css"/>
-<script src="https://unpkg.com/leaflet@1.9.4/dist/leaflet.js"></script>
+<link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/leaflet/1.9.4/leaflet.min.css"/>
+<script src="https://cdnjs.cloudflare.com/ajax/libs/leaflet/1.9.4/leaflet.min.js"></script>
 
 <style>
 :root{
@@ -352,7 +352,7 @@ function LiveMap({city,places,selected,onSelect}){
     if(typeof window.L==='undefined'){
       // Leaflet's script tag didn't load (blocked, offline, or slow network).
       // Fail loudly in the console but keep the rest of the page usable.
-      console.error('Leaflet (L) is not defined — the map library failed to load from unpkg.com. Check network/CSP.');
+      console.error('Leaflet (L) is not defined — the map library failed to load from cdnjs.cloudflare.com. Check network/CSP.');
       setMapError(true);
       return;
     }
@@ -420,7 +420,7 @@ function LiveMap({city,places,selected,onSelect}){
       <div className="map-wrap" style={{display:'flex',alignItems:'center',justifyContent:'center',padding:'2rem'}}>
         <div style={{textAlign:'center',maxWidth:280}}>
           <div style={{fontFamily:'var(--ff-display)',fontStyle:'italic',fontSize:'1.1rem',color:'var(--cream)',marginBottom:'.5rem'}}>Map couldn't load</div>
-          <div style={{fontSize:'.78rem',color:'rgba(var(--cream-rgb),0.5)',lineHeight:1.5}}>The map library didn't load from unpkg.com. Check your connection, or if this keeps happening, your site's Content-Security-Policy may be blocking it — see console for details.</div>
+          <div style={{fontSize:'.78rem',color:'rgba(var(--cream-rgb),0.5)',lineHeight:1.5}}>The map library didn't load from cdnjs.cloudflare.com. Check your connection, or if this keeps happening, your site's Content-Security-Policy may be blocking it — see console for details.</div>
         </div>
       </div>
     );
