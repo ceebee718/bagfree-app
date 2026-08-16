@@ -2481,8 +2481,10 @@ function VideoSection() {
 function SocialFooter() {
   var shareUrl = encodeURIComponent('https://bagfree.app');
   var shareText = encodeURIComponent('Travel Light. Experience More. Leave Less Behind. Check out BagFree — sustainable travel clothing delivered to your hotel. #BagFree #TravelLight');
+  var year = new Date().getFullYear();
 
   return (
+    <React.Fragment>
     <div className="social-footer">
       <div className="social-footer-left">
         <span className="social-footer-brand">BagFree</span>
@@ -2510,6 +2512,14 @@ function SocialFooter() {
         </div>
       </div>
     </div>
+    <div className="legal-footer">
+      <span>© {year} Batch Physics Consulting, LLC</span>
+      <span className="dot">·</span>
+      <a href="/privacy.html">Privacy Policy</a>
+      <span className="dot">·</span>
+      <a href="/support.html">Support</a>
+    </div>
+    </React.Fragment>
   );
 }
 
