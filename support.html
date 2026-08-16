@@ -1,0 +1,113 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+<meta charset="UTF-8">
+<meta name="viewport" content="width=device-width,initial-scale=1">
+<title>Support — BagFree</title>
+<link rel="preconnect" href="https://fonts.googleapis.com">
+<link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+<link href="https://fonts.googleapis.com/css2?family=Cormorant+Garamond:ital,wght@0,300;0,400;0,500;0,600;1,300;1,400&family=DM+Sans:wght@300;400;500;600;700&display=swap" rel="stylesheet">
+<style>
+:root{
+  --navy:#071B3A; --navy-ink:#04122A; --navy-2:#0A2349;
+  --gold:#D4AF6A; --gold-soft:#E8CF9E; --gold-rgb:212,175,106;
+  --cream:#F4EFE3; --cream-rgb:244,239,227;
+  --em:#5DCAA5; --em-rgb:93,202,165;
+  --ff-display:'Cormorant Garamond',Georgia,serif;
+  --ff-body:'DM Sans','Helvetica Neue',sans-serif;
+  --line:rgba(var(--gold-rgb),0.14);
+}
+*,*::before,*::after{box-sizing:border-box;margin:0;padding:0}
+body{font-family:var(--ff-body);color:rgba(var(--cream-rgb),0.86);background:var(--navy);-webkit-font-smoothing:antialiased;line-height:1.6}
+body::before{content:'';position:fixed;inset:0;pointer-events:none;z-index:0;
+  background:radial-gradient(900px 600px at 78% -8%, rgba(var(--gold-rgb),0.10), transparent 60%),
+             radial-gradient(800px 700px at -10% 110%, rgba(var(--em-rgb),0.07), transparent 60%);}
+a{color:var(--gold)}
+.wrap{position:relative;z-index:1;max-width:760px;margin:0 auto;padding:3rem 1.5rem 6rem}
+.brand{display:inline-flex;align-items:center;gap:.5rem;text-decoration:none;margin-bottom:2.5rem}
+.brand-mark{font-family:var(--ff-display);font-style:italic;font-size:1.3rem;color:var(--gold)}
+.eyebrow{font-size:.6rem;letter-spacing:3.4px;text-transform:uppercase;font-weight:600;color:var(--gold);margin-bottom:.6rem}
+h1{font-family:var(--ff-display);font-weight:300;font-size:clamp(2.1rem,5vw,3rem);color:var(--cream);margin-bottom:.6rem}
+.lead{font-size:.95rem;color:rgba(var(--cream-rgb),0.55);max-width:52ch;margin-bottom:2rem}
+
+.contact-card{display:flex;align-items:center;justify-content:space-between;gap:1rem;flex-wrap:wrap;
+  border:1px solid rgba(var(--gold-rgb),0.28);border-radius:16px;background:rgba(255,255,255,.03);padding:1.3rem 1.5rem;margin-bottom:2.6rem}
+.contact-card .t{font-size:.92rem;color:var(--cream)}
+.contact-card .d{font-size:.78rem;color:rgba(var(--cream-rgb),0.5);margin-top:.2rem}
+.contact-card .btn{display:inline-block;padding:.7rem 1.2rem;border-radius:30px;border:1px solid var(--gold);
+  color:var(--gold);font-size:.68rem;letter-spacing:2px;text-transform:uppercase;font-weight:700;text-decoration:none;transition:.2s;white-space:nowrap}
+.contact-card .btn:hover{background:rgba(var(--gold-rgb),0.1)}
+
+h2{font-family:var(--ff-display);font-weight:500;font-size:1.5rem;color:var(--gold-soft);margin:2.4rem 0 1rem}
+.faq{border:1px solid var(--line);border-radius:12px;overflow:hidden;margin-bottom:.7rem;background:rgba(255,255,255,.02)}
+.faq summary{padding:1rem 1.2rem;font-size:.92rem;color:var(--cream);font-weight:500;cursor:pointer;list-style:none;display:flex;justify-content:space-between;align-items:center;gap:1rem}
+.faq summary::-webkit-details-marker{display:none}
+.faq summary::after{content:'+';font-size:1.2rem;color:var(--gold);flex-shrink:0;transition:transform .2s}
+.faq[open] summary::after{transform:rotate(45deg)}
+.faq p{padding:0 1.2rem 1.1rem;font-size:.85rem;color:rgba(var(--cream-rgb),0.62)}
+
+footer{margin-top:3.5rem;padding-top:1.6rem;border-top:1px solid var(--line);font-size:.78rem;color:rgba(var(--cream-rgb),0.45)}
+footer a{color:var(--em)}
+</style>
+</head>
+<body>
+<div class="wrap">
+  <a href="/" class="brand"><span class="brand-mark">BagFree</span></a>
+  <div class="eyebrow">Help Center</div>
+  <h1>Support</h1>
+  <p class="lead">Questions about an order, your account, or how BagFree works — we're happy to help.</p>
+
+  <div class="contact-card">
+    <div>
+      <div class="t">Reach us directly</div>
+      <div class="d">We typically respond within 1 business day.</div>
+    </div>
+    <a class="btn" href="mailto:larry@bagfree.app">Email larry@bagfree.app</a>
+  </div>
+
+  <h2>Orders & Delivery</h2>
+  <details class="faq">
+    <summary>How does BagFree delivery work?</summary>
+    <p>You choose a curated bundle, your city, hotel, and travel dates at checkout. We coordinate delivery so your items are ready at your hotel — no packing, no checked bag.</p>
+  </details>
+  <details class="faq">
+    <summary>Can I change my size or cancel an item after ordering?</summary>
+    <p>Email us as soon as possible at <a href="mailto:larry@bagfree.app">larry@bagfree.app</a> with your order details. We can usually adjust size or quantity if your order hasn't shipped yet.</p>
+  </details>
+  <details class="faq">
+    <summary>Where can I see my past orders?</summary>
+    <p>Your order history is on your Dashboard under "Recent Orders," including the items, sizes, and status of each trip.</p>
+  </details>
+
+  <h2>Account & Preferences</h2>
+  <details class="faq">
+    <summary>Does BagFree remember my size?</summary>
+    <p>Yes — after your first order, we save your size to your profile so it's pre-selected the next time you check out. You can change it anytime from your Dashboard.</p>
+  </details>
+  <details class="faq">
+    <summary>How do I delete my account or personal data?</summary>
+    <p>Email <a href="mailto:larry@bagfree.app">larry@bagfree.app</a> and we'll process your deletion request. See our <a href="/privacy.html">Privacy Policy</a> for details on what we collect and how long we keep it.</p>
+  </details>
+
+  <h2>Passport & Rewards</h2>
+  <details class="faq">
+    <summary>What is the Passport feature?</summary>
+    <p>Your Passport tracks real places you visit in each BagFree city — check in at partner locations to collect stamps and earn BAG Points.</p>
+  </details>
+  <details class="faq">
+    <summary>How do BAG Points work?</summary>
+    <p>You earn points from purchases and passport stamps. Points and membership details are available on your Rewards page.</p>
+  </details>
+
+  <h2>Payments</h2>
+  <details class="faq">
+    <summary>Is my payment information secure?</summary>
+    <p>Yes. Payments are processed by Stripe — BagFree never stores your full card number on our servers. See our <a href="/privacy.html">Privacy Policy</a> for more detail.</p>
+  </details>
+
+  <footer>
+    BagFree · <a href="/privacy.html">Privacy Policy</a> · <a href="/">bagfree.app</a>
+  </footer>
+</div>
+</body>
+</html>
