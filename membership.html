@@ -208,7 +208,7 @@ html.light .ft{border-color:rgba(0,0,0,0.08)}
         <li>Sustainable travel participation</li>
       </ul>
 
-      <button class="tc-btn" onclick="go('secondjourney')">Request This Service</button>
+      <button class="tc-btn" onclick="startServiceCheckout('secondjourney')">Request This Service</button>
     </div>
 
     <!-- EMERALD -->
@@ -249,7 +249,7 @@ html.light .ft{border-color:rgba(0,0,0,0.08)}
         <li class="h">Enhanced BAG Rewards (1.5x)</li>
       </ul>
 
-      <button class="tc-btn" onclick="go('emerald')">Request This Plan</button>
+      <button class="tc-btn" onclick="startServiceCheckout('emerald')">Request This Plan</button>
     </div>
 
     <!-- GOLD -->
@@ -291,7 +291,7 @@ html.light .ft{border-color:rgba(0,0,0,0.08)}
         <li class="h">Highest BAG Rewards (2x)</li>
       </ul>
 
-      <button class="tc-btn" onclick="go('gold')">Request Concierge Service</button>
+      <button class="tc-btn" onclick="startServiceCheckout('gold')">Request Concierge Service</button>
     </div>
   </div>
 </section>
@@ -502,5 +502,89 @@ document.querySelectorAll('a[href^="#"]').forEach(function(a){a.addEventListener
 </script>
 
 <script src="/bagfree-nav.js" defer></script>
+
+<script id="bagfree-service-checkout-fix">
+(function(){
+  var SERVICE_TIER_NAMES = {
+    secondjourney: 'Second Journey',
+    emerald: 'Emerald',
+    gold: 'Gold'
+  };
+
+  async function openExternalCheckout(url) {
+    if (!url || !/^https:\/\/checkout\.stripe\.com\//i.test(url)) {
+      throw new Error('Invalid Stripe checkout URL');
+    }
+
+    var Browser = window.Capacitor && window.Capacitor.Plugins && window.Capacitor.Plugins.Browser;
+
+    if (window.location.protocol === 'capacitor:' && Browser && typeof Browser.open === 'function') {
+      await Browser.open({ url: url });
+      return;
+    }
+
+    window.location.href = url;
+  }
+
+  window.startServiceCheckout = async function(tier) {
+    try {
+      tier = String(tier || '').toLowerCase();
+      var tierName = SERVICE_TIER_NAMES[tier] || 'BagFree Service';
+
+      var email = window.prompt('Enter your email to request ' + tierName + ' service checkout:');
+      email = String(email || '').trim();
+
+      if (!email) return;
+      if (email.indexOf('@') === -1) {
+        alert('Please enter a valid email address.');
+        return;
+      }
+
+      var endpoint = '/.netlify/functions/create-service-plan-checkout';
+      var isNative = window.location && window.location.protocol === 'capacitor:';
+      if (isNative) endpoint = 'https://bagfree.app/.netlify/functions/create-service-plan-checkout';
+
+      var payload = { tier: tier, email: email };
+      var data = null;
+      var ok = false;
+      var status = 0;
+
+      var capHttp = window.Capacitor && window.Capacitor.Plugins && window.Capacitor.Plugins.CapacitorHttp;
+
+      if (isNative && capHttp) {
+        var nativeRes = await capHttp.post({
+          url: endpoint,
+          headers: { 'Content-Type': 'application/json' },
+          data: payload
+        });
+        status = nativeRes.status || 0;
+        ok = status >= 200 && status < 300;
+        data = typeof nativeRes.data === 'string'
+          ? JSON.parse(nativeRes.data || '{}')
+          : (nativeRes.data || {});
+      } else {
+        var res = await fetch(endpoint, {
+          method: 'POST',
+          headers: { 'Content-Type': 'application/json' },
+          body: JSON.stringify(payload)
+        });
+        status = res.status;
+        ok = res.ok;
+        data = await res.json().catch(function(){ return {}; });
+      }
+
+      if (!ok || !data.url) {
+        throw new Error((data && (data.error || data.detail || data.message)) || ('Checkout HTTP ' + status));
+      }
+
+      await openExternalCheckout(data.url);
+    } catch (err) {
+      console.error('Service checkout error:', err && (err.stack || err.message || JSON.stringify(err)));
+      alert("We couldn't open service checkout. Please try again or email hello@bagfree.app.\n\n(" + ((err && err.message) || 'unknown error') + ")");
+    }
+  };
+})();
+</script>
+
 </body>
 </html>
