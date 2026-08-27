@@ -3098,7 +3098,29 @@ function App() {
           <span></span><span></span><span></span>
         </button>
         <a href="/" className="brand-link"><img src={LOGO_SRC} alt="BagFree" className="brand-img--sm"/></a>
-        <div className="mobile-bar-actions"><ThemeToggle/></div>
+        <div className="mobile-bar-actions" style={{display:'flex',alignItems:'center',gap:8}}>
+          <a
+            href="/account-login.html"
+            style={{
+              display:'inline-flex',
+              alignItems:'center',
+              justifyContent:'center',
+              padding:'7px 10px',
+              border:'1px solid rgba(201,169,110,0.45)',
+              borderRadius:999,
+              color:'var(--gold)',
+              fontSize:11,
+              letterSpacing:1.4,
+              textTransform:'uppercase',
+              textDecoration:'none',
+              whiteSpace:'nowrap',
+              background:'rgba(201,169,110,0.08)'
+            }}
+          >
+            Sign In
+          </a>
+          <ThemeToggle/>
+        </div>
       </div>
       <div className={'drawer-overlay' + (drawerOpen ? ' show' : '')} onClick={function(){ setDrawerOpen(false); }}></div>
       <Sidebar mobileOpen={drawerOpen} onClose={function(){ setDrawerOpen(false); }} active={active} setActive={setActive} city={city} setCity={setCity}/>
