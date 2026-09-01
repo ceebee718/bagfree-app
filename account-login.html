@@ -188,18 +188,6 @@ async function handleLogin() {
   var email = emailEl ? String(emailEl.value || '').trim().toLowerCase() : '';
   var password = passEl ? String(passEl.value || '') : '';
 
-  // App Review demo login. This avoids blocking review on external auth setup.
-  if (email === 'appreview@bagfree.app' && password === 'BagFreeReview2026!') {
-    try {
-      localStorage.setItem('bagfree_review_demo', 'true');
-      localStorage.setItem('bagfree_review_email', email);
-      localStorage.setItem('bagfree_review_name', 'App Review');
-    } catch (e) {}
-    window.location.href = '/app-review-account.html';
-    return;
-  }
-
-
   var email = document.getElementById('loginEmail').value.trim();
   var pass = document.getElementById('loginPass').value;
   if (!email || !pass) { showMsg('Please enter email and password.', 'error'); return; }
