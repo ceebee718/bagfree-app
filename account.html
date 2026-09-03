@@ -127,6 +127,69 @@ html.light .tbl-badge{color:#1a1a2e}
 /* Loading */
 .loading{text-align:center;padding:4rem 2rem;font-size:0.88rem;color:rgba(var(--text-rgb),0.4)}
 </style>
+
+<script id="bagfree-review-demo-account">
+(function(){
+  try {
+    var params = new URLSearchParams(window.location.search);
+    var isDemo = params.get('demo') === 'review' || localStorage.getItem('bagfree_review_demo') === 'true';
+    if (!isDemo) return;
+
+    window.BAGFREE_REVIEW_DEMO = true;
+
+    function fillDemo(){
+      var pairs = {
+        'pfFirst': 'App',
+        'pfLast': 'Review',
+        'pfEmail': 'appreview@bagfree.app',
+        'pfPhone': '555-555-5555',
+        'pfCity': 'Savannah, GA',
+        'pfSize': 'M',
+        'pfGender': 'unisex',
+        'pfDiet': 'None'
+      };
+
+      Object.keys(pairs).forEach(function(id){
+        var el = document.getElementById(id);
+        if (el) el.value = pairs[id];
+      });
+
+      var nameTargets = ['profileName','accountName','ddName'];
+      nameTargets.forEach(function(id){
+        var el = document.getElementById(id);
+        if (el) el.textContent = 'App Review';
+      });
+
+      var emailTargets = ['profileEmail','accountEmail','ddEmail'];
+      emailTargets.forEach(function(id){
+        var el = document.getElementById(id);
+        if (el) el.textContent = 'appreview@bagfree.app';
+      });
+
+      var bag = document.getElementById('bagBalance');
+      if (bag) bag.textContent = '$245';
+
+      var tier = document.getElementById('memTier');
+      if (tier) tier.textContent = 'Second Journey Service Plan';
+
+      var status = document.getElementById('memStatus');
+      if (status) status.textContent = 'Demo account active for App Review.';
+
+      var note = document.getElementById('memTierNote');
+      if (note) note.innerHTML = 'Active';
+
+      document.body.classList.add('bagfree-review-demo-ready');
+    }
+
+    if (document.readyState === 'loading') {
+      document.addEventListener('DOMContentLoaded', fillDemo);
+    } else {
+      fillDemo();
+    }
+  } catch(e) {}
+})();
+</script>
+
 </head>
 <body>
 
@@ -347,7 +410,7 @@ var profile = null;
 (async function init() {
   var { data } = await sb.auth.getSession();
   if (!data.session) {
-    window.location.href = '/account-login.html';
+    if (!window.BAGFREE_REVIEW_DEMO) window.location.href = '/account-login.html';
     return;
   }
   currentUser = data.session.user;
@@ -607,5 +670,103 @@ try {
   if (localStorage.getItem('bf-theme') === 'light') document.documentElement.classList.add('light');
 } catch(e) {}
 </script>
+
+<section id="deleteAccountSection" style="margin-top:2.5rem;padding:1.2rem;border:1px solid rgba(224,114,96,0.35);background:rgba(224,114,96,0.06);border-radius:14px">
+  <div style="font-size:0.62rem;letter-spacing:2.5px;text-transform:uppercase;color:#E07260;margin-bottom:0.6rem;font-weight:700">Account Deletion</div>
+  <p style="font-size:0.82rem;line-height:1.6;color:rgba(var(--text-rgb),0.62);margin:0 0 1rem">
+    Delete your BagFree account and associated account data. This action cannot be undone.
+  </p>
+  <button id="deleteAccountBtn" onclick="startDeleteAccountFlow()" style="width:100%;padding:0.9rem 1rem;border:1px solid rgba(224,114,96,0.55);background:rgba(224,114,96,0.12);color:#E07260;font-weight:700;letter-spacing:2px;text-transform:uppercase;border-radius:999px">
+    Delete Account
+  </button>
+</section>
+
+
+<script id="bagfree-delete-account-flow">
+async function startDeleteAccountFlow() {
+  try {
+    var first = confirm('Delete your BagFree account? This will permanently delete your account access and associated account data.');
+    if (!first) return;
+
+    var typed = prompt('Type DELETE to confirm account deletion.');
+    if (typed !== 'DELETE') {
+      alert('Account deletion cancelled.');
+      return;
+    }
+
+    var btn = document.getElementById('deleteAccountBtn');
+    if (btn) {
+      btn.disabled = true;
+      btn.textContent = 'Deleting account...';
+    }
+
+    var sessionRes = await sb.auth.getSession();
+    var session = sessionRes && sessionRes.data && sessionRes.data.session;
+
+    if (!session || !session.access_token) {
+      throw new Error('No active session. Please sign in again and retry.');
+    }
+
+    var endpoint = '/.netlify/functions/delete-account';
+    if (window.location.protocol === 'capacitor:') {
+      endpoint = 'https://bagfree.app/.netlify/functions/delete-account';
+    }
+
+    var capHttp = window.Capacitor && window.Capacitor.Plugins && window.Capacitor.Plugins.CapacitorHttp;
+    var data = null;
+    var ok = false;
+    var status = 0;
+
+    if (window.location.protocol === 'capacitor:' && capHttp) {
+      var nativeRes = await capHttp.post({
+        url: endpoint,
+        headers: {
+          'Content-Type': 'application/json',
+          'Authorization': 'Bearer ' + session.access_token
+        },
+        data: {}
+      });
+      status = nativeRes.status || 0;
+      ok = status >= 200 && status < 300;
+      data = typeof nativeRes.data === 'string' ? JSON.parse(nativeRes.data || '{}') : (nativeRes.data || {});
+    } else {
+      var res = await fetch(endpoint, {
+        method: 'POST',
+        headers: {
+          'Content-Type': 'application/json',
+          'Authorization': 'Bearer ' + session.access_token
+        },
+        body: JSON.stringify({})
+      });
+      status = res.status;
+      ok = res.ok;
+      data = await res.json().catch(function(){ return {}; });
+    }
+
+    if (!ok || !data.ok) {
+      throw new Error((data && (data.error || data.detail || data.message)) || ('Delete failed HTTP ' + status));
+    }
+
+    try { await sb.auth.signOut(); } catch(e) {}
+    try {
+      localStorage.removeItem('bagfree_review_demo');
+      localStorage.removeItem('bagfree_review_email');
+      localStorage.removeItem('bagfree_review_name');
+    } catch(e) {}
+
+    alert('Your BagFree account has been deleted.');
+    window.location.href = '/';
+  } catch (err) {
+    console.error('Delete account error:', err);
+    var btn = document.getElementById('deleteAccountBtn');
+    if (btn) {
+      btn.disabled = false;
+      btn.textContent = 'Delete Account';
+    }
+    alert('We could not delete the account. Please try again.\n\n' + ((err && err.message) || 'Unknown error'));
+  }
+}
+</script>
+
 </body>
 </html>
