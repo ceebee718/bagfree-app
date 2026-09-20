@@ -156,6 +156,23 @@ a{text-decoration:none}
 .ll-desc{display:block;font-size:0.82rem;color:var(--muted);line-height:1.5}
 .ll-cta{flex-shrink:0;font-size:0.72rem;letter-spacing:1.5px;text-transform:uppercase;color:var(--gold);font-weight:600;white-space:nowrap;align-self:center}
 @media(max-width:640px){.lost-luggage{flex-wrap:wrap}.ll-cta{width:100%;margin-top:0.5rem}}
+/* App Store greeting-column card */
+.appstore-card{display:flex;align-items:center;gap:1rem;margin:0 0 1.4rem;padding:1.1rem 1.3rem;border:1.5px solid rgba(201,169,110,0.55);border-radius:12px;background:linear-gradient(120deg,rgba(201,169,110,0.09),rgba(201,169,110,0.03));text-decoration:none;transition:all 0.2s;max-width:640px;box-shadow:0 2px 16px rgba(201,169,110,0.08)}
+.appstore-card:hover{background:linear-gradient(120deg,rgba(201,169,110,0.14),rgba(201,169,110,0.05));border-color:var(--gold)}
+.as-icon{flex-shrink:0;width:46px;height:46px;border-radius:50%;background:rgba(201,169,110,0.12);display:flex;align-items:center;justify-content:center;color:var(--gold)}
+.as-text{flex:1;min-width:0;display:flex;flex-direction:column;gap:0.15rem}
+.as-eyebrow{font-size:0.6rem;letter-spacing:2px;text-transform:uppercase;color:var(--gold);font-weight:600}
+.as-title{font-family:var(--ff-display);font-size:1.1rem;color:var(--white);font-weight:500}
+.as-cta{flex-shrink:0;font-size:0.72rem;letter-spacing:1.5px;text-transform:uppercase;color:var(--gold);font-weight:600;white-space:nowrap}
+@media(max-width:640px){.appstore-card{flex-wrap:wrap}.as-cta{width:100%;margin-top:0.5rem}}
+/* App Store slim top bar */
+.appstore-topbar{display:flex;align-items:center;justify-content:center;position:relative;background:linear-gradient(90deg,#0d1a32,#162240);border-bottom:1px solid rgba(201,169,110,0.3);padding:0.5rem 2.5rem 0.5rem 1rem;z-index:95}
+.ast-link{display:inline-flex;align-items:center;gap:0.55rem;color:var(--gold);text-decoration:none;font-size:0.78rem;letter-spacing:0.3px;flex-wrap:wrap;justify-content:center}
+.ast-link svg{flex-shrink:0}
+.ast-cta{font-weight:700;letter-spacing:1px;text-transform:uppercase;font-size:0.7rem;padding-left:0.2rem}
+.ast-link:hover .ast-cta{text-decoration:underline}
+.ast-close{position:absolute;right:0.8rem;top:50%;transform:translateY(-50%);background:none;border:none;color:rgba(201,169,110,0.6);font-size:0.85rem;cursor:pointer;padding:0.3rem;line-height:1}
+.ast-close:hover{color:var(--gold)}
 .meta-row{display:flex;align-items:center;gap:1.4rem;margin-top:0.9rem;flex-wrap:wrap}
 .meta-item{display:flex;align-items:center;gap:0.45rem;color:var(--muted);font-size:0.85rem}
 .meta-item svg{width:14px;height:14px;color:var(--gold)}
