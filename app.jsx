@@ -1546,6 +1546,16 @@ function TopBar(props) {
           </span>
           <span className="ll-cta">Learn More →</span>
         </a>
+        <a href="https://apps.apple.com/us/app/bagfree/id6796845348" target="_blank" rel="noopener" className="appstore-card">
+          <span className="as-icon">
+            <svg viewBox="0 0 24 24" width="24" height="24" fill="currentColor"><path d="M17.05 12.53c-.02-2.02 1.65-2.99 1.73-3.04-.94-1.38-2.41-1.57-2.93-1.59-1.25-.13-2.44.73-3.07.73-.63 0-1.61-.71-2.65-.69-1.36.02-2.62.79-3.32 2.01-1.42 2.46-.36 6.1 1.02 8.09.67.97 1.48 2.06 2.53 2.02 1.02-.04 1.4-.66 2.64-.66 1.23 0 1.58.66 2.65.64 1.09-.02 1.79-.99 2.46-1.97.77-1.13 1.09-2.22 1.11-2.28-.02-.01-2.13-.82-2.15-3.25zM15.03 6.58c.56-.68.94-1.62.83-2.58-.81.03-1.79.54-2.37 1.22-.52.6-.97 1.56-.85 2.48.9.07 1.83-.46 2.39-1.12z"/></svg>
+          </span>
+          <span className="as-text">
+            <span className="as-eyebrow">Now on the App Store</span>
+            <span className="as-title">Download the BagFree app</span>
+          </span>
+          <span className="as-cta">Get it →</span>
+        </a>
         <SearchBar city={props.city} onSearch={props.onSearch} onItemClick={props.onItemClick} onClearResults={props.onClearResults}/>
       </div>
       <div className="topbar-right">
@@ -2925,6 +2935,16 @@ function App() {
   const active = stateActive[0];
   const setActive = stateActive[1];
 
+  const appBarState = useState(function(){
+    try { return localStorage.getItem('bf_appbar_dismissed') !== '1'; } catch(e){ return true; }
+  });
+  const showAppBar = appBarState[0];
+  const setShowAppBar = appBarState[1];
+  function dismissAppBar(){
+    setShowAppBar(false);
+    try { localStorage.setItem('bf_appbar_dismissed', '1'); } catch(e){}
+  }
+
   const initCity = (function(){
     // URL > localStorage > default
     try {
@@ -3093,6 +3113,16 @@ function App() {
 
   return (
     <div className="app">
+      {showAppBar && (
+        <div className="appstore-topbar">
+          <a href="https://apps.apple.com/us/app/bagfree/id6796845348" target="_blank" rel="noopener" className="ast-link">
+            <svg viewBox="0 0 24 24" width="16" height="16" fill="currentColor"><path d="M17.05 12.53c-.02-2.02 1.65-2.99 1.73-3.04-.94-1.38-2.41-1.57-2.93-1.59-1.25-.13-2.44.73-3.07.73-.63 0-1.61-.71-2.65-.69-1.36.02-2.62.79-3.32 2.01-1.42 2.46-.36 6.1 1.02 8.09.67.97 1.48 2.06 2.53 2.02 1.02-.04 1.4-.66 2.64-.66 1.23 0 1.58.66 2.65.64 1.09-.02 1.79-.99 2.46-1.97.77-1.13 1.09-2.22 1.11-2.28-.02-.01-2.13-.82-2.15-3.25zM15.03 6.58c.56-.68.94-1.62.83-2.58-.81.03-1.79.54-2.37 1.22-.52.6-.97 1.56-.85 2.48.9.07 1.83-.46 2.39-1.12z"/></svg>
+            <span>BagFree is now on the App Store</span>
+            <span className="ast-cta">Download →</span>
+          </a>
+          <button className="ast-close" onClick={dismissAppBar} aria-label="Dismiss">✕</button>
+        </div>
+      )}
       <div className="mobile-bar">
         <button className="hamburger" aria-label="Open menu" onClick={function(){ setDrawerOpen(true); }}>
           <span></span><span></span><span></span>
