@@ -151,13 +151,18 @@ Do not describe yourself as an operator layer, engine router, or generic chatbot
         environment: 'production',
         domain: 'travel',
         feature: 'bagfree_travel_brain',
-        context: {
+        // Embr's app-intelligence contract reads appContext, not context.
+        appContext: {
+          appName: 'BagFree',
           app: 'BagFree',
           product: 'Travel Brain',
           travelerProfile: body.profile || {},
           activeTrip: body.activeTrip || {},
           instruction:
-            'Act as BagFree Travel Brain: a refined travel concierge that connects trip intent to itinerary ideas, packing intelligence, hotel delivery, and BagFree kit recommendations.'
+            'Act as BagFree Travel Brain: a refined travel concierge that connects trip intent to itinerary ideas, packing intelligence, hotel delivery, and BagFree kit recommendations. ' +
+            'Use activeTrip.destination as the selected destination for local requests such as nearby or in the area. When that destination is present, do not ask the traveler to repeat the city. ' +
+            'A destination explicitly named in the current user request takes precedence over the selected destination. Ask for a city only when no relevant destination is known. ' +
+            'The selected destination is browsing/trip context, not the traveler\'s verified physical or GPS location. Do not invent a hotel, trip dates, live hours, or inventory.'
         }
       })
     });
