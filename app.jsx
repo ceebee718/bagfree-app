@@ -3112,7 +3112,7 @@ function App() {
   }
 
   return (
-    <div className="app">
+    <React.Fragment>
       {showAppBar && (
         <div className="appstore-topbar">
           <a href="https://apps.apple.com/us/app/bagfree/id6796845348" target="_blank" rel="noopener" className="ast-link">
@@ -3123,6 +3123,7 @@ function App() {
           <button className="ast-close" onClick={dismissAppBar} aria-label="Dismiss">✕</button>
         </div>
       )}
+    <div className="app">
       <div className="mobile-bar">
         <button className="hamburger" aria-label="Open menu" onClick={function(){ setDrawerOpen(true); }}>
           <span></span><span></span><span></span>
@@ -3184,6 +3185,7 @@ function App() {
       </div>
       <ConciergeChat open={chatOpen} setOpen={setChatOpen} city={city} seed={chatSeed}/>
     </div>
+    </React.Fragment>
   );
 }
 
