@@ -163,13 +163,13 @@ a{text-decoration:none}
 .ll-cta{flex-shrink:0;font-size:0.72rem;letter-spacing:1.5px;text-transform:uppercase;color:var(--gold);font-weight:600;white-space:nowrap;align-self:center}
 @media(max-width:640px){.lost-luggage{flex-wrap:wrap}.ll-cta{width:100%;margin-top:0.5rem}}
 /* App Store greeting-column card */
-.appstore-card{display:flex;align-items:center;gap:1rem;margin:0 0 1.4rem;padding:1.1rem 1.3rem;border:1.5px solid rgba(201,169,110,0.55);border-radius:12px;background:linear-gradient(120deg,rgba(201,169,110,0.09),rgba(201,169,110,0.03));text-decoration:none;transition:all 0.2s;max-width:640px;box-shadow:0 2px 16px rgba(201,169,110,0.08)}
-.appstore-card:hover{background:linear-gradient(120deg,rgba(201,169,110,0.14),rgba(201,169,110,0.05));border-color:var(--gold)}
-.as-icon{flex-shrink:0;width:46px;height:46px;border-radius:50%;background:rgba(201,169,110,0.12);display:flex;align-items:center;justify-content:center;color:var(--gold)}
+.appstore-card{display:flex;align-items:center;gap:1rem;margin:0 0 1.4rem;padding:1.1rem 1.3rem;border:1.5px solid var(--gold);border-radius:12px;background:linear-gradient(120deg,var(--gold),#b8935a);text-decoration:none;transition:all 0.2s;max-width:640px;box-shadow:0 3px 16px rgba(201,169,110,0.28)}
+.appstore-card:hover{transform:translateY(-1px);box-shadow:0 6px 22px rgba(201,169,110,0.42)}
+.as-icon{flex-shrink:0;width:46px;height:46px;border-radius:50%;background:rgba(13,26,50,0.12);display:flex;align-items:center;justify-content:center;color:#0d1a32}
 .as-text{flex:1;min-width:0;display:flex;flex-direction:column;gap:0.15rem}
-.as-eyebrow{font-size:0.6rem;letter-spacing:2px;text-transform:uppercase;color:var(--gold);font-weight:600}
-.as-title{font-family:var(--ff-display);font-size:1.1rem;color:var(--white);font-weight:500}
-.as-cta{flex-shrink:0;font-size:0.72rem;letter-spacing:1.5px;text-transform:uppercase;color:var(--gold);font-weight:600;white-space:nowrap}
+.as-eyebrow{font-size:0.6rem;letter-spacing:2px;text-transform:uppercase;color:#0d1a32;font-weight:700;opacity:0.75}
+.as-title{font-family:var(--ff-display);font-size:1.15rem;color:#0d1a32;font-weight:600}
+.as-cta{flex-shrink:0;font-size:0.72rem;letter-spacing:1.5px;text-transform:uppercase;color:#0d1a32;font-weight:700;white-space:nowrap}
 @media(max-width:640px){.appstore-card{flex-wrap:wrap}.as-cta{width:100%;margin-top:0.5rem}}
 /* App Store slim top bar */
 .appstore-topbar{display:flex;align-items:center;justify-content:center;position:relative;background:linear-gradient(90deg,#0d1a32,#162240);border-bottom:1px solid rgba(201,169,110,0.3);padding:0.5rem 2.5rem 0.5rem 1rem;z-index:95}
