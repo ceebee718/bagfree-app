@@ -2599,20 +2599,9 @@ async function saveOrderToSupabase(bundleCart, total, stripeSessionId) {
       status: 'pending'
     }).select().single();
 
-    // Award BAG points (5% of purchase value, rounded to 2 decimals)
-    if (order && total > 0) {
-      var points = Math.round(total * 0.05 * 100) / 100;
-      if (points > 0) {
-        await sb.from('bag_rewards').insert({
-          user_id: sbUser.id,
-          amount: points,
-          type: 'earned',
-          source: 'purchase',
-          description: 'Earned from order ' + (order.order_number || ''),
-          order_id: order.id
-        });
-      }
-    }
+    // Rewards are credited only after Stripe confirms payment via the
+    // signed bag-credit-on-payment webhook. Never award purchase rewards
+    // merely because a checkout session was created.
 
     // Remember the size they just ordered as their preferred size for next
     // time (most frequent size in this cart wins; ties go to the first item).

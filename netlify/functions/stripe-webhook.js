@@ -8,6 +8,10 @@
 //   STRIPE_SECRET_KEY       — your Stripe secret key
 //   STRIPE_WEBHOOK_SECRET   — from Stripe Dashboard → Developers → Webhooks → signing secret
 //
+// OPTIONAL FOR ORDER CONFIRMATION (already used by other BagFree functions):
+//   SUPABASE_URL
+//   SUPABASE_SERVICE_ROLE_KEY
+//
 // SETUP IN STRIPE DASHBOARD:
 //   1. Developers → Webhooks → "Add endpoint"
 //   2. URL: https://bagfree.app/.netlify/functions/stripe-webhook
@@ -16,6 +20,7 @@
 //      as STRIPE_WEBHOOK_SECRET in Netlify env vars.
 
 const Stripe = require('stripe');
+const { createClient } = require('@supabase/supabase-js');
 
 exports.handler = async (event) => {
   if (event.httpMethod !== 'POST') {
@@ -58,6 +63,11 @@ exports.handler = async (event) => {
       return { statusCode: 200, body: JSON.stringify({ received: true, skipped: 'not_paid' }) };
     }
 
+    // Confirm the pending BagFree order created before redirecting to
+    // Stripe. This is best-effort: a database hiccup must not make Stripe
+    // retry a payment that already succeeded.
+    await confirmBagFreeOrder(session.id);
+
     // Format amount nicely
     const amount = `$${(session.amount_total / 100).toFixed(2)} ${(session.currency || 'usd').toUpperCase()}`;
 
@@ -98,3 +108,36 @@ exports.handler = async (event) => {
 
   return { statusCode: 200, body: JSON.stringify({ received: true }) };
 };
+
+
+async function confirmBagFreeOrder(stripeSessionId) {
+  const supabaseUrl =
+    process.env.SUPABASE_URL || process.env.BAGFREE_SUPABASE_URL;
+  const serviceKey =
+    process.env.SUPABASE_SERVICE_ROLE_KEY ||
+    process.env.BAGFREE_SUPABASE_SERVICE_ROLE_KEY;
+
+  if (!supabaseUrl || !serviceKey) {
+    console.warn(
+      'Supabase admin env vars not configured — leaving BagFree order pending'
+    );
+    return;
+  }
+
+  try {
+    const admin = createClient(supabaseUrl, serviceKey, {
+      auth: { persistSession: false },
+    });
+
+    const { error } = await admin
+      .from('orders')
+      .update({ status: 'confirmed' })
+      .eq('stripe_session_id', stripeSessionId);
+
+    if (error) {
+      console.error('Could not confirm BagFree order:', error);
+    }
+  } catch (err) {
+    console.error('Could not confirm BagFree order:', err);
+  }
+}
