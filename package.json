@@ -3,6 +3,9 @@
   "version": "1.0.0",
   "description": "BagFree travel platform",
   "private": true,
+  "scripts": {
+    "test": "node --test test/*.test.js"
+  },
   "dependencies": {
     "@capacitor/cli": "^8.4.1",
     "@capacitor/core": "^8.4.1",
