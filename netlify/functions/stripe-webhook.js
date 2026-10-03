@@ -22,6 +22,9 @@
 const Stripe = require('stripe');
 const { createClient } = require('@supabase/supabase-js');
 
+// Stripe signature verification requires the unparsed request body.
+exports.config = { rawBody: true };
+
 exports.handler = async (event) => {
   if (event.httpMethod !== 'POST') {
     return { statusCode: 405, body: 'Method not allowed' };
@@ -63,10 +66,20 @@ exports.handler = async (event) => {
       return { statusCode: 200, body: JSON.stringify({ received: true, skipped: 'not_paid' }) };
     }
 
-    // Confirm the pending BagFree order created before redirecting to
-    // Stripe. This is best-effort: a database hiccup must not make Stripe
-    // retry a payment that already succeeded.
-    await confirmBagFreeOrder(session.id);
+    // Durable BagFree work happens before the owner notification.
+    // If Supabase is configured and a database/RPC call fails, return 500 so
+    // Stripe retries. Reward writes use the session id as an idempotency key.
+    const processing = await processPaidBagFreeSession(session);
+    if (!processing.ok) {
+      console.error('BagFree payment processing failed:', processing.error);
+      return {
+        statusCode: 500,
+        body: JSON.stringify({
+          received: false,
+          error: 'BagFree payment processing failed',
+        }),
+      };
+    }
 
     // Format amount nicely
     const amount = `$${(session.amount_total / 100).toFixed(2)} ${(session.currency || 'usd').toUpperCase()}`;
@@ -109,8 +122,7 @@ exports.handler = async (event) => {
   return { statusCode: 200, body: JSON.stringify({ received: true }) };
 };
 
-
-async function confirmBagFreeOrder(stripeSessionId) {
+async function processPaidBagFreeSession(session) {
   const supabaseUrl =
     process.env.SUPABASE_URL || process.env.BAGFREE_SUPABASE_URL;
   const serviceKey =
@@ -119,25 +131,126 @@ async function confirmBagFreeOrder(stripeSessionId) {
 
   if (!supabaseUrl || !serviceKey) {
     console.warn(
-      'Supabase admin env vars not configured — leaving BagFree order pending'
+      'Supabase admin env vars not configured — skipping order/reward sync'
     );
-    return;
+    return { ok: true, skipped: 'supabase_not_configured' };
   }
 
-  try {
-    const admin = createClient(supabaseUrl, serviceKey, {
-      auth: { persistSession: false },
-    });
+  const admin = createClient(supabaseUrl, serviceKey, {
+    auth: { persistSession: false },
+  });
 
-    const { error } = await admin
+  const { data: order, error: orderLookupError } = await admin
+    .from('orders')
+    .select('id,user_id')
+    .eq('stripe_session_id', session.id)
+    .maybeSingle();
+
+  if (orderLookupError) {
+    return {
+      ok: false,
+      error: `order_lookup_failed: ${orderLookupError.message}`,
+    };
+  }
+  let orderConfirmed = false;
+  if (order?.id) {
+    const { error: confirmError } = await admin
       .from('orders')
       .update({ status: 'confirmed' })
-      .eq('stripe_session_id', stripeSessionId);
+      .eq('id', order.id);
 
-    if (error) {
-      console.error('Could not confirm BagFree order:', error);
+    if (confirmError) {
+      return {
+        ok: false,
+        error: `order_confirm_failed: ${confirmError.message}`,
+      };
     }
-  } catch (err) {
-    console.error('Could not confirm BagFree order:', err);
+    orderConfirmed = true;
   }
+
+  let userId = order?.user_id || null;
+  const email =
+    session.customer_details?.email ||
+    session.customer_email ||
+    session.metadata?.customer_email ||
+    null;
+
+  if (!userId && email) {
+    const { data: profile, error: profileError } = await admin
+      .from('profiles')
+      .select('id')
+      .eq('email', email)
+      .maybeSingle();
+    if (profileError) {
+      console.warn('Profile lookup for rewards failed:', profileError);
+    } else {
+      userId = profile?.id || null;
+    }
+  }
+
+  if (!userId) {
+    return {
+      ok: true,
+      orderConfirmed,
+      pointsCredited: 0,
+      rewardSkipped: 'no_matching_user',
+    };
+  }
+
+  let earnRate = 5;
+  const { data: rule, error: ruleError } = await admin
+    .from('bag_rules')
+    .select('value')
+    .eq('key', 'earn_rate_per_dollar')
+    .maybeSingle();
+
+  if (ruleError) {
+    console.warn(
+      'Could not load BAG earn rate; using default 5:',
+      ruleError
+    );
+  } else if (rule?.value != null) {
+    const parsedRate = Number(rule.value);
+    if (Number.isFinite(parsedRate) && parsedRate >= 0) {
+      earnRate = parsedRate;
+    }
+  }
+
+  const dollars = Number(session.amount_total || 0) / 100;
+  const points = Math.floor(dollars * earnRate);
+
+  if (points <= 0) {
+    return { ok: true, orderConfirmed, pointsCredited: 0 };
+  }
+
+  const { data: result, error: rewardError } = await admin.rpc(
+    'award_points',
+    {
+      p_user_id: userId,
+      p_amount: points,
+      p_reason: 'purchase',
+      p_source_ref: `stripe_session:${session.id}`,
+      p_idempotency_key: `stripe:${session.id}:purchase`,
+      p_metadata: {
+        stripe_session_id: session.id,
+        amount_total_cents: session.amount_total,
+        currency: session.currency,
+        email,
+      },
+    }
+  );
+  if (rewardError) {
+    return {
+      ok: false,
+      error: `reward_credit_failed: ${rewardError.message}`,
+    };
+  }
+
+  return {
+    ok: true,
+    orderConfirmed,
+    pointsCredited: points,
+    newBalance: result?.[0]?.new_balance,
+    duplicateReward: Boolean(result?.[0]?.was_duplicate),
+  };
 }

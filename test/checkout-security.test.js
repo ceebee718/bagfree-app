@@ -150,9 +150,10 @@ test('server catalog matches live web checkout ids and prices', () => {
   }
 });
 
-test('paid Stripe webhook confirms matching pending order', async () => {
+test('paid Stripe webhook confirms order and credits rewards', async () => {
   const updateCalls = [];
-  const eqCalls = [];
+  const updateEqCalls = [];
+  const rpcCalls = [];
 
   class FakeStripe {
     constructor() {
@@ -175,20 +176,60 @@ test('paid Stripe webhook confirms matching pending order', async () => {
       };
     }
   }
+
   const fakeSupabase = {
     createClient: () => ({
       from: (table) => {
-        assert.equal(table, 'orders');
-        return {
-          update: (payload) => {
-            updateCalls.push(payload);
-            return {
-              eq: async (column, value) => {
-                eqCalls.push([column, value]);
-                return { error: null };
+        if (table === 'orders') {
+          return {
+            select: () => ({
+              eq: (column, value) => {
+                assert.equal(column, 'stripe_session_id');
+                assert.equal(value, 'cs_test_paid');
+                return {
+                  maybeSingle: async () => ({
+                    data: { id: 'order-row-1', user_id: 'user-1' },
+                    error: null,
+                  }),
+                };
               },
-            };
-          },
+            }),
+            update: (payload) => {
+              updateCalls.push(payload);
+              return {
+                eq: async (column, value) => {
+                  updateEqCalls.push([column, value]);
+                  return { error: null };
+                },
+              };
+            },
+          };
+        }
+
+        if (table === 'bag_rules') {
+          return {
+            select: () => ({
+              eq: (column, value) => {
+                assert.equal(column, 'key');
+                assert.equal(value, 'earn_rate_per_dollar');
+                return {
+                  maybeSingle: async () => ({
+                    data: { value: 5 },
+                    error: null,
+                  }),
+                };
+              },
+            }),
+          };
+        }
+
+        throw new Error(`Unexpected table: ${table}`);
+      },
+      rpc: async (name, payload) => {
+        rpcCalls.push([name, payload]);
+        return {
+          data: [{ new_balance: 275, was_duplicate: false }],
+          error: null,
         };
       },
     }),
@@ -198,7 +239,6 @@ test('paid Stripe webhook confirms matching pending order', async () => {
   process.env.STRIPE_WEBHOOK_SECRET = 'whsec_test_fake';
   process.env.SUPABASE_URL = 'https://example.supabase.co';
   process.env.SUPABASE_SERVICE_ROLE_KEY = 'service-role-test';
-
   const originalFetch = global.fetch;
   global.fetch = async () => ({ ok: true });
 
@@ -207,6 +247,7 @@ test('paid Stripe webhook confirms matching pending order', async () => {
       stripe: FakeStripe,
       '@supabase/supabase-js': fakeSupabase,
     });
+
     const response = await handler({
       httpMethod: 'POST',
       headers: { 'stripe-signature': 'sig_test' },
@@ -215,7 +256,22 @@ test('paid Stripe webhook confirms matching pending order', async () => {
 
     assert.equal(response.statusCode, 200);
     assert.deepEqual(updateCalls, [{ status: 'confirmed' }]);
-    assert.deepEqual(eqCalls, [['stripe_session_id', 'cs_test_paid']]);
+    assert.deepEqual(updateEqCalls, [['id', 'order-row-1']]);
+
+    assert.equal(rpcCalls.length, 1);
+    const [rpcName, rpcPayload] = rpcCalls[0];
+    assert.equal(rpcName, 'award_points');
+    assert.equal(rpcPayload.p_user_id, 'user-1');
+    assert.equal(rpcPayload.p_amount, 225);
+    assert.equal(rpcPayload.p_reason, 'purchase');
+    assert.equal(
+      rpcPayload.p_idempotency_key,
+      'stripe:cs_test_paid:purchase'
+    );
+    assert.equal(
+      rpcPayload.p_source_ref,
+      'stripe_session:cs_test_paid'
+    );
   } finally {
     global.fetch = originalFetch;
   }
