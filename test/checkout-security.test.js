@@ -78,6 +78,7 @@ test('checkout ignores client-supplied prices and titles', async () => {
 
   const response = await handler(event);
   assert.equal(response.statusCode, 200);
+  assert.equal(JSON.parse(response.body).amount_total, 9000);
   assert.ok(capturedSessionParams);
 
   const line = capturedSessionParams.line_items[0];
@@ -255,7 +256,11 @@ test('paid Stripe webhook confirms order and credits rewards', async () => {
     });
 
     assert.equal(response.statusCode, 200);
-    assert.deepEqual(updateCalls, [{ status: 'confirmed' }]);
+    assert.deepEqual(updateCalls, [{
+      status: 'confirmed',
+      subtotal: 45,
+      total: 45,
+    }]);
     assert.deepEqual(updateEqCalls, [['id', 'order-row-1']]);
 
     assert.equal(rpcCalls.length, 1);

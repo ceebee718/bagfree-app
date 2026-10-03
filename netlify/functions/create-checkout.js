@@ -72,6 +72,11 @@ exports.handler = async (event) => {
     return json(400, { error: err.message || 'Invalid bundle' });
   }
 
+  const canonicalTotalCents = canonicalBundles.reduce(
+    (sum, { qty, product }) => sum + product.unitAmount * qty,
+    0
+  );
+
   const lineItems = canonicalBundles.map(({ id, qty, size, product }) => {
     const productData = {
       name: product.title,
@@ -142,7 +147,12 @@ exports.handler = async (event) => {
       automatic_tax: { enabled: false },
     });
 
-    return json(200, { url: session.url, id: session.id });
+    return json(200, {
+      url: session.url,
+      id: session.id,
+      amount_total: canonicalTotalCents,
+      currency: 'usd',
+    });
   } catch (err) {
     console.error('Stripe checkout creation failed:', err);
     return json(500, {

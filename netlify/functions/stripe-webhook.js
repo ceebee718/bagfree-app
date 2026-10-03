@@ -154,9 +154,14 @@ async function processPaidBagFreeSession(session) {
   }
   let orderConfirmed = false;
   if (order?.id) {
+    const paidDollars = Number(session.amount_total || 0) / 100;
     const { error: confirmError } = await admin
       .from('orders')
-      .update({ status: 'confirmed' })
+      .update({
+        status: 'confirmed',
+        subtotal: paidDollars,
+        total: paidDollars,
+      })
       .eq('id', order.id);
 
     if (confirmError) {
