@@ -41,6 +41,11 @@ exports.handler = async function(event) {
     ).trim();
 
     const incomingSystemPrompt = String(body.systemPrompt || body.system || '').trim();
+    const anonymousSubjectIdRaw = String(body.anonymousSubjectId || '').trim();
+    const anonymousSubjectId =
+      /^[0-9a-f]{8}-[0-9a-f]{4}-4[0-9a-f]{3}-[89ab][0-9a-f]{3}-[0-9a-f]{12}$/i.test(anonymousSubjectIdRaw)
+        ? anonymousSubjectIdRaw
+        : '';
 
     const bagfreeSystemPrompt = `
 You are BagFree Travel Brain, powered by Embr.
@@ -144,6 +149,7 @@ Do not describe yourself as an operator layer, engine router, or generic chatbot
       },
       body: JSON.stringify({
         appId,
+        ...(anonymousSubjectId ? { anonymousSubjectId } : {}),
         message: userMessage,
         userMessage,
         messages: history,
